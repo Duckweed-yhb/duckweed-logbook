@@ -37,6 +37,11 @@
 ]{hyperref}
 \usepackage{hypcap}
 
+% 告诉 hyperref 五级标题的目录层级，消除 bookmark 警告
+\makeatletter
+\providecommand\toclevel@subsubsubsection{5}
+\makeatother
+
 % ======================== 基础页面设置 ========================
 \geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
 
@@ -180,9 +185,23 @@
 \tableofcontents
 \clearpage
 
-% 分模块引入子文件
-\input{3.力学.tex}
-\input{4.电磁学.tex}
-\input{5.振动与波动.tex}
+% ========== 第一篇 力学 ==========
+\part{第一篇 力学}
+\input{3.质点运动学.tex}
+\input{4.质点动力学.tex}
+\input{5.刚体力学基础.tex}
+\input{6.流体力学.tex}
+\input{7.狭义相对论.tex}
+
+% ========== 第二篇 电磁学 ==========
+\part{第二篇 电磁学}
+\input{8.电荷与电场.tex}
+\input{9.电流与磁场.tex}
+\input{10.电磁场与麦克斯韦电磁场方程组.tex}
+
+% ========== 第三篇 振动与波动 ==========
+\part{第三篇 振动与波动}
+\input{11.振动学基础.tex}
+\input{12.波动学基础.tex}
 
 \end{document}
