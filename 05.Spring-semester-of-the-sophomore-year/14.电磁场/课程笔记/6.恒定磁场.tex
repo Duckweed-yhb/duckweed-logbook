@@ -1,0 +1,548 @@
+% 恒定磁场 - 子文件（仅用于 \input 引入）
+% 电磁场课程笔记
+% 无额外依赖，可直接编译
+
+% -------------------------- 正文 --------------------------
+\section{恒定磁场}
+
+\subsection{本章内容概览}
+本章系统讲解恒定磁场的基础理论，核心知识点如下：
+\begin{itemize}
+    \item \textbf{磁感应强度}
+    \item \textbf{安培环路定律}
+    \item \textbf{恒定磁场基本方程组、分界面上的衔接条件}
+    \item \textbf{磁矢位、恒定磁场的边值问题}
+    \item \textbf{标量磁位}
+    \item \textbf{磁场能量与力}
+\end{itemize}
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+
+\subsection{磁感应强度}
+\subsubsection{引言与研究思路}
+本节核心内容为\textbf{真空中恒定磁场的散度}，整体研究思路如下：
+\begin{enumerate}
+    \item \textbf{安培力定律}
+    \item \textbf{磁感应强度}（描述磁场的基本物理量，即\textbf{毕奥-萨伐尔定律}）
+    \item 线电流产生的磁感应强度表达式
+    \item 体、面电流分布的磁感应强度表达式
+    \item 以体电流为例，研究表达式的散度，引出\textbf{磁矢位}
+\end{enumerate}
+
+\subsubsection{安培力定律}
+安培力定律描述的是\textbf{两个载流线圈之间的作用力}，与静电场中的库仑定律地位相当。
+
+载流线圈 $I_1$ 对 $I_2$ 的作用力为：
+\begin{formulaBox}
+\[
+\vec{F} = \frac{\mu_0}{4\pi} \oint_{L_2} \oint_{L_1} \frac{I_2 d\vec{L}_2 \times \left( I_1 d\vec{L}_1 \times \vec{e}_R \right)}{R^2}
+\]
+\end{formulaBox}
+也可写为：
+\[
+\vec{F} = \oint_{L_2} I_2 d\vec{L}_2 \times \left( \frac{\mu_0}{4\pi} \oint_{L_1} \frac{I_1 d\vec{L}_1 \times \vec{e}_R}{R^2} \right)
+\]
+
+其中：
+\begin{itemize}
+    \item $\mu_0$ 为\textbf{真空磁导率}，$\mu_0 = 4\pi \times 10^{-7} \, \text{H/m}$；
+    \item $R$ 为两个电流元之间的距离；
+    \item $\vec{e}_R$ 为从 $I_1 d\vec{L}_1$ 指向 $I_2 d\vec{L}_2$ 的单位矢量。
+\end{itemize}
+
+安培力定律与库仑定律相比，公式中存在复杂的方向关系，这种复杂性来源于电流元的矢量性。
+
+\subsubsection{电场与磁场的对比}
+磁场与电场的基本属性具有明确的对应关系：
+\begin{itemize}
+    \item 磁场的基本属性：对运动电荷/电流有力的作用，满足
+    \[
+    \vec{F} = \oint_{L_2} I_2 d\vec{L}_2 \times \vec{B}
+    \]
+    \item 电场的基本属性：对电荷有力的作用，满足
+    \[
+    \vec{F} = q\vec{E}
+    \]
+\end{itemize}
+
+\subsubsection{毕奥-萨伐尔定律（磁感应强度）}
+毕奥-萨伐尔定律给出了电流产生磁场的定量关系，细导线闭合回路激发的磁场为：
+\begin{formulaBox}
+\[
+\vec{B} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I' d\vec{L}' \times \vec{e}_R}{R^2} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I' d\vec{L}' \times (\vec{r} - \vec{r}')}{|\vec{r} - \vec{r}'|^3}
+\]
+\end{formulaBox}
+
+相关说明：
+\begin{itemize}
+    \item \textbf{磁感应强度}的单位为特斯拉（T），定义为：长1m、电流为1A的直导线在该点处所受到的最大磁场力；
+    \item 方向由\textbf{右手螺旋定则}判断：
+    \begin{enumerate}
+        \item 通电直导线：右手握住直导线，大拇指指向电流方向，弯曲四指方向为磁感应线环绕方向；
+        \item 通电螺线管：右手握住螺线管，四指指向电流方向，大拇指指向螺线管内部磁感应线方向；
+        \item 环形电流：右手握住环形电流，四指指向电流方向，大拇指指向环形电流内部磁感应线方向。
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{不同电流分布的磁感应强度}
+根据电流分布形式，毕奥-萨伐尔定律可推广为以下四种形式：
+\begin{itemize}
+    \item 单个运动点电荷的磁场：
+    \[
+    \vec{B} = \frac{\mu_0}{4\pi} \frac{q\vec{v} \times \vec{e}_R}{R^2}
+    \]
+    \item 线电流分布：
+    \[
+    \vec{B} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I' d\vec{L}' \times \vec{e}_R}{R^2}
+    \]
+    \item 面电流分布：
+    \[
+    \vec{B} = \frac{\mu_0}{4\pi} \int_{S'} \frac{\vec{K} dS' \times \vec{e}_R}{R^2}
+    \]
+    \item 体电流分布：
+    \[
+    \vec{B} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J} dV' \times \vec{e}_R}{R^2}
+    \]
+\end{itemize}
+
+\subsubsection{矢量磁位的引出}
+以体电流的磁场表达式为基础，可通过矢量恒等式引出矢量磁位：
+\[
+\vec{B} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J} \times \vec{e}_R}{R^2} dV' = \frac{\mu_0}{4\pi} \int_{V'} \vec{J} \times \left( -\nabla \frac{1}{R} \right) dV'
+\]
+利用矢量恒等式 $\vec{J} \times \nabla \frac{1}{R} = \nabla \times \left( \frac{\vec{J}}{R} \right)$，可推导得：
+\[
+\vec{B} = \nabla \times \left( \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}}{R} dV' + \nabla h + C \right)
+\]
+定义\textbf{矢量磁位} $\vec{A}$：
+\begin{formulaBox}
+\[
+\vec{A} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}}{R} dV'
+\]
+\end{formulaBox}
+则磁感应强度与矢量磁位满足：
+\[
+\vec{B} = \nabla \times \vec{A}
+\]
+
+为解决矢量磁位不唯一的问题，引入\textbf{库仑规范}：
+\[
+\nabla \cdot \vec{A} = 0
+\]
+并选择无穷远为参考点。
+
+\subsubsection{不同分布电流的矢量磁位}
+与磁感应强度对应，不同电流分布的矢量磁位表达式为：
+\begin{itemize}
+    \item 体电流分布：
+    \[
+    \vec{A} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}}{R} dV'
+    \]
+    \item 面电流分布：
+    \[
+    \vec{A} = \frac{\mu_0}{4\pi} \int_{S'} \frac{\vec{K}}{R} dS'
+    \]
+    \item 线电流分布：
+    \[
+    \vec{A} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I}{R} d\vec{L}'
+    \]
+\end{itemize}
+
+\subsubsection{磁通连续性定理}
+由 $\vec{B} = \nabla \times \vec{A}$，利用矢量恒等式 $\nabla \cdot (\nabla \times \vec{A}) = 0$，可得：
+\begin{formulaBox}
+\[
+\nabla \cdot \vec{B} = 0
+\]
+\end{formulaBox}
+积分形式为：
+\[
+\oint_{S} \vec{B} \cdot d\vec{S} = 0
+\]
+
+相关结论：
+\begin{itemize}
+    \item 恒定磁场是\textbf{无散场}；
+    \item 恒定磁场的磁力线是闭合曲线，且与闭合的电流矢量链相链；
+    \item 由任一闭合面穿出的净磁通等于零，即穿出的磁通等于穿入的磁通；
+    \item 以任意闭合曲线 $L$ 为边界的所有曲面上，具有相同的磁通。
+\end{itemize}
+
+\subsubsection{磁感应强度线}
+磁感应强度线（$\vec{B}$ 线）的定义：曲线上每一点的切线方向与该点磁感应强度方向一致。
+
+磁感线的微分方程为：
+\begin{formulaBox}
+\[
+\vec{B} \times d\vec{L} = 0 \quad \Rightarrow \quad \frac{B_x}{dx} = \frac{B_y}{dy} = \frac{B_z}{dz}
+\]
+\end{formulaBox}
+
+\subsubsection{磁偶极子}
+磁偶极子是指所围成的面积趋近于零时的载流回路，是研究磁场特性时使用的磁场源模型。
+
+\textbf{磁偶极矩}定义为：
+\begin{formulaBox}
+\[
+\vec{m} = I\vec{S}
+\]
+\end{formulaBox}
+其中 $I$ 为回路电流，$\vec{S}$ 为回路围成的有向面积，方向与电流环绕方向服从右手螺旋关系。
+
+磁偶极子的矢量磁位为：
+\[
+\vec{A} = \frac{\mu_0}{4\pi} \frac{\vec{m} \times \vec{e}_r}{r^2}
+\]
+在球坐标系中，其形式为：
+\[
+\vec{A} = \frac{\mu_0}{4\pi} \frac{IS \sin\theta}{r^2} \vec{e}_\phi
+\]
+对应的磁感应强度为：
+\[
+\vec{B} = \nabla \times \vec{A} = \frac{\mu_0 m}{4\pi r^3} \left( 2\cos\theta \vec{e}_r + \sin\theta \vec{e}_\theta \right)
+\]
+
+电偶极子电场与磁偶极子磁场的对比：
+\begin{itemize}
+    \item 电偶极子：
+    \[
+    \varphi = \frac{1}{4\pi\varepsilon_0} \frac{\vec{p} \cdot \vec{e}_r}{r^2}, \quad \vec{E} = -\nabla\varphi = \frac{p}{4\pi\varepsilon_0 r^3} \left( 2\cos\theta \vec{e}_r + \sin\theta \vec{e}_\theta \right)
+    \]
+    \item 磁偶极子：
+    \[
+    \vec{A} = \frac{\mu_0}{4\pi} \frac{\vec{m} \times \vec{e}_r}{r^2}, \quad \vec{B} = \nabla \times \vec{A} = \frac{\mu_0 m}{4\pi r^3} \left( 2\cos\theta \vec{e}_r + \sin\theta \vec{e}_\theta \right)
+    \]
+\end{itemize}
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+
+\subsection{安培环路定律——恒定磁场的旋度方程}
+\subsubsection{本节内容概览}
+本节核心内容包括：
+\begin{enumerate}
+    \item \textbf{真空中的安培环路定律}
+    \item \textbf{媒质的磁化}
+    \item \textbf{磁化强度}
+    \item 磁媒质内磁偶极子产生的场
+    \item \textbf{磁场强度}
+    \item \textbf{媒质中的安培环路定律}
+    \item \textbf{磁媒质的物性方程}
+\end{enumerate}
+
+\subsubsection{真空中的安培环路定律}
+安培环路定律描述了磁场的旋度特性，分为微分形式和积分形式：
+
+\begin{formulaBox}
+微分形式：
+\[
+\nabla \times \vec{B} = \mu_0 \vec{J}_C
+\]
+积分形式：
+\[
+\oint_L \vec{B} \cdot d\vec{l} = \mu_0 \iint_S \vec{J}_C \cdot d\vec{S} = \mu_0 \sum I_i
+\]
+\end{formulaBox}
+
+相关说明：
+\begin{itemize}
+    \item 磁场是\textbf{有旋场（涡旋场）}，与磁场的散度方程 $\nabla \cdot \vec{B} = 0$ 一致；
+    \item 磁感线与电流垂直并相互交链；
+    \item 在真空稳恒磁场中，$\vec{B}$ 沿任一闭合路径的积分，等于 $\mu_0$ 乘以该闭合路径所包围面积的各电流的代数和；如果电流的方向和积分回路的绕行方向符合右手螺旋关系，式中的电流取正号；
+    \item $\vec{B}$ 对任意闭合曲线 $L$ 的环流不恒等于零，磁场是非保守场，没有磁势的概念；
+    \item \textbf{传导电流}：在导电媒质中（如导体、电解液等）电荷的运动形成的电流称为传导电流（自由电流）。
+\end{itemize}
+
+\subsubsection{媒质（磁介质）的磁化}
+自然界中的所有实体物质都是磁介质。物质由分子或原子组成，分子或原子中任何一个电子都不停地同时参与两种运动，即\textbf{环绕原子核的轨道运动}和\textbf{电子本身的自旋运动}。这两种运动都等效于一个电流分布，因而能产生磁效应。
+
+把分子或原子看成一个整体，分子或原子中各个电子对外界所产生磁效应的总和，可用一个等效的圆电流表示，统称为\textbf{分子电流}。
+
+分子电流具有一定的磁矩，称为\textbf{分子磁矩} $\vec{m}$，其表达式为：
+\begin{formulaBox}
+\[
+\vec{m} = I\vec{S}
+\]
+\end{formulaBox}
+其中：
+\begin{itemize}
+    \item $I$ 是分子电流强度；
+    \item $\vec{S}$ 是分子电流围成的有向曲面的面积，其方向与电流环绕方向服从右手螺旋关系。
+\end{itemize}
+
+在没有外磁场作用时，由于热运动，分子磁矩排列是随机的，因此总的磁矩等于零，整块物质对外不显磁性。若把物体放入外磁场中，外磁场将对分子磁矩有转矩作用，其方向与外磁场方向趋于一致，使得分子磁矩的排列比较有序化。此时总磁矩不为零，物质对外呈现磁性，这种现象称为\textbf{媒质（磁介质）的磁化}。
+
+磁媒质中的电流是束缚电流。磁媒质的磁化：磁媒质在外加磁场时，磁偶极矩有转矩作用，其方向与外磁场方向趋于一致，使得磁偶极矩的排列比较有序化的现象称为磁媒质的磁化。
+
+磁化的结果：在磁媒质中出现了宏观的附加电流，称为\textbf{磁化电流}。磁化电流形成附加磁场，从而影响原来磁场的分布。
+
+\subsubsection{磁化强度}
+磁化强度是反映媒质被磁化的程度，定义为单位体积内所有磁偶极矩的矢量和：
+\begin{formulaBox}
+\[
+\vec{M} = \lim_{\Delta V \to 0} \frac{\sum_i \vec{m}_i}{\Delta V} \quad (\text{A/m})
+\]
+\end{formulaBox}
+其中 $\vec{m}_i = I\vec{S}$ 是媒质中第 $i$ 个分子的磁偶极矩。
+
+\subsubsection{磁媒质内磁偶极子产生的场}
+整个媒质中所有磁偶极矩在场点处产生的矢量磁位为：
+\[
+\vec{A} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}_M(\vec{r}')}{R} dV' + \frac{\mu_0}{4\pi} \oint_{S} \frac{\vec{K}_M(\vec{r}')}{R} dS'
+\]
+其中：
+\begin{itemize}
+    \item \textbf{磁化面电流密度}：$\vec{K}_M = \vec{M} \times \vec{e}_n$
+    \item \textbf{磁化体电流密度}：$\vec{J}_M = \nabla' \times \vec{M}$
+\end{itemize}
+
+磁介质对磁场的影响，可归结为磁化后磁化体电流和磁化面电流在真空所产生的作用。
+
+磁化电流与自由电流来源不同，但从激发磁场这一特性来讲，磁化电流和自由电流没有区别：
+\[
+\begin{cases}
+\nabla \times \vec{B}_C = \mu_0 \vec{J}_C \\
+\nabla \cdot \vec{B}_C = 0
+\end{cases}
+\quad
+\begin{cases}
+\nabla \times \vec{B}_M = \mu_0 \vec{J}_M \\
+\nabla \cdot \vec{B}_M = 0
+\end{cases}
+\]
+
+\subsubsection{磁场强度}
+当有磁介质存在时，磁场可看成由自由电流和磁化电流共同在真空中引起的：
+\[
+\vec{B} = \vec{B}_C + \vec{B}_M
+\]
+对其取旋度：
+\[
+\nabla \times \vec{B} = \nabla \times (\vec{B}_C + \vec{B}_M) = \mu_0 (\vec{J}_C + \vec{J}_M)
+\]
+代入 $\vec{J}_M = \nabla \times \vec{M}$，整理得：
+\[
+\nabla \times \left( \frac{\vec{B}}{\mu_0} - \vec{M} \right) = \vec{J}_C
+\]
+
+定义\textbf{磁场强度} $\vec{H}$：
+\begin{formulaBox}
+\[
+\vec{H} = \frac{\vec{B}}{\mu_0} - \vec{M} \quad (\text{A/m})
+\]
+\end{formulaBox}
+则上式可写为：
+\[
+\nabla \times \vec{H} = \vec{J}_C
+\]
+该式表明，在静磁场中任一点上磁场强度的旋度等于该点的传导电流面密度。
+
+利用斯托克斯定理，可得到积分形式：
+\[
+\oint_L \vec{H} \cdot d\vec{l} = I
+\]
+结论：在磁场中，磁场强度沿任一闭合路径的线积分等于穿过该回路所包围面积的自由电流（不包括磁化电流）的代数和。
+
+\subsubsection{磁介质的物性方程}
+磁介质的物性方程反映介质的磁化特性：
+\begin{formulaBox}
+\[
+\vec{B} = \mu_0 (\vec{H} + \vec{M})
+\]
+\end{formulaBox}
+
+在各向同性线性媒质中，磁化强度与磁场强度成正比：
+\[
+\vec{M} = \chi_M \vec{H}
+\]
+其中 $\chi_M$ 称为媒质的\textbf{磁化率}，无量纲。代入物性方程可得：
+\[
+\vec{B} = \mu_0 \vec{H} + \chi_M \mu_0 \vec{H} = \mu_0 (1 + \chi_M) \vec{H} = \mu_0 \mu_r \vec{H} = \mu \vec{H}
+\]
+其中：
+\begin{itemize}
+    \item $\mu = \mu_0 \mu_r$ 称为媒质的\textbf{磁导率}，单位 H/m；
+    \item $\mu_r = 1 + \chi_M = \mu / \mu_0$ 称为介质的\textbf{相对磁导率}，无量纲。
+\end{itemize}
+
+\subsubsection{极化和磁化的对比}
+为了方便对比，将介质的极化与磁化特性总结如下：
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{介质的极化} & \textbf{介质的磁化} \\
+\hline
+极化强度 $\vec{P} = \lim_{\Delta V \to 0} \frac{\sum \vec{p}_i}{\Delta V}$ & 磁化强度 $\vec{M} = \lim_{\Delta V \to 0} \frac{\sum \vec{m}_i}{\Delta V}$ \\
+\hline
+电偶极矩 $\vec{p}_i = q\vec{d}$ & 磁矩 $\vec{m}_i = I\vec{S}$ \\
+\hline
+$\sigma_p = \vec{P} \cdot \vec{e}_n, \rho_p = -\nabla \cdot \vec{P}$ & $\vec{K}_m = \vec{M} \times \vec{e}_n, \vec{J}_m = \nabla \times \vec{M}$ \\
+\hline
+$\nabla \cdot \vec{E} = \frac{\rho_f + \rho_p}{\varepsilon_0}$ & $\nabla \times \vec{B} = \mu_0 (\vec{J}_c + \vec{J}_m)$ \\
+\hline
+$\vec{D} = \varepsilon_0 \vec{E} + \vec{P}$ & $\vec{B} = \mu_0 (\vec{H} + \vec{M})$ \\
+\hline
+$\vec{P} = \chi_e \varepsilon_0 \vec{E}$ & $\vec{M} = \chi_m \vec{H}$ \\
+\hline
+$\vec{D} = \varepsilon \vec{E} = \varepsilon_0 \varepsilon_r \vec{E}$ & $\vec{B} = \mu \vec{H} = \mu_0 \mu_r \vec{H}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{本节重点}
+本节核心重点：
+\begin{itemize}
+    \item \textbf{真空中和磁媒质中的安培环路定律}（微分、积分形式）——恒定磁场的旋度方程；
+    \item 如何应用安培环路定律求磁场。
+\end{itemize}
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+
+\subsection{恒定磁场基本方程组与分界面衔接条件}
+\subsubsection{恒定磁场的基本方程}
+恒定磁场的基本方程分为微分形式和积分形式：
+
+\begin{formulaBox}
+微分形式：
+\[
+\begin{cases}
+\nabla \times \vec{H} = \vec{J}_C \\
+\nabla \cdot \vec{B} = 0
+\end{cases}
+\]
+积分形式：
+\[
+\begin{cases}
+\oint_L \vec{H} \cdot d\vec{l} = I \\
+\oint_S \vec{B} \cdot d\vec{S} = 0
+\end{cases}
+\]
+构成方程：
+\[
+\vec{B} = \mu \vec{H}
+\]
+\end{formulaBox}
+
+相关说明：
+\begin{itemize}
+    \item $\nabla \times \vec{H} = \vec{J}_C$：恒定磁场是\textbf{有旋场}，电流密度是磁场的涡旋源；
+    \item $\nabla \cdot \vec{B} = 0$：恒定磁场是\textbf{无源场}，磁感应线是无头无尾的闭合曲线，没有磁荷的存在；
+    \item $\oint_L \vec{H} \cdot d\vec{l} = I$：恒定磁场的环路线积分等于与积分路径相交链的所有自由电流代数和；
+    \item $\oint_S \vec{B} \cdot d\vec{S} = 0$：\textbf{磁通连续性定理}，由任一闭合面穿出的净磁通等于零；
+    \item $\vec{B} = \mu \vec{H}$：各向同性线性介质的构成方程。
+\end{itemize}
+
+\subsubsection{分界面上的衔接条件}
+分界面上的衔接条件描述了磁场在不同介质分界面处的变化规律：
+
+1.  \textbf{磁场强度的衔接条件}：
+    \[
+    \begin{cases}
+    H_{1t} - H_{2t} = K' \\
+    \vec{e}_n \times (\vec{H}_2 - \vec{H}_1) = \vec{K}
+    \end{cases}
+    \]
+    说明：由于分界面上电流的存在，分界面两侧磁场强度的切向分量不连续。理论上，在理想导体、超导体表面才可能有\textbf{面电流} $\vec{K}$ 的存在；工程上，唯当电流集肤效应十分显著时，才有可能近似将导体表面的电流分布看作等价的面电流分布。
+
+2.  \textbf{磁感应强度的衔接条件}：
+    \[
+    \begin{cases}
+    B_{2n} - B_{1n} = 0 \\
+    \vec{e}_n \cdot (\vec{B}_2 - \vec{B}_1) = 0
+    \end{cases}
+    \]
+    说明：分界面两侧磁感应强度的\textbf{法向分量连续}。
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+
+\subsection{磁矢位与恒定磁场的边值问题}
+\subsubsection{矢量磁位的微分方程}
+根据恒定磁场基本方程的微分形式和物性方程，可推导矢量磁位的微分方程：
+\[
+\nabla \times \vec{H} = \nabla \times \frac{\vec{B}}{\mu} = \frac{1}{\mu} \nabla \times \nabla \times \vec{A} = \vec{J}
+\]
+利用矢量恒等式 $\nabla \times \nabla \times \vec{A} = \nabla(\nabla \cdot \vec{A}) - \nabla^2 \vec{A}$，代入库仑规范 $\nabla \cdot \vec{A} = 0$，可得：
+\begin{formulaBox}
+\[
+\nabla^2 \vec{A} = -\mu \vec{J}
+\]
+\end{formulaBox}
+该式表明，矢量磁位满足\textbf{泊松方程}。在没有电流分布的场域中，$\vec{J} = 0$，则方程退化为\textbf{拉普拉斯方程}：
+\[
+\nabla^2 \vec{A} = 0
+\]
+
+\subsubsection{矢量磁位的衔接条件}
+根据 $\vec{B} = \nabla \times \vec{A}$，可得分界面上矢量磁位的衔接条件：
+\[
+\begin{cases}
+\vec{A}_1 = \vec{A}_2 \\
+\vec{e}_n \times \left( \frac{1}{\mu_2} \nabla \times \vec{A}_2 - \frac{1}{\mu_1} \nabla \times \vec{A}_1 \right) = \vec{K}
+\end{cases}
+\]
+
+对于平行平面磁场，分界面上的衔接条件可简化为：
+\[
+\begin{cases}
+A_1 = A_2 \\
+\frac{1}{\mu_1} \frac{\partial A_1}{\partial n} - \frac{1}{\mu_2} \frac{\partial A_2}{\partial n} = K
+\end{cases}
+\]
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+
+\subsection{标量磁位}
+\subsubsection{标量磁位的引出}
+如果在所研究的区域内，传导电流处处为零时，$\nabla \times \vec{H} = 0$，此时可以有条件地引入\textbf{标量磁位}：
+\begin{formulaBox}
+\[
+\vec{H} = -\nabla \varphi_m
+\]
+\end{formulaBox}
+其中标量磁位的定义为：
+\[
+\varphi_{mP} = \int_{P}^{Q} \vec{H} \cdot d\vec{l}
+\]
+标量磁位是\textbf{多值函数}，其多值性来源于参考点和积分路径的选择。
+
+在均匀媒质中，标量磁位满足拉普拉斯方程：
+\[
+\nabla^2 \varphi_m = 0
+\]
+
+\subsubsection{标量磁位的衔接条件}
+\[
+\begin{cases}
+\varphi_{m1} = \varphi_{m2} \\
+\mu_1 \frac{\partial \varphi_{m1}}{\partial n} = \mu_2 \frac{\partial \varphi_{m2}}{\partial n}
+\end{cases}
+\]
+
+\subsubsection{电位与标量磁位的区别}
+\begin{enumerate}
+    \item 存在条件：$\varphi_m$ 的提出有条件（传导电流为0）；
+    \item 多值性：电位的多值性仅来源于参考点的选择，而磁位的多值性同时受参考点和积分路径的影响；
+    \item 物理意义：标量磁位没有直接的物理意义，只是为了方便计算引入的辅助量。
+\end{enumerate}
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+
+\subsection{磁场能量与力}
+\subsubsection{磁场能量与能量密度}
+磁场能量来源于磁场建立过程中外力提供的能量。\textbf{磁场能量}的表达式为：
+\begin{formulaBox}
+\[
+W_m = \frac{1}{2} \int_{V'} \vec{A} \cdot \vec{J} dV'
+\]
+\end{formulaBox}
+利用 $\vec{J} = \nabla \times \vec{H}$ 可推导出更通用的形式：
+\[
+W_m = \frac{1}{2} \int_{V} \vec{B} \cdot \vec{H} dV
+\]
+该式表明，凡是恒定磁场不为零的空间都储存着磁场能量，场是能量的载体。
+
+\textbf{磁场能量密度}定义为：
+\[
+w_m = \frac{1}{2} \vec{B} \cdot \vec{H}
+\]
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}

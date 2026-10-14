@@ -1,0 +1,407 @@
+% 3.力学.tex 子文件，book文档类，由主文档\input{}导入
+\part{第一篇 力学}
+\chapter{第一章 质点运动学}
+
+\section{运动时空测量}
+    \subsection{物质与运动}
+    \begin{enumerate}
+        \item 质点运动学：描述机械运动物体空间位置随时间的变化关系，不探究运动产生与改变的原因。
+        \item 物质定义：客观存在，能量的表达；以\textbf{实物}和\textbf{场}两种基本形式存在，运动是物质固有属性，场是更基本的物质形态。
+    \end{enumerate}
+
+    \subsection{测量的标准}
+    \begin{enumerate}
+        \item 物理量测量规则：将物理量与公认标准比对，单位是物理量的命名，标准为精确不变的基准。
+        \item 标准选取原则：易于获取、恒定不变。
+    \end{enumerate}
+
+    \subsection{国际单位制与量纲}
+    \subsubsection{SI国际单位制7个基本量}
+    \begin{enumerate}
+        \item 长度 $\mathrm{L}$，单位：米 $\mathrm{m}$
+        \item 时间 $\mathrm{T}$，单位：秒 $\mathrm{s}$
+        \item 质量 $\mathrm{M}$，单位：千克 $\mathrm{kg}$
+        \item 电流 $\mathrm{I}$，单位：安培 $\mathrm{A}$
+        \item 热力学温度 $\varTheta$，单位：开尔文 $\mathrm{K}$
+        \item 物质的量 $\mathrm{N}$，单位：摩尔 $\mathrm{mol}$
+        \item 发光强度 $\mathrm{J}$，单位：坎德拉 $\mathrm{cd}$
+    \end{enumerate}
+    由基本量导出的物理量称为\textbf{导出量}，对应单位为导出单位。
+
+    \subsubsection{量纲}
+    物理量用基本量乘方乘积表达的形式；\textbf{量纲一致性原理}：物理方程等式两侧量纲必须完全相同，可用于校验公式正误。
+    例：力的量纲 $\mathrm{MLT^{-2}}$；所有量纲指数为 $0$ 的量为无量纲量。
+
+    \subsection{时间与空间}
+    \begin{enumerate}
+        \item 时空本质：客观存在，是运动物质的存在形式，二者通过物质运动相互关联，无法脱离物质独立存在。
+        \item 时间定义：描述物质运动持续性与顺序性，1967年定义：铯-133原子基态两个超精细能级跃迁辐射9192631770个周期的时长为1秒。
+        \item 长度定义：描述物质广延性，1983年定义：光在真空中 $1/299792458\ \mathrm{s}$ 内传播的路径长度为1米。
+    \end{enumerate}
+
+    \subsection{参考系和坐标系}
+        \subsubsection{参考系}
+        运动具有绝对性，观测描述具有相对性；被选定作为观测基准的物体称为\textbf{参考系}，所有物理量必须统一至同一参考系计算。
+
+        \subsubsection{坐标系}
+        在选定参考系中搭建的定量描述系统，常用：直角坐标系、自然坐标系、极坐标系、球坐标系、柱坐标系；坐标系选定等价于参考系选定，选取原则简化运算。
+
+\section{质点运动的描述}
+    \subsection{质点}
+    理想化物理模型：当物体自身尺寸、形状对研究问题无影响时，抽象为集中全部质量的几何点。
+    相对性示例：地球公转可视为质点，地球自转不可视为质点。
+
+    \subsection{位置矢量与运动方程}
+    \subsubsection{位置矢量（位矢）}
+    参考系原点指向质点空间位置的矢量，记作 $\boldsymbol{r}$。
+    直角坐标系分解：
+    \[
+    \boldsymbol{r}(t) = x(t)\boldsymbol{i} + y(t)\boldsymbol{j} + z(t)\boldsymbol{k}
+    \]
+    分量形式：
+    \[
+    \begin{cases}
+    x = x(t)\\
+    y = y(t)\\
+    z = z(t)
+    \end{cases}
+    \]
+    位矢大小：
+    \[
+    r = |\boldsymbol{r}| = \sqrt{x^2+y^2+z^2}
+    \]
+    方向由方向余弦确定：
+    \[
+    \cos\alpha = \frac{x}{r},\quad \cos\beta = \frac{y}{r},\quad \cos\gamma = \frac{z}{r}
+    \]
+
+    \subsubsection{运动方程与轨道方程}
+    \begin{enumerate}
+        \item 运动方程：$\boldsymbol{r}=\boldsymbol{r}(t)$，描述位矢随时间变化规律；
+        \item 轨道方程：消去运动方程参数 $t$ 得到空间轨迹方程，分为直线运动、曲线运动。
+    \end{enumerate}
+
+    \subsection{位移与路程}
+    \begin{enumerate}
+        \item 位移矢量 $\Delta\boldsymbol{r}$：$\Delta t$ 内位矢的增量，矢量，方向由初位置指向末位置
+        \[
+        \Delta\boldsymbol{r} = \boldsymbol{r}_B - \boldsymbol{r}_A = \Delta x \boldsymbol{i} + \Delta y \boldsymbol{j} + \Delta z \boldsymbol{k}
+        \]
+        位移大小：
+        \[
+        |\Delta\boldsymbol{r}| = \sqrt{\Delta x^2+\Delta y^2+\Delta z^2}
+        \]
+        \item 路程 $\Delta s$：质点实际走过的轨迹长度，标量；
+        \item 核心关系：一般 $|\Delta\boldsymbol{r}| \neq \Delta s$，仅单向直线运动或无穷小时间间隔内 $\mathrm{d}s = |\mathrm{d}\boldsymbol{r}|$。
+    \end{enumerate}
+
+    \subsection{速度矢量}
+    \subsubsection{平均速度}
+    $\Delta t$ 内位矢平均变化率，矢量：
+    \[
+    \bar{\boldsymbol{v}} = \frac{\Delta\boldsymbol{r}}{\Delta t}
+    \]
+
+    \subsubsection{瞬时速度（速度）}
+    $\Delta t \to 0$ 时平均速度极限，沿轨迹切线方向：
+    \[
+    \boldsymbol{v} = \lim_{\Delta t \to 0}\frac{\Delta\boldsymbol{r}}{\Delta t} = \frac{\mathrm{d}\boldsymbol{r}}{\mathrm{d}t}
+    \]
+    直角坐标系分解：
+    \[
+    \boldsymbol{v} = \frac{\mathrm{d}x}{\mathrm{d}t}\boldsymbol{i} + \frac{\mathrm{d}y}{\mathrm{d}t}\boldsymbol{j} + \frac{\mathrm{d}z}{\mathrm{d}t}\boldsymbol{k} = v_x\boldsymbol{i}+v_y\boldsymbol{j}+v_z\boldsymbol{k}
+    \]
+
+    \subsubsection{速率}
+    速度矢量的模，标量：
+    \[
+    v = |\boldsymbol{v}| = \sqrt{v_x^2+v_y^2+v_z^2}
+    \]
+    注意：平均速度大小 $\neq$ 平均速率。
+
+\section{质点运动变化的描述}
+    \subsection{加速度矢量}
+    描述速度矢量（大小、方向）随时间变化快慢的物理量。
+    \begin{enumerate}
+        \item 平均加速度：
+        \[
+        \bar{\boldsymbol{a}} = \frac{\Delta\boldsymbol{v}}{\Delta t}
+        \]
+        \item 瞬时加速度：
+        \[
+        \boldsymbol{a} = \lim_{\Delta t \to 0}\frac{\Delta\boldsymbol{v}}{\Delta t} = \frac{\mathrm{d}\boldsymbol{v}}{\mathrm{d}t} = \frac{\mathrm{d}^2\boldsymbol{r}}{\mathrm{d}t^2}
+        \]
+    \end{enumerate}
+    直角坐标系分解：
+    \[
+    \boldsymbol{a} = \frac{\mathrm{d}v_x}{\mathrm{d}t}\boldsymbol{i} + \frac{\mathrm{d}v_y}{\mathrm{d}t}\boldsymbol{j} + \frac{\mathrm{d}v_z}{\mathrm{d}t}\boldsymbol{k}
+    \]
+    加速度大小：
+    \[
+    a = \sqrt{a_x^2+a_y^2+a_z^2}
+    \]
+
+    \subsubsection{两类质点运动学核心问题}
+    \begin{enumerate}
+        \item 微分问题：已知运动方程 $\boldsymbol{r}(t)$，一阶导求速度，二阶导求加速度；
+        \item 积分问题：已知加速度/速度与初始条件，积分逆运算求解速度、运动方程。
+    \end{enumerate}
+    \subsubsection{运动叠加原理}
+    \textbf{运动叠加原理}：任意曲线运动可分解为三个正交方向独立直线运动的叠加。
+
+    \subsection{自然坐标系中的速度和加速度}
+    适用于已知轨迹的平面曲线运动，以切向单位矢量 $\boldsymbol{e}_\mathrm{t}$、法向单位矢量 $\boldsymbol{e}_\mathrm{n}$ 搭建坐标系。
+
+    \subsubsection{自然坐标与速度}
+    弧长坐标 $s=s(t)$，速率 $v=\dfrac{\mathrm{d}s}{\mathrm{d}t}$，速度矢量：
+    \[
+    \boldsymbol{v} = \frac{\mathrm{d}s}{\mathrm{d}t}\boldsymbol{e}_\mathrm{t} = v\boldsymbol{e}_\mathrm{t}
+    \]
+
+    \subsubsection{切向加速度与法向加速度}
+    对速度求导分解：
+    \[
+    \boldsymbol{a} = \frac{\mathrm{d}v}{\mathrm{d}t}\boldsymbol{e}_\mathrm{t} + \frac{v^2}{\rho}\boldsymbol{e}_\mathrm{n}
+    \]
+    \begin{enumerate}
+        \item 切向加速度：
+        \[
+        a_\mathrm{t} = \frac{\mathrm{d}v}{\mathrm{d}t}
+        \]
+        物理意义：改变速度的大小；
+        \item 法向加速度（向心加速度）：
+        \[
+        a_\mathrm{n} = \frac{v^2}{\rho}
+        \]
+        物理意义：改变速度的方向，$\rho$ 为轨迹曲率半径；
+    \end{enumerate}
+    合加速度大小：
+    \[
+    a = \sqrt{a_\mathrm{t}^2 + a_\mathrm{n}^2}
+    \]
+
+    \subsubsection{由切向、法向加速度判定运动类型}
+    \begin{enumerate}
+        \item 若 $a_\mathrm{n} \equiv 0$：质点做直线运动；若 $a_\mathrm{n} \not\equiv 0$：质点做曲线运动；
+        \item 若 $a_\mathrm{t} \equiv 0$：质点做匀速率运动；若 $a_\mathrm{t} \not\equiv 0$：质点做变速率运动。
+    \end{enumerate}
+    直线运动、匀速率曲线运动均为平面一般曲线运动的特例。
+
+    \subsection{圆周运动的角量描述}
+    \subsubsection{线量与角量定义}
+    \begin{enumerate}
+        \item \textbf{线量}：自然坐标系描述物理量，包括弧长 $s$、路程 $\Delta s$、速率 $v$、切向加速度 $a_\mathrm{t}$、法向加速度 $a_\mathrm{n}$；
+        \item \textbf{角量}：极坐标系描述圆周运动物理量，包括角位置 $\theta$、角位移 $\Delta\theta$、角速度 $\omega$、角加速度 $\alpha$。
+    \end{enumerate}
+    规定：质点绕原点逆时针转动角量为正值，顺时针转动角量为负值。
+
+    \subsubsection{角速度与角加速度定义式}
+    角速度：
+    \[
+    \omega = \lim_{\Delta t \to 0}\frac{\Delta\theta}{\Delta t} = \frac{\mathrm{d}\theta}{\mathrm{d}t}
+    \]
+    角加速度：
+    \[
+    \alpha = \lim_{\Delta t \to 0}\frac{\Delta\omega}{\Delta t} = \frac{\mathrm{d}\omega}{\mathrm{d}t} = \frac{\mathrm{d}^2\theta}{\mathrm{d}t^2}
+    \]
+    SI单位：角速度 $\mathrm{rad\cdot s^{-1}}$，角加速度 $\mathrm{rad\cdot s^{-2}}$。
+
+    \subsubsection{圆周运动角量与线量关系式}
+    \[
+    \begin{cases}
+    v = R\omega \\
+    a_\mathrm{t} = R\alpha \\
+    a_\mathrm{n} = R\omega^2 = \dfrac{v^2}{R}
+    \end{cases}
+    \]
+
+    \subsubsection{角速度与角加速度的矢量表达}
+    无限小角位移满足矢量运算法则，瞬时角速度 $\boldsymbol{\omega}$、瞬时角加速度 $\boldsymbol{\alpha}$ 为矢量，方向由右手螺旋定则判定。
+    线速度矢量叉乘公式：
+    \[
+    \boldsymbol{v} = \boldsymbol{\omega} \times \boldsymbol{r}
+    \]
+    加速度矢量叉乘公式：
+    \[
+    \boldsymbol{a} = \boldsymbol{\alpha} \times \boldsymbol{r} + \boldsymbol{\omega} \times \boldsymbol{v}
+    \]
+    式中第一项为切向加速度，第二项为法向加速度。
+
+\section{相对运动}
+    \subsection{参考系平动变换基本关系}
+    设参考系 $S'$ 相对惯性系 $S$ 做平动，$S'$ 原点位矢为 $\boldsymbol{r}_0$，质点在 $S$ 系位矢 $\boldsymbol{r}$，在 $S'$ 系位矢 $\boldsymbol{r}'$，满足位矢变换：
+    \[
+    \boldsymbol{r} = \boldsymbol{r}' + \boldsymbol{r}_0
+    \]
+    位移变换关系：
+    \[
+    \Delta\boldsymbol{r} = \Delta\boldsymbol{r}' + \Delta\boldsymbol{r}_0
+    \]
+
+    \subsection{伽利略速度变换定理}
+    对位矢公式对时间求导，令质点相对 $S$ 速度 $\boldsymbol{v}$，质点相对 $S'$ 速度 $\boldsymbol{v}'$，$S'$ 相对 $S$ 牵连速度 $\boldsymbol{u}$：
+    \[
+    \boldsymbol{v} = \boldsymbol{v}' + \boldsymbol{u}
+    \]
+    该式为\textbf{伽利略速度变换公式}，适用于物体运动速度远小于光速的宏观低速场景。
+
+    \subsection{伽利略加速度变换定理}
+    对速度变换式再次求导，$S'$ 相对 $S$ 牵连加速度 $\boldsymbol{a}_0$，质点在两参考系加速度 $\boldsymbol{a}$、$\boldsymbol{a}'$：
+    \[
+    \boldsymbol{a} = \boldsymbol{a}' + \boldsymbol{a}_0
+    \]
+    若 $S'$ 相对 $S$ 做匀速直线平动，牵连加速度 $\boldsymbol{a}_0 = \boldsymbol{0}$，则：
+    \[
+    \boldsymbol{a} = \boldsymbol{a}'
+    \]
+    即惯性系中所有匀速平动参考系内观测到的质点加速度完全相等。
+
+\chapter{第二章 质点动力学}
+
+\section{动量 动量守恒定律}
+    \subsection{动量 质量}
+    \subsection{动量的时间变化率 力}
+        \subsubsection{质点动量的时间变化率}
+        \subsubsection{力}
+        \subsubsection{质点系动量的时间变化率}
+        \subsubsection{惯性系中的牛顿运动定律}
+        \subsubsection{非惯性系中的牛顿运动定律}
+            \subsubsubsection{平动加速参考系中的惯性力}
+            \subsubsubsection{匀角速转动参考系中的惯性力}
+    \subsection{动量定理 动量守恒定律}
+        \subsubsection{质点动量定理}
+        \subsubsection{质点系动量定理}
+        \subsubsection{动量守恒定律}
+    \subsection{质心 质心运动定理}
+
+\section{角动量 角动量守恒定律}
+    \subsection{质点的角动量}
+    角动量又称动量矩。
+    \subsection{质点角动量的时间变化率 力矩}
+    质点动量的改变不仅与其所受的作用力$\boldsymbol{F}$有关，还与参考点到质点的位矢有关。外力 $\boldsymbol{F}$ 对参考点的力矩定义为位矢与作用力的叉乘，力矩方向垂直于位矢与作用力所决定的平面。
+    \subsection{质点的角动量定理 角动量守恒定律}
+
+\section{能量 能量守恒定律}
+    \subsection{动能 功 动能定理}
+    \subsection{保守力 势能 功能原理}
+    \subsection{机械能守恒定律与能量守恒定律}
+
+\chapter{第三章 刚体力学基础}
+
+\section{刚体运动的基本形式}
+    \subsection{平动和转动}
+    刚体上任一给定直线（或任意两质点间连线）在运动中空间方向始终不变而保持平行，这样的运动称为刚体平动。
+    \subsection{描述刚体转动的物理量}
+
+\section{定轴转动刚体的角动量 转动惯量}
+    \subsection{刚体对定轴的角动量}
+    当刚体绕$Oz$轴作定轴转动时，刚体上各质元某一瞬时均以相同的角速度$\omega$绕该定轴作平面圆周运动。
+    \subsection{转动惯量}
+    \textbf{转动惯量定义}：质点系内每个质点的质量与该质点到转轴距离平方之积的总和。
+    \[
+    J = \sum r_i^2 \Delta m_i
+    \]
+    刚体对某定轴的角动量等于刚体对此轴的转动惯量与角速度的乘积：
+    \[
+    L = J\omega
+    \]
+
+    \subsubsection{平行轴定理}
+    \textbf{平行轴定理}：若质量为$m$的刚体对过其质心$C$的转轴的转动惯量为$J_C$，则刚体对平行于该轴、间距为$d$的另一平行转轴的转动惯量：
+    \[
+    J = J_C + md^2
+    \]
+
+\section{刚体定轴转动定律}
+    \subsection{刚体角动量的时间变化率 对转轴的力矩}
+    质点系角动量对时间的变化率等于系统所受的合外力矩。
+    \subsection{刚体定轴转动定律}
+    \textbf{刚体定轴转动定律}：刚体所受的对于某定轴的合外力矩等于刚体对此定轴的转动惯量与刚体在此合外力矩作用下所获得的角加速度的乘积。
+    \[
+    M = J\beta
+    \]
+
+\section{刚体的角动量定理和角动量守恒定律}
+    \subsection{刚体的角动量定理}
+    \subsection{刚体的角动量守恒定律}
+
+\section{刚体定轴转动的动能定理和机械能守恒定律}
+    \subsection{刚体转动动能和势能}
+    \subsection{力矩的功}
+    \subsection{刚体定轴转动的动能定理}
+    \subsection{刚体定轴转动的机械能守恒定律}
+
+\chapter{第四章 流体力学简介}
+
+\section{流体运动的描述}
+    \subsection{速度场和定常流动}
+    \subsection{流线和流管}
+
+\section{连续性方程和伯努利方程}
+    \subsection{理想流体}
+    \subsection{理想流体的连续性方程}
+    \textbf{连续性方程}（定常不可压缩流体）：
+    \[
+    S_1 v_1 = S_2 v_2
+    \]
+    \subsection{理想流体的伯努利方程}
+    \textbf{伯努利方程}（理想流体定常流动）：
+    \[
+    p_1+\frac{1}{2}\rho v_1^2+\rho g h_1 = p_2+\frac{1}{2}\rho v_2^2+\rho g h_2
+    \]
+
+\chapter{第五章 狭义相对论}
+
+\section{狭义相对论基本原理}
+    \subsection{伽利略相对性原理}
+    \textbf{伽利略相对性原理}：所有惯性系对于描述力学定律来说都是等价的。
+
+    \subsection{狭义相对论基本原理}
+    \subsection{洛伦兹变换}
+    \begin{enumerate}
+        \item 洛伦兹坐标变换
+        \[
+        \left\{
+        \begin{aligned}
+        x' &= \frac{x - vt}{\sqrt{1 - \frac{v^2}{c^2}}}, \\
+        y' &= y, \\
+        z' &= z, \\
+        t' &= \frac{t - \frac{v}{c^2} x}{\sqrt{1 - \frac{v^2}{c^2}}}.
+        \end{aligned}
+        \right.
+        \]
+        \item 洛伦兹速度变换
+        \[
+        \left\{
+        \begin{aligned}
+        u'_x &= \frac{u_x - v}{1 - \frac{u_x v}{c^2}}, \\
+        u'_y &= \frac{u_y \sqrt{1 - \beta^2}}{1 - \frac{u_x v}{c^2}}, \\
+        u'_z &= \frac{u_z \sqrt{1 - \beta^2}}{1 - \frac{u_x v}{c^2}}.
+        \end{aligned}
+        \right.
+        \]
+        洛伦兹速度逆变换：
+        \[
+        \left\{
+        \begin{aligned}
+        u_x &= \frac{u'_x + v}{1 + \frac{u'_x v}{c^2}}, \\
+        u_y &= \frac{u'_y \sqrt{1 - \beta^2}}{1 + \frac{u'_x v}{c^2}}, \\
+        u_z &= \frac{u'_z \sqrt{1 - \beta^2}}{1 + \frac{u'_x v}{c^2}}.
+        \end{aligned}
+        \right.
+        \]
+    \end{enumerate}
+
+\section{狭义相对论时空观}
+    \subsection{“同时”的相对性}
+    \subsection{时间的相对性}
+    \subsection{长度的相对性}
+
+\section{相对论动力学基础}
+    \subsection{相对论的质速关系}
+    \subsection{相对论动力学的基本方程}
+    \subsection{相对论动能}
+    \subsection{静能、总能和质能关系}
+    \subsection{能量和动量的关系}
+
+\endinput

@@ -1,0 +1,288 @@
+% ======================== 量子物理章节 - 适配主文档格式 ========================
+% 子文件说明：无任何特殊宏包依赖，主文档仅需基础宏包：
+% \usepackage{ctex,booktabs,array,xcolor,amsmath,amssymb}
+% 引入方式：\input{量子物理.tex}
+
+\section{量子物理}
+
+% ======================== 早期量子论 ========================
+\subsection{早期量子论}
+
+\subsubsection{黑体辐射和普朗克量子假设}
+\textbf{【核心考点】} 黑体辐射核心定律 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{黑体模型}：能完全吸收各种波长的电磁辐射而无反射的理想物体。
+    \item \textbf{单色辐出度}：单位时间从单位表面积辐射的、波长在$\lambda\sim\lambda+d\lambda$的能量与$d\lambda$之比：
+          \[
+          m(\lambda, T) = \frac{\mathrm{d}M}{\mathrm{d}\lambda}
+          \]
+    \item \textbf{辐出度}：所有波长辐射的总能量（单色辐出度的积分）：
+          \[
+          M(T) = \int_{0}^{\infty} m(\lambda, T) \, \mathrm{d}\lambda
+          \]
+    \item \textbf{斯特藩-玻尔兹曼定律}（黑体）：
+          \[
+          M_0(T) = \sigma_0 T^4
+          \]
+    \item \textbf{维恩位移定律}：
+          \[
+          \lambda_{\text{m}}T = b
+          \]
+    \item \textbf{经典物理的困难}：维恩公式（短波符合、长波偏离）、瑞利-金斯公式（长波符合、短波紫外灾难）。
+    \item \textbf{普朗克量子假设}：能量量子化，谐振子能量$E = nh\nu$（$n=0,1,2,\dots$）。
+\end{itemize}
+
+\textbf{核心常数：}\\
+$\sigma_0$：斯特藩常量，$\sigma_0=5.67\times10^{-8}$ W/(m²·K⁴) \\
+$b$：维恩常量，$b=2.898\times10^{-3}$ m·K \\
+$h$：普朗克常量，$h=6.63\times10^{-34}$ J·s
+\vspace{0.5em}
+
+\subsubsection{光电效应和爱因斯坦光子理论}
+\textbf{【核心考点】} 光电效应的光子解释 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{光电效应实验规律}：饱和电流与光强成正比、存在截止频率、遏止电压与频率线性相关、响应时间极短。
+    \item \textbf{光子能量}：光的粒子性体现，能量与频率成正比：
+          \[
+          \varepsilon = h\nu
+          \]
+    \item \textbf{爱因斯坦光电效应方程}：
+          \[
+          h\nu = \frac{1}{2}mv_{\text{m}}^2 + A_0
+          \]
+    \item \textbf{光的波粒二象性}：光子动量（波粒二象性核心）：
+          \[
+          p = \frac{h\nu}{c} = \frac{h}{\lambda}
+          \]
+\end{itemize}
+
+\textbf{符号说明：}\\
+$\nu$：光的频率（Hz） \\
+$A_0$：金属逸出功（J） \\
+$v_{\text{m}}$：光电子最大初速度（m/s） \\
+$c$：真空中光速，$c=3\times10^8$ m/s
+\vspace{0.5em}
+
+\subsubsection{康普顿效应（康普顿散射）}
+\textbf{【核心考点】} 康普顿效应验证光子动量 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{实验现象}：X射线散射后部分波长变长，波长改变量与散射角相关。
+    \item \textbf{波长改变量公式}：
+          \[
+          \Delta\lambda = \lambda' - \lambda = \frac{h}{m_0 c}(1-\cos\theta) = \frac{2h}{m_0 c}\sin^2\frac{\theta}{2}
+          \]
+    \item \textbf{康普顿波长}（电子）：
+          \[
+          \lambda_{\text{C}} = \frac{h}{m_0 c} = 2.43\times10^{-12}\ \text{m}
+          \]
+\end{itemize}
+
+\textbf{符号说明：}\\
+$m_0$：电子静质量，$m_0=9.11\times10^{-31}$ kg \\
+$\theta$：散射角（rad/°） \\
+$\lambda'$：散射后波长（m）
+\vspace{0.5em}
+
+\subsubsection{氢原子光谱和玻尔理论}
+\textbf{【核心考点】} 玻尔理论的量子化条件 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{经典原子模型缺陷}：汤姆孙模型（西瓜模型）、核式模型（无法解释光谱分立性）。
+    \item \textbf{玻尔氢原子理论三大假设}：
+          \begin{enumerate}
+              \item 定态假设：原子只能处于能量不连续的定态，定态不辐射能量。
+              \item 跃迁假设：原子从一个定态跃迁到另一定态，辐射/吸收光子能量$\Delta E = h\nu = |E_n - E_k|$。
+              \item 轨道角动量量子化假设：
+                    \[
+                    L = mvr = n\frac{h}{2\pi} = n\hbar,\quad n=1,2,3,\cdots
+                    \]
+          \end{enumerate}
+    \item \textbf{玻尔轨道半径与速度}：
+          \[
+          r_n = a_0 n^2,\quad v_n = \frac{\alpha c}{n}
+          \]
+    \item \textbf{氢原子能级公式}：
+          \[
+          E_n = -\frac{m e^4}{8\varepsilon_0^2 h^2 n^2} = -\frac{13.6}{n^2}\ \text{eV}
+          \]
+\end{itemize}
+
+\textbf{符号说明：}\\
+$\hbar$：约化普朗克常量，$\hbar = \frac{h}{2\pi} = 1.05\times10^{-34}$ J·s \\
+$a_0$：玻尔半径，$a_0=0.529\times10^{-10}$ m \\
+$\alpha$：精细结构常数，$\alpha\approx\frac{1}{137}$ \\
+$e$：元电荷，$e=1.60\times10^{-19}$ C \\
+$\varepsilon_0$：真空介电常量，$\varepsilon_0=8.85\times10^{-12}$ F/m
+\vspace{0.5em}
+
+\subsubsection{德布罗意假设与电子衍射实验}
+\textbf{【核心考点】} 实物粒子的波粒二象性 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{德布罗意假设}：实物粒子具有波粒二象性（物质波/德布罗意波）：
+          \[
+          \boldsymbol{p} = \frac{h}{\lambda} \boldsymbol{e} = \hbar \boldsymbol{k}
+          \]
+    \item \textbf{德布罗意波长计算}：
+          \begin{itemize}
+              \item 非相对论近似（$v\ll c$）：
+                    \[
+                    \lambda = \frac{h}{\sqrt{2m_0 E_{\text{k}}}} = \frac{1.226}{\sqrt{U}}\ \text{nm} \quad (\text{电子，}U\text{为加速电压，单位V})
+                    \]
+              \item 相对论通用式：
+                    \[
+                    \lambda = \frac{h}{\sqrt{\left( \frac{E_{\text{k}}}{c} \right)^2 + 2m_0 E_{\text{k}}}}
+                    \]
+          \end{itemize}
+    \item \textbf{电子衍射实验}（验证物质波）：布拉格衍射条件：
+          \[
+          2d\sin\varphi = k\lambda \quad (k=1,2,3,\dots)
+          \]
+\end{itemize}
+
+\textbf{符号说明：}\\
+$\boldsymbol{k}$：波矢，$\boldsymbol{k} = \frac{2\pi}{\lambda} \boldsymbol{e}$ \\
+$E_{\text{k}}$：粒子动能（J） \\
+$d$：晶面间距（m） \\
+$\varphi$：入射波与晶面夹角（rad/°）
+\vspace{0.5em}
+
+% ======================== 量子力学基础 ========================
+\subsection{量子力学基础}
+
+\subsubsection{波函数的统计解释}
+\textbf{【核心考点】} 波函数的概率诠释与标准条件 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{波函数}：描述微观粒子状态的函数，记为$\Psi(x,y,z,t)$（复函数）。
+    \item \textbf{玻恩统计解释}：
+          \begin{itemize}
+              \item 概率密度：$w = |\Psi|^2 = \Psi^* \cdot \Psi$（单位体积内找到粒子的概率）。
+              \item 体积元$\mathrm{d}V$内找到粒子的概率：$\mathrm{d}W = |\Psi|^2 \mathrm{d}V$。
+              \item 归一化条件：$\iiint_{-\infty}^{+\infty} |\Psi|^2 \mathrm{d}x\mathrm{d}y\mathrm{d}z = 1$。
+          \end{itemize}
+    \item \textbf{波函数的标准条件}：单值性、有限性、连续性（概率的物理意义要求）。
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{不确定关系（测不准原理）}
+\textbf{【核心考点】} 不确定关系的物理意义与应用 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{坐标-动量不确定关系}（海森伯）：
+          \[
+          \Delta x \Delta p_x \ge \frac{\hbar}{2}
+          \]
+    \item \textbf{时间-能量不确定关系}：
+          \[
+          \Delta E \cdot \Delta t \ge \frac{\hbar}{2}
+          \]
+    \item \textbf{物理意义}：微观粒子的位置与动量、能量与时间不能同时精确测量，是粒子波粒二象性的体现。
+\end{itemize}
+
+\textbf{符号说明：}\\
+$\Delta x$：位置不确定量（m） \\
+$\Delta p_x$：x方向动量不确定量（kg·m/s） \\
+$\Delta E$：能量不确定量（J，能级宽度） \\
+$\Delta t$：时间不确定量（s，能级平均寿命）
+\vspace{0.5em}
+
+\subsubsection{薛定谔方程}
+\textbf{【核心考点】} 定态薛定谔方程的形式与应用 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{定态薛定谔方程}（能量不随时间变化）：
+          \[
+          -\frac{\hbar^2}{2m}\nabla^2 \psi + V(x,y,z)\psi = E\psi
+          \]
+    \item \textbf{一维定态薛定谔方程}：
+          \[
+          -\frac{\hbar^2}{2m}\frac{\mathrm{d}^2\psi}{\mathrm{d}x^2} + V(x)\psi = E\psi
+          \]
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{一维定态问题}
+\textbf{【核心考点】} 一维无限深势阱与隧道效应 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{一维无限深方势阱}（$0 < x < a$，$V=0$；$x\le0$或$x\ge a$，$V\to\infty$）：
+          \begin{itemize}
+              \item 归一化波函数：
+                    \[
+                    \psi_n(x) = \sqrt{\frac{2}{a}} \sin\left(\frac{n\pi x}{a}\right)
+                    \]
+              \item 能量本征值（量子化）：
+                    \[
+                    E_n = \frac{n^2 h^2}{8ma^2} = \frac{n^2 \pi^2 \hbar^2}{2ma^2}\quad (n=1,2,3,\dots)
+                    \]
+          \end{itemize}
+    \item \textbf{宽度为$2a$的势阱补充}（考点）：
+          \[
+          E_n = \frac{n^2 h^2}{32ma^2} = \frac{n^2 \pi^2 \hbar^2}{8ma^2}\quad (n=1,2,3,\dots)
+          \]
+    \item \textbf{隧道效应}：微观粒子能穿透高于自身能量的势垒（应用：扫描隧穿显微镜STM）。
+    \item \textbf{一维线性谐振子}：
+          \begin{itemize}
+              \item 势能：$V(x) = \frac{1}{2}m\omega^2 x^2$
+              \item 能量本征值（零点能效应）：
+                    \[
+                    E_n = \left(n + \frac{1}{2}\right)\hbar\omega\quad (n=0,1,2,\dots)
+                    \]
+          \end{itemize}
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{原子中的电子与原子壳层结构}
+\textbf{【核心考点】} 氢原子量子数与电子自旋 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{氢原子的四个量子数}（完整描述电子状态）：
+          \begin{enumerate}
+              \item 主量子数$n$：$n=1,2,3,\dots$，决定电子能量（主要）。
+              \item 角量子数$l$：$l=0,1,\dots,n-1$，决定轨道角动量$L=\sqrt{l(l+1)}\hbar$。
+              \item 磁量子数$m_l$：$m_l=0,\pm1,\dots,\pm l$，决定角动量z分量$L_z=m_l\hbar$。
+              \item 自旋磁量子数$m_s$：$m_s=\pm\frac{1}{2}$，决定自旋角动量z分量$S_z=m_s\hbar$。
+          \end{enumerate}
+    \item \textbf{电子自旋角动量}：
+          \[
+          S = \sqrt{s(s+1)}\hbar,\quad s=\frac{1}{2},\quad S_z = \pm\frac{1}{2}\hbar
+          \]
+    \item \textbf{泡利不相容原理}：同一原子中，不可能有两个电子的四个量子数完全相同。
+    \item \textbf{能量最低原理}：电子优先填充能量最低的能级（决定元素周期律）。
+\end{itemize}
+
+% 量子数汇总表格（优化排版，适配紧凑布局）
+\begin{table}[htbp]
+    \centering
+    \scriptsize
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{@{}p{2.2cm}|p{3cm}|p{5.6cm}@{}}
+        \toprule
+        \rowcolor[RGB]{230,240,250} 量子数 & 取值范围 & 物理意义 \\
+        \midrule
+        主量子数 $n$ & $n=1,2,3,\dots$ & 决定能量：$E_n = -\frac{13.6}{n^2}$ eV \\
+        \midrule
+        角量子数 $l$ & $l=0,1,\dots,n-1$ & 决定轨道角动量：$L=\sqrt{l(l+1)}\hbar$ \\
+                      & （$l=0:\text{s},1:\text{p},2:\text{d},3:\text{f}$） & 决定轨道形状 \\
+        \midrule
+        磁量子数 $m_l$ & $m_l=0,\pm1,\dots,\pm l$ & 决定角动量z分量：$L_z=m_l\hbar$（空间量子化） \\
+        \midrule
+        自旋磁量子数 $m_s$ & $m_s=\pm\frac{1}{2}$ & 决定自旋角动量z分量：$S_z=m_s\hbar$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{氢原子电子的量子数汇总}
+    \label{tab:quantum_number}
+\end{table}
+\vspace{0.5em}
+
+% ======================== 例题参考与考点提示 ========================
+\subsection{例题参考与考点提示}
+{
+\color[RGB]{0,80,150}
+\begin{tabular}{@{}p{2cm}p{9cm}@{}}
+早期量子论： & 2、4、7、8、12、14、17、18（黑体辐射、光电效应、康普顿效应、玻尔理论）； \\
+量子力学： & 19、20、21、22、26、27（波函数、不确定关系、势阱、量子数）； \\
+核心考点： & 1. 德布罗意波长计算；2. 不确定关系应用；3. 一维势阱能级求解；4. 氢原子量子数取值； \\
+参考教材： & 《大学物理学 (第五版)》王少杰 \\
+\end{tabular}
+}
+
+% 章节末尾分隔线（视觉优化）
+\vspace{0.5em}
+\noindent{\color[RGB]{0,80,150}\rule{\linewidth}{0.3pt}}
+\vspace{0.5em}
+\clearpage

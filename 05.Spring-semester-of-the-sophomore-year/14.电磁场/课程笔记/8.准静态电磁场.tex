@@ -1,0 +1,115 @@
+% 第6章 准静态电磁场
+\section{准静态电磁场}
+
+\subsection{电准静态场（EQS）}
+当感应电场远小于库仑电场时，即 $\frac{\partial \vec{B}}{\partial t} \approx 0$，麦克斯韦方程组可简化为：
+\begin{formulaBox}
+\[
+\begin{cases}
+\nabla \times \vec{E} \approx 0 \\
+\nabla \cdot \vec{D} = \rho_f \\
+\nabla \times \vec{H} = \vec{J}_c + \frac{\partial \vec{D}}{\partial t} \\
+\nabla \cdot \vec{B} = 0
+\end{cases}
+\]
+\end{formulaBox}
+
+与静态场相比，电准静态场具有与静电场类同的\textbf{有源无旋}特性，因此两种场的计算方法相同。
+
+典型应用场景：
+\begin{itemize}
+    \item 电力传输系统和装置中的高压电场；
+    \item 常用电子器件、设备附近的电场；
+    \item 低频交流情况下，平板电容器中的电场。
+\end{itemize}
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{磁准静态场（MQS）}
+当位移电流远小于传导电流时，即 $\frac{\partial \vec{D}}{\partial t} \approx 0$，麦克斯韦方程组可简化为：
+\begin{formulaBox}
+\[
+\begin{cases}
+\nabla \times \vec{H} \approx \vec{J}_c \\
+\nabla \cdot \vec{B} = 0 \\
+\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \\
+\nabla \cdot \vec{D} = \rho_f
+\end{cases}
+\]
+\end{formulaBox}
+
+与静态场相比，磁准静态场具有与静磁场类同的\textbf{有旋无源}特性，因此两种场的计算方法相同。
+
+典型应用场景：
+\begin{itemize}
+    \item 低频电磁装置中的磁场问题（电机、变压器、感应加热、磁悬浮等）；
+    \item 电工技术中的涡流问题；
+    \item 电气工程中的大部分问题都属于磁准静态场问题。
+\end{itemize}
+
+磁准静态场中的位函数引出与一般时变电磁场相同：
+\[
+\begin{cases}
+\nabla \cdot \vec{B} = 0 \implies \vec{B} = \nabla \times \vec{A} \\
+\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \implies \vec{E} = -\frac{\partial \vec{A}}{\partial t} - \nabla \varphi
+\end{cases}
+\]
+在库仑规范 $\nabla \cdot \vec{A} = 0$ 下，位函数满足：
+\begin{formulaBox}
+\[
+\begin{cases}
+\nabla^2 \vec{A} = -\mu \vec{J}_c \\
+\nabla^2 \varphi = -\frac{\rho_f}{\varepsilon}
+\end{cases}
+\]
+\end{formulaBox}
+
+磁准静态场也称作\textbf{似稳场}，其核心近似是略去电磁场的波动性，认为场和源之间具有类似于静态场的“瞬时”对应关系。
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{似稳条件}
+准静态近似的适用条件可分为两类：
+
+\paragraph{1. 导体中的时变电磁场}
+当满足 $\omega\varepsilon \ll \gamma$ 时，导体中的时变电磁场可按磁准静态场处理，这类场也称为\textbf{涡流场}。
+
+\paragraph{2. 理想介质中的时变电磁场}
+当满足 $\beta r \ll 1$（或 $r \ll \lambda$）时，理想介质中的时变电磁场可按磁准静态场处理。
+物理含义：载流系统的尺寸必须远小于电磁波的波长，系统中各点的场可近似认为是同相位变化的。
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{集肤效应}
+当交变电流流过导体时，电流密度分布呈现以下特点：
+\begin{itemize}
+    \item 靠近导体表面处电流密度大，深入导体内部电流密度小；
+    \item 频率很高时，电流几乎只在导体表面附近的薄层中存在；
+    \item 这种场量主要集中在导体表面附近的现象，称为\textbf{集肤效应}。
+\end{itemize}
+
+工程上常用\textbf{透入深度} $\delta$ 表示场量在良导体中的集肤程度，它等于场量振幅衰减到其表面值的 $1/e$ 时所经过的距离：
+\begin{formulaBox}
+\[
+\delta = \frac{1}{\alpha} = \sqrt{\frac{2}{\omega\mu\gamma}}
+\]
+\end{formulaBox}
+
+结论：\textbf{频率越高、导电性能越好的导体，集肤效应越显著}。
+
+\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{交流内阻抗}
+在交流情况下，由于集肤效应，电流和电磁场集中在导体表面附近，导致有效载流截面积减小，因此导体的电阻和电感与直流时不同。
+
+设导体中通过总电流 $\dot{I}$，其等效交流阻抗为 $Z = R + jX$，可通过坡印廷矢量的复数形式计算：
+\begin{formulaBox}
+\[
+Z = \frac{-\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A}}{|\dot{I}|^2}
+\]
+其中：
+\[
+\begin{cases}
+R = \frac{1}{|\dot{I}|^2} \text{Re}\left[ -\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A} \right] \\
+X = \frac{1}{|\dot{I}|^2} \text{Im}\left[ -\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A} \right]
+\end{cases}
+\]
+\end{formulaBox}
+
+$R$ 为\textbf{交流电阻}（反映焦耳损耗），$X$ 为\textbf{内电抗}（反映导体内部磁场储能）。

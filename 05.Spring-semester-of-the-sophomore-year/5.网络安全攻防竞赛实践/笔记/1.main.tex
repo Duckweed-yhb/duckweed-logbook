@@ -1,0 +1,57 @@
+% 网络安全攻防竞赛实践 - 主文件 1.main.tex
+\documentclass[12pt,a4paper,UTF8]{ctexart}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% 核心宏包
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+% 超链接（无红框 + 蓝色文字）
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!80!black,
+    citecolor=blue!80!black,
+    urlcolor=blue!80!black
+}
+
+% 代码块样式
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60},
+    stringstyle=\color{red},
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    captionpos=b,
+    tabsize=4
+}
+
+% 标题信息
+\title{\bfseries 网络安全攻防竞赛实践笔记}
+\author{duckweed}
+\date{\today}
+
+\begin{document}
+
+% 封面
+\input{2.cover.tex}
+
+% 目录
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+% 正文
+\input{3.introduction.tex}
+\newpage
+\input{4.misc.tex}
+\input{5.web.tex}
+\end{document}

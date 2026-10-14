@@ -1,0 +1,259 @@
+% 子文件：11.无穷级数与傅里叶级数.tex
+% 主文档使用 \input{11.无穷级数与傅里叶级数} 引入，不含 document 环境
+
+\section{无穷级数的敛散性}
+
+定义11.1\quad
+
+\subsection{收敛与发散概念}
+
+\subsection{无穷级数的几个基本性质}
+\begin{enumerate}
+    \item 性质1\quad 当$k$为非零常数时，级数
+    \item 性质2
+    \item 性质3
+    \item 性质4
+    \item 性质5（级数收敛的必要条件）\quad 若级数收敛，则必有
+\end{enumerate}
+
+\subsection{柯西收敛原理}
+
+定理11.1\quad 级数收敛的充要条件为：
+
+\section{正项级数敛散性判别法}
+
+若，即有
+\[
+u_n\ge 0
+\]
+所以
+
+定理11.2\quad 正项级数收敛的充要条件是其部分和数列有上界。
+
+定理11.3（比较判别法）\quad 设
+
+\noindent 推论
+
+定理11.4（比较判别法的极限形式）\quad 设$\sum u_n$，$\sum v_n$为两个正项级数，如果
+\[
+\lim_{n\to\infty}\frac{u_n}{v_n}=l
+\]
+则
+\begin{enumerate}
+    \item 当$0<l<+\infty$；
+    \item 当$l=0$；
+    \item 当$l=+\infty$。
+\end{enumerate}
+
+\noindent 推论\quad 设，则
+\begin{enumerate}
+    \item
+    \item
+\end{enumerate}
+
+定理11.5（比值判别法或达朗贝尔判别法）\quad 对正项级数$\sum u_n$，若
+
+定理11.6（根值判别法或柯西判别法）\quad 对正项级数$\sum u_n$，若
+\[
+\lim_{n\to\infty}\sqrt[n]{u_n}=\rho
+\]
+则当
+
+\noindent 两点补充：
+\begin{enumerate}
+    \item
+    \item
+\end{enumerate}
+
+定理11.7（积分判别法）\quad 设，且$f(n)=u_n$，则级数
+
+\section{任意项级数、绝对收敛}
+
+既有正项又有负项。
+
+定义11.3\quad 如果，则称绝对收敛。如果级数收敛，但不绝对收敛，则称级数条件收敛。
+
+定理11.8\quad 级数绝对收敛的充要条件是由级数中正项构成的级数和负项构成的级数
+\[
+\sum u_n^+,\quad \sum u_n^-
+\]
+都收敛。
+
+定理11.9\quad 若级数绝对收敛。
+
+\noindent 注意
+
+\noindent 正项与负项
+
+定理11.10（莱布尼茨判别法）\quad 若
+\begin{enumerate}
+    \item
+    \item
+\end{enumerate}
+则级数收敛，且其和，余和。
+
+\noindent 绝对收敛级数的两条性质
+\begin{enumerate}
+    \item 性质1\quad 若级数
+    \item 性质2\quad 若级数$\sum u_n$，$\sum v_n$都绝对收敛，它们的和分别为$A,B$，则它们的柯西乘积
+\[
+\sum_{n=1}^{\infty}\left(\sum_{k=1}^{n}u_k v_{n-k+1}\right)
+\]
+也是绝对收敛的，且其和为$A\cdot B$。
+\end{enumerate}
+
+\section{函数项级数、一致收敛}
+\subsection{函数项级数}
+
+设，对函数项级数
+\[
+\sum_{n=1}^{\infty}u_n(x)
+\]
+当，若数项级数
+\[
+\sum_{n=1}^{\infty}u_n(x_0)
+\]
+收敛。
+
+设$J$是。
+
+\subsection{一致收敛}
+
+恒有，这个。
+
+定义11.4\quad
+
+定理\quad
+
+\section{幂级数}
+
+形如
+\[
+\sum_{n=0}^{\infty}a_n(x-x_0)^n
+\]
+
+\subsection{幂级数的收敛半径和收敛域}
+
+阿贝尔引理\quad 如果
+
+\noindent 推论\quad 幂级数的收敛性有三种类型：
+\begin{enumerate}
+    \item
+    \item
+    \item
+\end{enumerate}
+
+定理11.12\quad 对幂级数$\sum a_n x^n$，若
+\[
+\rho=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|
+\]
+则幂级数的收敛半径
+\[
+R=\frac1\rho
+\]
+
+\subsection{幂级数的运算}
+
+设有两个幂级数
+\[
+\sum a_n x^n =f(x),\qquad \sum b_n x^n =g(x)
+\]
+记，由绝对收敛级数的性质有：
+\begin{enumerate}
+    \item 加法与减法
+    \item 乘法
+    \item 除法
+\end{enumerate}
+
+定理11.13\quad
+
+\noindent 幂级数有如下分析运算性质：
+\begin{enumerate}
+    \item
+    \item
+    \item
+\end{enumerate}
+
+幂级数，例如的收敛域。
+
+\noindent 关于幂级数的和函数有下列重要性质：
+\begin{enumerate}
+    \item 性质1
+    \item 性质2
+    \item 性质3
+\end{enumerate}
+
+\section{函数的幂级数展开}
+\subsection{直接展开法、泰勒级数}
+
+如果：人们称幂级数
+\[
+\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n
+\]
+为$f(x)$在$x_0$处的泰勒级数。
+
+显然。
+
+定理11.14\quad 则它的泰勒级数收敛于$f(x)$的充分必要条件是余项
+\[
+\lim_{n\to\infty}R_n(x)=0
+\]
+
+定理11.15（函数幂级数展开的唯一性）\quad 若函数可展开为幂级数
+\[
+f(x)=\sum_{n=0}^{\infty}a_n(x-x_0)^n
+\]
+则其系数
+\[
+a_n=\frac{f^{(n)}(x_0)}{n!}
+\]
+这里规定。
+
+\subsection{间接展开法}
+
+称为欧拉公式。
+
+\noindent 幂级数求和。
+
+\section{幂级数的应用举例}
+
+\section{傅里叶级数}
+
+即将周期为$T$的函数展开成
+\[
+\frac{a_0}{2}+\sum\left(a_n\cos\frac{2\pi}{T}nx+b_n\sin\frac{2\pi}{T}nx\right)
+\]
+的形式。
+
+\subsection{三角函数系的正交性}
+
+三角函数系
+\begin{enumerate}
+    \item（正交性）任何两个不同的
+    \item
+\end{enumerate}
+
+\subsection{傅里叶级数}
+
+定理11.16\quad 如果
+\[
+f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}(a_n\cos nx+b_n\sin nx)
+\]
+
+定理11.17（收敛的充分条件）\quad 如果
+\begin{enumerate}
+    \item
+    \item
+\end{enumerate}
+
+\subsection{正弦级数和余弦级数}
+\begin{enumerate}
+    \item
+    \item
+\end{enumerate}
+
+\subsection{以$2l$为周期的函数的傅里叶级数}
+
+\subsection{有限区间上的函数的傅里叶展开}
+
+\subsection{傅里叶级数的复数形式}

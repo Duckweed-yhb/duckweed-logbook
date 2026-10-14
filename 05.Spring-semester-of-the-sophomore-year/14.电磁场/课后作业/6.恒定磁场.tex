@@ -1,0 +1,196 @@
+% !TeX root = main.tex
+\section{恒定磁场}
+\begin{enumerate}
+    \item 已知无限长直导体圆柱由电导率不同的两层导体构成，内层导体的半径 $R_1=2\,\text{mm}$，电导率 $\gamma_1=10^7\,\text{S/m}$；外层导体的外半径 $R_2=3\,\text{mm}$，电导率 $\gamma_2=4\times10^7\,\text{S/m}$。导体圆柱中沿轴线方向流过的电流为 $I=100\,\text{A}$，求：
+    \begin{enumerate}
+        \item 两层导体中的电流密度 $\vec{J}_1$ 和 $\vec{J}_2$；
+        \item 导体圆柱内、外的磁感应强度。
+    \end{enumerate}
+
+    \paragraph{解答：}
+    \begin{enumerate}
+        \item 由于两层导体串联，电场强度 $E$ 相同，电流密度满足 $J=\gamma E$，故 $J_1=\gamma_1 E$，$J_2=\gamma_2 E$。
+        设内层电流为 $I_1$，外层电流为 $I_2$，则 $I=I_1+I_2$。
+        \[
+        I_1 = J_1 \pi R_1^2 = \gamma_1 E \pi R_1^2, \quad I_2 = J_2 \pi (R_2^2-R_1^2) = \gamma_2 E \pi (R_2^2-R_1^2)
+        \]
+        代入数据 $R_1=2\times10^{-3}\,\text{m}$，$R_2=3\times10^{-3}\,\text{m}$，解得：
+        \[
+        E = \frac{I}{\pi\left(\gamma_1 R_1^2 + \gamma_2(R_2^2-R_1^2)\right)}
+        \]
+        \[
+        J_1 = \gamma_1 E = \frac{I \gamma_1}{\pi\left(\gamma_1 R_1^2 + \gamma_2(R_2^2-R_1^2)\right)} = 2.5\times10^6\,\text{A/m}^2
+        \]
+        \[
+        J_2 = \gamma_2 E = \frac{I \gamma_2}{\pi\left(\gamma_1 R_1^2 + \gamma_2(R_2^2-R_1^2)\right)} = 1.0\times10^7\,\text{A/m}^2
+        \]
+        方向均沿轴线方向。
+
+        \item 由安培环路定理 $\oint \vec{H}\cdot d\vec{l}=I_{\text{enclosed}}$：
+        \begin{itemize}
+            \item 当 $0<\rho<R_1$：
+            \[
+            H \cdot 2\pi\rho = J_1 \pi\rho^2 \Rightarrow H = \frac{J_1 \rho}{2}, \quad B = \mu_0 H = \frac{\mu_0 J_1 \rho}{2}
+            \]
+            \item 当 $R_1<\rho<R_2$：
+            \[
+            H \cdot 2\pi\rho = I_1 + J_2 \pi(\rho^2-R_1^2) \Rightarrow B = \mu_0 H
+            \]
+            \item 当 $\rho>R_2$：
+            \[
+            H \cdot 2\pi\rho = I \Rightarrow B = \frac{\mu_0 I}{2\pi\rho}
+            \]
+        \end{itemize}
+    \end{enumerate}
+
+    \item 有一半径为 $a$ 的长直圆柱形导体，通有电流密度为 $\vec{J}=J_0\frac{\rho}{a}\vec{e}_z$ 的恒定电流（$z$ 轴就是圆柱导体的轴线）。试求导体内、外的磁场强度 $\vec{H}$。
+
+    \paragraph{解答：}
+    由安培环路定理，磁场仅沿 $\vec{e}_\theta$ 方向，大小仅与 $\rho$ 有关。
+    \begin{itemize}
+        \item 当 $0<\rho<a$：
+        \[
+        I_{\text{enclosed}} = \int_0^\rho \int_0^{2\pi} J_0 \frac{\rho'}{a} \rho' d\rho' d\theta = \frac{2\pi J_0}{3a}\rho^3
+        \]
+        \[
+        H \cdot 2\pi\rho = I_{\text{enclosed}} \Rightarrow H = \frac{J_0 \rho^2}{3a} \Rightarrow \vec{H} = \frac{J_0 \rho^2}{3a}\vec{e}_\theta
+        \]
+        \item 当 $\rho>a$：
+        \[
+        I = \int_0^a \int_0^{2\pi} J_0 \frac{\rho'}{a} \rho' d\rho' d\theta = \frac{2\pi J_0 a^2}{3}
+        \]
+        \[
+        H \cdot 2\pi\rho = I \Rightarrow H = \frac{J_0 a^2}{3\rho} \Rightarrow \vec{H} = \frac{J_0 a^2}{3\rho}\vec{e}_\theta
+        \]
+    \end{itemize}
+
+    \item 一根截面积为 $2\,\text{cm}^2$，长为 $10\,\text{cm}$ 的圆柱状磁媒质被均匀磁化，磁化强度 $\vec{M}=2\vec{e}_x\,\text{(A/m)}$，试计算它的磁矩 $\vec{m}$。
+
+    \paragraph{解答：}
+    磁矩与磁化强度的关系为 $\vec{m} = \vec{M} V$，其中 $V$ 为体积。
+    \[
+    V = S l = 2\times10^{-4}\,\text{m}^2 \times 0.1\,\text{m} = 2\times10^{-5}\,\text{m}^3
+    \]
+    \[
+    \vec{m} = 2\vec{e}_x \times 2\times10^{-5} = 4\times10^{-5}\vec{e}_x\,\text{(A·m}^2\text{)}
+    \]
+
+    \item $z=0$ 是两种媒质的分界面，分界面上无自由电流密度分布，在 $z>0$ 时，$\mu_{r1}=1$，$\vec{B}_1=1.5\vec{e}_x+0.8\vec{e}_y+0.6\vec{e}_z\,\text{mT}$；在 $z<0$ 时，$\mu_{r2}=100$，求：
+    \begin{enumerate}
+        \item 在 $z<0$ 时的磁感应强度 $\vec{B}_2$；
+        \item 每个区域的磁化强度和界面磁化面电流密度。
+    \end{enumerate}
+
+    \paragraph{解答：}
+    设分界面法向为 $\vec{e}_z$，无自由电流时，切向分量 $H_{1t}=H_{2t}$，法向分量 $B_{1n}=B_{2n}$。
+    \begin{enumerate}
+        \item $B_{2z}=B_{1z}=0.6\,\text{mT}$。
+        $H_{1x} = \frac{B_{1x}}{\mu_0\mu_{r1}} = \frac{1.5\times10^{-3}}{\mu_0}$，$H_{1y} = \frac{0.8\times10^{-3}}{\mu_0}$。
+        由 $H_{2x}=H_{1x}, H_{2y}=H_{1y}$，得：
+        \[
+        B_{2x} = \mu_0\mu_{r2}H_{2x} = 100 \times 1.5\times10^{-3} = 150\,\text{mT}
+        \]
+        \[
+        B_{2y} = \mu_0\mu_{r2}H_{2y} = 100 \times 0.8\times10^{-3} = 80\,\text{mT}
+        \]
+        故 $\vec{B}_2 = 150\vec{e}_x + 80\vec{e}_y + 0.6\vec{e}_z\,\text{mT}$。
+
+        \item 磁化强度 $\vec{M} = \frac{\vec{B}}{\mu_0} - \vec{H}$：
+        \[
+        \vec{M}_1 = \left(\frac{1.5\vec{e}_x+0.8\vec{e}_y+0.6\vec{e}_z}{\mu_0} - \frac{1.5\vec{e}_x+0.8\vec{e}_y+0.6\vec{e}_z}{\mu_0}\right) = 0
+        \]
+        \[
+        \vec{M}_2 = \left(\frac{150\vec{e}_x+80\vec{e}_y+0.6\vec{e}_z}{\mu_0} - \frac{1.5\vec{e}_x+0.8\vec{e}_y+0.6\vec{e}_z}{\mu_0}\right) = \frac{148.5\vec{e}_x + 79.2\vec{e}_y}{\mu_0}\times10^{-3}\,\text{A/m}
+        \]
+        界面磁化面电流密度：
+        \[
+        \vec{J}_{ms} = \vec{e}_z \times (\vec{M}_2 - \vec{M}_1) = \vec{e}_z \times \vec{M}_2 = \frac{1}{\mu_0}(-79.2\vec{e}_x + 148.5\vec{e}_y)\times10^{-3}\,\text{A/m}
+        \]
+    \end{enumerate}
+
+    \item 证明在平行平面磁场中等 $\vec{A}$ 线就是 $\vec{B}$ 线。
+
+    \paragraph{解答：}
+    平行平面磁场中，矢量磁位 $\vec{A}$ 仅有 $z$ 分量，即 $\vec{A}=A_z(x,y)\vec{e}_z$，且 $\vec{B}=\nabla\times\vec{A}$。
+    \[
+    \vec{B} = \nabla\times(A_z\vec{e}_z) = \frac{\partial A_z}{\partial y}\vec{e}_x - \frac{\partial A_z}{\partial x}\vec{e}_y
+    \]
+    等 $\vec{A}$ 线满足 $A_z(x,y)=\text{常数}$，其切线方向为 $\left(\frac{\partial A_z}{\partial y}, -\frac{\partial A_z}{\partial x}\right)$，与 $\vec{B}$ 的方向完全一致，故等 $\vec{A}$ 线就是 $\vec{B}$ 线。
+
+    \item 一根极细的圆铁杆和一个很薄的圆铁盘样品放入磁场 $\vec{B}_0$ 中，并使它们的轴与 $\vec{B}_0$ 平行，铁的磁导率为 $\mu$，求两样样品内的 $\vec{B}$，$\vec{H}$。若已知 $\vec{B}_0=1\,\text{T}$，$\mu=5000\mu_0$，求两样样品内的磁化强度 $\vec{M}$。
+
+    \paragraph{解答：}
+    \begin{itemize}
+        \item 极细圆铁杆：退磁因子 $N\approx0$，内部磁场 $H=H_0$，故：
+        \[
+        B = \mu H = \mu H_0 = \frac{\mu}{\mu_0}B_0 = 5000\,\text{T}
+        \]
+        \[
+        M = \frac{B}{\mu_0} - H = \left(\frac{5000\mu_0}{\mu_0} - \frac{1}{\mu_0}\right)B_0 = \frac{4999}{\mu_0}\,\text{A/m}
+        \]
+
+        \item 很薄圆铁盘：退磁因子 $N\approx1$，内部磁场 $H=H_0 - N M = H_0 - M$，且 $B=\mu(H_0 - M)=\mu_0(H_0 + M)$，解得：
+        \[
+        M = \frac{\mu-\mu_0}{\mu+\mu_0}H_0 \approx H_0, \quad B=\mu_0(H_0+M) \approx B_0=1\,\text{T}
+        \]
+        \[
+        H = H_0 - M \approx 0, \quad M = \frac{B}{\mu_0} - H \approx \frac{1}{\mu_0}\,\text{A/m}
+        \]
+    \end{itemize}
+
+    \item 在真空均匀磁场中放入一小块铁磁媒质（相对磁导率远大于 1），试问与周围场域相比，媒质中磁感应强度和磁场强度总体有何变化（大或小）？
+
+    \paragraph{解答：}
+    - 磁感应强度 $B$：由于铁磁媒质被强烈磁化，产生附加磁场，故媒质中 $B$ 显著增大。
+    - 磁场强度 $H$：在退磁效应影响下，媒质内部 $H$ 比外部真空的 $H_0$ 小（退磁场与外场反向）。
+
+    \item 无限长同轴电缆横截面如图所示，内外导体通过等大反向恒定电流，外导体电流均匀分布，内导体电流密度为
+    \[
+    \vec{J} = -\frac{I}{\pi\rho_1^2}\vec{e}_z
+    \]
+
+    \begin{enumerate}
+        \item 计算内导体磁感应强度；
+        \item 计算内外导体之间的磁感应强度。
+    \end{enumerate}
+
+    \paragraph{解答：}
+    由安培环路定理，磁场仅沿 $\vec{e}_\theta$ 方向。
+    \begin{enumerate}
+        \item 内导体（$0<\rho<\rho_1$）：
+        \[
+        I_{\text{enclosed}} = \int_0^\rho J \cdot 2\pi\rho' d\rho' = \frac{I\rho^2}{\rho_1^2}
+        \]
+        \[
+        H \cdot 2\pi\rho = I_{\text{enclosed}} \Rightarrow H = \frac{I\rho}{2\pi\rho_1^2}
+        \]
+        \[
+        B = \mu_0 H = \frac{\mu_0 I \rho}{2\pi\rho_1^2}\vec{e}_\theta
+        \]
+
+        \item 内外导体之间（$\rho_1<\rho<\rho_2$）：
+        包围电流为内导体全部电流 $I$，故：
+        \[
+        H \cdot 2\pi\rho = I \Rightarrow H = \frac{I}{2\pi\rho}
+        \]
+        \[
+        B = \mu_0 H = \frac{\mu_0 I}{2\pi\rho}\vec{e}_\theta
+        \]
+    \end{enumerate}
+
+    \item 同轴电缆内导体半径为 $0.5\,\text{m}$，外导体半径为 $1\,\text{m}$，长度为 $2\,\text{m}$。电缆中的电流为 $5\,\text{A}$，绝缘材料的磁导率为 $\mu_0$，计算在半径为 $0.75\,\text{m}$ 处的磁场能量密度。
+
+    \paragraph{解答：}
+    $0.75\,\text{m}$ 位于内外导体之间，磁场强度为：
+    \[
+    H = \frac{I}{2\pi\rho} = \frac{5}{2\pi \times 0.75} = \frac{10}{3\pi}\,\text{A/m}
+    \]
+    磁场能量密度：
+    \[
+    w_m = \frac{1}{2}\mu_0 H^2 = \frac{1}{2}\mu_0 \left(\frac{10}{3\pi}\right)^2 = \frac{50\mu_0}{9\pi^2}\,\text{J/m}^3
+    \]
+    代入 $\mu_0=4\pi\times10^{-7}\,\text{H/m}$，得：
+    \[
+    w_m = \frac{50 \times 4\pi\times10^{-7}}{9\pi^2} = \frac{200\times10^{-7}}{9\pi} \approx 7.07\times10^{-7}\,\text{J/m}^3
+    \]
+\end{enumerate}

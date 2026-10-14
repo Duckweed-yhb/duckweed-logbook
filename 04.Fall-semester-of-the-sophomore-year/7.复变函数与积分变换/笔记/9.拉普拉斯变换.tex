@@ -1,0 +1,181 @@
+% 复变函数和积分变换 第七章 子文件
+% 统一风格 · 无例题 · 无证明 · 纯净理论版 · 优化排版
+
+\chapter{拉普拉斯变换}
+
+\section{拉普拉斯变换的定义}
+由于常规傅里叶变换仅适用于绝对可积函数，且通常只需考虑 \( t>0 \) 的情形，因此我们引入拉普拉斯（Laplace）变换。
+
+设 \( f(t) \) 为定义在 \( t\ge 0 \) 上的函数，其拉普拉斯变换为
+\[
+F(s)=\mathscr{L}[f(t)]=\int_0^{+\infty} f(t) e^{-st} dt,
+\]
+其中 \( s=\beta+i\omega \) 为复参数。
+
+相应的拉普拉斯逆变换为
+\[
+f(t)=\mathscr{L}^{-1}[F(s)],
+\]
+并称 \( F(s) \) 为像函数，\( f(t) \) 为原函数。
+
+单位阶跃函数（Heaviside 函数）定义为
+\[
+u(t)=
+\begin{cases}
+0, & t<0, \\
+1, & t>0,
+\end{cases}
+\]
+其拉普拉斯变换为
+\[
+\mathscr{L}[u(t)] = \mathscr{L}[1] = \frac{1}{s}.
+\]
+
+当 \( \operatorname{Re}(s)=\beta>c \) 时，若 \( |f(t)|\le Me^{ct} \)，则拉普拉斯变换收敛，且成立关系
+\[
+\mathscr{L}[f(t)]=\mathscr{F}\left[f(t)u(t)e^{-\beta t}\right](\omega).
+\]
+
+\textbf{收敛域定理：}
+设 \( F(s)=\mathscr{L}[f(t)] \)，若积分在 \( s_0 \) 处收敛，则在 \( \operatorname{Re}(s)>\operatorname{Re}(s_0) \) 内处处收敛；若在 \( s_0 \) 处发散，则在 \( \operatorname{Re}(s)<\operatorname{Re}(s_0) \) 内处处发散。
+
+---
+
+\section{常用拉普拉斯变换公式}
+\begin{align*}
+\mathscr{L}[u(t)] = \mathscr{L}[1] &= \frac{1}{s},
+& \mathscr{L}[e^{at}] &= \frac{1}{s-a},
+& \mathscr{L}[t^m] &= \frac{m!}{s^{m+1}}, \\
+\mathscr{L}[\sin\omega t] &= \frac{\omega}{s^2+\omega^2},
+& \mathscr{L}[\cos\omega t] &= \frac{s}{s^2+\omega^2},
+& \mathscr{L}[\delta(t)] &= 1.
+\end{align*}
+
+对应的逆变换公式为：
+\begin{align*}
+\mathscr{L}^{-1}\left[\frac{1}{s}\right] &= 1,
+& \mathscr{L}^{-1}\left[\frac{1}{s-a}\right] &= e^{at},
+& \mathscr{L}^{-1}\left[\frac{m!}{s^{m+1}}\right] &= t^m, \\
+\mathscr{L}^{-1}\left[\frac{\omega}{s^2+\omega^2}\right] &= \sin\omega t,
+& \mathscr{L}^{-1}\left[\frac{s}{s^2+\omega^2}\right] &= \cos\omega t,
+& \mathscr{L}^{-1}[1] &= \delta(t).
+\end{align*}
+
+---
+
+\section{拉普拉斯变换的性质}
+设函数 \( f(t),g(t) \) 的拉普拉斯变换存在，且
+\[
+\mathscr{L}[f(t)]=F(s),\quad \mathscr{L}[g(t)]=G(s).
+\]
+
+\subsection{线性性质}
+\[
+\mathscr{L}\left[\alpha f(t)+\beta g(t)\right] = \alpha F(s)+\beta G(s),
+\]
+\[
+\mathscr{L}^{-1}\left[\alpha F(s)+\beta G(s)\right] = \alpha f(t)+\beta g(t).
+\]
+
+\subsection{相似性质}
+若常数 \( a>0 \)，则
+\[
+\mathscr{L}[f(at)] = \frac{1}{a}F\left(\frac{s}{a}\right).
+\]
+
+\subsection{延迟性质与位移性质}
+\[
+\mathscr{L}\left[f(t-\tau)u(t-\tau)\right] = e^{-s\tau}F(s),
+\]
+\[
+\mathscr{L}\left[e^{at}f(t)\right] = F(s-a).
+\]
+
+\subsection{微分性质}
+\[
+\mathscr{L}\left[f'(t)\right] = sF(s)-f(0),
+\]
+\[
+\mathscr{L}\left[f^{(n)}(t)\right] = s^nF(s)-s^{n-1}f(0)-s^{n-2}f'(0)-\cdots-f^{(n-1)}(0).
+\]
+
+像函数微分：
+\[
+F'(s) = -\mathscr{L}\left[tf(t)\right],\quad
+F^{(n)}(s) = (-1)^n\mathscr{L}\left[t^n f(t)\right].
+\]
+
+\subsection{积分性质}
+\[
+\mathscr{L}\left[\int_0^t f(\tau)d\tau\right] = \frac{1}{s}F(s),
+\]
+\[
+\mathscr{L}\left[\underbrace{\int_0^t dt\int_0^t dt\cdots\int_0^t}_{n\text{次}} f(t)dt\right] = \frac{1}{s^n}F(s).
+\]
+
+频域积分：
+\[
+\int_s^{+\infty} F(s)ds = \mathscr{L}\left[\frac{f(t)}{t}\right],
+\]
+\[
+\underbrace{\int_s^\infty ds\int_s^\infty ds\cdots\int_s^\infty}_{n\text{次}} F(s)ds = \mathscr{L}\left[\frac{f(t)}{t^n}\right].
+\]
+
+\subsection{卷积与卷积定理}
+\textbf{卷积定义：} 对 \( t\ge0 \)，
+\[
+f_1(t)*f_2(t) = \int_0^t f_1(\tau)f_2(t-\tau)d\tau.
+\]
+
+\textbf{卷积定理：}
+\[
+\mathscr{L}\left[f_1*f_2\right](s) = F_1(s)F_2(s),
+\]
+\[
+\mathscr{L}^{-1}\left[F_1(s)F_2(s)\right] = f_1(t)*f_2(t).
+\]
+
+\subsection{初值与终值定理}
+\[
+f(0^+)=\lim_{s\to\infty}sF(s),\qquad
+f(+\infty)=\lim_{s\to 0}sF(s).
+\]
+
+---
+
+\section{拉普拉斯逆变换}
+
+\subsection{反演法（留数法）}
+设 \( F(s) \) 除在半平面 \( \operatorname{Re}s \le c \) 内有限个孤立奇点 \( s_1,s_2,\dots,s_n \) 外解析，且 \( \lim\limits_{s\to\infty}F(s)=0 \)，则
+\[
+f(t)
+=
+\frac{1}{2\pi j}\int_{\beta-j\infty}^{\beta+j\infty} F(s)e^{st}ds
+=
+\sum_{k=1}^n \operatorname{Res}\left[F(s)e^{st},\,s_k\right].
+\]
+
+\subsection{部分分式法}
+将 \( F(s) \) 分解为部分分式，利用已知变换公式求逆变换：
+\[
+\frac{1}{(s-q)(s-p)} = \frac{1}{q-p}\left(\frac{1}{s-q}-\frac{1}{s-p}\right),
+\]
+\[
+\frac{1}{(s-q)(s-p)^2} = \frac{A_1}{s-q}+\frac{A_2}{s-p}+\frac{A_3}{(s-p)^2},
+\]
+\[
+\frac{1}{(s-q)(s^2+p)} = \frac{A}{s-q}+\frac{Bs+C}{s^2+p}.
+\]
+
+\subsection{卷积法}
+利用卷积定理
+\[
+\mathscr{L}^{-1}\left[F_1(s)F_2(s)\right] = f_1(t)*f_2(t)
+\]
+将 \( F(s) \) 分解为已知逆变换的像函数乘积，通过卷积求原函数。
+
+---
+
+\section{拉普拉斯变换的应用}
+利用拉普拉斯变换的微分性质，可将线性常微分方程（组）转化为代数方程（组）。
+求解代数方程后再做逆变换，即可得到原微分方程（组）的解。

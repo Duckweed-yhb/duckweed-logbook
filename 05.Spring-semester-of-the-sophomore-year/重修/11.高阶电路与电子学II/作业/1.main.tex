@@ -1,0 +1,52 @@
+\documentclass[12pt,a4paper,UTF8]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{ctex}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{tocloft}    % 目录美化
+\usepackage{hyperref}   % 目录超链接（核心包）
+\usetikzlibrary{calc,arrows}
+\geometry{margin=2.5cm}
+
+% 超链接样式（不显示彩色边框，更美观）
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue
+}
+
+% 逻辑符号
+\newcommand{\xorop}{\oplus}
+\newcommand{\notop}{\prime}
+\newcommand{\andop}{\cdot}
+\newcommand{\orop}{+}
+
+\begin{document}
+
+% 引入封面
+\input{2.cover.tex}
+
+% 目录（带超链接）
+\newpage
+\tableofcontents
+\newpage
+
+% 各章节内容
+\input{3.数制和码制.tex}
+\newpage
+
+\input{4.逻辑代数基础.tex}
+\newpage
+
+\input{5.门电路.tex}
+\newpage
+
+\input{6.组合逻辑电路.tex}
+
+\input{7.半导体存储电路.tex}
+
+\end{document}

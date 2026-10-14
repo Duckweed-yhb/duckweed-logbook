@@ -1,0 +1,86 @@
+\chapter{留数}
+
+\section{孤立奇点与留数的定义}
+我们称复平面上的点 \( z_0 \) 是函数 \( f(z) \) 的**孤立奇点**，当且仅当 \( f(z) \) 在 \( z_0 \) 的一个去心邻域 \( B^\circ(z_0, \delta) \) 上解析。
+
+设 \( z_0 \) 是 \( f(z) \) 的孤立奇点，其洛朗展开为
+\[
+f(z) = \sum_{n=-\infty}^{+\infty} a_n (z - z_0)^n,
+\]
+则 \( \frac{1}{z - z_0} \) 项的系数 \( a_{-1} \) 称为 \( f(z) \) 在 \( z_0 \) 处的**留数**，记为 \( \text{Res}[f(z), z_0] \)。
+
+对 \( \delta < R \)，有
+\[
+\oint_{|z - z_0| = \delta} f(z) dz = 2\pi i \, \text{Res}[f(z), z_0].
+\]
+
+\subsection{留数基本定理}
+设 \( C \) 是简单光滑闭曲线，\( f(z) \) 在 \( C \) 所围闭区域上除内部点 \( a_1, a_2, \dots, a_n \) 外解析，则
+\[
+\oint_C f(z) dz = 2\pi i \sum_{k=1}^n \text{Res}[f(z), a_k].
+\]
+
+对有界光滑连通闭区域 \( D \)，有
+\[
+\int_{\partial D} f(z) dz = 2\pi i \sum_{k=1}^n \text{Res}[f(z), a_k].
+\]
+
+\section{孤立奇点的分类}
+设 \( z_0 \) 是 \( f(z) \) 的孤立奇点，其洛朗展开为 \( \sum_{n=-\infty}^{+\infty} a_n (z - z_0)^n \)：
+\begin{itemize}[leftmargin=2em]
+    \item 负部分为零：\( z_0 \) 是**可去奇点**；
+    \item 负部分为有限项：\( z_0 \) 是**极点**；
+    \item 负部分为无限项：\( z_0 \) 是**本性奇点**。
+\end{itemize}
+
+\( z_0 \) 是可去奇点 \( \iff \lim_{z \to z_0} f(z) \) 存在有限；
+\( z_0 \) 是极点 \( \iff \lim_{z \to z_0} f(z) = \infty \)；
+\( z_0 \) 是本性奇点 \( \iff \lim_{z \to z_0} f(z) \)（广义意义下）不存在。
+
+\subsection{零点与极点的关系}
+\( z_0 \) 是 \( f(z) \) 的 \( m \) 阶零点 \( \iff z_0 \) 是 \( \frac{1}{f(z)} \) 的 \( m \) 阶极点。
+
+设 \( f(z) = \frac{P(z)}{Q(z)} \)，\( z_0 \) 是 \( P(z) \) 的 \( m \) 阶零点、\( Q(z) \) 的 \( n \) 阶零点：
+\begin{itemize}[leftmargin=2em]
+    \item \( m > n \)：\( z_0 \) 是 \( f(z) \) 的 \( m-n \) 阶零点；
+    \item \( m = n \)：\( z_0 \) 是 \( f(z) \) 的可去奇点；
+    \item \( m < n \)：\( z_0 \) 是 \( f(z) \) 的 \( n-m \) 阶极点。
+\end{itemize}
+
+\subsection{Picard 大定理}
+设 \( z_0 \) 是 \( f(z) \) 的本性奇点，\( f(z) \) 在去心邻域 \( B^\circ(z_0, \delta) \) 上解析，则 \( \mathbb{C} \setminus f(B^\circ(z_0, \delta)) \) 中至多有一个复数。
+
+\section{留数的计算}
+\begin{enumerate}[leftmargin=2em]
+    \item \textbf{线性性}：
+    \[
+    \begin{split}
+    \text{Res}\left[f(z) \pm g(z), z_0\right] &= \text{Res}\left[f(z), z_0\right] \pm \text{Res}\left[g(z), z_0\right], \\
+    \text{Res}\left[a f(z), z_0\right] &= a \text{Res}\left[f(z), z_0\right], \quad a \in \mathbb{C}.
+    \end{split}
+    \]
+    \item 若 \( z_0 \) 是可去奇点，则 \( \text{Res}\left[f(z), z_0\right] = 0 \)。
+    \item 若 \( z_0 \) 是 \( m \) 阶极点，则
+    \[
+    \text{Res}\left[f(z), z_0\right] = \frac{1}{(m-1)!} \lim_{z \to z_0} \frac{d^{m-1}}{dz^{m-1}} \left[(z - z_0)^m f(z)\right].
+    \]
+    \item 若 \( f(z) = \frac{g(z)}{h(z)} \)，\( z_0 \) 是 \( h(z) \) 的一阶零点且不是 \( g(z) \) 的零点，则
+    \[
+    \text{Res}\left[f(z), z_0\right] = \frac{g(z_0)}{h'(z_0)}.
+    \]
+\end{enumerate}
+
+\section{无穷远点的留数}
+无穷远点 \( \infty \) 是 \( f(z) \) 的孤立奇点，当且仅当存在 \( R>0 \)，使得 \( f(z) \) 在 \( |z|>R \) 上解析。
+
+\( \infty \) 是 \( f(z) \) 的可去奇点（\( m \) 阶极点、本性奇点）\( \iff 0 \) 是 \( g(\xi) = f\left( \frac{1}{\xi} \right) \) 的可去奇点（\( m \) 阶极点、本性奇点）。
+
+留数定义：
+\[
+\text{Res}[f(z), \infty] := -\text{Res}\left[ f\left( \frac{1}{\xi} \right) \frac{1}{\xi^2}, 0 \right].
+\]
+
+若 \( f(z) \) 在扩充复平面上只有有限多个奇点 \( \{a_1, \dots, a_n, \infty\} \)，则
+\[
+\sum_{k=1}^{n} \text{Res}\left[f(z), a_k\right] + \text{Res}\left[f(z), \infty\right] = 0.
+\]

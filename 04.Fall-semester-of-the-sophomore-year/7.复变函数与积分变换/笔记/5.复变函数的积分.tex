@@ -1,0 +1,48 @@
+\chapter{复变函数的积分}
+
+\section{复积分的定义与计算}
+对于逐段光滑有向曲线 \( C: z(t),\ a \leqslant t \leqslant b \) 和连续复函数 \( f(z) \)，复积分 \( \int_C f(z)dz \) 存在有限。
+若 \( C \) 光滑，则
+\[
+\int_C f(z) dz = \int_a^b f(z(t)) z'(t) dt.
+\]
+
+\section{柯西积分定理}
+\subsection{单连通区域}
+设 \( C \) 是简单光滑闭曲线，函数 \( f(z) \) 在 \( C \) 上及其内部解析，则
+\[
+\int_C f(z) dz = 0.
+\]
+
+\subsection{多连通区域}
+设 \( D \) 是有界光滑闭区域，函数 \( f(z) \) 在 \( D \) 上解析，则
+\[
+\int_{\partial D} f(z) dz = 0.
+\]
+
+\section{柯西积分公式}
+柯西积分公式的核心是：若 \(f(z)\) 在闭曲线 \(C\) 内部解析，则
+\[
+\oint_C \frac{f(z)}{z - z_0} dz = 2\pi i \cdot f(z_0).
+\]
+
+特别地，当 \(f(z) = 1\)（常函数，在复平面内处处解析）时，公式简化为：
+\[
+\oint_C \frac{1}{z - z_0} dz = 2\pi i \quad (\text{若 } z_0 \text{ 在 } C \text{ 内部}),
+\]
+\[
+\oint_C \frac{1}{z - z_0} dz = 0 \quad (\text{若 } z_0 \text{ 在 } C \text{ 外部}).
+\]
+
+高阶柯西积分公式：
+设 \( D \) 是有界光滑闭区域，\( C \) 为其边界，\( f(z) \) 在 \( D \) 上解析，则 \( f(z) \) 在 \( D \) 内无穷阶可导，且对 \( D \) 内任意一点 \( z_0 \)，有
+\[
+f^{(n)}(z_0) = \frac{n!}{2\pi i} \int_C \frac{f(\xi)}{(\xi - z_0)^{n+1}} d\xi.
+\]
+
+\section{最大模原理}
+设 \( D \) 是连通有界光滑闭区域，\( f(z) \) 在 \( D \) 上解析，则
+\[
+\max_{z \in D} |f(z)| = \max_{z \in \partial D} |f(z)| = M,
+\]
+且存在内点 \( z_0 \) 使得 \( |f(z_0)| = M \) 的充要条件是 \( f(z) \) 在 \( D \) 上为常数函数。

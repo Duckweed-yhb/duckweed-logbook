@@ -1,0 +1,130 @@
+% 自动控制理论 课程笔记 —— 优化版主文件
+% 编译环境：XeLaTeX（必须！）
+% 无多余警告，支持书签中文，增加常用环境
+
+\documentclass[oneside,UTF8]{ctexbook}
+
+% ========== 核心宏包（有序加载） ==========
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{amsthm}          % 定理环境
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{tikz}
+\usepackage{etoolbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}        % 页眉页脚
+\usepackage{listings}        % 代码环境（可选）
+\usepackage{silence}
+
+% ========== 页面设置 ==========
+\geometry{
+    a4paper, left=2.5cm, right=2.5cm,
+    top=2.5cm, bottom=2.5cm, headheight=15pt
+}
+
+% ========== 屏蔽可控警告 ==========
+\hbadness=10000
+\vfuzz=10pt
+\hfuzz=10pt
+\WarningFilter{xeCJK}{Redefining CJKfamily}
+\WarningFilter{LaTeX Font}{Some font shapes were not available}
+\WarningFilter{hyperref}{Token not allowed}
+\WarningFilter{hyperref}{Unsupported document}
+\WarningFilter{enumitem}{Negative labelwidth}  % 可选
+
+% ========== 目录深度 ==========
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% ========== 章节标题样式（修正） ==========
+\titleformat{\chapter}
+    {\centering\bfseries\Large\zihao{-2}}   % 若无效可改用 \fontsize{18pt}{22pt}\selectfont
+    {第\thechapter 章}
+    {0.5em}
+    {}
+
+\titleformat{\section}
+    {\bfseries\large\zihao{-3}}
+    {\thesection}
+    {0.5em}
+    {}
+
+\titleformat{\subsection}
+    {\bfseries\normalsize\zihao{4}}
+    {\thesubsection}
+    {0.5em}
+    {}
+
+% ========== 列表间距 ==========
+\setlist{leftmargin=2em, itemsep=0.2em, parsep=0pt}
+
+% ========== 页眉页脚（已修复 oneside 警告）==========
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\rightmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ========== 数学定理环境 ==========
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{example}{例}[section]
+
+% ========== 超链接（最佳配置） ==========
+\usepackage[
+    colorlinks = true,
+    linkcolor  = blue,
+    citecolor  = blue,
+    urlcolor   = blue,
+    linktoc    = all,
+    pdfencoding=auto,
+    psdextra   = true          % 增强 PDF 字符串处理
+]{hyperref}
+
+\hypersetup{
+    pdftitle={自动控制理论课程笔记},
+    pdfauthor={2024级电气工程及其自动化},
+    pdfsubject={自动控制理论},
+    pdfkeywords={自控, 时域, 频域, 根轨迹}
+}
+
+% 仅屏蔽书签中的数学模式常见警告
+\pdfstringdefDisableCommands{%
+    \let\(\(%
+    \let\)\)%
+    \def\underscore{\_}%
+}
+
+% ========== 文档信息 ==========
+\title{自动控制理论（EE3003）课程笔记}
+\author{2024级电气工程及其自动化专业}
+\date{2026 春季学期}
+
+\begin{document}
+
+\input{2.cover.tex}   % 建议改名为 cover.tex
+
+\newpage
+\thispagestyle{empty}
+\renewcommand{\contentsname}{目~~录}
+\tableofcontents
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{3.绪论.tex}
+\input{4.控制系统的数学模型.tex}
+\input{5.控制系统的时域分析.tex}
+\input{6.线性系统的根轨迹法.tex}
+\input{7.线性系统的频域分析方法.tex}
+
+\end{document}

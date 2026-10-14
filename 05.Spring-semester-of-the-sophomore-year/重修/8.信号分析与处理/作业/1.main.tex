@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage{graphicx}
+
+% ========== 目录超链接（最重要）==========
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,       % 彩色链接
+    linkcolor=blue,        % 目录链接颜色
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle=信号分析与处理作业,
+    pdfauthor=学生
+}
+
+% 页面设置
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% 带圈数字
+\newcommand\circled[1]{\textcircled{\small #1}}
+
+% TikZ 绘图兼容
+\tikzset{every picture/.style={font=\normalsize}}
+
+% 目录标题中文化
+\renewcommand{\contentsname}{目\quad 录}
+
+\begin{document}
+
+\input{2.cover.tex}
+\tableofcontents
+\newpage
+
+\input{3.第一次作业.tex}
+\input{4.第二次作业.tex}
+\input{5.第三次作业.tex}
+\input{6.第四次作业.tex}
+\input{7.第五次作业.tex}
+
+\end{document}

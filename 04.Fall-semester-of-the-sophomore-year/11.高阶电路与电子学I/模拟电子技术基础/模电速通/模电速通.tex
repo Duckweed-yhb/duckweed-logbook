@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex} % 支持中文
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{hyperref} % 生成超链接目录
+\usepackage{fancyhdr} % 自定义页眉页脚
+\usepackage{amsmath} % 数学公式支持（必须加载以使用 \boxed）
+\usepackage{booktabs} % 表格美化
+\usepackage{float} % 支持 [H] 固定表格位置
+
+% ========== 关键修复点：设置足够的页眉高度 ==========
+\setlength{\headheight}{14.5pt}
+
+% 页面设置
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\setlength{\parindent}{0pt} % 取消段落首行缩进
+\setlength{\parskip}{1ex} % 段落间空一行
+
+% 标题格式
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% 页眉页脚
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{模拟电子技术基础}
+\lhead{期末总结}
+\rfoot{第 \thepage 页}
+\cfoot{}
+
+% 自定义命令，避免报错
+\newcommand{\Vth}{V_{\text{th}}}
+\newcommand{\Vd}{V_D}
+\newcommand{\Id}{I_D}
+\newcommand{\Rd}{r_d}
+\newcommand{\Vt}{V_T}
+\newcommand{\Icbo}{I_{CBO}} % 集电结反向饱和电流
+\newcommand{\Iceo}{I_{CEO}} % 穿透电流
+
+\title{模拟电子技术基础期末总结}
+\author{}
+\date{}
+
+\begin{document}
+
+% 标题页
+\maketitle
+\thispagestyle{empty} % 标题页不显示页码
+\newpage
+
+% 目录
+\tableofcontents
+\thispagestyle{fancy}
+\newpage
+
+\section{常用半导体器件}
+\subsection{半导体二极管}
+
+\subsubsection{1. 二极管的单向导电性}
+半导体二极管的核心特性是\textbf{单向导电性}，即电流仅能从二极管的\textbf{阳极（P区）}流向\textbf{阴极（N区）}，反向时二极管处于截止状态。
+
+\textbf{导通条件}：二极管阳极电位 $V_A$ 需比阴极电位 $V_K$ 高出门槛电压（硅管典型值为 $0.7\,\text{V}$，锗管典型值为 $0.3\,\text{V}$），即满足：
+\[
+V_A - V_K \geq \Vth
+\]
+其中 $\Vth$ 为二极管的阈值电压（门槛电压）。
+
+% =================== 后续章节占位 ===================
+% 可按此格式继续添加三极管、场效应管、放大电路等内容
+
+% =================== 参考文献（可选）===================
+%\newpage
+%\section*{参考文献}
+%\begin{itemize}
+%    \item  童诗白, 华成英. 模拟电子技术基础(第5版). 高等教育出版社, 2015.
+%\end{itemize}
+
+% =================== 尾页 ===================
+%\newpage
+%\thispagestyle{empty}
+%\vfill
+%\centering
+%\Huge 感谢阅读！\\[2ex]
+%\LARGE 模拟电子技术基础期末总结\\[2ex]
+%\small 编制人: XXX\\[2ex]
+%\small 完成日期: 2025年X月X日
+

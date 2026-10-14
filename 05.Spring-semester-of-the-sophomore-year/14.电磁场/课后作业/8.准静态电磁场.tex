@@ -1,0 +1,214 @@
+\section{准静态电磁场习题解答}
+
+\begin{enumerate}[label=\arabic*.]
+
+\item 已知同轴圆柱电容器内半径 \(r_1=1\,\text{cm}\)，外半径 \(r_2=4\,\text{cm}\)，长度 \(l=0.5\,\text{m}\)，介质介电常数 \(\varepsilon=4\varepsilon_0\)，电压 \(u=6000\sqrt{2}\sin100\pi t\,\text{V}\)。求位移电流密度。
+
+\textbf{解答：}
+同轴圆柱电容：
+\[
+C = \frac{2\pi \varepsilon l}{\ln(r_2/r_1)} = \frac{2\pi \cdot 4\varepsilon_0 \cdot 0.5}{\ln 4} = \frac{4\pi \varepsilon_0}{\ln 4}
+\]
+电场强度（\(r_1<r<r_2\)）：
+\[
+E(r,t) = \frac{u(t)}{r\ln(r_2/r_1)} = \frac{6000\sqrt{2}\sin100\pi t}{r\ln 4}
+\]
+位移电流密度：
+\[
+J_d = \frac{\partial D}{\partial t} = \varepsilon \frac{\partial E}{\partial t}
+\]
+代入 \(\varepsilon=4\varepsilon_0\)：
+\[
+J_d(r,t) = 4\varepsilon_0 \cdot \frac{6000\sqrt{2}\cdot 100\pi \cos100\pi t}{r\ln 4}
+= \frac{2.4\times 10^6 \sqrt{2}\pi \varepsilon_0}{r\ln 4} \cos100\pi t \quad (\text{A/m}^2)
+\]
+方向沿径向。
+
+\vspace{1em}
+
+\item 已知球形电容器内半径 \(a\)，外半径 \(b\)，介质介电常数 \(\varepsilon\)，电导率 \(\gamma\)，电压 \(u=U_m\sin\omega t\)。求全电流。
+
+\textbf{解答：}
+电场强度（\(a<r<b\)）：
+\[
+E(r,t) = \frac{u(t)}{r^2\left(\frac{1}{a}-\frac{1}{b}\right)} = \frac{U_m\sin\omega t}{r^2\left(\frac{1}{a}-\frac{1}{b}\right)}
+\]
+传导电流密度：
+\[
+J_c = \gamma E = \frac{\gamma U_m\sin\omega t}{r^2\left(\frac{1}{a}-\frac{1}{b}\right)}
+\]
+位移电流密度：
+\[
+J_d = \frac{\partial D}{\partial t} = \varepsilon \frac{\partial E}{\partial t} = \frac{\varepsilon \omega U_m\cos\omega t}{r^2\left(\frac{1}{a}-\frac{1}{b}\right)}
+\]
+全电流（积分 \(J_c+J_d\) 在任意半径 \(r\) 的球面上）：
+\[
+I = \oint (J_c+J_d)\cdot dS = 4\pi r^2 (J_c+J_d)
+= \frac{4\pi U_m}{\frac{1}{a}-\frac{1}{b}} (\gamma \sin\omega t + \varepsilon \omega \cos\omega t)
+\]
+
+\vspace{1em}
+
+\item 已知
+\[
+\vec{E} = 30\pi\cos\left(\omega t-\frac{4}{3}y\right)\vec{e}_z \,\text{V/m}, \quad
+\vec{H} = 10\cos\left(\omega t-\frac{4}{3}y\right)\vec{e}_x \,\text{A/m}, \quad \mu_r=1
+\]
+求 \(\omega\) 和 \(\varepsilon_r\)。
+
+\textbf{解答：}
+由法拉第定律 \(\nabla\times\vec{E}=-\mu_0\frac{\partial \vec{H}}{\partial t}\)：
+\[
+\nabla\times\vec{E} = -\frac{\partial E_z}{\partial y}\vec{e}_x = 40\pi\sin\left(\omega t-\frac{4}{3}y\right)\vec{e}_x
+\]
+\[
+-\mu_0\frac{\partial \vec{H}}{\partial t} = 10\mu_0\omega\sin\left(\omega t-\frac{4}{3}y\right)\vec{e}_x
+\]
+比较得：
+\[
+40\pi = 10\mu_0\omega \implies \omega = \frac{4\pi}{\mu_0} = 10^7\,\text{rad/s}
+\]
+
+由安培环路定律 \(\nabla\times\vec{H}=\varepsilon_0\varepsilon_r\frac{\partial \vec{E}}{\partial t}\)：
+\[
+\nabla\times\vec{H} = -\frac{\partial H_x}{\partial y}\vec{e}_z = \frac{40}{3}\sin\left(\omega t-\frac{4}{3}y\right)\vec{e}_z
+\]
+\[
+\varepsilon_0\varepsilon_r\frac{\partial \vec{E}}{\partial t} = -30\pi\omega\varepsilon_0\varepsilon_r\sin\left(\omega t-\frac{4}{3}y\right)\vec{e}_z
+\]
+比较得：
+\[
+\frac{40}{3} = 30\pi\omega\varepsilon_0\varepsilon_r
+\]
+代入 \(\omega=10^7\)，\(\varepsilon_0=8.854\times 10^{-12}\)：
+\[
+\varepsilon_r = \frac{40}{3\cdot 30\pi \cdot 10^7 \cdot 8.854\times 10^{-12}} \approx 16
+\]
+
+\vspace{1em}
+
+\item 已知媒质1（空气，\(\varepsilon_{r1}=1\)），媒质2（干土，\(\varepsilon_{r2}=3\)，\(\gamma_2=10^{-5}\,\text{S/m}\)），
+\[
+E_1=100\sin(1000t+30^\circ)\,\text{V/m}, \quad \theta_1=45^\circ
+\]
+求 \(E_2\) 及折射角 \(\theta_2\)。
+
+\textbf{解答：}
+角频率 \(\omega=1000\,\text{rad/s}\)，媒质2的损耗正切：
+\[
+\tan\delta = \frac{\gamma_2}{\omega\varepsilon_0\varepsilon_{r2}} \approx 0.377
+\]
+属于低损耗介质，近似用无耗边界条件：
+切向分量连续 \(E_{1t}=E_{2t}\)，法向分量 \(\varepsilon_1 E_{1n} = \varepsilon_2 E_{2n}\)。
+
+分解 \(E_1\)：
+\[
+E_{1t} = E_{1n} = 50\sqrt{2}\sin(1000t+30^\circ)
+\]
+则
+\[
+E_{2t} = 50\sqrt{2}\sin(1000t+30^\circ),\quad
+E_{2n} = \frac{50\sqrt{2}}{3}\sin(1000t+30^\circ)
+\]
+合场强：
+\[
+E_2 = \frac{100\sqrt{5}}{3}\sin(1000t+30^\circ)\,\text{V/m}
+\]
+折射角：
+\[
+\tan\theta_2 = \frac{E_{2t}}{E_{2n}} = 3 \implies \theta_2 = \arctan 3 \approx 71.6^\circ
+\]
+
+\vspace{1em}
+
+\item 已知 \(z=0\) 为空气-理想导体分界面，磁场
+\[
+\vec{H}(x,y,0,t) = H_0\sin\beta x\cos(\omega t-\beta y)\vec{e}_x
+\]
+求表面电流密度与切向电场。
+
+\textbf{解答：}
+理想导体表面电流密度：
+\[
+\vec{J}_s = \vec{n}\times\vec{H}
+\]
+法向 \(\vec{n}=\vec{e}_z\)，故：
+\[
+\vec{J}_s = H_0\sin\beta x\cos(\omega t-\beta y)\vec{e}_y
+\]
+
+理想导体边界切向电场为零：
+\[
+\vec{E}_t = 0
+\]
+
+\vspace{1em}
+
+\item 已知
+\[
+\vec{E} = 2000\sqrt{2}\sin(\omega t-\beta z)\vec{e}_x\,\text{V/m}, \quad
+\vec{H} = 5.3\sqrt{2}\sin(\omega t-\beta z)\vec{e}_y\,\text{A/m}
+\]
+\(f=20\,\text{MHz}\)，\(\beta=0.42\,\text{rad/m}\)。求瞬时坡印亭矢量、平均坡印亭矢量、净瞬时功率。
+
+\textbf{解答：}
+(1) 瞬时坡印亭矢量：
+\[
+\vec{S}(t) = \vec{E}\times\vec{H}
+= 21200\sin^2(\omega t-\beta z)\vec{e}_z \,\text{W/m}^2
+\]
+
+(2) 平均坡印亭矢量：
+\[
+\vec{S}_{av} = \frac{1}{2}\text{Re}\left(\dot{\vec{E}}\times\dot{\vec{H}}^*\right)
+= 10600\,\vec{e}_z \,\text{W/m}^2
+\]
+
+(3) 平行六面体净瞬时功率（\(A=0.5\,\text{m}^2\)）：
+\[
+P(t) = 10600\left[\sin^2\omega t - \sin^2(\omega t-0.84)\right]\,\text{W}
+\]
+
+\vspace{1em}
+
+\item 圆形平行板电容器（非理想介质），半径 \(a\)，间距 \(d\)，电导率 \(\gamma\)，电压 \(U_0\)。分析能量守恒、电磁场、能流、储能与损耗。
+
+\textbf{解答：}
+坡印亭定理：
+\[
+-\oint_S \vec{S}\cdot d\vec{S} = \frac{d}{dt}\int_V w_e dV + \int_V \gamma E^2 dV
+\]
+
+极板间电场：
+\[
+\vec{E} = \frac{U_0}{d}\vec{e}_z
+\]
+传导电流密度：
+\[
+\vec{J} = \frac{\gamma U_0}{d}\vec{e}_z
+\]
+
+由安培环路定律得磁场：
+\[
+\vec{H} = \frac{\gamma U_0 r}{2d}\vec{e}_\phi
+\]
+
+坡印亭矢量：
+\[
+\vec{S} = \vec{E}\times\vec{H}
+= -\frac{\gamma U_0^2 r}{2d^2}\vec{e}_r
+\]
+能流从侧面径向流入介质。
+
+电场能量：
+\[
+W_e = \frac{\varepsilon \pi a^2}{2d}U_0^2
+\]
+
+损耗功率：
+\[
+P_L = \frac{\gamma \pi a^2}{d}U_0^2
+\]
+符合坡印亭能量守恒定理。
+
+\end{enumerate}

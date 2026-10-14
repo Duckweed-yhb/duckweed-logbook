@@ -1,0 +1,66 @@
+% 基础文档类：ctexbook适配中文，UTF8编码
+\documentclass[oneside, UTF8]{ctexbook}
+
+% 核心宏包（精简必要的，避免冲突）
+\usepackage{amsmath,amssymb,amsfonts,mathrsfs}
+\usepackage{graphicx,geometry,enumitem,booktabs}
+\usepackage{xcolor,hyperref} % 颜色+超链接
+\geometry{a4paper, margin=2.5cm} % 页面布局
+
+% 1. 定义封面需要的主色调
+\definecolor{mainblue}{RGB}{0, 102, 204} 
+
+% 2. 超链接配置（仅保留核心功能，避免错误）
+\hypersetup{
+    colorlinks=true,    % 文字颜色代替边框
+    linkcolor=mainblue, % 内部链接颜色（和封面色调统一）
+    urlcolor=mainblue,  % 外部链接颜色（和封面色调统一）
+    pdfborder={0 0 0},  % 移除边框
+    unicode=true        % 支持中文
+}
+
+% 3. 极致警告屏蔽（新增字体大小替换警告屏蔽）
+\usepackage{silence}
+\WarningFilter{xeCJK}{Redefining CJKfamily} % 屏蔽xeCJK重定义警告
+\WarningFilter{latexfont}{Size substitutions with differences} % 屏蔽字体大小替换警告
+\hbadness=10000
+\vfuzz=100pt
+
+% 4. 目录配置
+\usepackage{tocbibind}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% 5. 标题样式（极简，避免特殊字符）
+\usepackage{titlesec}
+\titleformat{\chapter}{\bfseries\Large}{\thechapter}{1em}{}
+\titleformat{\section}{\bfseries\large}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
+
+% 元信息
+\title{复变函数与积分变换}
+\author{课程笔记}
+\date{}
+
+\begin{document}
+% 引入封面
+\input{2.cover.tex}
+
+% 生成目录（极简写法，避免解析错误）
+\newpage
+\thispagestyle{empty}
+\renewcommand{\contentsname}{目录}
+\tableofcontents
+\clearpage
+\setcounter{page}{1}
+
+% 引入章节文件
+\input{3.复数与复变函数.tex}
+\input{4.解析函数.tex}
+\input{5.复变函数的积分.tex}
+\input{6.级数.tex}
+\input{7.留数.tex}
+\input{8.傅里叶变换.tex}
+\input{9.拉普拉斯变换.tex}
+
+\end{document}

@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}  % 修复数学公式命令
+\geometry{a4paper, margin=1in}
+
+% 代码高亮
+\lstset{
+    language=Python,
+    basicstyle=\small,
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    keywordstyle=\color{blue},
+    frame=single,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    showstringspaces=false
+}
+
+\title{CTF Crypto 题解：primeRSA}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{题目信息}
+\subsection{题目源码}
+题目给出加密代码如下，使用 RSA 加密，模数 $n$ 由 \texttt{getPrime(1024)} 生成，公钥指数 $e=0$x$10001=65537$。
+
+\begin{lstlisting}
+from Crypto.Util.number import getPrime, bytes_to_long
+import re
+
+flag = open("flag.txt", "rb").read().strip()
+m = bytes_to_long(flag)
+assert re.fullmatch(r"flag{[A-Za-z0-9_]+}", flag.decode())
+n = getPrime(1024)
+e = 0x10001
+c = pow(m, e, n)
+
+print(f"{n=}")
+print(f"{e=}")
+print(f"{c=}")
+\end{lstlisting}
+
+程序运行后输出三行内容至 \texttt{output.txt}：
+\begin{itemize}
+    \item 第一行：\texttt{n=大整数}
+    \item 第二行：\texttt{e=65537}
+    \item 第三行：\texttt{c=密文大整数}
+\end{itemize}
+
+\section{原理分析}
+标准 RSA 算法中，若模数 $n$ 为两个大素数乘积 $n=p\cdot q$，则欧拉函数：
+$$
+\varphi(n) = (p-1)(q-1)
+$$
+私钥 $d$ 满足：
+$$
+e\cdot d \equiv 1 \pmod{\varphi(n)}
+$$
+
+本题漏洞点：
+题目中直接使用 \texttt{getPrime(1024)} 生成 \textbf{单个素数} 作为模数 $n$，即 $n$ 本身是素数。
+此时欧拉函数简化为：
+$$
+\varphi(n) = n-1
+$$
+
+解密公式：
+\[
+m = c^d \pmod{n},\quad d = e^{-1} \pmod{n-1}
+\]
+将解密得到的大数 $m$ 转为字节串，即可得到 \texttt{flag}。
+
+\section{解题过程}
+\subsection{解密脚本}
+使用 SageMath 运行，自动读取 \texttt{output.txt} 并完成解密、反向验证，脚本如下：
+\begin{lstlisting}
+# solve.py
+# 运行命令：sage solve.py
+with open("output.txt", "r") as f:
+    lines = f.read().splitlines()
+
+n = int(lines[0].split("=")[1])
+e = int(lines[1].split("=")[1])
+c = int(lines[2].split("=")[1])
+
+phi = n - 1
+d = pow(e, -1, phi)
+m = pow(c, d, n)
+
+flag = bytes.fromhex(hex(m)[2:])
+
+m_check = int.from_bytes(flag, "big")
+c_check = pow(m_check, e, n)
+
+print("解密得到 flag =", flag)
+print("原密文 c     =", c)
+print("验证密文 c   =", c_check)
+print("验证结果     =", c == c_check)
+\end{lstlisting}
+
+\subsection{运行环境与命令}
+运行环境：WSL Ubuntu + SageMath
+执行命令：
+\begin{lstlisting}[language=bash]
+sage solve.py
+\end{lstlisting}
+
+\end{document}

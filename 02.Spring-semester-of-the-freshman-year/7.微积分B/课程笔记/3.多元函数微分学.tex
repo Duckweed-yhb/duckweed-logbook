@@ -1,0 +1,219 @@
+% 子文件：8.多元函数微分学.tex
+% 主文档使用 \input{8.多元函数微分学} 引入，不含 document 环境
+
+\section{多元函数的基本概念}
+\subsection{预备知识}
+
+\subsection{多元函数}
+
+定义8.1\quad 设$D$是$Oxy$平面的点集，若变量$z$与$D$中的变量$x,y$之间有一个依赖关系，使得在，记为
+
+\subsection{多元函数的极限与连续}
+
+设集合
+
+定义8.8\quad 设$u$是$D$的聚点。
+
+多元函数极限的含义是：
+
+务必注意，虽然多元函数的极限与一元函数的极限定义相似，但它复杂得多。一元函数在某点处极限存在的充要条件是左右极限存在且相等。
+
+顺便指出：$(x,y)\to(x_0,y_0)$的过程中，$x$和$y$是作为点的坐标。
+
+定义8.9\quad 设函数$f(P)$的定义域为，且，则说函数。
+
+若
+
+有界闭区域上的多元连续函数有如下重要性质：
+\begin{enumerate}
+    \item 在
+    \item 在
+\end{enumerate}
+
+\section{偏导数与高阶偏导数}
+\subsection{偏导数}
+
+定义8.10\quad 设函数$z=f(x,y)$在点，称为。若极限
+\[
+\lim_{\Delta x\to0}\frac{f(x+\Delta x,y)-f(x,y)}{\Delta x}
+\]
+存在，则称此极限值为关于$x$的偏导数，记为。同样定义处关于$y$的偏导数为。
+
+如果在区域$E$内每一点，记为。同样，$z=$记为。
+
+\noindent 偏导函数
+
+对一般。
+
+由偏导数的定义知，
+
+一元函数可导必连续，但对多元函数，偏导数都存在，函数未必有极限。
+
+因为偏导数。
+
+\subsection{高阶偏导数}
+
+记函数，它们仍是$E$内$x,y$的函数。，其中称为混合二阶偏导数。
+
+递推地可以定义各阶偏导数，二阶。
+
+定理8.1\quad 如果在点。
+
+\section{全微分}
+
+设函数
+
+定义8.11\quad 若函数。
+
+定理8.2\quad 若函数$z=f(x,y)$在点$P(x,y)$处可微，则在点$P$处偏导数$\dfrac{\partial z}{\partial x}$及$\dfrac{\partial z}{\partial y}$都存在，且
+\[
+\frac{\partial z}{\partial x}=A,\quad \frac{\partial z}{\partial y}=B.
+\]
+因为，我们把。
+
+定理8.3\quad 若在点。
+
+\section{复合函数求导法}
+
+定理8.4\quad 如果函数在点
+\[
+\frac{\partial z}{\partial x}=\frac{\partial z}{\partial u}\frac{\partial u}{\partial x}+
+\]
+
+由上式。
+
+同样条件下，公式可以推广到一般复合函数上去，设，则$z$关于某个自变量$x_j$的偏导数等于$z$对每个与$x_j$有关的中间变量$u_i$的偏导数与这个中间变量$u_i$对$x_j$的偏导数之积的总和，即。该公式称为链导法则。
+
+在，当中间变量都是同一个自变量的一元函数时，，称为$z$的全导数公式。
+
+链导法则公式可借助，称矩阵为函数，记为，则链导法则公式。
+
+\noindent 全微分形式不变性。
+
+\noindent 四则运算的全微分法则：
+
+\section{隐函数求导法}
+\subsection{一个方程的情况}
+
+定理8.5（隐函数存在定理）\quad 设函数$F(x,y,z)$在点$(x_0,y_0,z_0)$的某邻域内具有连续的偏导数，且，则方程在点的某邻域内确定唯一一个函数，满足，且有偏导数公式
+\[
+\frac{\partial z}{\partial x}=-\frac{F'_x(x,y,z)}{F'_z(x,y,z)},\quad
+\frac{\partial z}{\partial y}=-\frac{F'_y(x,y,z)}{F'_z(x,y,z)}.
+\]
+
+\subsection{方程组的情况}
+
+设由方程组
+\[
+\begin{cases}
+F(x,y,u,v)=0,\\
+G(x,y,u,v)=0
+\end{cases}
+\]
+确定两个二元函数$u=u(x,y),\ v=v(x,y)$。将恒等式
+\[
+\begin{cases}
+F\bigl(x,y,u(x,y),v(x,y)\bigr)=0,\\
+G\bigl(x,y,u(x,y),v(x,y)\bigr)=0
+\end{cases}
+\]
+两边关于$x$求偏导，由链导法得到。解这个以$\dfrac{\partial u}{\partial x},\dfrac{\partial v}{\partial x}$为未知量的代数方程组，当系数行列式不为零时，即
+\[
+\begin{vmatrix}
+\frac{\partial F}{\partial u} & \frac{\partial F}{\partial v}\\[4pt]
+\frac{\partial G}{\partial u} & \frac{\partial G}{\partial v}
+\end{vmatrix}\neq 0,
+\]
+解得。上面出现的由函数的偏导数构成的行列式称为雅可比行列式，记。于是。如果。
+
+\section{偏导数的几何应用}
+\subsection{空间曲线的切线与法平面}
+
+设曲线$l$以参数方程给出。设，所以向量是切线的方向向量，称为曲线$l$在。故曲线的切线方程为。过点，其方程为。
+
+\subsection{曲面的切平面与法线}
+
+设曲面的隐函数方程给出，设其方程为。点，于是有。两边在，由全导数公式得。此式表明：向量与，切平面方程为。过，其方程为。现在。
+
+\subsection{二元函数全微分的几何意义}
+
+二元函数在点处可微。
+
+\section{多元函数的一阶泰勒公式与极值}
+\subsection{多元函数的一阶泰勒公式}
+
+设$z=f(x,y)$在点$X_0(x_0,y_0)$的某邻域$U(X_0)$内有二阶连续的偏导数，$X(x,y)$是$U(X_0)$内的点。记$\Delta X=(\Delta x,\Delta y)=(x-x_0,y-y_0)$。称函数$z=f(x,y)$的两个一阶偏导数构成的向量$(f'_x,f'_y)_X$为$f(x,y)$的梯度。四个二阶偏导数构成的方阵
+\[
+H(X)=
+\begin{pmatrix}
+f''_{xx} & f''_{xy}\\
+f''_{yx} & f''_{yy}
+\end{pmatrix}_X
+\]
+称为$f(x,y)$的黑塞矩阵。
+
+定理8.6\quad 若二元函数，则对，存在，使得
+\[
+f(x,y)=
+\]
+其中
+\[
+R=\frac1{2!}\bigl(\Delta x\quad \Delta y\bigr)
+\begin{pmatrix}
+f''_{xx} & f''_{xy}\\
+f''_{yx} & f''_{yy}
+\end{pmatrix}_{X^*}
+\begin{pmatrix}
+\Delta x\\
+\Delta y
+\end{pmatrix}.
+\]
+称上式为$f(x,y)$的一阶泰勒公式。
+
+\noindent 推论\quad 在定理8.6的条件下。
+
+\subsection{多元函数的极值}
+
+定义8.12\quad 设二元函数，且，则说函数。
+
+定理8.7（极值的必要条件）\quad 设函数在$X_0$处取极值，且在该点处函数的偏导数都存在，则必有
+\[
+\bigl(f'_x,f'_y\bigr)_{X_0}=\boldsymbol{0}.
+\]
+
+定理8.8（极值的充分条件）\quad 设是函数的驻点。若$f(X)$在点$X_0$的黑塞矩阵正定（负定），则为极小值（极大值）。
+
+\noindent 推论\quad 设，记$f''_{XX}(x_0,y_0)$。
+\begin{enumerate}
+    \item 若
+    \item
+    \item
+\end{enumerate}
+
+\subsection{条件极值、拉格朗日乘数法}
+
+设函数$z=f(x,y)$在约束条件$\psi(x,y)=0$下，在点$(x_0,y_0)$处取极值。
+
+\section{方向导数和梯度}
+\subsection{方向导数}
+
+在数量场。
+
+定义8.13\quad 设点，比式的极限存在，则称方向导数，记为，即。由定义。
+
+定理8.9\quad 设在点$P_0$处可微，则函数，且，其中是$l$的方向余弦。
+
+\subsection{梯度}
+
+定义8.14\quad 数量场（函数）$u(P)$在点$P$处的梯度是个向量，其方向为$u(P)$在点$P$的变化率最大的方向，其模恰好等于这个最大的变化率，记为$\mathrm{grad}\,u$。
+
+在空间直角坐标系下，梯度的表达式为。
+
+可以直接推出下列性质及运算法则。
+\begin{enumerate}
+    \item
+    \item
+    \item
+    \item
+    \item
+\end{enumerate}

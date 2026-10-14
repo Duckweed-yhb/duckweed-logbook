@@ -1,0 +1,127 @@
+% 子文件：5.不定积分.tex
+% 主文档中使用 \input{5.不定积分} 引入，不含 document 环境
+
+\section{原函数与不定积分}
+\subsection{原函数与不定积分的概念}
+
+定义5.1\quad 如果在某区间$I$上，
+\[
+F'(x)=f(x)\quad\text{或}\quad dF(x)=f(x)dx,
+\]
+则称$F(x)$为$f(x)$在$I$上的一个原函数。
+
+一般地说，若$F(x)$为$f(x)$的一个原函数，则$F(x)+C$亦为$f(x)$的原函数（$C$为任意常数），这是因为
+\[
+\bigl[F(x)+C\bigr]'=F'(x)=f(x).
+\]
+
+定理5.1\quad 如果$F(x)$是$f(x)$在区间$I$上的一个原函数，则$f(x)$在$I$上的任一原函数都可表示为$F(x)+C$的形式，其中$C$为某一常数。
+
+这个定理表明：形如$F(x)+C$的一族函数是$f(x)$的全部原函数。
+
+定义5.2\quad 设$F(x)$是$f(x)$的任一原函数，则$f(x)$的全部原函数的一般表达式
+\[
+F(x)+C
+\]
+称为函数$f(x)$的不定积分，记作$\int f(x)\,dx = F(x)+C$，即
+\[
+\int f(x)dx=F(x)+C.
+\]
+其中，$\int$叫做积分号，$f(x)dx$叫做被积表达式，$f(x)$叫做被积函数，$x$叫做积分变量，任意常数$C$叫做积分常数。
+
+不定积分的几何意义：设$F(x)$是$f(x)$的一个原函数，则$y=F(x)$的图形称为$f(x)$的一条积分曲线。因为$F'(x)=f(x)$，所以积分曲线上任一点$(x,F(x))$处的切线斜率恰好等于$f(x)$。若把这条积分曲线沿$y$轴方向平移$C$个单位，就得到另一条积分曲线$y=F(x)+C$。所以不定积分就是这样一族积分曲线通用的方程。曲线族中各条曲线在横坐标相同的点处的切线平行。
+
+定理5.2\quad 若$f(x)\in C[a,b]$，则它必有原函数。
+
+\subsection{不定积分的性质和基本公式}
+
+性质1
+\[
+\bigl(\int f(x)dx\bigr)'=f(x)\quad\text{或}\quad d\int f(x)dx=f(x)dx;
+\]
+\[
+\int f'(x)dx=f(x)+C\quad\text{或}\quad\int df(x)=f(x)+C.
+\]
+
+性质2\quad 若在同一区间上$f(x),g(x)$都有原函数，则
+\[
+\int\bigl[af(x)+bg(x)\bigr]dx=a\int f(x)dx+b\int g(x)dx,
+\]
+其中$a,b$是不同时为零的常数。
+
+性质2称为积分线性性质。
+
+\noindent 不定积分基本公式（1）
+\begin{enumerate}
+    \item 
+    \item 
+    \item 
+    \item 
+    \item 
+    \item 
+    \item $\int \sin xdx=-\cos x+C;$
+    \item $\int \cos xdx=\sin x+C;$
+    \item $\int \sec^2 xdx=\int \frac{1}{\cos^2 x}dx=\tan x+C;$
+    \item $\int \csc^2 xdx=\int \frac{1}{\sin^2 x}dx=-\cot x+C;$
+    \item $\int \sec x\tan xdx=\sec x+C;$
+    \item $\int \csc x\cot xdx=-\csc x+C;$
+    \item $\int\frac{dx}{\sqrt{1-x^2}}=\arcsin x+C;$
+    \item $\int\frac{dx}{1+x^2}=\arctan x+C;$
+\end{enumerate}
+
+\noindent 分项积分法
+
+\section{换元积分法}
+\subsection{换元积分公式}
+设
+
+\noindent 第一换元积分法
+
+\noindent 第二换元积分法
+
+当被积函数中：
+\begin{itemize}
+    \item[$1^\circ$] 含有$\sqrt{a^2-x^2}$时，做变换$x=a\sin t$；
+    \item[$2^\circ$] 含有$\sqrt{x^2+a^2}$时，做变换$x=a\tan t$；
+    \item[$3^\circ$] 含有$\sqrt{x^2-a^2}$时，做变换$x=a\sec t$；
+    \item[$4^\circ$] 含有$\sqrt{ax+b}$时，做变换$t=\sqrt{ax+b}$，即$x=\dfrac{t^2-b}{a}$，常常是可行的。
+\end{itemize}
+
+一般情况下（如被积函数是分式，分母为次数较高的幂函数时），倒变换可以用来消去分母中的变量。
+
+\noindent 不定积分基本公式（2）
+\begin{enumerate}
+    \setcounter{enumi}{14}
+    \item $\int\tan xdx=-\ln|\cos x|+C;$
+    \item $\int\cot xdx=\ln|\sin x|+C;$
+    \item $\int\sec xdx=\ln|\sec x+\tan x|+C;$
+    \item $\int\csc xdx=\ln|\csc x-\cot x|+C;$
+    \item 
+    \item 
+    \item 
+    \item 
+    \item 
+    \item 
+\end{enumerate}
+
+\section{分部积分法}
+根据不定积分性质1，性质2有
+\[
+\int u\,dv=uv-\int v\,du \tag{1}
+\]
+亦即
+\[
+\int uv'dx=uv-\int vu'dx \tag{2}
+\]
+积分公式（1）或（2）称为分部积分公式。
+
+应用分部积分法时，
+
+当被积函数形如
+
+\section{几类函数的积分}
+\subsection{有理函数的积分}
+
+\subsection{三角函数有理式的积分}
+
+\subsection{简单无理函数的积分}

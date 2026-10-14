@@ -1,0 +1,42 @@
+\chapter{级数}
+
+\section{数项级数的基本性质}
+\begin{itemize}[leftmargin=2em]
+    \item 级数 \( \sum_{n=0}^{\infty} a_n \) 收敛 \( \implies \lim_{n \to \infty} a_n = 0 \)。
+    \item 级数 \( \sum_{n=0}^{\infty} a_n \) 绝对收敛 \( \iff \sum_{n=0}^{\infty} |a_n| \) 收敛。
+    \item 级数 \( \sum_{n=0}^{\infty} a_n \) 绝对收敛 \( \implies \sum_{n=0}^{\infty} a_n \) 收敛。
+\end{itemize}
+
+\section{幂级数的收敛半径}
+\subsection{达朗贝尔检比法}
+给定幂级数 \( \sum_{n=0}^{\infty} a_n w^n \)，若极限 \( \lambda = \lim_{n \to \infty} \frac{|a_{n+1}|}{|a_n|} \) 广义存在，则收敛半径
+\[
+R = \frac{1}{\lambda}.
+\]
+
+\subsection{柯西检根法}
+幂级数 \( \sum_{n=0}^{\infty} a_n w^n \) 的收敛半径为
+\[
+R = \frac{1}{\varlimsup_{n \to \infty} \sqrt[n]{|a_n|}}.
+\]
+
+\section{泰勒展开}
+设函数 \( f(z) \) 是开圆盘 \( B(z_0, R) \) 上的解析函数，则
+\[
+f(z) = \sum_{n=0}^{\infty} a_n (z - z_0)^n = \sum_{n=0}^{\infty} \frac{f^{(n)}(z_0)}{n!} (z - z_0)^n,
+\]
+其中
+\[
+a_0 = f(z_0),\quad a_n = \frac{1}{2\pi i} \oint_{|\xi - z_0|=r} \frac{f(\xi)}{(\xi - z_0)^{n+1}} d\xi = \frac{f^{(n)}(z_0)}{n!},\quad r < R.
+\]
+若圆盘 \( B(z_0, R) \) 上的解析函数 \( f(z) \) 可展为幂级数 \( \sum_{n=0}^{\infty} a_n (z - z_0)^n \)，则必有 \( a_n = \frac{f^{(n)}(z_0)}{n!} \)。
+
+\section{洛朗展开}
+设 \( f(z) \) 是圆环区域 \( r < |z - z_0| < R \) 上的解析函数，则 \( f(z) \) 在圆环上可展开为广义幂级数：
+\[
+f(z) = \sum_{n=-\infty}^{\infty} a_n (z - z_0)^n, \quad r < |z - z_0| < R,
+\]
+其中
+\[
+a_n = \frac{1}{2\pi i} \oint_{|\xi - z_0|=l} \frac{f(\xi)}{(\xi - z_0)^{n+1}} d\xi, \quad r < l < R.
+\]

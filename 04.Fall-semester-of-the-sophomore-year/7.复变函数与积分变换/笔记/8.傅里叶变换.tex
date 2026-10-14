@@ -1,0 +1,160 @@
+\chapter{傅里叶变换}
+
+\section{绝对可积函数}
+我们称实数轴上的复值函数 \( f(t) \) 是 \textbf{绝对可积的}，当且仅当广义积分
+\[
+\int_{-\infty}^{+\infty} |f(t)| dt
+\]
+收敛。
+
+设 \( f(t) \) 为实数轴上的绝对可积函数，定义其傅里叶变换为
+\[
+F(\omega)=\int_{-\infty}^{+\infty} f(t) e^{-i \omega t} d t,
+\]
+记为 \( F(\omega)=\mathscr{F}[f(t)] \)。
+
+相应地，傅里叶逆变换定义为
+\[
+f(t)=\frac{1}{2 \pi} \int_{-\infty}^{+\infty} F(\omega) e^{i t \omega} d \omega,
+\]
+记为 \( f(t)=\mathscr{F}^{-1}[F(\omega)] \)。
+
+对于实数轴上以 \( T \) 为周期的连续（或仅有有限第一类间断点）函数，其傅里叶级数为
+\[
+f(t) \sim \sum_{n \in \mathbb{Z}} a_{n} e^{i n \omega t}, \quad \omega=\frac{2 \pi}{T},
+\]
+其中系数
+\[
+a_{n}=\frac{1}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f(t) e^{-i n \omega t} d t.
+\]
+
+当周期 \( T\to+\infty \) 时，离散级数过渡为连续积分，即得到傅里叶变换与逆变换。
+
+\textbf{傅里叶积分定理：}
+设 \( f(t) \) 为绝对可积函数，\( F(\omega)=\mathscr{F}[f(t)] \)，则
+\[
+\frac{1}{2\pi}\int_{-\infty}^{+\infty}F(\omega)e^{it\omega}d\omega
+=
+\begin{cases}
+f(t), & t\text{ 是连续点}, \\
+\dfrac{f(t+0)+f(t-0)}{2}, & t\text{ 是第一类间断点}.
+\end{cases}
+\]
+
+\section{傅里叶变换的性质}
+
+\subsection{线性性质}
+设 \( k_1,k_2\in\mathbb{C} \)，\( f_1(t),f_2(t) \) 为绝对可积函数，\( F_1=\mathscr{F}[f_1] \)，\( F_2=\mathscr{F}[f_2] \)，则
+\[
+\mathscr{F}\left[k_1 f_1(t)+k_2 f_2(t)\right]
+=
+k_1 F_1(\omega)+k_2 F_2(\omega),
+\]
+\[
+\mathscr{F}^{-1}\left[k_1 F_1(\omega)+k_2 F_2(\omega)\right]
+=
+k_1 f_1(t)+k_2 f_2(t).
+\]
+
+\subsection{伸缩与平移性质}
+设 \( F(\omega)=\mathscr{F}[f(t)] \)，\( a\neq0 \)，则
+\[
+\mathscr{F}\left[f(at+b)\right](\omega)
+=
+\frac{1}{|a|} e^{\frac{i b \omega}{a}} F\left(\frac{\omega}{a}\right).
+\]
+特别地，当 \( a=1 \) 时，
+\[
+\mathscr{F}\left[f(t\pm t_0)\right]
+=
+e^{\pm i t_0 \omega} F(\omega).
+\]
+
+对频域平移，有
+\[
+\mathscr{F}\left[e^{i\omega_0 t}f(t)\right]
+=
+F(\omega-\omega_0).
+\]
+
+\subsection{卷积性质}
+设 \( f_1(t),f_2(t) \) 绝对可积，定义卷积
+\[
+(f_1*f_2)(t)
+=
+\int_{-\infty}^{+\infty}f_1(\tau)f_2(t-\tau)d\tau.
+\]
+卷积满足交换律、结合律与对加法的分配律。
+
+\textbf{卷积定理：}
+设 \( F_1=\mathscr{F}[f_1] \)，\( F_2=\mathscr{F}[f_2] \)，则
+\[
+\mathscr{F}\left[f_1*f_2\right](\omega)
+=
+F_1(\omega)F_2(\omega),
+\]
+\[
+\mathscr{F}\left[f_1\cdot f_2\right](\omega)
+=
+\frac{1}{2\pi}F_1(\omega)*F_2(\omega).
+\]
+
+\subsection{微分性质}
+设 \( f(t) \) 为绝对可积的光滑函数，且在无穷远处各阶导数趋于0，则
+\[
+\mathscr{F}\left[f^{(n)}(t)\right](\omega)
+=
+(i\omega)^n F(\omega).
+\]
+
+\subsection{帕塞瓦尔恒等式}
+设 \( f_1,f_2 \) 绝对可积，则
+\[
+\int_{-\infty}^{+\infty}\overline{f_1(t)}f_2(t)dt
+=
+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\overline{F_1(\omega)}F_2(\omega)d\omega.
+\]
+特别地，
+\[
+\int_{-\infty}^{+\infty}|f(t)|^2dt
+=
+\frac{1}{2\pi}\int_{-\infty}^{+\infty}|F(\omega)|^2d\omega.
+\]
+
+\section{广义傅里叶变换}
+普通傅里叶变换对常数、正弦、余弦等函数不适用，需引入广义函数（如 \( \delta \) 函数）扩展定义。
+
+单位脉冲函数 \( \delta(t) \) 满足
+\[
+\delta(t)=
+\begin{cases}
+0, & t\neq0, \\
+\infty, & t=0,
+\end{cases}
+\quad
+\int_{-\infty}^{+\infty}\delta(t)dt=1,
+\]
+且对任意连续函数 \( \varphi(t) \)，
+\[
+\int_{-\infty}^{+\infty}\delta(t)\varphi(t)dt=\varphi(0).
+\]
+
+常用广义傅里叶变换如下：
+\[
+\mathscr{F}[\delta(t)]=1,\quad
+\mathscr{F}[1]=2\pi\delta(\omega),
+\]
+\[
+\mathscr{F}[\cos\omega_0 t]
+=
+\pi\left[\delta(\omega+\omega_0)+\delta(\omega-\omega_0)\right],
+\]
+\[
+\mathscr{F}[\sin\omega_0 t]
+=
+\pi i\left[\delta(\omega+\omega_0)-\delta(\omega-\omega_0)\right],
+\]
+\[
+\mathscr{F}[\text{sgn}(t)]=-\frac{2i}{\omega},\quad
+\mathscr{F}[u(t)]=\pi\delta(\omega)-\frac{i}{\omega}.
+\]

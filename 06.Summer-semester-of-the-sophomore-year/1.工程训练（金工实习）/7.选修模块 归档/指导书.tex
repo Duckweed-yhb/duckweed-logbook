@@ -1,0 +1,487 @@
+% =============================================================================
+% 视觉应用软件开发技术实践——指导说明书【最终全优化排版版】
+% 优化点：
+% 1. 删除封面多余文档整合说明，封面留白重新均衡分配
+% 2. 全局排版统一、层级间距梯度标准化、段落缩进规范
+% 3. 代码块限定宽度防横向溢出，自动换行柔和
+% 4. 表格宽度压缩、行高适中，彻底消除 Overfull \hbox
+% 5. 目录增加引导点线，页码对齐美观
+% 6. 页眉无报错，弱化xeCJK字体重定义警告
+% 7. 列表紧凑无冗余空白，正文段落间距舒适
+% 8. 所有下划线转义，无Missing $编译错误
+% 9. 移除非法CJKfontfamily，无未定义控制序列报错
+% 10. 页面边距、章节、代码、图表留白分层清晰
+% 编译方式：XeLaTeX 仅存在VS Code cSpell无害拼写提示，无LaTeX致命报错
+% =============================================================================
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+% -------------------------- 全局页面基础设置 --------------------------
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm]{geometry}
+\usepackage{indentfirst}               % 中文段落首行自动缩进
+\setlength{\parindent}{2em}            % 首行缩进2个汉字
+\setlength{\parskip}{0.3em}            % 段间微小留白，阅读更舒适
+
+% -------------------------- 目录美化（带引导点线） --------------------------
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsecpagefont}{\bfseries}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesecskip}{8pt}
+\setlength{\cftbeforesubsecskip}{4pt}
+\setlength{\cfttabindent}{0pt}
+
+% -------------------------- 字体配置（弱化xeCJK重定义警告） --------------------------
+\usepackage{fontspec}
+\setCJKmainfont{SimSun}[AutoFakeBold=2.5]
+\setmainfont{Times New Roman}
+
+% -------------------------- 代码高亮包 + 图表标题格式 --------------------------
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+\captionsetup{
+    tableposition=top,
+    figureposition=bottom,
+    font=small,
+    labelfont=bf,
+    skip=8pt
+}
+
+% 代码配色定义
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codeframe}{RGB}{180,180,180}
+\definecolor{codekeyword}{RGB}{0,0,180}
+\definecolor{codecomment}{RGB}{0,130,0}
+\definecolor{codestring}{RGB}{160,20,20}
+
+% HALCON专用代码样式（限制宽度防止页面溢出）
+\lstdefinestyle{halconstyle}{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codekeyword}\bfseries,
+    commentstyle=\color{codecomment}\itshape,
+    stringstyle=\color{codestring},
+    tabsize=4,
+    showstringspaces=false,
+    breaklines=true,
+    breakatwhitespace=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=6pt,
+    captionpos=b,
+    aboveskip=10pt,
+    belowskip=10pt,
+    language=C++,
+    linewidth=0.92\textwidth,
+    morekeywords={
+        read_image,dev_close_window,dev_open_window_fit_image,dev_set_window,
+        dev_display,rgb3_to_gray,draw_rectangle1,gen_rectangle1,reduce_domain,
+        threshold,opening_circle,connection,select_shape,shape_trans,
+        smallest_rectangle2,count_obj,sort_region,gen_rectangle2,concat,
+        disp_message,dev_update_off,dev_set_draw,dev_set_color,
+        dev_set_line_width,set_display_font,rgb1_to_gray,
+        create_data_code_2d_model,find_data_code_2d,dev_open_window,
+        for,endif,endfor,if,elseif
+    }
+}
+
+% -------------------------- 表格、图片自适应 --------------------------
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{array}
+\renewcommand{\arraystretch}{1.15}    % 表格行高适中，不拥挤不松散
+
+% -------------------------- 超链接（无边框） --------------------------
+\usepackage[hidelinks]{hyperref}
+
+% -------------------------- 有序/无序列表统一紧凑格式 --------------------------
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=2em,itemsep=2pt,topsep=3pt}
+
+% -------------------------- 页眉页脚（彻底消除headheight警告） --------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\fancyhead[L]{\small 视觉应用软件开发技术实践——指导说明书}
+\fancyhead[R]{\small 工程训练（金工实习）选修模块}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% -------------------------- 章节标题间距分层控制 --------------------------
+\ctexset{
+    section={
+        format={\Large\bfseries},
+        beforeskip=24pt,
+        afterskip=12pt,
+    },
+    subsection={
+        format={\large\bfseries},
+        beforeskip=16pt,
+        afterskip=8pt,
+    },
+    subsubsection={
+        format={\normalsize\bfseries},
+        beforeskip=12pt,
+        afterskip=6pt,
+    },
+    paragraph={
+        format={\normalsize\bfseries},
+        beforeskip=8pt,
+        afterskip=4pt,
+    }
+}
+
+\begin{document}
+
+% ============================== 封面（已删除多余文档说明，留白均衡） ==============================
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+\vspace*{5cm}
+
+{\Huge\bfseries 视觉应用软件开发技术实践}
+\vspace{1cm}
+{\LARGE 指导说明书}
+
+\vspace{2.8cm}
+{\large 工程训练（金工实习）——选修模块}
+\vspace{0.6cm}
+{\large 小班实训，单次最多容纳10人}
+
+\vfill
+\vspace{3cm}
+\end{center}
+\end{titlepage}
+
+% ============================== 目录页 ==============================
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+% ===================================================================
+\section{开发环境配置与图像基础操作}
+\subsection{实验内容与目的}
+\begin{itemize}
+    \item 掌握 HALCON、Visual Studio C++ 完整开发环境搭建流程；
+    \item 实现图像读取、窗口显示、像素空间基础操作；
+    \item 理解数字图像存储原理与RGB/灰度色彩空间转换逻辑。
+\end{itemize}
+
+\subsection{实验设备清单}
+\begin{itemize}
+    \item \textbf{硬件设备}：机器视觉综合教学平台、配套工业相机；
+    \item \textbf{软件工具}：MVTec HALCON、Visual Studio 2022（C++控制台开发）。
+\end{itemize}
+
+% ===================================================================
+\section{实验任务一：Blob分析实现PCB焊片区域提取}
+\subsection{任务概述}
+使用工业相机拍摄标准焊板样本图像，拍摄要求：焊板水平摆放、无大幅倾斜、画面清晰无过曝/欠曝。完整检测流程采用标准Blob图像分析流水线，分步完成区域提取、形态学去噪、连通域筛选、缺陷判定。
+
+\subsection{分步操作流程}
+\subsubsection{步骤1：图像读入与自适应窗口显示}
+打开HALCON程序编辑器，调用\texttt{read\_image}算子加载本地图像；支持单步逐算子调试。读取图像尺寸后自适应创建图形窗口并绑定显示。
+\begin{lstlisting}[style=halconstyle, caption={图像读入与自适应窗口显示}]
+* 读取本地样本图像，自适应创建窗口并展示
+read_image(Image, 'E:/实验教学/2025工训选修模块/焊接片/0819/barcode12.jpg')
+* 关闭软件默认空白图形窗口
+dev_close_window()
+* 根据图像分辨率自动适配窗口尺寸
+dev_open_window_fit_image(Image, 0, 0, -1, -1, WindowHandle)
+* 绑定当前操作窗口句柄
+dev_set_window(WindowHandle)
+* 在窗口中渲染原图
+dev_display(Image)
+\end{lstlisting}
+
+\subsubsection{步骤2：灰度转换与自定义ROI裁剪}
+将三通道彩色图像转为单通道灰度图；交互式手绘矩形划定待检测焊片区域，生成ROI并对原图裁剪，仅保留目标检测区域，再基于灰度直方图完成阈值分割。
+\begin{lstlisting}[style=halconstyle, caption={彩色图灰度化 + ROI感兴趣区域提取}]
+* RGB三通道图像转换单通道灰度图
+rgb3_to_gray(Image, Image, Image, ImageGray)
+dev_display(ImageGray)
+* 交互式鼠标手绘矩形检测框
+draw_rectangle1(WindowHandle, Row1, Column1, Row2, Column2)
+* 根据手绘坐标生成矩形ROI区域对象
+gen_rectangle1(ROI_0, Row1, Column1, Row2, Column2)
+* 依据ROI裁剪灰度图像，减少无效计算区域
+reduce_domain(ImageGray, ROI_0, ImageReduced)
+* 灰度阈值分割，提取高亮焊片区域
+threshold(ImageReduced, Regions, 190, 255)
+\end{lstlisting}
+
+\paragraph{灰度直方图工具使用规范}
+执行\texttt{reduce\_domain}完成图像裁剪后，在变量窗口右键\texttt{ImageReduced}，选择「清除并显示变量」；点击工具栏「灰度直方图」图标，绿色标线为灰度下限、红色标线为灰度上限，拖动两条标线框选目标灰度区间后，点击「阈值」激活分割预览，最后点击「插入代码」自动生成对应threshold算子。
+
+\subsubsection{步骤3：形态学去噪与连通域特征筛选}
+开运算用于消除微小噪点、划痕，保留大面积焊片轮廓；拆分独立连通域后按面积特征过滤干扰区域，再转换为最小外接矩形用于尺寸、倾斜度检测。
+\begin{lstlisting}[style=halconstyle, caption={形态学开运算 + 连通域特征筛选}]
+* 圆形结构元素开运算，去除微小噪点、细碎干扰
+opening_circle(Regions, RegionOpening, 3.5)
+* 拆分互不连通的独立区域
+connection(RegionOpening, ConnectedRegions)
+* 按面积特征筛选有效焊片区域，过滤过小杂点
+select_shape(ConnectedRegions, SelectedRegions, 'area', 'and', 2572.73, 5000)
+* 将不规则区域统一转换为标准矩形
+shape_trans(SelectedRegions, RegionTrans, 'rectangle2')
+* 计算矩形中心坐标、倾斜角度、长宽尺寸
+smallest_rectangle2(RegionTrans, Row, Column, Phi, Length1, Length2)
+\end{lstlisting}
+
+\paragraph{特征直方图筛选操作}
+连通域拆分完成后，右键连通域变量选择「清除并显示」；打开工具栏「特征直方图」，横轴选择面积特征，拖动滑块限定有效面积区间，点击「插入代码」自动生成\texttt{select\_shape}筛选逻辑。
+
+\subsubsection{步骤4：焊片缺陷判定逻辑}
+统计焊片总数、遍历判断单块焊片倾斜角度；总数不足10判定为缺焊，单块倾斜弧度大于0.08判定为偏斜不良，分别用红色框标注缺陷并输出文字提示。
+\begin{lstlisting}[style=halconstyle, caption={焊片数量、倾斜缺陷判定完整逻辑}]
+* 重置绘图样式：仅绘制区域轮廓
+dev_display(Image)
+dev_set_draw('margin')
+dev_set_color('green')
+dev_set_line_width(3)
+set_display_font(WindowHandle, 24, 'mono', 'true', 'false')
+
+count_obj(RegionTrans, Number)
+sort_region(RegionTrans, SortedRegions, 'first_point', 'true', 'row')
+flag := 1
+
+* 循环遍历所有焊片，检测倾斜角度
+for Index := 1 to Number by 1
+    if (abs(Phi[Index-1]) > 0.08)
+        gen_rectangle2(Rectangle1, Row[Index-1], Column[Index-1],
+                       Phi[Index-1], Length1[Index-1], Length2[Index-1])
+        dev_set_color('red')
+        dev_display(Rectangle1)
+        disp_message(WindowHandle, Phi[Index-1], 'image',
+                     Row[Index-1], Column[Index-1], 'black', 'true')
+        flag := 0
+    endif
+endfor
+
+* 分情况判定输出检测结果
+if (Number < 10)
+    disp_message(WindowHandle, 'Quantity error', 'image',
+                 Row[0], Column[0], 'red', 'true')
+    flag := 0
+elseif (flag == 1)
+    disp_message(WindowHandle, 'OK', 'image',
+                 Row[0], Column[0], 'blue', 'true')
+endif
+
+dev_update_off()
+\end{lstlisting}
+
+\subsection{拓展功能：二维码学生信息识别}
+调用2D二维码解码算子读取样本附带学生信息QR码，在窗口左上角打印解析出的学号；使用HALCON标准\texttt{concat}拼接文本。
+\begin{lstlisting}[style=halconstyle, caption={QR二维码识别与学号显示}]
+* 读取带二维码的样本图像
+read_image(Image, 'C:/Users/lenovo/Desktop/2024312011.jpg')
+* 新建独立窗口展示二维码画面
+dev_open_window_fit_image(Image, 0, 0, -1, -1, WindowHandle1)
+dev_set_window(WindowHandle1)
+dev_display(Image)
+* 彩色图转灰度图用于解码
+rgb1_to_gray(Image, GrayImage)
+* 初始化QR Code二维码识别模型
+create_data_code_2d_model('QR Code', [], [], DataCodeHandle)
+* 灰度图像中查找并解码二维码
+find_data_code_2d(GrayImage, SymbolXLDs, DataCodeHandle,
+                  [], [], ResultHandles, DecodedDataStrings)
+set_display_font(WindowHandle1, 24, 'mono', 'true', 'false')
+concat('学生二维码：', DecodedDataStrings, ShowText)
+disp_message(WindowHandle1, ShowText, 'window', 12, 12, 'black', 'true')
+\end{lstlisting}
+
+\subsection{实验任务一核心HALCON算子汇总}
+\begin{table}[H]
+\centering
+\caption{任务一核心HALCON算子功能对照表}
+\begin{tabularx}{0.94\textwidth}{|l|X|}
+\hline
+\textbf{算子名称} & \textbf{功能详细说明} \\
+\hline
+\texttt{read\_image} & 从本地磁盘读取图像文件至内存变量 \\
+\texttt{dev\_close\_window} & 关闭软件启动自带默认图形窗口 \\
+\texttt{dev\_open\_window\_fit\_image} & 根据图像分辨率自适应创建可视化窗口 \\
+\texttt{dev\_set\_window} & 绑定窗口句柄，指定后续绘图操作目标窗口 \\
+\texttt{dev\_display} & 在绑定窗口渲染图像、区域、线条等图形对象 \\
+\texttt{rgb3\_to\_gray} & 三通道RGB彩色图像转换单通道灰度图像 \\
+\texttt{draw\_rectangle1} & 鼠标交互式手绘矩形，输出对角坐标 \\
+\texttt{gen\_rectangle1} & 根据对角坐标生成矩形ROI区域对象 \\
+\texttt{reduce\_domain} & 按ROI区域裁剪原图，仅保留指定检测范围 \\
+\texttt{threshold} & 灰度阈值分割，分离前景目标与背景 \\
+\texttt{opening\_circle} & 圆形结构元素形态学开运算，去除微小噪点 \\
+\texttt{connection} & 拆分图像中互不连通的独立区域对象 \\
+\texttt{select\_shape} & 基于面积、长宽等几何特征过滤区域 \\
+\texttt{shape\_trans} & 将不规则区域统一转换为矩形、椭圆等标准轮廓 \\
+\texttt{smallest\_rectangle2} & 计算区域最小外接矩形，输出中心、角度、长宽 \\
+\texttt{count\_obj} & 统计区域、XLD等图形对象总数量 \\
+\texttt{sort\_region} & 按坐标、面积等规则对区域集合排序 \\
+\texttt{gen\_rectangle2} & 根据中心、倾斜角、长宽生成任意角度矩形 \\
+\texttt{disp\_message} & 在图形窗口指定位置打印文本提示信息 \\
+\texttt{dev\_set\_draw} & 设置区域绘制模式：轮廓/填充 \\
+\texttt{dev\_set\_color} & 修改图形绘制线条、填充的显示颜色 \\
+\texttt{dev\_set\_line\_width} & 调整轮廓绘制线条像素宽度 \\
+\texttt{create\_data\_code\_2d\_model} & 初始化2D二维码解码识别模型 \\
+\texttt{find\_data\_code\_2d} & 在灰度图像中定位并解析二维码内容 \\
+\hline
+\end{tabularx}
+\end{table}
+
+% ===================================================================
+\newpage
+\section{实验任务二：VS2022开发独立视觉应用软件}
+\subsection{任务概述}
+HALCON离线调试代码验证效果无误后，导出标准C++源码，在Visual Studio 2022中配置HALCON依赖环境，封装编译生成独立可执行视觉检测程序，脱离HALCON软件直接运行。所有图像业务逻辑统一封装在导出代码\texttt{action()}函数内。
+
+\subsection{步骤1：HALCON工程导出标准C++代码}
+HALCON完整流程调试无报错后，通过软件顶部菜单栏导出功能，将HDevelop脚本导出为独立\texttt{.cpp}源文件；图像读取、形态学、缺陷判定全部封装在\texttt{action()}函数内部，是VS开发的核心逻辑载体。
+
+\subsection{步骤2：VS控制台项目创建与依赖环境配置}
+\subsubsection{新建空白C++控制台项目}
+\begin{enumerate}
+    \item 启动Visual Studio 2022，首页点击「创建新项目」；
+    \item 模板筛选选择「控制台应用（C++）」，点击下一步；
+    \item 自定义项目名称（例：\texttt{VisionPCBInspector}），选择本地存放路径，完成创建。
+\end{enumerate}
+
+\subsubsection{配置HALCON头文件包含目录}
+右键左侧解决方案资源管理器项目名称，选择「属性」打开配置页：
+\begin{itemize}
+    \item 展开 \textbf{C/C++} → \textbf{常规}；
+    \item 编辑「附加包含目录」，填入本地HALCON安装下include文件夹路径。
+\end{itemize}
+
+\subsubsection{配置HALCON静态库目录}
+\begin{itemize}
+    \item 展开 \textbf{链接器} → \textbf{常规}；
+    \item 编辑「附加库目录」，填入对应x64平台lib库文件夹路径。
+\end{itemize}
+
+\subsubsection{添加链接依赖库}
+\begin{itemize}
+    \item 展开 \textbf{链接器} → \textbf{输入}；
+    \item 在「附加依赖项」末尾追加 \texttt{halconcpp.lib}。
+\end{itemize}
+
+\subsection{步骤3：源码导入与项目编译生成程序}
+环境配置全部完成后执行如下操作：
+\begin{enumerate}
+    \item 打开HALCON导出的\texttt{.cpp}文件，全选复制所有代码，覆盖VS项目默认主cpp文件；
+    \item 顶部菜单栏选择「生成」→「重新生成解决方案」，执行完整编译；
+    \item 无语法、依赖报错时，在项目输出目录生成exe可执行程序。
+\end{enumerate}
+
+\subsection{步骤4：程序调试运行与闪退问题解决方案}
+\begin{itemize}
+    \item 菜单栏点击「调试」→「开始执行（不调试）」，启动视觉检测程序查看画面输出。
+\end{itemize}
+
+\paragraph{高频故障：程序运行后窗口直接闪退}
+故障原因：原生导出代码无阻塞等待逻辑，图像渲染完成后主线程立即结束进程。
+推荐两种修复方案，任选其一添加至主函数末尾：
+\begin{itemize}
+    \item 方案1：延时阻塞 \texttt{Sleep(2000)}；窗口保持2秒后自动关闭；
+    \item 方案2：键盘阻塞 \texttt{getchar()}；按下任意键才关闭图像窗口，便于观察检测结果。
+\end{itemize}
+
+\subsection{VS2022 HALCON环境配置速查表}
+\begin{table}[H]
+\centering
+\caption{VS2022 HALCON依赖一键配置清单}
+\begin{tabularx}{0.94\textwidth}{|l|l|X|}
+\hline
+\textbf{配置分类} & \textbf{属性层级路径} & \textbf{填写内容示例} \\
+\hline
+附加包含目录 & C/C++ → 常规 & \texttt{F:\textbackslash Program Files\textbackslash MVTec\textbackslash HALCON\textbackslash include} \\
+附加库目录 & 链接器 → 常规 & \texttt{F:\textbackslash Program Files\textbackslash MVTec\textbackslash HALCON\textbackslash lib\textbackslash x64-win64} \\
+附加依赖项 & 链接器 → 输入 & 末尾追加 \texttt{halconcpp.lib} \\
+\hline
+\end{tabularx}
+\end{table}
+
+% ===================================================================
+\newpage
+\section{附录：PCB焊片缺陷检测完整HALCON参考源码}
+以下为不含二维码拓展功能的完整Blob检测代码，供实训学生对照调试：
+\begin{lstlisting}[style=halconstyle, caption={PCB LED焊片缺陷检测完整参考代码}]
+* ========== 1. 图像读取与自适应窗口 ==========
+read_image(Image, 'E:/实验教学/2025工训选修模块/焊接片/0819/barcode12.jpg')
+dev_close_window()
+dev_open_window_fit_image(Image, 0, 0, -1, -1, WindowHandle)
+dev_set_window(WindowHandle)
+dev_display(Image)
+
+* ========== 2. RGB图像转灰度 ==========
+rgb3_to_gray(Image, Image, Image, ImageGray)
+dev_display(ImageGray)
+
+* ========== 3. 交互式ROI区域裁剪 ==========
+draw_rectangle1(WindowHandle, Row1, Column1, Row2, Column2)
+gen_rectangle1(ROI_0, Row1, Column1, Row2, Column2)
+reduce_domain(ImageGray, ROI_0, ImageReduced)
+
+* ========== 4. 灰度阈值分割提取焊片前景 ==========
+threshold(ImageReduced, Regions, 190, 255)
+
+* ========== 5. 形态学开运算去除微小噪点 ==========
+opening_circle(Regions, RegionOpening, 3.5)
+
+* ========== 6. 连通域拆分 ==========
+connection(RegionOpening, ConnectedRegions)
+
+* ========== 7. 按面积筛选有效焊片区域 ==========
+select_shape(ConnectedRegions, SelectedRegions,
+             'area', 'and', 2572.73, 5000)
+
+* ========== 8. 区域转换最小外接矩形 ==========
+shape_trans(SelectedRegions, RegionTrans, 'rectangle2')
+smallest_rectangle2(RegionTrans, Row, Column, Phi, Length1, Length2)
+
+* ========== 9. 缺陷可视化判定与绘制 ==========
+dev_display(Image)
+dev_set_draw('margin')
+dev_set_color('green')
+dev_set_line_width(3)
+set_display_font(WindowHandle, 24, 'mono', 'true', 'false')
+
+count_obj(RegionTrans, Number)
+sort_region(RegionTrans, SortedRegions, 'first_point', 'true', 'row')
+flag := 1
+
+for Index := 1 to Number by 1
+    if (abs(Phi[Index-1]) > 0.08)
+        gen_rectangle2(Rectangle1, Row[Index-1], Column[Index-1],
+                       Phi[Index-1], Length1[Index-1], Length2[Index-1])
+        dev_set_color('red')
+        dev_display(Rectangle1)
+        disp_message(WindowHandle, Phi[Index-1], 'image',
+                     Row[Index-1], Column[Index-1], 'black', 'true')
+        flag := 0
+    endif
+endfor
+
+if (Number < 10)
+    disp_message(WindowHandle, 'Quantity error', 'image',
+                 Row[0], Column[0], 'red', 'true')
+elseif (flag == 1)
+    disp_message(WindowHandle, 'OK', 'image',
+                 Row[0], Column[0], 'blue', 'true')
+endif
+
+dev_update_off()
+\end{lstlisting}
+
+\vspace{3cm}
+\begin{center}
+\rule{0.6\textwidth}{0.5pt}\\[8pt]
+{\small 工程训练（金工实习）选修模块 · 视觉应用软件开发技术实践指导说明书}
+\end{center}
+
+\end{document}

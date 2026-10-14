@@ -1,0 +1,107 @@
+\section{$n$阶行列式的概念}
+
+\subsection{全排列的逆序数、对换}
+把$n$个不同的元素排成一列，叫做这$n$个元素的**全排列**（简称排列）。称$n$个不同元素的排列为$n$阶排列。
+
+为了方便，把自然数$1,2,\cdots,n$视为$n$个不同的元素的代表。用$p_i$表示这$n$个数中的一个$(i=1,2,\cdots,n)$，且当$i\neq j$时$p_i\neq p_j$，于是 $p_1 p_2 \cdots p_n$ 便是 $1, 2, \cdots, n$ 的一个排列。
+
+对于排列 $p_1 p_2 \cdots p_n$，我们把排在 $p_i$ 前面且比 $p_i$ 大的数的个数 $t_i$ 称为全排列 $p_1 p_2 \cdots p_n$ 中 $p_i$ 的逆序数，把这个排列中各数的逆序数之和
+\[
+t_1 + t_2 + \cdots + t_n
+\]
+称为这个排列的**逆序数**，记为 $t(p_1 p_2 \cdots p_n)$。
+
+逆序数为奇数的排列称为**奇排列**；逆序数为偶数的排列称为**偶排列**。显然，排列 $12 \cdots n$ 的逆序数为 $0$，故它是偶排列。称此排列为**自然排列**。
+
+在一个排列中，将某两个数的位置对调（其他数不动）的变动叫做一个**对换**。两个相邻数的对换称为**相邻对换**。
+
+\begin{theorem}
+一个排列中的任意两个数对换后，排列改变奇偶性。
+\end{theorem}
+
+\subsection{$n$阶行列式的概念}
+\begin{definition}
+设$n^2$个数，排成$n$行$n$列的数表
+\[
+\begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n}\\
+a_{21} & a_{22} & \cdots & a_{2n}\\
+\vdots & \vdots & & \vdots\\
+a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{pmatrix}
+\]
+% 此处可继续补充n阶行列式定义表达式
+\end{definition}
+
+
+\section{行列式的性质}
+
+\begin{property}
+行列式与它的转置行列式相等。
+\end{property}
+
+\begin{property}
+互换行列式的两行（列），行列式变号。
+\end{property}
+
+\begin{corollary}
+如果行列式有两行（列）完全相同，则此行列式为零。
+\end{corollary}
+
+\begin{property}
+行列式一行的公因子可以提出去，或者说以数$k$乘行列式的一行相当于用这个数乘此行列式。
+\end{property}
+
+\begin{corollary}
+若行列式中有两行（列）元素成比例，则行列式等于零。
+\end{corollary}
+
+\begin{property}
+如果行列式的某一行是两项和的形式，那么这个行列式就等于两个行列式的和。这两个行列式，除第$i$行以外的其他行与原来行列式完全相同。
+\end{property}
+
+
+\section{行列式的展开定理}
+
+在给定的$n$阶子式中，把$a_{ij}$所在的第$i$行和第$j$列划去，余下的元素按原来的排法构成的$n-1$阶行列式叫做元素$a_{ij}$的**余子式**，记为$M_{ij}$；而$a_{ij}$的**代数余子式**记作$A_{ij}$，定义为
+\[
+A_{ij}=(-1)^{i+j}M_{ij}.
+\]
+
+% 引理位置，原文截断，保留占位
+% \begin{lemma}
+% 如果除$a_{ij}$以外……
+% \end{lemma}
+
+\begin{theorem}
+行列式等于它的任一行（列）的各元素与其代数余子式的乘积之和，即
+\[
+D=\sum_{j=1}^{n}a_{ij}A_{ij}\quad(i=1,2,\dots,n)
+\]
+\[
+D=\sum_{i=1}^{n}a_{ij}A_{ij}\quad(j=1,2,\dots,n)
+\]
+称本定理为行列式按行（列）展开法则。
+\end{theorem}
+
+\begin{theorem}
+行列式$D$的任一行（列）元素与另一行（列）对应元素的代数余子式乘积之和为零。
+\[
+\sum_{k=1}^{n}a_{ik}A_{jk}=0\quad(i\neq j),\qquad
+\sum_{k=1}^{n}a_{ki}A_{kj}=0\quad(i\neq j).
+\]
+\end{theorem}
+
+
+\section{Cramer法则}
+
+设有含$n$个未知数的线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=b_1\\
+a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=b_2\\
+\quad\vdots\\
+a_{n1}x_1+a_{n2}x_2+\cdots+a_{nn}x_n=b_n
+\end{cases}
+\]
+% 后续Cramer法则内容自行续写

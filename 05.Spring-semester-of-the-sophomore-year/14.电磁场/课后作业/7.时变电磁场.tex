@@ -1,0 +1,108 @@
+\section{时变电磁场大作业解答}
+\begin{enumerate}[label=\arabic*.]
+
+\item 同轴电缆中的 TEM 波
+已知内导体半径 \(a=1\,\text{mm}\)，外导体半径 \(b=4\,\text{mm}\)，介质聚乙烯 \(\varepsilon_r=2.25,\ \mu_r=1,\ \gamma=0\)，电场
+\[
+\vec{E} = \frac{100}{\rho}\cos(10^8 t - \beta z)\,\vec{e}_\rho\ \text{V/m}
+\]
+\begin{enumerate}[label=(\arabic*)]
+    \item 判断电场表达式是否具有波动性
+    场量含行波因子 \(\cos(\omega t-\beta z)\)，沿 \(+z\) 方向传播，因此**具有波动性**。
+
+    \item 求解相位常数 \(\beta\)
+    \[
+    \beta = \omega\sqrt{\mu_0\varepsilon_0\varepsilon_r} = \frac{\omega}{c}\sqrt{\varepsilon_r}
+    \]
+    代入 \(\omega=10^8\,\text{rad/s},\ c=3\times 10^8\,\text{m/s},\sqrt{\varepsilon_r}=1.5\)
+    \[
+    \beta = \frac{10^8}{3\times 10^8}\times 1.5 = \boldsymbol{0.5\ \text{rad/m}}
+    \]
+
+    \item 求解磁场强度 \(\vec{H}\) 表达式
+    由 \(\nabla\times\vec{E}=-\mu_0\dfrac{\partial\vec{H}}{\partial t}\)，圆柱坐标旋度展开得
+    \[
+    \nabla\times\vec{E} = \frac{100\beta}{\rho}\sin(\omega t-\beta z)\,\vec{e}_\phi
+    \]
+    积分求得磁场分量，介质波阻抗 \(\eta=\dfrac{\eta_0}{\sqrt{\varepsilon_r}}=80\pi\ \Omega\)
+    \[
+    \vec{H} = \frac{100}{80\pi\rho}\cos\left(10^8 t-0.5 z\right)\,\vec{e}_\phi\ \text{A/m}
+    \]
+
+    \item 求解内外导体间平均坡印廷矢量
+    \[
+    \vec{S}_{\text{av}} = \frac{1}{2}\text{Re}\left(\dot{\vec{E}}\times\dot{\vec{H}}^*\right)
+    = \boldsymbol{\frac{125}{2\pi\rho^2}\,\vec{e}_z\ \text{W/m}^2}
+    \]
+
+    \item 求解内导体表面线电流密度
+    由边界关系 \(\vec{J}_s=\vec{e}_\rho\times\vec{H}\)，代入 \(\rho=a=1\,\text{mm}\)
+    \[
+    \vec{J}_s = \frac{1250}{\pi}\cos\left(10^8 t-0.5 z\right)\,\vec{e}_z\ \text{A/m}
+    \]
+
+    \item 求解 \(0\le z\le 1\,\text{m}\) 区段位移电流
+    位移电流密度 \(\vec{J}_d=\varepsilon\dfrac{\partial\vec{E}}{\partial t}\)，对柱面面积分积分化简得
+    \[
+    I_d \approx -2.5\times 10^{-2}\left[\cos(10^8 t-0.5)-\cos10^8 t\right]\ \text{A}
+    \]
+\end{enumerate}
+\vspace{1em}
+
+\item 平行板电容器中的坡印廷矢量与传输功率
+圆形极板面积为 \(S\)，极板间距为 \(d\)，介质参数 \(\varepsilon,\gamma\)。
+\begin{enumerate}[label=(\arabic*)]
+    \item 直流电压 \(U\) 作用下任一点坡印廷矢量
+    极板间均匀电场 \(\vec{E}=\dfrac{U}{d}\vec{e}_z\)，由安培环路定律求得磁场
+    \[
+    H_\phi = \frac{\gamma U r}{2d}
+    \]
+    坡印廷矢量
+    \[
+    \vec{S} = \vec{E}\times\vec{H} = \boldsymbol{-\frac{\gamma U^2 r}{2d^2}\vec{e}_r}
+    \]
+    能流由侧面径向流入介质内部。
+
+    \item 工频交流电压 \(u=\sqrt{2}U\cos314t\) 下复坡印廷矢量与功率
+    角频率 \(\omega=314\,\text{rad/s}\)，写出复场量并推导复坡印廷矢量
+    \[
+    \dot{\vec{S}} = -\frac{U^2 r}{2d^2}(\gamma-j\omega\varepsilon)\vec{e}_r
+    \]
+    介质有功损耗功率
+    \[
+    P = \frac{\gamma S}{d}U^2
+    \]
+    容性无功功率
+    \[
+    Q = -\omega C U^2,\quad C=\frac{\varepsilon S}{d}
+    \]
+\end{enumerate}
+\vspace{1em}
+
+\item 无源自由空间场与麦克斯韦方程组验证
+\begin{enumerate}[label=(\arabic*)]
+    \item 证明仅随时间变化的场不满足麦克斯韦方程组
+    以 \(\vec{B}=B_m\sin\omega t\,\vec{e}_z\) 为例，该场无空间分布，旋度 \(\nabla\times\vec{E}=0\)，
+    但法拉第电磁感应定律要求旋度等于磁场时变率，二者相互矛盾，故无法满足方程组。
+
+    \item 证明时空联合行波场满足麦克斯韦方程组
+    将场改写为 \(\vec{B}=B_m\sin\left[\omega\left(t-\dfrac{y}{c}\right)\right]\vec{e}_z\)，匹配电场与磁场振幅关系 \(E_m=cB_m\)，
+    可同时满足法拉第定律与全电流安培定律，符合麦克斯韦方程组约束。
+
+    \item 总结结论与适用条件
+    单一时间变化场不属于电磁波解，无法满足时变场基本方程；
+    只有形如 \(\cos(\omega t-\beta \boldsymbol{r})\)、兼具时空变化规律的行波场，且满足波速关系 \(\beta=\omega/c\)，才可作为麦克斯韦方程组有效解。
+\end{enumerate}
+\vspace{1em}
+
+\item 时变电磁场下导线电阻与电感特性分析
+恒定场中导线电阻、电感仅由结构尺寸与介质参数决定，与激励无关，该结论**不适用于时变电磁场**。
+\textbf{解答：}
+\begin{enumerate}
+    \item 集肤效应：交变电流集中于导体表层，有效导通截面积减小，交流电阻随工作频率升高显著增大；
+    \item 邻近效应：多根载流导线交变磁场相互耦合畸变电流分布，进一步改变等效电路参数；
+    \item 频率相关电感：高频下导体内部磁通大幅减少，内电感数值随频率上升持续降低。
+\end{enumerate}
+综上，时变场中导线等效电阻、等效电感均与工作频率强相关，不再为固定常数。
+
+\end{enumerate}

@@ -1,0 +1,150 @@
+\section{线性空间的概念}
+\subsection{线性空间的定义}
+\textbf{定义7.1}\quad 设$V$是一个非空集合，$F$是一个数域，如果对任意两个元素$\alpha,\beta\in V$，总有唯一的一个元素$\gamma\in V$与之对应，称$\gamma$为$\alpha$与$\beta$的和，记作$\gamma=\alpha+\beta$；又对于任一数$k\in F$及任一元素$\alpha\in V$，有唯一的一个$\delta\in V$与之对应，称为$k$与$\alpha$的积，记作$\delta=k\alpha$；并且这两种运算满足以下八条规律（设$\alpha,\beta,\gamma\in V;\;k,l\in F$）：
+\begin{enumerate}
+    \item $\alpha+\beta=\beta+\alpha$；
+    \item $(\alpha+\beta)+\gamma=\alpha+(\beta+\gamma)$；
+    \item 在$V$中存在元素$\boldsymbol{0}$，使得对任意$\alpha\in V$，都有$\alpha+\boldsymbol{0}=\alpha$，称这个元素$\boldsymbol{0}$为$V$的零元素；
+    \item 对任意$\alpha\in V$，存在负元素，使得$\alpha+(-\alpha)=\boldsymbol{0}$；
+    \item $1\alpha=\alpha$；
+    \item $k(l\alpha)=(kl)\alpha$；
+    \item $(k+l)\alpha=k\alpha+l\alpha$；
+    \item $k(\alpha+\beta)=k\alpha+k\beta$。
+\end{enumerate}
+那么，就称$V$为数域$F$上的线性空间。
+
+称满足上述八条规律的加法与数乘为线性运算。
+
+设$V$是数域$F$上的线性空间，还有性质：
+\begin{enumerate}
+    \item $V$中的零元素是唯一的，记为$\boldsymbol{0}$；
+    \item $V$中每个元素的负元素是唯一的，记$\alpha$的负元素为$-\alpha$；
+    \item $0\alpha=\boldsymbol{0},\;(-1)\alpha=-\alpha,\;k\boldsymbol{0}=\boldsymbol{0}$；
+    \item $k\alpha=\boldsymbol{0}\Rightarrow k=0$或$\alpha=\boldsymbol{0}$。
+\end{enumerate}
+
+\subsection{子空间}
+\textbf{定义7.2}\quad 设$V$是数域$F$上的线性空间，$L$是$V$的一个非空子集，如果$L$对于$V$上所定义的加法和数乘也构成$F$上的线性空间，则称$L$是$V$的一个线性子空间，简称$L$是$V$的一个子空间。
+
+\textbf{定理7.1}\quad $F$上的线性空间$V$的非空子集$L$构成$V$的子空间的充要条件是：$L$对于$V$中的线性运算封闭，即
+\begin{enumerate}
+    \item 对任意$\alpha,\beta\in L$，都有$\alpha+\beta\in L$；
+    \item 对任意$\alpha\in L$，对任意$k\in F$，都有$k\alpha\in L$。
+\end{enumerate}
+
+设$V$是数域$F$上的线性空间，$\alpha,\beta\in V$，集合
+\[
+L=\{\gamma\mid \gamma=k\alpha+l\beta,\;k,l\in F\}
+\]
+是$V$的一个子空间。这是由于，若$\gamma_1=k_1\alpha+l_1\beta,\;\gamma_2=k_2\alpha+l_2\beta,\;k_1,l_1,k_2,l_2\in F$，则有
+\[
+\gamma_1+\gamma_2=(k_1+k_2)\alpha+(l_1+l_2)\beta\in L,
+\]
+\[
+k\gamma_1=kk_1\alpha+kl_1\beta\in L,\quad k\in F.
+\]
+称这个线性空间为由向量$\alpha,\beta$所生成的（$V$的）子空间。
+
+一般地，由$V$中向量组$\alpha_1,\alpha_2,\cdots,\alpha_m$所生成的线性子空间为
+\[
+L=\{\gamma\mid \gamma=k_1\alpha_1+k_2\alpha_2+\cdots+k_m\alpha_m,\;k_1,k_2,\cdots,k_m\in F\}.
+\]
+
+\section{线性空间的基底、维数与坐标}
+\textbf{定义7.3}\quad 在线性空间$V$中，如果存在$n$个向量$\alpha_1,\alpha_2,\cdots,\alpha_n$，满足
+\begin{enumerate}
+    \item $\alpha_1,\alpha_2,\cdots,\alpha_n$线性无关；
+    \item $V$中任意向量$\alpha$，都使$\alpha_1,\alpha_2,\cdots,\alpha_n,\alpha$线性相关，
+\end{enumerate}
+那么就称$\alpha_1,\alpha_2,\cdots,\alpha_n$为线性空间$V$的一个基底（简称基），称$V$的基所含向量的个数$n$为线性空间$V$的维数。
+
+维数为$n$的线性空间称为$n$维线性空间，记为$V_n$。只含一个零向量的线性空间，称为零维线性空间。$n$维与零维线性空间统称为有限维线性空间。
+
+\textbf{定义7.4}\quad 设$\alpha_1,\alpha_2,\cdots,\alpha_n$是$F$上线性空间$V_n$的一个基，对于任意一个向量$\alpha\in V$，总有且仅有一组有序数$x_1,x_2,\cdots,x_n\in F$，使
+\[
+\alpha=x_1\alpha_1+x_2\alpha_2+\cdots+x_n\alpha_n,
+\]
+称$x_1,x_2,\cdots,x_n$为$\alpha$关于基$\alpha_1,\alpha_2,\cdots,\alpha_n$的坐标，记为$(x_1,x_2,\cdots,x_n)$。
+
+\section{线性变换}
+\subsection{线性变换的定义及性质}
+\textbf{定义7.5}\quad 设$V_n,U_m$分别是数域$F$上的$n$维和$m$维的线性空间。如果按照一定规则$\mathcal{A}$，对于$V_n$中任一元素$\alpha$，总有$U_m$中一个确定的元素$\beta$和它对应，那么，这个对应的规则$\mathcal{A}$称为由$V_n$到$U_m$的映射。
+
+设映射$\mathcal{A}$将$V_n$中元素$\alpha$映成$U_m$中元素$\beta$，则记为$\mathcal{A}(\alpha)=\beta$或$\mathcal{A}\alpha=\beta$。
+
+称$\beta$为$\alpha$的像，像的全体构成的集合称为像集，记作$\mathcal{A}(V_n)$，即
+\[
+\mathcal{A}(V_n) = \{ \beta \mid \beta = \mathcal{A}(\alpha),\; \alpha \in V_n \}.
+\]
+
+\textbf{定义7.6}\quad 如果由$V_n$到$U_m$的映射$\mathcal{A}$满足：
+\begin{enumerate}
+    \item 对任意$\alpha_1,\alpha_2\in V_n$，都有$\mathcal{A}(\alpha_1+\alpha_2)=\mathcal{A}(\alpha_1)+\mathcal{A}(\alpha_2)$；
+    \item 对任意$\alpha\in V_n$及任意$k\in F$，都有$\mathcal{A}(k\alpha)=k\mathcal{A}(\alpha)$，
+\end{enumerate}
+则称$\mathcal{A}$是从$V_n$到$U_m$的线性映射。
+
+设$\mathcal{A}_1,\mathcal{A}_2$都是$V_n$到$U_m$的映射，如果对任意$\alpha\in V_n$，都有$\mathcal{A}_1(\alpha)=\mathcal{A}_2(\alpha)$，则称$\mathcal{A}_1$与$\mathcal{A}_2$相等，记为$\mathcal{A}_1=\mathcal{A}_2$。
+
+线性空间$V_n$到自身的线性映射称为$V_n$的线性变换。
+
+将$V_n$中任意向量都变成$V_n$中零向量的变换是$V_n$的线性变换，称其为零变换，记为$\Gamma_0$，即 $\Gamma_0(\alpha) = \boldsymbol{0},\; \forall \alpha \in V_n$。
+
+又如将$V_n$中任意向量$\alpha$仍变成$\alpha$的变换也是$V_n$的线性变换，称其为$V_n$上的恒等变换，记为$1_V$，即 $1_V(\alpha) = \alpha,\; \forall \alpha \in V_n$。
+
+$V_n$中的线性变换 $\mathcal{A}$ 满足：
+\begin{enumerate}
+    \item $\mathcal{A}(\boldsymbol{0}) = \boldsymbol{0},\; \mathcal{A}(-\alpha) = -\mathcal{A}(\alpha)$；
+    \item 若 $\beta = k_1 \alpha_1 + k_2 \alpha_2 + \cdots + k_m \alpha_m$，则
+    \[
+    \mathcal{A}(\beta) = k_1 \mathcal{A}(\alpha_1) + k_2 \mathcal{A}(\alpha_2) + \cdots + k_m \mathcal{A}(\alpha_m);
+    \]
+    \item 若 $\alpha_1, \alpha_2, \cdots, \alpha_m$ 线性相关，则 $\mathcal{A}(\alpha_1), \mathcal{A}(\alpha_2), \cdots, \mathcal{A}(\alpha_m)$ 也线性相关；
+    \item $\mathcal{A}$ 的像集 $\mathcal{A}(V_n)$ 是 $V_n$ 的一个线性子空间，称为 $\mathcal{A}$ 的像空间；
+    \item 使 $\mathcal{A}(\alpha) = \boldsymbol{0}$ 的 $\alpha$ 的全体
+    \[
+    \operatorname{Ker} \mathcal{A} = \{ \alpha \in V_n \mid \mathcal{A}(\alpha) = \boldsymbol{0} \}
+    \]
+    也是$V_n$的一个子空间，称为$\mathcal{A}$的核。
+\end{enumerate}
+
+\subsection{线性变换的矩阵表示}
+设 $\mathcal{A}$ 是 $V_n$ 中的一个线性变换，$\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n$ 是 $V_n$ 的一个基。由于 $\mathcal{A}(\boldsymbol{\epsilon}_1), \mathcal{A}(\boldsymbol{\epsilon}_2), \ldots, \mathcal{A}(\boldsymbol{\epsilon}_n)$ 仍在 $V_n$ 中，所以，它们可由 $\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n$ 唯一地线性表示，设
+\[
+\begin{cases}
+\mathcal{A}(\boldsymbol{\epsilon}_1) = a_{11} \boldsymbol{\epsilon}_1 + a_{21} \boldsymbol{\epsilon}_2 + \cdots + a_{n1} \boldsymbol{\epsilon}_n, \\
+\mathcal{A}(\boldsymbol{\epsilon}_2) = a_{12} \boldsymbol{\epsilon}_1 + a_{22} \boldsymbol{\epsilon}_2 + \cdots + a_{n2} \boldsymbol{\epsilon}_n, \\
+\vdots \\
+\mathcal{A}(\boldsymbol{\epsilon}_n) = a_{1n} \boldsymbol{\epsilon}_1 + a_{2n} \boldsymbol{\epsilon}_2 + \cdots + a_{nn} \boldsymbol{\epsilon}_n.
+\end{cases} \tag{1}
+\]
+其右边系数矩阵的转置矩阵为
+\[
+A = \begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{pmatrix}.
+\]
+记 $\mathcal{A}(\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n) = \bigl(\mathcal{A}(\boldsymbol{\epsilon}_1), \mathcal{A}(\boldsymbol{\epsilon}_2), \ldots, \mathcal{A}(\boldsymbol{\epsilon}_n)\bigr)$，式(1)可形式地写成
+\[
+\mathcal{A}(\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n)
+= (\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n) A. \tag{2}
+\]
+称矩阵 $A$ 为线性变换 $\mathcal{A}$ 在基 $\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n$ 下的矩阵。
+
+\textbf{定理7.2}\quad 在线性空间$V_n$中取两个基：
+\[
+\alpha_1,\alpha_2,\cdots,\alpha_n\quad\text{和}\quad\beta_1,\beta_2,\cdots,\beta_n.
+\]
+设由基$\alpha_1,\alpha_2,\cdots,\alpha_n$到基$\beta_1,\beta_2,\cdots,\beta_n$的过渡矩阵是$P$，$V_n$中线性变换$\mathcal{A}$在两个基下的矩阵依次为$A$和$B$，则
+\[
+B=P^{-1}AP.
+\]
+
+定理7.2表明，线性空间$V_n$中同一线性变换在两个不同基下的矩阵是相似的，其相似变换矩阵就是相应的过渡矩阵。
+
+\textbf{定义7.7}\quad $V_n$的线性变换$\mathcal{A}$的像空间$\mathcal{A}(V_n)$的维数，称为线性变换$\mathcal{A}$的秩。
+
+可以看出，若$A$是线性变换$\mathcal{A}$的矩阵，则$\mathcal{A}$的秩就等于矩阵$A$的秩，若$A$的秩是$r$，则$\mathcal{A}$的核$\operatorname{Ker}\mathcal{A}$的维数为$n-r$。

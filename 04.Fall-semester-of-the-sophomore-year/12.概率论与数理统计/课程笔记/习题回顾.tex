@@ -1,0 +1,767 @@
+\documentclass{book}
+% 核心包引入（按无冲突顺序加载，hyperref最后）
+\usepackage[fontset=windows,UTF8]{ctex} % 中文支持
+\usepackage{amsmath,amssymb,mathtools} % 数学公式核心
+\usepackage{geometry} % 页面布局
+\usepackage{fancyhdr,lastpage} % 页眉页脚与总页数
+\usepackage{xcolor} % 颜色支持
+\usepackage{tocloft} % 自定义目录（点线+右对齐页码）
+% 新增：解决中文数字符号（①②③）字体问题
+\usepackage{textcomp}
+% hyperref 极简配置：规避警告，保留核心跳转
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan,
+    citecolor=red,
+    unicode=true,
+    hidelinks,
+    bookmarks=false
+]{hyperref}
+
+% ---------------------- 全局格式配置 ----------------------
+\definecolor{darkblue}{RGB}{0,0,128}
+\geometry{a4paper, margin=1in} % 页面边距
+\setlength{\parindent}{0pt} % 取消首行缩进（适配例题排版）
+\renewcommand{\baselinestretch}{1.18} % 行间距精细化
+\setlength{\itemsep}{0.2em} % 列表项紧凑化
+% 修复：移除未定义的\mathindent，改用通用的公式换行和宽度优化方案
+\allowdisplaybreaks % 允许公式环境自动换行
+\mathsurround=0pt % 替代mathindent的通用方案，消除公式前后额外间距
+
+% ---------------------- 目录样式定制（匹配要求） ----------------------
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % 章节点线连接
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % 小节点线连接
+\cftsetindents{chapter}{0em}{2em} % 章节缩进与页码宽度
+\cftsetindents{section}{2em}{3em} % 小节缩进与页码宽度
+\setcounter{tocdepth}{2} % 目录显示到小节层级
+
+% ---------------------- 页眉页脚配置（全局生效） ----------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize 概率论与数理统计}
+\fancyhead[R]{\footnotesize 例题回顾}
+\fancyfoot[C]{\footnotesize 第 \thepage 页 / 共 \pageref{LastPage} 页}
+% 纯页码样式（封面/目录页使用）
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\footnotesize 第 \thepage 页 / 共 \pageref{LastPage} 页}
+}
+
+% ---------------------- 定理环境（例题编号：按小节层级） ----------------------
+\newtheorem{example}{例}[subsection]
+
+% ---------------------- 封面配置（沿用你的风格，微调标题） ----------------------
+\newcommand{\makeCover}{
+  \begin{titlepage}
+    \newgeometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+    \centering
+    % 核心文案
+    {\large\itshape
+    究竟怎么在赌钱的时候永远稳赚不赔？\\[4pt]
+    普通玩家玩21点获胜概率，大概在p=0.495。如果记住牌，赢面会增至p=0.51。\\[4pt]
+    然后呢，就增加那么一点点赢面？\\[4pt]
+    你是不是笨蛋？这是赌博，是的，代入公式，只要增加那么一点点赢面，你赌注翻倍的概率会马上变成99.75\%。即稳赢不赔。\\[8pt]
+    那每天努力也是一样，增加一点微小的概率，就会在不知不觉中赌注翻倍，成为人生赢家？\\[8pt]
+    一以贯之的努力，不得懈怠的人生。每天的微小积累会决定最终结果，这就是答案。\\[12pt]
+    《天才基本法》
+    }
+    
+    \rule{\textwidth}{1pt}\\[2.8cm] 
+    {\Huge \bfseries \color{darkblue} 概率论与数理统计}\\[8pt]
+    {\Huge \bfseries \color{darkblue} 例题回顾}\\[12pt]
+    {\Large \itshape 典型例题与详细解答}\\[0.8cm]
+    \rule{0.6\textwidth}{0.5pt}\\[0.8cm]
+    
+    % 基础信息
+    {\Large \textbf{内容概要：} 随机事件 | 多维分布 | 抽样分布 | 参数估计}\\[6pt]
+    {\Large \textbf{适用场景：} 考前复盘 · 题型归纳}\\[1cm]
+    {\Large \textbf{整理者：}Duckweed-yhb}\\[4pt]
+    {\large \textbf{个人博客：}\url{https://duckweed-yhb.github.io/}}\\[4pt]
+    {\large \textbf{GitHub：}\url{https://github.com/Duckweed-yhb}}\\[4pt]
+    {\large \textbf{联系邮箱：}3071974740@qq.com}\\[4pt]
+    {\Large 整理日期：\today}\\[0.8cm]
+    
+    \rule{0.6\textwidth}{0.5pt}\\[0.8cm]
+    {\large \textbf{版本：} v1.0 例题回顾完整版}\\[4pt]
+    {\small Copyright © \the\year\ Duckweed-yhb · 禁止商用 · 欢迎交流}\\[0.3cm]
+    \rule{\textwidth}{1pt}
+    \restoregeometry
+  \end{titlepage}
+}
+
+% ---------------------- 文档主体开始 ----------------------
+\begin{document}
+
+% 1. 封面（无页码）
+\makeCover
+\thispagestyle{empty}
+\newpage
+
+% 2. 目录页（罗马数字页码，纯页码样式）
+\pagestyle{plain}
+\pagenumbering{Roman}
+\tableofcontents
+\newpage
+
+% 3. 正文部分（阿拉伯数字页码，页眉页脚生效）
+\pagestyle{fancy}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ===================== 第1章 随机事件与概率 =====================
+\chapter{随机事件与概率}
+\section{条件概率与独立性}
+
+\begin{example}[条件概率真假命题辨析]
+下列命题中，假命题是（）。
+
+A. 若 $P(A|B) = P(A)$，则 $P(A|\overline{B}) = P(A)$
+
+B. 若 $P(A|B) > P(A)$，则 $P(\overline{A}|\overline{B}) > P(\overline{A})$
+
+C. 若 $P(A|B) > P(A|\overline{B})$，则 $P(A) > P(AB)$
+
+D. 若 $P(A|A \cup B) > P(\overline{A}|A \cup B)$，则 $P(A) > P(B)$
+\end{example}
+
+\subsubsection{解}
+\begin{itemize}
+  \item 选项A：由 $P(A|B) = P(A)$ 知 $A,B$ 相互独立，故 $A$ 与 $\overline{B}$ 独立，$P(A|\overline{B}) = P(A)$，真命题。
+  \item 选项B：由 $P(A|B) > P(A)$ 得 $P(AB) > P(A)P(B)$，结合 $P(A) = P(AB) + P(A\overline{B})$，得 $P(A\overline{B}) < P(A)P(\overline{B})$，则 $P(\overline{A}|\overline{B}) = 1 - P(A|\overline{B}) > 1 - P(A) = P(\overline{A})$，真命题。
+  \item 选项C：取反例 $A \subset B$，则 $P(A|B) = \frac{P(A)}{P(B)} > 0 = P(A|\overline{B})$（$P(B) < 1$），且 $AB = A$，故 $P(A) = P(AB)$，不满足 $P(A) > P(AB)$，假命题。
+  \item 选项D：$P(A|A \cup B) = \frac{P(A)}{P(A \cup B)}$，$P(\overline{A}|A \cup B) = \frac{P(B - A)}{P(A \cup B)}$，由不等式得 $P(A) > P(B - A)$；又 $P(B) = P(AB) + P(B - A) \le P(A) + P(B - A)$，故 $P(A) > P(B)$，真命题。
+\end{itemize}
+
+最终答案：$\boxed{C}$
+
+\begin{example}[独立事件与条件概率的综合应用]
+设 $A$，$B$ 事件满足 $P(AB) > P(A)P(B)$，若存在事件 $C \subset AB$，使得 $A-C$ 与 $B$ 独立，那么 $P(C)=$（）。
+
+A. $P(A) - P(A|\overline{B})$ \quad\quad B. $P(A) - P(A|B)$
+
+C. $P(B) - P(B|\overline{A})$ \quad\quad D. $P(B) - P(B|A)$
+\end{example}
+
+\subsubsection{解}
+已知 $C \subset AB$，故 $A-C = A \cap \overline{C}$，且 $(A-C) \cap B = AB - C$。
+由 $A-C$ 与 $B$ 独立，得
+\[
+P((A-C) \cap B) = P(A-C)P(B).
+\]
+代入 $P((A-C) \cap B) = P(AB) - P(C)$ 和 $P(A-C) = P(A) - P(C)$，得
+\[
+P(AB) - P(C) = \bigl(P(A) - P(C)\bigr)P(B).
+\]
+展开并整理：
+\[
+P(AB) - P(C) = P(A)P(B) - P(C)P(B),
+\]
+\[
+P(AB) - P(A)P(B) = P(C)\bigl(1 - P(B)\bigr),
+\]
+\[
+P(C) = \frac{P(AB) - P(A)P(B)}{1 - P(B)}.
+\]
+
+对选项逐一验证：
+\begin{itemize}
+  \item 选项A：$P(A) - P(A|\overline{B}) = P(A) - \frac{P(A\overline{B})}{P(\overline{B})} = P(A) - \frac{P(A) - P(AB)}{1 - P(B)}$
+  \[
+  = \frac{P(A)(1 - P(B)) - P(A) + P(AB)}{1 - P(B)} = \frac{P(AB) - P(A)P(B)}{1 - P(B)},
+  \]
+  与 $P(C)$ 完全一致。
+  \item 选项B：$P(A) - P(A|B) = P(A) - \frac{P(AB)}{P(B)}$，与 $P(C)$ 形式不同。
+  \item 选项C：$P(B) - P(B|\overline{A}) = \frac{P(AB) - P(A)P(B)}{1 - P(A)}$，分母为 $1 - P(A)$，与 $P(C)$ 不同。
+  \item 选项D：$P(B) - P(B|A) = P(B) - \frac{P(AB)}{P(A)}$，与 $P(C)$ 形式不同。
+\end{itemize}
+
+最终答案：$\boxed{A}$
+
+% ===================== 新增例题：分布函数积分证明 =====================
+\begin{example}[分布函数积分恒等式证明]
+设 $F(x)$ 是连续型随机变量 $X$ 的分布函数，且存在二阶导数，常数 $a>0$。证明：
+\[
+\int_{-\infty}^{+\infty} \bigl[F(x+a) - F(x)\bigr] \mathrm{d}x = a
+\]
+\end{example}
+
+\subsubsection{证明}
+记 $X$ 的概率密度为 $f(x) = F'(x)$。
+
+1.  **改写被积函数**：
+    由分布函数定义，$F(x+a) - F(x) = P(x < X \le x+a)$。
+    因此，被积函数可表示为概率密度的积分：
+    \[
+    F(x+a) - F(x) = \int_{x}^{x+a} f(t) \mathrm{d}t.
+    \]
+
+2.  **交换积分次序**：
+    将上述表达式代入原积分，并交换积分次序（由Fubini定理保证合法）：
+    \[
+    \begin{aligned}
+    \int_{-\infty}^{+\infty} \bigl[F(x+a) - F(x)\bigr] \mathrm{d}x
+    &= \int_{-\infty}^{+\infty} \left( \int_{x}^{x+a} f(t) \mathrm{d}t \right) \mathrm{d}x \\
+    &= \int_{-\infty}^{+\infty} f(t) \left( \int_{t-a}^{t} \mathrm{d}x \right) \mathrm{d}t.
+    \end{aligned}
+    \]
+
+3.  **计算内层积分**：
+    对 $x$ 积分：
+    \[
+    \int_{t-a}^{t} \mathrm{d}x = (t) - (t-a) = a.
+    \]
+
+4.  **完成证明**：
+    将内层积分结果代入，得到：
+    \[
+    \int_{-\infty}^{+\infty} \bigl[F(x+a) - F(x)\bigr] \mathrm{d}x
+    = \int_{-\infty}^{+\infty} f(t) \cdot a \, \mathrm{d}t
+    = a \int_{-\infty}^{+\infty} f(t) \mathrm{d}t.
+    \]
+    由于 $f(t)$ 是概率密度，满足 $\int_{-\infty}^{+\infty} f(t) \mathrm{d}t = 1$，因此：
+    \[
+    \int_{-\infty}^{+\infty} \bigl[F(x+a) - F(x)\bigr] \mathrm{d}x = a \cdot 1 = a.
+    \]
+    证毕。
+
+% ===================== 新增例题结束 =====================
+
+% ===================== 第2章 多维随机变量及其分布 =====================
+\chapter{多维随机变量及其分布}
+\section{随机变量函数的分布}
+
+\begin{example}[离散型随机变量函数的分布函数]
+已知随机变量 $X$ 的分布函数为
+\[
+F(x) =
+\begin{cases}
+0, & x < -1, \\
+0.2, & -1 \le x < 0, \\
+0.6, & 0 \le x < 1, \\
+1, & x \ge 1,
+\end{cases}
+\]
+令 $Y = X^2$，求 $Y$ 的分布函数 $F_Y(y)$。
+\end{example}
+
+\subsubsection{解}
+首先，由分布函数 $F(x)$ 的跳跃点可知，$X$ 为离散型随机变量，其可能取值为 $-1, 0, 1$，对应概率为分布函数的跳跃高度：
+\[
+\begin{aligned}
+P(X = -1) &= F(-1) - F(-1^-) = 0.2 - 0 = 0.2, \\
+P(X = 0) &= F(0) - F(0^-) = 0.6 - 0.2 = 0.4, \\
+P(X = 1) &= F(1) - F(1^-) = 1 - 0.6 = 0.4.
+\end{aligned}
+\]
+其次，由 $Y = X^2$ 可知，$Y$ 的可能取值为 $0$ 和 $1$，对应概率为：
+\[
+\begin{aligned}
+P(Y = 0) &= P(X = 0) = 0.4, \\
+P(Y = 1) &= P(X = -1) + P(X = 1) = 0.2 + 0.4 = 0.6.
+\end{aligned}
+\]
+最后，根据分布函数的定义 $F_Y(y) = P(Y \le y)$，分区间讨论：
+\begin{itemize}
+  \item 当 $y < 0$ 时，$Y = X^2 \ge 0$，故 $P(Y \le y) = 0$，即 $F_Y(y) = 0$。
+  \item 当 $0 \le y < 1$ 时，$Y \le y$ 等价于 $Y = 0$，故 $P(Y \le y) = P(Y = 0) = 0.4$，即 $F_Y(y) = 0.4$。
+  \item 当 $y \ge 1$ 时，$Y \le y$ 包含 $Y = 0$ 和 $Y = 1$，故 $P(Y \le y) = P(Y = 0) + P(Y = 1) = 1$，即 $F_Y(y) = 1$。
+\end{itemize}
+因此，$Y$ 的分布函数为
+\[
+\boldsymbol{F_Y(y)} =
+\begin{cases}
+0, & y < 0, \\
+0.4, & 0 \le y < 1, \\
+1, & y \ge 1.
+\end{cases}
+\]
+
+\begin{example}[混合分布函数的概率密度]
+设随机变量 $X,Y$ 相互独立，且 $X$ 服从标准正态分布 $N(0,1)$，$Y$ 的概率分布为 $P(Y=1) = P(Y=2) = \frac{1}{2}$，求 $Z = X^Y$ 的概率密度函数 $f_Z(z)$。
+\end{example}
+
+\subsubsection{解}
+我们使用全概率公式来求解 $Z = X^Y$ 的分布函数 $F_Z(z) = P(Z \le z)$。
+由全概率公式及 $X,Y$ 相互独立，可得：
+\[
+\begin{aligned}
+F_Z(z) &= P(Z \le z) = P(X^Y \le z) \\
+&= P(Y=1)P(X^1 \le z \mid Y=1) + P(Y=2)P(X^2 \le z \mid Y=2) \\
+&= \frac{1}{2}P(X \le z) + \frac{1}{2}P(X^2 \le z).
+\end{aligned}
+\]
+记标准正态分布的分布函数为 $\Phi(z)$，概率密度为 $\varphi(z) = \frac{1}{\sqrt{2\pi}}e^{-z^2/2}$。分情况讨论：
+\begin{itemize}
+  \item 当 $z < 0$ 时：
+    $P(X \le z) = \Phi(z)$，而 $P(X^2 \le z) = 0$，故
+    \[
+    F_Z(z) = \frac{1}{2}\Phi(z).
+    \]
+  \item 当 $z \ge 0$ 时：
+    $P(X \le z) = \Phi(z)$，且 $P(X^2 \le z) = P(-\sqrt{z} \le X \le \sqrt{z}) = \Phi(\sqrt{z}) - \Phi(-\sqrt{z}) = 2\Phi(\sqrt{z}) - 1$，故
+    \[
+    F_Z(z) = \frac{1}{2}\Phi(z) + \frac{1}{2}\left(2\Phi(\sqrt{z}) - 1\right) = \frac{1}{2}\Phi(z) + \Phi(\sqrt{z}) - \frac{1}{2}.
+    \]
+\end{itemize}
+
+对分布函数 $F_Z(z)$ 求导，即可得到概率密度函数 $f_Z(z)$：
+\begin{itemize}
+  \item 当 $z < 0$ 时：
+    \[
+    f_Z(z) = \frac{1}{2}\varphi(z) = \frac{1}{2\sqrt{2\pi}}e^{-z^2/2}.
+    \]
+  \item 当 $z > 0$ 时：
+    \[
+    \begin{aligned}
+    f_Z(z) &= \frac{1}{2}\varphi(z) + \varphi(\sqrt{z}) \cdot \frac{1}{2\sqrt{z}} \\
+    &= \frac{1}{2\sqrt{2\pi}}e^{-z^2/2} + \frac{1}{\sqrt{2\pi}}e^{-z/2} \cdot \frac{1}{2\sqrt{z}} \\
+    &= \frac{1}{2\sqrt{2\pi}}e^{-z^2/2} + \frac{1}{2\sqrt{2\pi z}}e^{-z/2}.
+    \end{aligned}
+    \]
+  \item 当 $z = 0$ 时，密度可定义为 $0$ 或不单独定义（单点不影响积分）。
+\end{itemize}
+
+因此，$Z$ 的概率密度函数为
+\[
+\boldsymbol{f_Z(z)} =
+\begin{cases}
+\displaystyle \frac{1}{2\sqrt{2\pi}}e^{-z^2/2}, & z < 0, \\[6pt]
+\displaystyle \frac{1}{2\sqrt{2\pi}}e^{-z^2/2} + \frac{1}{2\sqrt{2\pi z}}e^{-z/2}, & z > 0, \\[6pt]
+0, & z = 0.
+\end{cases}
+\]
+
+% 新增例题：泊松+指数分布期望计算
+\begin{example}[泊松分布与指数分布的期望综合计算]
+设随机变量 $X \sim P(\lambda)$（泊松分布），$Y \sim E(\lambda)$（指数分布），且 $X$ 与 $Y$ 相互独立。已知 $E(X) = E(Y)$，求：\\
+(1) 参数 $\lambda$ 的值；\\
+(2) 期望 $E(X^2 2^Y)$。
+\end{example}
+
+\subsubsection{解}
+(1) 求参数 $\lambda$：
+由分布的期望性质：
+- $X \sim P(\lambda)$，故 $E(X) = \lambda$；
+- $Y \sim E(\lambda)$，故 $E(Y) = \frac{1}{\lambda}$。
+
+根据题意 $E(X) = E(Y)$，得方程：
+\[
+\lambda = \frac{1}{\lambda} \implies \lambda^2 = 1.
+\]
+因分布参数 $\lambda > 0$，故 $\lambda = 1$。
+
+(2) 计算 $E(X^2 2^Y)$：
+由 $X$ 与 $Y$ 相互独立，得 $E(X^2 2^Y) = E(X^2) \cdot E(2^Y)$，分别计算两部分：
+
+(1) 计算 $E(X^2)$：
+当 $\lambda = 1$ 时，$X \sim P(1)$，其期望 $E(X) = 1$，方差 $D(X) = 1$。
+由方差公式 $D(X) = E(X^2) - [E(X)]^2$，得：
+\[
+E(X^2) = D(X) + [E(X)]^2 = 1 + 1^2 = 2.
+\]
+
+(2) 计算 $E(2^Y)$：
+当 $\lambda = 1$ 时，$Y \sim E(1)$，其概率密度为 $f_Y(y) = e^{-y},\ y > 0$。
+由连续型随机变量函数的期望公式：
+\[
+\begin{aligned}
+E(2^Y) &= \int_{0}^{+\infty} 2^y e^{-y} \,\mathrm{d}y \\
+&= \int_{0}^{+\infty} e^{y \ln 2} e^{-y} \,\mathrm{d}y \\
+&= \int_{0}^{+\infty} e^{-y(1 - \ln 2)} \,\mathrm{d}y \\
+&= \frac{1}{1 - \ln 2}.
+\end{aligned}
+\]
+
+(3) 合并结果：
+\[
+E(X^2 2^Y) = E(X^2) \cdot E(2^Y) = 2 \cdot \frac{1}{1 - \ln 2} = \frac{2}{1 - \ln 2}.
+\]
+
+最终结果：
+(1) $\boxed{\lambda = 1}$；
+(2) $\boxed{E(X^2 2^Y) = \dfrac{2}{1 - \ln 2}}$。
+
+\section{边缘分布}
+
+\begin{example}[二维连续型随机变量的边缘分布]
+已知二维随机变量 $(X,Y)$ 的联合概率密度为
+\[
+f(x,y) = 
+\begin{cases}
+x \mathrm{e}^{-x(1+y)}, & x>0,\ y>0, \\
+0, & \text{其他}.
+\end{cases}
+\]
+分别求 $X$ 与 $Y$ 的边缘分布概率密度。
+\end{example}
+
+\subsubsection{解}
+1. 求 $f_X(x)$：
+当 $x > 0$ 时，
+\[
+f_X(x) = \int_{0}^{+\infty} x \mathrm{e}^{-x(1+y)} \mathrm{d}y = x\mathrm{e}^{-x} \int_{0}^{+\infty} \mathrm{e}^{-xy} \mathrm{d}y = x\mathrm{e}^{-x} \cdot \frac{1}{x} = \mathrm{e}^{-x}.
+\]
+当 $x \le 0$ 时，$f_X(x) = 0$，故
+\[
+f_X(x) = \begin{cases} \mathrm{e}^{-x}, & x>0, \\ 0, & x\le0. \end{cases}
+\]
+
+2. 求 $f_Y(y)$：
+当 $y > 0$ 时，
+\[
+f_Y(y) = \int_{0}^{+\infty} x \mathrm{e}^{-x(1+y)} \mathrm{d}x = \frac{1}{(1+y)^2}.
+\]
+当 $y \le 0$ 时，$f_Y(y) = 0$，故
+\[
+f_Y(y) = \begin{cases} \displaystyle \frac{1}{(1+y)^2}, & y>0, \\ 0, & x\le0. \end{cases}
+\]
+
+\begin{example}[均匀分布条件下的联合/边缘分布与概率计算]
+从区间 $(1,3)$ 中随机取一个数，记为 $X$，再从 $(X,3)$ 中取一个数，设为 $Y$。求：\\
+(1) 联合概率密度 $f(x,y)$；\\
+(2) $Y$ 的边缘概率密度 $f_Y(y)$；\\
+(3) 概率 $P(X + Y \leq 4)$。
+\end{example}
+
+\subsubsection{解}
+由题意，$X \sim U(1,3)$，故 $f_X(x) = \begin{cases} \frac{1}{2}, & 1<x<3, \\ 0, & \text{其他} \end{cases}$；
+条件分布 $Y|X=x \sim U(x,3)$，故 $f_{Y|X}(y|x) = \begin{cases} \frac{1}{3-x}, & x<y<3, \\ 0, & \text{其他} \end{cases}$。
+
+(1) 联合概率密度：
+\[
+f(x,y) = f_X(x) \cdot f_{Y|X}(y|x) = \begin{cases} \frac{1}{2(3-x)}, & 1<x<y<3, \\ 0, & \text{其他}. \end{cases}
+\]
+
+(2) 边缘概率密度 $f_Y(y)$：
+当 $1<y<3$ 时，
+\[
+f_Y(y) = \int_{1}^{y} \frac{1}{2(3-x)} \mathrm{d}x = \frac{1}{2} \left. \ln(3-x) \right|_{y}^{1} = \frac{1}{2} \ln \frac{2}{3-y}.
+\]
+当 $y \notin (1,3)$ 时，$f_Y(y) = 0$，故
+\[
+f_Y(y) = \begin{cases} \frac{1}{2} \ln \frac{2}{3-y}, & 1<y<3, \\ 0, & \text{其他}. \end{cases}
+\]
+
+(3) 概率 $P(X + Y \leq 4)$：
+积分区域为 $1<x\le2$，$x<y\le4-x$，则
+\[
+P(X + Y \leq 4) = \int_{1}^{2} \int_{x}^{4-x} \frac{1}{2(3-x)} \mathrm{d}y \mathrm{d}x = \int_{1}^{2} \frac{2-x}{3-x} \mathrm{d}x.
+\]
+% 修复：手动换行长公式，避免Overfull \hbox
+令被积函数变形为 $1 - \frac{1}{3-x}$，积分得
+\[
+\int_{1}^{2} \left(1 - \frac{1}{3-x}\right) \mathrm{d}x = \left. \left(x + \ln(3-x)\right) \right|_{1}^{2} = (2 + 0) - (1 + \ln2) = 1 - \ln2.
+\]
+最终结果：$\boxed{1 - \ln2}$。
+
+% ===================== 新增例题：P(X+Y < 1) 计算 =====================
+\begin{example}[二维连续型随机变量概率计算（X+Y < 1）]
+已知二维随机变量 $(X,Y)$ 的联合概率密度为 $f(x,y) = x e^{-y}$（$0 < x < y$），求概率 $P(X+Y < 1)$。
+\end{example}
+
+\subsubsection{解}
+要计算 $P(X+Y < 1)$，需在满足 $0 < x < y$ 且 $x + y < 1$ 的区域上对联合密度进行二重积分。
+
+步骤1：确定积分区域
+联立不等式 $0 < x < y$ 和 $x + y < 1$，可得积分区域：
+\[
+0 < x < \frac{1}{2}, \quad x < y < 1 - x
+\]
+
+步骤2：建立二重积分
+\[
+\begin{aligned}
+P(X+Y < 1) &= \iint_{x+y<1} f(x,y) \, dxdy \\
+&= \int_{0}^{\frac{1}{2}} \int_{x}^{1-x} x e^{-y} \, dy dx
+\end{aligned}
+\]
+
+步骤3：计算内层积分（对 $y$ 积分）
+\[
+\begin{aligned}
+\int_{x}^{1-x} x e^{-y} \, dy &= x \left[ -e^{-y} \right]_{x}^{1-x} \\
+&= x \left( -e^{-(1-x)} + e^{-x} \right) \\
+&= x e^{-x} - x e^{x-1}
+\end{aligned}
+\]
+
+步骤4：计算外层积分（对 $x$ 积分）
+\[
+P(X+Y < 1) = \int_{0}^{\frac{1}{2}} \left( x e^{-x} - x e^{x-1} \right) dx
+\]
+使用分部积分法计算：
+- $\int x e^{-x} dx = -x e^{-x} - e^{-x} + C$
+- $\int x e^{x} dx = x e^{x} - e^{x} + C$
+
+代入上下限 $0$ 和 $\frac{1}{2}$ 并化简：
+\[
+\begin{aligned}
+\int_{0}^{\frac{1}{2}} x e^{-x} dx &= 1 - \frac{3}{2} e^{-\frac{1}{2}}, \\
+\int_{0}^{\frac{1}{2}} x e^{x} dx &= 1 - \frac{1}{2} e^{\frac{1}{2}}.
+\end{aligned}
+\]
+
+合并结果：
+\[
+\begin{aligned}
+P(X+Y < 1) &= \left( 1 - \frac{3}{2} e^{-\frac{1}{2}} \right) - e^{-1} \left( 1 - \frac{1}{2} e^{\frac{1}{2}} \right) \\
+&= 1 - e^{-1} - e^{-\frac{1}{2}}.
+\end{aligned}
+\]
+
+最终答案：$\boxed{P(X+Y < 1) = 1 - e^{-1} - e^{-\frac{1}{2}}}$
+
+% ===================== 新增例题结束 =====================
+
+\begin{example}[均匀分布下最大值与最小值的期望计算]
+在 $[0,1]$ 内任取两点 $X,Y$，记 $U = \max\{X,Y\}$，$V = \min\{X,Y\}$，求 $E[(1-U)(1-V)]$。
+\end{example}
+
+\subsubsection{解}
+由题意，$X,Y$ 独立同分布于 $U(0,1)$，故联合密度为
+\[
+f(x,y) = \begin{cases}
+1, & 0 \le x,y \le 1, \\
+0, & \text{其他}.
+\end{cases}
+\]
+注意到 $(1-U)(1-V) = (1-\max\{X,Y\})(1-\min\{X,Y\}) = (1-X)(1-Y)$，因此
+\[
+E[(1-U)(1-V)] = E[(1-X)(1-Y)] = E(1 - X - Y + XY).
+\]
+由独立性，$E(XY) = E(X)E(Y)$，且 $E(X) = E(Y) = \frac{1}{2}$，代入得
+\[
+E[(1-U)(1-V)] = 1 - E(X) - E(Y) + E(X)E(Y) = 1 - \frac{1}{2} - \frac{1}{2} + \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}.
+\]
+最终结果：$\boxed{\dfrac{1}{4}}$。
+
+% ===================== 第5章 数理统计的基本概念 =====================
+\chapter{数理统计的基本概念}
+\section{样本均值与方差的分布}
+
+\begin{example}[正态总体样本均值与方差的方差计算]
+设 $X_1,X_2,\dots,X_n$ 是取自总体 $X \sim N(0,\sigma^2)$ 的样本，$\overline{X}$ 和 $S^2$ 分别为样本均值和样本方差，求 $D\left[\overline{X}^2 + \left(1 - \frac{1}{n}\right)S^2\right]$。
+\end{example}
+
+\subsubsection{解}
+核心性质：$\overline{X}$ 与 $S^2$ 相互独立，故
+\[
+D\left[\overline{X}^2 + \left(1 - \frac{1}{n}\right)S^2\right] = D(\overline{X}^2) + \left(1 - \frac{1}{n}\right)^2 D(S^2).
+\]
+
+步骤1：计算 $D(\overline{X}^2)$
+$\overline{X} \sim N\left(0, \frac{\sigma^2}{n}\right)$，令 $Z = \frac{\overline{X}}{\sigma/\sqrt{n}} \sim N(0,1)$，则 $\overline{X}^2 = \frac{\sigma^2}{n} Z^2$。
+因 $Z^2 \sim \chi^2(1)$，故 $D(Z^2) = 2$，因此
+\[
+D(\overline{X}^2) = \left(\frac{\sigma^2}{n}\right)^2 \cdot D(Z^2) = \frac{2\sigma^4}{n^2}.
+\]
+
+步骤2：计算 $D(S^2)$
+由 $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$，记 $W = \frac{(n-1)S^2}{\sigma^2}$，则 $S^2 = \frac{\sigma^2}{n-1} W$。
+因 $D(W) = 2(n-1)$，故
+\[
+D(S^2) = \left(\frac{\sigma^2}{n-1}\right)^2 \cdot D(W) = \frac{\sigma^4}{(n-1)^2} \cdot 2(n-1) = \frac{2\sigma^4}{n-1}.
+\]
+
+步骤3：合并结果
+\[
+D\left[\overline{X}^2 + \left(1 - \frac{1}{n}\right)S^2\right] = \frac{2\sigma^4}{n^2} + \left(\frac{n-1}{n}\right)^2 \cdot \frac{2\sigma^4}{n-1}.
+\]
+% 修复：手动换行长公式，避免Overfull \hbox
+化简得
+\[
+\frac{2\sigma^4}{n^2} + \frac{2(n-1)\sigma^4}{n^2} = \frac{2n\sigma^4}{n^2} = \frac{2\sigma^4}{n}.
+\]
+最终结果：$\boxed{\dfrac{2\sigma^4}{n}}$。
+
+\begin{example}[泊松分布样本均值的概率计算]
+已知随机变量 $X$ 服从参数为 $1$ 的泊松分布 $P(1)$，$X_1,X_2,X_3,X_4$ 为取自 $X$ 的简单随机样本，则 $P\left(\overline{X} > \frac{1}{4}\right) = \ ?$
+\end{example}
+
+\subsubsection{解}
+样本均值 $\overline{X} = \frac{1}{4}(X_1+X_2+X_3+X_4)$，故
+\[
+\overline{X} > \frac{1}{4} \iff X_1+X_2+X_3+X_4 > 1.
+\]
+由泊松分布的可加性，$X_1+X_2+X_3+X_4 \sim P(4)$，记 $Y = X_1+X_2+X_3+X_4$，则
+\[
+P\left(\overline{X} > \frac{1}{4}\right) = P(Y > 1) = 1 - P(Y=0) - P(Y=1).
+\]
+泊松分布概率公式：
+\[
+P(Y=k) = \frac{4^k e^{-4}}{k!}, \quad k=0,1,2,\dots
+\]
+代入 $k=0,1$：
+\[
+P(Y=0) = e^{-4}, \quad P(Y=1) = 4e^{-4}.
+\]
+因此
+\[
+P\left(\overline{X} > \frac{1}{4}\right) = 1 - e^{-4} - 4e^{-4} = 1 - 5e^{-4}.
+\]
+最终结果：$\boxed{1 - 5e^{-4}}$。
+
+% ===================== 第6章 参数估计 =====================
+\chapter{参数估计}
+\section{点估计}
+
+\begin{example}[正态总体下的概率密度、极大似然估计与无偏性]
+已知 $X \sim N(0,\sigma^2)$，$Y \sim N(0,2\sigma^2)$，且 $X,Y$ 相互独立，设 $Z = X - Y$，$Z_1,Z_2,\dots,Z_n$ 是取自总体 $Z$ 的一个样本，求：\\
+(1) $Z$ 的概率密度；\\
+(2) $\sigma^2$ 的极大似然估计 $\hat{\sigma^2}$；\\
+(3) 判断 $\hat{\sigma^2}$ 是否是 $\sigma^2$ 的无偏估计。
+\end{example}
+
+\subsubsection{解}
+(1) 求 $Z$ 的概率密度：
+由正态分布的线性性质，$Z = X - Y$ 仍服从正态分布。
+期望：$E(Z) = E(X) - E(Y) = 0 - 0 = 0$。
+方差：$D(Z) = D(X) + D(Y) = \sigma^2 + 2\sigma^2 = 3\sigma^2$。
+因此 $Z \sim N(0, 3\sigma^2)$，其概率密度为
+\[
+f_Z(z) = \frac{1}{\sqrt{2\pi \cdot 3\sigma^2}} \exp\left\{-\frac{z^2}{2 \cdot 3\sigma^2}\right\} = \frac{1}{\sqrt{6\pi}\sigma} \exp\left\{-\frac{z^2}{6\sigma^2}\right\},\quad z \in \mathbb{R}.
+\]
+
+(2) 求 $\sigma^2$ 的极大似然估计 $\hat{\sigma^2}$：
+似然函数：
+\[
+L(\sigma^2) = \prod_{i=1}^n f_Z(Z_i) = \prod_{i=1}^n \frac{1}{\sqrt{6\pi}\sigma} \exp\left\{-\frac{Z_i^2}{6\sigma^2}\right\}
+= (6\pi\sigma^2)^{-n/2} \exp\left\{-\frac{1}{6\sigma^2} \sum_{i=1}^n Z_i^2\right\}.
+\]
+取对数：
+\[
+\ln L(\sigma^2) = -\frac{n}{2}\ln(6\pi) - \frac{n}{2}\ln(\sigma^2) - \frac{1}{6\sigma^2} \sum_{i=1}^n Z_i^2.
+\]
+对 $\sigma^2$ 求导并令导数为0：
+\[
+\frac{\mathrm{d}\ln L}{\mathrm{d}(\sigma^2)} = -\frac{n}{2\sigma^2} + \frac{1}{6(\sigma^2)^2} \sum_{i=1}^n Z_i^2 = 0.
+\]
+解得
+\[
+\hat{\sigma^2} = \frac{1}{3n} \sum_{i=1}^n Z_i^2.
+\]
+
+(3) 判断无偏性：
+计算期望 $E(\hat{\sigma^2})$：
+\[
+E(\hat{\sigma^2}) = \frac{1}{3n} \sum_{i=1}^n E(Z_i^2) = \frac{1}{3n} \cdot n \cdot E(Z^2).
+\]
+因 $Z \sim N(0, 3\sigma^2)$，故 $E(Z^2) = D(Z) + [E(Z)]^2 = 3\sigma^2$。
+代入得
+\[
+E(\hat{\sigma^2}) = \frac{1}{3n} \cdot n \cdot 3\sigma^2 = \sigma^2.
+\]
+因此 $\hat{\sigma^2}$ 是 $\sigma^2$ 的无偏估计。
+
+最终结果：
+(1) $\boxed{f_Z(z) = \dfrac{1}{\sqrt{6\pi}\sigma} \exp\left\{-\dfrac{z^2}{6\sigma^2}\right\},\ z \in \mathbb{R}}$；
+(2) $\boxed{\hat{\sigma^2} = \dfrac{1}{3n} \sum_{i=1}^n Z_i^2}$；
+(3) $\hat{\sigma^2}$ \textbf{是} $\sigma^2$ 的无偏估计。
+
+\begin{example}[最大似然估计与无偏性]
+设总体 $X$ 的概率密度为
+\[
+f(x;\theta) = 
+\begin{cases}
+\displaystyle \frac{1}{\theta^2} x e^{-x/\theta}, & x>0, \\
+0, & \text{其他},
+\end{cases}
+\]
+其中 $\theta > 0$ 为未知参数。$X_1,X_2,\dots,X_n$ 是来自总体 $X$ 的简单随机样本。
+
+1. 求 $\theta$ 的最大似然估计 $\hat\theta$；
+2. 判断 $\hat\theta$ 是否为 $\theta$ 的无偏估计。
+\end{example}
+
+\subsubsection{解}
+1. 最大似然估计：
+似然函数：
+\[
+L(\theta) = \prod_{i=1}^n f(x_i;\theta) = \frac{1}{\theta^{2n}} \left(\prod_{i=1}^n x_i\right) e^{-\frac{1}{\theta}\sum_{i=1}^n x_i}.
+\]
+取对数：
+\[
+\ln L(\theta) = -2n\ln\theta + \sum_{i=1}^n \ln x_i - \frac{1}{\theta} \sum_{i=1}^n x_i.
+\]
+求导并令导数为0：
+\[
+\frac{\mathrm{d}\ln L}{\mathrm{d}\theta} = -\frac{2n}{\theta} + \frac{1}{\theta^2} \sum_{i=1}^n x_i = 0 \implies \hat\theta = \frac{1}{2n} \sum_{i=1}^n X_i = \frac{\overline{X}}{2}.
+\]
+
+2. 无偏性判断：
+计算总体期望：
+\[
+E(X) = \int_{0}^{+\infty} x \cdot \frac{1}{\theta^2} x e^{-x/\theta} \mathrm{d}x = \frac{1}{\theta^2} \int_{0}^{+\infty} x^2 e^{-x/\theta} \mathrm{d}x = 2\theta.
+\]
+样本均值期望 $E(\overline{X}) = E(X) = 2\theta$，故
+\[
+E(\hat\theta) = E\left(\frac{\overline{X}}{2}\right) = \frac{1}{2} \cdot 2\theta = \theta.
+\]
+因此 $\hat\theta$ 是 $\theta$ 的无偏估计。
+
+\subsection{估计量的评价标准}
+
+\begin{example}[无偏估计参数求解]
+设总体 $X \sim P(\lambda)$（泊松分布），$X_1,X_2,\dots,X_n$ 是来自总体 $X$ 的简单随机样本，若 $\frac{1}{n}\sum_{i=1}^n a^{X_i}$ 是 $\mathrm{e}^{\lambda}$ 的无偏估计，求常数 $a$ 的值。
+\end{example}
+
+\subsubsection{解}
+1. 计算 $E[a^X]$：
+由泊松分布的期望公式，
+\[
+E[a^X] = \sum_{k=0}^{\infty} a^k \cdot \frac{\lambda^k e^{-\lambda}}{k!} = e^{-\lambda} \sum_{k=0}^{\infty} \frac{(a\lambda)^k}{k!} = e^{-\lambda} \cdot e^{a\lambda} = e^{\lambda(a-1)}.
+\]
+
+2. 无偏性条件求解：
+由无偏估计定义，$E\left(\frac{1}{n}\sum_{i=1}^n a^{X_i}\right) = E[a^X] = e^{\lambda}$，故
+\[
+e^{\lambda(a-1)} = e^{\lambda} \implies a-1 = 1 \implies a = 2.
+\]
+最终结果：$\boxed{2}$。
+
+% 新增：无偏估计常数求解（c和k）
+\begin{example}[无偏估计常数求解（c和k）]
+设 $X_1,X_2,\dots,X_n$ 是取自正态总体 $N(\mu,\sigma^2)$ 的简单随机样本，求：\\
+(1) 常数 $c$，使得 $c\sum_{i=1}^{n-1} (X_{i+1}-X_i)^2$ 为 $\sigma^2$ 的无偏估计；\\
+(2) 常数 $k$，使得 $\hat{\sigma} = k\sum_{i=1}^n |X_i - \overline{X}|$ 为 $\sigma$ 的无偏估计。
+\end{example}
+
+\subsubsection{解}
+(1) 求常数 $c$：
+已知 $X_i \sim N(\mu, \sigma^2)$ 且相互独立，先计算 $E(X_{i+1}-X_i)^2$：
+\[
+\begin{aligned}
+E(X_{i+1}-X_i)^2 &= D(X_{i+1}-X_i) + [E(X_{i+1}-X_i)]^2 \\
+&= D(X_{i+1}) + D(X_i) + (\mu - \mu)^2 \\
+&= \sigma^2 + \sigma^2 = 2\sigma^2.
+\end{aligned}
+\]
+因此：
+\[
+E\left(\sum_{i=1}^{n-1} (X_{i+1}-X_i)^2\right) = (n-1) \cdot 2\sigma^2 = 2(n-1)\sigma^2.
+\]
+由无偏性要求 $E\left(c\sum_{i=1}^{n-1} (X_{i+1}-X_i)^2\right) = \sigma^2$，得：
+\[
+c \cdot 2(n-1)\sigma^2 = \sigma^2 \implies c = \frac{1}{2(n-1)}.
+\]
+
+(2) 求常数 $k$：
+令 $Y_i = X_i - \overline{X}$，则 $Y_i \sim N\left(0, \frac{n-1}{n}\sigma^2\right)$，利用正态分布绝对值期望公式 $E|Z| = \sqrt{\frac{2}{\pi}}\sigma$（$Z \sim N(0,\sigma^2)$），得：
+\[
+E|Y_i| = \sqrt{\frac{2}{\pi}} \cdot \sigma \sqrt{\frac{n-1}{n}} = \sigma \sqrt{\frac{2(n-1)}{n\pi}}.
+\]
+因此：
+\[
+E\left(\sum_{i=1}^n |X_i - \overline{X}|\right) = n \cdot \sigma \sqrt{\frac{2(n-1)}{n\pi}} = \sigma \sqrt{\frac{2n(n-1)}{\pi}}.
+\]
+由无偏性要求 $E(\hat{\sigma}) = \sigma$，得：
+\[
+k \cdot \sigma \sqrt{\frac{2n(n-1)}{\pi}} = \sigma \implies k = \sqrt{\frac{\pi}{2n(n-1)}}.
+\]
+
+最终结果：
+(1) $\boxed{c = \dfrac{1}{2(n-1)}}$；
+(2) $\boxed{k = \sqrt{\dfrac{\pi}{2n(n-1)}}}$。
+
+\end{document}

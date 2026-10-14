@@ -1,0 +1,97 @@
+% 第9章 直流电源
+\chapter{直流电源}
+
+\section{直流电源的组成及各部分的作用}
+直流电源由四部分组成：
+\begin{itemize}
+    \item 电源变压器：将市电（220V/50Hz）变换为所需交流电压；
+    \item 整流电路：将交流电变换为单向脉动直流电；
+    \item 滤波电路：滤除脉动成分，得到平滑直流电；
+    \item 稳压电路：稳定输出电压，减小电网波动/负载变化的影响。
+\end{itemize}
+
+\section{整流电路}
+\subsection{整流电路的分析方法及其基本参数}
+\subsubsection{工作原理}
+利用二极管的单向导电性，将交流电转换为单向脉动直流电。
+
+\subsubsection{主要参数}
+\begin{itemize}
+    \item 输出电压平均值 $U_{O(AV)}$；
+    \item 脉动系数 $S$：纹波电压幅值/输出电压平均值；
+    \item 整流二极管的电流/电压定额。
+\end{itemize}
+
+\subsubsection{二极管的选择}
+最大整流电流 $I_F >$ 二极管平均电流，最高反向工作电压 $U_{RM} >$ 二极管承受的最大反向电压。
+
+\subsection{\texorpdfstring{单相桥式整流电路}{单相桥式整流电路}}
+\subsubsection{电路的组成}
+由四个二极管组成桥式结构，正负半周均有电流流过负载。
+
+\subsubsection{工作原理}
+正半周：$D_1, D_3$ 导通，$D_2, D_4$ 截止；负半周：$D_2, D_4$ 导通，$D_1, D_3$ 截止，负载获得单向脉动电压。
+输出电压平均值：
+\[ U_{O(AV)} = 0.9U_2 \]（$U_2$ 为副边电压有效值）
+
+\section{滤波电路}
+\subsection{\texorpdfstring{电容滤波电路}{电容滤波电路}}
+\subsubsection{滤波原理}
+利用电容充放电特性，滤除整流后的脉动成分，空载时输出电压 $U_O = \sqrt{2}U_2$，带载时 $U_O \approx 1.2U_2$（全波/桥式）。
+
+\subsubsection{输出电压平均值}
+单相桥式整流+电容滤波：
+\[ U_{O(AV)} \approx 1.2U_2 \]（带载）
+
+\subsubsection{脉动系数}
+电容容量越大、负载电阻越大，脉动系数越小，滤波效果越好。
+
+\subsection{倍压整流电路}
+利用电容充电储能，输出电压为输入电压的整数倍（2倍, 3倍等），适用于高电压、小电流场合。
+
+\subsection{其他形式的滤波电路}
+包括电感滤波、LC滤波、$\pi$型滤波（LC/RC），$\pi$型滤波滤波效果更好，适用于要求低纹波的场合。
+
+\section{\texorpdfstring{稳压管稳压电路}{稳压管稳压电路}}
+\subsection{电路组成}
+由稳压管 $D_Z$ 和限流电阻 $R$ 组成，并联在负载两端。
+
+\subsection{稳压原理}
+利用稳压管的反向击穿特性，当电网/负载变化时，限流电阻调节电流，维持输出电压稳定。
+
+\subsection{性能指标}
+\begin{itemize}
+    \item 稳压系数 $S_r$：输出电压变化量/输入电压变化量；
+    \item 输出电阻 $R_o$：表征负载变化对输出电压的影响。
+\end{itemize}
+
+\subsection{电路参数的选择}
+限流电阻 $R$ 需满足：
+\[ \frac{U_{I(max)} - U_Z}{I_{Z(max)} + I_{L(min)}} < R < \frac{U_{I(min)} - U_Z}{I_{Z(min)} + I_{L(max)}} \]
+
+\section{\texorpdfstring{串联型稳压电路}{串联型稳压电路}}
+\subsection{串联型稳压电路的工作原理}
+调整管与负载串联，通过负反馈调节调整管压降，稳定输出电压，输出电压可调：
+\[ U_O = U_Z \left(1 + \frac{R_2}{R_1}\right) \]
+
+\section{\texorpdfstring{集成稳压器电路}{集成稳压器电路}}
+\subsection{\texorpdfstring{W7800三端稳压器}{W7800三端稳压器}}
+三端（输入、输出、公共端）固定输出正电压（5V, 9V, 12V等），输出电压：
+\[ U_O = U_{XX} \]（$XX$ 为型号后两位，如W7805输出5V）
+
+\subsection{\texorpdfstring{W117三端稳压器}{W117三端稳压器}}
+可调式三端稳压器，输出电压1.25V~37V连续可调：
+\[ U_O = 1.25 \left(1 + \frac{R_2}{R_1}\right) \]
+
+\subsection{集成稳压器的应用}
+包括扩流、扩压、正/负电压输出等电路，满足不同供电需求。
+
+\section{\texorpdfstring{开关型稳压电路}{开关型稳压电路}}
+\subsection{开关型稳压电路的发展及分类}
+调整管工作在开关状态（导通/截止），效率高（80\%~95\%），分为串联型、并联型、脉冲宽度调制（PWM）型等。
+
+\subsection{串联开关型稳压电路}
+调整管与负载串联，通过控制开关管导通时间（占空比）调节输出电压，核心组成：开关管、滤波电路、取样比较、基准电压、振荡器。
+
+\section{例题参考}
+6, 7, 8, 17

@@ -1,0 +1,284 @@
+% cSpell:ignore Mealy,Moore,CLK,FF,74LS194,74LS161,74LS160,74LS191,74LS193,74LS290,EP,ET,LD
+\setlength{\parskip}{0.4em}
+\setlength{\itemsep}{0.2em}
+\setlength{\tabcolsep}{4pt}
+
+\chapter{时序逻辑电路}
+\section{概述}
+\subsection{时序逻辑电路定义}
+在任意时刻的输出信号不仅取决于当时的输入信号，而且还取决于电路原来的状态。
+
+\subsection{时序逻辑电路构成与结构特点}
+时序逻辑电路由两部分组成：\textbf{组合逻辑电路} + \textbf{存储电路（触发器）}；
+存储电路的输出状态必须反馈到组合电路输入端，与外部输入共同决定电路输出。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{circuitikz}[scale=0.8]
+        % 组合逻辑模块
+        \draw (0,4) rectangle (4,2) node[midway] {组合逻辑电路};
+        % 存储电路模块
+        \draw (0,0) rectangle (4,-2) node[midway] {存储电路};
+        % 外部输入x
+        \foreach \i in {0.5,1.2,1.9}
+            \draw (-1,\i+2) -- (0,\i+2) node[left] {$x_\i$};
+        % 外部输出y
+        \foreach \i in {2.8,3.5}
+            \draw (4,\i+2) -- (5,\i+2) node[right] {$y_\i$};
+        % 状态反馈q
+        \foreach \i in {0.5,1.2}
+            \draw (4,-\i) -- (6,-\i) -- (6,\i+2) -- (4,\i+2) node[right] {$z_\i$};
+        \foreach \i in {0.5,1.2}
+            \draw (0,-\i) node[left] {$q_\i$} -- (0,-\i);
+    \end{circuitikz}
+    \caption{时序逻辑电路通用结构框图}
+\end{figure}
+
+\subsection{三大描述方程组}
+\begin{enumerate}
+    \item \textbf{输出方程：$Y=F(X,Q)$}
+    \[
+    \begin{cases}
+    y_1 = f_1(x_1,\dots,x_i,q_1,\dots,q_l)\\
+    \quad \vdots \\
+    y_j = f_j(x_1,\dots,x_i,q_1,\dots,q_l)
+    \end{cases}
+    \]
+    输出$Y$由外部输入$X$、触发器现态$Q$共同决定。
+
+    \item \textbf{驱动方程（激励方程）：$Z=G(X,Q)$}
+    \[
+    \begin{cases}
+    z_1 = g_1(x_1,\dots,x_i,q_1,\dots,q_l)\\
+    \quad \vdots \\
+    z_k = g_k(x_1,\dots,z_k,q_1,\dots,q_l)
+    \end{cases}
+    \]
+    触发器输入信号$Z$，由输入与现态决定。
+
+    \item \textbf{状态方程：$Q^*=H(Z,Q)$}
+    \[
+    \begin{cases}
+    q_1^* = h_1(z_1,\dots,z_k,q_1,\dots,q_l)\\
+    \quad \vdots \\
+    q_l^* = h_l(z_1,\dots,z_k,q_1,\dots,q_l)
+    \end{cases}
+    \]
+    $Q^*$为触发器次态，由驱动信号、现态共同得到。
+\end{enumerate}
+
+\subsection{时序电路分类}
+\subsubsection{按时钟同步特性划分}
+\begin{enumerate}
+    \item \textbf{同步时序逻辑电路}：全部触发器共用同一个时钟CLK，所有触发器同时翻转；
+    \item \textbf{异步时序逻辑电路}：触发器时钟不统一，触发器翻转不同时，分析更复杂。
+\end{enumerate}
+
+\subsubsection{按输出信号划分（Mealy/Moore）}
+\begin{enumerate}
+    \item \textbf{米利型 Mealy：$Y=F(X,Q)$}
+    输出同时和外部输入$X$、触发器状态$Q$相关；电路存在直通输入到输出的通路。
+    \item \textbf{穆尔型 Moore：$Y=F(Q)$}
+    输出仅由触发器存储状态$Q$决定，与外部输入无关；是Mealy电路的特例。
+\end{enumerate}
+
+\section{时序逻辑电路标准分析方法}
+\subsection{同步时序电路五步分析法（考试标准答题步骤）}
+\begin{enumerate}
+    \item 根据逻辑电路图，写出全部触发器的\textbf{驱动方程}；
+    \item 将驱动代入触发器特性方程，推导\textbf{状态方程}；
+    \item 从组合逻辑部分写出电路\textbf{输出方程}；
+    \item 列出\textbf{状态转换表}，遍历所有现态求次态与输出；
+    \item 根据状态表绘制\textbf{状态转换图/时序波形图}，总结电路逻辑功能。
+\end{enumerate}
+
+\subsection{异步时序电路分析要点}
+异步电路各触发器时钟不统一，分析额外增加一步：写出每一个触发器的时钟触发信号，仅当时钟有效沿到来时，状态方程才生效，无时钟跳变则状态保持不变。
+
+\section{常用标准时序逻辑器件}
+\subsection{移位寄存器}
+在时钟脉冲作用下，触发器中存储数码逐位移位传输；
+输入分类：串行输入、并行输入；输出分类：串行输出、并行输出。
+
+\subsubsection{4位D触发器移位寄存器工作原理}
+四级D触发器级联，统一CLK上升沿触发；
+每一个时钟上升沿，输入$D_I$存入第一级，前一级状态依次向后一级传递，实现串入串出、串入并出。触发器存在传输延迟$t_{pd}$，CLK上升沿到来时，各触发器按前一级原有状态完成翻转。
+
+\subsubsection{JK触发器移位寄存器}
+移位动作在时钟下降沿完成，其余逻辑与D型移位寄存器一致。
+
+\subsubsection{双向移位寄存器 74LS194A}
+\paragraph{引脚与功能表}
+引脚定义：
+\begin{itemize}
+    \item $\overline{R_D}$：异步清零，低电平有效；
+    \item $S_1,S_0$：工作模式控制端；
+    \item $D_{IR}$：右移串行输入；$D_{IL}$：左移串行输入；
+    \item $D_0\sim D_3$：并行数据输入；$Q_0\sim Q_3$：并行输出；
+    \item CLK：移位时钟，上升沿有效。
+\end{itemize}
+\begin{table}[htbp]
+\centering
+\caption{74LS194A功能真值表}
+\begin{tabular}{c|cc|l}
+$\overline{R_D}$ & $S_1$ & $S_0$ & 工作模式 \\
+\hline
+0 & $\times$ & $\times$ & 异步置零（清零）\\
+1 & 0 & 0 & 状态保持\\
+1 & 0 & 1 & 右移操作\\
+1 & 1 & 0 & 左移操作\\
+1 & 1 & 1 & 并行数据置入
+\end{tabular}
+\end{table}
+\paragraph{级联扩展}
+两片74LS194A可扩展为8位双向移位寄存器：低位片最高位$Q_3$接高位片右移输入$D_{IR}$，高位片最低位$Q_0$接低位片左移输入$D_{IL}$，两片控制端、时钟、清零端全部并联同步控制。
+\paragraph{典型应用}
+可实现串并转换、移位加法运算、可控乘除运算：左移1位等价数值乘2，右移1位等价数值除2。
+
+\subsubsection{移位寄存器型计数器}
+移位寄存器首尾反馈可构成循环计数电路，分为环形计数器、扭环形计数器两类，通用反馈形式为$D_0=F(Q_0,Q_1,\dots,Q_{n-1})$。
+\paragraph{环形计数器}
+反馈规则$D_0=Q_{n-1}$，$n$位移位寄存器仅使用$n$个有效状态，状态利用率低；存在大量无效循环，原始电路无法自启动，需额外增加修正反馈逻辑强制导入有效循环。
+状态方程组标准形式：
+\[
+\begin{cases}
+Q_0^*=D_0=\overline{Q_0+Q_1+Q_2}\\
+Q_1^*=D_1=Q_0\\
+Q_2^*=D_2=Q_1\\
+Q_3^*=D_3=Q_2
+\end{cases}
+\]
+自启动修正反馈表达式：$D_0=\overline{(\overline{Q_1}\overline{Q_2})\cdot Q_3}$。
+
+\paragraph{扭环形（约翰逊）计数器}
+反馈规则$D_0=\overline{Q_{n-1}}$，有效状态数量提升至$2n$，高于环形计数器；状态转换时仅单触发器翻转，译码无竞争冒险；仍存在无效循环，基础电路不能自启动，需改造反馈逻辑实现自启动。
+扭环形核心特点：$n$位寄存器共$2^n$个状态，仅使用$2n$个有效状态，剩余状态闲置。
+
+\subsubsection{移位寄存器应用发生器}
+\paragraph{顺序脉冲发生器}
+环形/扭环形计数器本身可直接作为顺序脉冲发生器，输出多路时序错开的脉冲信号；也可采用计数器搭配译码器组合实现多路节拍输出。
+\paragraph{序列信号发生器}
+两种标准实现方案：
+1. 计数器+多路数据选择器：计数器循环遍历全部状态，数据选择器按时序输出预设串行序列；
+2. 带反馈逻辑移位寄存器：根据目标序列列出反馈输入卡诺图，化简得到$D_0$反馈表达式，搭建带组合反馈的移位寄存器电路输出指定串行码流。
+
+\subsection{计数器}
+计数器可记录输入脉冲个数，实现分频、定时、节拍脉冲生成，分类方式如下：
+\begin{itemize}
+    \item 按时钟：同步计数器、异步计数器；
+    \item 按数值增减：加法计数器、减法计数器、可逆计数器；
+    \item 按编码形式：二进制、二-十进制、循环码计数器；
+    \item 按计数容量：二进制、十进制、六十进制计数器等。
+\end{itemize}
+
+\subsubsection{同步二进制加法计数器（T触发器结构）}
+加法规则：最低位$Q_0$每时钟必翻转；若第$i$位之前所有低位均为1，该位在下一时钟翻转，驱动方程：
+\[T_i = Q_{i-1}Q_{i-2}\dots Q_0,\quad T_0=1\]
+\paragraph{4位同步二进制加法计数器完整推导}
+驱动方程：
+\[
+\begin{cases}
+T_0=1\\
+T_1=Q_0\\
+T_2=Q_0Q_1\\
+T_3=Q_0Q_1Q_2
+\end{cases}
+\]
+T触发器特性方程$Q^*=T\overline{Q}+\overline{T}Q$，代入得状态方程：
+\[
+\begin{cases}
+Q_0^*=\overline{Q_0}\\
+Q_1^*=Q_0\oplus Q_1\\
+Q_2^*=(Q_0Q_1)\oplus Q_2\\
+Q_3^*=(Q_0Q_1Q_2)\oplus Q_3
+\end{cases}
+\]
+进位输出方程：$C=Q_0Q_1Q_2Q_3$。
+该电路为16进制同步加法计数器，计数循环周期为16个时钟周期，同时具备分频功能：$Q_0,Q_1,Q_2,Q_3$输出频率依次为时钟$f_0$的$\frac{1}{2},\frac{1}{4},\frac{1}{8},\frac{1}{16}$。
+
+\subsubsection{同步二进制减法计数器（T触发器结构）}
+减法规则：最低位$Q_0$每时钟必翻转；若第$i$位之前所有低位均为0，该位在下一时钟翻转，驱动方程：
+\[T_i = \overline{Q_{i-1}}\overline{Q_{i-2}}\dots\overline{Q_0},\quad T_0=1\]
+借位输出方程：$B=\overline{Q_0}\overline{Q_1}\overline{Q_2}\overline{Q_3}$。
+
+\subsubsection{同步集成计数器}
+\paragraph{74161/74LS161（4位同步二进制计数器）}
+引脚说明：
+\begin{itemize}
+    \item $\overline{R_D}$：异步清零，低电平有效，不受时钟控制；
+    \item $\overline{LD'}$：同步置数，低电平有效，时钟到来时完成预置；
+    \item $EP,ET$：计数使能，$EP=ET=1$时执行计数；
+    \item $D_0\sim D_3$：并行预置输入；$Q_0\sim Q_3$：计数输出；$C$：进位输出。
+\end{itemize}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c|ccccc|l}
+$\overline{R_D}$ & $\overline{LD'}$ & $EP$ & $ET$ & 工作模式 \\
+\hline
+0 & $\times$ & $\times$ & $\times$ & 异步清零\\
+1 & 0 & $\times$ & $\times$ & 同步预置数\\
+1 & 1 & 0 & $\times$ & 保持（进位$C$同步保持）\\
+1 & 1 & 1 & 0 & 保持（进位$C=0$）\\
+1 & 1 & 1 & 1 & 正常加法计数
+\end{tabular}
+\end{table}
+
+\paragraph{74160/74LS160（同步十进制加法计数器）}
+计数到1001后下一个时钟回到0000，进位脉冲在状态1001时产生，而161进位在1111产生。
+驱动方程：
+\[
+\begin{cases}
+T_0=1\\
+T_1=Q_0\overline{Q_3}\\
+T_2=Q_0Q_1\\
+T_3=Q_0Q_1Q_2+Q_0Q_3
+\end{cases}
+\]
+可自启动，有效循环为$0000\sim1001$。
+
+\paragraph{可逆同步计数器}
+\begin{enumerate}
+    \item 单时钟型74LS191：由$U/D'$电平控制加减计数，$\overline{S'}$为计数使能，$\overline{LD'}$异步预置数；
+    \item 双时钟型74LS193：$CLK_U$加法时钟，$CLK_D$减法时钟，分别控制增减计数。
+\end{enumerate}
+同类十进制可逆芯片还有74LS190、74LS192、CC4510、CC40192。
+
+\subsubsection{异步计数器}
+\paragraph{异步二进制加减计数器}
+低位触发器输出作为高位时钟信号：加法计数器高位时钟接低位$Q$端，低位由1翻0时高位进位翻转；减法计数器高位时钟接低位$\overline{Q}$端，低位由0翻1时高位借位翻转。
+\paragraph{异步十进制计数器74LS290}
+内部集成二分频、五分频模块，可配置为二进制、五进制、十进制计数器，通过$R_{01},R_{02}$异步清零，$S_{91},S_{92}$异步置9；缺点是串行进位导致工作频率低，译码易产生竞争冒险。
+
+\subsubsection{任意进制计数器实现方法}
+设已有$N$进制计数器，目标实现$M$进制：
+\paragraph{情况1：$M<N$（单片改造）}
+\begin{enumerate}
+    \item 置零法（复位法）：利用异步清零端，计数到暂态$S_M$立刻产生清零信号，跳回初始态；暂态仅维持极短时间，易出现清零毛刺，可搭配基本RS锁存器延长清零电平宽度。
+    \item 置数法（置位法）：利用同步预置端，计数到$S_{M-1}$产生预置信号，下一时钟跳转到预置初态，无毛刺问题。
+\end{enumerate}
+\paragraph{情况2：$M>N$（多片级联）}
+将$M$分解为$M=N_1\times N_2$，两片$N$进制计数器分别实现$N_1,N_2$进制：
+\begin{itemize}
+    \item 并行进位：共用时钟，低位进位接高位使能端；
+    \item 串行进位：低位进位接高位时钟端。
+\end{itemize}
+两片74LS160构成100进制电路：并行进位连接时，片1进位$C$接片2$EP、ET$；串行进位连接时，片1进位经反相器接入片2时钟输入端，两片使能恒为1持续计数。
+若$M$无法分解为两因数，采用多片级联后整体置零/整体置数改造。
+
+\section{时序逻辑电路完整设计流程（同步）}
+标准八步设计流程，适用于计数、序列检测、控制类时序电路：
+\begin{enumerate}
+    \item 根据任务要求列出状态转换图/状态转换表；
+    \item 状态化简，合并等价状态减少触发器数量；
+    \item 状态编码，确定触发器位数$n$满足$2^{n-1}<M\le 2^n$；
+    \item 根据状态转换表绘制次态、输出卡诺图；
+    \item 化简卡诺图得到状态方程、输出方程；
+    \item 代入触发器特性方程，推导全部驱动方程；
+    \item 根据驱动、输出方程绘制完整逻辑电路图；
+    \item 遍历全部无效状态，绘制完整状态转换图，验证电路是否可自启动。
+\end{enumerate}
+JK触发器通用特性方程：$\boldsymbol{Q^* = J\overline{Q}+\overline{K}Q}$；D触发器特性方程：$\boldsymbol{Q^*=D}$。
+自启动设计优化技巧：化简卡诺图时，将无关项统一划入有效次态，强制所有无效状态经过一个时钟进入有效循环，省去后期校验修改步骤。
+
+\section{时序电路竞争-冒险现象补充说明}
+异步计数器串行级联结构会限制最高工作频率；状态译码环节易出现竞争冒险产生毛刺，可通过滤波电容、逻辑化简消除冗余项、同步时钟采样避开毛刺区间。

@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{esint}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{tocloft}       % 目录美化
+\usepackage{fix-cm}       % 消除字体警告
+\usepackage{lmodern}      % 消除字体警告
+\usepackage{float}        % 图片固定位置
+\usepackage{indentfirst}  % 中文首行缩进
+
+% 页面设置
+\geometry{a4paper, margin=1in}
+
+% 列表全局样式
+\setlist[enumerate]{label=\arabic*., itemsep=1em, topsep=1em, leftmargin=*}
+\setlist[enumerate,1]{label=\arabic*.}
+\setlist[enumerate,2]{label=(\arabic*)}
+
+% 目录样式（美观、中文适配）
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% 超链接（放在最后！）
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+\begin{document}
+
+\input{2.cover.tex}
+\newpage
+
+% 目录
+\tableofcontents
+\newpage
+
+% 各章节
+\input{3.矢量分析.tex}
+\input{4.静电场.tex}     % 你原来的静电场章节
+\input{5.恒定电场.tex}
+\input{6.恒定磁场.tex}
+\input{7.时变电磁场.tex}
+\input{8.准静态电磁场.tex}
+
+\end{document}

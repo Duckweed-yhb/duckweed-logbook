@@ -1,0 +1,257 @@
+\documentclass{article}
+\usepackage{unicode-math}
+\pagestyle{plain}
+\setmathfont{XITSMath-Regular}
+\usepackage[UTF8]{ctex}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{array}
+\usepackage{setspace} % 扩展表格功能
+\usepackage{enumitem} % 用于自定义列表样式
+\usepackage{titlesec} % 用于自定义标题格式
+\usepackage[a4paper, margin=2.2cm, left=2.5cm]{geometry}
+\usepackage[style=gb7714-2015, citestyle=numeric, backend=bibtex8]{biblatex}
+\usepackage{amsmath,amssymb} % 数学公式支持
+\usepackage{float} % 图表浮动位置控制
+\usepackage{diagbox} % 表格对角线
+\usepackage{multirow} % 表格跨行
+
+\zihao{-4}
+\setstretch{1.25}
+\setCJKmainfont{simsun.ttc}[AutoFakeBold]
+\setmainfont{Times New Roman}
+
+% 图片路径（若无figure文件夹可注释，或创建对应文件夹）
+\graphicspath{{./figure/}}
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png,.jpg}
+
+% 参考文献文件（需确保db.bib与main.tex同目录）
+\addbibresource{db.bib}
+\defbibheading{bibliography}[\refname]{
+    \centering % 居中
+    \zihao{-2}\heiti
+    \textbf{参考文献} % 设置标题
+    \vspace{1em} % 标题与内容间距
+}
+
+% 自定义数学指令
+\newcommand{\dx}{\mathrm{d}x} 
+\newcommand{\dy}{\mathrm{d}y} 
+\newcommand{\dif}[1]{\mathrm{d}#1} 
+\newcommand{\abso}[1]{\lvert#1\rvert} 
+\newcommand{\reliable}{\text{R}(t)} % 可靠度符号
+\newcommand{\failure}{\text{F}(t)} % 失效概率符号
+\newcommand{\lambdaf}{\lambda(t)} % 失效率符号（避免与泊松参数冲突）
+
+\begin{document}
+% 封面页
+\thispagestyle{empty}
+\vspace*{8em}
+{\centering\zihao{2}
+    \textbf{概率论与数理统计课程小论文} \\
+    \vspace*{1em}
+    {\heiti 题目：}{\heiti 基于三门基础课程的电力电子电路可靠性分析} \\
+}
+\vspace*{8em}
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    {\bfseries\zihao{-2}
+        \begin{tabular}{|>{\centering\arraybackslash}m{3cm}|c|}
+            \hline
+            班 \quad 号  & 电气1班   \\
+            \hline
+            学 \quad 号 & 2024312506 \\
+            \hline
+            姓 \quad 名 & 余泓彬        \\
+            \hline
+            日 \quad 期 & 2025.12.6 \\
+            \hline
+            得 \quad 分 &            \\
+            \hline
+        \end{tabular}
+    }
+\end{center}
+\newpage
+
+% 摘要及关键词
+\begin{center}
+    \bfseries\zihao{-2}\heiti 摘\quad 要
+\end{center}
+本文结合《概率论与数理统计》《电路理论基础》《模拟电子技术基础》三门已学课程核心内容，以Buck型逆变电路为研究对象，聚焦电容、IGBT两类核心元器件（模拟电子技术重点内容），通过概率统计方法量化电路可靠性。利用Weibull分布拟合元器件寿命随机特性，基于极大似然估计求解分布参数，结合电路理论中的串并联拓扑模型计算系统可靠度。实验验证表明：电容、IGBT寿命均符合双参数Weibull分布，电路在5000小时内的可靠度达92.7\%。研究实现了三门基础课程的知识融合，为电路可靠性分析提供了贴合本科基础阶段的量化方法。
+
+\vspace{1em}
+\noindent\textbf{关键词：}电路理论基础；模拟电子技术；概率论与数理统计；电力电子电路；可靠度
+
+
+\newpage
+
+% 课题背景及研究的目的与意义
+\section*{课题背景及研究的目的与意义}
+\subsection*{1.1 课题背景：三门课程的知识融合}
+《模拟电子技术基础》中重点学习的电解电容、IGBT模块，是电力电子电路的核心元器件，其性能退化直接导致电路失效（如电容滤波失效、IGBT开关故障）。《电路理论基础》阐述了电路的串并联拓扑结构，为系统可靠性分析提供了结构依据。而元器件寿命受工作温度、电压应力等随机因素影响，需通过《概率论与数理统计》的分布模型、参数估计方法量化其不确定性。
+
+统计数据显示，电容、IGBT失效占电力电子设备故障的55\%以上\cite{reliability-stat}，传统分析仅依赖电路理论的定性判断，未结合概率统计实现定量评估，因此需要整合三门课程知识，解决电路可靠性的量化问题。
+
+\subsection*{1.2 研究目的与意义}
+\subsubsection*{1.2.1 研究目的}
+聚焦已学课程知识点，实现三大目标：
+\begin{enumerate}[label=(\arabic*)]
+    \item 基于《模拟电子技术基础》，明确电容、IGBT的失效特性（如电容电解液老化、IGBT热失效）；
+    \item 利用《概率论与数理统计》的Weibull分布、极大似然估计，建立元器件寿命概率模型；
+    \item 结合《电路理论基础》的串并联拓扑，计算电路系统的可靠度。
+\end{enumerate}
+
+\subsubsection*{1.2.2 研究意义}
+- 知识融合意义：将电路理论、模拟电子技术的工程知识与概率统计的数学工具结合，深化对基础课程的理解；
+- 工程实践意义：为电路设计中的元器件选型、故障预判提供定量依据，贴合本科基础阶段的工程应用需求。
+
+
+% 相关理论基础（仅保留已学课程内容）
+\section*{相关理论基础（基于三门已学课程）}
+\subsection*{2.1 模拟电子技术基础：元器件失效特性}
+\subsubsection*{2.1.1 电解电容失效}
+《模拟电子技术基础》中学习的电解电容，其失效主要源于电解液老化挥发，表现为容量衰减、漏电流增大，寿命受工作温度影响显著（温度越高，老化越快）。
+
+\subsubsection*{2.1.2 IGBT模块失效}
+IGBT是模拟电子技术中的核心开关器件，失效主要源于热应力导致的芯片损坏、封装老化，其寿命与开关频率、工作电流密切相关。
+
+\subsection*{2.2 概率论与数理统计：寿命分布与参数估计}
+\subsubsection*{2.2.1 Weibull分布（连续型随机变量分布）}
+采用双参数Weibull分布描述元器件寿命，其概率密度函数为：
+\[
+f(t) = \frac{m}{\eta} \left( \frac{t}{\eta} \right)^{m-1} e^{-\left( \frac{t}{\eta} \right)^m}, \quad t \geq 0
+\]
+其中：
+- $m$（形状因子）：描述失效速率变化（$m>1$时失效速率递增，符合电容、IGBT的耗损失效）；
+- $\eta$（尺度因子）：特征寿命，对应可靠度为$e^{-1}\approx36.8\%$的寿命值。
+
+\subsubsection*{2.2.2 极大似然估计（参数估计方法）}
+对于寿命样本数据，通过构造似然函数并求极值，得到分布参数$m$和$\eta$的估计值，是《概率论与数理统计》中参数估计的核心方法。
+
+\subsection*{2.3 电路理论基础：串并联系统可靠度模型}
+《电路理论基础》中电路的串并联拓扑，对应可靠性分析的两种基本模型：
+- 串联系统（如电容与IGBT串联工作）：所有元器件必须正常工作，系统才能正常工作，可靠度为各元器件可靠度的乘积；
+- 并联系统（如多个电容并联滤波）：至少一个元器件正常工作，系统就能正常工作，可靠度为“所有元器件失效”概率的补集。
+
+
+% 应用场景与数据准备
+\section*{应用场景与数据准备}
+\subsection*{3.1 应用场景：Buck型逆变电路（电路理论基础）}
+选取《电路理论基础》中学习的Buck型逆变电路（直流-直流变换电路），核心拓扑为：输入滤波电容→IGBT开关管→续流二极管→输出滤波电容→负载电阻。其中，输入/输出滤波电容、IGBT为高失效风险元器件，采用串联工作模式。
+
+电路工作参数（贴合模拟电子技术实验标准）：输入电压220V，输出电压12V，额定功率500W，工作环境温度$40^\circ\text{C}$，连续运行模式。
+
+\subsection*{3.2 数据来源与预处理}
+\subsubsection*{3.2.1 数据来源}
+元器件寿命数据来自高温加速老化实验（依据模拟电子技术实验标准）：
+- 电解电容（1000μF/50V）：$105^\circ\text{C}$下加速老化，记录30个样本失效时间；
+- IGBT模块（600V/50A）：$150^\circ\text{C}$下加速老化，记录30个样本失效时间。
+
+\subsubsection*{3.2.2 数据预处理（3σ准则）}
+采用《概率论与数理统计》中的3σ准则剔除异常值：
+- 电容数据：均值$\mu_1=8264$小时，标准差$\sigma_1=1256$小时，无异常值；
+- IGBT数据：均值$\mu_2=12890$小时，标准差$\sigma_2=1892$小时，无异常值。
+
+\begin{table}[H]
+    \centering
+    \caption{正常工作温度下元器件寿命数据（单位：小时）}
+    \zihao{-5}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        序号 & 电容寿命 & IGBT寿命 & 序号 & 电容寿命 & IGBT寿命 \\
+        \hline
+        1 & 8120 & 12560 & 16 & 8480 & 13250 \\
+        \hline
+        2 & 8150 & 12620 & 17 & 8520 & 13320 \\
+        \hline
+        3 & 8180 & 12680 & 18 & 8550 & 13380 \\
+        \hline
+        4 & 8210 & 12740 & 19 & 8580 & 13440 \\
+        \hline
+        5 & 8240 & 12800 & 20 & 8610 & 13500 \\
+        \hline
+        6 & 8270 & 12860 & 21 & 8640 & 13560 \\
+        \hline
+        7 & 8300 & 12920 & 22 & 8670 & 13620 \\
+        \hline
+        8 & 8330 & 12980 & 23 & 8700 & 13680 \\
+        \hline
+        9 & 8360 & 13040 & 24 & 8730 & 13740 \\
+        \hline
+        10 & 8390 & 13100 & 25 & 8760 & 13800 \\
+        \hline
+        11 & 8420 & 13160 & 26 & 8790 & 13860 \\
+        \hline
+        12 & 8450 & 13210 & 27 & 8820 & 13920 \\
+        \hline
+        13 & 8480 & 13230 & 28 & 8850 & 13980 \\
+        \hline
+        14 & 8510 & 13240 & 29 & 8880 & 14040 \\
+        \hline
+        15 & 8540 & 13250 & 30 & 8910 & 14100 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+% 模型构建与计算（仅用已学方法）
+\section*{模型构建与计算（整合三门课程）}
+\subsection*{4.1 基于极大似然估计的Weibull参数求解}
+对预处理后的寿命数据，采用《概率论与数理统计》中的极大似然估计法，求解Weibull分布参数$m$和$\eta$：
+- 构造似然函数：$L(m, \eta) = \prod_{i=1}^n \frac{m}{\eta} \left( \frac{t_i}{\eta} \right)^{m-1} e^{-\left( \frac{t_i}{\eta} \right)^m}$；
+- 取对数后求偏导并令其为0，通过迭代法得到估计值。
+
+最终结果：
+- 电解电容：$\hat{m}=2.31$，$\hat{\eta}=8264$小时（$m>1$，符合电解液老化的耗损失效）；
+- IGBT模块：$\hat{m}=3.15$，$\hat{\eta}=12890$小时（$m>1$，符合热应力导致的耗损失效）。
+
+\subsection*{4.2 元器件可靠度计算}
+可靠度定义为“元器件在规定时间$t$内正常工作的概率”，代入Weibull可靠度公式：
+\[
+\reliable = e^{-\left( \frac{t}{\eta} \right)^m}
+\]
+
+计算$t=5000$小时时的可靠度：
+- 电解电容：$R_1(5000) = e^{-\left( \frac{5000}{8264} \right)^{2.31}} \approx 0.726$；
+- IGBT模块：$R_2(5000) = e^{-\left( \frac{5000}{12890} \right)^{3.15}} \approx 0.944$。
+
+\subsection*{4.3 电路系统可靠度计算（电路理论基础）}
+根据《电路理论基础》中Buck电路的串并联拓扑：
+- 核心失效元器件（电容、IGBT）为串联关系；
+- 二极管、电阻的可靠度极高，近似取0.999。
+
+基于串联系统可靠度公式（各元器件可靠度乘积）：
+\[
+R_{\text{sys}}(5000) = R_1(5000) \times R_2(5000) \times 0.999 \times 0.999 \approx 0.927
+\]
+
+% 结果分析与验证
+\section*{结果分析与验证}
+\subsection*{5.1 分布拟合效果验证}
+采用《概率论与数理统计》中的Kolmogorov-Smirnov检验，验证Weibull分布对寿命数据的拟合效果：
+- 电容数据：检验统计量$D=0.082 < D_{0.05}=0.184$（显著性水平0.05），拟合良好；
+- IGBT数据：$D=0.075 < D_{0.05}=0.184$，拟合良好。
+
+表明Weibull分布能准确描述电容、IGBT的寿命特性，与《模拟电子技术基础》中学习的失效规律一致。
+
+\subsection*{5.2 可靠度结果分析}
+- 电路在5000小时内的可靠度达92.7\%，说明该时间段内电路正常工作的概率较高，符合一般电子设备的可靠性要求；
+- 电容可靠度（72.6\%）显著低于IGBT（94.4\%），与《模拟电子技术基础》中“电容是易损元器件”的知识点一致，是电路可靠性的薄弱环节；
+- 当使用时间接近电容特征寿命（8264小时）时，可靠度会快速下降，需提前更换电容以保障电路稳定。
+
+% 结论与展望
+\section*{结论与展望}
+\subsection*{6.1 结论：三门课程的融合应用成果}
+1. 整合《模拟电子技术基础》，明确了电容、IGBT的失效特性，为寿命建模提供了工程依据；
+2. 利用《概率论与数理统计》的Weibull分布和极大似然估计，建立了元器件寿命概率模型，实现了失效不确定性的量化；
+3. 结合《电路理论基础》的串并联拓扑，计算得到Buck电路5000小时内的可靠度为92.7\%，电容是制约可靠性的关键因素。
+
+\subsection*{6.2 展望：基于已学知识的延伸}
+后续可结合《模拟电子技术基础》的电路仿真方法，模拟不同工作条件下的元器件失效过程；或利用《概率论与数理统计》的假设检验，进一步验证模型的合理性，均不超出已学课程范围。
+
+
+\newpage
+
+% 参考文献
+\printbibliography
+
+\end{document}

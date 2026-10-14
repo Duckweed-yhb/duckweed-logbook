@@ -1,0 +1,71 @@
+% 第9章 线性动态电路暂态过程的复频域分析
+\chapter{线性动态电路暂态过程的复频域分析}
+
+\section{拉普拉斯变换}
+常见函数的拉普拉斯变换：
+\begin{itemize}
+    \item 单位阶跃函数：$\mathcal{L}[\varepsilon(t)] = \frac{1}{s} \quad (\text{Re}[s] > 0)$
+    \item 指数函数：$\mathcal{L}[e^{at}\varepsilon(t)] = \frac{1}{s-a} \quad (\text{Re}[s] > a)$
+    \item 单位冲激函数：$\mathcal{L}[\delta(t)] = 1 \quad (\text{Re}[s] > -\infty)$
+\end{itemize}
+
+\section{拉普拉斯变换的基本性质}
+\begin{itemize}
+    \item 线性性质：$\mathcal{L}[a f_1(t) + b f_2(t)] = a F_1(s) + b F_2(s)$
+    \item 微分性质：$\mathcal{L}[f'(t)] = sF(s) - f(0_-)$
+    \item 积分性质：$\mathcal{L}\left[\int_{0_-}^t f(\tau)d\tau\right] = \frac{F(s)}{s}$
+    \item 延迟性质：$\mathcal{L}[f(t-t_0)\varepsilon(t-t_0)] = e^{-st_0}F(s) \quad (t_0 > 0)$
+    \item 位移性质：$\mathcal{L}[e^{-at}f(t)] = F(s+a) \quad (\text{Re}[s+a] > \sigma_0)$
+    \item 初值定理：$f(0_+) = \lim\limits_{s \to \infty} sF(s) \quad (\text{满足初值定理条件})$
+    \item 终值定理：$f(\infty) = \lim\limits_{s \to 0} sF(s) \quad (\text{满足终值定理条件})$
+    \item 卷积定理：$\mathcal{L}[f_1(t) * f_2(t)] = F_1(s)F_2(s)$
+\end{itemize}
+
+\section{拉普拉斯逆变换}
+拉普拉斯逆变换的求解核心是有理分式分解，按分子分母阶数分两种情况：
+\begin{itemize}
+    \item 分子阶数 $n > m$（分母阶数）：先做多项式除法，将有理分式分解为多项式 + 真分式
+    \item 分子阶数 $n \leq m$（分母阶数）：直接对真分式进行部分分式分解（单极点、共轭复极点、重极点）
+\end{itemize}
+
+\section{复频域中的电路定律与电路模型}
+\begin{itemize}
+    \item 复频域中的基尔霍夫定律：
+          \begin{itemize}
+              \item KCL：$\sum I_k(s) = 0$（复频域节点电流代数和为零）
+              \item KVL：$\sum U_k(s) = 0$（复频域回路电压代数和为零）
+          \end{itemize}
+    \item 复频域中的元件电压与电流关系：
+          \begin{itemize}
+              \item 电阻：$U_R(s) = R I_R(s)$
+              \item 电感：$U_L(s) = sL I_L(s) - Li_L(0_-)$
+              \item 电容：$U_C(s) = \frac{1}{sC} I_C(s) + \frac{u_C(0_-)}{s}$
+          \end{itemize}
+    \item 复频域电路模型、运算阻抗与运算导纳：
+          \begin{itemize}
+              \item 运算阻抗：$Z(s) = \frac{U(s)}{I(s)}$（关联参考方向）
+              \item 运算导纳：$Y(s) = \frac{1}{Z(s)} = \frac{I(s)}{U(s)}$
+          \end{itemize}
+\end{itemize}
+
+\section{用拉普拉斯变换分析线性动态电路的暂态过程}
+分析步骤：
+\begin{enumerate}
+    \item 求电路的初始状态 $u_C(0_-)$、$i_L(0_-)$；
+    \item 将激励源做拉普拉斯变换，得到复频域激励 $E(s)$；
+    \item 建立复频域电路模型（代入初始状态，元件用运算阻抗/导纳表示）；
+    \item 利用复频域KCL/KVL列方程，求解响应的复频域表达式 $R(s)$；
+    \item 对 $R(s)$ 做拉普拉斯逆变换，得到时域响应 $r(t)$。
+\end{enumerate}
+
+\section{网络函数}
+\begin{itemize}
+    \item 网络函数定义：$H(s) = \frac{R(s)}{E(s)}$（零状态下，响应象函数与激励象函数之比）
+    \item 网络函数的极点位置与单位冲激特性的关系：
+          \begin{itemize}
+              \item 极点在左半复平面：冲激响应衰减（稳定电路）；
+              \item 极点在虚轴上：冲激响应等幅振荡；
+              \item 极点在右半复平面：冲激响应发散（不稳定电路）。
+          \end{itemize}
+    \item 复频域网络函数与复数网络函数的关系：$H(j\omega) = H(s)\big|_{s=j\omega}$（$s$ 沿虚轴取值）
+\end{itemize}

@@ -1,0 +1,191 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+\section{线性方程组有解的充要条件}
+\subsection{基本概念}
+设有线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=b_1,\\
+a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=b_2,\\
+\cdots\quad\cdots\quad\cdots\quad\cdots\\
+a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=b_m,
+\end{cases} \tag{1}
+\]
+记
+\[
+A=
+\begin{pmatrix}
+a_{11} & a_{12} & \dots & a_{1n}\\
+a_{21} & a_{22} & \dots & a_{2n}\\
+\cdots & \cdots & \cdots & \cdots\\
+a_{m1} & a_{m2} & \dots & a_{mn}
+\end{pmatrix},\quad
+\beta=
+\begin{pmatrix}
+b_1\\b_2\\\vdots\\b_m
+\end{pmatrix},\quad
+X=
+\begin{pmatrix}
+x_1\\x_2\\\vdots\\x_n
+\end{pmatrix},
+\]
+则式（1）可写成矩阵形式
+\[
+AX=\beta \tag{2}
+\]
+记
+\[
+\alpha_1=\begin{pmatrix}a_{11}\\a_{21}\\\vdots\\a_{m1}\end{pmatrix},\;
+\alpha_2=\begin{pmatrix}a_{12}\\a_{22}\\\vdots\\a_{m2}\end{pmatrix},\;\dots,\;
+\alpha_n=\begin{pmatrix}a_{1n}\\a_{2n}\\\vdots\\a_{mn}\end{pmatrix},
+\]
+则式（2）可写成向量形式
+\[
+x_1\alpha_1+x_2\alpha_2+\dots+x_n\alpha_n=\beta \tag{3}
+\]
+称$A$为方程组（1）的系数矩阵。
+
+记增广矩阵
+\[
+B=
+\left(\begin{array}{cccc|c}
+a_{11} & a_{12} & \cdots & a_{1n} & b_1 \\
+a_{21} & a_{22} & \cdots & a_{2n} & b_2 \\
+\vdots & \vdots & &\vdots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn} & b_m \\
+\end{array}\right)
+\]
+称$B$为方程组（1）的增广矩阵。
+
+若$x_1=d_1,\,x_2=d_2,\,\cdots,\,x_n=d_n$为方程组的解，则称
+\[
+X=\begin{pmatrix}d_1\\d_2\\\vdots\\d_n\end{pmatrix}
+\]
+为方程组（1）的解（向量），显然，这个向量$X$就是方程组（2）的解。
+
+若方程组有解，则称这个方程组是相容的，否则称这个方程组不相容。
+
+若式（1）中$b_1,b_2,\cdots,b_m$不全为$0$，则称式（1）为非齐次线性方程组；
+若式（1）中$b_1,b_2,\cdots,b_m$全部为$0$，则称式（1）为齐次线性方程组。
+
+由于$x_1=x_2=\cdots=x_n=0$是齐次线性方程组的零解，所以，齐次线性方程组总是相容的。
+
+\subsection{非齐次线性方程组有解的充要条件}
+由（3）式可知，方程组（1）的解就是向量$\beta$用向量组$\alpha_1,\alpha_2,\dots,\alpha_n$线性表示的线性系数。下边三种提法等价。
+\begin{enumerate}
+    \item 方程组（1）有解；
+    \item 向量$\beta$可由向量组$\alpha_1,\alpha_2,\dots,\alpha_n$线性表示；
+    \item 向量组$\alpha_1,\alpha_2,\dots,\alpha_n$与$\alpha_1,\alpha_2,\dots,\alpha_n,\beta$等价。
+\end{enumerate}
+
+\textbf{定理5.1}\quad 非齐次线性方程组（1）有解的充要条件是它的系数矩阵的秩等于其增广矩阵的秩，即
+\[
+R(A)=R(B)
+\]
+
+\section{线性方程组解的结构}
+\subsection{齐次线性方程组解的结构}
+设有齐次线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
+a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
+\cdots\quad\cdots\quad\cdots\quad\cdots\\
+a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=0,
+\end{cases} \tag{4}
+\]
+写成矩阵形式为
+\[
+AX=0 \tag{5}
+\]
+写成向量形式为
+\[
+x_1\alpha_1+x_2\alpha_2+\cdots+x_n\alpha_n=0. \tag{6}
+\]
+
+记$N(A)$为齐次线性方程组（5）的全体解向量所构成的（解）集合。
+
+\textbf{定理5.2}\quad 齐次线性方程组（5）的解集合$N(A)$是向量空间，并且$N(A)$的维数是$n-R(A)$。
+
+\textbf{推论5.1}\quad 设$A$是$m\times n$矩阵，$X=(x_1,x_2,\cdots,x_n)'$，则
+\begin{enumerate}
+    \item $AX=0$有唯一解(只有零解)$\iff R(A)$等于未知数的个数$n \iff A$为列满秩矩阵；
+    \item $AX=0$有无穷多解（有非零解）$\iff R(A)$小于未知数的个数$n$；
+    \item 当$r=R(A)<n$时，设$\xi_1,\xi_2,\cdots,\xi_{n-r}$是$N(A)$的基，则$AX=0$的解空间可表示成
+    \[
+    N(A)=\{X\mid X=k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r};\;k_1,k_2,\cdots,k_{n-r}\in F\}.
+    \]
+    称$N(A)$的基$\xi_1,\xi_2,\cdots,\xi_{n-r}$为方程组（4）的基础解系。方程组（4）的通解可以表示成
+    \[
+    X=k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r},
+    \]
+    其中$k_1,k_2,\cdots,k_{n-r}$为任意常数。
+\end{enumerate}
+
+当$R(A)=n$时，方程组（4）只有零解，$N(A)=\{0\}$。此时，方程组（4）没有基础解系。
+
+当$R(A)<n$时，$\xi_1,\xi_2,\cdots,\xi_s$为$AX=0$的基础解系的充要条件是：$\xi_1,\xi_2,\cdots,\xi_s$为$AX=0$的$n-R(A)$个线性无关的解向量。
+
+\textbf{推论5.2}\quad $n$个未知数$n$个方程的齐次线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
+a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
+\cdots\quad\cdots\quad\cdots\quad\cdots\\
+a_{n1}x_1+a_{n2}x_2+\dots+a_{nn}x_n=0,
+\end{cases} \tag{4}
+\]
+有非零解的充要条件是它的系数行列式$|A|=0$。
+
+\subsection{非齐次线性方程组解的结构}
+设有非齐次线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=b_1,\\
+a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=b_2,\\
+\cdots\quad\cdots\quad\cdots\quad\cdots\\
+a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=b_m,
+\end{cases} \tag{5}
+\]
+称齐次线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
+a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
+\cdots\quad\cdots\quad\cdots\quad\cdots\\
+a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=0,
+\end{cases} \tag{6}
+\]
+为非齐次线性方程组（5）的导出组，或称方程组（6）为与方程组（5）对应的齐次线性方程组。
+将式（5）和式（6）分别写成矩阵形式$AX=\beta$和$AX=0$。
+
+\textbf{定理5.3}\quad 方程组（5）和方程组（6）的解向量，满足：
+\begin{enumerate}
+    \item 若$\eta_1,\eta_2$都是（5）的解，则$\eta_1-\eta_2$是（6）的解；
+    \item 若$\eta$是（5）的解，$\xi$是（6）的解，则$X=\eta+\xi$还是（5）的解。
+\end{enumerate}
+
+\textbf{推论5.3}\quad 设$A$是方程组（5）的系数矩阵，$B$是（5）的增广矩阵，$n$是（5）的未知数个数，则
+\begin{enumerate}
+    \item 方程组（5）有唯一解$\iff R(A)=R(B)=n$；
+    \item 方程组(5)有无穷多解$\iff R(A)=R(B)<n$。
+    \item 当$r=R(A)=R(B)<n$（$n$为未知数个数）时，设$\xi_1,\xi_2,\cdots,\xi_{n-r}$是方程组（6）的一个基础解系，$\eta^*$是方程组（5）的一个特解，则（5）的通解可表示成
+    \[
+    X=\eta^*+k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r}, \tag{7}
+    \]
+    其中$k_1,k_2,\cdots,k_{n-r}$为任意常数。
+\end{enumerate}
+
+\section{利用矩阵的初等变换解线性方程组}
+考察方程组$AX=0$。设$A$经初等行变换化为$A_1$，则$AX=0$与$A_1X=0$同解。
+事实上，因$A$经初等行变换化为$A_1$，所以存在可逆矩阵$P$使$PA=A_1$。
+设$\xi$是$AX=0$的解，则$A_1\xi=PA\xi=P0=0$；
+设$\xi$是$A_1X=0$的解，则$A\xi=P^{-1}A_1\xi=P^{-1}0=0$。
+因此，我们经常用初等行变换将$A$化成$A_1$，使方程组$A_1X=0$容易求解，然后去解方程组$A_1X=0$。
+
+类似地，对非齐次线性方程组$AX=\beta$，我们经常将增广矩阵$B=(A\vdots\beta)$用初等行变换化为$\tilde{B}=(\tilde{A}\vdots\tilde{\beta})$，使$\tilde{A}X=\tilde{\beta}$容易求解，然后去解方程组$\tilde{A}X=\tilde{\beta}$。
+
+\end{document}

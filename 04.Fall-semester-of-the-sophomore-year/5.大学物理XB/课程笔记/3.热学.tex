@@ -1,0 +1,169 @@
+% 第一章：热学
+\section{热学}
+\subsection{理想气体基本公式}
+\begin{itemize}
+    \item 理想气体物态方程：\keyformula{pV=\frac{m}{M}RT}
+    \item 压强微观表达式：$p = \frac{2}{3} n \overline{\varepsilon}_{\text{kt}} = \frac{2}{3} n \left( \frac{1}{2} m_0 \overline{v^2} \right)$
+    \item 物态方程另一形式：$p = nkT$
+    \item 玻尔兹曼常量与气体常量关系：$k=\frac{R}{N_{\text{A}}}$
+\end{itemize}
+
+\textbf{符号说明：}\\
+\symb{$p$}{压强（Pa）}
+\symb{$V$}{体积（m³）}
+\symb{$T$}{热力学温度（K）}
+\symb{$m$}{气体质量（kg）}
+\symb{$M$}{摩尔质量（kg/mol）}
+\symb{$n$}{分子数密度（m⁻³）}
+\symb{$R$}{气体常量（8.31 J/(mol·K)）}
+\symb{$k$}{玻尔兹曼常量（$1.38\times10^{-23}$ J/K）}
+\symb{$m_0$}{分子质量（kg）}
+\symb{$N_{\text{A}}$}{阿伏伽德罗常量（$6.02\times10^{23}$ mol⁻¹）}
+
+\subsection{速率分布函数}
+\begin{itemize}
+    \item 定义：$\frac{\mathrm{d}N}{N_0} = f(v)\mathrm{d}v$ 或 $f(v) = \frac{\mathrm{d}N}{N_0 \mathrm{d}v}$
+    \item 麦克斯韦速率分布：
+    \keyformula{f(v) = 4\pi \left( \frac{m_0}{2\pi kT} \right)^{\frac{3}{2}} e^{-\frac{m_0 v^2}{2kT}} v^2}
+    \item 归一化条件：$\int_{0}^{\infty} f(v) \mathrm{d}v = 1$
+\end{itemize}
+
+\textbf{符号说明：}\\
+\symb{$f(v)$}{速率分布函数（s/m）}
+\symb{$m_0$}{分子质量（kg）}
+\symb{$N_0$}{总分子数（个）}
+
+\subsection{三种统计速率}
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}p{1.8cm}|p{5cm}|p{4.8cm}@{}}
+    \toprule
+    \rowcolor{tablehead} 速率类型 & 公式 & 物理意义 \\
+    \midrule
+    最概然速率 & $v_{\text{p}} = \sqrt{\frac{2kT}{m_0}} = \sqrt{\frac{2RT}{M}}$ & 分布函数最大值对应的速率 \\
+    \midrule
+    平均速率 & $\bar{v} = \sqrt{\frac{8kT}{\pi m_0}} = \sqrt{\frac{8RT}{\pi M}}$ & 速率的算术平均值 \\
+    \midrule
+    方均根速率 & $\sqrt{\overline{v^2}} = \sqrt{\frac{3kT}{m_0}} = \sqrt{\frac{3RT}{M}}$ & 速率平方平均的平方根 \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{符号说明：}\\
+\symb{$v_{\text{p}}$}{最概然速率（m/s）}
+\symb{$\bar{v}$}{平均速率（m/s）}
+\symb{$\overline{v^2}$}{速率平方平均（m²/s²）}
+
+\subsection{分子动能与自由度}
+\begin{itemize}
+    \item 平均平动动能：\keyformula{\overline{\varepsilon}_{\text{kt}} = \frac{1}{2} m_0 \overline{v^2}=\frac{3}{2}kT}
+    \item 自由度表格：
+        \begin{center}
+            \scriptsize
+            \begin{tabular}{@{}p{2.2cm}|c|c|c@{}}
+                \toprule
+                \rowcolor{tablehead} 分子种类 & 平动自由度 & 转动自由度 & 总自由度$i$ \\
+                \midrule
+                单原子分子 & 3 & 0 & 3 \\
+                \midrule
+                刚性双原子分子 & 3 & 2 & 5 \\
+                \midrule
+                刚性多原子分子 & 3 & 3 & 6 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+    \item 分子的平均动能：$\overline{\varepsilon}_{\text{k}} = \frac{i}{2} kT$（$i$为分子的自由度数）
+    \item 理想气体内能：\keyformula{E=\frac{m}{M}\frac{i}{2}RT}
+\end{itemize}
+
+\textbf{符号说明：}\\
+\symb{$i$}{总自由度（无量纲）}
+\symb{$E$}{内能（J）}
+\symb{$\overline{\varepsilon}_{\text{k}}$}{分子平均动能（J）}
+
+\subsection{平均自由程与碰撞频率}
+\begin{itemize}
+    \item 分子的碰撞截面：$\sigma = \pi d^2$
+    \item 平均碰撞频率：$\bar{z} = \sqrt{2} \sigma \bar{v} n = \sqrt{2} \pi d^2 \bar{v} n$
+    \item 平均自由程：
+    \keyformula{\overline{\lambda} = \frac{\bar{v}}{\bar{z}} = \frac{1}{\sqrt{2} \sigma n} = \frac{kT}{\sqrt{2}\pi d^2p}}
+\end{itemize}
+
+\textbf{符号说明：}\\
+\symb{$\overline{\lambda}$}{平均自由程（m）}
+\symb{$\bar{z}$}{碰撞频率（Hz）}
+\symb{$d$}{分子有效直径（m）}
+\symb{$\sigma$}{碰撞截面（m²）}
+\symb{$n$}{分子数密度（m⁻³）}
+
+\subsection{热力学过程}
+\subsubsection{热容相关}
+\begin{itemize}
+    \item 摩尔定容热容：$C_{V,\text{m}} = \left( \frac{\mathrm{d}Q}{\mathrm{d}T} \right)_V = \frac{\mathrm{d}E}{\mathrm{d}T} = \frac{i}{2} R$
+    \item 摩尔定压热容：$C_{p,\text{m}} = \left( \frac{\mathrm{d}Q}{\mathrm{d}T} \right)_p = \frac{\mathrm{d}E}{\mathrm{d}T} + R$
+    \item 迈耶公式：\keyformula{C_{p,\text{m}} = C_{V,\text{m}} + R}
+    \item 比热容比：$\gamma = \frac{C_{p,\text{m}}}{C_{V,\text{m}}}$
+\end{itemize}
+
+\textbf{符号说明：}\\
+\symb{$C_{V,\text{m}}$}{摩尔定容热容（J/(mol·K)）}
+\symb{$C_{p,\text{m}}$}{摩尔定压热容（J/(mol·K)）}
+\symb{$\gamma$}{比热容比（无量纲）}
+
+\subsubsection{等值过程}
+\begin{table}[htbp]
+    \centering
+    \scriptsize
+    \begin{tabular}{@{}p{1.2cm}|p{1.4cm}|p{2.6cm}|p{2.6cm}|p{2.6cm}@{}}
+        \toprule
+        \rowcolor{tablehead} 过程类型 & 核心条件 & 做功 $W$ & 内能变化 $\Delta E$ & 热量 $Q$ \\
+        \midrule
+        等体过程 & $V=$常量 & $0$ & $\frac{m}{M}C_{V,\text{m}}(T_2-T_1)$ & $Q_V = \Delta E$ \\
+        \midrule
+        等压过程 & $p=$常量 & $p(V_2-V_1)$ & $\frac{m}{M}C_{V,\text{m}}(T_2-T_1)$ & $Q_p = \Delta E + W$ \\
+        \midrule
+        等温过程 & $T=$常量 & $\frac{m}{M}RT\ln\frac{V_2}{V_1}$ & $0$ & $Q_T = W$ \\
+        \midrule
+        绝热过程 & $Q=0$ & $\frac{1}{\gamma-1}(p_1V_1-p_2V_2)$ & $-W$ & $0$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{理想气体等值过程对比}
+    \label{tab:thermo_process}
+    \vspace{-0.5em}
+\end{table}
+
+\textbf{补充公式：}\\
+- 绝热过程泊松公式：\\
+  $TV^{\gamma-1}=C_2$；$\frac{p^{\gamma-1}}{T^\gamma}=C_3$；$pV^\gamma=C_1$\\
+- 绝热线斜率：\\
+  $\left( \frac{\mathrm{d}p}{\mathrm{d}V} \right)_Q = -\gamma \frac{p}{V}$ \\
+  （等温线斜率：$\left( \frac{\mathrm{d}p}{\mathrm{d}V} \right)_T = -\frac{p}{V}$）
+
+\subsection{热机与熵}
+\begin{itemize}
+    \item 热机效率：\keyformula{\eta = \frac{W}{Q_1} = 1 - \frac{Q_2}{Q_1}}
+    \item 制冷系数：$\varepsilon = \frac{Q_2}{W} = \frac{Q_2}{Q_1 - Q_2}$
+    \item 熵：$S = k\ln \Omega$
+    \item 熵变：$\Delta S = k\ln \frac{\Omega_2}{\Omega_1} > 0$，$\mathrm{d}S = \frac{\mathrm{d}Q}{T}$
+    \item 熵差计算：\\
+      $\Delta S = \int_{1}^{2} \mathrm{d}S \geqslant \int_{1}^{2} \frac{\mathrm{d}Q}{T}$，\\
+      $\Delta S = \frac{m}{M} C_{V,\text{m}} \ln\frac{T_2}{T_1} + \frac{m}{M} R \ln\frac{V_2}{V_1}$
+\end{itemize}
+
+\textbf{符号说明：}\\
+\symb{$\eta$}{热机效率（无量纲）}
+\symb{$\varepsilon$}{制冷系数（无量纲）}
+\symb{$S$}{熵（J/K）}
+\symb{$\Omega$}{热力学概率（无量纲）}
+\symb{$Q_1$}{吸热（J）}
+\symb{$Q_2$}{放热（J）}
+
+\subsection{例题参考}
+\textcolor{mainblue}{%
+\begin{tabular}{@{}ll@{}}
+热学基础： & 3、5、6、13、18、20； \\
+热力学过程： & 4、5、7、8、9、10、13、15、17、19、21； \\
+教材： & 《大学物理学 (第五版)》王少杰 \\
+\end{tabular}
+}
+\clearpage

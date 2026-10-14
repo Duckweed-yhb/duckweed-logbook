@@ -1,0 +1,197 @@
+% 第10章 二端口网络（章节子文件，需被主文件调用）
+\chapter{二端口网络}
+
+\section{导纳参数方程和阻抗参数方程}
+
+\subsection{导纳参数方程（Y参数）}
+二端口网络的导纳参数（Y参数）以端口电压 $\dot{U}_1\text{、}\dot{U}_2$ 为自变量，端口电流 $\dot{I}_1\text{、}\dot{I}_2$ 为因变量，其代数方程为：
+\[
+\begin{cases} 
+\dot{I}_1 = Y_{11}\dot{U}_1 + Y_{12}\dot{U}_2 \\ 
+\dot{I}_2 = Y_{21}\dot{U}_1 + Y_{22}\dot{U}_2 
+\end{cases}
+\]
+
+写成矩阵形式（Y参数矩阵方程）：
+\[
+\begin{bmatrix} 
+\dot{I}_1 \\ 
+\dot{I}_2 
+\end{bmatrix} = 
+\mathbf{Y}
+\begin{bmatrix} 
+\dot{U}_1 \\ 
+\dot{U}_2 
+\end{bmatrix}
+\]
+其中 $\mathbf{Y} = \begin{bmatrix} Y_{11} & Y_{12} \\ Y_{21} & Y_{22} \end{bmatrix}$ 称为二端口网络的导纳矩阵。
+
+Y参数的物理意义及计算方法（短路参数，下标为0表示短路）：
+\[
+\begin{aligned}
+Y_{11} &= \left. \frac{\dot{I}_1}{\dot{U}_1} \right|_{\dot{U}_2 = 0} \quad (\text{端口2短路时，端口1的输入导纳}) \\
+Y_{12} &= \left. \frac{\dot{I}_1}{\dot{U}_2} \right|_{\dot{U}_1 = 0} \quad (\text{端口1短路时，端口2对端口1的转移导纳}) \\
+Y_{21} &= \left. \frac{\dot{I}_2}{\dot{U}_1} \right|_{\dot{U}_2 = 0} \quad (\text{端口2短路时，端口1对端口2的转移导纳}) \\
+Y_{22} &= \left. \frac{\dot{I}_2}{\dot{U}_2} \right|_{\dot{U}_1 = 0} \quad (\text{端口1短路时，端口2的输入导纳})
+\end{aligned}
+\]
+
+互易与对称条件：
+\begin{itemize}
+    \item 互易网络（无受控源）：$Y_{12} = Y_{21}$（转移导纳相等）
+    \item 对称网络（电气结构对称）：$Y_{12} = Y_{21}$ 且 $Y_{11} = Y_{22}$（输入导纳相等）
+\end{itemize}
+
+\subsection{阻抗参数方程（Z参数）}
+二端口网络的阻抗参数（Z参数）以端口电流 $\dot{I}_1\text{、}\dot{I}_2$ 为自变量，端口电压 $\dot{U}_1\text{、}\dot{U}_2$ 为因变量，其代数方程为：
+\[
+\begin{cases} 
+\dot{U}_1 = Z_{11}\dot{I}_1 + Z_{12}\dot{I}_2 \\ 
+\dot{U}_2 = Z_{21}\dot{I}_1 + Z_{22}\dot{I}_2 
+\end{cases}
+\]
+
+写成矩阵形式（Z参数矩阵方程）：
+\[
+\begin{bmatrix} 
+\dot{U}_1 \\ 
+\dot{U}_2 
+\end{bmatrix} = 
+\mathbf{Z}
+\begin{bmatrix} 
+\dot{I}_1 \\ 
+\dot{I}_2 
+\end{bmatrix}
+\]
+其中 $\mathbf{Z} = \begin{bmatrix} Z_{11} & Z_{12} \\ Z_{21} & Z_{22} \end{bmatrix}$ 称为二端口网络的阻抗矩阵。
+
+Z参数的物理意义及计算方法（开路参数，下标为0表示开路）：
+\[
+\begin{aligned}
+Z_{11} &= \left. \frac{\dot{U}_1}{\dot{I}_1} \right|_{\dot{I}_2 = 0} \quad (\text{端口2开路时，端口1的输入阻抗}) \\
+Z_{12} &= \left. \frac{\dot{U}_1}{\dot{I}_2} \right|_{\dot{I}_1 = 0} \quad (\text{端口1开路时，端口2对端口1的转移阻抗}) \\
+Z_{21} &= \left. \frac{\dot{U}_2}{\dot{I}_1} \right|_{\dot{I}_2 = 0} \quad (\text{端口2开路时，端口1对端口2的转移阻抗}) \\
+Z_{22} &= \left. \frac{\dot{U}_2}{\dot{I}_2} \right|_{\dot{I}_1 = 0} \quad (\text{端口1开路时，端口2的输入阻抗})
+\end{aligned}
+\]
+
+互易与对称条件：
+\begin{itemize}
+    \item 互易网络（无受控源）：$Z_{12} = Z_{21}$（转移阻抗相等）
+    \item 对称网络（电气结构对称）：$Z_{12} = Z_{21}$ 且 $Z_{11} = Z_{22}$（输入阻抗相等）
+\end{itemize}
+
+\section{传输参数方程和混合参数方程}
+
+\subsection{传输参数方程（A参数）}
+传输参数（A参数，又称T参数）用于描述二端口网络的级联特性，以输出端口的 $\dot{U}_2\text{、}-\dot{I}_2$ 为自变量，输入端口的 $\dot{U}_1\text{、}\dot{I}_1$ 为因变量，其代数方程为：
+\[
+\begin{cases} 
+\dot{U}_1 = A_{11}\dot{U}_2 + A_{12}(-\dot{I}_2) \\ 
+\dot{I}_1 = A_{21}\dot{U}_2 + A_{22}(-\dot{I}_2) 
+\end{cases}
+\]
+
+写成矩阵形式（A参数矩阵方程）：
+\[
+\begin{bmatrix} 
+\dot{U}_1 \\ 
+\dot{I}_1 
+\end{bmatrix} = 
+\mathbf{A}
+\begin{bmatrix} 
+\dot{U}_2 \\ 
+-\dot{I}_2 
+\end{bmatrix}
+\]
+其中 $\mathbf{A} = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{bmatrix}$ 称为传输矩阵。
+
+A参数的物理意义及计算方法：
+\[
+\begin{aligned}
+A_{11} &= \left. \frac{\dot{U}_1}{\dot{U}_2} \right|_{\dot{I}_2 = 0} \quad (\text{端口2开路时，电压传输比}) \\
+A_{21} &= \left. \frac{\dot{I}_1}{\dot{U}_2} \right|_{\dot{I}_2 = 0} \quad (\text{端口2开路时，转移导纳}) \\
+A_{12} &= \left. \frac{\dot{U}_1}{-\dot{I}_2} \right|_{\dot{U}_2 = 0} \quad (\text{端口2短路时，转移阻抗}) \\
+A_{22} &= \left. \frac{\dot{I}_1}{-\dot{I}_2} \right|_{\dot{U}_2 = 0} \quad (\text{端口2短路时，电流传输比})
+\end{aligned}
+\]
+
+互易与对称条件：
+\begin{itemize}
+    \item 互易网络（无受控源）：$\det(\mathbf{A}) = A_{11}A_{22} - A_{12}A_{21} = 1$（传输矩阵的行列式为1）
+    \item 对称网络（电气结构对称）：$\det(\mathbf{A}) = 1$ 且 $A_{11} = A_{22}$（电压/电流传输比相等）
+\end{itemize}
+
+Z参数转换为A参数的公式（仅适用于互易网络，$Z_{12}=Z_{21}$）：
+\[
+\begin{aligned}
+A_{11} &= \frac{Z_{11}}{Z_{21}}, \quad A_{12} = \frac{Z_{11}Z_{22} - Z_{12}Z_{21}}{Z_{21}}, \\
+A_{21} &= \frac{1}{Z_{21}}, \quad A_{22} = \frac{Z_{22}}{Z_{21}}
+\end{aligned}
+\]
+
+\subsection{混合参数方程（H参数）}
+混合参数（H参数）结合了阻抗和导纳的特点，以 $\dot{I}_1\text{、}\dot{U}_2$ 为自变量，$\dot{U}_1\text{、}\dot{I}_2$ 为因变量（适用于晶体管电路分析），其代数方程为：
+\[
+\begin{cases} 
+\dot{U}_1 = H_{11}\dot{I}_1 + H_{12}\dot{U}_2 \\ 
+\dot{I}_2 = H_{21}\dot{I}_1 + H_{22}\dot{U}_2 
+\end{cases}
+\]
+
+写成矩阵形式（H参数矩阵方程）：
+\[
+\begin{bmatrix} 
+\dot{U}_1 \\ 
+\dot{I}_2 
+\end{bmatrix} = 
+\mathbf{H}
+\begin{bmatrix} 
+\dot{I}_1 \\ 
+\dot{U}_2 
+\end{bmatrix}
+\]
+其中 $\mathbf{H} = \begin{bmatrix} H_{11} & H_{12} \\ H_{21} & H_{22} \end{bmatrix}$ 称为混合参数矩阵。
+
+H参数的物理意义及计算方法：
+\[
+\begin{aligned}
+H_{11} &= \left. \frac{\dot{U}_1}{\dot{I}_1} \right|_{\dot{U}_2 = 0} \quad (\text{端口2短路时，端口1的输入阻抗，又称输入电阻}) \\
+H_{21} &= \left. \frac{\dot{I}_2}{\dot{I}_1} \right|_{\dot{U}_2 = 0} \quad (\text{端口2短路时，电流放大系数，又称电流传输比}) \\
+H_{12} &= \left. \frac{\dot{U}_1}{\dot{U}_2} \right|_{\dot{I}_1 = 0} \quad (\text{端口1开路时，电压反馈系数}) \\
+H_{22} &= \left. \frac{\dot{I}_2}{\dot{U}_2} \right|_{\dot{I}_1 = 0} \quad (\text{端口1开路时，端口2的输出导纳})
+\end{aligned}
+\]
+
+互易与对称条件：
+\begin{itemize}
+    \item 互易网络（无受控源）：$H_{12} = -H_{21}$（反馈系数与电流放大系数符号相反）
+    \item 对称网络（电气结构对称）：$H_{12} = -H_{21}$ 且 $\det(\mathbf{H}) = H_{11}H_{22} - H_{12}H_{21} = 1$
+\end{itemize}
+
+\section{二端口网络的等效电路}
+根据二端口网络的参数，可构造对应的等效电路（仅适用于互易网络）：
+\begin{itemize}
+    \item Z参数等效T形电路：$Z_1=Z_{11}-Z_{12},\ Z_2=Z_{22}-Z_{21},\ Z_3=Z_{12}$（串联支路阻抗）
+    \item Y参数等效Π形电路：$Y_1=Y_{11}+Y_{12},\ Y_3=-Y_{21}=-Y_{12},\ Y_2=Y_{22}+Y_{21}$（并联支路导纳）
+    \item A参数等效T形阻抗电路：$Z_1=\frac{A_{11}-1}{A_{21}},\ Z_2=\frac{A_{22}-1}{A_{21}},\ Z_3=\frac{1}{A_{21}}$
+    \item A参数等效Π形导纳电路：$Y_a=\frac{A_{22}-1}{A_{12}},\ Y_b=\frac{A_{11}-1}{A_{12}},\ Y_c=\frac{1}{A_{12}}$
+\end{itemize}
+
+\section{二端口网络与电源和负载的连接}
+当二端口网络输入端口接电源（内阻 $Z_s$）、输出端口接负载（阻抗 $Z_L$）时，需分析以下参数：
+\begin{itemize}
+    \item 输入阻抗：$Z_i = \frac{\dot{U}_1}{\dot{I}_1}$（负载 $Z_L$ 接在输出端口时，输入端口的等效阻抗）
+    \item 输出阻抗：$Z_o = \frac{\dot{U}_2}{\dot{I}_2}$（电源内阻 $Z_s$ 接在输入端口时，输出端口的等效阻抗）
+    \item 特性阻抗（对称二端口）：$Z_c = \sqrt{Z_{11}Z_{22} - Z_{12}^2}$（无反射匹配阻抗）
+    \item 对称二端口的传输系数：$\gamma = \frac{1}{2}\ln(A_{11} + A_{12}/Z_c)$（衰减和相移特性）
+\end{itemize}
+
+\section{二端口网络的级联}
+多个二端口网络级联时，总传输矩阵等于各级联网络传输矩阵的乘积：
+\[
+\mathbf{A}_{\text{总}} = \mathbf{A}_1 \cdot \mathbf{A}_2 \cdot \dots \cdot \mathbf{A}_n
+\]
+其中 $\mathbf{A}_1\text{、}\mathbf{A}_2\text{、}\dots\text{、}\mathbf{A}_n$ 为各级联网络的传输矩阵，级联顺序与矩阵相乘顺序一致（从输入到输出）。
+
+级联的优势：无需重新计算总参数，仅通过矩阵乘法即可得到整体特性，适用于滤波器、放大器等多级电路分析。

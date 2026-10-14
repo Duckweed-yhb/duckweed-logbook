@@ -1,0 +1,91 @@
+% 子文件：3.导数与微分.tex
+% 主文档中使用 \input{3.导数与微分} 引入，不含 document 环境
+
+\section{导数的概念}
+\subsection{导数的定义}
+定义 3.1\quad 设函数$y=f(x)$在$x_0$的某邻域内有定义，当自变量从$x_0$变到$x_0+\Delta x$时，函数$y=f(x)$的增量
+\[
+\Delta y = f(x_0 + \Delta x) - f(x_0)
+\]
+与自变量的
+
+\section{导数的基本公式与四则运算求导法则}
+\subsection{导数的基本公式}
+\begin{enumerate}
+    \item $(C)' = 0$（$C$ 为常数）
+    \item $(x^\mu)' = \mu x^{\mu-1}$
+    \item $(a^x)' = a^x \ln a$（$a > 0$ 且 $a \neq 1$）
+    \item $(e^x)' = e^x$
+    \item $(\log_a x)' = \frac{1}{x \ln a}$（$a > 0$ 且 $a \neq 1$）
+    \item $(\ln x)' = \frac{1}{x}$
+    \item $(\sin x)' = \cos x$
+    \item $(\cos x)' = -\sin x$
+    \item $(\tan x)' = \frac{1}{\cos^2 x} = \sec^2 x$
+    \item $(\cot x)' = -\frac{1}{\sin^2 x} = -\csc^2 x$
+    \item $(\sec x)' = \sec x \tan x$
+    \item $(\csc x)' = -\csc x \cot x$
+    \item $(\arcsin x)' = \frac{1}{\sqrt{1-x^2}}$
+    \item $(\arccos x)' = -\frac{1}{\sqrt{1-x^2}}$
+    \item $(\arctan x)' = \frac{1}{1+x^2}$
+    \item $(\text{arccot } x)' = -\frac{1}{1+x^2}$
+\end{enumerate}
+
+\subsection{四则运算求导法则}
+
+\section{其他求导法则}
+\subsection{反函数与复合函数求导法则}
+定理3.3（反函数求导法则）\quad 简单地说，反函数的导数等于原函数导数的倒数。
+\[
+(\arccos x)'=-\frac{1}{\sqrt{1-x^2}},\quad -1<x<1.
+\]
+
+定理3.4（复合函数求导法则）\quad 如果
+\begin{enumerate}
+    \item 函数$u=\varphi(x)$在$x$处可导，$u'_x= \varphi'(x)$；
+    \item 函数$y=f(u)$在对应点$u$（$u=\varphi(x)$）处也可导，$y'_u= f'(u)$，
+\end{enumerate}
+则复合函数$y=f(u)$在对应点
+
+\subsection{隐函数与有参数方程给出的函数求导法}
+
+\subsection{取对数求导法}
+
+\section{高阶导数}
+常用的n阶导数公式 1.
+
+与数学归纳法不难证明：若函数$u,v$均有$n$阶导数，则有下述求导法则：
+\begin{itemize}
+    \item[(i)]
+    \item[(ii)]
+    \item[(iii)] $(uv)^{(n)}=\sum_{k=0}^n\mathrm{C}_n^k$
+\end{itemize}
+其中规定。最后这一公式叫做莱布尼茨公式。
+
+\section{微分}
+\subsection{微分的概念}
+定义3.4\quad 设函数$y=f(x)$在$x$附近有定义
+
+\subsection{微分运算}
+\subsubsection{1.微分基本公式}
+\begin{enumerate}
+    \item $\mathrm{d}C = 0$（$C$ 为常数）
+    \item $\mathrm{d}x^\mu = \mu x^{\mu-1} \mathrm{d}x$
+    \item $\mathrm{d}a^x = a^x \ln a \, \mathrm{d}x$（$a > 0$ 且 $a \neq 1$）
+    \item $\mathrm{d}e^x = e^x \, \mathrm{d}x$
+    \item $\mathrm{d}(\log_a x) = \frac{\mathrm{d}x}{x \ln a}$（$a > 0$ 且 $a \neq 1$）
+    \item $\mathrm{d}(\ln x) = \frac{\mathrm{d}x}{x}$
+    \item $\mathrm{d}(\sin x) = \cos x \, \mathrm{d}x$
+    \item $\mathrm{d}(\cos x) = -\sin x \, \mathrm{d}x$
+    \item $\mathrm{d}(\tan x) = \frac{\mathrm{d}x}{\cos^2 x} = \sec^2 x \, \mathrm{d}x$
+    \item $\mathrm{d}(\cot x) = -\frac{\mathrm{d}x}{\sin^2 x} = -\csc^2 x \, \mathrm{d}x$
+    \item $\mathrm{d}(\sec x) = \sec x \tan x \, \mathrm{d}x$
+    \item $\mathrm{d}(\csc x) = -\csc x \cot x \, \mathrm{d}x$
+    \item $\mathrm{d}(\arcsin x) = \frac{\mathrm{d}x}{\sqrt{1-x^2}}$
+    \item $\mathrm{d}(\arccos x) = -\frac{\mathrm{d}x}{\sqrt{1-x^2}}$
+    \item $\mathrm{d}(\arctan x) = \frac{\mathrm{d}x}{1+x^2}$
+    \item $\mathrm{d}(\text{arccot } x) = -\frac{\mathrm{d}x}{1+x^2}$
+\end{enumerate}
+
+\subsubsection{2.四则运算微分法则}
+
+\subsubsection{3.复合函数的微分法}

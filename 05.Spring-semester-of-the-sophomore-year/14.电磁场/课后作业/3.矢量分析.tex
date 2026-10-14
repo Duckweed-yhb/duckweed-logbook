@@ -1,0 +1,140 @@
+\section{矢量分析习题解答}
+
+\begin{enumerate}[label=\arabic*.,itemsep=10pt,topsep=5pt,parsep=2pt]
+
+% --------------- 第1题（作业题号4）---------------
+\item 设有标量场 $\varphi = 2xy^2 - z^3$，求其在点 $M(2,-1,1)$ 沿 $\overrightarrow{MP}\big(P(3,1,-1)\big)$ 方向的方向导数，以及该点方向导数的最大值。
+
+\textbf{解答：}
+\begin{enumerate}[label=(\arabic*),itemsep=5pt,topsep=2pt,parsep=2pt]
+\item 求取梯度
+\[
+\nabla\varphi = \frac{\partial \varphi}{\partial x}\vec{e}_x+\frac{\partial \varphi}{\partial y}\vec{e}_y+\frac{\partial \varphi}{\partial z}\vec{e}_z
+= 2y^2\vec{e}_x + 4xy\vec{e}_y - 3z^2\vec{e}_z
+\]
+将 $M(2,-1,1)$ 代入坐标得：
+\[
+\nabla\varphi\big|_M = 2\vec{e}_x - 8\vec{e}_y - 3\vec{e}_z
+\]
+
+\item 方向矢量 $\overrightarrow{MP}=(1,2,-2)$，其模长
+\[
+|\overrightarrow{MP}|=\sqrt{1^2+2^2+(-2)^2}=3
+\]
+单位矢量为
+\[
+\vec{e}_l = \frac{1}{3}\vec{e}_x + \frac{2}{3}\vec{e}_y - \frac{2}{3}\vec{e}_z
+\]
+
+\item 由方向导数公式 $\displaystyle\frac{\partial \varphi}{\partial l}=\nabla\varphi\cdot\vec{e}_l$
+\[
+\left.\frac{\partial\varphi}{\partial l}\right|_M
+=2\cdot\frac13+(-8)\cdot\frac23+(-3)\cdot\left(-\frac23\right)
+=-\frac{8}{3}
+\]
+
+\item 方向导数最大值出现在梯度同向，大小为梯度模长
+\[
+\left|\nabla\varphi\big|_M\right|
+=\sqrt{2^2+(-8)^2+(-3)^2}
+=\sqrt{77}
+\]
+\end{enumerate}
+\textbf{结论：}方向导数$\boxed{-\dfrac{8}{3}}$，最大值$\boxed{\sqrt{77}}$。
+
+% --------------- 第2题（作业题号5）---------------
+\item 求标量场 $\varphi = x^3y^4z^2$ 梯度场的散度。
+
+\textbf{解答：}
+先求梯度：
+\[
+\nabla\varphi 
+=\frac{\partial\varphi}{\partial x}\vec{e}_x+\frac{\partial\varphi}{\partial y}\vec{e}_y+\frac{\partial\varphi}{\partial z}\vec{e}_z
+= 3x^2y^4z^2\vec{e}_x + 4x^3y^3z^2\vec{e}_y + 2x^3y^4z\vec{e}_z
+\]
+再求梯度的散度（拉普拉斯算子）：
+\[
+\begin{aligned}
+\nabla\cdot(\nabla\varphi)
+&=\frac{\partial}{\partial x}(3x^2y^4z^2)+\frac{\partial}{\partial y}(4x^3y^3z^2)+\frac{\partial}{\partial z}(2x^3y^4z) \\
+&= 6xy^4z^2 + 12x^3y^2z^2 + 2x^3y^4
+\end{aligned}
+\]
+\textbf{结论：}$\boxed{6xy^4z^2 + 12x^3y^2z^2 + 2x^3y^4}$。
+
+% --------------- 第3题（作业题号7）---------------
+\item 设矢量场 $\vec{A} = x^2\vec{e}_x + y^3\vec{e}_y + (3z - x)\vec{e}_z$，求：(1) $M_1(1,0,-1)$ 处散度；(2) $M_2(1,-1,-1)$ 处旋度。
+
+\textbf{解答：}
+\begin{enumerate}[label=(\arabic*),itemsep=5pt,topsep=2pt,parsep=2pt]
+\item 散度计算
+\[
+\nabla\cdot\vec{A} 
+=\frac{\partial A_x}{\partial x}+\frac{\partial A_y}{\partial y}+\frac{\partial A_z}{\partial z}
+=\frac{\partial(x^2)}{\partial x}+\frac{\partial(y^3)}{\partial y}+\frac{\partial(3z-x)}{\partial z}
+=2x+3y^2+3
+\]
+代入 $M_1(1,0,-1)$：
+\[
+\nabla\cdot\vec{A}\big|_{M_1}=2\times 1+3\times 0^2+3=5
+\]
+
+\item 旋度计算
+\[
+\nabla\times\vec{A} =
+\begin{vmatrix}
+\vec{e}_x & \vec{e}_y & \vec{e}_z \\
+\dfrac{\partial}{\partial x} & \dfrac{\partial}{\partial y} & \dfrac{\partial}{\partial z} \\
+x^2 & y^3 & 3z-x
+\end{vmatrix}
+=\vec{e}_y
+\]
+该旋度为常矢量，与坐标无关，故 $\nabla\times\vec{A}\big|_{M_2}=\vec{e}_y$。
+\end{enumerate}
+\textbf{结论：}散度$\boxed{5}$，旋度$\boxed{\vec{e}_y}$。
+
+% --------------- 第4题（作业题号8）---------------
+\item 已知电场强度 $\vec{E} = E_0\cos\theta\vec{e}_r - E_0\sin\theta\vec{e}_\theta$，求其散度与旋度。
+
+\textbf{解答：}
+在球坐标系中计算散度与旋度，代入化简可得：
+\[
+\nabla\cdot\vec{E} = 0,\quad \nabla\times\vec{E} = \vec{0}
+\]
+\textbf{结论：}$\boxed{\nabla\cdot\vec{E}=0,\ \nabla\times\vec{E}=\vec{0}}$。
+
+% --------------- 第5题（作业题号9）---------------
+\item 矢量场 $\vec{A}=(x^2-2xy)\vec{e}_x+(y^2-2yz)\vec{e}_y+z(z-2x+1)\vec{e}_z$，求其对半径为$a$、球心在原点的球面外侧的通量。
+
+\textbf{解答：}
+由高斯通量定理：
+\[
+\varPhi=\oiint_S \vec{A}\cdot d\vec{S}=\iiint_V \nabla\cdot\vec{A}\,\mathrm{d}V
+\]
+计算散度：
+\[
+\nabla\cdot\vec{A}=1
+\]
+因此：
+\[
+\varPhi=\iiint_V 1\,\mathrm{d}V=\frac{4}{3}\pi a^3
+\]
+\textbf{结论：}通量$\boxed{\dfrac{4}{3}\pi a^3}$。
+
+% --------------- 第6题（作业题号10）---------------
+\item 求矢量场 $\vec{A}=xyz(\vec{e}_x+\vec{e}_y+\vec{e}_z)$ 在点 $M(1,3,2)$ 处的旋度，以及绕方向 $\vec{e}_n=\frac{1}{3}(\vec{e}_x+2\vec{e}_y+2\vec{e}_z)$ 的环量面密度。
+
+\textbf{解答：}
+旋度计算并代入 $M(1,3,2)$：
+\[
+\nabla\times\vec{A}\big|_M
+=-\vec{e}_x-3\vec{e}_y+4\vec{e}_z
+\]
+环量面密度为旋度在法向的投影：
+\[
+\mu_n=(\nabla\times\vec{A})\cdot\vec{e}_n
+=\frac{1}{3}
+\]
+\textbf{结论：}旋度$\boxed{-\vec{e}_x-3\vec{e}_y+4\vec{e}_z}$，环量面密度$\boxed{\dfrac{1}{3}}$。
+
+\end{enumerate}

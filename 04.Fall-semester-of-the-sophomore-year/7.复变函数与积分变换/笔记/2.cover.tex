@@ -1,0 +1,47 @@
+% 封面定义（复变函数与积分变换专用）
+\newcommand{\makeCover}
+{
+  \begin{titlepage}
+    % 临时调整封面边距，适配内容排版
+    \newgeometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+    
+    \centering
+    \vspace*{1cm}
+    
+    % 学科引言（贴合复变函数主题）
+    {\Large \itshape 以复数为桥，连接分析与几何，\\以积分变换为器，求解工程与物理问题。}\\[0.5cm]
+    \rule{\textwidth}{1pt}\\[0.5cm]
+    
+    % 主标题（醒目+色调区分）
+    {\Huge \bfseries \color{mainblue} 复变函数与积分变换}\\[8pt]
+    {\Huge \bfseries \color{mainblue} 课程笔记}\\[12pt]
+    
+    % 分隔线
+    \rule{0.6\textwidth}{0.5pt}\\[1cm]
+    
+    % 内容概要（精准贴合学科重点）
+    {\Large \textbf{内容概要：} 解析函数 | 复积分 | 留数 | 傅里叶变换 | 拉普拉斯变换}\\[8pt]
+    {\Large \textbf{适用场景：} 课程复习 · 公式速查 }\\[1.5cm]
+    
+    % 整理者信息（已填入你的专属信息）
+    {\Large \textbf{整理者：}Duckweed}\\[6pt]
+    {\large \textbf{联系邮箱：}\href{mailto:3071974740@qq.com}{3071974740@qq.com}}\\[6pt]
+    {\large \textbf{GitHub：}\url{https://github.com/Duckweed-yhb}}\\[6pt]
+    {\Large 整理日期：\today}\\[1cm]
+    
+    \rule{0.6\textwidth}{0.5pt}\\[1cm]
+    
+    % 版本与版权信息
+    {\large \textbf{版本：} v0.7 不完整版}\\[6pt]
+    {\small \itshape Copyright © \the\year\ Duckweed · 禁止商用 · 欢迎交流}\\[0.5cm]
+    
+    \rule{\textwidth}{1pt}
+    \vfill
+    
+    % 恢复原始页面布局
+    \restoregeometry
+  \end{titlepage}
+}
+
+% 生成封面
+\makeCover

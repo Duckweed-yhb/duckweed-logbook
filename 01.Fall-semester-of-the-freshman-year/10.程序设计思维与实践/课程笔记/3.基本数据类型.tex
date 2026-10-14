@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\small,
+    commentstyle=\color{gray},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    numbers=none,
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\section{第一节：常量与变量}
+C语言程序处理的数据有常量和变量两种形式。
+
+\subsection{常量}
+常量的实例
+\begin{itemize}
+    \item 整型常量
+    \item 实型常量
+    \item 字符型常量
+    \item 字符串字面量
+\end{itemize}
+
+不同进制的整型常量的表示形式
+\begin{itemize}
+    \item 十进制
+    \item 二进制
+    \item 八进制
+    \item 十六进制
+\end{itemize}
+
+\begin{itemize}
+    \item 不同类型的整型常量的表示形式
+    \item 实型常量的表示形式
+    \item 不同类型的实型常量的表示形式
+\end{itemize}
+
+\subsection{变量}
+变量在使用之前必须先定义。定义变量的一般形式为：
+\begin{verbatim}
+类型关键字    变量名；
+\end{verbatim}
+
+变量名是用户定义的标识符，用于标识内存中一个具体的存储单元。
+
+变量的命名应遵守以下基本的命名规则：
+\begin{enumerate}
+    \item 标识符的第一个字符必须是字母（A-Z 或 a-z）或下划线 \texttt{\_}。
+    \item 后续的字符可以是字母、数字（0-9）或下划线 \texttt{\_}。
+    \item 标识符不能包含空格或其他特殊字符。
+    \item 不能使用C的关键词。
+\end{enumerate}
+
+C语言允许在定义变量的同时对变量初始化（为其赋初值）。
+
+在一条语句中，可同时定义多个相同类型的变量，多个变量之间用逗号作分隔符。
+
+若要在定义变量的同时将其初始化为0，则为：
+\begin{lstlisting}
+int a = 0 , b = 0 , c = 0 ;
+\end{lstlisting}
+
+但是不能写成：
+\begin{lstlisting}
+int a = b = c = 0 ;
+\end{lstlisting}
+
+
+\section{第二节：简单的屏幕输出}
+\begin{lstlisting}
+#include<stdio.h>
+int main(void)
+{
+	printf(" ");
+}
+\end{lstlisting}
+
+程序第一行以\#开头而未以分号结尾的不是C语句，而是C的编译器处理命令。
+
+尖括号内的文件称为头文件。编译器预处理命令可以使头文件在程序中生效。它的作用是：将写在尖括号内。
+
+C的标准输入/输出函数\texttt{printf()}的作用是输出一个字符串。
+
+C语言中，用一对双引号括起来的若干字符，称为字符串。
+
+
+\section{第三节：数据类型}
+C语言中的数据类型分类。
+
+定义整型变量时，只要不指定为无符号型，其隐含的类型就是有符号型，而\texttt{signed}通常是省略不写的。
+
+
+\section{第四节：如何计算变量或数据类型所占内存空间的大小}
+衡量内存空间大小的表示单位。
+
+\texttt{sizeof}是C语言的关键字，不是函数名。\texttt{sizeof()}是C语言提供的专门用于计算指定数据类型字节数的运算符。例如，计算\texttt{int}型数据所占内存的字节数用\texttt{sizeof(int)}计算即可。使用\texttt{sizeof(变量名)}的形式还可以计算一个变量所占内存的字节数。此外，\texttt{sizeof}是编译时执行的运算符，不增加程序额外的运行时间开销，但是可以增强程序的可移植性。
+
+
+\section{第五节：变量的赋值和赋值运算符}
+赋值运算符用于给变量赋值。由赋值运算符及其两侧的操作数组成的表达式称为赋值表达式。
+
+\begin{lstlisting}
+x = 1 ;
+\end{lstlisting}
+
+赋值操作是通过在赋值表达式后面加分号构成表达式语句来实现的。
+
+赋值运算符的含义是将赋值运算符右侧表达式的值(简称为右值)赋给左侧的变量，即在C语言中赋值运算的操作是有方向性的，并无“等号两侧操作数的值相等”之意，因此，等号左侧只能是标识一个特定存储单元的变量名。
+
+在计算含有不同类型运算符的表达式时，要考虑运算符的优先级，根据优先级确定运算的顺序，即先执行优先级高的运算，然后再执行优先级低的运算。
+
+\textbf{算术运算符的优先级高于赋值运算符的优先级}。
+
+在C语言中，赋值表达式的值被规定为运算完成后左操作数，类型与左操作数相同。
+
+根据运算符的结合性来确定运算的顺序。运算的结合性有两种：一种是左结合，即自左向右计算；另一种是右结合，即自右向左计算。
+
+C语言中需要两个操作数的算术运算符是左结合的。
+
+\begin{lstlisting}
+a = b = c = 0 ;
+a = (b = ( c = 0)) ;
+\end{lstlisting}
+
+执行时是从右向左把最右侧的表达式的值依次赋值给左侧的变量。像上面形式的赋值表达式称为多重赋值表达式，一般用于为多个变量赋予相同的数值。
+
+\end{document}

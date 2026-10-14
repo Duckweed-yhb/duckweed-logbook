@@ -1,0 +1,1 @@
+assert ascii(x := input())[1:-1] != x.replace("__","")[:97], eval(x,{'__builtins__':{}},{'__builtins__':{}})

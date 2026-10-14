@@ -1,0 +1,83 @@
+\chapter{绪论}
+\section{模拟与数字信号}
+信号分为\textbf{模拟信号}、\textbf{数字信号}两类：
+\begin{itemize}
+\item \textbf{数字量}：时间、数值均离散，存在最小量化单位$\Delta$；
+\item \textbf{数字信号}：表征数字量，仅0/1两种电平跳变；
+\item \textbf{数字电路}：处理数字信号，取值、时间全离散；
+\item \textbf{模拟信号}：时间、数值连续；
+\item \textbf{模拟电路}：处理模拟信号，波形连续（如正弦波）。
+\end{itemize}
+
+\subsection{数模电路对比}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+对比维度 & 数字电路 & 模拟电路 \\
+\hline
+工作信号 & 离散0/1电平 & 连续电压电流 \\
+\hline
+研究对象 & 逻辑与时序关系 & 连续电信号变化 \\
+\hline
+分析工具 & 布尔代数、卡诺图、状态机 & KCL/KVL、小信号模型 \\
+\hline
+数学基础 & 离散数学 & 微积分、复变函数 \\
+\hline
+\end{tabular}
+\caption{数字电路与模拟电路对比}
+\end{table}
+
+\section{电子技术发展历程}
+\begin{itemize}
+\item \textbf{40年代：电子管时代}
+核心器件电子管；由二极管、真空三极管奠基电子工业；缺点：笨重、功耗高、寿命短。
+\item \textbf{60年代：晶体管时代}
+晶体管推动电子技术跨越式发展，应用覆盖计算机、通信、测量。
+\item \textbf{70年代中期：集成电路IC}
+基尔比、诺伊斯1956–1958独立发明IC；拓展至医疗、雷达、卫星领域。
+\item \textbf{70中–80中：微电子时代}
+诞生大规模/超大规模芯片（CPU/FPGA/GPU），成为信息技术核心底座。
+\end{itemize}
+
+\section{电子电路核心功能}
+统一概括为：\textbf{信息处理 + 能量转换}
+\begin{itemize}
+\item 模拟电路：以连续电压/电流表征、处理信息；
+\item 数字电路：以0/1离散电平序列表征、处理信息。
+\end{itemize}
+
+\section{系统设计核心思想}
+\subsection{结构设计}
+结构化分层、单模块低复杂度、支持模块复用。
+\subsection{接口设计}
+系统核心要素，具备隔离、可扩展、可升级特性。
+\subsection{优质系统设计准则}
+低成本实现完整功能、运行可靠、兼容未来技术。
+
+\section{课程定位与学习目标}
+\subsection{课程体系衔接}
+先修：电路原理；平行：模电、数电及配套实验；后续：微机原理、嵌入式系统。
+
+\subsection{四大核心能力要求}
+\begin{enumerate}
+\item 基础概念；
+\item 电路分析方法；
+\item 电路设计方法；
+\item 实操实验技能。
+\end{enumerate}
+
+\subsection{学习目标}
+自底向上理解硬件底层原理；掌握数字电路理论、抽象/接口设计思想；覆盖发展史、系统方法、算法、调试实操全维度。
+
+\subsection{学习层级（由底层至顶层）}
+\begin{enumerate}
+\item MOS管：基础半导体器件；
+\item 逻辑门：MOS管构成的与/或/非基础单元；
+\item 组合逻辑：无记忆电路（译码器、加法器）；
+\item 时序逻辑：含存储单元（触发器、计数器、寄存器）；
+\item 复杂数字系统：FPGA、单片机、SoC等集成系统。
+\end{enumerate}
+
+\section{课程衔接说明}
+本课为微机原理、嵌入式系统的前置基础，重点训练数字系统分析与工程设计能力。

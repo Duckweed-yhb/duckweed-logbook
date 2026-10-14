@@ -1,0 +1,193 @@
+% 子文件：9.黎曼积分.tex
+% 主文档使用 \input{9.黎曼积分} 引入，不含 document 环境
+
+\section{黎曼积分}
+\subsection{黎曼积分的概念}
+
+设$f(P)$是几何形体$\varOmega$上有定义的点函数。将$\varOmega$分割为$n$个小的几何形体，同时用它们表示其度量。称数，记$\lambda$。任取，作乘积的和式
+\[
+\sum_{i=1}^{n}f(P_i)\Delta\varOmega_i
+\]
+如果不论分割如何，极限
+\[
+\lim_{\lambda\rightarrow0}\sum_{i=1}^{n}f(P_i)\Delta\varOmega_i
+\]
+都存在，且为同一个值，则称此极限值为函数$f(P)$在几何形体$\varOmega$上的黎曼积分，即
+\[
+\int_\varOmega f(P)\,d\varOmega
+\]
+此时也说$f(P)$在$\varOmega$上可积。
+
+定理9.1\quad 若
+
+\subsection{黎曼积分的性质}
+\begin{enumerate}
+    \item 当$f(P)=1$时，
+    \item 线性性质
+    \item 对积分域的可加性质
+    \item 比较性质
+    \item 估值性质
+    \item 积分中值定理
+    \item 对称性质
+\end{enumerate}
+
+\subsection{黎曼积分的分类}
+\begin{enumerate}
+    \item 二重积分
+
+当
+
+    \item 三重积分
+
+当几何形体
+
+    \item 对弧长的曲线积分
+
+当几何形体
+
+    \item 对面积的曲面积分
+\end{enumerate}
+
+\section{二重积分的计算}
+\subsection{直角坐标系下二重积分的计算}
+
+设$D$为$Oxy$平面上一有界闭域，$f(P)$的二重积分
+\[
+\iint_D f(x,y)\,dxdy
+\]
+存在。这时二重积分可表示为。当，即表示，其面积为。由已知，体积。习惯上，记作，并把。得到一个计算公式。公式把二重积分化为累次积分。计算时。
+
+当，不等式组表示，计算公式。公式将二重积分化为另一种累次积分，先。
+
+若函数$f(x,y)$在积分。
+
+\subsection{极坐标系下二重积分的计算}
+
+在极坐标系下，设，
+\[
+\iint_D f(x,y)\,dxdy=\iint_{D'} f(r\cos\theta,r\sin\theta)\,r\,dr d\theta
+\]
+其中
+
+\section{三重积分的计算}
+\subsection{直角坐标系下三重积分的计算}
+
+在直角坐标系下体积微元是
+\[
+dV=dx\,dy\,dz
+\]
+
+\subsubsection{投影法（先一后二法）}
+
+设，其中。先用，再用，故有公式。这就是。
+
+当，即积分域。由公式。
+
+\subsubsection{截面法（先二后一法）}
+
+\subsection{柱坐标系下三重积分的计算}
+
+设点$P(x,y,z)$在$Oxy$坐标面上的投影。
+
+柱坐标的三组坐标面是：
+\begin{itemize}
+    \item $r=$常数，
+    \item $\theta=$常数，
+    \item $z=$常数。
+\end{itemize}
+
+显然，直角坐标与柱坐标的关系是
+\[
+\begin{cases}
+x=r\cos\theta,\\
+y=r\sin\theta,\\
+z=z.
+\end{cases}
+\]
+用三组坐标面分割积分域，故柱坐标下体积微元是
+\[
+dV=r\,dr d\theta dz
+\]
+因此柱坐标系下三重积分可写为
+\[
+\iiint_V f(x,y,z)\,dV
+=\iiint_{V'} f(r\cos\theta,r\sin\theta,z)\,r\,dr d\theta dz.
+\]
+
+柱坐标系下。从而。故。直角坐标系下的关系是。当。
+
+\subsection{球坐标系下三重积分的计算}
+
+设。
+
+球坐标的三组坐标面是：
+\begin{enumerate}
+    \item
+    \item
+    \item
+\end{enumerate}
+
+点$P$的直角坐标$(x,y,z)$与球坐标$(\rho,\phi,\theta)$之间的关系是
+\[
+x=\rho\sin{\phi}\cos{\theta},\quad
+y=\rho\sin{\phi}\sin{\theta},\quad
+z=\rho\cos{\phi}.
+\]
+用球坐标的三组坐标面分割积分域$V$，典型的小块是直角六面体。所以，在球坐标系下，体积微元是
+\[
+dV=\rho^2\sin{\phi}\,d\rho d\phi d\theta
+\]
+故球坐标系下三重积分可以写为
+\[
+\iiint_V f(x,y,z)\,dV
+=\iiint_{V'} f(\rho\sin\phi\cos\theta,\rho\sin\phi\sin\theta,\rho\cos\phi)\,\rho^2\sin\phi\,d\rho d\phi d\theta.
+\]
+
+球坐标，则。直角坐标系下。当。
+
+\section{第一型曲线积分的计算}
+
+设$l$是，由参数方程
+\[
+\begin{cases}
+x=x(t),\\
+y=y(t),
+\end{cases}\quad \alpha\le t\le\beta
+\]
+给出。如果函数，则对弧长的曲线积分
+\[
+\int_l f(x,y)\,ds
+\]
+存在。
+
+设点。故由定积分定义知。于是对弧长的曲线积分可化为定积分计算，
+\[
+\int_l f(x,y)\,ds
+=\int_{\alpha}^{\beta}f\bigl(x(t),y(t)\bigr)\sqrt{\bigl(x'(t)\bigr)^2+\bigl(y'(t)\bigr)^2}\,dt.
+\]
+注意，这里弧长微元$ds$就是弧微分，
+\[
+ds=\sqrt{(dx)^2+(dy)^2}.
+\]
+当！由此可见。这是第一型曲线积分的一个特性。
+
+如果$l$是：则有公式1。
+
+\section{第一型曲面积分的计算}
+
+设空间曲面$\Sigma$为，其中，则曲面积分
+\[
+\iint_\Sigma f(x,y,z)\,dS
+\]
+存在。
+
+如果，显然有，其中，故。从而，其中，定义知。于是。
+
+\section{黎曼积分的应用举例}
+\subsection{物体的质心}
+
+由静力学知。
+
+\subsection{转动惯量}
+
+转动惯量。

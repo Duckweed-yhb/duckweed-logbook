@@ -1,0 +1,168 @@
+% 第7章 频率特性和谐振现象
+\chapter{频率特性和谐振现象}
+
+\section{网络函数和频率特性}
+若将所关心的网络某一电压或电流作为响应，激励与响应的比例系数记作
+\[
+H(j\omega) = \frac{\dot{Y}(j\omega)}{\dot{X}(j\omega)}
+\]
+该系数称为网络函数，其中$\dot{X}(j\omega)$为激励相量，$\dot{Y}(j\omega)$为响应相量。
+
+如果激励和响应均为集中参数正弦量，其网络函数为
+\[
+H(j\omega) = |H(j\omega)|e^{j\varphi(\omega)}
+\]
+式中$|H(j\omega)|$为网络函数的模（幅频特性），$\varphi(\omega)$为网络函数的辐角（相频特性）。
+
+可见网络函数的模和辐角均为角频率$\omega$的函数，即
+\[
+|H(j\omega)| = f(\omega), \quad \varphi(\omega) = \theta(\omega)
+\]
+由此可得频率特性的完整表达式：
+\[
+H(j\omega) = |H(j\omega)|\angle\varphi(\omega)
+\]
+式中幅频特性反映响应与激励的幅值比随频率的变化规律，相频特性反映响应与激励的相位差随频率的变化规律。
+
+\section{串联谐振电路}
+根据谐振的定义，RLC串联电路发生谐振时，端口电压与电流同相位，即阻抗的虚部为零：
+\[
+\mathrm{Im}[Z(j\omega)] = 0
+\]
+即
+\[
+\omega L - \frac{1}{\omega C} = 0
+\]
+
+由上式解得谐振角频率$\omega_0$，电感电抗$X_L$和电容电抗$X_C$分别为
+\[
+X_L = \omega_0 L, \quad X_C = \frac{1}{\omega_0 C}
+\]
+式中$\omega_0$称为$\mathrm{RLC}$串联电路的谐振角频率，其计算公式为：
+\[
+\omega_0 = \frac{1}{\sqrt{LC}}
+\]
+
+发生串联谐振时，令
+\[
+\rho = \omega_0 L = \frac{1}{\omega_0 C}
+\]
+$\rho$称为$\mathrm{RLC}$串联电路的特性阻抗。将谐振角频率代入特性阻抗公式，得
+\[
+\rho = \sqrt{\frac{L}{C}}
+\]
+又令
+\[
+Q = \frac{\rho}{R} = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 CR}
+\]
+$Q$称为$\mathrm{RLC}$串联电路的品质因数。可得品质因数的另外计算公式：
+\[
+Q = \frac{U_L}{U} = \frac{U_C}{U}
+\]
+当外加电压$U$不变时，电路中电流$I$、电感电压$U_L$、电容电压$U_C$与角频率$\omega$的关系是
+\[
+I(\omega) = \frac{U}{\sqrt{R^2 + \left(\omega L - \frac{1}{\omega C}\right)^2}}, \quad U_L = I\omega L, \quad U_C = \frac{I}{\omega C}
+\]
+
+根据幅频特性曲线，当电流下降到最大值的$\frac{1}{\sqrt{2}}$倍时，对应的角频率称为截止角频率，记为
+\[
+\omega_{1,2} = \omega_0 \sqrt{1 \pm \left(\frac{1}{Q}\right)^2}
+\]
+此时电流满足：
+\[
+I(\omega_{1,2}) = \frac{I_0}{\sqrt{2}}
+\]
+\[
+I_0 = \frac{U}{R} \quad (\text{谐振时的最大电流})
+\]
+
+引用$\mathrm{RLC}$串联电路各物理量的有效值关系：
+\[
+U = IR, \quad U_L = I\omega L, \quad U_C = \frac{I}{\omega C}
+\]
+可见谐振时$U_L = U_C = QU$，电容和电感电压为电源电压的$Q$倍，因此串联谐振也称为电压谐振。
+
+如果$\mathrm{RLC}$串联电路中电阻$R$趋于零，则品质因数$Q \to \infty$，谐振时电容和电感电压将远大于电源电压，实际电路中需避免这种情况。
+
+\section{RLC串联电路的频率特性}
+当以电阻电压为响应时，转移电压比（网络函数）为
+\[
+H_R(j\omega) = \frac{\dot{U}_R}{\dot{U}} = \frac{R}{R + j\left(\omega L - \frac{1}{\omega C}\right)}
+\]
+将谐振角频率$\omega_0 = \frac{1}{\sqrt{LC}}$代入，得
+\[
+H_R(j\omega) = \frac{1}{1 + jQ\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)}
+\]
+\[
+|H_R(j\omega)| = \frac{1}{\sqrt{1 + Q^2\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)^2}}, \quad \varphi(\omega) = -\arctan\left[Q\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)\right]
+\]
+
+由幅频特性可知，通带宽度为截止角频率之差，需满足
+\[
+|H_R(j\omega)| = \frac{1}{\sqrt{2}}
+\]
+由此解得下截止角频率和上截止角频率：
+\[
+\omega_1 = \omega_0 \left(-\frac{1}{2Q} + \sqrt{\left(\frac{1}{2Q}\right)^2 + 1}\right)
+\]
+\[
+\omega_2 = \omega_0 \left(\frac{1}{2Q} + \sqrt{\left(\frac{1}{2Q}\right)^2 + 1}\right)
+\]
+截止频率与谐振频率、品质因数的关系是
+\[
+\omega_2 - \omega_1 = \frac{\omega_0}{Q}, \quad \omega_1 \omega_2 = \omega_0^2
+\]
+可见，$\mathrm{RLC}$带通电路的通带宽度与品质因数成反比，$Q$越大，通带越窄，选频特性越好。
+
+如果以电感电压为响应，其转移电压比为
+\[
+H_L(j\omega) = \frac{\dot{U}_L}{\dot{U}} = \frac{j\omega L}{R + j\left(\omega L - \frac{1}{\omega C}\right)}
+\]
+\[
+|H_L(j\omega)| = \frac{\omega L}{\sqrt{R^2 + \left(\omega L - \frac{1}{\omega C}\right)^2}}, \quad \varphi_L(\omega) = 90^\circ - \arctan\left(\frac{\omega L - \frac{1}{\omega C}}{R}\right)
+\]
+幅频特性和相频特性分别为
+\[
+|H_L(j\omega)| = \frac{Q \cdot \frac{\omega}{\omega_0}}{\sqrt{1 + Q^2\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)^2}}
+\]
+\[
+\varphi_L(\omega) = 90^\circ - \arctan\left[Q\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)\right]
+\]
+当$\omega = \omega_0$时，$|H_L(j\omega_0)| = Q$，$\varphi_L(\omega_0) = 0^\circ$，电感电压与电源电压同相位。
+
+从幅频特性曲线可知，电感电压的最大值出现在$\omega > \omega_0$处，且$Q$越大，最大值越接近$\omega_0$。
+
+（注：此处可插入RLC串联电路电感电压幅频特性曲线图）
+
+最后，以电容电压为响应，其转移电压比为
+\[
+H_C(j\omega) = \frac{\dot{U}_C}{\dot{U}} = \frac{-j\frac{1}{\omega C}}{R + j\left(\omega L - \frac{1}{\omega C}\right)}
+\]
+\[
+|H_C(j\omega)| = \frac{\frac{1}{\omega C}}{\sqrt{R^2 + \left(\omega L - \frac{1}{\omega C}\right)^2}}, \quad \varphi_C(\omega) = -90^\circ - \arctan\left(\frac{\omega L - \frac{1}{\omega C}}{R}\right)
+\]
+幅频特性和相频特性分别为
+\[
+|H_C(j\omega)| = \frac{Q \cdot \frac{\omega_0}{\omega}}{\sqrt{1 + Q^2\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)^2}}
+\]
+\[
+\varphi_C(\omega) = -90^\circ - \arctan\left[Q\left(\frac{\omega}{\omega_0} - \frac{\omega_0}{\omega}\right)\right]
+\]
+当$\omega = \omega_0$时，$|H_C(j\omega_0)| = Q$，$\varphi_C(\omega_0) = -180^\circ$，电容电压与电源电压反相位。
+
+（注：此处可插入RLC串联电路电容电压幅频特性曲线图）
+
+\section{并联谐振电路}
+由电流源激励的$\mathrm{GCL}$并联电路，其输入导纳为
+\[
+Y(j\omega) = G + j\left(\omega C - \frac{1}{\omega L}\right)
+\]
+实现谐振的条件是输入导纳的虚部为零，即端口电压与电流同相位：
+\[
+\mathrm{Im}[Y(j\omega)] = 0 \implies \omega C - \frac{1}{\omega L} = 0
+\]
+解得并联谐振角频率：
+\[
+\omega_0 = \frac{1}{\sqrt{LC}}
+\]
+与RLC串联电路的谐振角频率相同。

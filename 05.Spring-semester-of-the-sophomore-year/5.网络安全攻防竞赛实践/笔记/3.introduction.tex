@@ -1,0 +1,90 @@
+% 绪论 3.introduction.tex
+\section{绪论}
+\label{sec:introduction}
+
+\subsection{网络安全攻防竞赛（CTF）概述}
+网络安全攻防竞赛（CTF，Capture The Flag，夺旗赛）起源于1996年DEF CON全球黑客大会，是网络安全领域的核心竞技形式。
+
+参赛团队通过攻防对抗、程序分析等方式，从比赛环境中获取特定格式的字符串（即 Flag，格式一般为 \verb|flag{xxx}|），提交后获得分数，并最终提交 Write-Up（解题报告，简称 WP）。
+
+CTF 竞赛以实战化场景检验参赛人员的漏洞挖掘、渗透测试、逆向分析、密码学破解、应急响应等综合能力，是网络安全人才培养、技术交流与选拔的重要平台。
+
+\subsection{CTF 竞赛模式}
+CTF 主要分为两种竞赛模式：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{解题模式（Jeopardy）}
+    \\多用于线上初赛，依托互联网进行。主办方将题目部署在竞赛平台，选手登录后解题，提交 Flag 得分，按总分排名。
+
+    \item \textbf{攻防模式（Attack-Defense，AWD）}
+    \\多用于线下决赛，依托局域网进行。各队伍拥有相同的靶机环境，需要同时进行漏洞利用（攻击）与安全加固（防御）。
+\end{itemize}
+
+\subsection{CTF 竞赛主要题型}
+CTF 竞赛题目覆盖网络安全全领域，主要包括以下六大类：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Web}：Web 应用漏洞挖掘、SQL 注入、XSS、文件上传、命令执行等
+    \item \textbf{Pwn}：二进制漏洞利用、堆栈溢出、格式化字符串、ROP、沙箱绕过等
+    \item \textbf{Crypto}：古典密码、对称/非对称加密、哈希算法、密码分析等
+    \item \textbf{Reverse}：程序逆向、静态分析、动态调试、加壳脱壳等
+    \item \textbf{Misc}：隐写术、流量分析、电子取证、硬件安全等
+    \item \textbf{其他}：移动安全、工控安全、区块链安全、AI 安全等
+\end{itemize}
+
+\subsection{CTF 主流赛事}
+国内具有广泛影响力的 CTF 赛事包括：
+\begin{itemize}[leftmargin=*]
+    \item 全国大学生信息安全竞赛（CISCCTF）
+    \item “强网杯”全国网络安全挑战赛
+    \item 国际网络安全技术对抗联赛（XCTF）
+    \item 腾讯信息安全争霸赛（TCTF）
+    \item DEF CON CHINA CTF
+    \item 网鼎杯、蓝帽杯、鹏城杯、羊城杯、湖湘杯等
+\end{itemize}
+
+\subsection{Write-Up（WP）书写规范}
+Write-Up 是 CTF 竞赛中必须提交的解题报告，用于记录解题思路、方法、工具与过程，是比赛评分与技术交流的重要依据。
+
+\subsubsection{WP 基本要求}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{书面性}：以 PDF、Markdown、Word 等可读格式呈现，可包含截图、代码。
+    \item \textbf{完整性}：包含解题全过程，关键步骤不可缺失。
+    \item \textbf{原创性}：必须为独立完成，引用工具需注明来源。
+    \item \textbf{可读性}：逻辑清晰、排版规范，可复现解题过程。
+\end{enumerate}
+
+\subsection{CTF 备赛方法}
+\begin{itemize}[leftmargin=*]
+    \item 夯实计算机基础：计算机网络、操作系统、编程语言
+    \item 熟练掌握至少一门编程语言（推荐 Python）
+    \item 搭建实验环境，练习漏洞复现
+    \item 掌握常用安全工具：Burp Suite、IDA、GDB、Wireshark 等
+    \item 大量刷题并独立书写 WP
+    \item 学习优秀 Write-Up，拓展解题思路
+    \item 积极参加线上线下比赛，以赛促学
+    \item 赛后及时复盘，总结经验与不足
+\end{itemize}
+
+\subsection{课程学习与实践路径}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{讲解}：知识点梳理、工具介绍、基础操作
+    \item \textbf{演示}：典型题目完整解题过程示范
+    \item \textbf{复现}：学生独立复现演示题目
+    \item \textbf{实践}：完成竞赛题目并提交 WP
+\end{itemize}
+
+\subsection{法律与合规要求}
+网络安全技术具有高风险性，所有学习与竞赛活动必须严格遵守法律法规。
+
+《中华人民共和国网络安全法》明确规定：
+\begin{quote}
+国家采取措施，监测、防御、处置来源于境内外的网络安全风险和威胁，保护关键信息基础设施免受攻击、侵入、干扰和破坏，依法惩治网络违法犯罪活动，维护网络空间安全和秩序。
+\end{quote}
+
+\begin{itemize}[leftmargin=*]
+    \item 严禁未经授权对任何系统进行攻击、入侵
+    \item 仅在授权环境下开展技术研究与竞赛
+    \item 遵守竞赛规则与法律底线，合法合规学习
+\end{itemize}
+
+\subsection{本笔记编写目的}
+本笔记系统梳理网络安全攻防竞赛的基础知识、题型分类、解题方法、备赛路径与规范要求，为课程学习、竞赛备赛、技术速查提供完整、实用的参考资料。

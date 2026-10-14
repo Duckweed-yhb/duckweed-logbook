@@ -1,0 +1,129 @@
+\section{特征值与特征向量}
+\subsection{特征值与特征向量的概念}
+\textbf{定义6.1}\quad 设$A$是数域$F$上的$n$阶方阵，如果有数$\lambda\in F$及$F$上的$n$维列向量$X=(x_1,x_2,\cdots,x_n)'\neq \boldsymbol{0}$，使得
+\[
+AX=\lambda X \tag{1}
+\]
+成立，那么称$\lambda$为$A$的一个特征值，非零向量$X$为$A$的属于特征值$\lambda$的一个特征向量。
+
+如无特别声明，我们在复数域内讨论特征值、特征向量问题。
+
+因为对任意$n$维非零列向量$X$都有$E_nX=1\cdot X$，所以$1$是$E_n$的特征值，任意$n$维非零列向量$X$都是$E_n$的属于特征值$1$的特征向量。
+
+式（1）可以写成
+\[
+(\lambda E_n-A)X=\boldsymbol{0}. \tag{2}
+\]
+这是一个含有$n$个未知数$n$个方程的齐次线性方程组，它有非零解的充要条件是
+\[
+|\lambda E_n-A|=0, \tag{3}
+\]
+即
+\[
+\begin{vmatrix}
+\lambda-a_{11} & -a_{12} & \cdots & -a_{1n}\\
+-a_{21} & \lambda-a_{22} & \cdots & -a_{2n}\\
+\vdots & \vdots &  & \vdots\\
+-a_{n1} & -a_{n2} &  & \lambda-a_{nn}
+\end{vmatrix}=0. \tag{4}
+\]
+这是以$\lambda$为未知数的一元$n$次方程，称为方阵$A$的特征方程。其左端$|\lambda E_n-A|$是关于$\lambda$的$n$次多项式，称之为方阵$A$的特征多项式。
+
+显然，$A$的特征值就是特征方程（3）的解（根），$A$的属于特征值$\lambda_i$的特征向量就是齐次线性方程组
+\[
+(\lambda_iE_n-A)X=\boldsymbol{0} \tag{5}
+\]
+的非零解向量，称（5）的解空间$N(\lambda_iE_n-A)$为$A$的关于特征值$\lambda_i$的特征子空间。在特征子空间 $N(\lambda_iE_n-A)$内，除零向量外，其余向量全是$A$的关于$\lambda_i$的特征向量。
+
+\subsection{特征值与特征向量的性质}
+特征方程（4）在复数范围内恒有解，解的个数等于特征方程的次数（重根按重数计算），因此，$n$阶方阵$A$在复数域内有$n$个特征值。
+
+$n$阶方阵$A$的特征值满足：
+\begin{enumerate}
+    \item 矩阵$A$的$n$个特征值之和等于$A$的$n$个对角线元素之和（$A$的迹$\mathrm{tr}(A)$），即
+    \[
+    \lambda_1+\lambda_2+\cdots+\lambda_n=a_{11}+a_{22}+\cdots+a_{nn}=\mathrm{tr}(A).
+    \]
+    \item 矩阵$A$的$n$个特征值的乘积等于$A$的行列式的值，即
+    \[
+    \lambda_1\lambda_2\cdots\lambda_n=|A|.
+    \]
+\end{enumerate}
+
+\textbf{定理6.1}\quad 设$\lambda_1,\lambda_2,\cdots,\lambda_m$是$n$阶方阵$A$的互不相同的特征值。如果$T_{i1},T_{i2},\cdots,T_{ir_i}$是特征值$\lambda_i$对应的$r_i$个线性无关的特征向量，则
+\[
+T_{11},T_{12},\cdots,T_{1r_1},T_{21},T_{22},\cdots,T_{2r_2},\cdots,T_{m1},T_{m2},\cdots,T_{mr_m}
+\]
+线性无关。
+
+\subsection{实对称矩阵的特征值与特征向量}
+实对称矩阵有下面两个重要的性质：
+\begin{enumerate}
+    \item 实对称矩阵的特征值都是实数；
+    \item 实对称矩阵的对应于不同特征值的实特征向量必正交。
+\end{enumerate}
+
+\section{相似矩阵}
+\subsection{相似矩阵的概念}
+\textbf{定义6.2}\quad 设$A$，$B$都是$n$阶方阵，若存在可逆矩阵$T$，使
+\[
+B=T^{-1}AT,
+\]
+则称$A$与$B$相似，称从$A$到$B$的这种变换为相似变换，称这个矩阵$T$为相似变换矩阵。
+
+矩阵的相似满足：
+\begin{enumerate}
+    \item 自反性：任一$n$阶方阵都与自身相似；
+    \item 对称性：若矩阵$A$与$B$相似，则$B$与$A$也相似；
+    \item 传递性：若矩阵$A$与$B$相似，且矩阵$B$与$C$相似，则矩阵$A$与$C$相似。
+\end{enumerate}
+
+若$A$与一个对角矩阵$D$相似，则称$A$可以相似对角化。
+
+\textbf{定理6.2}\quad 若$A$与$B$相似，则$A$与$B$的特征多项式相同。
+
+由定理6.2容易得到：
+\begin{enumerate}
+    \item 若$A$与$B$相似，则$A$与$B$的特征值相同。反之未必成立，即两个矩阵特征值相同，它们不一定相似；
+    \item 若$A$与$B$相似，则$\mathrm{tr}(A)=\mathrm{tr}(B)$，且$|A|=|B|$。
+\end{enumerate}
+
+\textbf{推论6.1}\quad 若$n$阶方阵$A$与对角矩阵
+\[
+D=\begin{pmatrix}
+\lambda_1 & & & \\
+& \lambda_2 & & \\
+& & \ddots & \\
+& & & \lambda_n
+\end{pmatrix}
+\]
+相似，则$\lambda_1,\lambda_2,\cdots,\lambda_n$是$A$的$n$个特征值。
+
+\subsection{方阵相似对角化的条件及方法}
+\textbf{定理6.3}\quad $n$阶方阵$A$与对角矩阵相似的充要条件是$A$有$n$个线性无关的特征向量，并且$T^{-1}AT=D$为对角矩阵的充要条件是，$T$的$n$个列向量是$A$的$n$个线性无关的特征向量，且这$n$个特征向量对应的特征值依次为对角矩阵$D$的主对角线上的元素。
+
+\textbf{推论6.2}\quad 如果$n$阶方阵$A$的$n$个特征值互不相等，则$A$与对角矩阵相似。
+
+\subsection{几何重数与代数重数}
+\textbf{定义6.3}\quad 设$\lambda_0$是$n$阶方阵$A$的一个特征值，若$\lambda_0$是$A$的特征方程的$m$重根，则称$m$是特征值$\lambda_0$的代数重数。称$\lambda_0$对应的特征子空间（即$(\lambda_0E-A)X=\boldsymbol{0}$的解空间）的维数为$\lambda_0$的几何重数。
+
+\textbf{定理6.4}\quad 矩阵的特征值的几何重数小于等于它的代数重数。
+
+实对称矩阵的特征值的几何重数与代数重数相等。
+
+\textbf{定理6.5}\quad 设$A$是$n$阶实对称矩阵，则$A$的互不相同的特征值的几何重数之和为$n$。
+
+\textbf{定理6.6}\quad 复矩阵$A$与对角矩阵相似的充要条件是$A$的每一特征值的几何重数都等于它的代数重数。
+
+\subsection{实对称矩阵的正交相似对角化}
+\textbf{定理6.7}\quad 设$A$为$n$阶实对称矩阵，则存在$n$阶正交矩阵$P$，使
+\[
+P^{-1}AP=
+\begin{pmatrix}
+\lambda_1 & & & \\
+& \lambda_2 & & \\
+& & \ddots & \\
+& & & \lambda_n
+\end{pmatrix}
+\]
+其中$\lambda_1,\lambda_2,\cdots,\lambda_n$是$A$的$n$个特征值。

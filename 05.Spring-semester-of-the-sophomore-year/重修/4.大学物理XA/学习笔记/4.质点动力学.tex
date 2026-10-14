@@ -1,0 +1,253 @@
+% 4.质点动力学.tex 第二章 质点动力学
+\chapter{第二章 质点动力学}
+动力学研究物体间相互作用，以及相互作用引发的运动状态变化规律，是研究复杂物体运动的基础。本章以低速宏观运动为前提，围绕动量、角动量两大守恒量展开，并补充宇宙速度、黑洞物理模型与传送带动力学实例。
+
+\section{动量 动量守恒定律}
+    \subsection{动量与冲量}
+    \subsubsection{质点动量定理}
+    冲量定义：力对时间的累积效应 $\displaystyle \boldsymbol{I} = \int_{t_0}^{t}\boldsymbol{F}\mathrm{d}t$。
+    质点动量定理：质点末态相对初态的动量增量等于所受合外力的冲量。
+    \keyformula{\boldsymbol{I}=m\boldsymbol{v}-m\boldsymbol{v}_0}
+    冲量 $\boldsymbol{I}$ 为矢量，方向与动量增量同向；单位 $\mathrm{N\cdot s}$，量纲 $\mathrm{MLT^{-1}}$。
+    直角坐标系分量形式：
+    \keyformula{
+    \begin{cases}
+    I_x = \displaystyle \int_{t_0}^{t}F_x\mathrm{d}t = mv_x - mv_{x0}\\
+    I_y = \displaystyle \int_{t_0}^{t}F_y\mathrm{d}t = mv_y - mv_{y0}\\
+    I_z = \displaystyle \int_{t_0}^{t}F_z\mathrm{d}t = mv_z - mv_{z0}
+    \end{cases}
+    }
+    爆炸、碰撞瞬时冲力可用平均冲力简化：$\bar{\boldsymbol{F}}\mathrm{d}t = m\boldsymbol{v}-m\boldsymbol{v}_0$。
+
+    \subsubsection{质点系动量定理}
+    系统合外力等于总动量对时间的变化率：
+    \[
+    \boldsymbol{F}=\sum_i \boldsymbol{F}_i = \frac{\mathrm{d}\boldsymbol{p}}{\mathrm{d}t}
+    \]
+    积分形式质点系动量定理：
+    \keyformula{\boldsymbol{I}=\int_{t_0}^{t}\boldsymbol{F}\mathrm{d}t = \boldsymbol{p}-\boldsymbol{p}_0=\Delta\boldsymbol{p}}
+    系统内力矢量和为零，内力冲量无法改变系统总动量，仅能分配质点间动量。
+
+    \subsubsection{动量守恒定律}
+    系统合外力 $\boldsymbol{F}=\sum\boldsymbol{F}_i=\boldsymbol{0}$ 时，总动量为常矢量：
+    \keyformula{\boldsymbol{p}=\boldsymbol{p}_0=\text{常矢量}}
+    分量守恒条件：某一坐标轴外力分量为零，则该方向动量分量守恒
+    \keyformula{
+    \begin{cases}
+    F_x=0,\quad p_x=\sum m_i v_{ix}=\text{常量}\\
+    F_y=0,\quad p_y=\sum m_i v_{iy}=\text{常量}\\
+    F_z=0,\quad p_z=\sum m_i v_{iz}=\text{常量}
+    \end{cases}
+    }
+    适用范围：宏观物体、微观粒子（原子、分子、光子）普遍成立；碰撞爆炸问题可忽略重力等常规外力。
+
+    \subsection{质心 质心运动定理}
+    \subsubsection{质心位置矢量}
+    离散质点系质心位矢（质量加权平均）：
+    \keyformula{\boldsymbol{r}_C = \frac{\sum m_i \boldsymbol{r}_i}{m},\quad m=\sum m_i}
+    直角坐标分量：
+    \keyformula{
+    \begin{cases}
+    x_C = \dfrac{\sum m_i x_i}{m}\\[4pt]
+    y_C = \dfrac{\sum m_i y_i}{m}\\[4pt]
+    z_C = \dfrac{\sum m_i z_i}{m}
+    \end{cases}
+    }
+    连续质量分布物体质心：
+    \keyformula{\boldsymbol{r}_C = \frac{\int \boldsymbol{r}\mathrm{d}m}{m}}
+    分量形式：
+    \keyformula{
+    \begin{cases}
+    x_C = \dfrac{\int x\mathrm{d}m}{m}\\[4pt]
+    y_C = \dfrac{\int y\mathrm{d}m}{m}\\[4pt]
+    z_C = \dfrac{\int z\mathrm{d}m}{m}
+    \end{cases}
+    }
+
+    \subsubsection{质心速度与加速度}
+    \keyformula{\boldsymbol{v}_C = \frac{\mathrm{d}\boldsymbol{r}_C}{\mathrm{d}t} = \frac{\sum m_i \boldsymbol{v}_i}{m}}
+    \keyformula{\boldsymbol{a}_C = \frac{\mathrm{d}\boldsymbol{v}_C}{\mathrm{d}t} = \frac{\sum m_i \boldsymbol{a}_i}{m}}
+
+    \subsubsection{质心运动定理}
+    系统总动量 $\boldsymbol{p}=m\boldsymbol{v}_C$，求导得：
+    \keyformula{\boldsymbol{F}_{\text{外}} = \frac{\mathrm{d}\boldsymbol{p}}{\mathrm{d}t} = m\boldsymbol{a}_C}
+    物理意义：系统合外力等于总质量乘以质心加速度；内力不改变质心运动状态，合外力为零时质心静止或匀速直线运动。
+
+\section{角动量 角动量守恒定律}
+    \subsection{质点角动量}
+    质点对定点 $O$ 的角动量（动量矩）定义为位矢与动量叉乘：
+    \keyformula{\boldsymbol{L} = \boldsymbol{r} \times \boldsymbol{p} = \boldsymbol{r} \times m\boldsymbol{v}}
+    大小 $L=rmv\sin\varphi$，方向垂直 $\boldsymbol{r}$ 与 $\boldsymbol{v}$ 构成平面，右手螺旋定则判定；单位 $\mathrm{kg\cdot m^2\cdot s^{-1}}$，量纲 $\mathrm{ML^2T^{-1}}$。
+    质点系总角动量：
+    \keyformula{\boldsymbol{L}=\sum \boldsymbol{L}_i = \sum \boldsymbol{r}_i \times m_i \boldsymbol{v}_i}
+
+    \subsection{力矩 角动量定理}
+    \subsubsection{力矩定义}
+    外力对定点力矩：
+    \keyformula{\boldsymbol{M} = \boldsymbol{r} \times \boldsymbol{F}}
+    大小 $M=rF\sin\varphi=Fd$，$d$ 为力臂；一对内力对同一参考点力矩矢量和恒为零 $\boldsymbol{M}_{\text{内}}\equiv \boldsymbol{0}$。
+    质点系合外力矩：
+    \keyformula{\boldsymbol{M}=\sum \boldsymbol{r}_i \times \boldsymbol{F}_i}
+
+    \subsubsection{角动量定理}
+    微分形式（质点/质点系通用）：
+    \keyformula{\boldsymbol{M} = \frac{\mathrm{d}\boldsymbol{L}}{\mathrm{d}t}}
+    文字表述：质点（质点系）所受对某一参考点的合外力矩，等于角动量对同一参考点随时间的变化率。
+
+    积分形式（冲量矩定理）：
+    \keyformula{\int_{t_1}^{t_2}\boldsymbol{M}\mathrm{d}t = \boldsymbol{L}_2 - \boldsymbol{L}_1}
+    $\displaystyle \int_{t_1}^{t_2}\boldsymbol{M}\mathrm{d}t$ 称为**冲量矩**，是外力矩对时间的累积量；冲量矩等于系统角动量的增量。
+    角动量单位：$\mathrm{m\cdot N\cdot s}$，量纲 $\mathrm{ML^2T^{-1}}$。
+
+    \subsubsection{角动量守恒定律}
+    若对某定点合外力矩 $\boldsymbol{M}=\boldsymbol{0}$，则系统对该点角动量 $\boldsymbol{L}=$ 常矢量，角动量守恒。
+    \corepoint{有心力对力心的力矩恒为零，仅受有心力作用的系统角动量守恒；典型应用：开普勒行星运动第二定律（面积定律）}
+
+    \subsubsubsection{例：开普勒第二定律推导}
+    行星仅受太阳有心力，对太阳角动量守恒。行星角动量大小：
+    \[
+    L = rmv\sin\varphi = rm \left|\frac{\mathrm{d}\boldsymbol{r}}{\mathrm{d}t}\right|\sin\varphi
+    \]
+    极短时间 $\Delta t$ 内矢径扫过面积 $\displaystyle \Delta S = \frac12 r |\Delta \boldsymbol{r}|\sin\varphi$，取极限：
+    \[
+    L = 2m \lim_{\Delta t \to 0}\frac{\Delta S}{\Delta t} = 2m \frac{\mathrm{d}S}{\mathrm{d}t}
+    \]
+    \keyformula{\frac{\mathrm{d}S}{\mathrm{d}t} = \frac{L}{2m}}
+    $L$ 为恒量，故面积速率 $\dfrac{\mathrm{d}S}{\mathrm{d}t}$ 不变，行星矢径在相等时间内扫过相等面积。
+
+    \subsubsubsection{角动量守恒经典实例}
+    1. 细绳拉小球绕细管转动：拉力为有心力，角动量守恒，半径缩小转速增大 $v_1 = \dfrac{r_2}{r_1}v_2$；
+    2. 星系坍缩：万有引力为有心力，星云向内收缩时旋转角速度增大，形成盘状星系。
+
+\section{变质量物体运动（火箭方程）}
+    火箭动力学微分方程：
+    \[
+    m\frac{\mathrm{d}\boldsymbol{v}}{\mathrm{d}t} = \boldsymbol{F} + \boldsymbol{u}\frac{\mathrm{d}m}{\mathrm{d}t}
+    \]
+    $\boldsymbol{u}\dfrac{\mathrm{d}m}{\mathrm{d}t}$ 为火箭发动机推力，$\boldsymbol{u}$ 为喷出气体相对火箭速度。
+    太空无外力时火箭末速度公式（齐奥尔科夫斯基公式）：
+    \keyformula{v_m = v_0 + u\ln\frac{m_0}{m_{\text{火箭}}}}
+
+\section{能量 能量守恒定律}
+    \subsection{动能 功 动能定理}
+    \subsubsection{动能}
+    质点动能定义：
+    \keyformula{E_\mathrm{k}=\frac12 mv^2}
+    单位：焦耳（$\mathrm{J}$），量纲 $\mathrm{ML^2T^{-2}}$；
+    质点系总动能为所有质点动能代数和：
+    \keyformula{E_\mathrm{k}=\sum_i \frac12 m_i v_i^2}
+
+    \subsubsection{功与功率}
+    1. 元功定义：
+    \keyformula{\mathrm{d}W = \boldsymbol{F}\cdot \mathrm{d}\boldsymbol{r}}
+    2. 有限路径总功（线积分）：
+    \keyformula{W=\int_{A}^{B}\boldsymbol{F}\cdot \mathrm{d}\boldsymbol{r}}
+    直角坐标系分解：
+    \[
+    W=\int_L F_x\mathrm{d}x+F_y\mathrm{d}y+F_z\mathrm{d}z = W_x+W_y+W_z
+    \tag{2-35}
+    \]
+
+    功四大核心性质：
+    \begin{enumerate}[label=(\alph*)]
+        \item 标量，正负由力与位移夹角决定：$\alpha<\pi/2$ 正功，$\alpha>\pi/2$ 负功，$\alpha=\pi/2$ 不做功；合外力做功等于各分力做功代数和；
+        \item 过程量：功依赖完整运动路径，某一时刻无“功”的概念；
+        \item 相对量：位移与参考系绑定，不同参考系下同一力做功不同；
+        \item 一对相互作用力总功由相对位移决定，$\mathrm{d}W=\boldsymbol{F}_1\cdot \mathrm{d}\boldsymbol{r}_{12}$，无相对位移时内力总功为0。
+    \end{enumerate}
+
+    瞬时功率定义：
+    \keyformula{P=\lim_{\Delta t\to0}\frac{\Delta W}{\Delta t}=\frac{\mathrm{d}W}{\mathrm{d}t}=\boldsymbol{F}\cdot \boldsymbol{v}}
+    单位：瓦特（$\mathrm{W}$）。
+
+    \subsubsection{质点动能定理}
+    对元功公式沿路径积分，得动能定理：
+    \keyformula{W=\int_{A}^{B}\boldsymbol{F}\cdot \mathrm{d}\boldsymbol{r} = \Delta E_\mathrm{k} = \frac12 mv_B^2 - \frac12 mv_A^2}
+    \corepoint{动能定理核心：合外力对质点做的总功，等于质点动能的增量；功是过程量，动能是状态量，只与初末速率有关}
+    适用范围：惯性参考系，处理速率–位置关系问题比牛顿第二定律更简便。
+
+    \subsubsection{传送带滑动摩擦动力学（动能定理应用）}
+    质量$m$物体轻放在速率$v$的水平传送带上，动摩擦因数$\mu$，滑动摩擦力$F_f=\mu mg$。
+    1. 加速滑动时间（动量定理）
+    \[
+    -F_f \cdot \Delta t = 0-mv \implies \Delta t = \frac{v}{\mu g}
+    \]
+    2. 物体对地滑动位移（动能定理）
+    \[
+    -F_f \cdot s = 0-\frac12 mv^2 \implies s = \frac{v^2}{2\mu g}
+    \]
+    3. 摩擦耗散机械能
+    传送带对地位移$s'=v\Delta t=\dfrac{v^2}{\mu g}$，相对位移$s'-s$，摩擦生热：
+    \[
+    W' = \mu mg\left(\frac{v^2}{\mu g}-\frac{v^2}{2\mu g}\right) = \frac12 mv^2
+    \]
+
+    \subsection{保守力 势能 功能原理}
+    \subsubsection{保守力判定}
+    保守力：做功仅由初末位置决定、与运动路径无关的力，满足环路积分 $\displaystyle \oint_L \boldsymbol{F}_\text{保}\cdot \mathrm{d}\boldsymbol{r}=0$；
+    典型保守力：重力、弹性力、万有引力、静电力；
+    非保守力（耗散力）：摩擦力、粘滞阻力、爆炸推力，做功与路径相关。
+
+    \subsubsection{三类保守力的功与势能}
+    1. 重力的功与重力势能
+    \[
+    W_G = -mg(y_b-y_a)
+    \tag{2-41}
+    \]
+    取地面为势能零点，高度 $h$ 处重力势能：
+    \keyformula{E_{\mathrm{p}\text{重}}=mgh}
+
+    2. 弹性力的功与弹性势能
+    \[
+    W_\text{弹}= -\left(\frac12 kx_b^2 - \frac12 kx_a^2\right)
+    \tag{2-42}
+    \]
+    弹簧原长为势能零点，形变量 $x$ 弹性势能：
+    \keyformula{E_{\mathrm{p}\text{弹}}=\frac12 kx^2}
+
+    3. 万有引力的功与引力势能
+    \[
+    W_\text{引} = -Gm_1m_2\left(\frac{1}{r_b}-\frac{1}{r_a}\right)
+    \tag{2-43}
+    \]
+    取无穷远为势能零点，间距 $r$ 引力势能：
+    \keyformula{E_{\mathrm{p}\text{引}}=-G\frac{m_1m_2}{r}}
+
+    \subsubsection{保守力与势能梯度关系}
+    保守力做功等于势能增量的负值：
+    \[
+    W_\text{保} = -\Delta E_\mathrm{p},\quad \mathrm{d}W_\text{保}=-\mathrm{d}E_\mathrm{p}
+    \]
+    \keyformula{\boldsymbol{F}_\text{保}=-\nabla E_\mathrm{p} = -\left(\frac{\partial E_\mathrm{p}}{\partial x}\boldsymbol{i}+\frac{\partial E_\mathrm{p}}{\partial y}\boldsymbol{j}+\frac{\partial E_\mathrm{p}}{\partial z}\boldsymbol{k}\right)}
+    物理意义：保守力等于对应势能函数的负梯度；势能属于相互作用系统共有。
+
+    \subsubsection{质点系功能原理}
+    将内力拆分为保守内力、非保守内力，推导得功能原理：
+    \keyformula{W_\text{外} + W_\text{非保内} = E - E_0}
+    其中机械能 $E=E_\mathrm{k}+E_\mathrm{p}$；文字表述：系统外力做功与非保守内力做功之和，等于系统机械能的增量。
+
+    \subsection{机械能守恒定律与能量守恒定律}
+    \subsubsection{机械能守恒定律}
+    守恒条件：$W_\text{外}=0$ 且 $W_\text{非保内}=0$，只有保守内力做功：
+    \keyformula{E=E_\mathrm{k}+E_\mathrm{p}=\text{常量}}
+    \corepoint{机械能守恒仅适用于惯性系；碰撞分类：弹性碰撞（机械能守恒）、完全非弹性碰撞、非弹性碰撞（后两者机械能损耗）}
+
+    \subsubsection{普遍能量守恒定律}
+    孤立系统（与外界无能量交换）内，一切形式能量仅相互转化，总能量保持恒定；能量既不能凭空产生，也不能凭空消失，是自然界普适基本定律。
+
+    \subsubsection{经典应用：宇宙速度与黑洞模型}
+    1. 第二宇宙速度（脱离地球逃逸速度）
+    以无穷远为引力势能零点，脱离地球引力末速度 $v_\infty=0$，机械能守恒：
+    \[
+    \frac12 mv^2 - G\frac{mM}{R}=0
+    \]
+    代入地面重力关系 $G\dfrac{M}{R^2}=g$，得第二宇宙速度：
+    \keyformula{v=\sqrt{2gR}}
+    推广到任意天体，逃逸速度通式：
+    \[
+    v=\sqrt{\frac{2Gm_{\text{天体}}}{R}}
+    \]
+    2. 黑洞物理简述
+    若天体密度极大、半径极小，逃逸速度可达到光速；此时天体发射的光子无法挣脱引力束缚，外部无法观测该天体，此类天体定义为黑洞（black hole），是天体物理前沿研究课题。
+
+\endinput

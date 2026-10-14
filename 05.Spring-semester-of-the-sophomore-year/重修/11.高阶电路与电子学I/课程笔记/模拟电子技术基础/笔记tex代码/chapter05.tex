@@ -1,0 +1,159 @@
+% 第5章 放大电路的反馈
+\chapter{放大电路的反馈}
+
+\section{反馈的基本概念及判断方法}
+\subsection{反馈的基本概念}
+反馈：将放大电路的输出量（电压/电流）的一部分或全部，通过反馈网络送回输入回路，与输入量（电压/电流）共同控制输出的过程。
+\begin{itemize}
+    \item 正反馈：反馈信号增强输入信号，使放大倍数增大，多用于振荡电路；
+    \item 负反馈：反馈信号削弱输入信号，使放大倍数减小，多用于改善放大电路性能；
+    \item 直流反馈：反馈量仅含直流成分，用于稳定静态工作点；
+    \item 交流反馈：反馈量仅含交流成分，用于改善动态性能。
+\end{itemize}
+
+\subsection{反馈的判断}
+\begin{enumerate}
+    \item \textbf{有无反馈}：判断输入回路与输出回路是否有反馈网络（电阻、电容等）相连；
+    \item \textbf{正/负反馈（瞬时极性法）}：假设输入信号瞬时极性，逐级推导反馈信号极性，判断是否削弱输入信号；
+    \item \textbf{直流/交流反馈}：反馈通路中是否有电容（隔直则为交流反馈，无电容则为交直流反馈）；
+    \item \textbf{反馈组态}：后续章节详细说明。
+\end{enumerate}
+
+\section{负反馈放大电路的四种基本组态}
+\subsection{负反馈放大电路分析要点}
+负反馈组态由反馈信号的取样方式（电压/电流）和比较方式（串联/并联）决定，核心是判断“取样对象”和“比较方式”。
+
+\subsection{由集成运放组成的四种组态负反馈放大电路}
+\subsubsection{电压串联负反馈电路}
+\begin{itemize}
+    \item 取样：输出电压（反馈信号与输出电压成正比）；
+    \item 比较：输入电压与反馈电压串联叠加；
+    \item 特点：稳定输出电压，减小输出电阻，增大输入电阻。
+\end{itemize}
+
+\subsubsection{电流串联负反馈电路}
+\begin{itemize}
+    \item 取样：输出电流（反馈信号与输出电流成正比）；
+    \item 比较：输入电压与反馈电压串联叠加；
+    \item 特点：稳定输出电流，增大输出电阻，增大输入电阻。
+\end{itemize}
+
+\subsubsection{电压并联负反馈电路}
+\begin{itemize}
+    \item 取样：输出电压；
+    \item 比较：输入电流与反馈电流并联叠加；
+    \item 特点：稳定输出电压，减小输出电阻，减小输入电阻。
+\end{itemize}
+
+\subsubsection{电流并联负反馈电路}
+\begin{itemize}
+    \item 取样：输出电流；
+    \item 比较：输入电流与反馈电流并联叠加；
+    \item 特点：稳定输出电流，增大输出电阻，减小输入电阻。
+\end{itemize}
+
+\subsection{反馈组态的判断}
+\subsubsection{电压负反馈与电流负反馈的判断（负载短路法）}
+\begin{itemize}
+    \item 电压负反馈：将输出端短路（$u_O=0$），反馈信号消失；
+    \item 电流负反馈：将输出端短路（$i_O \neq 0$），反馈信号仍存在。
+\end{itemize}
+
+\subsubsection{串联反馈与并联反馈的判断（输入短路法）}
+\begin{itemize}
+    \item 串联反馈：将输入端短路（$u_I=0$），反馈信号仍能作用于输入回路；
+    \item 并联反馈：将输入端短路（$i_I=0$），反馈信号被短路，无法作用于输入回路。
+\end{itemize}
+
+\section{负反馈放大电路的方块图及一般表达式}
+\subsection{负反馈放大电路的方块图}
+核心组成：
+\begin{itemize}
+    \item 基本放大电路：开环放大倍数 $A = \frac{X_O}{X_{ID}}$（$X_{ID}$ 为净输入量）；
+    \item 反馈网络：反馈系数 $F = \frac{X_F}{X_O}$（$X_F$ 为反馈量）；
+    \item 比较环节：$X_{ID} = X_I - X_F$（负反馈）。
+\end{itemize}
+
+\subsection{一般表达式}
+闭环放大倍数：
+\[
+A_f = \frac{X_O}{X_I} = \frac{A}{1 + AF}
+\]
+其中 $1 + AF$ 为**反馈深度**：
+\begin{itemize}
+    \item $1 + AF > 1$：负反馈，$A_f < A$；
+    \item $1 + AF = 0$：正反馈（自激振荡）；
+    \item $1 + AF \gg 1$：深度负反馈，$A_f \approx \frac{1}{F}$。
+\end{itemize}
+
+\section{深度负反馈放大电路放大倍数的分析}
+\subsection{深度负反馈的实质}
+深度负反馈下，反馈深度 $1 + AF \gg 1$，净输入量 $X_{ID} \approx 0$（虚短、虚断）：
+\begin{itemize}
+    \item 虚短：$u_{ID} = u_I - u_F \approx 0 \implies u_I \approx u_F$（串联反馈）；
+    \item 虚断：$i_{ID} = i_I - i_F \approx 0 \implies i_I \approx i_F$（并联反馈）。
+\end{itemize}
+
+\subsection{反馈网络的分析}
+反馈网络是连接输出与输入的通路，仅分析反馈网络的参数（电阻、电容），忽略基本放大电路的影响。
+
+\subsection{基于反馈系数的放大倍数分析}
+\subsubsection{电压串联负反馈电路}
+反馈系数 $F_u = \frac{u_F}{u_O}$，闭环电压放大倍数：
+\[
+A_{uf} = \frac{u_O}{u_I} \approx \frac{1}{F_u}
+\]
+
+\subsubsection{电流串联负反馈电路}
+反馈系数 $F_g = \frac{u_F}{i_O}$，闭环互导放大倍数：
+\[
+A_{gf} = \frac{i_O}{u_I} \approx \frac{1}{F_g}
+\]
+
+\subsection{基于理想运放的放大倍数分析}
+理想运放满足“虚短”（$u_+ = u_-$）和“虚断”（$i_+ = i_- = 0$），直接通过节点电流/电压关系推导放大倍数。
+
+\section{负反馈对放大电路性能的影响}
+\subsection{稳定放大倍数}
+闭环放大倍数仅由反馈网络决定，不受温度、电源、元件参数变化的影响：
+\[
+\frac{dA_f}{A_f} = \frac{1}{1 + AF} \cdot \frac{dA}{A}
+\]
+
+\subsection{改变输入电阻和输出电阻}
+\subsubsection{速记要点}
+\begin{itemize}
+    \item 电压负反馈：稳定输出电压，减小输出电阻；
+    \item 电流负反馈：稳定输出电流，增大输出电阻；
+    \item 串联负反馈：增大输入电阻；
+    \item 并联负反馈：减小输入电阻。
+\end{itemize}
+
+\subsection{展宽频带}
+负反馈使上限截止频率升高、下限截止频率降低，通频带展宽：
+\[
+f_{BWf} = (1 + AF) \cdot f_{BW}
+\]
+
+\subsection{减小非线性失真}
+反馈信号削弱失真的输出信号，使输出波形更接近输入波形，失真系数减小。
+
+\section{负反馈放大电路的稳定性}
+\subsection{自激振荡的条件}
+$1 + AF = 0$（幅值条件：$|AF| = 1$，相位条件：$\varphi_A + \varphi_F = \pm 180^\circ$）。
+
+\subsection{稳定判据}
+用波特图判断：当 $20\lg|AF| = 0\ \text{dB}$ 时，$\varphi_A + \varphi_F < 180^\circ$，电路稳定。
+
+\section{放大电路中的正反馈}
+正反馈用于振荡电路（正弦波振荡、弛张振荡），使电路在无输入信号时产生周期性输出信号，核心是满足自激振荡条件。
+
+\section{例题参考}
+\section{核心速记}
+\begin{itemize}
+    \item 电压负反馈：稳定输出电压，减小输出电阻；
+    \item 电流负反馈：稳定输出电流，增大输出电阻；
+    \item 串联负反馈：增大输入电阻；
+    \item 并联负反馈：减小输入电阻；
+    \item 深度负反馈：虚短（$u_{ID} \approx 0$）、虚断（$i_{ID} \approx 0$）。
+\end{itemize}

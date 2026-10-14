@@ -1,0 +1,119 @@
+% 主文档配置：模拟电子技术基础笔记
+\documentclass[12pt,a4paper,openany]{book}  % openany取消章节强制从奇数页开始
+% ===================== 核心包引入 =====================
+% 中文支持（必须用XeLaTeX编译）
+\usepackage[UTF8]{ctex}
+% 数学公式与符号支持
+\usepackage{amsmath,amssymb}
+% 颜色支持（封面/高亮使用）
+\usepackage{xcolor}
+% 页面布局设置
+\usepackage{geometry}
+% 标题格式自定义
+\usepackage{titlesec}
+% 分页/环境控制工具
+\usepackage{etoolbox}
+% 目录样式优化
+\usepackage{tocloft}
+% 页码样式支持
+\usepackage{fancyhdr}
+% 关键：添加超链接/目录跳转支持
+\usepackage{hyperref}       % 核心跳转包
+\usepackage{bookmark}       % 优化PDF书签（可选但推荐）
+
+% ===================== 超链接配置（解决跳转问题） =====================
+% 超链接样式（可选，可自定义颜色/样式）
+\hypersetup{
+    colorlinks=true,        % 链接文字上色（false为边框）
+    linkcolor=blue,         % 内部链接（目录→正文）颜色
+    anchorcolor=black,      % 锚点颜色
+    citecolor=green,        % 引用颜色
+    urlcolor=cyan,          % 网址颜色
+    pdfstartview=FitH,      % PDF打开时适配宽度
+    bookmarksnumbered=true, % 书签显示章节编号
+    pdfpagemode=UseOutlines % 打开PDF时显示书签栏
+}
+
+% ===================== 全局配置 =====================
+% 页面边距（A4纸，适配阅读）
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm,
+    headsep=10pt,  % 页眉间距
+    footskip=15pt  % 页脚间距
+}
+
+% 标题格式优化（适配中文排版）
+\titleformat{\chapter}
+    {\centering\Large\bfseries\color{black}}  % 居中、大号、加粗、黑色
+    {第\thechapter\ 章}                      % 章节前缀
+    {1em}                                     % 前缀与标题间距
+    {}                                        % 标题内容格式
+
+\titleformat{\section}
+    {\large\bfseries\color{black}}
+    {\thesection}
+    {1em}
+    {}
+
+\titleformat{\subsection}
+    {\bfseries\color{black}}
+    {\thesubsection}
+    {1em}
+    {}
+
+% 标题间距调整（消除多余空白）
+\titlespacing{\chapter}{0pt}{-20pt}{20pt}  % 章节标题上下间距
+\titlespacing{\section}{0pt}{12pt}{6pt}    % 小节标题上下间距
+\titlespacing{\subsection}{0pt}{8pt}{4pt}   % 子小节标题上下间距
+
+% ===================== 分页/目录修复 =====================
+% 取消目录自动分页，消除封面后空白页
+\pretocmd{\tableofcontents}{\clearpage\thispagestyle{empty}}{}{}
+
+% 修复LaTeX默认的分页写入逻辑，避免空白页
+\makeatletter
+\let\originalclearpage\clearpage
+\renewcommand{\clearpage}{%
+    \originalclearpage
+    \if@filesw
+        \immediate\write\@auxout{\string\@setckpt{\@currenvir}{\thepage}}%
+    \fi
+}
+\makeatother
+
+% ===================== 公式注释快捷命令 =====================
+% 统一公式中文注释样式（与子文件兼容）
+\newcommand{\formulaNote}[1]{\quad \text{#1}}
+
+% ===================== 文档主体 =====================
+\begin{document}
+% --------------------- 封面与目录 ---------------------
+\pagestyle{empty}          % 封面/目录页隐藏页码
+\input{cover}              % 引入封面文件
+\clearpage                 % 封面后手动分页（仅1次）
+
+\tableofcontents           % 生成目录（现在支持点击跳转）
+\thispagestyle{empty}      % 目录页无页码
+\clearpage                 % 目录后分页
+
+% --------------------- 正文部分 ---------------------
+\pagestyle{plain}          % 正文恢复普通页码样式
+\pagenumbering{arabic}     % 正文页码从1开始（阿拉伯数字）
+
+% 引入所有章节子文件（按顺序）
+\input{chapter01}
+\input{chapter02}
+\input{chapter03}
+\input{chapter04}
+\input{chapter05}
+\input{chapter06}
+\input{chapter07}
+\input{chapter08}
+\input{chapter09}
+
+
+% 文档结束
+\end{document}

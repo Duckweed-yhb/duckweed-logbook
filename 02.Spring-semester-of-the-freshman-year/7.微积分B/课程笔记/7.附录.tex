@@ -1,0 +1,141 @@
+% 子文件：附录.tex
+% 使用 \input{附录.tex} 引入，无 document 环境
+
+\section{Stolz定理}
+
+\subsection{定理陈述}
+设$\{a_n\}$和$\{b_n\}$是两个数列，且满足以下条件：
+\begin{enumerate}
+    \item 数列$\{b_n\}$单调增加并趋于无穷大；
+    \item 存在极限 $\displaystyle\lim_{n\rightarrow\infty} \frac{a_{n+1}-a_n}{b_{n+1}-b_n} = L$。
+\end{enumerate}
+那么，若$\{b_n\}$的增量$b_{n+1}-b_n$满足$\displaystyle\sum_{n=1}^{\infty}(b_{n+1}-b_n)=\infty$，则有
+\[
+\lim_{n\rightarrow\infty}\frac{a_n}{b_n}=L.
+\]
+
+\subsection{证明思路}
+Stolz定理的证明通常基于柯西收敛原理和单调有界原理。
+\begin{enumerate}
+    \item 假设前提成立：设有数列$\{a_n\}$和$\{b_n\}$，$\{b_n\}$单调递增且趋于无穷大，且
+    \[
+    \lim_{n\rightarrow\infty}\frac{a_{n+1}-a_n}{b_{n+1}-b_n}=L.
+    \]
+    \item 构造辅助数列：定义 $\displaystyle d_n=\frac{a_n}{b_n}$。
+    \item 应用柯西收敛原理：$\forall \varepsilon>0$，$\exists N\in\mathbb{N}^*$，当$n>N$时，
+    \[
+    \left|\frac{a_{n+1}-a_n}{b_{n+1}-b_n}-L\right|<\varepsilon.
+    \]
+    \item 估计差异：对任意$m>n>N$，$b_m-b_n>0$，于是
+    \[
+    \left|\frac{a_m}{b_m}-\frac{a_n}{b_n}\right|
+    =\left|\frac{a_mb_n -a_nb_m}{b_mb_n}\right|
+    \le\left|\frac{(a_{n+1}-a_n)+(a_{n+2}-a_{n+1})+\cdots+(a_m-a_{m-1})}{b_m-b_n}\right|.
+    \]
+    \item 应用极限定义：
+    \[
+    \left|\frac{(a_{n+1}-a_n)+(a_{n+2}-a_{n+1})+\cdots+(a_m-a_{m-1})}{b_m-b_n}-L\right|<\varepsilon.
+    \]
+    \item 结论：$\displaystyle\lim_{n\rightarrow\infty}\frac{a_n}{b_n}=L$。
+\end{enumerate}
+
+\section{柯西收敛原理}
+柯西收敛原理是实数系中判断数列收敛的充要条件。
+
+设$\{a_n\}_{n=1}^{\infty}$是一个数列，如果$\forall \varepsilon>0$，存在正整数$N$，使得对一切$m,n>N$，都有
+\[
+|a_m - a_n|<\varepsilon,
+\]
+则称$\{a_n\}$为柯西数列。
+
+\textbf{柯西收敛原理：} 在实数域上，数列$\{a_n\}$收敛的充分必要条件是$\{a_n\}$为柯西数列。
+
+\section{达布定理(Darboux定理)}
+若函数$f$在闭区间$[a,b]$上连续，在开区间$(a,b)$内可导，则对介于$f'(a),f'(b)$之间的任意实数$m$，至少存在一点$c\in(a,b)$，使得
+\[
+f'(c)=m.
+\]
+>说明：导函数具有介值性，导函数不会发生第一类跳跃间断。
+
+\section{常用积分公式}
+\subsection{区间再现公式}
+\[
+\int_a^b f(x)\,dx=\int_a^b f(a+b-x)\,dx
+\]
+
+\subsection{华里士公式（点火公式）}
+\[
+\int_{0}^{\frac{\pi}{2}} \sin^n x \, dx = \int_{0}^{\frac{\pi}{2}} \cos^n x \, dx
+=
+\begin{cases}
+\displaystyle \frac{(n-1)!!}{n!!} \cdot \frac{\pi}{2}, & n\text{ 为偶数} \\[6pt]
+\displaystyle \frac{(n-1)!!}{n!!}, & n\text{ 为奇数}
+\end{cases}
+\]
+
+推广：
+\[
+\int_{0}^{\frac{\pi}{2}} \sin^n x \cos^m x \, dx
+=
+\begin{cases}
+\displaystyle\frac{(m-1)!!\,(n-1)!!}{(m+n)!!}\cdot \frac{\pi}{2}, & m,n\text{ 全为偶数}\\[6pt]
+\displaystyle\frac{(m-1)!!\,(n-1)!!}{(m+n)!!}, & m,n\text{ 不全为偶数}
+\end{cases}
+\]
+
+\subsection{表格积分法（分部积分推广）}
+设$u(x),v(x)$均有直到$n+1$阶导数，则
+\[
+\int u\, v^{(n+1)} dx
+\]
+\[
+\begin{array}{c|c}
+\text{求导}u & \text{积分}v^{(n+1)} \\
+\hline
+u & v^{(n+1)} \\
+u' & v^{(n)} \\
+u'' & v^{(n-1)} \\
+\vdots & \vdots
+\end{array}
+\]
+
+\section{欧拉公式}
+\[
+e^{i\theta}=\cos\theta+i\sin\theta,\qquad
+e^{-i\theta}=\cos\theta-i\sin\theta
+\]
+
+\section{重积分的变量代换}
+% p87 笔记占位
+设变换 $T:\begin{cases}x=x(u,v)\\y=y(u,v)\end{cases}$，雅可比行列式
+\[
+J=\frac{\partial(x,y)}{\partial(u,v)}
+=\begin{vmatrix}
+\dfrac{\partial x}{\partial u} & \dfrac{\partial x}{\partial v}\\[4pt]
+\dfrac{\partial y}{\partial u} & \dfrac{\partial y}{\partial v}
+\end{vmatrix}
+\]
+\[
+\iint_D f(x,y)\,dxdy
+=\iint_{D'} f\big(x(u,v),y(u,v)\big)\,|J|\,dudv
+\]
+
+\section{含参变量的积分}
+设函数
+\[
+I(y)=\int_a^b f(x,y)\,dx
+\]
+
+\section{常见幂级数展开式}
+\[
+\ln(1+x)=\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n}x^n,\quad |x|<1
+\]
+\[
+e^x=\sum_{n=0}^{\infty}\frac{x^n}{n!},\quad x\in\mathbb R
+\]
+\[
+\cos x=\sum_{n=0}^{\infty}\frac{(-1)^n}{(2n)!}x^{2n},\quad x\in\mathbb R
+\]
+\[
+\frac{1}{1+x}=\sum_{n=0}^{\infty} (-1)^n x^n,\quad |x|<1
+\]

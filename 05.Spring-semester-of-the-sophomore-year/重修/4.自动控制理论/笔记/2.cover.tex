@@ -1,0 +1,45 @@
+% 封面定义（自动控制理论专用 · 深度优化版）
+% 直接生成封面，无需额外命令封装
+
+\begin{titlepage}
+    % 临时修改边距（与主文件全局设置区分）
+    \newgeometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+    \centering
+    
+    % 顶部留白（使用相对高度，适应不同页面比例）
+    \vspace*{0.1\textheight}
+    
+    % 学科引言
+    {\Large \itshape 模型析特性，控制定精准}\\[0.6cm]
+    \rule{\textwidth}{1pt}\\[1cm]
+    
+    % 主标题（增加行距避免拥挤）
+    {\Huge \bfseries 自动控制理论（EE3003）}\\[10pt]
+    {\LARGE \bfseries 课程笔记}\\[1.2cm]
+    
+    % 核心信息区（优化表格对齐）
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{@{}ll@{}}
+        \textbf{内容概要} & 数学模型 | 时域分析 | 根轨迹 | 频域分析 | 校正 \\
+        \textbf{适用场景} & 课程复习 · 公式速查 \\
+        \textbf{适用专业} & 2024级电气工程及其自动化 \\
+    \end{tabular}\\[1.5cm]
+    
+    % 作者与网址（网址可点击）
+    {\Large \textbf{整理者：} duckweed}\\[5pt]
+    {\large \url{https://github.com/Duckweed-yhb}}\\[1cm]
+    
+    % 日期与版本（版本号可集中定义）
+    {\large 整理日期：\today}\\[0.5cm]
+    {\large \textbf{版本：v0.8 优化版}}\\[0.5cm]
+    
+    % 底部版权
+    \rule{\textwidth}{0.5pt}\\[0.3cm]
+    {\small \itshape Copyright \textcopyright \ \the\year\ duckweed · 禁止商用 · 欢迎交流}
+    
+    \vfill
+    \restoregeometry
+\end{titlepage}
+
+% 如需在 PDF 书签中添加封面条目，取消下一行注释
+% \pdfbookmark[0]{封面}{cover}

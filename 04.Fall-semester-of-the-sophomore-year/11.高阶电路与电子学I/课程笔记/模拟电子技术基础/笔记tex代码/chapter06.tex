@@ -1,0 +1,102 @@
+% 第6章 信号的运算和处理
+\chapter{信号的运算和处理}
+
+\section{基本运算电路}
+\subsection{概述}
+基本运算电路以集成运放为核心，工作在线性区（引入深度负反馈），利用“虚短”（$u_+ = u_-$）和“虚断”（$i_+ = i_- = 0$）特性，实现比例、加减、积分、微分等数学运算。
+
+\subsection{比例运算电路}
+\subsubsection{反相比例运算电路}
+\paragraph{基本电路}
+核心公式：
+\[ u_O = -\frac{R_F}{R_1} u_I \]
+其中：
+\begin{itemize}
+    \item $R_F$：反馈电阻，$R_1$：输入电阻；
+    \item 输入电阻 $R_i = R_1$，输出电阻 $R_o \approx 0$；
+    \item 平衡电阻 $R_2 = R_1 \parallel R_F$（消除输入偏置电流影响）。
+\end{itemize}
+
+\paragraph{T形反相比例运算电路}
+解决高增益下 $R_F$ 过大的问题，电压放大倍数：
+\[ u_O = -\frac{R_2 + R_4}{R_1} \cdot \frac{R_4}{R_2 + R_4} u_I = -\left( \frac{R_2}{R_1} + \frac{R_4}{R_1} + \frac{R_2 R_4}{R_1 R_3} \right) u_I \]
+
+\subsubsection{同相比例运算电路}
+核心公式：
+\[ u_O = \left(1 + \frac{R_F}{R_1}\right) u_I \]
+特点：输入电阻极高（$R_i \to \infty$），输出电阻极低，无反相。
+
+\subsubsection{电压跟随器}
+同相比例运算电路的特例（$R_F = 0$ 或 $R_1 \to \infty$）：
+\[ u_O = u_I \]
+特点：电压放大倍数 $A_u = 1$，输入电阻极高，输出电阻极低，用于隔离、缓冲。
+
+\subsection{加减运算电路}
+\subsubsection{求和运算电路}
+\paragraph{反相求和运算电路}
+多输入信号接反相端，输出为各输入信号的比例和：
+\[ u_O = -\left( \frac{R_F}{R_1} u_{I1} + \frac{R_F}{R_2} u_{I2} + \dots + \frac{R_F}{R_n} u_{In} \right) \]
+若 $R_1 = R_2 = \dots = R_n = R$，则 $u_O = -\frac{R_F}{R} (u_{I1} + u_{I2} + \dots + u_{In})$。
+
+\paragraph{同相求和运算电路}
+多输入信号接同相端，输出为各输入信号的同相比例和：
+\[ u_O = \left(1 + \frac{R_F}{R_1}\right) \cdot \frac{R_2 \parallel R_3 \parallel \dots \parallel R_n}{R_1'} u_{I1} + \dots + \left(1 + \frac{R_F}{R_1}\right) \cdot \frac{R_1' \parallel R_3 \parallel \dots \parallel R_n}{R_2} u_{In} \]
+（$R_1'$ 为同相端平衡电阻）
+
+\subsubsection{加减运算电路}
+输入信号同时接反相端和同相端，实现加减运算：
+\[ u_O = \left(1 + \frac{R_F}{R_1}\right) \cdot \frac{R_3}{R_2 + R_3} u_{I2} - \frac{R_F}{R_1} u_{I1} \]
+（以两路输入为例，$u_{I1}$ 接反相端，$u_{I2}$ 接同相端）
+
+\subsection{积分运算电路和微分运算电路}
+\subsubsection{积分运算电路}
+核心公式（反相积分）：
+\[ u_O = -\frac{1}{R_1 C_F} \int_{0}^{t} u_I dt + u_O(0) \]
+其中 $u_O(0)$ 为初始电压，实现输入电压对时间的积分，用于波形变换（方波→三角波）、延时等。
+
+\subsubsection{微分运算电路}
+积分的逆运算，核心公式：
+\[ u_O = -R_F C_1 \frac{du_I}{dt} \]
+特点：对高频噪声敏感，实用电路需增加RC补偿网络抑制噪声。
+
+\subsubsection{逆函数运算电路}
+利用积分与微分的逆关系，或通过反馈网络实现运算的逆变换，如微分是积分的逆函数。
+
+\section{模拟乘法器及其在运算电路中的应用}
+\subsection{模拟乘法器基本特性}
+模拟乘法器实现两路输入信号的乘法运算：
+\[ u_O = k u_{X} u_{Y} \]
+其中 $k$ 为乘法系数（单位：$\text{V}^{-1}$）。
+
+\subsection{典型应用}
+\begin{itemize}
+    \item 乘方运算：$u_X = u_Y = u_I$，则 $u_O = k u_I^2$；
+    \item 除法运算：乘法器接在运放反馈回路，实现除法；
+    \item 开方运算：除法运算的特例，实现平方根、立方根等；
+    \item 调制/解调：用于通信系统的信号调制与解调。
+\end{itemize}
+
+\section{有源滤波电路}
+\subsection{滤波电路概述}
+有源滤波电路由集成运放（有源器件）和RC网络组成，无需电感，具有增益且输入电阻高、输出电阻低。
+滤波类型：低通、高通、带通、带阻、全通。
+
+\subsection{低通滤波器（LPF）}
+\subsubsection{一阶有源低通滤波器}
+传递函数：
+\[ A_u(s) = \frac{U_O(s)}{U_I(s)} = \frac{1 + \frac{R_F}{R_1}}{1 + sRC} = \frac{A_{up}}{1 + \frac{s}{\omega_0}} \]
+其中：
+\begin{itemize}
+    \item $A_{up} = 1 + \frac{R_F}{R_1}$（通带电压放大倍数）；
+    \item $\omega_0 = \frac{1}{RC}$（截止角频率），$f_0 = \frac{1}{2\pi RC}$（截止频率）；
+    \item 特性：允许低频信号通过，抑制高频信号，幅频特性波特图斜率为-20dB/十倍频。
+\end{itemize}
+
+\subsubsection{二阶有源低通滤波器}
+相比一阶，幅频特性在截止频率后衰减更快（-40dB/十倍频），滤波效果更好，常见形式为压控电压源（VCVS）低通滤波器。
+
+\section{电子信息（补充说明）}
+注：本小节为大纲预留章节，可补充有源滤波电路的工程应用、信号处理系统的组成等内容。
+
+\section{例题参考}
+10

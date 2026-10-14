@@ -1,0 +1,122 @@
+% 电磁场课程笔记 - 主文档
+% 版本：1.0 完整版
+% 作者：浮萍
+% GitHub：https://github.com/Duckweed-yhb
+% 邮箱：3071974740@qq.com
+
+\documentclass{article}
+% ==================== 基础宏包 ====================
+\usepackage{ctex}                 % 中文支持
+\usepackage{amsmath,amssymb}      % 数学公式
+\usepackage{esint}                % 环路积分 \oiint 支持
+\usepackage{booktabs}             % 表格美化
+\usepackage{array}                % 表格扩展
+\usepackage{xcolor}               % 颜色
+\usepackage{enumitem}             % 列表
+\usepackage{geometry}             % 页面设置
+\usepackage{titlesec}             % 章节标题
+\usepackage{titletoc}             % 目录样式
+\usepackage{empheq}               % 公式盒子增强
+
+% ==================== 彩色公式框（统一全局样式） ====================
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% 统一：重点公式彩色背景框（护眼浅蓝，无黑框）
+\newtcolorbox{keyformulabox}{
+    colback=blue!8!white,
+    colframe=transparent,
+    boxrule=0pt,
+    arc=2pt,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm,
+    halign=center,
+    capture=minipage,
+    nobeforeafter,
+    width=\linewidth
+}
+
+% 兼容旧命令 \keyformula{...} 自动转为彩色框
+\newcommand{\keyformula}[1]{%
+    \begin{keyformulabox}%
+        \displaystyle #1%
+    \end{keyformulabox}%
+}
+
+% ==================== 页面设置 ====================
+\geometry{a4paper,margin=2.5cm}
+\setlength{\parindent}{0pt}         % 取消首行缩进
+\linespread{1.25}                   % 舒适行距
+
+% ==================== 列表全局样式 ====================
+\setlist[itemize]{
+    label=\ensuremath{\boldsymbol{\cdot}},
+    leftmargin=1.8em,
+    itemsep=0.5em,
+    parsep=0.3em,
+    font=\normalfont
+}
+
+% ==================== 章节标题美化 ====================
+\titleformat{\section}
+  {\centering\Large\bfseries\color{blue!70!black}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{black}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{black!80}}
+  {\thesubsubsection}{1em}{}
+
+% ==================== 目录美化 ====================
+\renewcommand{\contentsname}{\centering\Huge\bfseries 目录}
+\titlecontents{section}[0pt]{\bfseries}{\thecontentslabel\quad}{}{\titlerule*[10pt]{.}\contentspage}
+\titlecontents{subsection}[1.2em]{\small}{\thecontentslabel\quad}{}{\titlerule*[10pt]{.}\contentspage}
+
+% ==================== 常用数学符号简化定义 ====================
+\newcommand{\vecE}{\vec{E}}
+\newcommand{\vecD}{\vec{D}}
+\newcommand{\vecP}{\vec{P}}
+\newcommand{\vecF}{\vec{F}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecp}{\vec{p}}
+\newcommand{\rmd}{\mathrm{d}}        % 标准微分符号
+\newcommand{\veczero}{\vec{0}}       % 零矢量
+\newcommand{\eps}{\varepsilon}       % 介电常数
+\newcommand{\rvec}{\vec{r}}          % 位置矢量
+
+% ==================== 超链接（必须最后加载） ====================
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    anchorcolor=blue!70!black,
+    citecolor=black,
+    urlcolor=blue,
+    bookmarksnumbered=true,
+    pdfencoding=unicode,
+    pdfauthor={浮萍},
+    pdftitle={电磁场课程笔记},
+    pdfsubject={电磁场与电磁波},
+    pdfkeywords={电磁场,静电场,恒定电场,矢量分析}
+}
+
+\begin{document}
+% 封面
+\input{2.cover.tex}
+
+% 目录
+\newpage
+\tableofcontents
+\newpage
+
+% 章节内容
+\input{3.矢量分析.tex}
+\input{4.静电场.tex}
+\input{5.恒定电场.tex}
+\input{6.恒定磁场.tex}
+\input{7.时变电磁场.tex}
+\input{8.准静态电磁场.tex}
+\end{document}

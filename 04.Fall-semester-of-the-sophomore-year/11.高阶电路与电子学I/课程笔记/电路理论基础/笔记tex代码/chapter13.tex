@@ -1,0 +1,116 @@
+\chapter{均匀传输线}
+
+\section{均匀传输线及其方程}
+\begin{itemize}
+    \item 电路参数的分布性
+    \item 均匀线方程：
+    \[
+    \begin{cases} 
+    -\dfrac{\partial u}{\partial x} = R_0 i + L_0 \dfrac{\partial i}{\partial t} \\ 
+    -\dfrac{\partial i}{\partial x} = G_0 u + C_0 \dfrac{\partial u}{\partial t} 
+    \end{cases}
+    \]
+\end{itemize}
+
+\section{均匀传输线方程的正弦稳态解}
+正弦稳态下相量形式：
+\[
+\begin{cases} 
+-\dfrac{\mathrm{d}\dot{U}(x)}{\mathrm{d}x} = \left(R_0 + \mathrm{j}\omega L_0\right)\dot{I}(x) = Z_0 \dot{I}(x) \\ 
+-\dfrac{\mathrm{d}\dot{I}(x)}{\mathrm{d}x} = \left(G_0 + \mathrm{j}\omega C_0\right)\dot{U}(x) = Y_0 \dot{U}(x) 
+\end{cases}
+\]
+
+二阶微分方程：
+\[
+\begin{cases} 
+\dfrac{\mathrm{d}^2 \dot{U}(x)}{\mathrm{d}x^2} = Z_0 Y_0 \dot{U}(x) = \gamma^2 \dot{U}(x) \\ 
+\dfrac{\mathrm{d}^2 \dot{I}(x)}{\mathrm{d}x^2} = Z_0 Y_0 \dot{I}(x) = \gamma^2 \dot{I}(x) 
+\end{cases}
+\]
+
+传播常数：
+\[
+\gamma = \sqrt{\left(R_0 + \mathrm{j}\omega L_0\right)\left(G_0 + \mathrm{j}\omega C_0\right)} = \alpha + \mathrm{j}\beta
+\]
+
+通解：
+\[
+\begin{cases} 
+\dot{U}(x) = A_1 \mathrm{e}^{-\gamma x} + A_2 \mathrm{e}^{\gamma x} \\ 
+\dot{I}(x) = B_1 \mathrm{e}^{-\gamma x} + B_2 \mathrm{e}^{\gamma x} 
+\end{cases}
+\]
+
+特性阻抗（波阻抗）：
+\[
+Z_{\mathrm{c}} = \sqrt{\frac{R_0 + \mathrm{j}\omega L_0}{G_0 + \mathrm{j}\omega C_0}}
+\]
+
+边界条件（始端$U_1,I_1$）：
+\[
+\begin{cases} 
+\dot{U}(x) = \dot{U}_1 \cosh \gamma x - \dot{I}_1 Z_{\mathrm{c}} \sinh \gamma x \\ 
+\dot{I}(x) = -\dfrac{\dot{U}_1}{Z_{\mathrm{c}}} \sinh \gamma x + \dot{I}_1 \cosh \gamma x 
+\end{cases}
+\]
+
+矩阵形式：
+\[
+\begin{bmatrix} 
+\dot{U}(x) \\ 
+\dot{I}(x) 
+\end{bmatrix} = 
+\begin{bmatrix} 
+\cosh \gamma x & -Z_{\text{c}} \sinh \gamma x \\ 
+-\dfrac{1}{Z_{\text{c}}} \sinh \gamma x & \cosh \gamma x 
+\end{bmatrix}
+\begin{bmatrix} 
+\dot{U}_1 \\ 
+\dot{I}_1 
+\end{bmatrix}
+\]
+
+\section{均匀传输线上的行波}
+\subsection{行波}
+电压电流分解为正向/反向行波：
+\[
+\dot{U}(x) = \dot{U}^+(x) + \dot{U}^-(x),\quad \dot{I}(x) = \dot{I}^+(x) - \dot{I}^-(x)
+\]
+
+相速：$v_p=\frac{\omega}{\beta}$，波长：$\lambda=\frac{2\pi}{\beta}$
+
+\subsection{波的反射与终端匹配}
+终端反射系数：
+\[
+N_2 = \frac{Z_L - Z_c}{Z_L + Z_c}
+\]
+
+匹配条件：$Z_L=Z_c$（无反射波）
+
+输入阻抗：
+\[
+Z_i = Z_c \frac{Z_L \cosh \gamma l + Z_c \sinh \gamma l}{Z_L \sinh \gamma l + Z_c \cosh \gamma l}
+\]
+
+\section{无损耗线、驻波}
+无损耗线（$R_0=0,G_0=0$）：
+\begin{itemize}
+    \item 传播常数：$\gamma = \mathrm{j}\omega\sqrt{L_0C_0} = \mathrm{j}\beta$
+    \item 波阻抗：$Z_c = \sqrt{\frac{L_0}{C_0}}$（纯实数）
+    \item 终端开路/短路/接负载的电压电流特性
+\end{itemize}
+
+\section{均匀传输线的集中参数等效电路}
+
+\section{无损均匀线方程的通解}
+
+\section{无损均匀线上波的发出}
+
+\section{无损均匀线上波的反射}
+\begin{itemize}
+    \item 终端开路
+    \item 终端短路
+    \item 终端接负载
+    \item 波的反射规律
+\end{itemize}

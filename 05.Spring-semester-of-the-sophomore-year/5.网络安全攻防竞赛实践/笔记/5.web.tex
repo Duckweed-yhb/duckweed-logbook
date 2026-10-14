@@ -1,0 +1,191 @@
+\section{Web 安全}
+\label{sec:web}
+
+\subsection{Web 安全概述}
+Web 安全是 CTF 竞赛中最核心、最常见的题型，主要考察参赛人员对 HTTP 协议、Web 应用漏洞原理、漏洞利用工具、代码审计及渗透测试思路的掌握程度，覆盖前后端全栈安全知识。
+
+\subsubsection{Web 核心学习参考}
+\begin{itemize}[leftmargin=*]
+    \item CTF Wiki Web 安全：\url{https://ctf-wiki.org/web/}
+    \item Burp Suite 实战指南：\url{https://blog.csdn.net/qq_35544379/article/details/76696106}
+    \item SQL 注入从入门到精通：\url{https://blog.csdn.net/phppppppppp/article/details/124968358}
+    \item Hackbar 工具使用教程：\url{https://blog.csdn.net/weixin_49769267/article/details/131501614}
+\end{itemize}
+
+\subsubsection{Web 核心考察方向}
+Web 题目涉及知识面广泛，核心考点主要包括：
+\begin{itemize}[leftmargin=*]
+    \item SQL 注入漏洞与利用
+    \item 文件上传漏洞与解析绕过
+    \item PHP 特性与代码执行绕过
+    \item XSS 跨站脚本攻击
+    \item CSRF 跨站请求伪造
+    \item SSRF 服务器端请求伪造
+    \item 反序列化漏洞
+    \item HTTP 协议与请求包构造
+\end{itemize}
+
+\newpage
+% --------------------- 常用工具
+\subsection{Web 常用工具介绍}
+\begin{table}[htbp]
+    \centering
+    \caption{Web 题型常用工具清单}
+    \begin{tabular}{ll}
+        \toprule
+        工具名称 & 工具用途 \\
+        \midrule
+        Burp Suite & Web 渗透集成平台，代理、重放、爆破、扫描 \\
+        Sqlmap & 自动化 SQL 注入检测与利用工具 \\
+        Hackbar & Firefox 插件，快速构造 HTTP 请求 \\
+        Dirsearch & Web 目录扫描、隐藏路径爆破 \\
+        蚁剑/冰蝎/Weevely & 网站后门管理、文件管理、命令执行 \\
+        Nmap & 端口扫描、服务探测 \\
+        Wireshark & HTTP/HTTPS 流量抓包与分析 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection{Kali Linux 渗透测试系统}
+Kali Linux 是基于 Debian 的 Linux 发行版，专为渗透测试、数字取证设计，预装大量 Web 安全工具，是 CTF Web 题目的标准实验环境。
+\begin{itemize}[leftmargin=*]
+    \item 官网：\url{https://www.kali.org/}
+    \item 核心工具：Burp Suite、Sqlmap、Nmap、Wireshark 等
+\end{itemize}
+
+\newpage
+% --------------------- 核心工具详解
+\subsection{核心工具详解}
+
+\subsubsection{Hackbar 工具}
+Hackbar 是 Firefox 浏览器插件，用于快速编辑、发送 HTTP 请求，支持编码解码、加密、参数修改，是 Web 入门必备工具。
+
+\begin{itemize}[leftmargin=*]
+    \item 加载 URL、快速修改 GET/POST 参数
+    \item 支持 URL、Base64、16 进制编码解码
+    \item 支持 MD5、SHA1、SHA256 哈希计算
+    \item 一键发送请求，查看响应结果
+\end{itemize}
+
+\subsubsection{Burp Suite 工具}
+Burp Suite 是 Web 安全最核心工具，提供完整渗透测试工具链：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Proxy}：HTTP/HTTPS 代理，拦截修改请求
+    \item \textbf{Repeater}：手动重放 HTTP 请求
+    \item \textbf{Intruder}：暴力破解、Fuzz 测试
+    \item \textbf{Decoder}：编码解码工具箱
+\end{itemize}
+
+\subsubsection{SQLmap 工具}
+SQLmap 是自动化 SQL 注入工具，可自动检测、利用注入漏洞，获取数据库权限、数据。
+
+常用命令：
+\begin{itemize}[leftmargin=*]
+    \item 探测注入点：\texttt{sqlmap -u "url"}
+    \item 枚举所有数据库：\texttt{--dbs}
+    \item 查看表名：\texttt{-D 库名 --tables}
+    \item 脱库数据：\texttt{--dump}
+\end{itemize}
+
+\newpage
+% --------------------- HTTP 协议基础
+\subsection{HTTP 请求协议基础}
+
+\subsubsection{GET 请求}
+\begin{itemize}[leftmargin=*]
+    \item 用于从服务器获取数据
+    \item 参数直接拼接在 URL 中
+    \item 长度受限、参数可见
+\end{itemize}
+
+\subsubsection{POST 请求}
+\begin{itemize}[leftmargin=*]
+    \item 用于向服务器提交数据
+    \item 参数放在请求体中
+    \item 长度无限制、更安全
+\end{itemize}
+
+\subsubsection{HTTP 常见请求头}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Host}：目标主机地址
+    \item \textbf{User-Agent}：客户端标识
+    \item \textbf{Cookie}：用户身份凭证
+    \item \textbf{Referer}：请求来源页面
+    \item \textbf{X-Forwarded-For}：客户端真实 IP
+\end{itemize}
+
+\newpage
+% --------------------- HTTP 请求示例
+\subsection{HTTP 请求示例}
+
+\subsubsection{GET 请求示例}
+\begin{verbatim}
+GET /index.html HTTP/1.1
+Host: www.test.com
+User-Agent: Mozilla/5.0
+Accept: */*
+Connection: close
+\end{verbatim}
+
+\subsubsection{POST 请求示例}
+\begin{verbatim}
+POST /login HTTP/1.1
+Host: www.test.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 20
+
+username=admin&password=123
+\end{verbatim}
+
+\newpage
+% --------------------- Hackbar 实验
+\subsection{Hackbar 使用实验}
+
+\subsubsection{实验目的}
+\begin{itemize}[leftmargin=*]
+    \item 掌握 GET/POST 请求区别
+    \item 能够使用 Hackbar 构造、修改、发送 HTTP 请求
+    \item 理解 HTTP 请求头作用并能手动修改
+    \item 完成基础 Web 题目测试
+\end{itemize}
+
+\subsubsection{实验步骤}
+\begin{enumerate}[leftmargin=*]
+    \item 安装 Firefox 与 Hackbar 插件
+    \item 加载目标 URL，熟悉工具面板
+    \item 构造 GET 请求，修改参数并发送
+    \item 构造 POST 请求，填写请求体数据
+    \item 修改 Referer、X-Forwarded-For 等请求头
+    \item 观察服务器响应并记录结果
+\end{enumerate}
+
+\subsubsection{实验要求}
+\begin{itemize}[leftmargin=*]
+    \item 独立完成 HTTP 请求构造
+    \item 熟练使用编码解码功能
+    \item 提交完整实验记录与测试截图
+\end{itemize}
+
+\newpage
+% --------------------- 通用解题思路
+\subsection{Web 安全通用解题思路}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{信息收集}：目录扫描、端口扫描、查看页面源码
+    \item \textbf{抓包分析}：使用 Burp Suite 抓取 HTTP 请求
+    \item \textbf{漏洞判断}：识别 SQL 注入、文件上传、XSS 等漏洞
+    \item \textbf{工具利用}：使用 SQLmap、Hackbar 等完成利用
+    \item \textbf{权限提升}：获取网站权限、读取 flag
+    \item \textbf{提交 flag}
+\end{enumerate}
+
+\newpage
+% --------------------- 参考文献
+\subsection{参考文献}
+\begin{enumerate}[leftmargin=*]
+    \item CTF Wiki Web 安全官方文档：\url{https://ctf-wiki.org/web/}
+    \item 《白帽子讲 Web 安全》，吴翰清，电子工业出版社
+    \item 《CTF 特训营：技术详解、解题方法与竞赛技巧》
+    \item Burp Suite 官方文档：\url{https://portswigger.net/burp/documentation}
+    \item SQLmap 官方使用手册：\url{https://sqlmap.org/}
+    \item HTTP 协议官方标准：\url{https://www.w3.org/Protocols/rfc2616/rfc2616.html}
+\end{enumerate}

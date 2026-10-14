@@ -1,0 +1,326 @@
+\documentclass[twoside]{article} 
+\usepackage{ctex}          
+\usepackage{tikz}          
+\usetikzlibrary{positioning, arrows.meta, patterns, shapes.geometric}
+\usepackage{enumitem}      
+\usepackage{geometry}      
+\usepackage{float}         
+\usepackage{amsmath}       
+\usepackage{caption}       
+\usepackage{fancyhdr}      
+\usepackage{hyperref}      
+\usepackage{booktabs}      
+\usepackage{siunitx}       
+\usepackage{graphicx}      
+\usepackage{setspace}      
+
+% 页面设置
+\geometry{margin=2.5cm, headheight=13pt} 
+\setlength{\headheight}{13pt}
+\onehalfspacing 
+
+% 字体设置（适配Windows系统，避免字体缺失）
+\setCJKmainfont{SimSun}
+\setmainfont{Times New Roman}
+\setCJKsansfont{Microsoft YaHei}
+
+% 页眉页脚设置
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyhead[LO]{\leftmark}  
+\fancyhead[RO]{\thepage}   
+\fancyhead[LE]{\rightmark} 
+\fancyhead[RE]{\thepage}   
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% 标题格式
+\title{\textbf{高阶电路与电子学实验 — 综合实验实验报告}}
+\author{余泓彬}
+\date{实验时间：2025 年 12 月 5 日 \quad 完成时间：2025 年 12 月 6 日}
+
+\begin{document}
+
+% 标题页
+\maketitle
+\thispagestyle{empty}
+
+% 目录
+\tableofcontents
+\clearpage
+
+% 总体设计方案与电路拓扑
+\section{总体设计方案与电路拓扑}
+\thispagestyle{fancy}
+
+\subsection{总体设计方案（技术路线）}
+以下为多信号发生器的核心技术路线流程图：
+\begin{center}
+\begin{tikzpicture}[
+    block/.style={rectangle, draw, minimum width=2cm, minimum height=0.7cm, align=center, font=\small},
+    arrow/.style={->, thick, >=Stealth, shorten >=1pt},
+    label/.style={font=\footnotesize, midway}
+]
+    \node[block] (step1) {1. 生成基础方波信号};
+    \node[block, right=3cm of step1] (step2) {2. 方波转占空比可调窄脉冲};
+    \draw[arrow] (step1) -- (step2) node[label, above] {转换};
+    
+    \node[block, below=1.2cm of step2] (step3) {3. 方波转正弦波};
+    \draw[arrow] (step1.south east) -- (step3.west) node[label, left] {转换};
+    
+    \node[block, right=3cm of step3] (step4) {4. 正弦波转余弦波};
+    \draw[arrow] (step3) -- (step4) node[label, above] {移相$90^\circ$};
+\end{tikzpicture}
+\end{center}
+\label{sec:technical-route}
+
+\subsection{实验电路拓扑（模块流向）}
+下图为实验核心电路的模块拓扑与信号流向：
+\begin{center}
+\begin{tikzpicture}[
+    block/.style={rectangle, draw, minimum width=1.8cm, minimum height=0.7cm, align=center, font=\small},
+    arrow/.style={->, thick, >=Stealth, shorten >=1pt},
+    label/.style={font=\footnotesize, midway}
+]
+    % 第一行
+    \node[block] (gen) {方波发生器};
+    \node[block, right=3.5cm of gen] (square) {方波 $U_{o1}$};
+    \draw[arrow] (gen) -- (square) node[label, above] {直接输出};
+    
+    % 第二行
+    \node[block, below=1.2cm of gen] (mono) {单稳态触发器};
+    \draw[arrow] (gen.south) -- (mono.north) node[label, left] {触发};
+    \node[block, right=3.5cm of mono] (pulse) {占空比可调 窄脉冲 $U_{o2}$};
+    \draw[arrow] (mono) -- (pulse) node[label, above] {输出};
+    
+    % 第三行
+    \node[block, below=1.2cm of mono] (rc) {RC 低通滤波器};
+    \draw[arrow] (mono.south) -- (rc.north);
+    \node[block, right=3.5cm of rc] (sine) {正弦波 $U_{o3}$};
+    \draw[arrow] (rc) -- (sine) node[label, above] {滤波输出};
+    
+    % 第四行
+    \node[block, right=2cm of sine] (phase) {移相电路};
+    \draw[arrow] (sine) -- (phase) node[label, above] {输入};
+    \node[block, right=2cm of phase] (cosine) {余弦波 $U_{o4}$};
+    \draw[arrow] (phase) -- (cosine) node[label, above] {移相输出};
+\end{tikzpicture}
+\end{center}
+\label{sec:circuit-topology}
+
+\subsection{模块选取原因}
+\begin{enumerate}[label=\arabic*., leftmargin=2em, itemsep=0.3em]
+    \item \textbf{方波发生器}：选用“运放 + 与非门”组合，兼顾数字电路振荡稳定与模拟电路参数易调的优势，可快速生成 \SI{19}{\kilo\hertz}~\SI{21}{\kilo\hertz} 目标频率方波；
+    \item \textbf{占空比可调窄脉冲模块}：采用“方波触发单稳态触发器”方案，通过电位器调节暂稳态时间，实现窄脉冲占空比连续可调；
+    \item \textbf{方波转正弦波模块}：采用 RC 低通滤波电路，利用电容衰减高次谐波，低成本实现方波→正弦波的波形变换；
+    \item \textbf{正弦波转余弦波模块}：选用 RC 移相电路，对正弦波实现$90^\circ$相位偏移，无需额外信号源，提升电路集成度。
+\end{enumerate}
+\label{sec:module-selection}
+
+% 无源器件参数计算
+\section{无源器件参数计算过程}
+
+\subsection{方波发生器参数计算}
+\subsubsection{核心公式}
+\[ T = 2R_4C \cdot \ln\left(1+\frac{2R_1}{R_3}\right) \]
+频率范围：$f=\SI{19}{\kilo\hertz} \sim \SI{21}{\kilo\hertz}$，对应周期 $T\approx \SI{47.6}{\micro\second} \sim \SI{52.6}{\micro\second}$。
+
+\subsubsection{参数计算}
+电容：$C=\SI{10}{\nano\farad}$；
+电阻：$R_3=\SI{15}{\kilo\ohm}$，$R_1=R_2=\SI{10}{\kilo\ohm}$；
+可调电阻：$R_4=\SI{2.55}{\kilo\ohm}$（电位器，覆盖目标频率范围）。
+\label{sec:square-generator-calc}
+
+\subsection{占空比可调窄脉冲参数计算}
+\subsubsection{核心公式}
+\[ t_W = R_6C_2 \cdot \ln\left(1+\frac{V_{\text{CC}}}{V_{\text{ref}}}\right) \]
+
+\subsubsection{参数计算}
+电容：$C_2=\SI{10}{\nano\farad}$；
+电阻：$R_5=\SI{10}{\kilo\ohm}$，$R_6=\SI{20}{\kilo\ohm}$（电位器）；
+暂稳态时间：$t_W \approx \SI{138.6}{\micro\second}$，满足窄脉冲要求。
+\label{sec:pulse-calc}
+
+\subsection{正弦波低通滤波器参数计算}
+\subsubsection{核心公式}
+\[ \omega_0 = \frac{1}{R_8C_3} = \frac{1}{R_9C_4} \]
+
+\subsubsection{参数计算}
+电阻：$R_8=R_9=\SI{10}{\kilo\ohm}$；
+电容：$C_3=C_4=\SI{2}{\nano\farad}$（保证 THD<5\%）。
+\label{sec:filter-calc}
+
+\subsection{余弦波移相电路参数计算}
+\subsubsection{核心公式}
+\[ \tau = R_{14}C_6 \]
+
+\subsubsection{参数计算}
+电容：$C_6=\SI{1}{\nano\farad}$；
+电阻：$R_{14}=\SI{5}{\kilo\ohm}$（保证移相$90^\circ$）。
+\label{sec:phase-shift-calc}
+
+% 实验步骤与测量数据
+\section{实验步骤与测量数据}
+
+\subsection{实验步骤}
+\begin{enumerate}[label=\arabic*., leftmargin=2em, itemsep=0.3em]
+    \item 打开 Multisim 软件，搭建“方波发生器→单稳态触发器→低通滤波器→移相电路”的完整电路；
+    \item 接入 \SI{+5}{\volt} 直流电源，启动仿真，调节方波发生器电位器，将频率设置为$\SI{19.9}{\kilo\hertz}$；
+    \item 调节单稳态触发器电位器，将窄脉冲占空比设置为$10\%$；
+    \item 用 4 通道示波器（XSC1）同时观测方波、正弦波、窄脉冲、余弦波的波形（波形见 \ref{fig:oscilloscope-waveforms}）；
+    \item 用失真分析仪（XDA）测量正弦波、余弦波的总谐波失真（THD）；
+    \item 记录各信号的频率、峰峰值、失真度等参数（数据汇总见 \ref{tab:signal-parameters}）。
+\end{enumerate}
+\label{sec:experimental-steps}
+
+\subsection{实验测量数据记录}
+\subsubsection{信号参数汇总表}
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{c c c c c}
+        \toprule
+        \textbf{信号类型} & \textbf{频率} & \textbf{峰峰值（$V_{\text{p-p}}$）} & \textbf{失真度（THD）} & \textbf{占空比} \\
+        \midrule
+        方波       & \SI{19.9}{\kilo\hertz} & \SI{5.00}{\volt} & — & — \\
+        正弦波     & \SI{19.9}{\kilo\hertz} & \SI{1.45}{\volt} & $4.510\%$ & — \\
+        窄脉冲     & \SI{19.9}{\kilo\hertz} & \SI{5.00}{\volt} & — & $10\%$ \\
+        余弦波     & \SI{19.9}{\kilo\hertz} & \SI{2.23}{\volt} & $2.018\%$ & — \\
+        \bottomrule
+    \end{tabular}
+    \caption{实验信号参数测量结果}
+    \label{tab:signal-parameters}
+\end{table}
+
+\subsubsection{失真度测量结果}
+正弦波失真度：$4.510\%$（≤5\%，满足实验要求）；
+余弦波失真度：$2.018\%$（≤5\%，满足实验要求）。
+\label{sec:thd-results}
+
+\subsection{波形记录（4 通道示波器波形绘制）}
+\begin{center}
+\begin{tikzpicture}[x=0.1cm, y=0.5cm]
+    % 示波器背景
+    \fill[black] (0,0) rectangle (100,10);
+    \draw[white, dashed] (0,0) grid (100,10) [step={20,2}];
+    \draw[white, thick] (0,0) rectangle (100,10);
+    
+    % 时基 / 量程标注
+    \node[white, font=\tiny] at (10,-1) {时基: \SI{20}{\micro\second}/Div};
+    \node[white, font=\tiny] at (90,-1) {量程: \SI{2}{\volt}/Div};
+    
+    % 通道 A: 方波（红色）
+    \draw[red, thick, line cap=round]
+        (0,5) -- (10,5) -- (10,8) -- (20,8) -- (20,5) -- (30,5) -- (30,8) -- (40,8) -- (40,5) -- (50,5) -- (50,8) -- (60,8) -- (60,5) -- (70,5) -- (70,8) -- (80,8) -- (80,5) -- (90,5) -- (90,8) -- (100,8);
+    
+    % 通道 B: 正弦波（绿色）
+    \draw[green, thick, line cap=round]
+        (0,5) sin (5,7) cos (10,5) sin (15,3) cos (20,5) sin (25,7) cos (30,5) sin (35,3) cos (40,5) sin (45,7) cos (50,5) sin (55,3) cos (60,5) sin (65,7) cos (70,5) sin (75,3) cos (80,5) sin (85,7) cos (90,5) sin (95,3) cos (100,5);
+    
+    % 通道 C: 窄脉冲（青色）
+    \draw[cyan, thick, line cap=round]
+        (0,5) -- (18,5) -- (18,8) -- (20,8) -- (20,5) -- (38,5) -- (38,8) -- (40,8) -- (40,5) -- (58,5) -- (58,8) -- (60,8) -- (60,5) -- (78,5) -- (78,8) -- (80,8) -- (80,5) -- (98,5) -- (98,8) -- (100,8);
+    
+    % 通道 D: 余弦波（蓝色）
+    \draw[blue, thick, line cap=round]
+        (0,7) cos (5,5) sin (10,3) cos (15,5) sin (20,7) cos (25,5) sin (30,3) cos (35,5) sin (40,7) cos (45,5) sin (50,3) cos (55,5) sin (60,7) cos (65,5) sin (70,3) cos (75,5) sin (80,7) cos (85,5) sin (90,3) cos (95,5) sin (100,7);
+\end{tikzpicture}
+\captionof{figure}{4 通道示波器波形（从左到右对应：方波 (红)、正弦波 (绿)、窄脉冲 (青)、余弦波 (蓝)）}
+\label{fig:oscilloscope-waveforms}
+\end{center}
+
+% 实验设备与主要元器件
+\section{实验设备与主要元器件}
+
+\subsection{实验仿真软件}
+\begin{itemize}[leftmargin=2em, itemsep=0.2em]
+    \item 名称：Multisim
+\end{itemize}
+\label{sec:simulation-software}
+
+\subsection{主要元器件}
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{c c}
+        \toprule
+        \textbf{元器件名称} & \textbf{型号 / 参数} \\
+        \midrule
+        四运算放大器       & LM324AD \\
+        四2输入与非门      & SN74LS00D \\
+        定值电阻           & \SI{1}{\kilo\ohm}、\SI{5}{\kilo\ohm}、\SI{10}{\kilo\ohm}、\SI{15}{\kilo\ohm} \\
+        线性电位器         & \SI{2.55}{\kilo\ohm}、\SI{20}{\kilo\ohm} \\
+        陶瓷电容           & \SI{1}{\nano\farad}、\SI{2}{\nano\farad}、\SI{10}{\nano\farad} \\
+        直流电源           & \SI{+5}{\volt} \\
+        4通道示波器        & XSC1（Multisim 内置） \\
+        失真分析仪         & XDA（Multisim 内置） \\
+        \bottomrule
+    \end{tabular}
+    \caption{实验元器件型号参数}
+    \label{tab:components}
+\end{table}
+
+% 实验结论
+\section{实验结论}
+本次实验基于 LM324AD 运放与 SN74LS00D 与非门，成功设计并仿真实现了多信号发生器，实验结论如下：
+\begin{enumerate}[label=\arabic*., leftmargin=2em, itemsep=0.3em]
+    \item 方波发生器可稳定输出 \SI{19}{\kilo\hertz}~\SI{21}{\kilo\hertz} 连续可调的方波信号，峰峰值达 \SI{5.00}{\volt}（数据见 \ref{tab:signal-parameters}）；
+    \item 占空比可调窄脉冲模块实现了 5\%~15\% 连续可调的窄脉冲，峰峰值 \SI{5.00}{\volt}，调节精度符合指标；
+    \item 方波经 RC 低通滤波后得到正弦波，THD 为 4.510\%（≤5\%），峰峰值 \SI{1.45}{\volt}（波形见 \ref{fig:oscilloscope-waveforms}）；
+    \item 正弦波经移相电路后得到余弦波，相位偏移约 $90^\circ$，THD 为 2.018\%，与正弦波正交性良好。
+\end{enumerate}
+综上，本次实验设计的多信号发生器各项指标均达到实验要求，电路功能完整、性能稳定。
+\label{sec:conclusion}
+
+% 问题与对策
+\section{问题与对策}
+实验过程中出现的问题及解决对策如下：
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{c c}
+        \toprule
+        \textbf{问题} & \textbf{对策} \\
+        \midrule
+        方波频率未覆盖 \SI{21}{\kilo\hertz} & 调整电位器阻值为 \SI{2.55}{\kilo\ohm}，扩展频率范围 \\
+        \midrule
+        正弦波失真度超 5\% & 优化滤波器电容为 \SI{2}{\nano\farad}，降低谐波分量 \\
+        \midrule
+        窄脉冲占空比调节不连续 & 更换 \SI{20}{\kilo\ohm} 线性电位器，提升调节线性度 \\
+        \bottomrule
+    \end{tabular}
+    \caption{实验问题与解决对策}
+    \label{tab:problems-solutions}
+\end{table}
+
+% 实验体会与建议
+\section{实验体会与建议}
+
+\subsection{实验体会}
+通过本次实验，深入掌握了方波发生器、单稳态触发器等电路的设计原理，理解了“核心信号源 + 功能模块”的设计思路。同时体会到仿真与理论的差异，需通过调试优化性能，也提升了 Multisim 的操作能力。
+\label{sec:experience}
+
+\subsection{电路优化方向}
+\begin{enumerate}[label=\arabic*., leftmargin=2em, itemsep=0.3em]
+    \item 采用巴特沃斯低通滤波器，将正弦波 THD 降至 3\% 以下；
+    \item 引入数字电位器（如 X9C103），实现占空比与频率的程控调节；
+    \item 增加电压跟随器，提高模块间信号隔离度，减少串扰。
+\end{enumerate}
+\label{sec:optimization}
+
+\subsection{后续研究建议}
+可扩展电路功能，实现信号参数的数字化显示（如 LCD1602）；或与 51 单片机结合，开发“程控多信号发生器”系统，支持上位机远程配置。
+\label{sec:future-research}
+
+% 参考文献（无列表格式，彻底避免missing item错误）
+\section{参考文献}
+[1] TEXAS INSTRUMENTS. LM324B, LM2902B 四路运算放大器数据手册[Z].2025.
+
+[2] TEXAS INSTRUMENTS. SN74LS00D 四2输入与非门数据手册[Z].2017.
+
+[3] 华成英，童诗白.模拟电子技术基础（第5版）[M].北京：高等教育出版社，2015.
+
+[4] Multisim官方教程编写组.Multisim电路仿真与设计[M].北京：电子工业出版社，2020.
+\label{sec:references}
+
+\end{document}

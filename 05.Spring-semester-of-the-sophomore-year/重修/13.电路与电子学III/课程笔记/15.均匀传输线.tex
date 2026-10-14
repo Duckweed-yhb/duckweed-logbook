@@ -1,0 +1,310 @@
+% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
+\chapter{第十三章 均匀传输线}
+
+\section{均匀传输线及其方程}
+电路参数的分布性。
+
+均匀传输线方程：
+\[
+\begin{cases}
+-\dfrac{\partial u}{\partial x} = R_0 i + L_0 \dfrac{\partial i}{\partial t} \\
+-\dfrac{\partial i}{\partial x} = G_0 u + C_0 \dfrac{\partial u}{\partial t}
+\end{cases}
+\]
+
+\section{均匀传输线方程的正弦稳态解}
+由正弦电源激励的均匀线达到稳态时，线路上任一点的电流和线间电压都是同一频率的正弦量，可以用相量法分析沿线的电压和电流。沿线电压和电流可表示如下
+\[
+u(x,t)=\text{Re}\left[\sqrt{2}\dot{U}(x)\text{e}^{\text{j}\omega t}\right]
+\]
+\[
+i(x,t)=\text{Re}\left[\sqrt{2}\dot{I}(x)\text{e}^{\text{j}\omega t}\right]
+\]
+式中。写成如下的相量形式
+\[
+\begin{cases}
+-\dfrac{\mathrm{d}\dot{U}(x)}{\mathrm{d}x} = \left(R_0 + \mathrm{j}\omega L_0\right)\dot{I}(x) = Z_0 \dot{I}(x) \\
+-\dfrac{\mathrm{d}\dot{I}(x)}{\mathrm{d}x} = \left(G_0 + \mathrm{j}\omega C_0\right)\dot{U}(x) = Y_0 \dot{U}(x)
+\end{cases}
+\]
+式中，$Z_0=$；。原来，。将式的两边再对$x$求导，得
+\[
+\begin{cases}
+\dfrac{\mathrm{d}^2 \dot{U}(x)}{\mathrm{d}x^2} = Z_0 Y_0 \dot{U}(x) = \gamma^2 \dot{U}(x) \\
+\dfrac{\mathrm{d}^2 \dot{I}(x)}{\mathrm{d}x^2} = Z_0 Y_0 \dot{I}(x) = \gamma^2 \dot{I}(x)
+\end{cases}
+\]
+式中
+\[
+\gamma = \sqrt{\left(R_0 + \mathrm{j}\omega L_0\right)\left(G_0 + \mathrm{j}\omega C_0\right)} = \alpha + \mathrm{j}\beta
+\]
+$\gamma$是由线路原参数和频率决定的复常数，称为线路的传播常数；其实部$\alpha$称为衰减常数，虚部$\beta$称为相位常数。式通解为
+\[
+\begin{cases}
+\dot{U}(x) = A_1 \mathrm{e}^{-\gamma x} + A_2 \mathrm{e}^{\gamma x} \\
+\dot{I}(x) = B_1 \mathrm{e}^{-\gamma x} + B_2 \mathrm{e}^{\gamma x}
+\end{cases}
+\]
+通解中的待定积分系数$A_1$、$A_2$、$B_1$、$B_2$可由边界条件确定，得到
+\[
+\dot{I}(x) = -\frac{1}{Z_0}\frac{\mathrm{d}\dot{U}(x)}{\mathrm{d}x} = \frac{\gamma}{Z_0}\left(A_1 \mathrm{e}^{-\gamma x} - A_2 \mathrm{e}^{\gamma x}\right)
+\]
+令
+\[
+Z_{\mathrm{c}} = \frac{Z_0}{\gamma} = \frac{R_0 + \mathrm{j}\omega L_0}{\sqrt{\left(R_0 + \mathrm{j}\omega L_0\right)\left(G_0 + \mathrm{j}\omega C_0\right)}} = \sqrt{\frac{R_0 + \mathrm{j}\omega L_0}{G_0 + \mathrm{j}\omega C_0}}
+\]
+$Z_\mathrm{c}$特性阻抗或波阻抗，具有，只与传输线路的原参数和频率相关。所以电流可写为
+\[
+\dot{I}(x) = B_1 \mathrm{e}^{-\gamma x} + B_2 \mathrm{e}^{\gamma x} = \frac{A_1}{Z_{\mathrm{c}}} \mathrm{e}^{-\gamma x} - \frac{A_2}{Z_{\mathrm{c}}} \mathrm{e}^{\gamma x}
+\]
+根据边界条件可以确定积分系数$A_1$和。假设，当以，在，$=$，$=$,可以得到
+\[
+\begin{cases}
+\dot{U}_1 = A_1 + A_2 \\
+\dot{I}_1 = \dfrac{A_1}{Z_{\mathrm{c}}} - \dfrac{A_2}{Z_{\mathrm{c}}}
+\end{cases}
+\]
+解得
+\[
+\begin{cases}
+A_1 = \dfrac{1}{2}\left(\dot{U}_1 + Z_{\mathrm{c}} \dot{I}_1\right) \\
+A_2 = \dfrac{1}{2}\left(\dot{U}_1 - Z_{\mathrm{c}} \dot{I}_1\right)
+\end{cases}
+\]
+代入，得
+\[
+\begin{aligned}
+\dot{U}(x) &= \dfrac{1}{2}\left(\dot{U}_1 + Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{-\gamma x} + \dfrac{1}{2}\left(\dot{U}_1 - Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{\gamma x} \\
+&= \dot{U}_1 \cdot \dfrac{\mathrm{e}^{\gamma x} + \mathrm{e}^{-\gamma x}}{2} - Z_{\mathrm{c}} \dot{I}_1 \cdot \dfrac{\mathrm{e}^{\gamma x} - \mathrm{e}^{-\gamma x}}{2} \\
+\dot{I}(x) &= \dfrac{1}{Z_{\mathrm{c}}} \cdot \dfrac{1}{2}\left(\dot{U}_1 + Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{-\gamma x} - \dfrac{1}{Z_{\mathrm{c}}} \cdot \dfrac{1}{2}\left(\dot{U}_1 - Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{\gamma x} \\
+&= \dot{I}_1 \cdot \dfrac{\mathrm{e}^{\gamma x} + \mathrm{e}^{-\gamma x}}{2} - \dfrac{\dot{U}_1}{Z_{\mathrm{c}}} \cdot \dfrac{\mathrm{e}^{\gamma x} - \mathrm{e}^{-\gamma x}}{2}
+\end{aligned}
+\]
+计，，可写成
+\[
+\begin{cases}
+\dot{U}(x) = \dot{U}_1 \cosh \gamma l - \dot{I}_1 Z_{\mathrm{c}} \sinh \gamma l \\
+\dot{I}(x) = -\dfrac{\dot{U}_1}{Z_{\mathrm{c}}} \sinh \gamma l + \dot{I}_1 \cosh \gamma l
+\end{cases}
+\]
+如果用矩阵表示，可写为
+\[
+\begin{bmatrix}
+\dot{U}(x) \\
+\dot{I}(x)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cosh \gamma x & -Z_{\text{c}} \sinh \gamma x \\
+-\dfrac{1}{Z_{\text{c}}} \sinh \gamma x & \cosh \gamma x
+\end{bmatrix}
+\begin{bmatrix}
+\dot{U}_1 \\
+\dot{I}_1
+\end{bmatrix}
+\]
+若线路长度为$l$，将$x=l$代入上式，则线路终端电压和电流为
+\[
+\left\{
+\begin{aligned}
+\dot{U}_2 &= \dot{U}_1 \cosh \gamma l - \dot{I}_1 Z_{\text{c}} \sinh \gamma l \\
+\dot{I}_2 &= -\frac{\dot{U}_1}{Z_{\text{c}}} \sinh \gamma l + \dot{I}_1 \cosh \gamma l
+\end{aligned}
+\right.
+\]
+如果已知，可得
+\[
+\left\{
+\begin{aligned}
+\dot{U}_1 &= \dot{U}_2 \cosh \gamma l + \dot{I}_2 Z_{\text{c}} \sinh \gamma l \\
+\dot{I}_1 &= \frac{\dot{U}_2}{Z_{\text{c}}} \sinh \gamma l + \dot{I}_2 \cosh \gamma l
+\end{aligned}
+\right.
+\]
+上式写成矩阵形式则为
+\[
+\begin{bmatrix}
+\dot{U}_1 \\
+\dot{I}_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cosh \gamma l & Z_{\text{c}} \sinh \gamma l \\
+\dfrac{1}{Z_{\text{c}}} \sinh \gamma l & \cosh \gamma l
+\end{bmatrix}
+\begin{bmatrix}
+\dot{U}_2 \\
+\dot{I}_2
+\end{bmatrix}
+\]
+式实际上。故传输参数矩阵为
+\[
+\begin{bmatrix}
+A_{11} & A_{12} \\
+A_{21} & A_{22}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cosh \gamma l & Z_{\text{c}} \sinh \gamma l \\
+\dfrac{1}{Z_{\text{c}}} \sinh \gamma l & \cosh \gamma l
+\end{bmatrix}
+\]
+而且有，说明。这是，因为。
+
+当，于是得到
+\[
+\left\{
+\begin{aligned}
+\dot{U}(x') &= \dot{U}_2 \cosh \gamma x' + \dot{I}_2 Z_{\text{c}} \sinh \gamma x' \\
+\dot{I}(x') &= \frac{\dot{U}_2}{Z_{\text{c}}} \sinh \gamma x' + \dot{I}_2 \cosh \gamma x'
+\end{aligned}
+\right.
+\]
+
+\section{均匀传输线上的行波}
+\subsection{行波}
+为了，重写如下
+\[
+\dot{U}(x) = A_1 \text{e}^{-\gamma x} + A_2 \text{e}^{\gamma x} = \dot{U}^+(x) + \dot{U}^-(x)
+\]
+\[
+\dot{I}(x) = \frac{A_1}{Z_{\text{c}}} \text{e}^{-\gamma x} - \frac{A_2}{Z_{\text{c}}} \text{e}^{\gamma x} = \dot{I}^+(x) - \dot{I}^-(x)
+\]
+其中
+\[
+\dot{U}^{+}(x) = A_1 \mathrm{e}^{-\gamma x} = U' \mathrm{e}^{\mathrm{j}\psi'} \mathrm{e}^{-(\alpha + \mathrm{j}\beta)x} = U' \mathrm{e}^{-\alpha x} \mathrm{e}^{\mathrm{j}(-\beta x + \psi')}
+\]
+式中$A_1=U'\mathrm{e}^{}$。表达式为
+\[
+u^{+}(x,t)=\text{Re}[\sqrt{2}\dot{U}^{+}(x)\cdot e^{j\omega t}]=\text{Re}[\sqrt{2}U'e^{-\alpha x}\cdot e^{j(\omega t - \beta x + \psi')}]
+\]
+
+由此可见，在。
+
+现在研究$u$的波形随时间和位置的变化规律，相角为$\theta$。经过$\Delta$时间以后，即。由可得
+\[
+\Delta x=\frac{\omega}{\beta}\Delta t
+\]
+上式。移动的速度是
+\[
+v_p=\frac{\omega}{\beta}
+\]
+$v_p$称为相移速度，简称相速。
+
+综上所述，即
+\[
+(\omega)-[\omega t]=2\pi
+\]
+\[
+\lambda=\frac{2\pi}{\beta}
+\]
+如将代入，并，则得
+\[
+\lambda=\frac{v_p}{f}=v_pT
+\]
+此式又说明波长。
+
+式，瞬时值为$u$，它。
+
+综上所述，线路上的电压的叠加$u$$=$同样。所以
+\[
+\frac{\dot{U}^{+}(x)}{\dot{I}^{+}(x)}=\frac{\dot{U}^{-}(x)}{\dot{I}^{-}(x)}=Z_{c}=\vert Z_{c}\vert\angle\varphi_{c}
+\]
+即波阻抗等于电压正向行波与电流正向行波之比，为。应当指出。
+
+\subsection{波的反射与终端匹配}
+设线路终端所接负载阻抗是$Z_L$，如图所示，则终端电压和终端电流之比为$Z_L$而又可以，即。由可得。化简，得。因此
+\[
+\frac{\dot{I}_2^-}{\dot{I}_2^+} = \frac{\dot{U}_2^- / Z_c}{\dot{U}_2^+ / Z_c} = \frac{\dot{U}_2^-}{\dot{U}_2^+} = \frac{Z_L - Z_c}{Z_L + Z_c} = N_2
+\]
+式中$N_2$称为终端反射系数，它是一个与负载阻抗有关的复数。
+
+从式可以看出，如果终端负载阻抗等于均匀线的波阻抗，即$Z_L=Z_c$，则均匀线的电压和电流反向行波为零，只有正向行波存在。这种工作状态称为负载与传输线匹配。
+
+反之，在负载的情况下，传输线，又有。因此可以认为而引起的，故称为反射波，又称为入射波。反射系数便是反射波电压（或电流）和入射波电压（或电流）相量的比值。
+
+对于终端，由于，由式任意一位置$x$处的电压和电流分别为
+\[
+\dot{U}(x) = A_1 \mathrm{e}^{-\gamma x} = \dot{U}_1 \mathrm{e}^{-\gamma x}
+\]
+\[
+\dot{I}(x)=\frac{A_1}{Z_c}e^{-\gamma x}=\frac{\dot{U_1}}{Z_c}e^{-\gamma x}=\dot{I_1}e^{-\gamma x}
+\]
+在这种情况，线路上任何一处电压和电流相量之比都等于线路的波阻抗$Z_c$。电压和电流的有效值分别为
+\[
+\begin{cases}
+U(x) = U_1 \mathrm{e}^{-\alpha x} \\
+I(x) = I_1 \mathrm{e}^{-\alpha x}
+\end{cases}
+\]
+沿线电压、电流的有效值均按指数规律从始端到终端单调衰减。
+
+线路在无反射条件工作时，终端负载吸收的功率为
+\[
+P_2 = U_2 I_2 \cos\varphi_c = \frac{U_2^2}{\vert Z_c \vert} \cos\varphi_c
+\]
+这一功率称为均匀传输线的自然功率。由于没有反向行波，工作在此种匹配状态下的传输线路传输效率是很高的，一般通信传输线就常常处于这种工作状态。
+
+由有
+\[
+U_2=U_1e^{-\alpha l}
+\]
+\[
+I_2=I_1e^{-\alpha l}
+\]
+将此$U_2$和$I_2$的值代入式，得
+\[
+P_2 = U_2 I_2 \cos\varphi_c = U_1 I_1 \mathrm{e}^{-2\alpha l} \cos\varphi_c
+\]
+而始端输入功率为
+\[
+P_1=U_1I_1\cos{\psi c}
+\]
+故线路在匹配工作下的输电效率为
+\[
+\eta = \frac{P_2}{P_1} = \mathrm{e}^{-2\alpha l}
+\]
+
+为使线路达成匹配工作状态，终端必须接阻抗等于$Z_c$的负载。线路的波阻抗$Z_c$和传播常数$\gamma$可。
+
+根据以及，可以写出传输线始端的输入阻抗
+\[
+Z_i = \frac{\dot{U}_1}{\dot{I}_1} = \frac{\dot{U}_2 \cosh \gamma l + \dot{I}_2 Z_c \sinh \gamma l}{\frac{\dot{U}_2}{Z_c} \sinh \gamma l + \dot{I}_2 \cosh \gamma l} = Z_c \frac{Z_L \cosh \gamma l + Z_c \sinh \gamma l}{Z_L \sinh \gamma l + Z_c \cosh \gamma l}
+\]
+由此可见，若$Z_L=Z_c$，始端输入阻抗$Z_i=Z_c$，这与前面一致。
+
+当终端开路时，即$Z_L$，测量，阻抗为。同理，输入阻抗为。根据，得。
+
+\section{无损耗线、驻波}
+无损耗线。
+
+在，其传播系数为，即。其波阻抗为，是纯实数。
+
+注意到，因此有。为。为。写出，得。应为。
+
+\subsection{终端开路，即}
+为。电压。由，的等效阻抗。
+
+\subsection{终端短路}
+由为。等效阻抗。
+
+\subsection{终端接}
+此时终端反射系数为。由于无损线，故。
+
+\section{均匀传输线的集中参数等效电路}
+
+\section{无损均匀线方程的通解}
+设，对时间，即。设。
+
+\section{无损均匀线上波的发出}
+
+\section{无损均匀线上波的反射}
+\begin{enumerate}
+    \item 终端开路
+    \item 终端
+    \item 终端
+    \item 波的
+    \item 终端
+\end{enumerate}
+
+\endinput

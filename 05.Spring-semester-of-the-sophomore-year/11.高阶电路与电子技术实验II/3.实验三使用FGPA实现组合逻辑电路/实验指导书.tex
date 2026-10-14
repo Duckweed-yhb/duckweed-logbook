@@ -1,0 +1,467 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{verbatim}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% 页面边距设置
+\geometry{left=2.4cm,right=2.4cm,top=2.5cm,bottom=2.5cm}
+
+% Verilog代码高亮配置
+\lstset{
+    language=Verilog,
+    basicstyle=\ttfamily\small,
+    commentstyle=\color{gray},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    breaklines=true,
+    tabsize=4,
+    escapeinside={/*@}{@*/},
+    columns=fixed
+}
+
+% 枚举间距全局规范化
+\setlist[enumerate,1]{itemsep=0.3em, topsep=0.2em}
+\setlist[enumerate,2]{itemsep=0.2em, topsep=0.1em}
+\setlist[itemize]{itemsep=0.2em}
+
+\begin{document}
+\title{实验三：基于FPGA实现组合逻辑电路实验指导书}
+\author{}
+\date{}
+\maketitle
+
+\section{实验内容总览}
+本次实验包含\textbf{四项必做任务}与\textbf{两项选做拓展任务}，需严格按照流程依次完成，所有设计均基于 Xilinx EGO1（XC7A35T）FPGA 开发板。
+\begin{enumerate}[label=任务\arabic*：]
+    \item 基础示例：二输入与非门，拨码开关、按键作为输入，LED 作为输出；
+    \item 必做：带使能端 2-4 译码器，拨码输入、四路 LED 输出；
+    \item 必做：带使能端 3-8 译码器，拨码输入、八路 LED 输出；
+    \item 必做：1 位全加器，三路拨码输入，和、进位分别由 LED 显示；
+\end{enumerate}
+\noindent \textbf{选做内容}：优先报警电路、4位减法运算+数码管显示电路。
+
+\section{通用标准化实验流程（全任务通用）}
+\subsection{阶段1：新建Vivado工程}
+\begin{enumerate}
+    \item 启动 Vivado 软件，点击 \textbf{Create New Project}，连续点击 \textbf{Next}；
+    \item 工程名、存放路径\textbf{禁止包含中文、空格、特殊字符}，选择工程类型为 \textbf{RTL Project}；
+    \item 器件选型：Artix-7 系列，封装 csg324，速度等级 -1，芯片型号 \verb|xc7a35t-1csg324-1|，点击 \textbf{Finish} 完成创建。
+\end{enumerate}
+\textbf{核查要点}：器件型号与开发板完全匹配。
+
+\subsection{阶段2：添加设计源文件（Design Source）}
+\begin{enumerate}
+    \item 左侧 \texttt{Sources} 面板 $\rightarrow$ \texttt{Design Sources} $\rightarrow$ \texttt{Add Sources}；
+    \item 选择 \textbf{Add or create design sources} $\rightarrow$ \textbf{Create File}，文件类型选择 Verilog；
+    \item 自定义模块名与端口，粘贴对应功能代码，保存文件。
+\end{enumerate}
+\textbf{核查要点}：代码无语法报错，端口名称统一，与后续约束文件保持一致。
+
+\subsection{阶段3：添加仿真源文件（Simulation Source）}
+\begin{enumerate}
+    \item 再次点击 \texttt{Add Sources}，选择 \textbf{Add or create simulation sources}；
+    \item 新建仿真文件，命名规则：\texttt{模块名\_tb.v}，文件内例化待测模块并编写激励信号；
+    \item 执行 \texttt{Simulation $\rightarrow$ Run Behavioral Simulation}，查看波形。
+\end{enumerate}
+\textbf{核查要点}：仿真波形与真值表完全一致，逻辑无误后方可进入硬件调试。
+
+\subsection{阶段4：添加管脚约束文件（XDC）}
+\begin{enumerate}
+    \item \texttt{Add Sources} $\rightarrow$ \textbf{Add or create constraints}，新建约束文件 \texttt{const.xdc}；
+    \item 写入三类约束：FPGA 管脚绑定、IO 电平标准 \texttt{LVCMOS33}、闲置引脚配置。
+\end{enumerate}
+\textbf{核查要点}：端口名、物理引脚编号对照 EGO1 板卡手册，无引脚冲突。
+
+\subsection{阶段5：综合、布局布线、生成比特流}
+\begin{enumerate}
+    \item 执行 \textbf{Run Synthesis}（逻辑综合），保证无 Error 错误；
+    \item 执行 \textbf{Run Implementation}（布局布线），保证无 Error 错误；
+    \item 执行 \textbf{Generate Bitstream}，生成可下载的 \texttt{*.bit} 比特流文件。
+\end{enumerate}
+\textbf{核查要点}：三步流程全部正常完成，比特流文件生成成功。
+
+\subsection{阶段6：JTAG在线下载与板级实测}
+\begin{enumerate}
+    \item 硬件设置：开发板跳线 \textbf{JP2} 接 \texttt{JTAG} 档位，Micro-USB 连接 J6 接口并上电；
+    \item Vivado 中打开 \texttt{Hardware Manager} $\rightarrow$ \texttt{Open Target} $\rightarrow$ \texttt{Auto Connect}，自动识别 FPGA；
+    \item 右键 FPGA 芯片 \texttt{xc7a35t\_0}，选择 \textbf{Program Device}，选中 \texttt{impl\_1} 下的 \texttt{.bit} 文件完成下载；
+    \item 拨动拨码/按键，观察 LED 状态，对比理论逻辑。
+\end{enumerate}
+\textbf{核查要点}：硬件现象与真值表、仿真波形完全一致。
+
+\subsection{可选拓展：程序固化至SPI Flash（断电保存）}
+\begin{enumerate}
+    \item 右键 \texttt{Generate Bitstream} $\rightarrow$ \texttt{Bitstream Setting}，勾选生成 \texttt{.bin} 文件，重新生成文件；
+    \item 硬件管理器中选择 \textbf{Add Configuration Memory Device}，搜索并选择存储芯片 \texttt{n25q64-3.3V}；
+    \item 右键 Flash 芯片，选择 \textbf{Program Configuration Memory Device}，烧写 \texttt{.bin} 文件；
+    \item 断电后将 \textbf{JP2} 切至 \texttt{QSPI} 档位，重新上电，程序自动加载运行。
+\end{enumerate}
+\textbf{核查要点}：断电重启后电路功能保持不变。
+
+\newpage
+\section{分任务代码、引脚、约束与实验说明}
+\subsection{任务1：二输入与非门（入门示例）}
+\subsubsection{引脚分配}
+输入：拨码开关 \textbf{SW7(P5)}、按键 \textbf{S1(R17)}；输出：LED \textbf{LD2\_7(F6)}。
+
+\subsubsection{Verilog 设计代码}
+\begin{lstlisting}
+// 二输入与非门 数据流描述
+module nand_test(
+    input  SW7,
+    input  S1,
+    output LD2_7
+);
+assign LD2_7 = ~(SW7 & S1);
+endmodule
+\end{lstlisting}
+
+\subsubsection{Verilog 仿真代码 \texttt{nand\_test\_tb.v}}
+\begin{lstlisting}
+module nand_test_tb();
+reg SW7_tb, S1_tb;
+wire LD2_7_tb;
+
+// 例化待测模块
+nand_test uut(
+    .SW7(SW7_tb),
+    .S1(S1_tb),
+    .LD2_7(LD2_7_tb)
+);
+
+initial begin
+    SW7_tb = 1'b0; S1_tb = 1'b0;
+    #5 SW7_tb = 1'b0; S1_tb = 1'b1;
+    #5 SW7_tb = 1'b1; S1_tb = 1'b0;
+    #5 SW7_tb = 1'b1; S1_tb = 1'b1;
+    #10 $finish;
+end
+endmodule
+\end{lstlisting}
+
+\subsubsection{XDC 约束文件}
+\begin{lstlisting}
+# 管脚绑定
+set_property PACKAGE_PIN P5  [get_ports SW7]
+set_property PACKAGE_PIN R17 [get_ports S1]
+set_property PACKAGE_PIN F6  [get_ports LD2_7]
+# 电平标准
+set_property IOSTANDARD LVCMOS33 [get_ports *]
+# 闲置引脚配置
+set_property BITSTREAM.CONFIG.UNUSEDPIN PULLNONE [current_design]
+\end{lstlisting}
+
+\subsubsection{实验现象}
+当 $\texttt{SW7}=1$ 且 $\texttt{S1}=1$ 时，LED $\texttt{LD2\_7}$ 熄灭；其余输入组合下 LED 点亮。
+
+\newpage
+\subsection{任务2：带使能端 2-4 译码器（必做）}
+\subsubsection{引脚分配}
+使能 \textbf{EN(M4)}、输入 $\boldsymbol{A_1}$(N4)、$\boldsymbol{A_0}$(R1)；
+输出：$\boldsymbol{Y_0}$(K2)、$\boldsymbol{Y_1}$(J2)、$\boldsymbol{Y_2}$(J3)、$\boldsymbol{Y_3}$(H4)。
+
+\subsubsection{真值表}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ccccccc}
+\toprule
+$\text{EN}$ & $A_1$ & $A_0$ & $Y_3$ & $Y_2$ & $Y_1$ & $Y_0$ \\
+\midrule
+0  & $x$  & $x$  & 0  & 0  & 0  & 0  \\
+1  & 0  & 0  & 0  & 0  & 0  & 1  \\
+1  & 0  & 1  & 0  & 0  & 1  & 0  \\
+1  & 1  & 0  & 0  & 1  & 0  & 0  \\
+1  & 1  & 1  & 1  & 0  & 0  & 0  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Verilog 设计代码（行为级）}
+\begin{lstlisting}
+module Vr2to4dec_b(
+    input        EN,
+    input        in_A0,
+    input        in_A1,
+    output reg   out_Y0,
+    output reg   out_Y1,
+    output reg   out_Y2,
+    output reg   out_Y3
+);
+
+always @(*) begin
+    if(!EN) begin
+        {out_Y3,out_Y2,out_Y1,out_Y0} = 4'b0000;
+    end
+    else begin
+        case({in_A1, in_A0})
+            2'b00: {out_Y3,out_Y2,out_Y1,out_Y0} = 4'b0001;
+            2'b01: {out_Y3,out_Y2,out_Y1,out_Y0} = 4'b0010;
+            2'b10: {out_Y3,out_Y2,out_Y1,out_Y0} = 4'b0100;
+            2'b11: {out_Y3,out_Y2,out_Y1,out_Y0} = 4'b1000;
+            default:{out_Y3,out_Y2,out_Y1,out_Y0} = 4'b0000;
+        endcase
+    end
+end
+endmodule
+\end{lstlisting}
+
+\subsubsection{Verilog 仿真代码 \texttt{Vr2to4dec\_tb.v}}
+\begin{lstlisting}
+module Vr2to4dec_tb();
+reg ENt, A0t, A1t;
+wire Y0t, Y1t, Y2t, Y3t;
+
+Vr2to4dec_b uut(
+    .EN(ENt),
+    .in_A0(A0t),
+    .in_A1(A1t),
+    .out_Y0(Y0t),
+    .out_Y1(Y1t),
+    .out_Y2(Y2t),
+    .out_Y3(Y3t)
+);
+
+initial begin
+    {ENt,A1t,A0t} = 3'b000;
+    #5 {ENt,A1t,A0t} = 3'b001;
+    #5 {ENt,A1t,A0t} = 3'b010;
+    #5 {ENt,A1t,A0t} = 3'b011;
+    #5 {ENt,A1t,A0t} = 3'b100;
+    #5 {ENt,A1t,A0t} = 3'b101;
+    #5 {ENt,A1t,A0t} = 3'b110;
+    #5 {ENt,A1t,A0t} = 3'b111;
+    #10 $finish;
+end
+endmodule
+\end{lstlisting}
+
+\subsubsection{XDC 约束文件}
+\begin{lstlisting}
+set_property PACKAGE_PIN M4 [get_ports EN]
+set_property PACKAGE_PIN N4 [get_ports in_A1]
+set_property PACKAGE_PIN R1 [get_ports in_A0]
+set_property PACKAGE_PIN K2 [get_ports out_Y0]
+set_property PACKAGE_PIN J2 [get_ports out_Y1]
+set_property PACKAGE_PIN J3 [get_ports out_Y2]
+set_property PACKAGE_PIN H4 [get_ports out_Y3]
+
+set_property IOSTANDARD LVCMOS33 [get_ports *]
+set_property BITSTREAM.CONFIG.UNUSEDPIN PULLNONE [current_design]
+\end{lstlisting}
+
+\subsubsection{实验现象}
+$\texttt{EN}=0$ 时四路 LED 全灭；$\texttt{EN}=1$ 时，根据 $A_1A_0$ 输入，对应编号 LED 单独点亮。
+
+\newpage
+\subsection{任务3：带使能端 3-8 译码器（必做）}
+\subsubsection{引脚分配}
+使能 \textbf{EN(SW0)}、输入 $A_2$(SW1)、$A_1$(SW2)、$A_0$(SW3)；
+输出 $\boldsymbol{y}[7:0]$ 依次绑定：K2,J2,J3,H4,J4,G3,G4,F6。
+
+\subsubsection{真值表}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ccccccccc}
+\toprule
+$\text{EN}$ & $A_2$ & $A_1$ & $A_0$ & $y_7$ & $y_6$ & $y_5$ & $y_4$ & $y_3\sim y_0$ \\
+\midrule
+0  & $x$  & $x$  & $x$  & 0  & 0  & 0  & 0  & 0000 \\
+1  & 0  & 0  & 0  & 0  & 0  & 0  & 0  & 0001 \\
+1  & 0  & 0  & 1  & 0  & 0  & 0  & 0  & 0010 \\
+1  & 0  & 1  & 0  & 0  & 0  & 0  & 0  & 0100 \\
+1  & 0  & 1  & 1  & 0  & 0  & 0  & 0  & 1000 \\
+1  & 1  & 0  & 0  & 0  & 0  & 0  & 1  & 0000 \\
+1  & 1  & 0  & 1  & 0  & 0  & 1  & 0  & 0000 \\
+1  & 1  & 1  & 0  & 0  & 1  & 0  & 0  & 0000 \\
+1  & 1  & 1  & 1  & 1  & 0  & 0  & 0  & 0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Verilog 设计代码（行为级）}
+\begin{lstlisting}
+module dec3_8(
+    input        EN,
+    input        A2, A1, A0,
+    output reg [7:0] y
+);
+
+always @(*) begin
+    if(!EN)
+        y = 8'b00000000;
+    else begin
+        case({A2,A1,A0})
+            3'b000: y = 8'b00000001;
+            3'b001: y = 8'b00000010;
+            3'b010: y = 8'b00000100;
+            3'b011: y = 8'b00001000;
+            3'b100: y = 8'b00010000;
+            3'b101: y = 8'b00100000;
+            3'b110: y = 8'b01000000;
+            3'b111: y = 8'b10000000;
+            default:y = 8'b00000000;
+        endcase
+    end
+end
+endmodule
+\end{lstlisting}
+
+\subsubsection{XDC 约束文件}
+\begin{lstlisting}
+# 输入引脚
+set_property PACKAGE_PIN R2 [get_ports EN]
+set_property PACKAGE_PIN M4 [get_ports A2]
+set_property PACKAGE_PIN N4 [get_ports A1]
+set_property PACKAGE_PIN R1 [get_ports A0]
+# 输出引脚 y[7:0]
+set_property PACKAGE_PIN F6 [get_ports y[7]]
+set_property PACKAGE_PIN G4 [get_ports y[6]]
+set_property PACKAGE_PIN G3 [get_ports y[5]]
+set_property PACKAGE_PIN J4 [get_ports y[4]]
+set_property PACKAGE_PIN H4 [get_ports y[3]]
+set_property PACKAGE_PIN J3 [get_ports y[2]]
+set_property PACKAGE_PIN J2 [get_ports y[1]]
+set_property PACKAGE_PIN K2 [get_ports y[0]]
+
+set_property IOSTANDARD LVCMOS33 [get_ports *]
+set_property BITSTREAM.CONFIG.UNUSEDPIN PULLNONE [current_design]
+\end{lstlisting}
+
+\subsubsection{实验现象}
+$\texttt{EN}=0$ 八路 LED 全灭；$\texttt{EN}=1$ 时，3位输入二进制数对应位置 LED 单独点亮。
+
+\newpage
+\subsection{任务4：1位全加器（必做）}
+\subsubsection{引脚分配}
+输入：加数 $A$(SW0)、被加数 $B$(SW1)、低位进位 $\text{CI}$(SW2)；
+输出：和 $S$(K2)、进位 $\text{CO}$(J2)。
+
+\subsubsection{逻辑公式}
+\[
+S = A \oplus B \oplus \text{CI},\quad \text{CO} = AB + A\cdot \text{CI} + B\cdot \text{CI}
+\]
+
+\subsubsection{真值表}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+$\text{CI}$ & $A$ & $B$ & $S$ & $\text{CO}$ \\
+\midrule
+0  & 0 & 0 & 0 & 0 \\
+0  & 0 & 1 & 1 & 0 \\
+0  & 1 & 0 & 1 & 0 \\
+0  & 1 & 1 & 0 & 1 \\
+1  & 0 & 0 & 1 & 0 \\
+1  & 0 & 1 & 0 & 1 \\
+1  & 1 & 0 & 0 & 1 \\
+1  & 1 & 1 & 1 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Verilog 设计代码（数据流）}
+\begin{lstlisting}
+module full_adder(
+    input  A, B, CI,
+    output S, CO
+);
+assign S  = A ^ B ^ CI;
+assign CO = (A & B) | (A & CI) | (B & CI);
+endmodule
+\end{lstlisting}
+
+\subsubsection{XDC 约束文件}
+\begin{lstlisting}
+set_property PACKAGE_PIN R2 [get_ports A]
+set_property PACKAGE_PIN M4 [get_ports B]
+set_property PACKAGE_PIN N4 [get_ports CI]
+set_property PACKAGE_PIN K2 [get_ports S]
+set_property PACKAGE_PIN J2 [get_ports CO]
+
+set_property IOSTANDARD LVCMOS33 [get_ports *]
+set_property BITSTREAM.CONFIG.UNUSEDPIN PULLNONE [current_design]
+\end{lstlisting}
+
+\subsubsection{实验现象}
+拨动三路拨码开关组合，两个 LED 分别对应加法和、进位输出，与真值表一致。
+
+\newpage
+\subsection{选做任务1：优先报警电路}
+\subsubsection{功能说明}
+输入满足 $I_3>I_2>I_1>I_0$（优先级从高到低），输出 $Y_0,Y_1,Y_2$ 驱动LED；任意输入有效时 $Y_0$ 必亮。
+\subsubsection{Verilog 代码}
+\begin{lstlisting}
+module alarm_priority(
+    input  I0, I1, I2, I3,
+    output reg Y0, Y1, Y2
+);
+always @(*) begin
+    Y0 = 1'b1;
+    if(I3) begin
+        Y1 = 1'b1; Y2 = 1'b1;
+    end
+    else if(I2) begin
+        Y1 = 1'b1; Y2 = 1'b0;
+    end
+    else if(I1) begin
+        Y1 = 1'b0; Y2 = 1'b1;
+    end
+    else if(I0) begin
+        Y1 = 1'b0; Y2 = 1'b0;
+    end
+    else begin
+        Y0 = 1'b0; Y1 = 1'b0; Y2 = 1'b0;
+    end
+end
+endmodule
+\end{lstlisting}
+
+\subsection{选做任务2：4位减法+数码管显示电路}
+被减数：$\texttt{SW7}\sim\texttt{SW4}$，减数：$\texttt{SW3}\sim\texttt{SW0}$，结果由共阴极数码管显示十进制数值。
+
+\section{实验核查清单（Checklist）}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|l|c|}
+\hline
+序号 & 检查项目 & 完成标记 $\boldsymbol{\surd}$ \\
+\hline
+1 & 工程路径无中文、空格，芯片型号 \verb|xc7a35t-1csg324-1| 配置正确 & \\
+\hline
+2 & Verilog 源码端口、变量无拼写、语法错误 & \\
+\hline
+3 & 仿真文件编写完整，仿真波形与真值表完全吻合 & \\
+\hline
+4 & XDC 约束端口与源码一致，物理引脚匹配 EGO1 手册 & \\
+\hline
+5 & 逻辑综合 Synthesis 无 Error 报错 & \\
+\hline
+6 & 布局布线 Implementation 无 Error 报错 & \\
+\hline
+7 & 成功生成 \texttt{*.bit} 比特流下载文件 & \\
+\hline
+8 & 开发板 JP2 跳线接 JTAG，USB 接线正常、上电正常 & \\
+\hline
+9 & Vivado 硬件管理器自动识别 FPGA 芯片 & \\
+\hline
+10 & 程序下载过程无报错，下载完成 & \\
+\hline
+11 & 板级实测，LED/数码管逻辑与理论完全一致 & \\
+\hline
+12 & （可选）Flash 固化成功，切换 QSPI 后断电重启功能正常 & \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{document}

@@ -1,0 +1,55 @@
+\section{拉普拉斯变换计算题}
+
+\subsection{题目1}
+求函数 $f(t) = 5e^{-2t} - \sin 2t,\ t \geq 0$ 的Laplace变换。
+
+\subsubsection{解答}
+根据拉普拉斯变换的线性性质，分别对两项进行变换：
+\begin{align*}
+    \mathcal{L}\left[5e^{-2t}\right] &= 5 \cdot \mathcal{L}\left[e^{-2t}\right] = 5 \cdot \frac{1}{s+2}, \quad (\text{指数函数变换公式：}\mathcal{L}[e^{-at}] = \frac{1}{s+a}) \\
+    \mathcal{L}\left[\sin 2t\right] &= \frac{2}{s^2 + 2^2} = \frac{2}{s^2 + 4}, \quad (\text{正弦函数变换公式：}\mathcal{L}[\sin \omega t] = \frac{\omega}{s^2+\omega^2})
+\end{align*}
+因此，原函数的拉普拉斯变换为：
+\begin{align*}
+    F(s) &= \mathcal{L}\left[5e^{-2t} - \sin 2t\right] \\
+    &= 5\mathcal{L}\left[e^{-2t}\right] - \mathcal{L}\left[\sin 2t\right] \\
+    &= \frac{5}{s+2} - \frac{2}{s^2+4} \\
+    &= \frac{5(s^2+4) - 2(s+2)}{(s+2)(s^2+4)} \\
+    &= \frac{5s^2 - 2s + 16}{s^3 + 2s^2 + 4s + 8}
+\end{align*}
+最终结果：
+\[
+\boxed{F(s) = \frac{5}{s+2} - \frac{2}{s^2+4} = \frac{5s^2 - 2s + 16}{s^3 + 2s^2 + 4s + 8}}
+\]
+
+\newpage
+\subsection{题目2}
+求函数 $F(s) = \dfrac{2s+2}{s^2+2s+5}$ 的Laplace逆变换。
+
+\subsubsection{解答}
+首先对分母进行配方，将其化为标准形式：
+\[
+s^2 + 2s + 5 = (s+1)^2 + 2^2
+\]
+对分子进行拆分，匹配标准逆变换形式：
+\[
+2s+2 = 2(s+1)
+\]
+因此原函数可改写为：
+\[
+F(s) = \frac{2(s+1)}{(s+1)^2 + 2^2}
+\]
+根据拉普拉斯逆变换的频移性质：
+\[
+\mathcal{L}^{-1}\left[\frac{s+a}{(s+a)^2 + \omega^2}\right] = e^{-at}\cos\omega t
+\]
+代入 $a=1,\ \omega=2$，可得：
+\begin{align*}
+    f(t) &= \mathcal{L}^{-1}\left[\frac{2(s+1)}{(s+1)^2 + 2^2}\right] \\
+    &= 2 \cdot \mathcal{L}^{-1}\left[\frac{s+1}{(s+1)^2 + 2^2}\right] \\
+    &= 2e^{-t}\cos 2t,\quad t \geq 0
+\end{align*}
+最终结果：
+\[
+\boxed{f(t) = 2e^{-t}\cos 2t,\ t \geq 0}
+\]

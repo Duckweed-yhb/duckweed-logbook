@@ -1,0 +1,37 @@
+% 网络安全攻防竞赛实践 —— 专用封面
+% 纯LaTeX原生，无版权，无依赖，可直接编译
+
+\providecommand{\makeCTFCover}{}
+\renewcommand{\makeCTFCover}{
+    \begin{titlepage}
+      \newgeometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+      \centering
+      \vspace*{1cm}
+      
+      {\Large \itshape 以攻防为刃，守护数字边界；\\以技术为基，探索安全世界。}\\[0.5cm]
+      \rule{\textwidth}{1pt}\\[0.5cm]
+      
+      {\Huge \bfseries 网络安全攻防竞赛实践}\\[8pt]
+      {\Huge \bfseries 课程笔记}\\[12pt]
+      
+      \rule{0.6\textwidth}{0.5pt}\\[1cm]
+      
+      {\Large \textbf{内容概要：} Web安全 | 二进制Pwn | 密码学 | MISC | 渗透测试}\\[8pt]
+      {\Large \textbf{适用场景：} 课程学习 · 竞赛备赛 · 知识点速查 }\\[1.5cm]
+      
+      {\Large \textbf{整理者：} duckweed}\\[6pt]
+      {\Large 整理日期：\today}\\[1cm]
+      
+      \rule{0.6\textwidth}{0.5pt}\\[1cm]
+      
+      {\large \textbf{版本：} v1.0 完整版}\\[6pt]
+      {\small \itshape 原创笔记 · 禁止商用 · 欢迎交流学习}\\[0.5cm]
+      
+      \rule{\textwidth}{1pt}
+      \vfill
+      \restoregeometry
+    \end{titlepage}
+}
+
+% 生成封面
+\makeCTFCover

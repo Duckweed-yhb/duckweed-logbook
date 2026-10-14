@@ -1,0 +1,46 @@
+% 封面 - 适配book文档类，无编译报错
+\begin{titlepage}
+    % 全局居中，取消默认缩进
+    \centering
+    
+    % 顶部空行，提升整体布局
+    \vspace*{2cm}
+    
+    % 主标题
+    {\Huge \bfseries 电路理论基础笔记} \\
+    \vspace{0.8cm}
+    % 副标题
+    {\Large \textit{核心知识点整理}} \\
+    \vspace{0.5cm}
+    % 版本标识（依赖main.tex中的xcolor包）
+    {\large \textcolor{gray}{0.5残缺版}} \\
+    
+    % 分割线（提升视觉层次）
+    \vspace{2cm}
+    \rule{8cm}{0.5pt}
+    \vspace{2cm}
+    
+    % 名言：替换为电路领域知名科学家（尼古拉·特斯拉）
+    {\Large \textit{“我知道有一个无限的能量源，它就在我们身边，我们只需要学会如何去捕捉它。”}} \\
+    \vspace{1cm}
+    {\large —— 尼古拉·特斯拉（Nikola Tesla）}
+    
+    % 中间大间距，突出底部信息
+    \vspace{5cm}
+    
+    % 作者信息
+    {\large 整理人：浮萍} \\
+    \vspace{0.5cm}
+    % 整理时间
+    {\large 整理时间：2026年} \\
+    
+    % 底部填充，让内容居中偏上
+    \vfill
+    
+    % 页脚小字
+    {\small \textcolor{gray}{仅用于学习参考 · 请勿商用}}
+\end{titlepage}
+
+% 封面后强制清空分页，避免影响后续排版
+\clearpage
+\thispagestyle{empty}  % 确保封面后无页码残留

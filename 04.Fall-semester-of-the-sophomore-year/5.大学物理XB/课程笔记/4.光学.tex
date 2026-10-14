@@ -1,0 +1,321 @@
+% ======================== 光学章节 - 适配主文档格式 ========================
+% 子文件说明：无任何特殊宏包依赖，主文档仅需基础宏包：
+% \usepackage{ctex,booktabs,array,xcolor,amsmath,amssymb}
+% 引入方式：\input{光学.tex}
+
+\section{光学}
+
+% ======================== 半波损失（干涉基础） ========================
+\subsection{半波损失（干涉核心前置知识点）}
+\textbf{【核心考点】} 半波损失的判断与干涉影响 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{核心定义}：光从光疏介质（$n_1$）入射到光密介质（$n_2$）的反射光，相位突变$\pi$（等效光程差增加$\lambda/2$），称为半波损失；折射光无此现象。
+    \item \textbf{产生条件（双满足）}：
+          \begin{enumerate}
+              \item 仅发生在\textbf{反射光}中（折射光始终无）；
+              \item 入射介质折射率 $n_1 < $ 反射介质折射率 $n_2$（光疏→光密）。
+          \end{enumerate}
+    \item \textbf{不产生的情况}：
+          \begin{enumerate}
+              \item 光密→光疏介质的反射光；
+              \item 任何情况下的折射光；
+              \item 垂直入射（$i=0$）且$n_1/n_2$差异极小时（工程忽略）。
+          \end{enumerate}
+    \item \textbf{干涉影响（关键）}：
+          \begin{itemize}
+              \item 仅一束光有半波损失 → 干涉加强/减弱条件反转；
+              \item 两束光都有/都无 → 干涉条件不变（薄膜/劈尖/牛顿环分析核心）。
+          \end{itemize}
+    \item \textbf{典型场景}：薄膜干涉、劈尖干涉、牛顿环干涉。
+\end{itemize}
+
+\textbf{符号说明：} \\
+$\lambda$：光在真空中的波长（m）；\quad $n$：介质折射率（无量纲）；\quad $i$：入射角（rad/°）
+\vspace{0.5em}
+
+% ======================== 光的干涉 ========================
+\subsection{光的干涉}
+\textbf{【核心考点】} 干涉的核心是光程差与半波损失的综合判断 \par\vspace{0.3em}
+
+\subsubsection{杨氏双缝干涉}
+\begin{itemize}
+    \item \textbf{实验模型}：相干光源$S_1/S_2$间距$d$，屏距$D$（$D\gg d$），屏上$P$点距中心$O$为$x$。
+    \item \textbf{光程差（核心）}：
+          \[
+          \delta = r_2 - r_1 \approx \frac{xd}{D}
+          \]
+    \item \textbf{干涉条件}：
+          \begin{itemize}
+              \item 明纹：$\delta = \pm k\lambda \Rightarrow x = \pm k\frac{D\lambda}{d} \quad (k=0,1,2,\dots)$（$k=0$为中央明纹）；
+              \item 暗纹：$\delta = \pm (2k-1)\frac{\lambda}{2} \Rightarrow x = \pm (2k-1)\frac{D\lambda}{2d} \quad (k=1,2,3,\dots)$；
+              \item 条纹间距：$\Delta x = \frac{D\lambda}{d}$（等间距、明暗相间直条纹）。
+          \end{itemize}
+\end{itemize}
+
+\textbf{符号说明：} \\
+$d$：双缝间距（m）；\quad $D$：缝到屏的垂直距离（m）；\quad $x$：条纹到屏中心的距离（m）；\quad $k$：条纹级次（无量纲）
+\vspace{0.5em}
+
+\subsubsection{薄膜干涉（等倾干涉）}
+\begin{itemize}
+    \item \textbf{模型}：薄膜折射率$n_2$，两侧介质$n_1$（$n_1 < n_2$），厚度$e$，入射角$i$，折射角$\gamma$。
+    \item \textbf{光程差（含半波损失）}：
+          \[
+          \delta = 2e\sqrt{n_2^2 - n_1^2\sin^2 i} + \frac{\lambda}{2}
+          \]
+    \item \textbf{干涉条件}：
+          \begin{itemize}
+              \item 明纹：$2e\sqrt{n_2^2 - n_1^2\sin^2 i} = \left(k - \frac{1}{2}\right)\lambda \quad (k=1,2,3,\dots)$；
+              \item 暗纹：$2e\sqrt{n_2^2 - n_1^2\sin^2 i} = k\lambda \quad (k=0,1,2,\dots)$。
+          \end{itemize}
+    \item \textbf{核心特点}：同一入射角对应同一级条纹（等倾），条纹为同心圆环，中心级次最高。
+\end{itemize}
+
+\textbf{符号说明：} \\
+$e$：薄膜厚度（m）；\quad $n_1/n_2$：介质折射率（无量纲）；\quad $i$：入射角（rad/°）
+\vspace{0.5em}
+
+\subsubsection{薄膜干涉（等厚干涉）}
+\paragraph{1. 劈尖干涉（空气劈尖）}
+\begin{itemize}
+    \item \textbf{模型}：两玻璃片夹成空气劈尖（$n\approx1$），夹角$\theta$（极小），厚度$e$，距棱边距离$l$。
+    \item \textbf{光程差（垂直入射）}：
+          \[
+          \delta = 2e + \frac{\lambda}{2}
+          \]（上表面反射无半波损失，下表面有）
+    \item \textbf{干涉条件}：
+          \begin{itemize}
+              \item 明纹：$2e + \frac{\lambda}{2} = k\lambda \Rightarrow e = (2k-1)\frac{\lambda}{4} \quad (k=1,2,3,\dots)$；
+              \item 暗纹：$2e + \frac{\lambda}{2} = (2k+1)\frac{\lambda}{2} \Rightarrow e = k\frac{\lambda}{2} \quad (k=0,1,2,\dots)$；
+              \item 棱边特征：$e=0$时为零级暗纹（标志性特征）。
+          \end{itemize}
+    \item \textbf{条纹间距}：
+          \[
+          L = \frac{\lambda}{2\theta}
+          \]（$\theta$越小，条纹越稀疏）
+\end{itemize}
+
+\paragraph{2. 牛顿环（空气薄膜）}
+\begin{itemize}
+    \item \textbf{模型}：平凸透镜+平面玻璃，空气膜厚度$e \approx \frac{r^2}{2R}$（$R$为透镜曲率半径，$r$为环半径）。
+    \item \textbf{光程差}：$\delta = 2e + \frac{\lambda}{2}$（下表面反射有半波损失）。
+    \item \textbf{干涉条件}：
+          \begin{itemize}
+              \item 明环：$r_k = \sqrt{\left(k - \frac{1}{2}\right)\lambda R} \quad (k=1,2,3,\dots)$；
+              \item 暗环：$r_k = \sqrt{k\lambda R} \quad (k=0,1,2,\dots)$；
+              \item 中心特征：$r=0$时为暗斑（半波损失导致）。
+          \end{itemize}
+    \item \textbf{曲率半径测量（实验核心）}：
+          \[
+          R = \frac{d_{k+m}^2 - d_k^2}{4m\lambda}
+          \]（$d_k$为第$k$圈暗环直径）
+\end{itemize}
+
+% 优化后的等厚干涉核心参数表（增加长度、优化列宽和内容）
+\begin{table}[htbp]
+    \centering
+    \small  % 字号调整为small，提升可读性
+    \renewcommand{\arraystretch}{1.5}  % 增加行高，拉长表格
+    \begin{tabular}{@{}p{2.5cm}|p{4.5cm}|p{5cm}@{}}  % 优化列宽，增加表格总长度
+        \toprule
+        \rowcolor[RGB]{230,240,250} 干涉类型 & 核心公式（空气介质） & 关键特征与应用 \\
+        \midrule
+        空气劈尖 & 1. 光程差：$\delta=2e+\lambda/2$ \\ 
+                  & 2. 条纹间距：$L=\lambda/(2\theta)$ \\
+                  & 3. 厚度公式：$e=k\lambda/2$（暗纹） & 1. 棱边为零级暗纹（半波损失）； \\
+                  &                                   & 2. 等间距平行直条纹； \\
+                  &                                   & 3. 应用：测量细丝直径、玻璃平整度 \\
+        \midrule
+        牛顿环 & 1. 光程差：$\delta=2e+\lambda/2$ \\
+                & 2. 暗环半径：$r_k=\sqrt{k\lambda R}$ \\
+                & 3. 曲率半径：$R=(d_{k+m}^2-d_k^2)/(4m\lambda)$ & 1. 中心为暗斑（半波损失）； \\
+                &                                             & 2. 内疏外密同心圆环； \\
+                &                                             & 3. 应用：测量透镜曲率半径、波长 \\
+        \bottomrule
+    \end{tabular}
+    \caption{等厚干涉核心参数与应用（空气介质）}
+    \label{tab:equal_thickness_interference}
+\end{table}
+\vspace{0.5em}
+
+% ======================== 光的衍射 ========================
+\subsection{光的衍射}
+\textbf{【核心考点】} 衍射的核心是半波带法（单缝）和光栅方程（光栅） \par\vspace{0.3em}
+
+\subsubsection{惠更斯-菲涅耳原理}
+\begin{itemize}
+    \item \textbf{衍射现象}：光偏离直线传播，绕过障碍物形成明暗条纹的现象；
+    \item \textbf{核心原理}：波前上每一点都是子波源，衍射光为所有子波的相干叠加。
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{夫琅禾费单缝衍射}
+\begin{itemize}
+    \item \textbf{模型}：单缝宽度$a$，入射光波长$\lambda$，衍射角$\theta$（衍射光与法线夹角）。
+    \item \textbf{半波带法（核心分析方法）}：
+          \begin{itemize}
+              \item 最大光程差：$\Delta = a\sin\theta$；
+              \item 半波带数：$N = \frac{2a\sin\theta}{\lambda}$；
+              \item 叠加规律：$N$偶数→暗纹，$N$奇数→明纹（次极大），$\theta=0$→中央明纹。
+          \end{itemize}
+    \item \textbf{条纹公式}：
+          \begin{itemize}
+              \item 暗纹：
+                    \[
+                    a\sin\theta = \pm k\lambda \quad (k=1,2,3,\dots)
+                    \]
+              \item 明纹（次极大）：$a\sin\theta = \pm (2k+1)\frac{\lambda}{2} \quad (k=1,2,3,\dots)$；
+              \item 中央明纹：半角宽度$\theta_0 \approx \frac{\lambda}{a}$，线宽度$\Delta x_0 \approx 2f\frac{\lambda}{a}$（$f$为透镜焦距）；
+              \item 相对光强：
+                    \[
+                    \frac{I}{I_0} = \left( \frac{\sin\alpha}{\alpha} \right)^2
+                    \]（$\alpha = \frac{\pi a\sin\theta}{\lambda}$）。
+          \end{itemize}
+    \item \textbf{关键结论}：$a$越小/$\lambda$越长，衍射越明显；中央明纹占80%以上能量，宽度为其他明纹的2倍。
+\end{itemize}
+
+\textbf{符号说明：} \\
+$a$：单缝宽度（m）；\quad $\theta$：衍射角（rad/°）；\quad $f$：透镜焦距（m）；\quad $I_0$：中央明纹光强（W/m²）
+\vspace{0.5em}
+
+\subsubsection{光栅衍射}
+\begin{itemize}
+    \item \textbf{光栅常量}：$d = a + b$（$a$缝宽，$b$刻痕宽）；
+    \item \textbf{光栅方程（主极大）}：
+          \[
+          d\sin\varphi = \pm k\lambda \quad (k=0,1,2,\dots)
+          \]（所有缝光相干加强）；
+    \item \textbf{缺级条件（干涉+衍射）}：
+          \[
+          k = \pm \frac{d}{a}k' \quad (k'=1,2,3,\dots)
+          \]（主极大落在衍射暗纹处）；
+    \item \textbf{核心特点}：缝数$N$越多，主极大越亮、越窄；缺级是衍射对干涉的调制结果。
+\end{itemize}
+
+\textbf{符号说明：} \\
+$d$：光栅常量（m）；\quad $\varphi$：衍射角（rad/°）；\quad $k$：主极大级次（无量纲）
+\vspace{0.5em}
+
+\subsubsection{光学仪器的分辨本领}
+\begin{itemize}
+    \item \textbf{限制根源}：圆孔衍射形成艾里斑，无法无限分辨；
+    \item \textbf{瑞利判据（临界分辨条件）}：
+          \[
+          \delta\theta = 1.22 \frac{\lambda}{d}
+          \]（最小分辨角，$d$为透镜/圆孔直径）；
+    \item \textbf{分辨本领}：$R = \frac{1}{\delta\theta} = \frac{d}{1.22\lambda}$；
+    \item \textbf{提升途径}：增大$d$（天文望远镜大口径）、减小$\lambda$（电子显微镜）。
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{X射线衍射（补充）}
+\textbf{【核心考点】} X射线衍射的布拉格条件 \par\vspace{0.3em}
+\begin{itemize}
+    \item \textbf{核心公式（布拉格条件）}：
+          \[
+          2d\sin\theta = k\lambda \quad (k=1,2,3,\dots)
+          \]（$d$为晶面间距）；
+    \item \textbf{应用}：晶体结构分析（X射线衍射仪）。
+\end{itemize}
+\vspace{0.5em}
+
+% ======================== 光的偏振 ========================
+\subsection{光的偏振}
+\textbf{【核心考点】} 偏振是横波的特有性质，核心定律为马吕斯定律和布儒斯特定律 \par\vspace{0.3em}
+
+\subsubsection{偏振光与自然光}
+\begin{itemize}
+    \item \textbf{自然光}：垂直传播方向的所有振动方向均等，可分解为两个垂直、等幅的线偏振光；
+    \item \textbf{偏振光}：
+          \begin{itemize}
+              \item 线偏振光：仅沿一个固定方向振动；
+              \item 圆/椭圆偏振光：两个垂直振动分量有固定相位差。
+          \end{itemize}
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{马吕斯定律}
+\begin{itemize}
+    \item \textbf{自然光→线偏振光}：入射光强$I_0$，通过起偏器后光强$I_1 = \frac{I_0}{2}$；
+    \item \textbf{线偏振光通过检偏器}：
+          \[
+          I_2 = I_1 \cos^2\alpha
+          \]（$\alpha$为入射光与检偏器偏振方向的夹角）；
+    \item \textbf{关键现象}：$\alpha=90^\circ$时$I_2=0$（消光），验证光的横波性。
+\end{itemize}
+
+\textbf{符号说明：} \\
+$I_0$：入射自然光强（W/m²）；\quad $\alpha$：偏振方向夹角（rad/°）
+\vspace{0.5em}
+
+\subsubsection{反射和折射时光的偏振（布儒斯特定律）}
+\begin{itemize}
+    \item \textbf{一般情况}：反射光为垂直入射面的部分偏振光，折射光为平行入射面的部分偏振光；
+    \item \textbf{布儒斯特角（起偏振角）}：
+          \begin{itemize}
+              \item 条件：反射光为线偏振光（仅垂直入射面振动），且反射光⊥折射光（$i_0 + r = 90^\circ$）；
+              \item 公式：
+                    \[
+                    \tan i_0 = \frac{n_2}{n_1}
+                    \]（$n_1$为入射介质折射率，$n_2$为折射介质折射率）；
+              \item 示例：空气（$n_1=1$）→玻璃（$n_2=1.5$），$i_0 \approx 56^\circ$。
+          \end{itemize}
+    \item \textbf{玻璃片堆}：多次反射滤除垂直振动分量，折射光近似为平行入射面的线偏振光。
+\end{itemize}
+\vspace{0.5em}
+
+\subsubsection{双折射现象与波片}
+\paragraph{1. 双折射基础}
+\begin{itemize}
+    \item \textbf{寻常光（o光）}：遵守折射定律，$n_o$为定值，振动方向垂直于主平面；
+    \item \textbf{非常光（e光）}：不遵守折射定律，$n_e$随传播方向变化，振动方向平行于主平面；
+    \item \textbf{光轴}：晶体中o光与e光传播速度相同的方向（无双折射现象）。
+\end{itemize}
+
+\paragraph{2. 波片（偏振态转换核心元件）}
+\begin{itemize}
+    \item \textbf{相位差公式}：$\Delta\varphi = \frac{2\pi}{\lambda}(n_o - n_e)d$（$d$为波片厚度，$\lambda$为真空中波长）；
+    \item \textbf{典型波片（对特定波长）}：
+          \begin{itemize}
+              \item 1/4波片：$\Delta\varphi = (2k+1)\frac{\pi}{2}$，$\alpha=45^\circ$时线偏振光→圆偏振光；
+              \item 1/2波片（半波片）：$\Delta\varphi = (2k+1)\pi$，线偏振光振动面转过$2\alpha$。
+          \end{itemize}
+\end{itemize}
+
+% 波片特性汇总表
+\begin{table}[htbp]
+    \centering
+    \scriptsize
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{@{}p{2cm}|p{3.5cm}|p{5.5cm}@{}}
+        \toprule
+        \rowcolor[RGB]{230,240,250} 波片类型 & 相位差/光程差 & 核心效果 \\
+        \midrule
+        1/4波片 & $\Delta\varphi=(2k+1)\pi/2$；$\delta=(2k+1)\lambda/4$ & 线偏振光→圆/椭圆偏振光 \\
+        \midrule
+        1/2波片 & $\Delta\varphi=(2k+1)\pi$；$\delta=(2k+1)\lambda/2$ & 线偏振光振动面旋转$2\alpha$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{波片核心参数与效果}
+    \label{tab:waveplate}
+\end{table}
+\vspace{0.5em}
+
+% ======================== 例题参考与核心考点 ========================
+\subsection{例题参考与核心考点}
+{
+\color[RGB]{0,80,150}
+\begin{tabular}{@{}p{2.2cm}p{8.8cm}@{}}
+光的干涉： & 8、9、11、13、16、18、19、20（杨氏双缝、薄膜/劈尖/牛顿环）； \\
+光的衍射： & 23、24、25、26、28（单缝、光栅、分辨本领）； \\
+光的偏振： & 32、33、36、38、40（马吕斯定律、布儒斯特角、波片）； \\
+核心考点： & 1.半波损失判断；2.干涉光程差计算；3.单缝衍射半波带法；4.光栅缺级分析；5.偏振定律应用； \\
+参考教材： & 《大学物理学 (第五版)》王少杰 \\
+\end{tabular}
+}
+
+% 章节末尾视觉分隔
+\vspace{0.5em}
+\noindent{\color[RGB]{0,80,150}\rule{\linewidth}{0.3pt}}
+\vspace{0.5em}
+\clearpage

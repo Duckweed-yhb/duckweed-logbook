@@ -1,0 +1,115 @@
+% 第2章 基本放大电路
+\chapter{基本放大电路}
+
+\section{放大的概念和放大电路的主要性能指标}
+\subsection{放大的概念}
+放大的本质是在输入信号的控制下，将直流电源提供的能量转换为幅值更大的输出信号，实现能量的控制与转换。
+
+\subsection{放大电路的性能指标}
+\begin{itemize}
+    \item 放大倍数（增益）
+    \item 输入电阻
+    \item 输出电阻
+    \item 通频带
+    \item 非线性失真系数
+    \item 最大不失真输出电压
+    \item 最大输出功率与效率
+\end{itemize}
+
+\section{基本共射放大电路的工作原理}
+\subsection{基本共射放大电路的组成及各元件的作用}
+当 \(u_i=0\) 时，放大电路处于静态。
+\[
+\begin{aligned}
+&I_{BQ} = \frac{V_{BB} - U_{BE}}{R_B} \\
+&I_{CQ} = \beta I_{BQ} \\
+&U_{BE} = 0.7\ \text{V}\ (\text{硅管}) \\
+&U_{CEQ} = V_{CC} - I_{CQ} \cdot R_C
+\end{aligned}
+\]
+
+\subsection{设置静态工作点的必要性}
+\begin{itemize}
+    \item 静态工作点 \(Q\)
+    \item 设置静态工作点的目的：避免放大信号产生截止失真与饱和失真
+\end{itemize}
+
+\subsection{基本共射放大电路的工作原理及波形分析}
+\subsection{放大电路的组成原则}
+\begin{itemize}
+    \item 放大电路的组成原则
+    \item 两种实用的共射放大电路
+\end{itemize}
+
+\section{放大电路的分析方法}
+\subsection{直流通路与交流通路}
+\textbf{直流通路}：直流电源作用下直流电流流经的通路，用于分析静态工作点。
+\begin{enumerate}
+    \item 电容视为开路
+    \item 电感视为短路
+    \item 信号源视为短路，保留内阻
+\end{enumerate}
+
+\textbf{交流通路}：输入信号作用下交流信号流经的通路，用于分析动态参数。
+\begin{enumerate}
+    \item 大容量耦合电容视为短路
+    \item 理想直流电源视为短路
+\end{enumerate}
+
+\subsection{图解法}
+\begin{itemize}
+    \item 静态工作点的分析
+    \item 电压放大倍数的分析
+    \item 波形非线性失真的分析
+    \item 直流负载线与交流负载线
+    \item 图解法的适用范围
+\end{itemize}
+
+\subsection{等效电路法}
+\subsubsection{晶体管的直流模型及静态工作点的估算法}
+\subsubsection{晶体管共射 \(h\) 参数等效模型}
+\begin{itemize}
+    \item \(h\) 参数等效模型的由来
+    \item \(h\) 参数的物理意义
+    \item 简化的 \(h\) 参数等效模型
+    \item \(r_{be}\) 的近似表达式
+\end{itemize}
+
+\subsubsection{共射放大电路动态参数的分析}
+\begin{itemize}
+    \item 电压放大倍数
+    \item 输入电阻
+    \item 输出电阻
+\end{itemize}
+
+\section{放大电路静态工作点的稳定}
+\subsection{静态工作点稳定的必要性}
+温度变化、电源波动、元件老化等都会使静态工作点发生漂移，导致失真。
+
+\subsection{典型的静态工作点稳定电路}
+\begin{itemize}
+    \item 电路组成和 \(Q\) 点稳定原理
+    \item 静态工作点的估算
+    \item 动态参数的估算
+\end{itemize}
+
+\subsection{稳定静态工作点的措施}
+引入直流负反馈是稳定静态工作点最常用、最有效的方法。
+
+\section{晶体管单管放大电路的三种基本接法}
+\subsection{基本共集放大电路}
+\begin{itemize}
+    \item 电路组成
+    \item 静态分析
+    \item 动态分析
+\end{itemize}
+
+\subsection{基本共基放大电路}
+\subsection{三种接法的比较}
+共射、共集、共基三种放大电路在增益、输入电阻、输出电阻、频带特性上各有特点。
+
+\section{场效应管放大电路}
+\section{基本放大电路的派生电路}
+
+\section{例题参考}
+5、6、11、12

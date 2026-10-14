@@ -1,0 +1,186 @@
+\section{第五次作业}
+
+\subsection{1. 系统冲激响应与频率响应}
+\noindent\textbf{原题：}
+\begin{enumerate}[label=(\arabic*)]
+    \item 已知微分方程 $\dfrac{\mathrm{d}}{\mathrm{d} t}y(t) + 3y(t) = 2\dfrac{\mathrm{d}}{\mathrm{d} t}x(t)$，求单位冲激响应 $h(t)$。
+    \item 已知微分方程 $\dfrac{\mathrm{d}^2}{\mathrm{d} t^2}y(t) + \dfrac{\mathrm{d}}{\mathrm{d} t}y(t) + y(t) = \dfrac{\mathrm{d}}{\mathrm{d} t}x(t) + x(t)$，求单位冲激响应 $h(t)$。
+    \item 因果LTI系统 $H(j\omega) = \dfrac{1}{j\omega+3}$，输出 $y(t)=e^{-3t}u(t)-e^{-4t}u(t)$，求输入 $x(t)$。
+    \item 因果LTI系统差分方程 $y(n)-\dfrac{1}{6}y(n-1)-\dfrac{1}{6}y(n-2)=x(n)$，求频率响应 $H(\Omega)$ 和单位脉冲响应 $h(n)$。
+\end{enumerate}
+
+\subsubsection{解答}
+\begin{enumerate}[label=(\arabic*)]
+    \item
+    对微分方程两边做傅里叶变换：
+    \[
+    j\omega Y(j\omega) + 3Y(j\omega) = 2j\omega X(j\omega)
+    \]
+    频率响应：
+    \[
+    H(j\omega) = \frac{Y(j\omega)}{X(j\omega)} = \frac{2j\omega}{j\omega+3} = 2 - \frac{6}{j\omega+3}
+    \]
+    逆变换得：
+    \[
+    h(t) = \boldsymbol{2\delta(t) - 6e^{-3t}u(t)}
+    \]
+
+    \item
+    傅里叶变换：
+    \[
+    (j\omega)^2 Y + j\omega Y + Y = j\omega X + X
+    \]
+    \[
+    H(j\omega) = \frac{j\omega+1}{(j\omega)^2+j\omega+1}
+    \]
+    极点 $s_{1,2}=\dfrac{-1\pm j\sqrt{3}}{2}$，部分分式展开后逆变换：
+    \[
+    h(t) = \boldsymbol{e^{-\frac{t}{2}} \left( \cos\frac{\sqrt{3}t}{2} + \frac{1}{\sqrt{3}}\sin\frac{\sqrt{3}t}{2} \right) u(t)}
+    \]
+
+    \item
+    \[
+    Y(j\omega) = \frac{1}{j\omega+3} - \frac{1}{j\omega+4}
+    \]
+    \[
+    X(j\omega) = \frac{Y(j\omega)}{H(j\omega)} = \frac{1}{j\omega+4}
+    \]
+    \[
+    x(t) = \boldsymbol{e^{-4t}u(t)}
+    \]
+
+    \item
+    Z变换：
+    \[
+    H(z) = \frac{z^2}{z^2-\frac16 z-\frac16} = \frac{z^2}{\left(z-\frac12\right)\left(z+\frac13\right)}
+    \]
+    频率响应：
+    \[
+    H(\Omega) = \boldsymbol{\frac{e^{j2\Omega}}{\left(e^{j\Omega}-\frac12\right)\left(e^{j\Omega}+\frac13\right)}}
+    \]
+    部分分式展开：
+    \[
+    H(z) = \frac35\frac{z}{z-\frac12}+\frac25\frac{z}{z+\frac13}
+    \]
+    \[
+    h(n) = \boldsymbol{\left[ \frac35\left(\frac12\right)^n + \frac25\left(-\frac13\right)^n \right] u(n)}
+    \]
+\end{enumerate}
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+
+\subsection{2. 离散数据平均处理的频率响应}
+\noindent\textbf{原题：}
+$y(n)=\dfrac14\big[x(n)+x(n-1)+x(n-2)+x(n-3)\big]$，分别用时域、频域法求 $H(\Omega)$。
+
+\subsubsection{解答}
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{时域法}
+    令 $x(n)=e^{j\Omega n}$：
+    \[
+    H(\Omega) = \frac14\left(1+e^{-j\Omega}+e^{-j2\Omega}+e^{-j3\Omega}\right)
+    \]
+    化简：
+    \[
+    H(\Omega) = \boldsymbol{\frac14 e^{-j\frac{3\Omega}{2}} \cdot \frac{\sin2\Omega}{\sin(\Omega/2)}}
+    \]
+
+    \item \textbf{频域法（Z变换）}
+    \[
+    H(z) = \frac14\left(1+z^{-1}+z^{-2}+z^{-3}\right)
+    \]
+    令 $z=e^{j\Omega}$：
+    \[
+    H(\Omega) = \boldsymbol{\frac14\left(1+e^{-j\Omega}+e^{-j2\Omega}+e^{-j3\Omega}\right)}
+    \]
+\end{enumerate}
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+
+\subsection{3. 系统对周期信号的响应}
+\noindent\textbf{原题：}
+$H(j\omega)=\dfrac{1}{j\omega+1}$，$x(t)=\sin t+\sin3t$。
+\begin{enumerate}[label=(\arabic*)]
+    \item 求 $y(t)$；
+    \item 说明波形变化；
+    \item 写出无失真传输条件；
+    \item 分析失真类型。
+\end{enumerate}
+
+\subsubsection{解答}
+\begin{enumerate}[label=(\arabic*)]
+    \item
+    \[
+    H(j1)=\frac{1-j}{2},\quad H(j3)=\frac{1-j3}{10}
+    \]
+    \[
+    y(t) = \boldsymbol{\frac{\sqrt{2}}{2}\sin\left(t-\frac{\pi}{4}\right) + \frac{1}{\sqrt{10}}\sin\left(3t-\arctan3\right)}
+    \]
+
+    \item 高频分量幅度衰减更大，相位滞后更多，波形被平滑。
+
+    \item 幅频：$|H(j\omega)|=K$；相频：$\angle H(j\omega)=-\omega t_0$。
+
+    \item 存在 \textbf{幅度失真} 与 \textbf{相位失真}。
+\end{enumerate}
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+
+\subsection{4. 理想低通滤波器响应}
+\noindent\textbf{原题：}
+\[
+H(\omega)=\begin{cases}
+e^{-j\omega t_0},&|\omega|\le1\\
+0,&|\omega|>1
+\end{cases},\quad
+x_1(t)=\frac{2\sin(t/2)}{t}
+\]
+\begin{enumerate}[label=(\arabic*)]
+    \item 求 $x_2(t)=\left[x_1(t)-x_1(t-T)\right]*h(t)$；
+    \item 证明对 $\pi\delta(t)$ 与 $\dfrac{\sin t}{t}$ 响应相同。
+\end{enumerate}
+
+\subsubsection{解答}
+\begin{enumerate}[label=(\arabic*)]
+    \item
+    \[
+    X_1(\omega)=2\pi\mathrm{rect}(\omega)
+    \]
+    \[
+    x_2(t) = \boldsymbol{x_1(t-t_0)-x_1(t-t_0-T)}
+    \]
+
+    \item
+    两者频谱在通带内均为常数 $\pi$，故输出相同：
+    \[
+    Y_a(\omega)=Y_b(\omega)=\pi e^{-j\omega t_0}
+    \]
+    因此响应相同。
+\end{enumerate}
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+
+\subsection{5. 滤波器设计}
+\noindent\textbf{原题：}
+设计巴特沃思低通：$\omega_p=1000\,\text{rad/s},\,A_p\le3\,\text{dB}$；$\omega_s=5000\,\text{rad/s},\,A_s\ge20\,\text{dB}$。
+并分析 $H_a(s)=\dfrac{s}{s+a}$ 能否用冲激不变法。
+
+\subsubsection{解答}
+\begin{enumerate}[label=(\arabic*)]
+    \item
+    归一化 $\Omega_p=1,\Omega_s=5$，得阶数 $N=2$。
+    \[
+    H(s) = \boldsymbol{\frac{10^6}{s^2+1000\sqrt{2}\,s+10^6}}
+    \]
+
+    \item
+    $H_a(s)$ 为高通滤波器，冲激不变法会产生 \textbf{频率混叠}，故不可用。
+\end{enumerate}
