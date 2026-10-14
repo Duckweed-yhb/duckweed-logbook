@@ -1,0 +1,52 @@
+# duckweed-logbook 全仓属性
+# 2026-10-15 从 05.Spring-semester-of-the-sophomore-year/.gitattributes 提到仓库根，
+# 让 11 个学期共用一份；同时补齐本库实际用到的二进制类型。
+
+# 文本文件统一按 LF 存进版本库。
+# 在 Windows 上提交时看到 "LF will be replaced by CRLF" 属正常现象。
+* text=auto
+
+## 常见二进制类型：不要让 git 拿它们当文本做差异 / 合并
+*.pdf   binary
+*.docx  binary
+*.doc   binary
+*.pptx  binary
+*.ppt   binary
+*.xlsx  binary
+*.xls   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.bmp   binary
+*.ico   binary
+*.zip   binary
+*.rar   binary
+*.7z    binary
+*.exe   binary
+*.dll   binary
+*.step  binary
+*.stp   binary
+*.wav   binary
+*.mp3   binary
+*.mp4   binary
+
+## MATLAB 相关（沿用 05 原有的设置；本库目前没有这些文件，留着以备后用）
+*.fig binary
+*.mat binary
+*.mdl binary diff merge=mlAutoMerge
+*.mdlp binary
+*.mex* binary
+*.mlapp binary
+*.mldatx binary
+*.mlproj binary
+*.mlx binary
+*.p binary
+*.sfx binary
+*.sldd binary
+*.slreqx binary merge=mlAutoMerge
+*.slmx binary merge=mlAutoMerge
+*.sltx binary
+*.slxc binary
+*.slx binary merge=mlAutoMerge
+*.slxp binary
