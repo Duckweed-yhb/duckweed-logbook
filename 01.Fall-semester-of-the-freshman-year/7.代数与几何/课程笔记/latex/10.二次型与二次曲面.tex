@@ -1,0 +1,674 @@
+\section{实二次型}
+\subsection{二次型的定义及其矩阵}
+\textbf{定义8.1}\quad 含有$n$个变量$x_1,x_2,\cdots,x_n$，而系数取自数域$F$的$n$元二次齐次函数
+\[
+\begin{aligned}
+f(x_1, x_2, \cdots, x_n) &= a_{11}x_1^2 + 2a_{12}x_1x_2 + 2a_{13}x_1x_3 + \cdots + 2a_{1n}x_1x_n \\
+&+ a_{22}x_2^2 + 2a_{23}x_2x_3 + \cdots + 2a_{2n}x_2x_n \\
+&+ \cdots \\
+&+ a_{nn}x_n^2
+\end{aligned}\tag{1}
+\]
+称为数域$F$上的$n$元二次型，简称二次型。
+
+当系数$a_{ij}$都是复数时，称$f$为复二次型；当系数$a_{ij}$都是实数时，称$f$为实二次型。
+
+设$a_{ji} = a_{ij}$ 且$i < j$，$i, j = 1, 2, \cdots, n$，则$2a_{ij}x_i x_j = a_{ij}x_i x_j + a_{ji}x_j x_i$，于是式(1)可写成：
+\[
+\begin{aligned}
+f(x_1, x_2, \cdots, x_n) &= a_{11}x_1^2 + a_{12}x_1x_2 + \cdots + a_{1n}x_1x_n \\
+&+ a_{21}x_2x_1 + a_{22}x_2^2 + \cdots + a_{2n}x_2x_n \\
+&+ \cdots \\
+&+ a_{n1}x_nx_1 + a_{n2}x_nx_2 + \cdots + a_{nn}x_n^2 \\
+&= \sum_{i=1}^{n} \sum_{j=1}^{n} a_{ij}x_i x_j.
+\end{aligned}\tag{2}
+\]
+为了方便，可把式（1）表示成矩阵形式：
+\[
+f(x_1, x_2, \cdots, x_n)
+=
+\begin{pmatrix} x_1 & x_2 & \cdots & x_n \end{pmatrix}
+\begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{pmatrix}
+\begin{pmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{pmatrix}.
+\]
+记
+\[
+A = \begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{pmatrix},
+\quad
+X = \begin{pmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{pmatrix},
+\]
+则二次型(1)可记为
+\[
+f = X^T A X. \tag{3}
+\]
+由于$a_{ij}=a_{ji}$，所以$A$是对称矩阵。
+
+称式（3）中对称矩阵$A$为二次型$f$的矩阵，称$A$的秩为二次型$f$的秩。
+
+任给一个二次型$f$，$f$唯一地确定了一个对称矩阵$A$；反之，任给一个对称矩阵$A$，$A$也可唯一地确定一个二次型。
+
+\subsection{合同矩阵}
+设$f(x_1,x_2,\cdots,x_n)=X^TAX$是$n$元实二次型。如果把$X=(x_1,x_2,\cdots,x_n)'$看作$\mathbb{R}^n$中向量$\alpha$在基底$\alpha_1,\alpha_2,\cdots,\alpha_n$下的坐标，取定$\mathbb{R}^n$的另一基$\beta_1,\beta_2,\cdots,\beta_n$，则$\alpha$关于基$\beta_1,\beta_2,\cdots,\beta_n$的坐标$Y=(y_1,y_2,\cdots,y_n)'$为
+\[
+Y=C^{-1}X,
+\]
+其中$C$为由基$(\alpha_1,\alpha_2,\cdots,\alpha_n)$到$\beta_1,\beta_2,\cdots,\beta_n$的过渡矩阵，在坐标变换$X=CY$下，$f(X)$化为
+\[
+f(X)=X^TAX=(CY)^TA(CY)=Y^T(C^TAC)Y.
+\]
+记$B=C^TAC$，显然$B$是实对称矩阵，从而$B=C^TAC$是实二次型$Y^TC^TACY$的矩阵。
+
+关系$B=C^TAC$是矩阵之间的一种重要关系，它反映了同一二次型在不同基下对应的矩阵之间的关系。
+
+\textbf{定义8.2}\quad 给定两个$n$阶方阵$A$和$B$，如果存在可逆矩阵$C$，使得
+\[
+B=C^TAC
+\]
+则称$A$与$B$合同。
+
+矩阵合同具有以下三条性质：
+\begin{enumerate}
+    \item 自反性：任一$n$阶方阵$A$都与自身合同；
+    \item 对称性：若$A$与$B$合同，则$B$与$A$合同；
+    \item 传递性：若$A$与$B$合同，且$B$与$C$合同，则$A$与$C$合同。
+\end{enumerate}
+
+定理6.7指出，对任一实对称矩阵$A$，存在正交矩阵$P$，使$P^{-1}AP=P^TAP=D$为对角矩阵，因此，任一实对称矩阵都与对角矩阵合同。
+
+\section{化实二次型为标准形}
+设$C$是$n$阶可逆矩阵。称变量$X=(x_1,x_2,\cdots,x_n)',Y=(y_1,y_2,\cdots,y_n)'$之间的变换
+\[
+X=CY
+\]
+为可逆线性变换，$\mathbb{R}^n$中向量在两组基下的坐标变换就是可逆线性变换。如果$C$为正交矩阵，则称上述变换为正交线性变换。$\mathbb{R}^n$中向量在两个规范正交基下的坐标变换就是正交线性变换。
+
+我们的目的是：对给定的实二次型
+\[
+f(X)=X^TAX
+\]
+其中$X=(x_1,x_2,\cdots,x_n)'$，寻找适当的可逆线性变换
+\[
+X=CY,
+\]
+使得
+\[
+\begin{aligned}
+f&=X^TAX=(CY)^TA(CY)=Y^T(C^TAC)Y \\
+&= Y^T
+\begin{pmatrix}
+k_1 & & & \\
+& k_2 & & \\
+& & \ddots & \\
+& & & k_n
+\end{pmatrix}
+Y
+= k_1 y_1^2 + k_2 y_2^2 + \cdots + k_n y_n^2.
+\end{aligned}
+\]
+用矩阵的语言来说，就是对实对称矩阵$A$，寻找可逆矩阵$C$，使$C^TAC$为对角矩阵。
+
+称只含平方项的二次型为标准二次型，例如
+\[
+f=x^2+y^2+4z^2,\qquad f=3x_1^2-5x_2^2+7x_3^2+9x_4^2
+\]
+都是标准二次型。
+
+由于$C$是可逆矩阵，所以$R(A)=R(C^TAC)$。因此，$f$的秩等于$f$的标准形中系数不为零的平方项的个数。
+
+很多情况下，我们希望用正交变换化实二次型为标准形。
+
+称形如
+\[
+f=y_1^2+y_2^2+\cdots+y_p^2-y_{p+1}^2-\cdots-y_{p+q}^2
+\]
+的实二次型为规范二次型。
+
+\subsection{用正交变换化实二次型为标准形}
+由第六章6.2节中定理6.7知，对实对称矩阵$A$，存在正交矩阵$P$，使
+\[
+P^{-1} A P =
+\begin{pmatrix}
+\lambda_1 & & & \\
+& \lambda_2 & & \\
+& & \ddots & \\
+& & & \lambda_n
+\end{pmatrix},
+\quad\text{即}\quad
+P^T A P =
+\begin{pmatrix}
+\lambda_1 & & & \\
+& \lambda_2 & & \\
+& & \ddots & \\
+& & & \lambda_n
+\end{pmatrix}.
+\]
+把这个结论应用于实二次型，则有如下定理。
+
+\textbf{定理8.1}\quad 对任意$n$元实二次型
+\[
+f=X^TAX
+\]
+存在正交线性变换
+\[
+X=PY
+\]
+将二次型$f$化为标准形
+\[
+f=\lambda_1y_1^2+\lambda_2y_2^2+\cdots+\lambda_ny_n^2
+\]
+其中$\lambda_1,\lambda_2,\cdots,\lambda_n$是$A$的$n$个特征值。
+
+\subsection{拉格朗日配方法化二次型为标准形}
+正交变换可视为由规范正交基到规范正交基的变换。如果不限于正交变换，可以用可逆线性变换把二次型$f$化为标准形。注意，由此得到的标准形不是唯一的。下面介绍拉格朗日配方法化二次型为标准形。这是一种用可逆线性变换化二次型为标准形的方法。
+
+一般地，用配方法化二次型为标准形时，如果二次型不含平方项，可先用一个可逆变换把$f$化为含有平方项的二次型；对于含有$x_i^2$的二次型，可先集中将含有$x_i$的所有项进行配方，对剩下的$n-1$元实二次型，仍按上述方法配方，如此反复做下去，就可得到标准形，最后写出可逆线性变换的表达式（或矩阵）。做多次变换的情况，需要综合各次变换，得到总的线性变换的表达式（或矩阵）。
+
+\subsection{初等变换法化二次型为标准形}
+所谓合同变换就是用可逆矩阵$C$及其转置在两边乘$A$，即$C^TAC$。将一般的实二次型通过配方法化成标准形的过程，如果用矩阵形式来表达，其实质是将二次型的矩阵通过一连串的合同变换，化成对角矩阵的过程。拉格朗日配方法表明，对任一实对称矩阵$A$，一定存在可逆矩阵$C$，使$C^TAC$为对角矩阵。将$C$分解为一系列初等矩阵之积：$C=P_1P_2\cdots P_s$，得
+\[
+P_s^T\cdots P_2^T P_1^T A P_1 P_2\cdots P_s=\Lambda.
+\]
+此式表明，$A$可以通过一系列对于行、列来说“协调一致”的初等变换化为对角矩阵，由此得到化实对称矩阵为与之合同的对角矩阵$\Lambda$的方法如下：将单位矩阵放在待变换的矩阵下面，构成$2n\times n$矩阵$\begin{pmatrix}A\\E\end{pmatrix}$。对$\begin{pmatrix}A\\E\end{pmatrix}$每作一次列变换，同时对前$n$行的$A$作一次相应的行变换，即
+\[
+\begin{pmatrix}A\\E\end{pmatrix}\rightarrow\begin{pmatrix}C^TAC\\C\end{pmatrix}.
+\]
+当$C^TAC$是对角矩阵时，$E$就化成了$C$，$C$即是所求的合同变换矩阵。
+
+\section{正定实二次型}
+\subsection{实二次型的惯性定律}
+容易看出，给定二次型$f$，它的标准形不是唯一的，即用不同的可逆线性变换把同一个实二次型$f$化为标准形时，这些标准形中的系数一般是不同的，但在实可逆线性变换下，同一个实二次型的标准形中的正系数、负系数及零系数的个数不因实可逆线性变换的不同而改变，这就是实二次型的惯性定律。
+
+\textbf{定理8.2}\quad 设$n$元实二次型$f=X^TAX$经实可逆线性变换$X=C_1Y,\;X=C_2Z$分别化成标准形
+\[
+f=k_1y_1^2+k_2y_2^2+\cdots +k_ny_n^2
+\]
+及
+\[
+f=l_1z_1^2+l_2z_2^2+\cdots+l_nz_n^2,
+\]
+则$k_1,k_2,\cdots,k_n$中正数的个数与$l_1,l_2,\cdots,l_n$中正数的个数相等，$k_1,k_2,\cdots,k_n$中负数的个数与$l_1,l_2,\cdots,l_n$中负数的个数也相等（当然，$k_1,k_2,\cdots,k_n$中零的个数与$l_1,l_2,\cdots,l_n$中零的个数相等），分别称之为$f$的正惯性指数与负惯性指数。
+
+这相当于说：在秩为$r$的实二次型$f$的标准形中，正平方项的项数$p$（称为$f$的正惯性指数）是唯一确定的，而负平方项的项数恰为$r-p$（负惯性指数）也是唯一确定的。
+
+由定理8.2可知，任一实二次型$f(x_1,x_2,\cdots,x_n)$都可经一适当的可逆线性变换化成规范形
+\[
+f=y_1^2+\cdots+y_p^2-y_{p+1}^2-\cdots-y_{p+q}^2,
+\]
+其中$p,q$分别为$f$的正、负惯性指数。实二次型$f(x_1,x_2,\cdots,x_n)$的规范形是唯一的。
+
+\subsection{正定二次型}
+\textbf{定义8.3}\quad 设有$n$元实二次型$f=X^TAX$，如果对$\mathbb{R}^n$中任何列向量$X\neq \boldsymbol{0}$，都有$X^TAX>0$，则称$f$为正定二次型。称正定二次型的矩阵为正定矩阵。
+
+显然，正定矩阵一定是实对称矩阵，反之未必。
+
+\textbf{定理8.3}\quad $n$元实二次型$f=X^TAX$为正定二次型的充要条件是：$f$的标准形中的$n$个系数全为正数，即$f$的正惯性指数是$n$。
+
+\textbf{推论8.1}\quad 实二次型$f=X^TAX$为正定二次型的充要条件是：$f$的矩阵$A$的特征值全大于零。
+
+\textbf{推论8.2}\quad 实二次型$f=X^TAX$为正定二次型的充要条件是：存在实可逆矩阵$Q$，使
+\[
+A=Q^TQ.
+\]
+
+设$A$是$n$阶方阵，顺序选取$A$的前$k$（$1\le k\le n$）行，前$k$列构成的矩阵称为$A$的$k$阶顺序主子阵，其行列式称为$A$的$k$阶顺序主子式。
+
+\textbf{定理8.4}\quad 实对称矩阵$A$为正定矩阵的充要条件是：$A$的各阶顺序主子式都大于零，即
+\[
+a_{11}>0,\quad
+\begin{vmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{vmatrix}>0,\quad
+\cdots\quad
+\begin{vmatrix}
+a_{11}&a_{12}&\cdots&a_{1n}\\
+a_{21}&a_{22}&\cdots&a_{2n}\\
+\vdots&\vdots&&\vdots\\
+a_{n1}&a_{n2}&\cdots&a_{nn}
+\end{vmatrix}>0.
+\]
+
+\textbf{定义8.4}\quad 设有$n$元实二次型$f=X^TAX$。若对$\mathbb{R}^n$中任意非零列向量$X$，都有$X^TAX<0$，则称此二次型是负定二次型，而$f$的矩阵$A$称为负定矩阵。
+
+显然，实二次型$f=X^TAX$是负定二次型的充要条件是$-f=X^T(-A)X$为正定二次型。因此，由定理8.4可得如下推论。
+
+\textbf{推论8.3}\quad $n$元实二次型$f=X^TAX$为负定二次型的充要条件是：$A$的奇数阶顺序主子式小于零，而偶数阶顺序主子式大于零。
+
+\section{空间中的曲面与曲线}
+给定空间坐标系中一个曲面$S$，由于$S$上的点要满足一定的几何条件，这个条件一般可以写成点的坐标所满足的一个方程$F(x,y,z)=0$。曲面$S$上点的坐标一定满足这个方程，坐标满足这个方程的点也一定在曲面$S$上。称这个方程$F(x,y,z)=0$为曲面$S$的方程。也称$S$为方程$F(x,y,z)=0$的图形。
+
+主要讨论两个问题：
+\begin{enumerate}
+    \item 已知一曲面，建立曲面的方程；
+    \item 已知坐标$(x,y,z)$满足的一个方程，研究这方程所表示的曲面。
+\end{enumerate}
+
+\subsection{球面}
+空间中任一点$M(x,y,z)$在球面上当且仅当$|M_0M|=r$，即
+\[
+\sqrt{(x-x_0)^2+(y-y_0)^2+(z-z_0)^2}=r
+\]
+故该球面方程为
+\[
+(x-x_0)^2+(y-y_0)^2+(z-z_0)^2=r^2\tag{1}
+\]
+将方程（1）展开，得
+\[
+x^2+y^2+z^2-2x_0x-2y_0y-2z_0z+x_0^2+y_0^2+z_0^2-r^2=0
+\]
+这个方程的特点是：
+\begin{enumerate}
+    \item 它是三元二次方程；
+    \item 二次项$x^2,y^2,z^2$的系数相同；
+    \item 没有$xy$，$yz$，$xz$这类二次项。
+\end{enumerate}
+
+事实上，具有这三个条件的方程，一般来说，图形也是球面，可以用配完全平方的方法，总可以将这样的方程化为
+\[
+(x-x_0)^2+(y-y_0)^2+(z-z_0)^2=k
+\]
+当$k>0$时，它就是球心在$M_0(x_0,y_0,z_0)$，半径为$\sqrt{k}$的球面方程；当$k=0$时，球面收缩为一点（点球面）；当$k<0$时，无图形（虚球面）。
+
+\subsection{柱面}
+平行于定直线并沿定曲线$C$移动的直线$L$形成的轨迹叫做柱面，定曲线$C$叫做柱面的准线，动直线$L$叫做柱面的母线。
+
+一般地，含有两个变量的方程在平面上表示一条曲线，而在空间中表示一个柱面，它以平面上的这条曲线为准线，其母线平行于方程中不出现的那个变量对应的坐标轴。
+
+给定一个柱面，总可以适当选取坐标系，使其母线平行于某坐标轴。当柱面的母线平行于$z$轴，且准线是$xOy$面上的曲线
+\[
+\begin{cases}
+f(x,y)=0\\
+z=0
+\end{cases}
+\]
+时，柱面的方程就是
+\[
+f(x,y)=0.
+\]
+
+在空间直角坐标系下，方程
+\[
+\frac{x^2}{a^2}+\frac{y^2}{b^2}=1,\quad
+\frac{x^2}{a^2}-\frac{y^2}{b^2}=1,\quad
+x^2=2py\;(p>0)
+\]
+分别表示母线平行于$z$轴的椭圆柱面、双曲柱面和抛物柱面。
+
+\subsection{旋转曲面}
+由一条平面曲线$C$绕该平面上的一条定直线$L$旋转一周所成的曲面叫做旋转曲面，曲线$C$称为母线，直线$L$称为旋转轴。
+
+为方便，我们常把曲线所在的平面取作坐标面，把旋转轴取作坐标轴。
+
+在$yOz$面上，给定曲线
+\[
+C:
+\begin{cases}
+f(y, z) = 0, \\
+x = 0.
+\end{cases}
+\]
+将其绕$z$轴旋转一周，求此旋转曲面的方程。
+
+设$M(x, y, z)$是曲面上任一点，且$M$点位于曲线$C$上点$M_1(0, y_1, z_1)$所转过的圆周上，则
+\[
+z_1 = z.
+\]
+又$M, M_1$到$z$轴的距离相等，所以
+\[
+\sqrt{x^2 + y^2} = |y_1|,
+\]
+即
+\[
+y_1 = \pm \sqrt{x^2 + y^2}.
+\]
+因$M_1(0, y_1, z_1)$在曲线$C$上，故
+\[
+f(y_1, z_1) = 0.
+\]
+从而
+\[
+f(\pm \sqrt{x^2 + y^2}, z) = 0,
+\]
+这就是所求的旋转曲面方程。
+
+同理，曲线$C$绕$y$轴旋转所成的旋转曲面的方程为
+\[
+f(y, \pm \sqrt{x^2 + z^2}) = 0.
+\]
+总之，位于坐标面上的曲线$C$，绕其上的一个坐标轴转动，所成的旋转面方程可以这样得到：曲线方程中与旋转轴相同的变量不动，而用另两个变量的平方和的平方根（加正、负号）替代曲线方程中另一变量即可。
+
+\subsection{空间曲线}
+空间曲线可以视为两个通过它的曲面的交线。若空间曲线$C$是两个曲面
+\[
+S_1:F(x,y,z)=0,\qquad S_2:G(x,y,z)=0
+\]
+的交线，则曲线$C$的方程为
+\[
+\begin{cases}
+F(x,y,z)=0,\\
+G(x,y,z)=0,
+\end{cases}
+\]
+称为空间曲线$C$的一般方程。
+
+有时，空间曲线$C$的方程也可以用参数表示成
+\[
+\begin{cases}
+x=x(t)\\
+y=y(t)\\
+z=z(t)
+\end{cases}
+\]
+
+设$C$是一条空间曲线，$\pi$是一个平面，以$C$为准线，做母线垂直于$\pi$的柱面，该柱面与平面$\pi$的交线叫做$C$在平面$\pi$上的投影曲线，简称投影。
+
+设曲线$C$的方程是
+\[
+\begin{cases}
+F_1(x,y,z)=0,\\
+F_2(x,y,z)=0.
+\end{cases}
+\]
+从这个方程组中消去$z$可以得到以$C$为准线，母线垂直于$xOy$面的柱面方程$F(x,y)=0$，故曲线
+\[
+\begin{cases}
+F(x,y)=0,\\
+z=0
+\end{cases}
+\]
+是曲线$C$在$xOy$面上的投影。
+
+同样，从$C$的方程中消去$x$或$y$，可以得到曲线$C$在$yOz$或$zOx$平面上投影的曲线。
+
+\section{二次曲面}
+现在我们研究三维几何空间中三元二次方程代表的曲面——二次曲面。一般的三元二次方程都可写成
+\[
+X^TAX+v^TX+a_{44}=0,
+\]
+其中
+\[
+A=(a_{ij})_{3\times3},\;a_{ij}=a_{ji},\;i,j=1,2,3,\quad
+X=\begin{pmatrix}x\\y\\z\end{pmatrix},\quad
+v=\begin{pmatrix}a_{14}\\a_{24}\\a_{34}\end{pmatrix}.
+\]
+
+依定理8.1，存在正交变换$X=PY$，使二次型$X^TAX$化为标准二次型$\lambda_1x'^2+\lambda_2y'^2+\lambda_3z'^2$。这意味着存在三维几何空间中适当的直角坐标系，使原来的三元二次方程化成
+\[
+\lambda_1x'^2+\lambda_2y'^2+\lambda_3z'^2+a'_{14}x'+a'_{24}y'+a'_{34}z'+a'_{44}=0.
+\]
+对系数$\lambda_1,\lambda_2,\lambda_3$以及$a'_{14},a'_{24},a'_{34},a'_{44}$的各种可能情况分别进行讨论，将得到三元二次方程所代表的各种不同类型的二次曲面。
+
+\subsection{椭球面}
+由方程
+\[
+\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1 \quad (a > 0, b > 0, c > 0)
+\]
+确定的曲面，称为椭球面，数 $a, b, c$ 称为椭球面的三个半轴。
+
+当 $a = b = c$ 时，方程确定一个球面。当 $a, b, c$ 中有两个相等时，方程确定一个旋转椭球面。
+
+椭球面有如下特点：
+\begin{enumerate}
+    \item 图形关于三个坐标面、三个坐标轴及原点都对称，且被限制在如下以原点为中心的长方体内：
+    \[
+    |x| \leq a, \quad |y| \leq b, \quad |z| \leq c.
+    \]
+    \item 图形被平面 $z = h$ ($|h| < c$) 截割，截线为
+    \[
+    \begin{cases}
+    \dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} + \dfrac{z^2}{c^2} = 1, \\
+    z = h.
+    \end{cases}
+    \]
+    即
+    \[
+    \left( \frac{x}{a \sqrt{1 - \frac{h^2}{c^2}}} \right)^2 + \left( \frac{y}{b \sqrt{1 - \frac{h^2}{c^2}}} \right)^2 = 1,
+    \]
+    这是 $z = h$ 平面上的椭圆，随 $|h|$ 的增大，其长、短半轴 $a \sqrt{1 - \frac{h^2}{c^2}}$，$b \sqrt{1 - \frac{h^2}{c^2}}$ 减小。当 $|h|$ 由零变到 $c$ 时，椭圆由 $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ 缩成点 $(0, 0, c)$ 或 $(0, 0, -c)$。
+
+    图形被平面 $y = h$ ($|h| < b$) 或 $x = h$ ($|h| < a$) 截割也有类似的结果。
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.55\textwidth,height=6.2cm,view={28}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=0:180,samples=30,samples y=12]
+({1.6*sin(y)*cos(x)},{1.1*sin(y)*sin(x)},{1.2*cos(y)});
+\end{axis}
+\end{tikzpicture}
+\caption{椭球面 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}+\dfrac{z^2}{c^2}=1$ 及其用平面 $z=h$ 截割所得的椭圆（代码绘制，对应原图 8.9）}
+\end{figure}
+
+\end{enumerate}
+
+\subsection{单叶双曲面}
+方程
+\[
+\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 1 \quad (a > 0, b > 0, c > 0)
+\]
+的图形称为单叶双曲面。该方程的特点是，平方项有一个取负号，两个取正号。类似地，方程
+\[
+\frac{x^2}{a^2} - \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1 \quad \text{或} \quad -\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1
+\]
+的图形也是单叶双曲面。
+
+用平面 $z = h$ 截该图形，得截线为椭圆
+\[
+\begin{cases}
+\left( \dfrac{x}{a \sqrt{1 + \frac{h^2}{c^2}}} \right)^2 + \left( \dfrac{y}{b \sqrt{1 + \frac{h^2}{c^2}}} \right)^2 = 1, \\
+z = h.
+\end{cases}
+\]
+随着 $|h|$ 的增大，其长、短半轴也增大。
+
+用平面 $y = k$ 截该图形得截线为
+\[
+\begin{cases}
+\dfrac{x^2}{a^2} - \dfrac{z^2}{c^2} = 1 - \dfrac{k^2}{b^2}, \\
+y = k.
+\end{cases}
+\]
+当 $|k| < b$ 时，它是实轴与 $x$ 轴平行的双曲线；当 $|k| > b$ 时，它是实轴与 $z$ 轴平行的双曲线；当 $|k| = b$ 时，截线为
+\[
+\begin{cases}
+\left( \dfrac{x}{a} + \dfrac{z}{c} \right) \left( \dfrac{x}{a} - \dfrac{z}{c} \right) = 0, \\
+y = \pm b.
+\end{cases}
+\]
+它是两条相交直线。
+
+\subsection{双叶双曲面}
+方程
+\[
+\frac{x^2}{a^2} - \frac{y^2}{b^2} - \frac{z^2}{c^2} = 1 \quad (a > 0, b > 0, c > 0)\tag{1}
+\]
+的图形称为双叶双曲面。该方程的特点是，平方项的系数一个取正号，二个取负号。类似地，方程
+\[
+-\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 1 \quad \text{或} \quad -\frac{x^2}{a^2} - \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1
+\]
+的图形也是双叶双曲面。
+
+用平面 $z = h$ 或 $y = h$ 截曲面(1)，得双曲线
+\[
+\begin{cases}
+\dfrac{x^2}{a^2} - \dfrac{y^2}{b^2} = 1 + \dfrac{h^2}{c^2}, \\
+z = h
+\end{cases}
+\quad\text{或}\quad
+\begin{cases}
+\dfrac{x^2}{a^2} - \dfrac{z^2}{c^2} = 1 + \dfrac{h^2}{b^2}, \\
+y = h
+\end{cases}
+\]
+用平面 $x = h$ ($|h| \geq a$)截曲面(1)，得椭圆
+\[
+\begin{cases}
+\dfrac{y^2}{b^2} + \dfrac{z^2}{c^2} = -1 + \dfrac{h^2}{a^2}, \\
+x = h
+\end{cases}
+\]
+
+\subsection{椭圆抛物面}
+方程
+\[
+\frac{x^2}{2p} + \frac{y^2}{2q} = z \quad (p, q \text{ 同号})\tag{1}
+\]
+的图形称为椭圆抛物面。
+
+用 $z = h$ ($h$ 与 $p, q$ 同号)截该曲面，得椭圆
+\[
+\begin{cases}
+\dfrac{x^2}{2ph} + \dfrac{y^2}{2qh} = 1, \\
+z = h.
+\end{cases}
+\]
+用平面 $x = h$ 或 $y = h$ 截该曲面，得抛物线
+\[
+\begin{cases}
+y^2 = 2q \left(z - \dfrac{h^2}{2p}\right), \\
+x = h
+\end{cases}
+\quad\text{或}\quad
+\begin{cases}
+x^2 = 2p \left(z - \dfrac{h^2}{2q}\right), \\
+y = h.
+\end{cases}
+\]
+
+\subsection{双曲抛物面}
+方程
+\[
+\frac{x^2}{2p} - \frac{y^2}{2q} = z \quad (p, q \text{ 同号})\tag{1}
+\]
+的图形称为双曲抛物面（或马鞍面）。方程的特点是有两个异号的平方项，另一个变量是一次项，无常数项。
+
+用平面 $z = h$ ($h \neq 0$) 截该曲面得双曲线
+\[
+\begin{cases}
+\dfrac{x^2}{2ph} - \dfrac{y^2}{2qh} = 1, \\
+z = h.
+\end{cases}
+\]
+当 $h$ 与 $p, q$ 同号时，双曲线实轴与 $x$ 轴平行；当 $h$ 与 $p, q$ 异号时，实轴与 $y$ 轴平行。$h = 0$ 时，该曲面与 $xOy$ 平面的交线是两条相交的直线
+\[
+\begin{cases}
+\dfrac{x^2}{2p} - \dfrac{y^2}{2q} = 0, \\
+z = 0.
+\end{cases}
+\]
+用 $x = h$ 或 $y = h$ 平面截该曲面均得抛物线。
+
+\subsection{二次锥面}
+方程
+\[
+\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 0 \quad (a > 0, b > 0, c > 0)\tag{1}
+\]
+的图形称为二次锥面。该方程是二次齐次方程，平方项的系数两个取正号，一个取负号（也可写成两个系数取负号，一个系数取正号的形式）。
+
+用平面 $z = h$ ($h \neq 0$) 截该曲面得椭圆
+\[
+\begin{cases}
+\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} = \left(\dfrac{h}{c}\right)^2, \\
+z = h,
+\end{cases}
+\]
+随 $|h|$ 的增大，其长、短半轴也不断加大。该锥面与 $xOy$ 平面（即 $z = 0$ 平面）仅交于一点 $O(0, 0, 0)$。
+
+当 $a = b$ 时，锥面 (1) 就是圆锥面。
+
+如果 $M_0(x_0, y_0, z_0)$ 满足方程 (1)，则 $M(tx_0, ty_0, tz_0)$ 也满足方程 (1)，即若点 $M_0(x_0, y_0, z_0)$ 在锥面 (1) 上，则过点 $O(0, 0, 0)$ 和 $M_0(x_0, y_0, z_0)$ 的直线 $L$ 上的任一点均在锥面 (1) 上。
+
+\subsection{二次曲面的一般方程}
+九种二次曲面
+\begin{enumerate}
+    \item 椭圆柱面
+    \item 双曲柱面
+    \item 抛物柱面
+    \item 椭球面
+    \item 单叶双曲面
+    \item 双叶双曲面
+    \item 椭圆抛物面
+    \item 双曲抛物面
+    \item 二次锥面
+\end{enumerate}
+
+\subsection*{本章二次曲面图}
+以下图形全部由 \texttt{pgfplots} 参数曲面代码绘制，不再依赖 \texttt{markdown/} 下的 PNG 截图。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=6cm,view={25}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=-1.6:1.6,samples=30,samples y=8]
+({1.0*cos(x)},{0.75*sin(x)},{y});
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=6cm,view={25}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=-1.5:1.5,samples=32,samples y=12]
+({(0.55+0.20*y^2)*cos(x)},{(0.55+0.20*y^2)*sin(x)},{y});
+\end{axis}
+\end{tikzpicture}
+\caption{图 8.1 柱面（母线平行于 $z$ 轴，准线为 $xOy$ 面上的曲线）\quad 图 8.2 旋转曲面（$yOz$ 面上曲线 $C$ 绕 $z$ 轴旋转，$f(\pm\sqrt{x^2+y^2},z)=0$）}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=6cm,view={28}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=-1.1:1.1,samples=30,samples y=12]
+({1.3*cosh(y)*cos(x)},{1.0*cosh(y)*sin(x)},{0.9*sinh(y)});
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=6cm,view={28}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=0:1.35,samples=28,samples y=10]
+({1.3*cosh(y)},{0.9*sinh(y)*cos(x)},{1.0*sinh(y)*sin(x)});
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=0:1.35,samples=28,samples y=10]
+({-1.3*cosh(y)},{0.9*sinh(y)*cos(x)},{1.0*sinh(y)*sin(x)});
+\end{axis}
+\end{tikzpicture}
+\caption{图 8.10 单叶双曲面 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=1$\quad 图 8.11 双叶双曲面 $\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=1$}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=6cm,view={28}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,samples=24,domain=-1.2:1.2,y domain=-1.2:1.2,samples y=16]
+{x^2+y^2};
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[width=0.46\textwidth,height=6cm,view={28}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,samples=24,domain=-1.2:1.2,y domain=-1.2:1.2,samples y=16]
+{x^2-y^2};
+\end{axis}
+\end{tikzpicture}
+\caption{图 8.12 椭圆抛物面 $\dfrac{x^2}{2p}+\dfrac{y^2}{2q}=z$\quad 图 8.13 双曲抛物面（马鞍面）$\dfrac{x^2}{2p}-\dfrac{y^2}{2q}=z$}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.42\textwidth,height=6.4cm,view={28}{18},axis lines=center,ticks=none,
+  xlabel=$x$,ylabel=$y$,zlabel=$z$,label style={font=\small}]
+\addplot3[mesh,draw=black!75,line width=0.3pt,domain=0:360,y domain=-1.3:1.3,samples=30,samples y=10]
+({y*cos(x)},{0.85*y*sin(x)},{y});
+\end{axis}
+\end{tikzpicture}
+\caption{图 8.14 二次锥面 $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=0$：$z=h$ 截得椭圆，$z=0$ 时仅交于原点 $O$}
+\end{figure}

@@ -1,0 +1,204 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{tikz}
+
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\small,
+    commentstyle=\color{gray},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    numbers=none,
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\section{第一节：常量与变量}
+C语言程序处理的数据有常量和变量两种形式。
+
+\subsection{常量}
+常量的实例
+\begin{itemize}
+    \item 整型常量
+    \item 实型常量
+    \item 字符型常量
+    \item 字符串字面量
+\end{itemize}
+
+不同进制的整型常量的表示形式
+\begin{itemize}
+    \item 十进制
+    \item 二进制
+    \item 八进制
+    \item 十六进制
+\end{itemize}
+
+\begin{itemize}
+    \item 不同类型的整型常量的表示形式
+    \item 实型常量的表示形式
+    \item 不同类型的实型常量的表示形式
+\end{itemize}
+
+\subsection{变量}
+变量在使用之前必须先定义。定义变量的一般形式为：
+\begin{verbatim}
+类型关键字    变量名；
+\end{verbatim}
+
+变量名是用户定义的标识符，用于标识内存中一个具体的存储单元。
+
+变量的命名应遵守以下基本的命名规则：
+\begin{enumerate}
+    \item 标识符的第一个字符必须是字母（A-Z 或 a-z）或下划线 \texttt{\_}。
+    \item 后续的字符可以是字母、数字（0-9）或下划线 \texttt{\_}。
+    \item 标识符不能包含空格或其他特殊字符。
+    \item 不能使用C的关键词。
+\end{enumerate}
+
+C语言允许在定义变量的同时对变量初始化（为其赋初值）。
+
+在一条语句中，可同时定义多个相同类型的变量，多个变量之间用逗号作分隔符。
+
+若要在定义变量的同时将其初始化为0，则为：
+\begin{lstlisting}
+int a = 0 , b = 0 , c = 0 ;
+\end{lstlisting}
+
+但是不能写成：
+\begin{lstlisting}
+int a = b = c = 0 ;
+\end{lstlisting}
+
+
+\section{第二节：简单的屏幕输出}
+\begin{lstlisting}
+#include<stdio.h>
+int main(void)
+{
+	printf(" ");
+}
+\end{lstlisting}
+
+程序第一行以\#开头而未以分号结尾的不是C语句，而是C的编译器处理命令。
+
+尖括号内的文件称为头文件。编译器预处理命令可以使头文件在程序中生效。它的作用是：将写在尖括号内。
+
+C的标准输入/输出函数\texttt{printf()}的作用是输出一个字符串。
+
+C语言中，用一对双引号括起来的若干字符，称为字符串。
+
+
+\section{第三节：数据类型}
+C语言中的数据类型分类。
+
+\begin{table}[htbp]
+\centering
+\caption{C 语言数据类型分类（关键字、变量声明实例与讲述章节）}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}p{1.9cm}p{2.6cm}Xp{1.5cm}@{}}
+\toprule
+数据类型分类 & 关键字 & 变量声明实例 & 讲述章节 \\
+\midrule
+\multirow{10}{*}{基本类型}
+ & 基本整型 \texttt{int} & \texttt{int a;} & 第2章 \\
+ & 长整型 \texttt{long int} & \texttt{long int a;}；或 \texttt{long a;} & 第4章 \\
+ & 长整型 \texttt{long} & \texttt{long long int a;}；或 \texttt{long long a;} & 第4章 \\
+ & 短整型 \texttt{short int} & \texttt{short int a;}；或 \texttt{short a;} & 第4章 \\
+ & 无符号整型 \texttt{unsigned} & \texttt{unsigned int a;}\newline \texttt{unsigned long b;}\newline \texttt{unsigned short c;} & 第4章 \\
+\cmidrule(l){2-4}
+ & 单精度实型 \texttt{float} & \texttt{float a;} & 第4章 \\
+ & 双精度实型 \texttt{double} & \texttt{double a;} & 第4章 \\
+ & 长双精度实型 \texttt{long double} & \texttt{long double a;} & 第4章 \\
+\cmidrule(l){2-4}
+ & 字符型 \texttt{char} & \texttt{char a;} & 第4章、第10章 \\
+ & 枚举类型 \texttt{enum} & \texttt{enum response\{no, yes, none\};}\newline \texttt{enum response answer;} & 第12章 \\
+\midrule
+\multirow{3}{*}{构造类型}
+ & 数组 \texttt{--} & \texttt{int score[10];}\newline \texttt{char name[20];} & 第8章 \\
+ & 结构体 \texttt{struct} & \texttt{struct date\{ int year; int month; int day; \};}\newline \texttt{struct date d;} & 第12章 \\
+ & 共用体 \texttt{union} & \texttt{union\{ int single; char spouseName[20]; struct date divorcedDay; \}married;} & 第12章 \\
+\midrule
+指针类型 & \texttt{--} & \texttt{int *ptr;}\quad \texttt{char *pStr;} & 第9--11章 \\
+空类型 & \texttt{void} & \texttt{void Sort(int array[], int n);}\newline \texttt{void *malloc(unsigned int size);} & 第8章、第11章 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+这些类型的层次关系如下：
+
+\begin{itemize}
+    \item 基本类型
+    \begin{itemize}
+        \item 整型：基本整型 \texttt{int}、长整型 \texttt{long int}（\texttt{long}）、短整型 \texttt{short int}（\texttt{short}）、无符号整型 \texttt{unsigned}
+        \item 实型（浮点型）：单精度实型 \texttt{float}、双精度实型 \texttt{double}、长双精度实型 \texttt{long double}
+        \item 字符型 \texttt{char}
+        \item 枚举类型 \texttt{enum}
+    \end{itemize}
+    \item 构造类型：数组类型、结构体类型 \texttt{struct}、共用体类型 \texttt{union}
+    \item 指针类型（\texttt{int *}、\texttt{char *} 等）
+    \item 空类型 \texttt{void}
+\end{itemize}
+
+\subsection{\texttt{\#define} 与 \texttt{const} 的区别}
+常量可以用 \texttt{\#define} 预处理指令或 \texttt{const} 关键字定义，选择哪种方式取决于具体需求与编程习惯。通常情况下建议使用 \texttt{const}，因为它具有类型检查和作用域的优势；而 \texttt{\#define} 仅做简单的文本替换，可能带来意外问题。
+
+\begin{itemize}
+    \item \textbf{替换机制}：\texttt{\#define} 进行简单的文本替换，\texttt{const} 则声明一个具有类型的常量。\texttt{\#define} 定义的常量在编译时被直接替换为对应的值；\texttt{const} 定义的常量在程序运行时分配内存，并且具有类型信息。
+    \item \textbf{类型检查}：\texttt{\#define} 不做类型检查，因为它只是文本替换；\texttt{const} 定义的常量具有类型信息，编译器可对其做类型检查，有助于捕获潜在的类型错误。
+    \item \textbf{作用域}：\texttt{\#define} 定义的常量没有作用域限制，在定义之后的整个代码中都有效；\texttt{const} 定义的常量具有块级作用域，只在其定义所在的作用域内有效。
+    \item \textbf{调试和符号表}：\texttt{\#define} 定义的常量在符号表中没有对应条目，因为它只是文本替换；\texttt{const} 定义的常量在符号表中有对应条目，有助于调试和可读性。
+\end{itemize}
+
+\begin{lstlisting}
+#define MAX 100          /* 预处理阶段文本替换，无类型 */
+const int max = 100;     /* 有类型、有块级作用域的常量 */
+\end{lstlisting}
+
+定义整型变量时，只要不指定为无符号型，其隐含的类型就是有符号型，而\texttt{signed}通常是省略不写的。
+
+
+\section{第四节：如何计算变量或数据类型所占内存空间的大小}
+衡量内存空间大小的表示单位。
+
+\texttt{sizeof}是C语言的关键字，不是函数名。\texttt{sizeof()}是C语言提供的专门用于计算指定数据类型字节数的运算符。例如，计算\texttt{int}型数据所占内存的字节数用\texttt{sizeof(int)}计算即可。使用\texttt{sizeof(变量名)}的形式还可以计算一个变量所占内存的字节数。此外，\texttt{sizeof}是编译时执行的运算符，不增加程序额外的运行时间开销，但是可以增强程序的可移植性。
+
+
+\section{第五节：变量的赋值和赋值运算符}
+赋值运算符用于给变量赋值。由赋值运算符及其两侧的操作数组成的表达式称为赋值表达式。
+
+\begin{lstlisting}
+x = 1 ;
+\end{lstlisting}
+
+赋值操作是通过在赋值表达式后面加分号构成表达式语句来实现的。
+
+赋值运算符的含义是将赋值运算符右侧表达式的值(简称为右值)赋给左侧的变量，即在C语言中赋值运算的操作是有方向性的，并无“等号两侧操作数的值相等”之意，因此，等号左侧只能是标识一个特定存储单元的变量名。
+
+在计算含有不同类型运算符的表达式时，要考虑运算符的优先级，根据优先级确定运算的顺序，即先执行优先级高的运算，然后再执行优先级低的运算。
+
+\textbf{算术运算符的优先级高于赋值运算符的优先级}。
+
+在C语言中，赋值表达式的值被规定为运算完成后左操作数，类型与左操作数相同。
+
+根据运算符的结合性来确定运算的顺序。运算的结合性有两种：一种是左结合，即自左向右计算；另一种是右结合，即自右向左计算。
+
+C语言中需要两个操作数的算术运算符是左结合的。
+
+\begin{lstlisting}
+a = b = c = 0 ;
+a = (b = ( c = 0)) ;
+\end{lstlisting}
+
+执行时是从右向左把最右侧的表达式的值依次赋值给左侧的变量。像上面形式的赋值表达式称为多重赋值表达式，一般用于为多个变量赋予相同的数值。
+
+\end{document}

@@ -1,0 +1,30 @@
+% file: 拓展.tex
+% 作为主文档 \input{../../拓展/拓展} 的子文件，不要写 \documentclass、\begin{document}、\end{document}
+% 由同目录 拓展.md 生成（2026-10-20）
+
+\section{拓展}
+\noindent\textit{本部分为补充篇：伴随矩阵的秩、降阶公式，以及两处待补的残稿。}
+
+\subsection{伴随矩阵的秩与原矩阵的秩的关系}
+设 $A$ 为 $n$ 阶方阵，$A^{*}$ 为其伴随矩阵，则
+\[
+r(A^{*})=
+\begin{cases}
+n, & r(A)=n,\\[1mm]
+1, & r(A)=n-1,\\[1mm]
+0, & r(A)\le n-2.
+\end{cases}
+\]
+
+\noindent\textit{（以下直觉解释原图没有，2026-10-20 按标准结论补：$r(A)=n$ 时 $A$ 可逆、$A^{*}=|A|A^{-1}$ 也可逆；
+$r(A)=n-1$ 时由 $AA^{*}=|A|E=O$ 得 $r(A)+r(A^{*})\le n$，又存在 $n-1$ 阶非零子式使 $r(A^{*})\ge1$；
+$r(A)\le n-2$ 时所有 $n-1$ 阶子式为零，$A^{*}=O$。）}
+
+\subsection{降阶公式}
+设 $A$ 是 $m\times n$ 矩阵，$B$ 是 $n\times m$ 矩阵，$m>n$，$\lambda$ 为任意数，则
+\[
+|\lambda E_m-AB|=\lambda^{m-n}\,|\lambda E_n-BA|.
+\]
+
+\subsection{待补}
+原稿中「生成的向量空间」只有半句定义，「相似的本质」只有标题，均未写出内容，按原样保留待补。

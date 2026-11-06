@@ -1,0 +1,115 @@
+% 子文件：4.微分中值定理与导数应用.tex
+% 主文档使用 \input{4.微分中值定理与导数应用} 引入，无document环境
+
+\section{微分中值定理}
+
+定理4.1（罗尔定理）\quad 若函数$f(x)$满足
+\begin{enumerate}
+    \item 在闭区间$[a,b]$上连续；
+    \item 在开区间$(a,b)$内可导；
+    \item $f(a)=f(b)$，
+\end{enumerate}
+则在开区间$(a,b)$内至少存在一点$\xi$，使得
+\[
+f'(\xi)=0.
+\]
+
+定理4.2（拉格朗日中值定理）\quad
+若函数$f(x)$满足
+\begin{enumerate}
+    \item 在闭区间$[a,b]$上连续；
+    \item 在开区间$(a,b)$内可导，
+\end{enumerate}
+则在开区间$(a,b)$内至少存在一点$\xi$，使得
+\[
+f(b)-f(a)=(b-a)f'(\xi). \tag{3}
+\]
+
+\noindent 其中 $\dfrac{f(b)-f(a)}{b-a}$ 称平均曲线的斜率（原 markdown 稿的批注，2026-10-20 补回）。
+
+\noindent 分析（利用罗尔定理证明拉格朗日中值定理）
+
+定理4.3（柯西中值定理）\quad 如果函数$f(x)$和$g(x)$满足
+\begin{enumerate}
+    \item 在闭区间$[a,b]$上连续；
+    \item 在开区间$(a,b)$内可导，且$g'(x)\neq 0$，
+\end{enumerate}
+则在开区间$(a,b)$内至少存在一点$\xi$，使得
+\[
+\frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f'(\xi)}{g'(\xi)}.
+\]
+
+\section{洛必达法则}
+\noindent 和型未定式
+
+\noindent 其他型未定式
+
+\section{泰勒公式}
+定理4.4（泰勒定理）\quad 设函数$f(x)$在点$x_0$处有$n$阶导数，则在$x_0$附近$f(x)$可表示为。
+
+麦克劳林公式
+\[
+f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^2+\cdots+\frac{f^{(n)}(0)}{n!}x^n+\frac{f^{(n+1)}(\theta x)}{(n+1)!}x^{n+1}.
+\]
+
+\noindent 初等函数的麦克劳林公式（拉格朗日型余项，$0<\theta<1$）：
+\begin{align*}
+(1)\quad \mathrm{e}^{x} &= 1+x+\frac{x^{2}}{2!}+\cdots+\frac{x^{n}}{n!}+\frac{\mathrm{e}^{\theta x}}{(n+1)!}x^{n+1};\\
+(2)\quad \sin x &= x-\frac{x^{3}}{3!}+\frac{x^{5}}{5!}-\cdots+(-1)^{m}\frac{x^{2m+1}}{(2m+1)!}+(-1)^{m+1}\frac{\cos\theta x}{(2m+3)!}x^{2m+3};\\
+(3)\quad \cos x &= 1-\frac{x^{2}}{2!}+\frac{x^{4}}{4!}-\cdots+(-1)^{m}\frac{x^{2m}}{(2m)!}+(-1)^{m+1}\frac{\cos\theta x}{(2m+2)!}x^{2m+2};\\
+(4)\quad \ln(1+x) &= x-\frac{x^{2}}{2}+\frac{x^{3}}{3}-\cdots+(-1)^{n-1}\frac{x^{n}}{n}+(-1)^{n}\frac{x^{n+1}}{(n+1)(1+\theta x)^{n+1}};\\
+(5)\quad (1+x)^{\mu} &= 1+\mu x+\frac{\mu(\mu-1)}{2!}x^{2}+\cdots+\frac{\mu(\mu-1)\cdots(\mu-n+1)}{n!}x^{n}\\
+&\qquad +\frac{\mu(\mu-1)\cdots(\mu-n)}{(n+1)!}(1+\theta x)^{\mu-n-1}x^{n+1}.
+\end{align*}
+
+\[
+\frac{1}{1-x}=1+x+x^2+\cdots+x^n+o(x^n).
+\]
+
+\section{极值与最大（小）值的求法}
+\subsection{函数的极值及其求法}
+
+\subsection{函数的最大（小）值的求法}
+
+\section{函数的分析作图法}
+\subsection{凸函数、曲线的凸向及拐点}
+定理4.9\quad 设$f(x)$在区间$I$上有二阶导数，若$f''(x)\ge 0\,(\le 0)$，则$f(x)$为$I$上的下凸函数（上凸函数）。
+
+定理4.10\quad 若
+
+\noindent 在连续曲线$y=f(x)$上，不同凸向曲线段的分界点叫做拐点。
+
+\subsection{曲线的渐近线}
+
+\subsection{函数的分析作图法}
+
+\section{曲率}
+\subsection{弧微分}
+若函数曲线是由极坐标方程
+\[
+r=r(\theta),\quad \alpha\le\theta\le\beta
+\]
+给出，且$r(\theta)$有连续导数，则将$x=r(\theta)\cos\theta,\ y=r(\theta)\sin\theta$代入，即得
+\[
+ds=\sqrt{[r(\theta)]^2+[r'(\theta)]^2}\,d\theta.
+\]
+
+\subsection{曲率}
+为了说明在点$M$处曲线弯曲程度，让$M_1$沿曲线趋于$M\,(\Delta s\rightarrow 0)$，称倾角$\alpha$对弧长$s$的导数
+\[
+\frac{d\alpha}{ds}=\lim_{\Delta s\rightarrow0}\frac{\Delta\alpha}{\Delta s}
+\]
+的绝对值为曲线在点$M$处的曲率，记为$k$，则
+\[
+k=\left|\frac{d\alpha}{ds}\right|.
+\]
+就是说，曲率等于切线倾角随弧长变化的变化率的绝对值，或者说是切线方向随弧长变化的变化率的模。
+
+在直角坐标下$\alpha=$，其微分。由式知$ds=\sqrt{1+y'^2}\,dx$就得到曲率的计算公式
+\[
+k=\left|\frac{y''}{\left(1+y'^2\right)^{\frac{3}{2}}}\right|.
+\]
+
+若曲线$c$上点$M$处的曲率$k\neq0$，则称$R=\dfrac{1}{k}$为曲线$c$在点$M$处的曲率半径。
+
+在点$M$处曲线凹向的法线上取一点$D$，使$|MD|=R=\dfrac{1}{k}$，则以$D$为圆心，$R$为半径的圆叫做曲线在$M$处的

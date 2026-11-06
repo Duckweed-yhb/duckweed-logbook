@@ -7,7 +7,7 @@
 
 **面向零基础学生的 ESP32-S3 开发板使用教程**
 
-[快速开始](#快速开始三步) · [学习路线](教程文档/00_learning_path.md) · [硬件资料](教程文档/06_hardware_info.md) · [常见问题](教程文档/FAQ_troubleshooting.md) · [Gitee 镜像](https://gitee.com/careyyyy/engineering-training)
+[快速开始](#快速开始三步) · [学习路线](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>) · [硬件资料](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/06_hardware_info.md>) · [常见问题](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/FAQ_troubleshooting.md>) · [Gitee 镜像](https://gitee.com/careyyyy/engineering-training)
 
 </div>
 
@@ -18,34 +18,34 @@
 > [!TIP]
 > **第一次来，别翻代码目录。** 直接点下面这一步，按学习路线从头走，每一步都有「完成标志」帮你确认没跳步：
 >
-> ### [从第 1 步开始学 —— 00 学习路线](教程文档/00_learning_path.md)
+> ### [从第 1 步开始学 —— 00 学习路线](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>)
 
 ---
 
 ## 快速开始（三步）
 
-1. **装环境**：[Windows 安装](教程文档/01_install_windows.md) ・ [macOS 安装](教程文档/02_install_macos.md) ・ [下载链接与驱动](教程文档/00_downloads_cn.md) ・ [板卡参数](教程文档/03_board_settings_esp32s3.md)
-2. **跟路线**：打开 [00 学习路线](教程文档/00_learning_path.md)，从第 1 步顺序往下走。
-3. **卡住了**：先查 [常见问题排查 FAQ](教程文档/FAQ_troubleshooting.md)，再看本页底部的 [安全须知](#安全须知必读)。
+1. **装环境**：[Windows 安装](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/01_install_windows.md>) ・ [macOS 安装](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/02_install_macos.md>) ・ [下载链接与驱动](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_downloads_cn.md>) ・ [板卡参数](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/03_board_settings_esp32s3.md>)
+2. **跟路线**：打开 [00 学习路线](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>)，从第 1 步顺序往下走。
+3. **卡住了**：先查 [常见问题排查 FAQ](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/FAQ_troubleshooting.md>)，再看本页底部的 [安全须知](#安全须知必读)。
 
 ---
 
 ## 学习路线（按这个顺序走）
 
-> 下面是总览，**完整步骤、接线和「完成标志」以 [00 学习路线](教程文档/00_learning_path.md) 为准。**
+> 下面是总览，**完整步骤、接线和「完成标志」以 [00 学习路线](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>) 为准。**
 
 | 阶段 | 目标 | 教程 | 示例代码 |
 |:--:|------|------|----------|
-| 1 | 装好 Arduino IDE 和 ESP32-S3 板卡 | [Windows](教程文档/01_install_windows.md) / [macOS](教程文档/02_install_macos.md) | — |
-| 2 | 让板载 RGB 彩灯闪烁，验证上传流程 | [学习路线](教程文档/00_learning_path.md) | [01_LED闪烁](示例代码/01_LED闪烁/01_blink_onboard_led.ino) |
-| 3 | 学会串口输出和调试 | [学习路线](教程文档/00_learning_path.md) | [02_串口调试](示例代码/02_串口调试/02_serial_print.ino) |
-| 4 | 控制单个 PWM 舵机 | [舵机指南](教程文档/07_servo_guide.md) | [03_舵机基础控制](示例代码/03_舵机基础控制/03_servo_basic.ino) |
-| 5 | 用网页控制舵机 | [网页控制舵机](教程文档/05_web_servo_guide.md) | [04_舵机网页控制](示例代码/04_舵机网页控制/04_servo_web_control.ino) |
-| 6 | 跑通 MG4010-i10 基础命令 | [电机指南](教程文档/08_motor_guide.md) | [05_电机基础控制](示例代码/05_电机基础控制/05_mg4010_motor_basic.ino) |
-| 7 | 电机速度闭环控制 | [电机指南](教程文档/08_motor_guide.md) | [06_电机速度模式](示例代码/06_电机速度模式/06_motor_speed_mode.ino) |
-| 8 | 电机多圈位置控制 | [电机指南](教程文档/08_motor_guide.md) | [07_电机位置模式](示例代码/07_电机位置模式/07_motor_position_mode.ino) |
-| 9 | 网页综合控制电机 | [电机指南](教程文档/08_motor_guide.md) | [08_电机网页控制](示例代码/08_电机网页控制/08_motor_web_control.ino) |
-| 10 | 两电机四舵机整合 | [机器人整合](教程文档/09_robot_integration.md) | [09_机器人整合控制](示例代码/09_机器人整合控制/09_robot_integrated_control.ino) |
+| 1 | 装好 Arduino IDE 和 ESP32-S3 板卡 | [Windows](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/01_install_windows.md>) / [macOS](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/02_install_macos.md>) | — |
+| 2 | 让板载 RGB 彩灯闪烁，验证上传流程 | [学习路线](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>) | [01_LED闪烁](示例代码/01_LED闪烁/01_blink_onboard_led.ino) |
+| 3 | 学会串口输出和调试 | [学习路线](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>) | [02_串口调试](示例代码/02_串口调试/02_serial_print.ino) |
+| 4 | 控制单个 PWM 舵机 | [舵机指南](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/07_servo_guide.md>) | [03_舵机基础控制](示例代码/03_舵机基础控制/03_servo_basic.ino) |
+| 5 | 用网页控制舵机 | [网页控制舵机](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/05_web_servo_guide.md>) | [04_舵机网页控制](示例代码/04_舵机网页控制/04_servo_web_control.ino) |
+| 6 | 跑通 MG4010-i10 基础命令 | [电机指南](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/08_motor_guide.md>) | [05_电机基础控制](示例代码/05_电机基础控制/05_mg4010_motor_basic.ino) |
+| 7 | 电机速度闭环控制 | [电机指南](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/08_motor_guide.md>) | [06_电机速度模式](示例代码/06_电机速度模式/06_motor_speed_mode.ino) |
+| 8 | 电机多圈位置控制 | [电机指南](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/08_motor_guide.md>) | [07_电机位置模式](示例代码/07_电机位置模式/07_motor_position_mode.ino) |
+| 9 | 网页综合控制电机 | [电机指南](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/08_motor_guide.md>) | [08_电机网页控制](示例代码/08_电机网页控制/08_motor_web_control.ino) |
+| 10 | 两电机四舵机整合 | [机器人整合](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/09_robot_integration.md>) | [09_机器人整合控制](示例代码/09_机器人整合控制/09_robot_integrated_control.ino) |
 
 ---
 
@@ -136,7 +136,7 @@
 | 电机手册 / 协议 | [手册](硬件资料/技术文档/MG4010-i10电机手册.pdf) ・ [RS485 协议](硬件资料/技术文档/MG4010-i10-R485协议.pdf) |
 | 转接板原理图 | [转接板原理图.pdf](硬件资料/技术文档/转接板原理图.pdf) |
 | Windows 串口驱动 | [CH341SER.EXE](硬件资料/驱动程序/CH341SER.EXE) |
-| 3D 模型 | [开发板](硬件资料/3D模型/开发板/ESP32-S3开发板.STEP) ・ [电机](硬件资料/3D模型/电机/MG4010-i10电机.STEP) ・ [转接板](硬件资料/3D模型/转接板/电机转接板.STEP) ・ [舵机](硬件资料/3D模型/舵机/MG90S舵机主体.STEP) ・ 舵盘 [单](硬件资料/3D模型/舵机/单向舵盘.STEP)/[双](硬件资料/3D模型/舵机/双向舵盘.STEP)/[四](硬件资料/3D模型/舵机/四向舵盘.STEP) |
+| 3D 模型 | [开发板](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/开发板/ESP32-S3开发板.STEP) ・ [电机](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/电机/MG4010-i10电机.STEP) ・ [转接板](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/转接板/电机转接板.STEP) ・ [舵机](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/MG90S舵机主体.STEP) ・ 舵盘 [单](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/单向舵盘.STEP)/[双](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/双向舵盘.STEP)/[四](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/四向舵盘.STEP) |
 
 更多说明见 [硬件资料 README](硬件资料/README.md)。
 
@@ -153,7 +153,7 @@
 https://jihulab.com/esp-mirror/espressif/arduino-esp32/-/raw/gh-pages/package_esp32_index_cn.json
 ```
 
-安装带 `-cn` 后缀的 `esp32 by Espressif Systems`。详细步骤见 [Windows 安装教程](教程文档/01_install_windows.md)。
+安装带 `-cn` 后缀的 `esp32 by Espressif Systems`。详细步骤见 [Windows 安装教程](<../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/01_install_windows.md>)。
 
 推荐 ESP32-S3 参数：
 

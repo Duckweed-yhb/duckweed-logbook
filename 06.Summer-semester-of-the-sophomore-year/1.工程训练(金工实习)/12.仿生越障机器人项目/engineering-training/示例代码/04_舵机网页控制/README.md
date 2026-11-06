@@ -198,6 +198,6 @@ void loop() {
 
 ## 相关资料
 
-- [教程文档/05_web_servo_guide.md](../../教程文档/05_web_servo_guide.md)
-- [教程文档/07_servo_guide.md](../../教程文档/07_servo_guide.md)
-- [返回学习路线](../../教程文档/00_learning_path.md)
+- [教程文档/05_web_servo_guide.md](<../../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/05_web_servo_guide.md>)
+- [教程文档/07_servo_guide.md](<../../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/07_servo_guide.md>)
+- [返回学习路线](<../../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>)

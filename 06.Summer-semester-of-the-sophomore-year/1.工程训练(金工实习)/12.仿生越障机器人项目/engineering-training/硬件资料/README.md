@@ -105,31 +105,31 @@ WCH CH340/CH341 USB 转串口芯片的 Windows 驱动。
 
 ### 开发板模型
 
-- [ESP32-S3开发板.STEP](3D模型/开发板/ESP32-S3开发板.STEP)
+- [ESP32-S3开发板.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/开发板/ESP32-S3开发板.STEP)
   ESP32-S3 开发板的三维模型，STEP 格式。
 
 ### 电机模型
 
-- [MG4010-i10电机.STEP](3D模型/电机/MG4010-i10电机.STEP)
+- [MG4010-i10电机.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/电机/MG4010-i10电机.STEP)
   MG4010 电机的三维模型，STEP 格式。
 
 ### 转接板模型
 
-- [电机转接板.STEP](3D模型/转接板/电机转接板.STEP)
+- [电机转接板.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/转接板/电机转接板.STEP)
   RS485 通信与电机供电转接板的三维模型，STEP 格式。
 
 ### 舵机模型
 
-- [MG90S舵机主体.STEP](3D模型/舵机/MG90S舵机主体.STEP)
+- [MG90S舵机主体.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/MG90S舵机主体.STEP)
   MG90S 舵机主体模型
 
-- [单向舵盘.STEP](3D模型/舵机/单向舵盘.STEP)
+- [单向舵盘.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/单向舵盘.STEP)
   单向舵盘
 
-- [双向舵盘.STEP](3D模型/舵机/双向舵盘.STEP)
+- [双向舵盘.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/双向舵盘.STEP)
   双向舵盘
 
-- [四向舵盘.STEP](3D模型/舵机/四向舵盘.STEP)
+- [四向舵盘.STEP](file:///E:/future/yhb-大文件/2026-10-23-工程训练-3D模型/舵机/四向舵盘.STEP)
   四向舵盘
 
 **用来干嘛**：
@@ -152,8 +152,8 @@ WCH CH340/CH341 USB 转串口芯片的 Windows 驱动。
 
 ## 更多资料
 
-- **开发板引脚图**：见 [教程文档/06_hardware_info.md](../教程文档/06_hardware_info.md)
-- **驱动安装详细教程**：见 [教程文档/01_install_windows.md](../教程文档/01_install_windows.md)
-- **舵机使用指南**：见 [教程文档/07_servo_guide.md](../教程文档/07_servo_guide.md)
-- **电机使用指南**：见 [教程文档/08_motor_guide.md](../教程文档/08_motor_guide.md)
-- **转接板说明位置**：见 [教程文档/06_hardware_info.md](../教程文档/06_hardware_info.md) 和 [教程文档/08_motor_guide.md](../教程文档/08_motor_guide.md)
+- **开发板引脚图**：见 [教程文档/06_hardware_info.md](<../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/06_hardware_info.md>)
+- **驱动安装详细教程**：见 [教程文档/01_install_windows.md](<../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/01_install_windows.md>)
+- **舵机使用指南**：见 [教程文档/07_servo_guide.md](<../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/07_servo_guide.md>)
+- **电机使用指南**：见 [教程文档/08_motor_guide.md](<../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/08_motor_guide.md>)
+- **转接板说明位置**：见 [教程文档/06_hardware_info.md](<../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/06_hardware_info.md>) 和 [教程文档/08_motor_guide.md](<../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/08_motor_guide.md>)

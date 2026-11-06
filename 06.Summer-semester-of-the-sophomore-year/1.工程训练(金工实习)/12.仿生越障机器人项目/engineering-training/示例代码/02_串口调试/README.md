@@ -167,4 +167,4 @@ delay(1000);
 
 ## 下一步
 
-完成本例程后，回到 [学习路线](../../教程文档/00_learning_path.md)，继续学习单舵机控制。
+完成本例程后，回到 [学习路线](<../../../../../../../../12-知识库/01-学业/课程笔记/06.Summer-semester-of-the-sophomore-year/1.工程训练(金工实习)/12.仿生越障机器人项目/engineering-training/教程文档/00_learning_path.md>)，继续学习单舵机控制。

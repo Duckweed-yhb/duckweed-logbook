@@ -1,0 +1,134 @@
+% 高等数学A 核心公式与考点汇总 - XeLaTeX无错优化版（紧凑布局）
+% 适配MiKTeX/TeXLive、Windows、中文路径
+\documentclass[12pt,a4paper,oneside]{article}
+
+% ======================== 核心宏包 ========================
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{needspace}
+
+\usepackage[UTF8, fontset=windows]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{upgreek}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{siunitx}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+\usepackage{hypcap}
+\usepackage[
+    bookmarks=true,unicode=true,colorlinks=true,
+    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
+    pdfborder={0 0 0}
+]{hyperref}
+
+% ======================== 基础设置 ========================
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
+
+\definecolor{mainblue}{RGB}{41, 90, 141}
+\definecolor{secondcyan}{RGB}{26, 117, 117}
+\definecolor{thirdteal}{RGB}{27, 120, 101}
+\definecolor{highlight}{RGB}{255, 240, 200}
+\definecolor{tablehead}{RGB}{230, 240, 250}
+\definecolor{textgray}{RGB}{60, 60, 60}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\color{mainblue}\bfseries\small 高等数学A 核心公式与考点汇总}
+\fancyhead[R]{\color{mainblue}\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\color{mainblue}\hrule width\headwidth height\headrulewidth}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[L]{\color{mainblue}\bfseries\small 高等数学A 核心公式与考点汇总}
+    \fancyhead[R]{\color{mainblue}\thepage}
+    \renewcommand{\headrulewidth}{0.5pt}
+}
+
+\titlespacing*{\section}{0pt}{6pt plus 2pt minus 2pt}{3pt plus 2pt minus 2pt}
+\titlespacing*{\subsection}{0pt}{4pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt}
+\titlespacing*{\subsubsection}{0pt}{3pt plus 1pt minus 1pt}{1pt plus 1pt minus 1pt}
+
+\setlist{
+    itemsep=0.1ex,
+    parsep=0.2ex,
+    leftmargin=1.5em,
+    labelsep=0.4em,
+    topsep=0.2ex,
+    partopsep=0.1ex,
+    font=\small
+}
+\setlist[itemize,2]{leftmargin=1.8em,label=$\cdot$,itemsep=0.05ex,parsep=0.1ex}
+
+\numberwithin{equation}{section}
+\allowdisplaybreaks
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+\makeatletter
+\renewcommand{\@mathmargin}{0pt}
+\makeatother
+
+\setlength{\emergencystretch}{2em}
+\sloppy
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8ex}
+\setlength{\tabcolsep}{4pt}
+
+% ======================== 自定义命令 ========================
+\newcommand{\keyformula}[1]{%
+    \needspace{2\baselineskip}%
+    \begin{tcolorbox}[
+        colback=highlight,colframe=white,boxrule=0pt,arc=0pt,
+        left=6pt,right=6pt,top=4pt,bottom=4pt,center upper,
+        boxsep=0pt
+    ]
+    $\displaystyle #1$
+    \end{tcolorbox}%
+    \vspace{0.2em}
+}
+
+\newcommand{\symb}[2]{\textbf{#1}：\parbox[t]{10cm}{\raggedright #2}\\[0.3ex]}
+
+\newcommand{\corepoint}[1]{%
+    \begin{tcolorbox}[
+        colback=white,colframe=mainblue,boxrule=0.5pt,arc=2pt,
+        left=6pt,right=6pt,top=2pt,bottom=2pt,center upper,
+        boxsep=0pt
+    ]
+    \textbf{\color{mainblue}核心考点：#1}
+    \end{tcolorbox}%
+    \vspace{0.2em}
+}
+
+% ======================== 文档内容 ========================
+\begin{document}
+\input{2.cover.tex}
+\clearpage
+\thispagestyle{fancy}
+\tableofcontents
+\clearpage
+
+\input{3.函数.tex}
+\input{4.极限&连续.tex}
+\input{5.导数与微分.tex}
+\input{6.微分中值定理与导数的应用.tex}
+\input{7.不定积分.tex}
+\input{8.定积分.tex}
+\input{9.微分方程.tex}
+\input{../../拓展/拓展.tex}
+
+\end{document}

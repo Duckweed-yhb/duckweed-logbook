@@ -1,0 +1,26 @@
+% 程序设计思维与实践 —— 主文档（2026-10-20 新建；原先 main.tex 是 0 字节，工程根本无法编译）
+% 编译：xelatex 1.main.tex （建议编译两次生成目录）
+\documentclass[12pt,a4paper,oneside]{article}
+
+\usepackage{geometry}
+\usepackage[UTF8, fontset=windows]{ctex}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6ex}
+
+\begin{document}
+\input{2.cover.tex}
+\tableofcontents
+\clearpage
+
+\input{3.基本数据类型.tex}
+\input{4.基本算术运算.tex}
+
+\end{document}

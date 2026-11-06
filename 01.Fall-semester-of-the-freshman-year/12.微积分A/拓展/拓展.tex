@@ -1,0 +1,93 @@
+% file: 拓展.tex
+% 作为主文档 \input{../拓展/拓展} 的子文件，不要写 \documentclass、\begin{document}、\end{document}
+% 由同目录 拓展.md 生成（2026-10-20），内容为 4 张定理截图的转录 + 原草稿
+
+\section{拓展与细节}
+\noindent\textit{本部分为补充篇：Stolz 定理、柯西收敛原理、达布定理，以及几个常用公式。}
+
+\subsection{Stolz 定理}
+设 $\{a_n\}$ 和 $\{b_n\}$ 是两个数列，且满足
+\begin{enumerate}
+    \item 数列 $\{b_n\}$ 单调增加并趋于无穷大；
+    \item 存在极限 $\lim\limits_{n\to\infty}\dfrac{a_{n+1}-a_n}{b_{n+1}-b_n}=L$。
+\end{enumerate}
+那么，若 $\{b_n\}$ 的增量 $b_{n+1}-b_n$ 足够大，即 $\sum\limits_{n=1}^{\infty}(b_{n+1}-b_n)=\infty$，则有
+\[
+\lim_{n\to\infty}\frac{a_n}{b_n}=L
+\]
+
+\subsubsection{证明思路（柯西收敛原理 + 单调有界原理）}
+\begin{enumerate}
+    \item \textbf{假设前提成立}：设 $\{a_n\}$、$\{b_n\}$，其中 $\{b_n\}$ 单调递增且趋于无穷大，且
+          $\lim\limits_{n\to\infty}\dfrac{a_{n+1}-a_n}{b_{n+1}-b_n}=L$。
+    \item \textbf{构造辅助数列}：定义新数列 $\{d_n\}$，$d_n=\dfrac{a_n}{b_n}$。
+    \item \textbf{应用柯西收敛原理}：任给正数 $\varepsilon>0$，因 $\lim\limits_{n\to\infty}\dfrac{a_{n+1}-a_n}{b_{n+1}-b_n}=L$，
+          故存在自然数 $N$，使当 $n>N$ 时
+          \[
+          \left|\frac{a_{n+1}-a_n}{b_{n+1}-b_n}-L\right|<\varepsilon
+          \]
+    \item \textbf{估计差异}：对任意 $m>n>N$，由 $\{b_n\}$ 的性质可知 $b_m-b_n>0$，于是
+          \[
+          \left|\frac{a_m}{b_m}-\frac{a_n}{b_n}\right|
+          =\left|\frac{a_m b_n-a_n b_m}{b_m b_n}\right|
+          \le\left|\frac{(a_{n+1}-a_n)+(a_{n+2}-a_{n+1})+\cdots+(a_m-a_{m-1})}{b_m-b_n}\right|
+          \]
+    \item \textbf{应用极限定义}：由于 $\lim\limits_{n\to\infty}\dfrac{a_{n+1}-a_n}{b_{n+1}-b_n}=L$，可得
+          \[
+          \left|\frac{(a_{n+1}-a_n)+(a_{n+2}-a_{n+1})+\cdots+(a_m-a_{m-1})}{b_m-b_n}-L\right|<\varepsilon
+          \]
+    \item \textbf{结论}：综合以上步骤，可得 $\lim\limits_{n\to\infty}\dfrac{a_n}{b_n}=L$。
+\end{enumerate}
+
+\subsection{柯西收敛原理}
+柯西收敛原理的基本思想是：如果一个数列的任一子序列都能无限接近某一个固定的数值，
+那么这个数列就收敛于那个数值。
+
+\textbf{形式化表述}：设 $\{a_n\}_{n=1}^{\infty}$ 是一个数列，如果对于任意给定的 $\varepsilon>0$，
+存在正整数 $N$，使得对于所有的 $m,n>N$，都有
+\[
+|a_m-a_n|<\varepsilon
+\]
+那么称数列 $\{a_n\}$ 是\textbf{柯西数列}。如果一个数列既是柯西数列又是有界的，那么它一定收敛。
+
+\noindent 该原理是实数系完备性的等价刻画：它保证了所有柯西数列都在实数范围内收敛。
+
+\subsection{达布定理（导数的介值定理）}
+如果函数 $f$ 在闭区间 $[a,b]$ 上连续，并且在开区间 $(a,b)$ 内可导，
+那么对于任意介于 $f'(a)$ 与 $f'(b)$ 之间的数 $m$，存在至少一个 $c\in(a,b)$，使得
+\[
+f'(c)=m
+\]
+换言之：可导函数的导数图像上不会出现“跳跃”，导数的变化率在区间内平滑过渡，不存在突然的跃变。
+
+\subsection{区间再现公式}
+\[
+\int_a^b f(x)\,\mathrm{d}x=\int_a^b f(a+b-x)\,\mathrm{d}x
+\]
+
+\subsection{华里式公式（点火公式）}
+\textbf{基本公式}：
+\[
+\int_0^{\frac{\pi}{2}}\sin^n x\,\mathrm{d}x=\int_0^{\frac{\pi}{2}}\cos^n x\,\mathrm{d}x=
+\begin{cases}
+\dfrac{(n-1)!!}{n!!}\cdot\dfrac{\pi}{2}, & n \text{ 为偶数}\\[2mm]
+\dfrac{(n-1)!!}{n!!}, & n \text{ 为奇数}
+\end{cases}
+\]
+\textbf{推广公式}：
+\[
+\int_0^{\frac{\pi}{2}}\sin^n x\cos^m x\,\mathrm{d}x=
+\begin{cases}
+\dfrac{(m-1)!!\,(n-1)!!}{(m+n)!!}\cdot\dfrac{\pi}{2}, & m,n \text{ 全为偶数}\\[2mm]
+\dfrac{(m-1)!!\,(n-1)!!}{(m+n)!!}, & m,n \text{ 不全为偶数}
+\end{cases}
+\]
+
+\subsection{欧拉公式}
+\[
+e^{i\theta}=\cos\theta+i\sin\theta,\qquad e^{-i\theta}=\cos\theta-i\sin\theta
+\]
+
+\subsection{待补条目}
+原笔记中以下条目只有标题、未写出内容，按原样保留待补：表格积分法（分部积分的表格法）、
+重积分的变量代换（教材 p87）、含参变量的积分、常见的幂级数展开式（$\ln(1+x)$、$\cos x$、$e^x$、$\dfrac{1}{1+x}$）。

@@ -1,0 +1,26 @@
+\chapter{解析函数}
+
+\section{可导与解析的条件}
+\subsection{柯西-黎曼条件}
+函数 \( f(z) = u(x,y) + iv(x,y) \) 在点 \( z_0 = x_0 + iy_0 \) 处可导的**必要条件**是：
+\( u(x,y) \) 和 \( v(x,y) \) 在 \( (x_0,y_0) \) 处偏导数存在，且满足
+\[
+\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad -\frac{\partial u}{\partial y} = \frac{\partial v}{\partial x}.
+\]
+
+函数 \( f(z) \) 在点 \( z_0 \) 处可导的**充要条件**是：
+\( u(x,y) \) 和 \( v(x,y) \) 在 \( (x_0,y_0) \) 处可微，且满足柯西-黎曼条件。
+
+\subsection{调和函数与共轭调和函数}
+设 \( u(x,y) \) 是区域 \( D \) 上的调和函数，若 \( v(x,y) \) 也是 \( D \) 上的调和函数，且满足
+\[
+\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x},
+\]
+则称 \( v(x,y) \) 是 \( u(x,y) \) 的**共轭调和函数**。
+
+% ===== 以下内容原在 markdown 稿中、tex 里没有，2026-10-21 归并时以注释保留 =====
+% （片段按公式切分，断句不整；需要时手工整理进正文，整理完删掉这段注释）
+% 的实部和虚部可以用的模和辐角表示。
+% 复变函数在区域内解析的充要条件是。
+% 这就是关于及的偏微分方程组。
+% 反三角函数与反双曲函数。
