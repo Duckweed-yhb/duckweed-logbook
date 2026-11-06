@@ -49,3 +49,5 @@
 > **2026-11-05 迁移说明**：本目录 `markdown/` 下的 Markdown 课程笔记已迁入 `12-知识库/01-学业/课程笔记/`（同一学期/课程层级，去掉 `markdown/` 一层）。本仓库保留 `latex/` 正文源、图片与 PDF 等非 Markdown 附件。
 >
 > **2026-11-06 收尾**：`markdown/` 下最后 3 张图（`C语言中的数据分类.png`、`数据类型/数据类型.png`、`数据类型/define与const的区别.png`）已转写进 `latex/3.基本数据类型.tex`（4 列 `tabularx` 分类表、类型层次列表、`#define` 与 `const` 四条对比 + `lstlisting`），并同步改写知识库 md；图片与空目录 `markdown/`、`markdown/数据类型/` 已删除，`1.main.tex` 的 `\graphicspath{{../markdown/}}` 一并移除。
+
+> **2026-11-06 结构统一**：`课程笔记/latex/` 只放 `.tex` 源码，`课程笔记/pdf/` 只放编译成品（中间文件在 `pdf/.build/`，已被 `.gitignore` 排除），编译用 `课程笔记/build.ps1`（两遍 xelatex + `-output-directory`，产物 `程序设计思维与实践课程笔记.pdf`，8 页 / 0 错误）。为让整本编过：`3.基本数据类型.tex`、`4.基本算术运算.tex` 去掉了自成文档的 `\documentclass`/`\usepackage`/`\begin{document}`，`listings`/`array`/`tabularx`/`multirow`/`tikz` 统一在主文档导言区加载。

@@ -27,22 +27,24 @@
 \usepackage{fancyhdr}
 \usepackage{enumitem}
 
-\usepackage{hypcap}
-\usepackage[
-    bookmarks=true,unicode=true,colorlinks=true,
-    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
-    pdfborder={0 0 0}
-]{hyperref}
-
-% ======================== 基础设置 ========================
-\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
-
+% ---------- 颜色（hyperref 用到颜色，必须先定义）----------
 \definecolor{mainblue}{RGB}{41, 90, 141}
 \definecolor{secondcyan}{RGB}{26, 117, 117}
 \definecolor{thirdteal}{RGB}{27, 120, 101}
 \definecolor{highlight}{RGB}{255, 240, 200}
 \definecolor{tablehead}{RGB}{230, 240, 250}
 \definecolor{textgray}{RGB}{60, 60, 60}
+
+% ---------- 超链接 ----------
+\usepackage[
+    bookmarks=true,unicode=true,colorlinks=true,
+    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
+    pdfborder={0 0 0}
+]{hyperref}
+\usepackage{hypcap}
+
+% ======================== 基础设置 ========================
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -129,6 +131,6 @@
 \input{7.不定积分.tex}
 \input{8.定积分.tex}
 \input{9.微分方程.tex}
-\input{../../拓展/拓展.tex}
+\input{10.拓展.tex}
 
 \end{document}

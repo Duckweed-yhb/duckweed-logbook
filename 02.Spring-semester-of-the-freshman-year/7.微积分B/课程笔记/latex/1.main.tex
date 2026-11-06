@@ -13,6 +13,7 @@
 \setsansfont{Microsoft YaHei}
 
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage{esint}   % \oiint 环路/闭合曲面积分符号（2026-11-06 补）
 \usepackage{upgreek}
 \usepackage{xcolor}
 \usepackage{colortbl}
@@ -26,22 +27,24 @@
 \usepackage{fancyhdr}
 \usepackage{enumitem}
 
-\usepackage{hypcap}
-\usepackage[
-    bookmarks=true,unicode=true,colorlinks=true,
-    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
-    pdfborder={0 0 0}
-]{hyperref}
-
-% ======================== 基础设置 ========================
-\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
-
+% 颜色定义（hyperref 引用颜色前必须先定义）
 \definecolor{mainblue}{RGB}{41, 90, 141}
 \definecolor{secondcyan}{RGB}{26, 117, 117}
 \definecolor{thirdteal}{RGB}{27, 120, 101}
 \definecolor{highlight}{RGB}{255, 240, 200}
 \definecolor{tablehead}{RGB}{230, 240, 250}
 \definecolor{textgray}{RGB}{60, 60, 60}
+
+% hyperref 在前，hypcap 在后
+\usepackage[
+    bookmarks=true,unicode=true,colorlinks=true,
+    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
+    pdfborder={0 0 0}
+]{hyperref}
+\usepackage{hypcap}
+
+% ======================== 基础设置 ========================
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}

@@ -1,6 +1,6 @@
 % 电路理论基础核心公式与考点汇总 - XeLaTeX无错优化版（紧凑布局）
 % 适配MiKTeX/TeXLive、Windows、中文路径
-\documentclass[12pt,a4paper,oneside]{article}
+\documentclass[12pt,a4paper,oneside]{book}
 
 % ======================== 核心宏包 ========================
 \usepackage{graphicx}
@@ -30,24 +30,24 @@
 \usepackage{fancyhdr}
 \usepackage{enumitem}
 
-% 超链接顺序规范
-\usepackage{hypcap}
-\usepackage[
-    bookmarks=true,unicode=true,colorlinks=true,
-    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
-    pdfborder={0 0 0}
-]{hyperref}
-
-% ======================== 基础设置 ========================
-\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
-
-% 颜色定义
+% 颜色定义（hyperref 引用颜色前必须先定义）
 \definecolor{mainblue}{RGB}{41, 90, 141}
 \definecolor{secondcyan}{RGB}{26, 117, 117}
 \definecolor{thirdteal}{RGB}{27, 120, 101}
 \definecolor{highlight}{RGB}{255, 240, 200}
 \definecolor{tablehead}{RGB}{230, 240, 250}
 \definecolor{textgray}{RGB}{60, 60, 60}
+
+% 超链接顺序规范：hyperref 在前，hypcap 在后
+\usepackage[
+    bookmarks=true,unicode=true,colorlinks=true,
+    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
+    pdfborder={0 0 0}
+]{hyperref}
+\usepackage{hypcap}
+
+% ======================== 基础设置 ========================
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
 
 % 页眉页脚【已改为电路理论主题】
 \pagestyle{fancy}

@@ -1,13 +1,4 @@
-\documentclass{article}
-\usepackage{ctex}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{array}
-\usepackage{booktabs}
-\usepackage{tabularx}
-\usepackage{multirow}
-\usepackage{tikz}
-
+% 子文件：由 1.main.tex 用 \input{3.基本数据类型.tex} 引入（2026-11-06 去掉自成文档的导言区，宏包统一在主文档加载）
 \lstset{
     language=C,
     basicstyle=\ttfamily\small,
@@ -20,7 +11,6 @@
     showstringspaces=false
 }
 
-\begin{document}
 
 \section{第一节：常量与变量}
 C语言程序处理的数据有常量和变量两种形式。
@@ -201,4 +191,3 @@ a = (b = ( c = 0)) ;
 
 执行时是从右向左把最右侧的表达式的值依次赋值给左侧的变量。像上面形式的赋值表达式称为多重赋值表达式，一般用于为多个变量赋予相同的数值。
 
-\end{document}
