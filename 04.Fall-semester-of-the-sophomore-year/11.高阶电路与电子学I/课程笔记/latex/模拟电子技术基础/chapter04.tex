@@ -1,0 +1,228 @@
+% 第4章 放大电路的频率响应
+\chapter{放大电路的频率响应}
+
+实际信号都不是单一频率的正弦波。放大电路中含有电抗元件（耦合电容、旁路电容、结电容、分布电容），它们的容抗随频率变化，因此放大倍数和相移都是频率的函数。本章要回答三件事：怎样描述这种依赖关系（幅频、相频、波特图）、晶体管的模型在高频要增加什么（混合 $\pi$ 模型）、单管与多级电路的 $f_L$、$f_H$ 由什么决定。
+
+\section{频率响应的基本概念}
+
+\subsection{研究频率响应的必要性}
+
+若放大电路对不同频率分量的放大倍数不同，输出波形就不再是输入波形的等比例放大；若对各分量的相移不与频率成正比，各分量之间的相对时间关系也会改变。二者都使输出波形畸变，但输出中\textbf{并不产生新的频率成分}，故称为\textbf{线性失真}（频率失真），以区别于由器件非线性引起的\textbf{非线性失真}：
+\begin{itemize}
+    \item \textbf{幅频失真}：各频率分量放大倍数不同造成的失真；
+    \item \textbf{相频失真}：各频率分量相移不同造成的失真。
+\end{itemize}
+由于任何稳态信号都可分解为正弦分量之和，研究频率响应就是研究电路对正弦信号的稳态响应，故用正弦波作为测试信号。
+
+\subsection{幅频特性与相频特性}
+
+放大倍数写成复数形式 $\dot A_u=A_u(f)\angle\varphi(f)$，其中 $A_u(f)$ 为\textbf{幅频特性}，$\varphi(f)$ 为\textbf{相频特性}。按频率高低把整个频段分为三段：
+\begin{itemize}
+    \item \textbf{中频段}：耦合电容、旁路电容容抗很小可视为短路，结电容、分布电容容抗很大可视为开路，放大倍数基本不随频率变化，记为 $A_{um}$，相移为 $180^\circ$（共射反相）；
+    \item \textbf{低频段}：频率降低使耦合电容、旁路电容的容抗增大，信号在电容上产生不可忽略的压降，放大倍数下降并产生\textbf{超前}相移。使放大倍数下降到 $0.707A_{um}$ 的频率称为\textbf{下限截止频率} $f_L$；
+    \item \textbf{高频段}：频率升高使结电容、分布电容的容抗减小，分流作用增强，放大倍数下降并产生\textbf{滞后}相移。使放大倍数下降到 $0.707A_{um}$ 的频率称为\textbf{上限截止频率} $f_H$。
+\end{itemize}
+\begin{equation}
+f_{bw}=f_H-f_L\approx f_H
+\formulaNote{通频带，通常 $f_H\gg f_L$}
+\end{equation}
+
+\paragraph{易错点}
+$f_L$ 由\textbf{耦合电容、旁路电容}决定（电容越大、所在回路电阻越大，$f_L$ 越低）；$f_H$ 由\textbf{结电容、分布电容}决定。增大耦合电容只能降低 $f_L$，对 $f_H$ 毫无改善，这是两类电容作用的分界。
+
+\subsection{波特图}
+
+把幅频特性与相频特性画在半对数坐标上即得\textbf{波特图}：横轴为 $\lg f$，幅频特性纵轴为 $20\lg|A_u|$（单位 dB），相频特性纵轴为相角（单位度）。采用对数坐标的理由是：多级级联时总增益变为各级分贝数相加，作图可以直接叠加。
+
+\paragraph{一阶低通}
+\begin{equation}
+\dot A=\frac{A_m}{1+\mathrm{j}\dfrac{f}{f_H}}
+\end{equation}
+其幅频与相频特性为
+\begin{equation}
+20\lg|A|=20\lg A_m-10\lg\!\left[1+\left(\frac{f}{f_H}\right)^2\right]
+\end{equation}
+\begin{equation}
+\varphi=-\arctan\frac{f}{f_H}
+\formulaNote{$f=f_H$ 时 $|A|=0.707A_m$，$\varphi=-45^\circ$}
+\end{equation}
+渐近画法：$f\ll f_H$ 时为水平线 $20\lg A_m$；$f\gg f_H$ 时为斜率 $-20\,\text{dB}/$十倍频的直线；两条渐近线交于 $f_H$，实际曲线在 $f_H$ 处比渐近值低 $3\,\text{dB}$。相频特性在 $f\ll0.1f_H$ 时趋于 $0^\circ$、$f\gg10f_H$ 时趋于 $-90^\circ$，可用每十倍频 $-45^\circ$ 的折线近似。
+
+\paragraph{一阶高通}
+\begin{equation}
+\dot A=\frac{A_m}{1-\mathrm{j}\dfrac{f_L}{f}}
+\end{equation}
+其相频特性为 $\varphi=\arctan(f_L/f)$，幅频特性在 $f\ll f_L$ 时按 $+20\,\text{dB}/$十倍频下降，$f=f_L$ 时 $\varphi=+45^\circ$。可见低通环节贡献负相移（滞后），高通环节贡献正相移（超前）；每个一阶环节在转折频率以外贡献 $\pm20\,\text{dB}/$十倍频的斜率。
+
+\section{晶体管的高频等效模型}
+
+\subsection{混合 $\pi$ 模型}
+
+低频 $h$ 参数模型没有计入结电容，故不能用于高频。把晶体管内部结构抽象为：基极到基区内部的体电阻 $r_{bb'}$，基区内部到发射极的发射结电阻 $r_{b'e}$ 与结电容 $C_{b'e}$（记 $C_\pi$）并联，基区内部到集电极的集电结电容 $C_{b'c}$（记 $C_\mu$），集电极到发射极的受控电流源 $g_m\dot U_{b'e}$ 与输出电阻 $r_{ce}$ 并联。这就是\textbf{混合 $\pi$ 模型}。
+
+模型参数与工作点的关系为
+\begin{equation}
+g_m=\frac{I_{CQ}}{U_T},
+\qquad
+r_{b'e}=(1+\beta_0)\frac{U_T}{I_{EQ}}
+\formulaNote{$\beta_0$ 为低频电流放大系数}
+\end{equation}
+\begin{equation}
+g_m=\frac{\beta_0}{r_{b'e}}
+\formulaNote{三式只需记住两个}
+\end{equation}
+其中 $C_\pi$ 是发射结势垒电容与扩散电容之和，数值较大（几十至几百 pF）；$C_\mu$ 是集电结电容，数值很小（几 pF），但因跨接在输入、输出之间，影响很大。
+
+\subsection{单向化（米勒近似）}
+
+$C_\mu$ 跨接在输入与输出之间，直接分析很麻烦。利用密勒定理把它折合到两侧：设输出对输入的电压放大倍数为 $\dot K=\dot U_{ce}/\dot U_{b'e}=-g_mR_L'$，则 $C_\mu$ 折合为两部分：
+\begin{equation}
+\text{输入侧：}(1+|\dot K|)C_\mu
+\formulaNote{$|\dot K|\gg1$ 时为 $(1+g_mR_L')C_\mu$}
+\end{equation}
+\begin{equation}
+\text{输出侧：}\left(1+\frac{1}{|\dot K|}\right)C_\mu\approx C_\mu
+\end{equation}
+折合后输入回路与输出回路彼此独立，可用一阶 RC 电路直接算截止频率。注意 $C_\mu$ 被放大 $(1+|\dot K|)$ 倍后往往远大于 $C_\pi$，成为限制 $f_H$ 的主要因素，这就是"共射电路高频性能差"的根本原因。
+
+\subsection{电流放大系数的频率响应}
+
+考虑 $C_\pi$、$C_\mu$ 的分流后，共射电流放大系数随频率下降：
+\begin{equation}
+\dot\beta=\frac{\beta_0}{1+\mathrm{j}\dfrac{f}{f_\beta}}
+\end{equation}
+\begin{equation}
+f_\beta=\frac{1}{2\pi r_{b'e}(C_\pi+C_\mu)}
+\formulaNote{$|\beta|$ 下降到 $\beta_0/\sqrt2$ 时的频率}
+\end{equation}
+当 $f\gg f_\beta$ 时 $|\beta|\approx\beta_0f_\beta/f$，按 $-20\,\text{dB}/$十倍频下降。令 $|\beta|=1$ 得\textbf{特征频率}：
+\begin{equation}
+f_T\approx\beta_0f_\beta=\frac{g_m}{2\pi(C_\pi+C_\mu)}
+\formulaNote{衡量管子高频性能的指标}
+\end{equation}
+
+\section{单管共射放大电路的频率响应}
+
+\subsection{中频段}
+
+中频段内耦合电容、旁路电容视为短路，结电容、分布电容视为开路，电路就是纯电阻网络，用第 2 章的 $h$ 参数模型计算：
+\begin{equation}
+\dot A_{um}=-\frac{\beta R_L'}{R_s+R_b+r_{be}}
+\formulaNote{$R_s$ 为信号源内阻}
+\end{equation}
+其中 $R_L'=R_c\parallel R_L$。共射电路反相，故中频相移为 $180^\circ$。
+
+\subsection{低频段}
+
+低频时耦合电容 $C_1$、$C_2$ 与旁路电容 $C_e$ 的容抗不可忽略，它们与回路电阻构成高通环节，使增益下降、相移超前：
+\begin{equation}
+\dot A_{uL}=\frac{\dot A_{um}}{1-\mathrm{j}\dfrac{f_L}{f}}
+\formulaNote{$f\ll f_L$ 时按 $20\,\text{dB}/$十倍频下降}
+\end{equation}
+$f_L$ 由各电容所在回路的时间常数决定，哪个回路的时间常数最大（转折频率最高），$f_L$ 就近似等于该回路的转折频率：
+\begin{equation}
+f_L\approx\max\{f_{L1},f_{L2},f_{Le}\},
+\qquad
+f_{Lk}=\frac{1}{2\pi R_kC_k}
+\formulaNote{$R_k$ 为从该电容看进去的等效电阻}
+\end{equation}
+$C_e$ 所在回路的等效电阻最小，故旁路电容通常要求容量最大。
+
+\subsection{高频段}
+
+高频时耦合电容、旁路电容视为短路，只考虑 $C_\pi$ 与折合后的 $C_\mu$，它们与回路电阻构成低通环节：
+\begin{equation}
+\dot A_{uH}=\frac{\dot A_{um}}{1+\mathrm{j}\dfrac{f}{f_H}}
+\end{equation}
+\begin{equation}
+f_H=\frac{1}{2\pi R C'},
+\qquad
+C'=C_\pi+(1+g_mR_L')C_\mu
+\formulaNote{$R$ 为输入回路等效电阻}
+\end{equation}
+其中 $R=r_{b'e}\parallel\left[r_{bb'}+(R_s\parallel R_b)\right]$。可见 $f_H$ 与 $R_L'$ 反相关：$R_L'$ 增大使增益增大，同时使米勒电容变大、$f_H$ 下降，二者不可兼得。
+
+\subsection{全频段的频率响应}
+
+单管共射放大电路三个频段的等效处理与结果对照如下表。
+
+\begin{table}[htbp]
+\centering
+\caption{单管共射放大电路三个频段的对照}
+\begin{tabular}{@{}llll@{}}
+\hline
+频段 & 电容的处理 & 电路性质 & 增益与相移 \\
+\hline
+中频段 & 耦合、旁路电容短路，结电容开路 & 纯电阻网络 & $\dot A_{um}$，$180^\circ$ \\
+低频段 & 只计耦合、旁路电容 & 一阶高通 & 下降，超前相移 \\
+高频段 & 只计结电容与米勒电容 & 一阶低通 & 下降，滞后相移 \\
+\hline
+\end{tabular}
+\end{table}
+
+把三个频段合起来，单管共射放大电路的源电压放大倍数为
+\begin{equation}
+\dot A_{us}=\frac{\dot A_{usm}}{\left(1-\mathrm{j}\dfrac{f_L}{f}\right)\left(1+\mathrm{j}\dfrac{f}{f_H}\right)}
+\formulaNote{中频段分母两项均趋于 1}
+\end{equation}
+对应的波特图是"低频 $+20\,\text{dB}/$十倍频上升、中频平坦、高频 $-20\,\text{dB}/$十倍频下降"的三段折线，相频特性由 $+90^\circ$ 经 $180^\circ$ 过渡到 $270^\circ$。
+
+\subsection{增益带宽积}
+
+把中频增益与带宽相乘：
+\begin{equation}
+GBW=|\dot A_{usm}|\,f_{bw}\approx|\dot A_{usm}|\,f_H
+\formulaNote{对给定管子和信号源近似为常数}
+\end{equation}
+\textbf{结论}：单管共射电路的增益带宽积基本恒定，\textbf{提高增益必然牺牲带宽，展宽频带必然降低增益}。这一矛盾只能靠负反馈（第 5 章）或多级电路来缓解。若要单独提高 $f_H$，应减小信号源内阻、选用 $r_{bb'}$ 小和 $C_\mu$ 小的管子；若要单独降低 $f_L$，应增大耦合电容与旁路电容的容量。
+
+\section{场效应管放大电路的频率响应}
+
+场效应管的极间电容为 $C_{gs}$、$C_{gd}$、$C_{ds}$（pF 级），且栅极电流为零、输入电阻极大，故其高频模型与混合 $\pi$ 模型结构相同，只要把 $r_{b'e}$ 换成栅源间的开路、把 $g_m\dot U_{b'e}$ 换成 $g_m\dot U_{gs}$：
+\begin{equation}
+\dot I_d=g_m\dot U_{gs}+\frac{\dot U_{ds}}{r_{ds}}
+\end{equation}
+\begin{equation}
+\dot A_{um}=-g_mR_L'
+\formulaNote{共源电路的中频增益}
+\end{equation}
+由于 $C_{gd}$ 同样跨接在输入、输出之间，也要作米勒折合，折合后为 $(1+g_mR_L')C_{gd}$。场效应管的高频性能一般优于晶体管：其极间电容小、输入回路没有 $r_{bb'}$ 与 $r_{b'e}$ 的分压损耗，故 $f_H$ 更高，常用于高频与宽带放大。
+
+\section{多级放大电路的频率响应}
+
+\subsection{幅频特性与相频特性}
+
+多级电路各级串接，总增益为各级增益之积：
+\begin{equation}
+\dot A_u=\prod_{k=1}^{N}\dot A_{uk}
+\end{equation}
+于是对数幅频特性与相频特性都可逐级相加：
+\begin{equation}
+20\lg|\dot A_u|=\sum_{k=1}^{N}20\lg|\dot A_{uk}|,
+\qquad
+\varphi=\sum_{k=1}^{N}\varphi_k
+\formulaNote{波特图最大的便利}
+\end{equation}
+
+\subsection{通频带变窄}
+
+在 $f_L$ 附近，各级增益都在下降，叠加后总增益下降得更快；在 $f_H$ 附近同理。因此\textbf{多级电路的通频带比任何一级都窄}，级数越多越窄：
+\begin{equation}
+f_L\approx1.1\sqrt{f_{L1}^2+f_{L2}^2+\cdots+f_{LN}^2}
+\end{equation}
+\begin{equation}
+\frac{1}{f_H}\approx1.1\sqrt{\frac{1}{f_{H1}^2}+\frac{1}{f_{H2}^2}+\cdots+\frac{1}{f_{HN}^2}}
+\formulaNote{总 $f_L$ 更高、总 $f_H$ 更低}
+\end{equation}
+若各级完全相同（$f_{H1}=\cdots=f_{HN}=f_H'$），则 $f_H\approx f_H'/1.1\sqrt{N}$：级数每增加一倍，带宽约缩小到 $1/\sqrt2$，而增益却增大一倍，这正是用多级换取增益所付的带宽代价。
+
+\subsection{主导极点}
+
+若各级的上限频率相差悬殊，则最小的那个 $f_H$ 在总特性中起决定作用：当某一级的 $f_H$ 远低于其余各级时，总 $f_H$ 近似等于该级的 $f_H$（称为\textbf{主导极点}）。工程上常用"找出最低的那一级"来估算总带宽，而不必逐级套公式。
+
+\paragraph{易错点}
+\begin{itemize}
+    \item 计算多级电路的总 $f_H$ 必须用倒数平方和公式，不能取各级 $f_H$ 的算术平均；
+    \item 后级的输入电阻是前级的负载，计算前级增益与 $f_H$ 时必须计入，否则 $R_L'$ 取错会使 $f_H$ 整体偏差；
+    \item 通频带展宽与增益稳定都靠负反馈实现，负反馈同时使 $f_H$ 提高、$f_L$ 降低，这一点在第 5 章定量给出。
+\end{itemize}

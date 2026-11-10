@@ -1,0 +1,301 @@
+% 第10章 字符串（教材 10.1--10.10）
+% 只写内容：不重复 \usepackage，不改字号与页面设置
+\providecommand{\nul}{\texttt{'\textbackslash0'}}
+
+\section{字符串字面量}
+用一对双引号括起来的若干字符称为\textbf{字符串字面量}（string literal），也称字符串常量，例如 \texttt{"China"}、\texttt{"hello, world"}、\texttt{"a"}。
+
+三条必须记牢的规则：
+\begin{enumerate}
+  \item \textbf{编译器自动在末尾加一个结束符 \nul}。\nul 是转义字符，代表 ASCII 码为 0 的字符（空字符 NUL），它既不是字符 \texttt{'0'}（ASCII 48），也不是空格。
+  \item \textbf{字符串的存储长度 = 字符个数 + 1}。故 \texttt{"China"} 占 6 个字节，其中 5 个存字母、1 个存 \nul；而 \texttt{strlen("China")} 的值是 5（长度不含结束符），\texttt{sizeof("China")} 的值是 6（含结束符）。
+  \item \textbf{字符串字面量存放在只读存储区}，试图修改它（如 \texttt{"China"[0] = 'c';}）是未定义行为，通常直接崩溃。
+\end{enumerate}
+
+其他细节：
+\begin{itemize}
+  \item 相邻的字符串字面量会被自动拼接：\texttt{"hello, " "world"} 等价于 \texttt{"hello, world"}，常用于把过长的字符串分行书写。
+  \item 空串 \texttt{""} 是合法的，它只占 1 个字节（就放 \nul），长度为 0。
+  \item 字符串字面量的类型是"字符数组"，在表达式中使用时\textbf{退化为指向首字符的指针}（类型 \texttt{char *}），这正是 \texttt{printf("\%s", "China")} 能工作的原因。
+\end{itemize}
+
+\section{字符串的存储}
+C 语言没有专门的"字符串类型"，字符串是用\textbf{字符数组}来存储的：把每个字符依次放进数组元素，最后放一个 \nul 作为结束标志。程序遍历时"看到 \nul 就停"，因此 \nul 是字符串的\textbf{边界}，没有它就只是一堆字符。
+
+\subsection{用字符数组存字符串}
+\begin{lstlisting}
+char s1[6] = "China";        /* 5 个字母 + '\0'，刚好放下，推荐 */
+char s2[]  = "China";        /* 长度由初值自动定为 6              */
+char s3[10] = "China";       /* 其余 4 个字节自动补 0             */
+char s4[5] = "China";        /* 危险！没有位置放 '\0'，s4 不是字符串 */
+char s5[]  = {'C','h','i','n','a'};   /* 只是字符数组，5 个元素，无 '\0' */
+\end{lstlisting}
+
+要点：
+\begin{itemize}
+  \item 数组长度\textbf{至少}要是"字符数 + 1"。少给 1，\nul 放不进去，后续按字符串处理时就会越过数组边界继续读，直到偶然遇到 0 才停。
+  \item 用 \texttt{char s[] = "China";} 这类"双引号"形式初始化会自动补 \nul；用逐个字符初始化（\texttt{char s5[] = \{'C','h',...\}}）则\textbf{不会}自动补，需要自己写 \nul 或留出位置由"部分初始化补 0"的规则补上。
+  \item 字符数组可以修改：\texttt{s1[0] = 'c';} 合法，因为数组有自己的存储副本。
+\end{itemize}
+
+\section{字符指针}
+除字符数组外，还可以用\textbf{字符指针}指向一个字符串：
+\begin{lstlisting}
+char *p = "China";       /* p 指向只读区中该字面量的首字符 'C' */
+printf("%c\n", *p);      /* 输出 C   */
+printf("%c\n", *(p+1));  /* 输出 h   */
+p = "Hello";             /* 合法：改的是指针的指向，不是字符串内容 */
+/* p[0] = 'c';           非法：试图修改只读区内容 */
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering
+\caption{\texttt{char s[] = "China";} 与 \texttt{char *p = "China";} 的区别}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.3cm}p{3.5cm}X@{}}
+\toprule
+比较项 & \texttt{char s[] = "China";} & \texttt{char *p = "China";} \\
+\midrule
+本质 & 数组，自己拥有一片 6 字节空间 & 指针，只存一个地址 \\
+内容所在 & 栈（或全局区），可读写 & 只读存储区，不可写 \\
+能否修改字符 & 可以，\texttt{s[0]='c';} & 不可以，未定义行为 \\
+能否改变指向 & 不可以，\texttt{s = ...} 非法 & 可以，\texttt{p = ...} 合法 \\
+\texttt{sizeof} & 6（整个数组的字节数） & 4 或 8（指针本身的大小） \\
+\texttt{strlen} & 5 & 5 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\corepoint{"数组名不能赋值、指针可以改指向"是理解这两者的关键：\texttt{s} 是地址常量，\texttt{p} 是存放地址的变量。需要修改字符串内容时用字符数组；只是"引用"一段现成文本、不打算改它时，用 \texttt{const char *p} 更省空间也更安全。}
+
+\section{字符串的访问和输入/输出}
+\subsection{如何访问字符串中的单个字符}
+字符数组和字符指针都可以用下标访问，也可以用指针运算访问，两种写法完全等价：
+\keyformula{s[i] \;\equiv\; *(s + i)}
+\begin{lstlisting}
+char s[] = "China";
+int i = 0;
+while (s[i] != '\0') {          /* 以结束符为循环条件，而不是固定长度 */
+    putchar(s[i]);
+    i++;
+}
+/* 等价的指针写法 */
+char *p = s;
+while (*p != '\0') { putchar(*p); p++; }
+\end{lstlisting}
+注意循环条件应写"当前字符不是 \nul"，这样函数对任意长度的字符串都成立，不必额外传长度。
+
+\subsection{字符串的输入/输出}
+\begin{table}[htbp]
+\centering
+\caption{常用字符串输入/输出函数}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.3cm}p{3.4cm}X@{}}
+\toprule
+函数 & 所属头文件 & 要点 \\
+\midrule
+\texttt{printf("\%s", s)} & stdio.h & 从 \texttt{s} 起逐字符输出，遇 \nul 停 \\
+\texttt{puts(s)} & stdio.h & 输出字符串并\textbf{自动换行}，不能格式化 \\
+\texttt{scanf("\%s", s)} & stdio.h & 跳过前导空白，\textbf{遇空白即停}，不检查数组边界 \\
+\texttt{gets(s)} & stdio.h & 读一行（可含空格），\textbf{不检查边界}，已从 C11 标准中移除 \\
+\texttt{fgets(s, n, stdin)} & stdio.h & 最多读 $n-1$ 个字符，\textbf{安全}，但会保留换行符 \\
+\texttt{getchar/putchar} & stdio.h & 单个字符的输入/输出，常用于逐字符处理 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}
+char name[20];
+scanf("%s", name);            /* 数组名本身就是地址，不要再加 & */
+scanf("%19s", name);          /* 更安全：限定最多读 19 个字符 */
+/* 读入含空格的一整行，推荐写法 */
+if (fgets(name, sizeof(name), stdin) != NULL) {
+    size_t len = strlen(name);
+    if (len > 0 && name[len - 1] == '\n')   /* 去掉 fgets 留下的换行符 */
+        name[len - 1] = '\0';
+}
+\end{lstlisting}
+
+\corepoint{\texttt{scanf("\%s", s)} 不检查目标数组有多大，输入超长就会\textbf{越界写入}（缓冲区溢出）；\texttt{gets} 同样危险且已被标准移除。工程上应使用 \texttt{fgets} 或带宽度限制的 \texttt{scanf("\%19s", s)}。另外，\texttt{scanf} 读字符串时形参已经是地址，写成 \texttt{\&name} 虽常能"碰巧工作"，但类型不对，属坏习惯。}
+
+\section{字符串处理函数}
+标准库 \texttt{string.h} 提供了一组字符串处理函数，它们都以 \nul 作为结束标志，因此都要求传入的字符数组\textbf{必须以 \nul 结尾}。
+
+\begin{table}[htbp]
+\centering
+\caption{常用字符串处理函数}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.1cm}p{3.3cm}X@{}}
+\toprule
+函数原型 & 功能 & 说明与风险 \\
+\midrule
+\texttt{size\_t strlen(const char *s)} & 求长度 & 不含 \nul；返回值类型为 \texttt{size\_t}（无符号），与 \texttt{int} 比较时注意符号问题 \\
+\texttt{char *strcpy(char *d, const char *s)} & 复制 & 连 \nul 一起复制；\textbf{不检查 d 的容量} \\
+\texttt{char *strncpy(char *d, const char *s, size\_t n)} & 限长复制 & 最多复制 $n$ 个字符；若 $s$ 短于 $n$，其余补 0 \\
+\texttt{char *strcat(char *d, const char *s)} & 连接 & 把 $s$ 接到 $d$ 末尾；$d$ 必须有足够剩余空间 \\
+\texttt{char *strncat(char *d, const char *s, size\_t n)} & 限长连接 & 最多接 $n$ 个字符，并自动补 \nul \\
+\texttt{int strcmp(const char *a, const char *b)} & 比较 & 按 ASCII 码逐字符比；$<0$、$=0$、$>0$ 分别表示小于、相等、大于，\textbf{不要依赖具体返回值是 $-1$ 或 $1$} \\
+\texttt{int strncmp(const char *a, const char *b, size\_t n)} & 限长比较 & 只比前 $n$ 个字符 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+理解这些函数的最好办法是自己实现一遍：
+\begin{lstlisting}
+/* 求字符串长度：走到 '\0' 为止 */
+size_t MyStrlen(const char *s)
+{
+    size_t n = 0;
+    while (*s != '\0') { n++; s++; }
+    return n;
+}
+/* 复制字符串：连 '\0' 一起搬 */
+char *MyStrcpy(char *d, const char *s)
+{
+    char *p = d;
+    while ((*d++ = *s++) != '\0')
+        ;                    /* 空循环体：赋值表达式的值就是刚复制的字符 */
+    return p;
+}
+/* 比较字符串：返回首个不同字符的差值 */
+int MyStrcmp(const char *a, const char *b)
+{
+    while (*a != '\0' && *a == *b) { a++; b++; }
+    return (unsigned char)*a - (unsigned char)*b;
+}
+\end{lstlisting}
+
+\corepoint{字符串不能用 \texttt{=} 赋值、不能用 \texttt{==} 比较内容。\texttt{s1 = s2;} 是给数组名赋值（非法）；\texttt{if (s1 == s2)} 比较的是两个\textbf{地址}，几乎永远为假。正确做法是 \texttt{strcpy} 与 \texttt{strcmp}。}
+
+\section{向函数传递字符串}
+字符串作函数参数时，传的仍然是\textbf{首字符的地址}，形参写作 \texttt{char *} 或 \texttt{char s[]}，二者等价，而且\textbf{不需要另传长度}——长度信息由 \nul 自带。
+\begin{lstlisting}
+/* 统计字符串中某字符出现的次数：形参加 const 表示只读 */
+int CountChar(const char *s, char ch)
+{
+    int count = 0;
+    for (; *s != '\0'; s++)
+        if (*s == ch) count++;
+    return count;
+}
+/* 调用：int c = CountChar("banana", 'a');   结果为 3 */
+\end{lstlisting}
+若函数要\textbf{修改}字符串内容，形参不能加 \texttt{const}，且实参必须是可写的字符数组（不能是字符串字面量）：
+\begin{lstlisting}
+/* 删除字符串中所有指定字符：原地操作，"读写指针"法 */
+void DeleteChar(char *s, char ch)
+{
+    char *p = s, *q = s;      /* p 读、q 写 */
+    while (*p != '\0') {
+        if (*p != ch) *q++ = *p;
+        p++;
+    }
+    *q = '\0';
+}
+\end{lstlisting}
+
+\section{从函数返回字符串指针}
+函数可以返回 \texttt{char *}，但\textbf{绝不能返回函数内部局部数组的地址}——函数返回后栈帧销毁，那个地址随即失效（悬垂指针）。合法的三种做法：
+
+\begin{enumerate}
+  \item \textbf{返回传入的缓冲区}（最常用）：结果写进调用者提供的数组，再把它的地址返回。
+\begin{lstlisting}
+char *ToUpperCopy(char *dst, const char *src)
+{
+    char *p = dst;
+    while (*src != '\0') {
+        *p++ = (*src >= 'a' && *src <= 'z') ? (char)(*src - 32) : *src;
+        src++;
+    }
+    *p = '\0';
+    return dst;                 /* dst 由调用者提供，函数返回后仍有效 */
+}
+\end{lstlisting}
+  \item \textbf{返回静态数组}的地址：\texttt{static char buf[64];} 存放在静态存储区，函数结束后仍存在；缺点是所有调用共享同一块缓冲，下一次调用会覆盖上次结果。
+  \item \textbf{返回动态分配的内存}：用 \texttt{malloc} 在堆上申请，由调用者负责 \texttt{free}（见第 11 章）。
+\end{enumerate}
+
+\corepoint{判据很简单：函数返回的地址所指向的内存，在函数返回后\textbf{是否还活着}？栈上的局部数组"死了"，静态区与堆上的"还活着"，调用者传进来的"由调用者管"。答错这一问，就写出悬垂指针。}
+
+\section{本章扩充内容}
+\subsection{const 类型限定符}
+\texttt{const} 表示"只读"，加在指针上时位置不同、含义完全不同：
+
+\begin{table}[htbp]
+\centering
+\caption{const 与指针的三种组合}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.9cm}p{2.6cm}X@{}}
+\toprule
+声明 & 谁不能改 & 记忆方法 \\
+\midrule
+\texttt{const char *p} & 所指内容 & \texttt{const} 在 \texttt{*} 左边，管"内容" \\
+\texttt{char * const p} & 指针本身 & \texttt{const} 在 \texttt{*} 右边，管"指针" \\
+\texttt{const char * const p} & 两者都不能改 & 两边都有 \texttt{const} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+函数形参用 \texttt{const char *s} 有两层好处：一是向调用者承诺"我不改你的数据"，二是编译器会拦住函数内不小心的写操作。\texttt{strlen}、\texttt{strcmp} 等标准函数的原型都是这样写的。
+
+\subsection{字符处理函数}
+\texttt{ctype.h} 提供了一批按字符分类与转换的函数，参数是 \texttt{int}（通常传 \texttt{(unsigned char)c}），返回非 0 表示"真"：
+
+\begin{table}[htbp]
+\centering
+\caption{常用字符处理函数（ctype.h）}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.4cm}Xp{2.4cm}X@{}}
+\toprule
+函数 & 判断/作用 & 函数 & 判断/作用 \\
+\midrule
+\texttt{isalpha} & 是否为字母 & \texttt{isdigit} & 是否为数字字符 \\
+\texttt{isalnum} & 是否为字母或数字 & \texttt{isspace} & 是否为空白字符 \\
+\texttt{isupper} & 是否为大写字母 & \texttt{islower} & 是否为小写字母 \\
+\texttt{toupper} & 转成大写 & \texttt{tolower} & 转成小写 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+自己写"判断是否大写"时容易写成 \texttt{c >= 'A' \&\& c <= 'Z'}（可行但不可移植）；用 \texttt{isupper(c)} 更清晰，也不依赖 ASCII 的具体编码。
+
+\subsection{数值字符串向数值的转换}
+\begin{lstlisting}
+#include <stdlib.h>
+int    i = atoi("123");        /* 字符串 -> int   */
+long   l = atol("123456");     /* 字符串 -> long  */
+double d = atof("3.14");       /* 字符串 -> double */
+/* 更稳健：strtol 能通过第二个参数报告"停在哪"，便于发现非法输入 */
+char *end;
+long v = strtol("123abc", &end, 10);   /* v = 123, end 指向 'a' */
+/* 反向：数值 -> 字符串 */
+char buf[32];
+sprintf(buf, "%d-%.2f", 7, 3.5);       /* buf 里得到 "7-3.50" */
+\end{lstlisting}
+要点：\texttt{atoi} 遇到非数字字符就停下，\textbf{不报错}，非法串返回 0，无法与真正的 0 区分；需要错误检测时用 \texttt{strtol}。反向转换时 \texttt{sprintf} 不检查目标缓冲区大小，安全版本是 \texttt{snprintf}。
+
+\section{本章知识点小结}
+\begin{itemize}
+  \item 字符串字面量用双引号表示，编译器自动在末尾加 \nul；存储字节数 = 字符数 + 1；字面量在只读区，不可修改。
+  \item 字符串用字符数组存储，数组长度至少为"字符数 + 1"；逐字符初始化不会自动补 \nul。
+  \item 字符指针 \texttt{char *p = "China";} 只存首字符地址，改指向合法、改内容非法；字符数组则相反。
+  \item \texttt{s[i]} 与 \texttt{*(s+i)} 等价；遍历以 \nul 为结束条件。
+  \item 输入：\texttt{scanf("\%s")} 遇空白停且不查边界；\texttt{gets} 不安全；\texttt{fgets} 安全但要处理换行符。输出：\texttt{printf("\%s")}、\texttt{puts}。
+  \item 字符串函数 \texttt{strlen/strcpy/strcat/strcmp} 及其 \texttt{n} 版本都以 \nul 为前提；\texttt{strcpy} 不检查容量。
+  \item 字符串不能用 \texttt{=} 赋值、不能用 \texttt{==} 比较内容，须用 \texttt{strcpy} 与 \texttt{strcmp}。
+  \item 传字符串给函数只传地址，长度由 \nul 自带；返回字符串指针时不能返回局部数组地址。
+  \item \texttt{const} 位置决定"锁内容"还是"锁指针"；字符分类用 \texttt{ctype.h}，数值转换用 \texttt{atoi/strtol} 与 \texttt{sprintf}。
+\end{itemize}
+
+\section{本章常见错误小结}
+\begin{enumerate}
+  \item \textbf{数组长度少给 1}：\texttt{char s[5] = "China";} 放不下 \nul，后续 \texttt{strlen} 会越界读，结果随机。
+  \item \textbf{逐字符初始化后当字符串用}：写 \texttt{char s[] = \{'C','h','i','n','a'\};} 这样逐个字符初始化，数组里就没有 \nul，再用 \texttt{printf("\%s", s)} 输出，程序会一直读到内存里偶然出现的 0 才停。
+  \item \textbf{修改字符串字面量}：\texttt{char *p = "China"; p[0] = 'c';} 往只读区写，通常直接崩溃。
+  \item \textbf{用 = 赋值、用 == 比较}：\texttt{s1 = s2;} 非法；\texttt{if (s1 == s2)} 比的是地址，不是内容。
+  \item \textbf{scanf 读字符串加 \&}：\texttt{scanf("\%s", \&s)} 类型不对；数组名本身就是地址。
+  \item \textbf{scanf("\%s") 读含空格的一行}：遇空格即停，只能读到第一个单词，应改用 \texttt{fgets}。
+  \item \textbf{strcpy 目标空间不足}：\texttt{char d[5]; strcpy(d, "China");} 溢出，是缓冲区溢出的经典来源。
+  \item \textbf{返回局部数组的地址}：函数返回后指针悬垂，读到的可能是任意垃圾值。
+  \item \textbf{忘记 \#include <string.h>}：在 C99 及以后，隐式声明被禁止，调用 \texttt{strlen} 会直接编译失败。
+\end{enumerate}

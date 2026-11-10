@@ -1,0 +1,193 @@
+% 第14章 简单的游戏设计（教材 14.1--14.5）
+% 只写内容：不重复 \usepackage，不改字号与页面设置
+
+\section{动画的基本原理}
+电影与动画都建立在\textbf{视觉暂留}之上：画面以足够快的速度连续替换（一般每秒 24 帧以上），人眼就会把一帧帧静止图像看成连续运动。程序里的动画因此归结为一个循环——\textbf{帧循环}（game loop）：
+
+\begin{enumerate}
+  \item \textbf{处理输入}：读取玩家这一帧按了什么键（不阻塞）；
+  \item \textbf{更新状态}：按规则改变坐标、速度、分数等数据；
+  \item \textbf{清屏并重绘}：把新的状态画到屏幕上；
+  \item \textbf{延时}：控制帧率，让画面速度稳定、别把 CPU 占满；
+  \item 回到第 1 步。
+\end{enumerate}
+
+关键认识：\textbf{屏幕上看到的一切都只是"数据的一份画法"}。游戏的本质是"维护一组状态变量 + 每帧按规则更新它们 + 每帧把它们画出来"，图形库只负责最后那一步。
+
+\subsection{几个必要的手段}
+\begin{table}[htbp]
+\centering
+\caption{控制台动画的常用手段}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}p{3.6cm}X@{}}
+\toprule
+手段 & 典型做法 & 作用与注意点 \\
+\midrule
+清屏 & \texttt{system("cls")}（Windows） & 每帧前清屏；频繁调用会闪烁，可用光标定位代替 \\
+光标定位 & 把光标移到指定行列再输出 & 只重画变化的部分，比整体清屏更平滑 \\
+延时 & \texttt{Sleep(ms)}（windows.h）、\texttt{delay} & \textbf{单位是毫秒}；延时太短画面过快、CPU 占用高 \\
+非阻塞按键 & \texttt{kbhit()} + \texttt{getch()}（conio.h） & 有键才读，无键立即返回，不会卡住帧循环 \\
+双缓冲 & 先在内存里画好整帧再一次性显示 & 消除"边画边显示"造成的闪烁 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\corepoint{帧循环里最容易犯的错是"用阻塞式输入"。若直接写 \texttt{getchar()}，程序会停在原地等按键，画面就不再更新。必须用"有键则读、无键继续"的非阻塞方式，这是游戏程序与普通批处理程序在结构上的根本区别。}
+
+\section{迷宫游戏}
+\subsection{地图的数据表示}
+迷宫的本质是一张\textbf{二维字符数组}：每个格子用一个字符表示其性质。
+\begin{lstlisting}
+#define ROWS 15
+#define COLS 25
+char map[ROWS][COLS] = {
+    "#########################",
+    "#S          #           #",
+    "# #### #### # #### #### #",
+    "#    #    #   #    #    #",
+    "#### # ## ##### ## # ####",
+    "#    #  #     #  #      #",
+    "# ####  #######  #### ###",
+    "#      #       #       E#",
+    "#########################"
+};
+\end{lstlisting}
+约定：\texttt{'\#'} 为墙、空格为通路、\texttt{'S'} 为起点、\texttt{'E'} 为出口。把地图写成\textbf{字符串数组}比手写 \texttt{map[i][j] = '\#'} 更直观，也便于修改。
+
+\subsection{状态与主循环}
+除地图外，还需要几个状态变量：玩家当前行列 \texttt{(pr, pc)}、是否胜利的标志。主循环为：
+\begin{lstlisting}
+int pr = 1, pc = 1;          /* 玩家位置（起点） */
+int running = 1;
+while (running) {
+    Render(map, pr, pc);      /* 画地图和玩家 */
+    int key = ReadKey();      /* 非阻塞读一个按键 */
+    int nr = pr, nc = pc;     /* 先假定不动 */
+    switch (key) {
+        case 'w': nr--; break;            /* 上 */
+        case 's': nr++; break;            /* 下 */
+        case 'a': nc--; break;            /* 左 */
+        case 'd': nc++; break;            /* 右 */
+        case 'q': running = 0; break;     /* 退出 */
+    }
+    /* 边界检查 + 撞墙判断：只有目标格不是墙才真正移动 */
+    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && map[nr][nc] != '#') {
+        pr = nr; pc = nc;
+    }
+    if (map[pr][pc] == 'E') {             /* 胜利判定 */
+        printf("You win!\n");
+        running = 0;
+    }
+    Sleep(120);                            /* 控制帧率 */
+}
+\end{lstlisting}
+
+\subsection{设计要点}
+\begin{itemize}
+  \item \textbf{先判断、后移动}：所有移动都要经过"边界 + 是否可走"的双重检查，否则玩家会走出数组、踩穿墙。
+  \item \textbf{逻辑与显示分离}：\texttt{Render} 只负责画，\texttt{Update} 只负责改数据。这样换界面、加道具都不必动游戏规则。
+  \item \textbf{坐标顺序}：二维数组是 \texttt{map[行][列]}，屏幕上是 \texttt{(x=列, y=行)}，两者容易整体写反，导致"按上键往左走"。
+\end{itemize}
+
+\section{Flappy bird 游戏}
+\subsection{用物理量描述"飞"}
+这类游戏的核心只有一条：\textbf{小鸟受重力，按键给它一个向上的速度}。把小鸟的纵向位置、纵向速度作为状态，每帧更新：
+\begin{lstlisting}
+double y = 10.0;        /* 小鸟的纵向位置（行，可为小数以便平滑） */
+double vy = 0.0;        /* 纵向速度 */
+const double G = 0.6;   /* 每帧重力加速度 */
+const double JUMP = -4.0;  /* 按键给的速度冲量（向上为负） */
+
+/* 每一帧： */
+vy += G;                /* 先受重力 */
+y  += vy;               /* 再按速度移动 */
+if (y < 0 || y >= ROWS) { /* 撞上下边界，游戏结束 */ }
+/* 玩家按键时： */
+vy = JUMP;
+\end{lstlisting}
+\textbf{为什么位置用浮点}？因为每帧的位移可能不足一格，用整型会把小位移"吃掉"，动作会一顿一顿。显示时再取整即可。
+
+\subsection{障碍物与碰撞检测}
+障碍物通常用\textbf{结构体数组}描述（呼应第 12 章）：
+\begin{lstlisting}
+typedef struct {
+    int x;          /* 障碍物所在列，每帧减 1 向左移动 */
+    int gapTop;     /* 空隙上沿的行号 */
+    int gapHeight;  /* 空隙高度 */
+    int scored;     /* 是否已计过分，防止重复加分 */
+} Pipe;
+Pipe pipes[MAXPIPES];
+\end{lstlisting}
+碰撞检测分两步：\textbf{先看横向是否重叠}（小鸟的列是否落在障碍物的列范围内），\textbf{再看纵向是否落在空隙之外}。只有横向重叠时才需要做纵向判断，这是最省事的写法：
+\begin{lstlisting}
+for (i = 0; i < MAXPIPES; i++) {
+    if (pipes[i].x == birdCol) {                       /* 横向重叠 */
+        if (birdRow < pipes[i].gapTop ||               /* 撞上管 */
+            birdRow > pipes[i].gapTop + pipes[i].gapHeight) {  /* 撞下管 */
+            gameOver = 1;
+        }
+    }
+    if (!pipes[i].scored && pipes[i].x < birdCol) {    /* 越过即加分 */
+        score++; pipes[i].scored = 1;
+    }
+}
+\end{lstlisting}
+
+\subsection{游戏的状态机}
+一个完整的游戏通常有三个状态，用枚举表示（呼应第 12 章）、用 \texttt{switch} 分派（呼应第 5 章）：
+\begin{lstlisting}
+enum state { READY, RUNNING, OVER };
+enum state st = READY;
+/* 主循环里 */
+switch (st) {
+    case READY:   /* 显示提示，等按键开始 */      break;
+    case RUNNING: /* 物理更新、障碍移动、碰撞检测 */ break;
+    case OVER:    /* 显示分数，等按键重开 */        break;
+}
+\end{lstlisting}
+把"开始、进行、结束"显式建模，比用一堆散布各处的 if 标志清楚得多，也更容易加重开、暂停、难度递增。
+
+\subsection{模块划分}
+\begin{table}[htbp]
+\centering
+\caption{游戏程序的典型模块}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}X@{}}
+\toprule
+模块 & 职责 \\
+\midrule
+\texttt{Init} & 初始化地图/障碍物/分数/随机种子 \\
+\texttt{ReadInput} & 非阻塞读键，转成"动作" \\
+\texttt{Update} & 按规则更新所有状态（物理、移动、生成障碍） \\
+\texttt{CheckCollision} & 边界与碰撞判定，判定胜负 \\
+\texttt{Render} & 清屏、绘制地图与实体、显示分数 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\corepoint{游戏程序的 bug 大多不在"算法"，而在"状态没管干净"：某个变量在重开时没复位、障碍物越界后没有回收、加分判断重复触发。写完每个函数都问一句"它读写哪些状态变量、这些变量在什么时机会变"，比盯着屏幕找现象有效。}
+
+\section{本章知识点小结}
+\begin{itemize}
+  \item 动画 = 视觉暂留 + 帧循环；一帧 = 读输入、更新状态、清屏重绘、延时。
+  \item 控制台动画的四个手段：清屏、光标定位、延时（毫秒）、非阻塞按键；双缓冲可消除闪烁。
+  \item 迷宫用二维字符数组表示地图，用行列坐标表示玩家；移动前必须做边界检查与撞墙判断。
+  \item 物理类游戏用"位置 + 速度 + 加速度"逐帧递推；位置用浮点，显示时再取整。
+  \item 障碍物用结构体数组组织；碰撞检测宜"先横向、后纵向"，减少无效判断。
+  \item 用枚举描述游戏状态（就绪/进行/结束），用 \texttt{switch} 分派，结构最清晰。
+  \item 按 \texttt{Init/ReadInput/Update/CheckCollision/Render} 分模块，逻辑与显示分离。
+  \item 本章把全书知识串了起来：数组（地图）、指针与结构体（实体）、函数（模块）、循环与分支（规则）、文件（存档与最高分）。
+\end{itemize}
+
+\section{本章常见错误小结}
+\begin{enumerate}
+  \item \textbf{用阻塞式输入}：\texttt{getchar()} 卡住帧循环，画面停住不动；应改用 \texttt{kbhit()} 配合 \texttt{getch()}。
+  \item \textbf{忘记清屏或清屏方式不当}：每帧都 \texttt{system("cls")} 会明显闪烁，可改为光标定位、只重画变化处。
+  \item \textbf{Sleep 的单位搞错}：\texttt{Sleep(1)} 是 1 毫秒（几乎看不见），想要"每帧 0.1 秒"应写 100。
+  \item \textbf{移动前不做边界检查}：玩家走出数组范围，读到随机内存，表现为"地图突然乱掉"或崩溃。
+  \item \textbf{行列颠倒}：\texttt{map[x][y]} 与 \texttt{map[y][x]} 混用，导致上下与左右方向错乱。
+  \item \textbf{浮点位置直接当地址用}：未经取整就用作数组下标，可能截断或越界。
+  \item \textbf{加分/碰撞重复触发}：没有"已处理"标志，一次通过被记多次分，或死后仍继续判定。
+  \item \textbf{重开游戏忘记复位状态}：分数、位置、障碍物沿用上一局的残值，越玩越乱。
+  \item \textbf{随机数没设种子}：每次运行障碍物位置完全相同；应在 \texttt{Init} 中调用一次 \texttt{srand(time(NULL))}。
+\end{enumerate}

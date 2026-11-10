@@ -1,0 +1,262 @@
+% ============================================================
+% 第 13 章  电力系统的有功功率平衡和频率调整
+% （教材：何仰赞、温增银《电力系统分析》下册 第 13 章）
+% 结构对齐 13.1—13.4；例题、习题不录
+% ============================================================
+
+\chapter{电力系统的有功功率平衡和频率调整}
+
+第 12 章讲“无功—电压”，本章讲“有功—频率”，二者是稳态运行的两根支柱，结构完全平行：
+平衡决定水平，调节手段实现平衡。区别在于：频率是\textbf{全网统一}的量，
+不存在“频率高低不同”的问题；因此调频必然涉及\textbf{谁来做主调频厂}、\textbf{互联系统怎样分区}
+这类组织问题，这是调压所没有的。
+
+\section{频率调整的必要性}
+
+频率偏离额定值对各方面都有害：
+\begin{itemize}
+  \item \textbf{对用户}：异步电动机转速与频率成正比，频率下降使转速下降，
+        影响纺织、造纸等对转速敏感的行业；电动机出力下降、电流增大，可能过热；
+        电子设备、钟表计时失准。
+  \item \textbf{对发电厂}：汽轮机叶片有固有振动频率，频率偏离会引起叶片共振、疲劳损伤；
+        厂用电动机（给水泵、风机）转速下降，导致锅炉出力下降，形成恶性循环。
+  \item \textbf{对系统}：频率下降说明有功不足，严重时引发频率崩溃，甚至系统瓦解。
+\end{itemize}
+我国额定频率 $50$~Hz，正常运行时允许偏移 $\pm0.2\sim\pm0.5$~Hz（大系统取严、小系统取宽）。
+频率主要取决于系统的\textbf{有功功率平衡}：发出的有功不足，频率就偏低。
+
+\begin{table}[htbp]
+  \centering
+  \caption{频率偏移的允许值与危害}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    偏移范围 & 状态 & 主要危害 \\
+    \midrule
+    $\pm0.2$ Hz 以内 & 正常 & 无 \\
+    $\pm0.2\sim\pm0.5$ Hz & 允许 & 对少数敏感用户有影响 \\
+    $>0.5$ Hz & 异常 & 电动机过热、汽轮机叶片振动 \\
+    $-1\sim-2$ Hz 以上 & 事故 & 厂用电动机失速、频率崩溃 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{电力系统的频率特性}
+
+频率调整之所以可能，是因为“负荷”与“发电机”都对频率有\textbf{自身调节作用}——
+这是理解一次调频的关键。二者统称系统的\textbf{有功功率—频率静态特性}。
+
+\subsection{系统负荷的有功功率—频率静态特性}
+
+负荷从电网取用的有功功率随频率变化的关系。频率下降时，电动机转速下降、机械负载功率下降，
+取用的有功随之减少。在额定频率附近可线性化：
+\keyformula{K_L=\frac{\Delta P_L}{\Delta f}\quad(\text{MW/Hz}),\qquad
+  k_L=\frac{K_Lf_N}{P_{LN}}=1\sim3}
+$K_L$ 称\textbf{负荷的频率调节效应系数}（负荷的单位调节功率），$k_L$ 为其标幺值。
+$k_L$ 的物理含义是：频率变化 $1\%$ 时，负荷有功变化 $k_L\%$。
+它由负荷构成决定，不可人为整定，是系统的固有属性。
+
+\subsection{发电机组的有功功率—频率静态特性}
+
+发电机组（或调频器未动作时的原动机调速系统）具有“频率下降 $\to$ 调速器动作 $\to$
+进汽（水）量增加 $\to$ 出力增加”的特性，称\textbf{发电机组的静态调节特性}：
+\begin{equation}
+  \Delta f=-\delta\,f_N\frac{\Delta P_G}{P_{GN}},
+\end{equation}
+其中 $\delta$ 称\textbf{调差系数}（一般 $4\%\sim5\%$），其倒数为机组的单位调节功率
+\keyformula{K_G=-\frac{\Delta P_G}{\Delta f}=\frac{P_{GN}}{\delta f_N}\quad(\text{MW/Hz}),
+  \qquad k_G=\frac{1}{\delta}}
+$K_G$ 称\textbf{发电机组的功率—频率静态特性系数}（单位调节功率）。
+机组的调差系数可以整定（改变调速器特性），故 $K_G$ 是\textbf{可调}的；
+但 $\delta$ 不能取得太小（$K_G$ 太大会引起调速系统振荡），也不能取得太大（调频能力弱）。
+
+\subsection{电力系统的有功功率—频率静态特性}
+
+系统同时含发电机组与负荷，二者的调节作用叠加：
+\keyformula{K_S=K_G+K_L,\qquad k_S=k_G+k_L}
+$K_S$ 称\textbf{系统的单位调节功率}。它表示：负荷增加 $1$~MW 时，
+在发电机调速器与负荷自身调节的共同作用下，系统频率下降多少赫兹。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三个调节系数的比较}
+  \small
+  \begin{tabular}{@{}p{0.12\linewidth}p{0.24\linewidth}p{0.20\linewidth}p{0.32\linewidth}@{}}
+    \toprule
+    系数 & 定义 & 可否整定 & 说明 \\
+    \midrule
+    $K_L$（$k_L$） & $\Delta P_L/\Delta f$ & 不可 & 负荷固有属性，$k_L=1\sim3$ \\
+    $K_G$（$k_G$） & $-\Delta P_G/\Delta f$ & 可（改 $\delta$） & $\delta=4\%\sim5\%$，$k_G=20\sim25$ \\
+    $K_S$（$k_S$） & $K_G+K_L$ & 部分可 & 系统调频能力的总度量 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{注意符号约定：$K_L$ 定义中负荷功率随频率下降而减少，即“频率降、负荷降”，
+故 $K_L>0$；$K_G$ 定义中加了负号，使“频率降、出力增”对应 $K_G>0$。
+两者同号相加才表示“共同承担负荷增量”。若符号搞反，一次调频的公式会差一个负号。}
+
+\section{电力系统的频率调整}
+
+\subsection{频率的一次调整}
+
+负荷突然增加 $\Delta P_{L0}$，调速器动作（一次调整），发电机增发、负荷因频率下降而少取，
+二者共同平衡这一增量。设频率下降 $|\Delta f|$，则
+\begin{equation}
+  \Delta P_{L0}=K_G\left|\Delta f\right|+K_L\left|\Delta f\right|=K_S\left|\Delta f\right|,
+\end{equation}
+故
+\keyformula{\Delta f=-\frac{\Delta P_{L0}}{K_S}=-\frac{\Delta P_{L0}}{K_G+K_L}}
+一次调整的特点是：
+\begin{itemize}
+  \item \textbf{有差调节}：频率不可能回到原值（$\Delta f\ne0$），只能减小偏差；
+  \item 各机组按各自调差系数\textbf{自动分配}负荷增量（$\delta$ 小的机组多担）；
+  \item 调整过程快速（秒级），是频率的“第一道防线”；
+  \item $K_S$ 越大，频率偏差越小。增加 $K_G$（减小 $\delta$）可改善，但受稳定性限制。
+\end{itemize}
+
+\textbf{机组间的负荷分配}：由 $K_G$ 的定义直接可得，第 $i$ 台机组承担的增量
+\begin{equation}
+  \Delta P_{Gi}=K_{Gi}\left|\Delta f\right|
+  =\frac{P_{GNi}}{\delta_i f_N}\left|\Delta f\right|,
+\end{equation}
+即
+\keyformula{\frac{\Delta P_{Gi}}{\Delta P_{Gj}}=\frac{K_{Gi}}{K_{Gj}}
+  =\frac{P_{GNi}\delta_j}{P_{GNj}\delta_i}}
+调差系数 $\delta$ 小的机组多担负荷，容量大的机组也多担负荷。
+这一分配是\textbf{自动、无需通信}的，由调速器自身的下垂特性决定，
+是“分散自治”控制的经典范例。但它也带来一个问题：$K_G$ 大的机组长期过载、
+$K_G$ 小的机组长期欠载，故二次调整时须人为修正。
+
+\subsection{频率的二次调整}
+
+一次调整后频率仍有偏差，须由调频器（二次调整）动作，人为增加发电出力：
+\begin{equation}
+  \Delta P_{L0}-\Delta P_{G0}=K_S\left|\Delta f\right|,
+\end{equation}
+即
+\keyformula{\Delta f=-\frac{\Delta P_{L0}-\Delta P_{G0}}{K_G+K_L}}
+当 $\Delta P_{G0}=\Delta P_{L0}$ 时 $\Delta f=0$，称\textbf{无差调节}。
+二次调整由调频厂（或 AGC）完成，是频率的“第二道防线”，时间尺度为分钟级。
+
+\begin{table}[htbp]
+  \centering
+  \caption{一次调整与二次调整的比较}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.34\linewidth}p{0.36\linewidth}@{}}
+    \toprule
+    比较项 & 一次调整 & 二次调整 \\
+    \midrule
+    动作元件 & 调速器 & 调频器（AGC） \\
+    时间尺度 & 秒级 & 分钟级 \\
+    调节性质 & 有差 & 可无差 \\
+    承担者 & 所有机组（按 $\delta$ 分配） & 主调频厂（或分区） \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{互联系统的频率调整}
+
+互联系统通过联络线相连，频率调整须考虑两个约束：\textbf{本区频率}与\textbf{联络线功率}。
+设 A、B 两区经联络线相连，A 区负荷增加 $\Delta P_{LA}$，则
+\begin{align}
+  \Delta P_{LA}-\Delta P_{GA}&=K_A\Delta f+\Delta P_{AB},\\
+  -\Delta P_{GB}&=K_B\Delta f-\Delta P_{AB},
+\end{align}
+其中 $\Delta P_{AB}$ 为经联络线由 A 流向 B 的功率增量。联立可得
+\begin{equation}
+  \Delta f=-\frac{\Delta P_{LA}-\Delta P_{GA}-\Delta P_{GB}}{K_A+K_B},
+  \qquad
+  \Delta P_{AB}=\frac{K_B\left(\Delta P_{LA}-\Delta P_{GA}\right)-K_A\Delta P_{GB}}{K_A+K_B}.
+\end{equation}
+\textbf{分区调频}（联合电力系统）的要点：
+\begin{itemize}
+  \item 各区按“\textbf{联络线功率偏差 $+$ 频率偏差}”构成\textbf{区域控制误差}（ACE）
+        作为调频信号，使本区只承担自己的负荷变化，不干扰邻区；
+  \item 若各区都只按本区 ACE 调整，则全网频率与联络线功率都能恢复；
+  \item 若只有一区调频，则该区须承担全网的负荷增量，经济上不合理。
+\end{itemize}
+
+\subsection{主调频厂的选择}
+
+主调频厂应满足：
+\begin{enumerate}
+  \item 有足够的\textbf{调频容量}（一般不小于系统最大负荷的 $2\%\sim5\%$，并留事故备用）；
+  \item 出力调整\textbf{速度快}、范围大、增减灵活；
+  \item 调频时\textbf{经济性}好（效率高、耗量特性平坦）；
+  \item 地理位置适当，调频引起的潮流变化不致使网络过载或电压越限。
+\end{enumerate}
+一般优先选\textbf{水电厂}（调整快、经济）或高效率大容量火电厂；核电厂一般带基荷，不参与调频。
+
+\subsection{频率调整和电压调整的关系}
+
+\begin{itemize}
+  \item \textbf{对象不同}：频率靠有功平衡，电压靠无功平衡，二者相对独立；
+  \item \textbf{耦合存在}：有功变化会改变网络电压损耗（$\Delta U=(PR+QX)/U$），
+        从而影响电压；无功补偿装置（尤其电容器）的投切也会改变有功损耗；
+  \item \textbf{调节速度不同}：频率调整要求更快（秒级—分钟级），电压调整可以慢一些；
+  \item \textbf{调节手段不同}：调频靠原动机（调速器、调频器），调压靠励磁、变比、无功补偿。
+\end{itemize}
+工程上两者分别由“有功—频率”与“无功—电压”两套控制系统（AGC 与 AVC）承担。
+
+\section{有功功率平衡和系统负荷在各类发电厂间的合理分配}
+
+\subsection{有功功率平衡和备用容量}
+
+系统有功平衡要求：所有发电厂发出的有功等于负荷、网损与厂用电之和。为应对负荷波动与事故，
+须留\textbf{备用容量}：
+
+\begin{table}[htbp]
+  \centering
+  \caption{备用容量的分类与取值}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.30\linewidth}p{0.42\linewidth}@{}}
+    \toprule
+    备用类型 & 作用 & 一般取值 \\
+    \midrule
+    负荷备用 & 应对负荷短期波动（调频容量） & 最大负荷的 $2\%\sim5\%$ \\
+    事故备用 & 应对机组或线路事故停运 & 最大负荷的 $5\%\sim10\%$（且不小于最大单机容量） \\
+    检修备用 & 应对计划检修 & 按检修计划确定 \\
+    国民经济备用 & 应对新用户、新增长 & 按发展规划确定 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+备用容量按“是否已并网”分为\textbf{热备用}（旋转备用，机组已并网、可立即增出力）与
+\textbf{冷备用}（机组未启动或未并网，需启动时间）。热备用是调频与事故支援的主力。
+
+\subsection{各类发电厂负荷的合理分配}
+
+在满足安全约束的前提下，按\textbf{经济性}分配负荷，基本原则是：
+\begin{enumerate}
+  \item \textbf{核电厂}：一次投资大、效率高、不宜频繁调节，带\textbf{基荷}；
+  \item \textbf{高效率大容量火电厂}：带基荷与腰荷；
+  \item \textbf{中小容量火电厂}：带腰荷与峰荷，调节灵活；
+  \item \textbf{水电厂}：启动快、调节灵活，宜带\textbf{峰荷}与调频、事故备用；
+        但受水库调度（来水、灌溉、防洪）约束；
+  \item \textbf{抽水蓄能电厂}：低谷抽水蓄能（消耗多余电能）、高峰发电，
+        是调峰填谷的有效手段。
+  \item 新能源（风电、光伏）：优先消纳，但其出力波动性要求更多备用与调节能力。
+\end{enumerate}
+
+\begin{table}[htbp]
+  \centering
+  \caption{各类电厂在负荷曲线上的位置}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.20\linewidth}p{0.26\linewidth}p{0.26\linewidth}@{}}
+    \toprule
+    电厂类型 & 负荷位置 & 调节能力 & 分配要点 \\
+    \midrule
+    核电 & 基荷 & 差 & 满发、少调 \\
+    大容量火电 & 基荷／腰荷 & 中等 & 按耗量特性排顺序 \\
+    中小火电 & 腰荷／峰荷 & 较好 & 承担日负荷变化 \\
+    水电 & 峰荷／备用 & 好（秒级） & 兼顾水库调度 \\
+    抽水蓄能 & 填谷／峰荷 & 很好 & 低谷抽水、高峰发电 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{本章的主线：\textbf{频率偏差 }$\Delta f=-\Delta P/K_S$\textbf{ 是一切调频结论的母式}。
+一次调整靠 $K_S$（有差），二次调整靠 $\Delta P_{G0}$（可无差），互联系统靠 ACE 分区平衡。
+把“$K_L$ 不可调、$K_G$ 可调、$K_S$ 是二者之和”这三句记住，
+再记住“备用容量四类、电厂分配按基荷—腰荷—峰荷排序”，本章的计算与简答就都有了骨架。}

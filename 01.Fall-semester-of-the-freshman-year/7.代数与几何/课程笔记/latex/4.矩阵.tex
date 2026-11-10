@@ -1,359 +1,317 @@
-\section{矩阵的概念}
+\section{线性方程组和矩阵}
 
-数域的概念：如果数集$F$包含$0$和$1$，并且$F$中任意两个数的和、差、积、商（除数不为$0$）仍在$F$中，那么称$F$是一个**数域**。
+\subsection{数域}
 
-全体有理数之集$\mathbb{Q}$、全体实数之集$\mathbb{R}$和全体复数之集$\mathbb{C}$都是数域，分别称之为**有理数域**、**实数域**、**复数域**。这是三个最常用的数域。
+如果数集$F$包含$0$和$1$，并且$F$中任意两个数的和、差、积、商（除数不为$0$）仍在$F$中，那么称$F$是一个\textbf{数域}。全体有理数之集$\mathbb{Q}$、全体实数之集$\mathbb{R}$、全体复数之集$\mathbb{C}$都是数域，分别称为\textbf{有理数域}、\textbf{实数域}、\textbf{复数域}，这是三个最常用的数域。本书的讨论一般在实数域上进行，但结论对一般数域同样成立。
+
+\subsection{线性方程组与矩阵}
+
+含$m$个方程、$n$个未知量的线性方程组（其通式见第3章§3），全部信息由两张“数表”决定：系数表与常数项表。把系数按原位置排成$m$行$n$列的数表，就得到\textbf{系数矩阵}$A$；把常数项排成一列得到\textbf{常数项列向量}$\beta$。于是方程组可简记为$AX=\beta$。
 
 \begin{definition}
-有数域$F$内$m\times n$个数$a_{ij}\;(i = 1, \cdots , m;\; j = 1, \cdots , n)$排成的$m$行$n$列的数表
+由数域$F$内$m\times n$个数$a_{ij}\;(i=1,\cdots,m;\ j=1,\cdots,n)$排成的$m$行$n$列的数表
 \[
-\begin{pmatrix}
-a_{11}&a_{12}&\dots&a_{1n}\\
-a_{21}&a_{22}&\dots&a_{2n}\\
-\vdots&\vdots&\ddots&\vdots \\
-a_{m1}&a_{m2}&\dots&a_{mn}
+A=\begin{pmatrix}
+a_{11}&a_{12}&\cdots&a_{1n}\\
+a_{21}&a_{22}&\cdots&a_{2n}\\
+\vdots&\vdots&&\vdots\\
+a_{m1}&a_{m2}&\cdots&a_{mn}
 \end{pmatrix}
 \]
-叫做$F$上的$m$行$n$列矩阵，简称 $m\times n$ 矩阵或矩阵，记作$A$。
+叫做$F$上的$m$行$n$列\textbf{矩阵}，简称$m\times n$矩阵，记作$A=(a_{ij})_{m\times n}$或$A=(a_{ij})$。数$a_{ij}$称为矩阵的\textbf{元素}（元），$i$为行标、$j$为列标。
 \end{definition}
 
-$n$阶方阵$A$的主对角线上的元$a_{11},a_{22},\cdots,a_{nn}$叫做$A$的主对角线元。
+矩阵与行列式是两个不同的概念：行列式是一个\textbf{数}（只对$n$阶方阵才有意义），矩阵是一张\textbf{数表}（行数、列数可以任意），两者记号也不同（行列式用$|\ |$，矩阵用$(\ )$或$[\ ]$）。
 
-非主对角线元全部为零的方阵叫做**对角矩阵**。
-称主对角线元都相等的对角矩阵为**标量矩阵**。
+\subsection{几类特殊矩阵}
 
+\begin{itemize}
+\item \textbf{零矩阵}：所有元素均为$0$的矩阵，记作$O$（$m\times n$零矩阵记作$O_{m\times n}$）；
+\item \textbf{方阵}：行数与列数都等于$n$的矩阵，称为$n$阶方阵，$a_{11},a_{22},\cdots,a_{nn}$称为它的\textbf{主对角线元}；
+\item \textbf{对角矩阵}：非主对角线元全为$0$的方阵，记作$\Lambda=\mathrm{diag}(\lambda_1,\lambda_2,\cdots,\lambda_n)$；主对角线元都相等的对角矩阵称为\textbf{标量矩阵}；主对角线元都是$1$的对角矩阵称为\textbf{单位矩阵}，记作$E$（或$E_n$）；
+\item \textbf{同型矩阵}：行数相同、列数也相同的两个矩阵；同型矩阵对应元素全相等时称两矩阵\textbf{相等}，记作$A=B$；
+\item \textbf{行矩阵与列矩阵}：$1\times n$矩阵称行矩阵，$m\times 1$矩阵称列矩阵（列向量）。
+\end{itemize}
 
 \section{矩阵的运算}
 
 \subsection{矩阵的加法}
+
 \begin{definition}
-设$A = (a_{ij})$,$B = (b_{ij})$都是$m\times n$矩阵，规定$A$与$B$的矩阵和为矩阵$(a_{ij}+b_{ij})_{m\times n}$，记为$A+B$，即
-\[
-A+B=
-\begin{pmatrix}
-a_{11}+b_{11}&a_{12}+b_{12}&\dots&a_{1n}+b_{1n}\\
-a_{21}+b_{21}&a_{22}+b_{22}&\dots&a_{2n}+b_{2n}\\
-\vdots&\vdots&\ddots&\vdots \\
-a_{m1}+b_{m1}&a_{m2}+b_{m2}&\dots&a_{mn}+b_{mn}
-\end{pmatrix}.
-\]
+设$A=(a_{ij})$，$B=(b_{ij})$都是$m\times n$矩阵，规定$A$与$B$的\textbf{和}为矩阵$(a_{ij}+b_{ij})_{m\times n}$，记为$A+B$，即\textbf{对应元素相加}。只有\textbf{同型}矩阵才能相加。
 \end{definition}
 
-设$A=(a_{ij})_{m\times n}$，称矩阵$(-a_{ij})_{m\times n}$为$A$的**负矩阵**，记为$-A$，即
-\[
--A=
-\begin{pmatrix}
--a_{11}&-a_{12}&\dots&-a_{1n}\\
--a_{21}&-a_{22}&\dots&-a_{2n}\\
-\vdots&\vdots&\ddots&\vdots \\
--a_{m1}&-a_{m2}&\dots&-a_{mn}
-\end{pmatrix}.
-\]
-
-矩阵的加法满足（$A,B,C$都是$m\times n$矩阵）：
-\begin{enumerate}
-    \item $A+B=B+A$；
-    \item $(A+B)+C=A+(B+C)$；
-    \item $A+0_{m\times n}=A$；
-    \item $A+(-A)=0_{m\times n}$。
-\end{enumerate}
+设$A=(a_{ij})_{m\times n}$，称$(-a_{ij})_{m\times n}$为$A$的\textbf{负矩阵}，记作$-A$。矩阵加法满足（$A,B,C$同为$m\times n$矩阵）：$A+B=B+A$，$(A+B)+C=A+(B+C)$，$A+O=A$，$A+(-A)=O$。规定$A-B=A+(-B)$。
 
 \subsection{数与矩阵相乘}
+
 \begin{definition}
-% 原文截断，自行补全定义
+数$k$与矩阵$A=(a_{ij})_{m\times n}$的乘积，规定为矩阵$(ka_{ij})_{m\times n}$，记作$kA$或$Ak$，即数$k$乘矩阵的每一个元素。
 \end{definition}
 
+数乘满足（$k,l$为数，$A,B$为同型矩阵）：$k(A+B)=kA+kB$，$(k+l)A=kA+lA$，$(kl)A=k(lA)$，$1\cdot A=A$，$0\cdot A=O$，$kO=O$。
+
 \subsection{矩阵与矩阵相乘}
-注意：
-\begin{enumerate}
-    \item 只有当左侧矩阵$A$的列数与右侧矩阵$B$的行数相同时，两矩阵才能相乘；
-    \item $AB$的行数等于$A$的行数，$AB$的列数等于$B$的列数；
-    \item $AB$的第$i$行第$j$列处的元等于$A$的第$i$行与$B$的第$j$列的对应元乘积的和。
-\end{enumerate}
 
-矩阵乘法满足（假设运算都是有意义的）：
-\begin{enumerate}
-    \item %待补
-    \item %待补
-    \item %待补
-    \item %待补
-    \item %待补
-\end{enumerate}
-
-矩阵乘法有许多特殊性，主要有：
-\begin{enumerate}
-    \item 矩阵乘法不满足交换律。这有两层含义：其一是，有时虽然$AB$有意义，但$BA$未必有意义；其二是，即使$AB,BA$都有意义，$AB$与$BA$也未必相等。总之，一般说$AB\neq BA$（如果对某些特定的矩阵$A,B$有$AB=BA$，则称$A$与$B$乘积可换）。
-    \item 矩阵乘法不满足消去律，即在一般情况下，由$AB=AC$不能断定$B=C$。同样由$BA=CA$，不能断定$B=C$。
-    \item 矩阵乘法有零因子，即存在矩阵$A\neq 0$，$B\neq 0$，使得$AB=0$。因此，在一般情况下，不能由$AB=0$断定$A=0$或$B=0$。
-\end{enumerate}
-
-\subsection{方阵的幂}
-作为矩阵乘法不满足交换律的自然结果，一般说来$(AB)^k\neq A^kB^k$。
-
-利用方阵的幂，我们定义方阵的多项式。
-
-\subsection{方阵的行列式及行列式的乘法公式}
 \begin{definition}
-由$n$阶方阵$A$的元所构成的行列式（各元的位置不变）叫做方阵$A$的行列式，记作$\det A$或$|A|$。
+设$A=(a_{ij})_{m\times s}$，$B=(b_{ij})_{s\times n}$，规定$A$与$B$的\textbf{乘积}是一个$m\times n$矩阵$C=(c_{ij})$，其中
+\[
+c_{ij}=a_{i1}b_{1j}+a_{i2}b_{2j}+\cdots+a_{is}b_{sj}=\sum_{k=1}^{s}a_{ik}b_{kj},
+\]
+记作$C=AB$。即$c_{ij}$是$A$的第$i$行与$B$的第$j$列的对应元素乘积之和（“行乘列”）。
+\end{definition}
+
+三点必须记牢：(1)只有当左矩阵$A$的\textbf{列数}等于右矩阵$B$的\textbf{行数}时$AB$才有意义；(2)$AB$的行数等于$A$的行数、列数等于$B$的列数；(3)$AB$的$(i,j)$元等于$A$的第$i$行与$B$的第$j$列的对应元乘积之和，即“行乘列”。
+
+矩阵乘法满足（假设运算都有意义）：\\
+(1)$(AB)C=A(BC)$（结合律）；(2)$A(B+C)=AB+AC$，$(B+C)A=BA+CA$（分配律）；(3)$k(AB)=(kA)B=A(kB)$（$k$为数）；(4)$E_mA_{m\times n}=A_{m\times n}$，$A_{m\times n}E_n=A_{m\times n}$（单位矩阵是乘法的“幺元”）。
+
+矩阵乘法有三条与数的乘法不同的特殊性：\\
+(1)\textbf{不满足交换律}——虽然$AB$有意义但$BA$未必有意义；即使$AB,BA$都有意义也未必相等。一般$AB\neq BA$；若$AB=BA$，称$A$与$B$可交换。\\
+(2)\textbf{不满足消去律}——一般由$AB=AC$（或$BA=CA$）不能断定$B=C$。\\
+(3)\textbf{有零因子}——存在$A\neq O,B\neq O$使$AB=O$，故不能由$AB=O$断定$A=O$或$B=O$。
+
+\subsection{方阵的幂与方阵的多项式}
+
+设$A$为$n$阶方阵，规定$A^1=A$，$A^{k+1}=A^kA$（$k$为正整数），称为$A$的\textbf{幂}。有$A^kA^l=A^{k+l}$，$(A^k)^l=A^{kl}$（$k,l$为非负整数）。
+
+\corepoint{
+作为乘法不满足交换律的直接后果，一般$(AB)^k\neq A^kB^k$，且$A^k=B^k$推不出$A=B$。只有$A,B$可交换时才有二项式展开$(A+B)^2=A^2+2AB+B^2$，一般$(A+B)^2=A^2+AB+BA+B^2$。
+}
+
+利用方阵的幂可定义方阵的多项式：$f(A)=a_mA^m+a_{m-1}A^{m-1}+\cdots+a_1A+a_0E$，注意常数项要乘单位矩阵$E$。
+
+\subsection{矩阵的转置}
+
+\begin{definition}
+把$m\times n$矩阵$A$的行换成同序数的列（第1行变成第1列，第2行变成第2列……），所得的$n\times m$矩阵称为$A$的\textbf{转置矩阵}，记作$A'$（也记作$A^{T}$）。
+\end{definition}
+
+转置满足（假设运算都可行）：
+\begin{enumerate}
+\item $(A')'=A$；
+\item $(A+B)'=A'+B'$；
+\item $(kA)'=kA'$（$k$为数）；
+\item $(AB)'=B'A'$（注意顺序颠倒）；
+\item $|A'|=|A|$（$A$为方阵时）。
+\end{enumerate}
+
+设$A=(a_{ij})$为$n$阶方阵。若$A'=A$，则称$A$为\textbf{对称矩阵}；若$A'=-A$，则称$A$为\textbf{反称矩阵}。对称矩阵的特点是元素以主对角线为对称轴对应相等（$a_{ij}=a_{ji}$）；反称矩阵的主对角线元全为$0$。
+
+两个$n$阶对称矩阵之和仍是对称矩阵；若$A,B$是对称矩阵且可交换（$AB=BA$），则$AB$也是对称矩阵。
+
+\subsection{方阵的行列式}
+
+\begin{definition}
+由$n$阶方阵$A$的元素所构成的行列式（各元素的位置不变）叫做方阵$A$的\textbf{行列式}，记作$|A|$或$\det A$。
 \end{definition}
 
 \begin{theorem}
+设$A,B$为$n$阶方阵，$k$为数，则
 \begin{enumerate}
-    \item $|kA|=k^n|A|$；
-    \item $|AB| =|A| |B|$。称公式$|AB| =|A| |B|$为行列式乘法公式。
+\item $|kA|=k^n|A|$；
+\item $|AB|=|A|\,|B|$，称此式为\textbf{行列式的乘法公式}；
+\item $|A'|=|A|$。
 \end{enumerate}
 \end{theorem}
 
-\subsection{矩阵的转置}
-\begin{definition}
-%原文截断，自行补全
-\end{definition}
+\keyformula{|A'|=|A|,\qquad |kA|=k^n|A|,\qquad |AB|=|A|\,|B|}
 
-矩阵的转置满足（假设运算都可行）：
-\begin{enumerate}
-    \item $(A')'=A$；
-    \item $(A+B)'=A'+B'$；
-    \item $(kA)'=kA'$，$k$是常数；
-    \item $(AB)'=B'A'$；
-    \item $|A'|=|A|$。
-\end{enumerate}
+由乘法公式可推出$|AB|=|BA|$。注意$|A+B|\neq|A|+|B|$（一般不等），这是最容易与数的运算混淆的一条。
 
-设$A=(a_{ij})$为$n$阶方阵。若$A'=A$（$A'=-A$），则称$A$为**对称矩阵**（**反称矩阵**）。对称矩阵的特点：$A$的元以主对角线为对称轴对应相等。
+\subsection{共轭矩阵}
 
-设$A,B$都是$n$阶对称矩阵，则$A+B$还是对称矩阵。若$A,B$还是乘积可换的（$AB=BA$），则$A$与$B$的积$AB$也是对称矩阵。
+设$A=(a_{ij})$为复矩阵，$\bar a_{ij}$为$a_{ij}$的共轭复数，记$\bar A=(\bar a_{ij})$，称为$A$的\textbf{共轭矩阵}。共轭矩阵满足$\overline{(A+B)}=\bar A+\bar B$，$\overline{(kA)}=\bar k\bar A$，$\overline{(AB)}=\bar A\,\bar B$，$\overline{(A')}=(\bar A)'$。记$A^{H}=(\bar A)'$，称为$A$的\textbf{共轭转置矩阵}；若$A^{H}=A$，则称$A$为Hermite矩阵。
 
-\begin{definition}
-设用$A^H$表示（），称其为$A$的共轭转置矩阵。
-\end{definition}
+\section{逆矩阵}
 
-共轭矩阵满足
-\begin{enumerate}
-    \item %待补
-    \item %待补
-    \item %待补
-    \item %待补
-\end{enumerate}
+\subsection{逆矩阵的定义与性质}
 
-
-\section{可逆矩阵}
-
-\subsection{逆矩阵的定义}
 \begin{definition}
 设$A$为$n$阶方阵，若存在$n$阶方阵$B$，使
 \[
 AB=BA=E,
 \]
-则称$A$是可逆矩阵，称$B$是$A$的逆矩阵。
+则称$A$是\textbf{可逆矩阵}（或$A$可逆），称$B$是$A$的\textbf{逆矩阵}。
 \end{definition}
 
-一般地，若$k_1,k_2,\dots,k_n$都不为零，则对角矩阵的逆矩阵仍是对角矩阵。
+若$A$可逆，则其逆矩阵是唯一的：设$B_1,B_2$都满足定义，则$B_1=B_1E=B_1(AB_2)=(B_1A)B_2=EB_2=B_2$。因此把$A$的逆矩阵记作$A^{-1}$。对角矩阵只要主对角线元全不为零就可逆，且其逆仍为对角矩阵，$\mathrm{diag}(\lambda_1,\cdots,\lambda_n)^{-1}=\mathrm{diag}(\lambda_1^{-1},\cdots,\lambda_n^{-1})$。
 
-可以断言，如果方阵$A$可逆，则$A$的逆矩阵是唯一的。将$A$的逆矩阵记作$A^{-1}$。
-
-可逆矩阵有许多性质：
+可逆矩阵的性质：
 \begin{enumerate}
-    \item 若$A$可逆，%待补
-    \item 若$A$可逆，数$k\neq0$，则$kA$可逆，且$(kA)^{-1}=\dfrac{1}{k}A^{-1}$；
-    \item 若$A,B$是同阶可逆方阵，则$AB$也可逆，且$(AB)^{-1}=B^{-1}A^{-1}$；
-    \item 若$A$可逆，则$A'$可逆，且$(A')^{-1}=(A^{-1})'$。
+\item 若$A$可逆，则$A^{-1}$可逆，且$(A^{-1})^{-1}=A$；
+\item 若$A$可逆，数$k\neq0$，则$kA$可逆，且$(kA)^{-1}=\dfrac{1}{k}A^{-1}$；
+\item 若$A,B$为同阶可逆方阵，则$AB$可逆，且$(AB)^{-1}=B^{-1}A^{-1}$（推广：$(A_1A_2\cdots A_s)^{-1}=A_s^{-1}\cdots A_2^{-1}A_1^{-1}$）；
+\item 若$A$可逆，则$A'$可逆，且$(A')^{-1}=(A^{-1})'$；
+\item 若$A$可逆，则$|A^{-1}|=|A|^{-1}$（由$|A||A^{-1}|=|AA^{-1}|=|E|=1$）。
 \end{enumerate}
 
-\subsection{方阵$A$可逆的充要条件、用伴随矩阵法求逆矩阵}
-设$n$阶方阵$A$，我们把$|A|$中诸元$a_{ij}$的代数余子式$A_{ij}$所组成的$n$阶方阵，常用$A^*$表示$A$的**伴随矩阵**。
+\corepoint{
+$(AB)^{-1}=B^{-1}A^{-1}$必须\textbf{反序}，写成$A^{-1}B^{-1}$是错的（$A^{-1}B^{-1}$未必等于$(AB)^{-1}$，除非$A,B$可交换）。同理$(A+B)^{-1}\neq A^{-1}+B^{-1}$，一般$A+B$甚至未必可逆。
+}
+
+\subsection{伴随矩阵与可逆的充要条件}
+
+\begin{definition}
+设$A=(a_{ij})$为$n$阶方阵，$A_{ij}$是$|A|$中$(i,j)$元$a_{ij}$的代数余子式，则称$n$阶方阵
+\[
+A^{*}=\begin{pmatrix}
+A_{11}&A_{21}&\cdots&A_{n1}\\
+A_{12}&A_{22}&\cdots&A_{n2}\\
+\vdots&\vdots&&\vdots\\
+A_{1n}&A_{2n}&\cdots&A_{nn}
+\end{pmatrix}
+\]
+为$A$的\textbf{伴随矩阵}（注意：$A^*$的$(i,j)$元是$A_{ji}$，即代数余子式要\textbf{转置}排列）。
+\end{definition}
 
 \begin{lemma}
-设$A$是数域$F$上的$n$阶方阵，则$A^*A=AA^*=|A|E$。
+设$A$为$n$阶方阵，则
+\[
+AA^{*}=A^{*}A=|A|E.
+\]
 \end{lemma}
 
+证明思路：$AA^*$的$(i,j)$元为$\sum_{k=1}^{n}a_{ik}A_{jk}$，由第1章§5“本行乘本行代数余子式得$|A|$、异行乘异行代数余子式得$0$”，得$(i,j)$元为$|A|\delta_{ij}$。
+
 \begin{theorem}
-设$A$是数域$F$上的$n$阶方阵，则$A$可逆的充要条件是$|A|\neq0$。当$|A|\neq0$时，
+$n$阶方阵$A$可逆的充要条件是$|A|\neq0$；当$|A|\neq0$时
 \[
-A^{-1}=\frac{1}{|A|}A^*.
+A^{-1}=\frac{1}{|A|}A^{*}.
 \]
 \end{theorem}
 
-设$A$为$n$阶方阵，当$|A|=0$时，称$A$为**奇异矩阵**。否则，即$|A|\neq0$时，称$A$为**非奇异矩阵**。
+当$|A|=0$时称$A$为\textbf{奇异矩阵}，当$|A|\neq0$时称$A$为\textbf{非奇异矩阵}。于是：$A$可逆$\iff A$非奇异$\iff|A|\neq0$。（另一等价说法是$R(A)=n$，见第3章§2。）
 
-如果$A$可逆，我们规定$A^{-k}=(A^{-1})^k,\;k=1,2,3,\dots$。
+\keyformula{A^{-1}=\frac{1}{|A|}A^{*},\qquad AA^{*}=A^{*}A=|A|E}
 
+若$A$可逆，规定$A^{-k}=(A^{-1})^{k}$（$k=1,2,\cdots$），此时$A^{k}A^{l}=A^{k+l}$对一切整数$k,l$成立。
 
-\section{矩阵的初等变换}
+\subsection{用伴随矩阵法求逆矩阵}
 
-\subsection{矩阵初等变换的概念}
-\subsection{矩阵在初等变换下的化简}
-称矩阵$A$为**行阶梯形矩阵**，如果$A$满足：
 \begin{enumerate}
-    \item 若$A$有零行，那么零行全部位于非零行的下方；
-    \item 各个非零行的左起第一个非零元的列指标由上至下严格递增。
+\item 计算$|A|$，若$|A|=0$则$A$不可逆，停止；
+\item 逐个求出全部$n^2$个代数余子式$A_{ij}$（注意符号$(-1)^{i+j}$要算准）；
+\item 把$A_{ij}$按\textbf{转置}位置排成$A^{*}$，即$A^*$的第$i$行第$j$列放$A_{ji}$；
+\item 用$A^{-1}=\dfrac{1}{|A|}A^{*}$写出结果。
 \end{enumerate}
 
-一般地，可按如下方法将矩阵$A$经初等变换化为行阶梯形矩阵。
+对二阶方阵有便捷口诀（“主对调、副变号、除以行列式”）：
+\keyformula{\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}\quad(ad-bc\neq0)}
 
-称$A$为**行最简形矩阵**，如果：
-\begin{enumerate}
-    \item $A$是行阶梯形矩阵；
-    \item $A$的非零行的左起第一个非零元都是$1$，并且这些$1$分别是它们所在列唯一的非零元。
-\end{enumerate}
+\corepoint{
+伴随矩阵法只适合二阶、三阶（$n\ge4$时要求$n^2$个余子式，计算量爆炸）。求具体数字矩阵的逆，用第3章§1的初等变换法：$(A\mid E)\xrightarrow{\text{行变换}}(E\mid A^{-1})$。
+}
 
+\subsection{用逆矩阵解矩阵方程}
 
-\section{矩阵的秩}
+设$A$为$n$阶可逆方阵：若$AX=B$则$X=A^{-1}B$（左乘$A^{-1}$）；若$XA=B$则$X=BA^{-1}$（右乘$A^{-1}$）；若$AXB=C$则$X=A^{-1}CB^{-1}$。
+关键是$A^{-1}$要乘在$A$原来所在的一侧，因为矩阵乘法不可交换。若$A$不可逆，则转化为解线性方程组（第3章§3）。
 
-\subsection{矩阵秩的概念}
-将矩阵$A$的某些行和某些列划去（可以只划某些行或某些列），称$A$的子方阵的行列式为$A$的**子式**。
+\section{克拉默法则}
 
-\begin{definition}
-矩阵$A$的非零子式的最高阶数叫做矩阵$A$的秩。记为$R(A)$。
-\end{definition}
-
-若$A$是矩阵，则
-\begin{enumerate}
-    \item $0\le R(A)\le \min\{m,n\}$
-    \item %待补
-    \item %待补
-    \item %待补
-\end{enumerate}
-
-\begin{theorem}
-矩阵经初等变换后，其秩不变。
+\begin{theorem}[克拉默法则]
+设$n$个未知数、$n$个方程的线性方程组$AX=\beta$的系数行列式$D=|A|\neq0$，则方程组有唯一解
+\[
+x_1=\frac{D_1}{D},\quad x_2=\frac{D_2}{D},\quad\cdots,\quad x_n=\frac{D_n}{D},
+\]
+其中$D_j$是把$D$中第$j$列换成常数项$b_1,b_2,\cdots,b_n$所得到的$n$阶行列式。
 \end{theorem}
 
-定理表明，$R(A)=r$的充要条件是%待补。
+\keyformula{x_j=\frac{D_j}{D}\quad(j=1,2,\cdots,n),\qquad D\neq0}
 
-\paragraph{求矩阵秩的方法}
-由矩阵秩的定义看出，行阶梯形矩阵的秩等于其非零行的个数。这样，求矩阵的秩时，只需将$A$经初等变换化成行阶梯形矩阵，其非零行的个数就是$A$的秩。
+证明思路：把方程组写成$AX=\beta$，由$D=|A|\neq0$知$A$可逆，$X=A^{-1}\beta=\dfrac{1}{D}A^{*}\beta$，再逐分量算出分子即$D_j$（$A^*$的第$j$行与$\beta$的内积）。
 
-由矩阵的秩的定义可知，$n$阶方阵$A$的秩$R(A)=n\Leftrightarrow|A|\neq0$。故$n$阶方阵$A$可逆$\Leftrightarrow R(A)=n$。
-
-由矩阵的初等变换不改变矩阵的秩可知：
-\begin{enumerate}
-    \item $n$阶方阵$A$的秩$R(A)=n\Leftrightarrow A\xrightarrow{\text{初等变换}} E_n$；
-    \item $m\times n$矩阵$A$是列满秩矩阵$\Leftrightarrow A\xrightarrow{\text{初等变换}} \begin{pmatrix} E_n \\ 0 \end{pmatrix}$；
-    \item $m\times n$矩阵$A$是行满秩矩阵$\Leftrightarrow A\xrightarrow{\text{初等变换}} \begin{pmatrix} E_m & 0 \end{pmatrix}$。
-\end{enumerate}
-
-
-\section{初等矩阵}
-
-\subsection{初等矩阵的概念}
-\begin{definition}
-由单位矩阵经一次初等变换得到的方阵称为**初等矩阵**。
-\end{definition}
-
-初等矩阵共有三类：
-\begin{enumerate}
-    \item 把单位矩阵中第$i,j$两行（列）对调，得到初等矩阵；
-    \item 以数$k\neq0$乘单位矩阵的某行（列），得到初等矩阵；
-    \item 以数$k$乘单位矩阵的某一行（列）加到另一行（列）得到初等矩阵。
-\end{enumerate}
-
-\subsection{初等矩阵的性质}
-\begin{enumerate}
-    \item 初等矩阵都是可逆矩阵，并且初等矩阵的逆矩阵还是初等矩阵。事实上，
-\begin{align*}
-E^{-1}(i,j)&=E(i,j);\\
-E^{-1}(i(k))&=E(i(\tfrac{1}{k})),\ k\neq0;\\
-E^{-1}(i,j(k))&=E(i,j(-k)).
-\end{align*}
-
-    \item 初等矩阵的转置矩阵还是初等矩阵，事实上，
-\begin{align*}
-E'(i,j)&=E(i,j);\\
-E'(i(k))&=E(i(k));\\
-E'(i,j(k))&=E(j,i(k)).
-\end{align*}
-
-    \item 设$A$是$m\times n$矩阵，对$A$施行一次初等行变换，其结果等于用一个相应的初等矩阵在其左边乘$A$；对$A$施行一次初等列变换，其结果等于用一个相应的初等矩阵在其右边乘$A$。
-\end{enumerate}
-
-具体地
-\begin{enumerate}
-    \item %待补
-    \item %待补
-    \item %待补
-\end{enumerate}
-
-\subsection{矩阵等价的充要条件}
-\begin{theorem}
-矩阵$A$可逆的充要条件是：存在有限个初等矩阵$P_1,P_2,\cdots,P_k$，使
-\[
-A=P_1P_2\cdots P_k.
-\]
-\end{theorem}
-
-\begin{corollary}
-两个$m\times n$矩阵$A$，$B$等价的充要条件是：存在$m$阶可逆矩阵$P$及$n$阶可逆矩阵$Q$，使$PAQ=B$。特别地，存在可逆矩阵$P,Q$使$PAQ=\begin{pmatrix}E_r&0\\0&0\end{pmatrix}$，其中$r=R(A)$。
+\begin{corollary}[齐次方程组]
+$n$个未知数、$n$个方程的齐次方程组$AX=0$，其系数行列式$D\neq0$时\textbf{只有零解}；反之，它\textbf{有非零解（即有无穷多个解）的充要条件是}$D=0$。
 \end{corollary}
 
-\begin{corollary}
-设$A$是$m\times n$矩阵，$P$是$m$阶可逆矩阵，$Q$是$n$阶可逆矩阵，则矩阵$PA$，$AQ$，$PAQ$的秩都等于$A$的秩，即
-\[
-R(PA)=R(AQ)=R(PAQ)=R(A).
-\]
-\end{corollary}
+\keyformula{D\neq0\ \Longrightarrow\ \text{齐次方程组只有零解};\qquad
+\text{齐次方程组有非零解}\iff D=0}
 
-\begin{corollary}
-设$A$是可逆矩阵，则可以只经过初等行（列）变换将$A$化成单位矩阵$E$。
-\end{corollary}
+\subsection{使用要点与限制}
 
-\paragraph{初等变换法求可逆矩阵的逆矩阵}
-设$A$是$n$阶可逆矩阵，于是存在初等矩阵$P_1,P_2,\dots,P_s$，使
-\[
-P_1P_2\cdots P_sA=E \tag{1}
-\]
-故
-\[
-P_1P_2\cdots P_sE=A^{-1} \tag{2}
-\]
+\begin{enumerate}
+\item 克拉默法则\textbf{只适用于“方程个数＝未知数个数”且$D\neq0$}的方程组；这两个条件缺一不可；
+\item 计算量大（$n$个未知数要算$n+1$个$n$阶行列式），实际求解应改用第3章的初等变换法；
+\item 理论价值大于计算价值：它给出了“解是常数项与系数的显式表达式”这一结论，并直接推出“齐次方程组有非零解$\iff$系数行列式为零”，是第4、5章讨论线性相关性、特征值的出发点；
+\item $D=0$时克拉默法则失效（无解或有无穷多解），此时必须用$R(A)$与$R(A\mid\beta)$的关系判定（第3章§3）。
+\end{enumerate}
 
-式$(1)$和式$(2)$表明，若经过一系列初等行变换可将$A$变成$E$，则施行同样的一系列初等行变换将$E$变成$A^{-1}$。于是，对矩阵$(A\mid E)$施行初等行变换。当其中的$A$化成$E$时，$E$就化成了$A^{-1}$。
+\corepoint{
+常见错误：（1）把常数项替换到\textbf{行}上（应替换\textbf{列}）；（2）方程组中某个未知数在某个方程里“缺项”时，没有补$0$就直接写系数行列式；（3）$D=0$仍套公式得$x_j=0/0$；（4）用克拉默法则讨论“方程组有唯一解$\iff D\neq0$”——仅在$m=n$时成立，方程个数与未知数个数不等时必须用秩判定。
+}
 
-此外，设$A$可逆，若$(A\mid B)\xrightarrow{\text{行变换}}(E\mid C)$，则$C=A^{-1}B$。
-
-类似地，设$A$可逆，若$\begin{pmatrix}A\\B\end{pmatrix}\xrightarrow{\text{列变换}}\begin{pmatrix}E\\C\end{pmatrix}$，则$C=BA^{-1}$。
-
-
-\section{分块矩阵的概念及其运算}
+\section{矩阵分块法}
 
 \subsection{分块矩阵的概念}
+
+用若干条横线与纵线把矩阵$A$分成若干个小块，以子块为元素的矩阵称为\textbf{分块矩阵}。例如把$3\times4$矩阵按前两行、前两列切成四块，可记作
+\[
+A=\begin{pmatrix}A_{11}&A_{12}\\A_{21}&A_{22}\end{pmatrix},
+\]
+其中$A_{11}$是$2\times2$子块，$A_{12}$是$2\times2$子块，$A_{21},A_{22}$都是$1\times2$子块。分块方式不唯一，可依需要（按行分块、按列分块、按相同规格分块）选取，原则是\textbf{便于揭示结构}。
+
+把$m\times n$矩阵$A$的每一行作为一个子块，得\textbf{按行分块}$A=(\alpha_1',\alpha_2',\cdots,\alpha_m')'$，$\alpha_i'$即$A$的第$i$行（称$A$的$m$个\textbf{行向量}）；把每一列作为一个子块，得\textbf{按列分块}$A=(\beta_1,\beta_2,\cdots,\beta_n)$，$\beta_j$为$A$的$n$个\textbf{列向量}。
+
 \subsection{分块矩阵的运算}
-分块矩阵的加法与数乘。
 
-分块矩阵的乘法。设$A$ %待补。
+分块矩阵的加法、数乘、乘法、转置与普通矩阵形式相同，只要\textbf{子块规格匹配}即可：
 
-分块矩阵的幂。特别地，当 %待补。
-
-分块矩阵的转置矩阵。
-
-分块矩阵的行列式。
-
-分块矩阵的逆矩阵。
-
-
-\section{分块矩阵的初等变换}
-
-\subsection{分块矩阵初等变换的概念}
-下列事实成立：
 \begin{enumerate}
-    \item %待补
-    \item %待补
-    \item %待补
-    \item %待补
+\item \textbf{加法}：$A,B$同型且采用\textbf{相同的分块法}，则$A+B$的对应子块相加；
+\item \textbf{数乘}：$kA$的每个子块乘$k$；
+\item \textbf{乘法}：设$A$为$m\times s$、$B$为$s\times n$矩阵，$A$的列分块法与$B$的行分块法一致（列组数等于行组数，对应子块规格相同），则按“子块相乘再相加”的规则得$C_{ij}=\sum_{k=1}^{t}A_{ik}B_{kj}$，即
+\[
+\begin{pmatrix}A_{11}&\cdots&A_{1t}\\ \vdots&&\vdots\\ A_{r1}&\cdots&A_{rt}\end{pmatrix}
+\begin{pmatrix}B_{11}&\cdots&B_{1q}\\ \vdots&&\vdots\\ B_{t1}&\cdots&B_{tq}\end{pmatrix}
+=\begin{pmatrix}C_{11}&\cdots&C_{1q}\\ \vdots&&\vdots\\ C_{r1}&\cdots&C_{rq}\end{pmatrix}.
+\]
+注意子块乘法\textbf{次序不能颠倒}（$A_{ik}B_{kj}\neq B_{kj}A_{ik}$）；
+\item \textbf{转置}：分块矩阵转置时，不仅子块的位置转置，\textbf{每个子块本身也要转置}：
+\[
+\begin{pmatrix}A_{11}&A_{12}\\A_{21}&A_{22}\end{pmatrix}'=\begin{pmatrix}A_{11}'&A_{21}'\\A_{12}'&A_{22}'\end{pmatrix};
+\]
+\item \textbf{分块矩阵的幂}：对分块对角矩阵，幂等于各对角块分别求幂。
 \end{enumerate}
 
-\paragraph{利用分块矩阵的初等变换计算矩阵的秩}
+\subsection{分块对角矩阵}
 
-矩阵的秩的性质：
+形如
+\[
+\Lambda=\begin{pmatrix}
+A_1&&&\\&A_2&&\\&&\ddots&\\&&&A_s\end{pmatrix}
+\]
+（未写出处为零块，$A_i$为$n_i$阶方阵）的矩阵称为\textbf{分块对角矩阵}（准对角矩阵）。它有下列简便性质：
 \begin{enumerate}
-    \item $R\begin{pmatrix}A&0\\0&B\end{pmatrix}=R(A)+R(B)$；
-    \item %待补
-    \item %待补
-    \item $R(A+B)\le R(A)+R(B)$；
-    \item $R(AB)\le \min\{R(A),R(B)\}$；
-    \item 设$A$为$m\times n$矩阵，$B$为$n\times p$矩阵，则
-    \[
-    R(AB)\ge R(A)+R(B)-n.
-    \]
-    特别地，当$AB=0$时，$R(A)+R(B)\le n$。
+\item $|\Lambda|=|A_1|\,|A_2|\cdots|A_s|$；
+\item $\Lambda$可逆$\iff$每个$A_i$都可逆，且$\Lambda^{-1}=\mathrm{diag}(A_1^{-1},A_2^{-1},\cdots,A_s^{-1})$；
+\item $\Lambda^{k}=\mathrm{diag}(A_1^{k},A_2^{k},\cdots,A_s^{k})$；
+\item 两个同规格分块对角矩阵的乘积仍为分块对角矩阵，对角块逐块相乘。
 \end{enumerate}
 
-两个$n$阶方阵$A,B$如果满足$AB=0$且$A+B$可逆，则$R(A)+R(B)=n$。
+\keyformula{\begin{vmatrix}A_1&&\\&\ddots&\\&&A_s\end{vmatrix}=|A_1|\,|A_2|\cdots|A_s|,\qquad \Lambda^{k}=\mathrm{diag}(A_1^{k},\cdots,A_s^{k})}
+
+\subsection{分块三角矩阵}
+
+形如$\begin{pmatrix}A&C\\O&B\end{pmatrix}$（$A$为$m$阶、$B$为$n$阶方阵）的矩阵称为\textbf{分块上三角矩阵}，$\begin{pmatrix}A&O\\C&B\end{pmatrix}$称为\textbf{分块下三角矩阵}。它们与三角形行列式一样“只取对角块”：
+\[
+\begin{vmatrix}A&C\\O&B\end{vmatrix}=\begin{vmatrix}A&O\\C&B\end{vmatrix}=|A|\,|B|.
+\]
+若$A,B$都可逆，则
+\[
+\begin{pmatrix}A&C\\O&B\end{pmatrix}^{-1}=\begin{pmatrix}A^{-1}&-A^{-1}CB^{-1}\\O&B^{-1}\end{pmatrix},
+\]
+下三角情形把$-A^{-1}CB^{-1}$换成$-B^{-1}CA^{-1}$放在左下方即可。验证方法是直接相乘看是否得单位矩阵；注意非对角块带负号，且$A^{-1}CB^{-1}$中三者的次序不能换。
+
+\subsection{分块乘法的典型用途}
+
+\begin{enumerate}
+\item \textbf{把矩阵乘法写成“列的组合”}：$AB=A(\beta_1,\cdots,\beta_n)=(A\beta_1,\cdots,A\beta_n)$，即$AB$的第$j$列是$A$乘$B$的第$j$列；同理$AB$的第$i$行是$A$的第$i$行乘$B$。这是第3、4章讨论线性组合与秩的基本工具。
+\item \textbf{把线性方程组写成列向量的线性组合}：$AX=x_1\beta_1+x_2\beta_2+\cdots+x_n\beta_n$，于是“$AX=\beta$有解”等价于“$\beta$可由$A$的列向量组线性表示”（第4章）。
+\item \textbf{简化高阶运算}：按“同结构块”分块后，高阶矩阵的乘法、行列式、逆矩阵都可化为低阶问题（对角块、三角块尤其方便）。
+\end{enumerate}
+
+\corepoint{
+分块运算的三个易错点：（1）分块乘法要求左矩阵的\textbf{列分组}与右矩阵的\textbf{行分组}完全一致，规格不匹配时不能乘；（2）转置时只转置子块位置、忘记子块内部也要转置；（3）分块三角矩阵求逆时负号与乘法次序$A^{-1}CB^{-1}$写错。矩阵的秩及秩的性质见第3章§2。
+}

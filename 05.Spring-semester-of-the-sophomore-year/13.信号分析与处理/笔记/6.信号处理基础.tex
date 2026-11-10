@@ -1,0 +1,342 @@
+% ========== 第3章 信号处理基础（依据 26春_第3章_讲义） ==========
+% 讲义 3.1 系统及其性质 / 3.2 信号的线性系统处理（时域、频域、复频域）
+
+\chapter{信号处理基础}
+
+\section{系统及其性质}
+
+\subsection{系统的描述}
+
+\subsubsection{系统的定义与输入输出}
+\begin{itemize}
+\item \textbf{系统}：由若干相互作用、相互依赖的事物组合而成、具有特定功能的整体，可以是自然的，也可以是人造的。
+\item 施加于系统的信号称为\textbf{输入信号}（激励）$x(t)$、$x(n)$，由此产生的信号称为\textbf{输出信号}（响应）$y(t)$、$y(n)$。
+\item 系统的功能体现在“接受一定输入时产生什么样的输出”；任何信号的改变都要通过某种系统实现，因此\textbf{系统是信号处理的工具}（如心电信号经低通滤波去掉高频噪声）。
+\end{itemize}
+
+\subsubsection{系统的数学模型}
+\begin{itemize}
+\item \textbf{定义}：系统物理特性的数学抽象，以数学表达式或具有理想特性的符号组合图形表征系统特性。
+\item \textbf{常见形式}：时域模型（微分/差分方程）、频域模型（频率响应）、方框图和信号流图、状态空间模型。
+\item 同一物理系统在不同条件下（不同稳态工作点、不同线性化近似）可得不同形式的模型；不同物理系统经抽象近似也可能得到形式完全相同的模型。
+\item 若数学模型是高阶微分方程，则该\textbf{微分方程的阶次就是系统的阶数}。
+\end{itemize}
+
+连续时间系统由线性常系数微分方程描述，离散时间系统由线性常系数差分方程描述：
+\begin{align}
+\sum_{k=0}^{n} a_k\, y^{(k)}(t) &= \sum_{k=0}^{m} b_k\, x^{(k)}(t), \label{eq:ctsys}\\
+\sum_{k=0}^{N} a_k\, y(n-k) &= \sum_{k=0}^{M} b_k\, x(n-k). \label{eq:dtsys}
+\end{align}
+
+\subsubsection{输入输出模型与状态空间模型}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+模型 & 反映的内容 & 描述方式 \\
+\midrule
+输入输出模型 & 只反映系统输入与输出的关系（外特性） & 输入输出方程 \\
+状态空间模型 & 既反映外特性，又着重反映系统内部状态 & 状态方程 $+$ 输出方程 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{系统的分析与综合}
+\begin{itemize}
+\item \textbf{系统分析（Analysis）}：给定系统，研究系统对输入信号产生的响应，由此获得对系统功能和特性的认识，如响应求解、稳定性分析等。这类问题一般有固定的答案。
+\item \textbf{系统综合（Synthesis）}：已知输入信号及对输出的要求，通过调整系统中可变动部分的结构和参数，保证得到所要求的输出，如控制器、滤波器的设计。
+\end{itemize}
+
+\subsubsection{系统的分类}
+\begin{itemize}
+\item \textbf{连续时间系统与离散时间系统}：前者输入输出均为连续时间信号，用微分方程或连续时间状态方程描述；后者输入输出均为离散时间信号，用差分方程或离散时间状态方程描述。
+\item \textbf{单输入单输出（SISO）系统与多输入多输出（MIMO）系统}：前者单个输入、单个输出；后者有多个输入和（或）多个输出。
+\item 按数学模型阶次可分为一阶、二阶、高阶系统。
+\end{itemize}
+
+\subsection{系统的性质}
+
+\subsubsection{六条基本性质}
+\begin{enumerate}
+\item \textbf{记忆性}。每一时刻的输出仅取决于同时刻的输入、与过去的工作状态（历史）无关，则系统\textbf{无记忆}（瞬时系统、即时系统），由代数方程描述，如电阻 $U_R=RI_R$、加法器；否则为\textbf{有记忆}（动态系统），由微分/差分方程描述，如含储能元件的系统，$U_C(t)=\dfrac{1}{C}\displaystyle\int_{-\infty}^{t}I_C(\tau)d\tau$。
+\item \textbf{因果性}。任何时刻的输出只取决于该时刻及以前的输入、与将来时刻的输入无关，则系统\textbf{因果}，否则\textbf{非因果}。电阻、电感、电容构成的实际物理系统都是因果系统；信号处理中待处理信号已被记录保存，可用后一时刻的输入决定前一时刻的输出，从而构成（允许存在的）非因果系统。
+\item \textbf{可逆性}。不同输入产生不同输出（输入输出一一对应）则\textbf{可逆}，否则不可逆。如通信中的编码器应当可逆，以便接收后恢复原信号。
+\item \textbf{稳定性}。对有界输入，其\textbf{零状态响应}也有界，则系统稳定，称有界输入有界输出（BIBO）稳定系统。渐近稳定是 BIBO 稳定；但 BIBO 稳定不一定满足渐近稳定条件（如传递函数存在零极点对消）。
+\item \textbf{时不变性}。参数不随时间变化称\textbf{时不变}（定常）系统，参量随时间改变称\textbf{时变}（参变）系统，如 $\dot{x}=Ax$ 与 $\dot{x}=A(t)x$。
+\item \textbf{线性}。同时满足\textbf{叠加性}与\textbf{齐次性}的系统为线性系统，否则为非线性系统。
+\end{enumerate}
+
+叠加性与齐次性可合并写为
+\begin{equation}
+x_1(t)\to y_1(t),\quad x_2(t)\to y_2(t)\ \Longrightarrow\ K_1x_1(t)+K_2x_2(t)\to K_1y_1(t)+K_2y_2(t).
+\end{equation}
+若系统输出与输入的关系为
+\begin{equation}
+y(t)=Ax(t)+y_0(t)\quad\Longrightarrow\quad \Delta y(t)=A\,\Delta x(t),
+\end{equation}
+即输出的增量与输入的增量之间呈线性关系，则称此类系统为\textbf{增量线性系统}。
+
+\subsubsection{性质的判定与易错点}
+\begin{center}
+\begin{tabular}{p{2.6cm}p{5.2cm}p{5.6cm}}
+\toprule
+性质 & 判定方法 & 易错点 \\
+\midrule
+记忆性 & 看输出是否只与同时刻输入有关；无记忆必为代数方程 & 含电容、电感的电路一律有记忆 \\
+因果性 & 检验 $y(t)=f\{x(t-\tau),\tau\ge 0\}$、$y(n)=f\{x(n-k),k\ge 0\}$ & $y(t)=\int_{-\infty}^{t}x(\tau)d\tau$ 因果；$y(t)=x(t+1)$ 非因果 \\
+可逆性 & 输入输出是否一一对应 & 多对一（如平方器）不可逆 \\
+稳定性 & 有界输入 $\Rightarrow$ 零状态响应有界 & 只对有界输入、只对零状态响应而言 \\
+时不变性 & 令 $x_2(t)=x_1(t-t_0)$，检验是否有 $y_2(t)=y_1(t-t_0)$ & 时不变看“参数是否随时间变”，线性看“是否满足叠加与齐次”，二者独立 \\
+线性 & 同时检验叠加性与齐次性 & 线性系统只有在\textbf{零初始状态}下才是线性的，否则是增量线性系统 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{信号的线性系统处理}
+
+线性系统处理信号有三条并行的路径：\textbf{时域法}（卷积积分/卷积和）、\textbf{频域法}（频率响应、无失真传输、理想低通滤波器）、\textbf{复频域法}（系统函数与传递函数）。三者描述同一系统，只是变换域不同。
+
+\subsection{时域法分析}
+
+\subsubsection{线性时不变系统的描述与直接求解的局限}
+线性时不变（LTI）动态系统由式~\eqref{eq:ctsys}（连续）或式~\eqref{eq:dtsys}（离散）描述。直接求解系统方程有三点局限：
+\begin{itemize}
+\item 需要初始条件（系统输出、各阶导数的初值等）；
+\item 纯数学方法不能表现系统响应的物理意义；
+\item 输入信号或初始条件改变，必须重新求解。
+\end{itemize}
+
+\subsubsection{零输入响应与零状态响应}
+\begin{itemize}
+\item \textbf{零输入响应}：无外加激励，仅由起始状态（起始时刻系统储能）产生的响应，即由非零初始状态延续下来的输出。
+\item \textbf{零状态响应}：系统在零初始状态下，对本次输入激励的响应。
+\end{itemize}
+\begin{equation}
+\boxed{\ y(t)=y_{zi}(t)+y_{zs}(t)\ }\qquad\text{系统响应}=\text{零输入响应}+\text{零状态响应}.
+\end{equation}
+以 RC 电路为例：输入为电源电压，状态变量为电容电压 $v_0$。注意：\textbf{线性系统只有在零初始状态下才是线性的，否则是增量线性系统}。
+
+\subsubsection{单位冲激响应与单位样值响应}
+\textbf{定义}：系统在零初始条件下，对激励为单位冲激信号 $\delta(t)$ 的响应记为 $h(t)$；对激励为单位样值信号 $\delta(n)$ 的响应记为 $h(n)$。
+
+$\delta(t)$ 与 $\delta(n)$ 的区别在于：
+\begin{equation}
+\delta(t)=\begin{cases}\infty, & t=0\\ 0, & t\ne 0\end{cases},\quad \int_{-\infty}^{\infty}\delta(t)\,dt=1;
+\qquad
+\delta(n)=\begin{cases}1, & n=0\\ 0, & n\ne 0\end{cases},\quad \sum_{n=-\infty}^{\infty}\delta(n)=1.
+\end{equation}
+
+\subsubsection{冲激响应的形式}
+把 $x(t)=\delta(t)$、$y(t)=h(t)$ 代入式~\eqref{eq:ctsys}，得
+\begin{equation}
+\sum_{k=0}^{n}a_k h^{(k)}(t)=\sum_{k=0}^{m}b_k \delta^{(k)}(t).
+\end{equation}
+当 $t>0$ 时 $\delta(t)$ 及其各阶导数均为零，故 $h(t)$ 满足齐次方程 $\sum_k a_k h^{(k)}(t)=0$；又由因果性 $h(t)=0\ (t<0)$，所以 $h(t)$ 具有\textbf{齐次微分方程解的基本形式}。设齐次方程有 $n$ 个互不相同的单特征根 $\lambda_i$，则 $h(t)=\sum_{i=1}^{n}A_i e^{\lambda_i t}u(t)$。
+
+$h(t)$ 的具体形式与 $n$、$m$ 的相对大小密切相关：
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+情形 & $h(t)$ 的形式 & 说明 \\
+\midrule
+$n>m$ & $h(t)=\displaystyle\sum_{i=1}^{n}A_i e^{\lambda_i t}u(t)$ & 物理上可实现系统的一般形式 \\
+$n=m$ & $h(t)=c\,\delta(t)+\displaystyle\sum_{i=1}^{n}A_i e^{\lambda_i t}u(t)$ & 出现冲激项 \\
+$n<m$ & $h(t)=\displaystyle\sum_{j=0}^{m-n}c_j\delta^{(j)}(t)+\sum_{i=1}^{n}A_i e^{\lambda_i t}u(t)$ & 出现冲激及各阶冲激偶 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+离散情形同理，把 $x(n)=\delta(n)$、$y(n)=h(n)$ 代入式~\eqref{eq:dtsys}：
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+情形 & $h(n)$ 的形式 \\
+\midrule
+$N>M$ & $h(n)=\displaystyle\sum_{i=1}^{N}A_i\lambda_i^{\,n}u(n)$ \\
+$N\le M$ & $h(n)=\displaystyle\sum_{j=0}^{M-N}C_j\delta(n-j)+\sum_{i=1}^{N}A_i\lambda_i^{\,n}u(n)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{求冲激响应的经典法步骤}
+\begin{enumerate}
+\item 列出系统的微分方程（或差分方程）；
+\item 求特征方程的根；
+\item 按上表写出齐次解（$h(t)$ 或 $h(n)$）的形式，待定系数；
+\item 求各阶导数（离散情形为各次平移所得序列）；
+\item 代回原微分（差分）方程；
+\item 令等式两边各奇异函数（或各移位序列）的系数相等，解出待定系数。
+\end{enumerate}
+
+\subsubsection{卷积积分与卷积和}
+\textbf{基本思想}：任意连续时间信号可分解为一系列冲激函数之和；已知 LTI 系统的单位冲激响应 $h(t)$，利用线性和时不变性就能确定系统对任意信号的响应。
+\begin{align}
+y(t)&=\int_{-\infty}^{\infty}x(\tau)h(t-\tau)\,d\tau=x(t)*h(t), \label{eq:conv}\\
+y(n)&=\sum_{m=-\infty}^{\infty}x(m)h(n-m)=x(n)*h(n). \label{eq:convsum}
+\end{align}
+作为特例，$y(t)=\delta(t)*h(t)=h(t)$，$y(n)=\delta(n)*h(n)=h(n)$——即“以单位冲激激励时的零状态响应就是 $h(t)$”。
+
+\subsubsection{阶跃响应与冲激响应的关系}
+设单位阶跃响应为 $c(t)$、$c(n)$，则
+\begin{align}
+c(t)&=\int_{-\infty}^{\infty}h(\tau)u(t-\tau)\,d\tau, & h(t)&=c'(t);\\
+c(n)&=\sum_{m=-\infty}^{\infty}h(m)u(n-m), & h(n)&=c(n)-c(n-1).
+\end{align}
+即\textbf{单位冲激（样值）响应是单位阶跃响应的微分（后向差分）}；反之阶跃响应是冲激响应的积分（累加）。
+
+\subsection{频域法分析}
+
+\subsubsection{频率响应}
+频域法研究信号通过系统后在\textbf{频谱结构}上的变化，即输出响应随频率变化的规律，具有明确的物理意义。
+
+考察单位冲激响应为 $h(t)$ 的 LTI 系统对复指数信号 $x(t)=e^{j\omega t}$ 的响应：系统对复指数信号的响应仍是\textbf{同频率}的复指数信号，只是幅值和相位发生改变，
+\begin{equation}
+y(t)=H(\omega)e^{j\omega t},\qquad H(\omega)=\mathcal{F}[h(t)]=\frac{Y(\omega)}{X(\omega)}=H(s)\Big|_{s=j\omega}.
+\end{equation}
+$H(\omega)$ 称为\textbf{频率特性（频率响应）函数}。对任意连续信号，由傅里叶反变换把 $x(t)$ 看成无穷多个不同频率复指数分量之和，再利用系统的齐次性与叠加性（或直接用傅里叶变换的时域卷积定理），得
+\begin{equation}
+Y(\omega)=X(\omega)H(\omega)\quad\Longleftrightarrow\quad y(t)=x(t)*h(t).
+\end{equation}
+写成分量形式
+\begin{equation}
+H(\omega)=\big|H(\omega)\big|e^{j\varphi_h(\omega)},
+\end{equation}
+其中 $|H(\omega)|$ 为\textbf{幅频特性}，$\varphi_h(\omega)$ 为\textbf{相频特性}。注意：严格来讲 $H(\omega)=\mathcal{F}[h(t)]$ 与 $H(\omega)=H(s)|_{s=j\omega}$ 并不一致，考虑到 $H(s)$ 在虚轴上无极点（稳定）的情况更为普遍，两种表示才一致。工程上：频率特性用极坐标图表示即\textbf{奈奎斯特图}，幅频、相频特性用对数坐标图表示即\textbf{伯德图}。
+
+\subsubsection{离散系统的频率响应}
+考察单位脉冲响应为 $h(n)$ 的 LTI 系统对复指数序列 $x(n)=e^{j\Omega n}$ 的响应，由卷积和得
+\begin{equation}
+H(\Omega)=\mathrm{DTFT}[h(n)]=\sum_{k=-\infty}^{\infty}h(k)e^{-j\Omega k}=\frac{Y(\Omega)}{X(\Omega)},\qquad Y(\Omega)=X(\Omega)H(\Omega).
+\end{equation}
+离散系统频率特性的两个要点：
+\begin{itemize}
+\item \textbf{周期性}：$H(\Omega)=H(\Omega+2\pi)$，是以 $2\pi$ 为周期的周期函数；若改用模拟频率 $\omega$ 表示，则周期为采样角频率 $\omega_s$。
+\item \textbf{幅频与相频}：$H(\Omega)=|H(\Omega)|e^{j\varphi(\Omega)}$。
+\end{itemize}
+
+\subsubsection{无失真传输}
+信号无失真传输是实现信号可靠传送与交换的基本条件：要求信号通过系统后\textbf{时域波形不变}，只允许幅度按比例放大（缩小）或在时间上有固定延迟。设原信号为 $x(t)$、频谱为 $X(\omega)$，则
+\begin{equation}
+y(t)=Kx(t-t_0)\quad\Longleftrightarrow\quad Y(\omega)=Ke^{-j\omega t_0}X(\omega).
+\end{equation}
+于是无失真传输系统的频率特性为
+\begin{equation}
+H(\omega)=\frac{Y(\omega)}{X(\omega)}=Ke^{-j\omega t_0}=\big|H(\omega)\big|e^{j\varphi_h(\omega)}.
+\end{equation}
+\textbf{无失真传输的频域条件}：
+\begin{enumerate}
+\item 幅频特性为与频率无关的常数，即在全部频带内具有恒定的放大倍数：$|H(\omega)|=K$；
+\item 相频特性与频率呈线性关系：$\varphi_h(\omega)=-\omega t_0$（\textbf{线性相位}）。
+\end{enumerate}
+信号通过系统的延迟时间 $t_0$ 就是相频特性斜率的负值，工程上定义\textbf{群时延（群延迟）}
+\begin{equation}
+\tau=-\frac{d\varphi_h(\omega)}{d\omega}=t_0>0.
+\end{equation}
+对多频分量信号（如基波与二次谐波）而言，不产生相位失真的条件是各次谐波的相移必须与其频率成正比：
+\begin{equation}
+\frac{\varphi_1}{\omega_1}=\frac{\varphi_2}{2\omega_1}=t_0=\text{常数}.
+\end{equation}
+\textbf{时域条件}：$\mathcal{F}^{-1}[H(\omega)]=\mathcal{F}^{-1}[Ke^{-j\omega t_0}]=K\delta(t-t_0)$，即单位冲激响应也应是冲激信号，只是放大了 $K$ 倍、延迟了 $t_0$。
+
+\textbf{讨论}：上述条件只是理想条件。任何系统都不可能在所有频率范围内同时具有平坦的幅频特性与线性相频特性，也不可能对单位冲激的响应是真正的冲激。实际中带有信息的物理信号都是\textbf{带限}的，只需在信号占据的频率范围内满足无失真传输条件。
+
+\subsubsection{理想低通滤波器}
+频率特性
+\begin{equation}
+H(\omega)=\begin{cases}1\cdot e^{-j\omega t_0}, & |\omega|<\omega_c\\[2pt] 0, & |\omega|>\omega_c\end{cases}
+\end{equation}
+其中 $0<\omega<\omega_c$ 为通带，$\omega>\omega_c$ 为阻带，$\omega_c$ 为截止频率。其单位冲激响应为
+\begin{equation}
+h(t)=\mathcal{F}^{-1}[H(\omega)]=\frac{1}{2\pi}\int_{-\omega_c}^{\omega_c}1\cdot e^{j\omega(t-t_0)}\,d\omega=\frac{\omega_c}{\pi}\Sa\big[\omega_c(t-t_0)\big].
+\end{equation}
+\begin{itemize}
+\item 响应在 $t$ 为负值时已经出现，即 $h(t)\ne 0\ (t<0)$，\textbf{非因果系统，物理上不可实现}；
+\item $h(t)$ 在时域上是无限的，这正对应“频域有限 $\Rightarrow$ 时域无限”。
+\end{itemize}
+
+\textbf{时域有限与频域无限的关系}（易错）：
+\begin{itemize}
+\item 信号时域有限 $\Rightarrow$ 频域无限：时域无限信号可通过加窗变成时域有限信号，对应\textbf{频域卷积}，导致频谱无限扩展；
+\item 信号频域有限 $\Rightarrow$ 时域无限：相当于在频域上加窗，对应\textbf{时域卷积}，导致时域无限扩展；
+\item 反之不成立：一个域上无限，\textbf{不一定}另一域上有限。如周期矩形脉冲在时域、频域上都是无限的，
+\begin{equation}
+F(\omega)=E\tau\omega_1\sum_{n=-\infty}^{\infty}\Sa\!\left(\frac{n\omega_1\tau}{2}\right)\delta(\omega-n\omega_1).
+\end{equation}
+\end{itemize}
+
+\subsubsection{理想低通的阶跃响应}
+由 $C(\omega)=\mathcal{F}[u(t)]\cdot H(\omega)=\left[\pi\delta(\omega)+\dfrac{1}{j\omega}\right]e^{-j\omega t_0}$ 取反变换，利用欧拉公式、奇函数在对称区间积分为零以及换元 $x=\omega(t-t_0)$，得
+\begin{equation}
+c(t)=\frac{1}{2}+\frac{1}{\pi}\operatorname{Si}\big[\omega_c(t-t_0)\big],\qquad
+\operatorname{Si}(y)=\int_{0}^{y}\frac{\sin x}{x}\,dx .
+\end{equation}
+\begin{itemize}
+\item 低通滤波器滤除了一些高频分量，不连续点在输出将被圆滑，产生渐变；
+\item 阶跃响应的\textbf{上升时间}与低通滤波器（系统）的截止频率（带宽）\textbf{成反比}：
+\begin{equation}
+t_r=\frac{2\pi}{\omega_c}.
+\end{equation}
+截止频率越低，输出响应上升越缓慢。信号随时间的急剧改变意味着它包含许多高频分量。
+\end{itemize}
+
+\subsubsection{矩形脉冲经理想低通传输}
+设 $e_1(t)=u(t)-u(t-\tau)$，借助叠加定理得
+\begin{equation}
+r_1(t)=\frac{1}{\pi}\Big\{\operatorname{Si}\big[\omega_c(t-t_0)\big]-\operatorname{Si}\big[\omega_c(t-t_0-\tau)\big]\Big\}.
+\end{equation}
+矩形脉冲经理想低通传输时，必须使脉宽 $\tau$ 与滤波器截止频率 $\omega_c$ 相适应（$\tau\gg\dfrac{2\pi}{\omega_c}$），才能得到大体上为矩形的响应。
+
+\textbf{吉布斯现象}：用矩形窗函数滤取信号频谱时，时域响应的不连续点处出现上冲，上冲量约为 \textbf{9\%}。加大理想低通的带宽 $\omega_c$ 可以让更多高频分量通过、改善响应波形并减小上升时间，但\textbf{不能改变 9\% 上冲的强度}。
+
+\subsection{复频域分析}
+
+\subsubsection{复频域分析的意义}
+\begin{itemize}
+\item 在复频域中物理意义不清晰；
+\item 但比频域法更方便、更有效：\textbf{求解微分方程}、\textbf{研究系统特性}、\textbf{系统的综合与设计}（自动控制理论中的传递函数即源于此）。
+\item 主要内容：微分方程的复频域（拉普拉斯变换）求解、差分方程的 Z 域求解。
+\end{itemize}
+
+\subsubsection{系统函数}
+\textbf{连续系统}：零初始条件下，系统输出的拉普拉斯变换与输入的拉普拉斯变换之比
+\begin{equation}
+H(s)=\frac{Y(s)}{X(s)}.
+\end{equation}
+\textbf{离散系统}：零初始条件下，系统输出的 Z 变换与输入的 Z 变换之比
+\begin{equation}
+H(z)=\frac{Y(z)}{X(z)}.
+\end{equation}
+若 $H(z)$ 的极点均位于单位圆之内，则频率响应可由系统函数得到
+\begin{equation}
+H(\Omega)=H(e^{j\Omega})=H(z)\Big|_{z=e^{j\Omega}};
+\end{equation}
+相应地，若 $H(s)$ 的极点均在左半 $s$ 平面，则
+\begin{equation}
+H(\omega)=H(s)\Big|_{s=j\omega}.
+\end{equation}
+
+\subsection{三域分析对照与易错点}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabular}{p{1.9cm}p{3.2cm}p{3.4cm}p{5.4cm}}
+\toprule
+方法 & 数学工具 & 核心量 & 输入输出关系 \\
+\midrule
+时域法 & 卷积积分、卷积和 & $h(t)$、$h(n)$ & $y(t)=x(t)*h(t)$，$y(n)=x(n)*h(n)$ \\
+频域法 & 傅里叶变换 & $H(\omega)=\mathcal{F}[h(t)]$ & $Y(\omega)=X(\omega)H(\omega)$ \\
+复频域法 & 拉氏变换、Z 变换 & $H(s)=Y(s)/X(s)$，$H(z)=Y(z)/X(z)$ & 代数运算，极点决定稳定性 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item \textbf{线性}只对零初始状态成立；有初始储能时系统是\textbf{增量线性}的，不能直接用叠加定理求全响应。
+\item \textbf{因果性}看输出是否用到将来时刻的输入：$y(t)=x(t+1)$ 非因果，$y(t)=\int_{-\infty}^{t}x(\tau)d\tau$ 因果。
+\item \textbf{BIBO 稳定}只约束零状态响应，且弱于渐近稳定（可能有零极点对消）。
+\item $h(t)$ 的形式与 $n$、$m$ 的关系：$n>m$ 不含冲激项，$n=m$ 含 $c\delta(t)$，$n<m$ 还含冲激的各阶导数；离散情形对应 $N>M$ 与 $N\le M$。
+\item \textbf{冲激响应与阶跃响应}互为微分（后向差分）与积分（累加）关系，方向不要记反。
+\item 无失真传输必须\textbf{幅频为常数且相频为线性}，缺一不可；仅幅频平坦而相位非线性仍产生相位失真。
+\item \textbf{理想低通}的 $h(t)$ 在 $t<0$ 已非零，物理不可实现；加大带宽只减小上升时间 $t_r=2\pi/\omega_c$，不改变 $9\%$ 上冲。
+\item $\operatorname{Si}(y)$ 是正弦\textbf{积分}函数，与 $\Sa(x)=\sin x/x$ 不是同一函数，不要混用。
+\item 离散系统 $H(\Omega)$ 以 $2\pi$ 为周期（模拟频率下以 $\omega_s$ 为周期），连续系统 $H(\omega)$ 无此周期性。
+\end{itemize}

@@ -1,0 +1,173 @@
+% ============================================================
+% 第 24 章 直流电动机（教材第六篇，印刷页 259--269）
+% 节名：第一节 直流电动机的基本电磁关系；第二节 直流电动机的运行特性；
+%       第三节 直流电动机的启动、调速及电磁制动
+% ============================================================
+\chapter{直流电动机}
+
+直流电动机最大的优点是\textbf{调速范围宽、平滑、起动转矩大}，因此在轧钢、矿山、电车、起重等需要低速大转矩的场合仍不可替代。本章的核心只有一个式子：由 $U=E_a+I_aR_a$ 与 $E_a=C_e\Phi n$ 解出的\textbf{转速公式}——它同时解释了机械特性、起动限流和三种调速方式。
+
+\section{直流电动机的基本电磁关系}
+
+\subsection{电压方程与转速公式}
+电动机接直流电源，电枢电流 $I_a$ 由电网流入（与 $E_a$ 反方向），故
+\begin{equation}
+U=E_a+I_aR_a\quad\Longrightarrow\quad
+I_a=\frac{U-E_a}{R_a}.
+\end{equation}
+代入 $E_a=C_e\Phi n$，得\textbf{转速公式}
+\begin{equation}
+n=\frac{U-I_aR_a}{C_e\Phi}.
+\end{equation}
+
+\keyformula{n=\frac{U-I_aR_a}{C_e\Phi}}
+
+这个式子说明：\textbf{转速由三个量决定}——端电压 $U$、电枢回路电阻压降 $I_aR_a$、每极磁通 $\Phi$。于是调速也只有三条路：调 $U$、调 $\Phi$、调 $R_a$（串电阻）。全部调速与起动分析都由此展开。
+
+\subsection{转矩方程}
+\begin{equation}
+T=C_T\Phi I_a .
+\end{equation}
+稳态时 $T=T_2+T_0$（电磁转矩 $=$ 负载转矩 $+$ 空载制动转矩）。负载增大时，转速略降、$E_a$ 减小、$I_a$ 增大，转矩随之增大，直至与负载平衡——这是电动机的自动调节过程。
+
+\subsection{各励磁方式的电流关系}
+\begin{itemize}
+  \item \textbf{并励}：$I_f=U/R_f$，$I_a=I-I_f$（$I$ 为电网输入电流）；
+  \item \textbf{串励}：$I_f=I_a=I$；
+  \item \textbf{他励}：$I_a=I$，$I_f$ 独立；
+  \item \textbf{复励}：$I_a=I-I_{f\text{（并）}}$，串励绕组电流为 $I_a$。
+\end{itemize}
+
+\section{直流电动机的运行特性}
+
+\subsection{机械特性}
+机械特性 $n=f(T)$ 是电动机最重要的特性，由转速公式与 $I_a=T/(C_T\Phi)$ 联立得
+\begin{equation}
+n=\frac{U}{C_e\Phi}-\frac{R_a}{C_eC_T\Phi^{2}}T=n_0-\beta T ,
+\end{equation}
+其中 $n_0=U/(C_e\Phi)$ 为\textbf{理想空载转速}，$\beta=R_a/(C_eC_T\Phi^2)$ 为斜率。
+
+\subsubsection{并励（他励）电动机}
+$\Phi$ 基本恒定，故机械特性是一条\textbf{略微下倾的直线}，属\textbf{硬特性}：负载从空载到额定，转速下降仅 5\%～10\%。定义转速变化率
+\begin{equation}
+\Delta n\%=\frac{n_0-n_N}{n_N}\times100\% ,
+\end{equation}
+一般 $<10\%$，适合要求转速平稳的机床、造纸、轧钢（配合调压调速）。
+
+\subsubsection{串励电动机}
+$\Phi$ 随 $I_a$ 变化（磁路未饱和时 $\Phi\propto I_a$），故 $T\propto I_a^2$，转速
+\begin{equation}
+n\propto\frac{U}{\sqrt{T}} ,
+\end{equation}
+机械特性为\textbf{软特性}：轻载时转速极高，重载时转速迅速下降。串励电动机起动转矩大（$T\propto I_a^2$），适合电车、起重机、牵引；但\textbf{绝对不允许空载或轻载运行}，否则转速将升高到危险程度（"飞车"），故禁止用皮带传动。
+
+\subsubsection{复励电动机}
+介于两者之间，既有较大的起动转矩，又不致空载飞车。
+
+\begin{center}
+\begin{tabular}{@{}p{2.0cm}p{3.4cm}p{3.6cm}p{4.2cm}@{}}
+\toprule
+励磁方式 & 机械特性 & 转速变化率 & 典型用途 \\
+\midrule
+并励/他励 & 硬特性（直线略下倾） & 5\%～10\% & 机床、轧钢、造纸 \\
+串励 & 软特性（$n\propto1/\sqrt T$） & 很大 & 电车、起重机（忌空载） \\
+复励 & 介于两者之间 & 中等 & 需要大起动转矩又怕飞车 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{工作特性}
+并励电动机的工作特性指 $U=U_N$、$I_f=I_{fN}$ 时，$n$、$T$、$I$、$\eta$ 随输出功率 $P_2$ 的变化：
+\begin{itemize}
+  \item $n=f(P_2)$：略下降（硬特性）；
+  \item $T=f(P_2)$：近似直线（$T=T_0+P_2/\Omega$）；
+  \item $I=f(P_2)$：随负载近似线性增大；
+  \item $\eta=f(P_2)$：先升后降，在 $(0.75\sim1.0)P_N$ 附近最高。
+\end{itemize}
+
+\section{直流电动机的启动、调速及电磁制动}
+
+\subsection{启动问题与限流}
+起动瞬间 $n=0$，$E_a=0$，故
+\begin{equation}
+I_{st}=\frac{U}{R_a}.
+\end{equation}
+电枢电阻 $R_a$ 很小，直接起动电流可达额定电流的 \textbf{10～20 倍}，将造成：
+\begin{enumerate}
+  \item 换向器产生强烈火花甚至环火；
+  \item 电网电压骤降；
+  \item 电磁转矩 $T=C_T\Phi I_{st}$ 过大，冲击机械负载与传动机构。
+\end{enumerate}
+因此直流电动机\textbf{不允许直接起动}（微型电机除外）。
+
+\subsubsection{降压起动}
+降低电源电压起动，随着转速上升逐步升压。起动电流小、起动平滑，需要可调压直流电源（现代多用晶闸管整流或直流斩波），是当前主流方案。
+
+\subsubsection{电枢串电阻起动}
+在电枢回路串入起动电阻 $R_{st}$，使
+\begin{equation}
+I_{st}=\frac{U}{R_a+R_{st}}\le\left(1.5\sim2\right)I_N ,
+\end{equation}
+随转速上升逐段切除电阻。设备简单，但起动过程中电阻上消耗大量能量，且为有级起动。
+
+\subsection{调速}
+由转速公式 $n=\dfrac{U-I_aR_a}{C_e\Phi}$ 可知三种调速方式。
+
+\subsubsection{调压调速}
+保持 $\Phi$ 不变（额定励磁），改变电枢电压 $U$。转速近似与 $U$ 成正比，可\textbf{无级、平滑}调节，调速范围宽（可达 10:1 以上），低速时特性仍硬。因 $\Phi$ 不变，允许的转矩不变，属\textbf{恒转矩调速}——最适合恒转矩负载（起重机、轧机）。这是直流电动机最优的调速方式。
+
+\subsubsection{调磁（弱磁）调速}
+保持 $U$ 不变，减小励磁电流以减小 $\Phi$，转速升高。因 $n\propto1/\Phi$，故为\textbf{升速}调速；受换向与机械强度限制，转速一般不超过 $1.2\sim2\,n_N$。由于 $\Phi$ 减小后允许的转矩减小，而功率近似不变，属\textbf{恒功率调速}，适合恒功率负载（机床主轴）。
+
+\subsubsection{电枢串电阻调速}
+在电枢回路串入电阻，使机械特性变软，同一转矩下转速降低。设备简单，但：① 为有级调速；② 低速时电阻上损耗大、效率低；③ 特性变软、转速随负载波动大。仅用于短时、小范围调速。
+
+\begin{center}
+\begin{tabular}{@{}p{2.0cm}p{2.6cm}p{3.2cm}p{3.4cm}p{2.4cm}@{}}
+\toprule
+调速方式 & 调节量 & 转速变化 & 调速性质 & 评价 \\
+\midrule
+调压 & $U$ & $n\propto U$，无级 & 恒转矩 & 最优，范围宽、特性硬 \\
+调磁（弱磁） & $\Phi$ & $n\propto1/\Phi$，升速 & 恒功率 & 只能向上调，受换向限制 \\
+电枢串电阻 & $R_a$ & 特性变软、转速降低 & 变转矩 & 有级、损耗大，少用 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{电磁制动}
+\begin{enumerate}
+  \item \textbf{能耗制动}：切断电源，把电枢接到制动电阻上。惯性使电枢继续旋转，$E_a$ 作用下电流反向、转矩变为制动，动能消耗在电阻上。制动平稳、准确。
+  \item \textbf{反接制动}：把电枢电压反接（或电枢反接），$E_a$ 与 $U$ 同方向，电流很大，必须串入制动电阻限流。制动强烈、迅速，用于快速停车与位能负载下放。
+  \item \textbf{回馈（再生）制动}：当转速高于理想空载转速（如起重机下放重物、电车下坡），$E_a>U$，电流反向流入电网，电机作发电机运行，把机械能回馈电网。最经济，但只能在 $n>n_0$ 时使用。
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{}p{2.2cm}p{4.2cm}p{3.6cm}p{3.2cm}@{}}
+\toprule
+制动方式 & 做法 & 能量去向 & 适用 \\
+\midrule
+能耗制动 & 电枢接制动电阻 & 消耗在电阻上 & 平稳停车 \\
+反接制动 & 电压（或电枢）反接 & 消耗在电阻上 & 快速停车、下放 \\
+回馈制动 & $n>n_0$ 自然进入发电态 & 回馈电网 & 下放重物、下坡 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{稳定运行与拖动系统}
+电动机的稳态工作点是机械特性 $n=f(T)$ 与负载特性 $n=f(T_L)$ 的交点。稳定运行的判据是：转速略有升高时，电动机转矩小于负载转矩（$\mathrm{d}T/\mathrm{d}n<\mathrm{d}T_L/\mathrm{d}n$）。
+
+动态过程中，转速的变化由拖动系统的运动方程决定：
+\begin{equation}
+T-T_L=J\frac{\mathrm{d}\Omega}{\mathrm{d}t},
+\end{equation}
+其中 $J$ 为转动惯量。该式说明：电磁转矩大于负载转矩时加速，小于时减速，相等时匀速——这是分析起动时间、制动过程的基础。并励电动机机械特性为下垂直线，与恒转矩负载的交点唯一且稳定；串励电动机特性下垂很陡，轻载时交点上移极快，这正是"忌空载"的数学表现。
+
+\subsection{并励与他励的区别}
+两者机械特性形式相同，但并励电动机的励磁电流取自电枢端电压，故：
+\begin{itemize}
+  \item 调压调速时，$U$ 下降会同时使 $I_f$ 下降、$\Phi$ 减小，导致"弱磁升速"与"降压降速"相互抵消一部分，特性不如他励硬；
+  \item 若电枢电压降低过多，励磁可能不足，需改用他励（或自励恒压）以保证励磁稳定。
+\end{itemize}
+因此要求宽范围调速的场合，多采用\textbf{他励}结构（励磁由独立可控电源供电）。
+
+\corepoint{本章只需牢记一条主线：\textbf{一切从 $n=\dfrac{U-I_aR_a}{C_e\Phi}$ 出发}。起动时 $E_a=0$ 故电流巨大 $\Rightarrow$ 必须降压或串电阻；调速就是调 $U$、$\Phi$、$R_a$ 三个量中的某一个，而调哪个量决定了"恒转矩"还是"恒功率"；制动就是让 $E_a$ 与 $U$ 的关系反过来，使电流反流。串励电动机的"忌空载"也必须记牢：$\Phi\propto I_a$，空载时 $I_a$ 很小、$\Phi$ 很小，$n\propto U/\Phi$ 会飞车。}

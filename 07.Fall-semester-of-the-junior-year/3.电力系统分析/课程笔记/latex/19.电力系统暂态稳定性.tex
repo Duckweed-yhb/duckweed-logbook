@@ -1,0 +1,316 @@
+% ============================================================
+% 第 17 章  电力系统暂态稳定性
+% （教材：何仰赞、温增银《电力系统分析》下册 第 17 章）
+% 结构对齐 17.1—17.6；例题、习题不录
+% ============================================================
+
+\chapter{电力系统暂态稳定性}
+
+暂态稳定研究\textbf{大扰动}后系统能否保持同步运行。大扰动（短路、切线路、切机）
+使电磁功率突然大幅下降，转子在“机械功率 $-$ 电磁功率”的差值下加速，
+功角迅速增大。若在功角越过临界值之前能把加速动能消耗掉，系统稳定；否则失步。
+本章给出这套判断的定量工具：\textbf{等面积定则}、\textbf{极限切除角}、
+以及求解转子运动方程的\textbf{数值方法}。
+
+\section{暂态稳定分析计算的基本假设}
+
+\subsection{电力系统机电暂态过程的特点}
+
+短路等大扰动发生后，系统中同时存在两类暂态过程：
+\begin{itemize}
+  \item \textbf{电磁暂态}：以毫秒计，表现为定子电流中的直流分量、倍频分量，
+        以及网络中的波过程；
+  \item \textbf{机电暂态}：以秒计，表现为发电机转子转速与功角的变化。
+\end{itemize}
+暂态稳定关心的是后者（$\delta$ 是否单调增大到失步）。两者的时间尺度相差两个数量级以上，
+故可以\textbf{在机电暂态分析中忽略电磁暂态的细节}，只保留基频分量。
+
+\subsection{基本假设}
+
+\begin{enumerate}
+  \item \textbf{忽略定子电流的直流分量与倍频分量}，只计基频分量。
+        这样发电机可用正序相量模型，网络可用稳态相量方程。
+  \item \textbf{忽略阻尼绕组的暂态过程}，发电机用“$E'$ 恒定、$X_d'$”模型
+        （称\textbf{经典模型}）。若要计入阻尼绕组，则用 $E''$、$X_d''$，但方程数增加。
+  \item \textbf{不计频率变化对网络参数的影响}，网络元件仍用额定频率下的恒定阻抗，
+        网络方程是线性的代数方程。
+  \item \textbf{不计原动机调速器的作用}，机械功率 $P_T$ 在暂态过程中保持不变
+        （调速器动作需数秒，比暂态过程慢）。
+  \item \textbf{负荷用恒定阻抗表示}（或按恒定功率、恒定电流的静特性），
+        以便把负荷并入节点导纳矩阵。
+  \item \textbf{不计网络电磁暂态}，即认为网络中的功率传输“瞬时”跟随功角变化。
+\end{enumerate}
+
+\subsection{近似计算中的简化}
+
+在上述假设下，发电机等值为“$\dot E'$ 恒定（暂态电抗后电势恒定）”的电压源串 $jX_d'$，
+其电磁功率为
+\keyformula{P_e=\frac{E'U}{X_{d\Sigma}'}\sin\delta',\qquad X_{d\Sigma}'=X_d'+X_{\text{外}}}
+$\delta'$ 为 $\dot E'$ 与 $\dot U$ 的夹角。这一模型的优点是：整个暂态过程中只有一个
+状态变量 $\delta$（每台机），计算量小，且能反映暂态稳定的主要特征。
+需要更精确时，可改用 $E_q$ 变化模型（计及励磁绕组暂态）或 $E''$ 模型（计及阻尼绕组）。
+
+\section{简单电力系统暂态稳定的分析计算}
+
+\subsection{各种运行情况下的功率特性}
+
+以“单机—无限大系统”双回线中一回线首端短路为例，暂态过程分三个阶段，
+每个阶段对应一条功率特性曲线：
+
+\begin{table}[htbp]
+  \centering
+  \caption{三个阶段的功率特性}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.26\linewidth}p{0.46\linewidth}@{}}
+    \toprule
+    阶段 & 功率特性 & 说明 \\
+    \midrule
+    正常运行 & $P_{\text{I}}=P_{\text{I}m}\sin\delta$ & 双回线并联，电抗最小，$P_{\text{I}m}$ 最大 \\
+    故障期间 & $P_{\text{II}}=P_{\text{II}m}\sin\delta$ & 短路使等值电抗增大（或电势降低），
+      $P_{\text{II}m}<P_{\text{I}m}$ \\
+    故障切除后 & $P_{\text{III}}=P_{\text{III}m}\sin\delta$ & 单回线运行，$P_{\text{III}m}$ 介于两者之间 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+故障期间 $P_{\text{II}m}$ 最小，转子加速最剧烈；切除后 $P_{\text{III}m}$ 较大，
+转子开始减速。三条曲线的相对高低决定了稳定与否。
+
+\textbf{三个功率极限的求法}（这一步是暂态稳定计算中最容易出错的地方）：
+\begin{enumerate}
+  \item 在正序等值网络中确定短路点，按故障类型在故障点接入附加电抗（第 8 章正序等效定则），
+        然后求“发电机电动势到无限大母线”的总电抗 $X_{\text{I}}$、$X_{\text{II}}$、$X_{\text{III}}$；
+  \item 由 $P_{m}=E'U/X_{\Sigma}'$ 得三个阶段各自的功率极限；
+  \item 注意故障期间若短路点靠近机端，$X_{\text{II}}$ 可能非常大（$P_{\text{II}m}$ 很小），
+        加速面积随之剧增——这正是“近端短路最危险”的原因。
+\end{enumerate}
+例如单回线首端发生三相短路：故障期间发电机端电压接近于零，$P_{\text{II}}\approx0$，
+加速面积达到最大；故障切除后单回线运行，$P_{\text{III}m}$ 只有双回线时的一半。
+若为单相接地短路，则须在正序网中串入 $Z_{\Delta}=Z_{2\Sigma}+Z_{0\Sigma}$，
+$X_{\text{II}}$ 不会太大，故\textbf{单相接地对暂态稳定的威胁远小于三相短路}。
+
+\subsection{大扰动后发电机转子的相对运动}
+
+短路瞬间，$P_T$ 不变而 $P_e$ 骤降至 $P_{\text{II}}$，转子受加速转矩：
+\begin{equation}
+  T_J\frac{\mathrm{d}^{2}\delta}{\mathrm{d}t^{2}}=P_T-P_{\text{II}m}\sin\delta>0 .
+\end{equation}
+$\delta$ 增大、转速上升，转子积累动能。故障切除后，若 $P_{\text{III}m}\sin\delta>P_T$，
+则加速转矩变负，转子减速，但 $\delta$ 仍继续增大（惯性），直到转速恢复到同步速、
+$\mathrm{d}\delta/\mathrm{d}t=0$，此时 $\delta$ 达最大值 $\delta_{\max}$。
+若此后 $\delta$ 能回落，系统稳定；若 $\delta$ 越过 $180^\circ-\delta_0$（功率特性与 $P_T$ 的
+另一个交点）仍未减速到零，则失步。
+
+\subsection{等面积定则}
+
+把转子运动方程两边对 $\delta$ 积分：
+\begin{equation}
+  T_J\frac{\mathrm{d}^{2}\delta}{\mathrm{d}t^{2}}=P_T-P_e
+  \;\Longrightarrow\;
+  \frac{1}{2}T_J\left(\frac{\mathrm{d}\delta}{\mathrm{d}t}\right)^{2}
+  =\int_{\delta_0}^{\delta}\left(P_T-P_e\right)\mathrm{d}\delta .
+\end{equation}
+转速回到同步速时 $\mathrm{d}\delta/\mathrm{d}t=0$，故积分为零。这就是\textbf{等面积定则}：
+\keyformula{\int_{\delta_0}^{\delta_c}\left(P_T-P_{\text{II}}\right)\mathrm{d}\delta
+  =\int_{\delta_c}^{\delta_{\max}}\left(P_{\text{III}}-P_T\right)\mathrm{d}\delta}
+左端为故障期间的\textbf{加速面积} $A_{acc}$，右端为切除后的\textbf{减速面积} $A_{dec}$。
+\textbf{稳定判据}：
+\begin{itemize}
+  \item $A_{dec}>A_{acc}$：$\delta$ 在到达 $\delta_{\max}$ 之前减速到零，系统\textbf{稳定}；
+  \item $A_{dec}=A_{acc}$：\textbf{临界状态}，对应极限切除角；
+  \item $A_{dec}<A_{acc}$：转子无法消耗全部动能，$\delta$ 持续增大，\textbf{失步}。
+\end{itemize}
+
+\subsection{极限切除角}
+
+令 $A_{acc}=A_{dec}$，即临界状态，解出\textbf{极限切除角} $\delta_{cm}$：
+\keyformula{\cos\delta_{cm}
+  =\frac{P_{\text{III}m}\cos\delta_{\max}-P_{\text{II}m}\cos\delta_0
+  +P_T\left(\delta_0-\delta_{\max}\right)}{P_{\text{III}m}-P_{\text{II}m}}}
+其中
+\begin{equation}
+  \delta_{\max}=\pi-\arcsin\frac{P_T}{P_{\text{III}m}}
+\end{equation}
+为故障切除后功率特性与 $P_T$ 的第二个交点（超过它必失步）。
+由 $\delta_{cm}$ 可进一步求\textbf{极限切除时间} $t_{cm}$：把 $\delta=\delta_{cm}$ 代入转子运动方程
+的数值解，反求对应的时间。工程上要求实际切除时间（保护动作时间 $+$ 断路器开断时间）
+小于 $t_{cm}$，并留裕度。
+
+\begin{table}[htbp]
+  \centering
+  \caption{暂态稳定的三个临界量}
+  \small
+  \begin{tabular}{@{}p{0.20\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    量 & 含义 & 工程用途 \\
+    \midrule
+    $A_{acc}$、$A_{dec}$ & 加速、减速面积 & 等面积定则判稳（手算） \\
+    $\delta_{cm}$ & 极限切除角 & 由角度判稳 \\
+    $t_{cm}$ & 极限切除时间 & 整定保护动作时间、校验断路器 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{简单电力系统暂态稳定判断的极值比较法}
+
+除等面积定则外，另一种判断方法是\textbf{比较极值}：求出 $\delta$-$t$ 曲线的最大值 $\delta_{\max}$，
+与临界角 $\delta_{cr}$（功率特性与 $P_T$ 的另一交点）比较：
+\begin{itemize}
+  \item $\delta_{\max}<\delta_{cr}$：稳定；
+  \item $\delta_{\max}\ge\delta_{cr}$：失步。
+\end{itemize}
+极值比较法的优点是物理意义直观（“摆动到多大角度”），缺点是须先数值求解 $\delta(t)$，
+不能像等面积定则那样直接由面积判断。
+
+\corepoint{等面积定则只适用于“单机—无限大系统”或“两机系统”这类单自由度问题。
+多机系统没有统一的“加速面积”，必须用数值积分判断各机相对角是否发散。
+另外等面积定则的前提是“$P_T$ 不变、网络方程代数化”，若计入调速器与励磁暂态，
+只能用数值方法。}
+
+\section{发电机转子运动方程的数值解法}
+
+\subsection{分段计算法}
+
+把时间分成等步长 $\Delta t$，用差分代替微分。由转子运动方程的标幺形式，
+在功率不变的假定下，第 $k$ 段的功角增量为
+\begin{equation}
+  \Delta\delta_k=\Delta\delta_{k-1}+K\,\Delta P_{k-1},
+\end{equation}
+\begin{equation}
+  \delta_k=\delta_{k-1}+\Delta\delta_k,
+\end{equation}
+其中
+\keyformula{K=\frac{360f_N\Delta t^{2}}{T_J}\quad\left(\text{度}\right)}
+$\Delta P_{k-1}=P_T-P_e(\delta_{k-1})$ 为第 $k-1$ 段的加速功率。
+分段计算法的精度取决于 $\Delta t$：$\Delta t$ 越小越准，但计算量越大；
+工程上常取 $\Delta t=0.05$~s。其误差主要来自“假定每段内加速功率不变”。
+
+\subsection{改进欧拉法}
+
+把二阶方程化为一阶方程组：
+\begin{equation}
+  \frac{\mathrm{d}\delta}{\mathrm{d}t}=\Delta\omega,\qquad
+  \frac{\mathrm{d}\Delta\omega}{\mathrm{d}t}=\frac{1}{T_J}\left(P_T-P_e(\delta)\right).
+\end{equation}
+\textbf{欧拉法（预测）}：
+\begin{equation}
+  \delta_{k+1}^{(0)}=\delta_k+\Delta\omega_k\Delta t,\qquad
+  \Delta\omega_{k+1}^{(0)}=\Delta\omega_k+\frac{1}{T_J}\left(P_T-P_e(\delta_k)\right)\Delta t .
+\end{equation}
+\textbf{改进欧拉法（校正）}：用预测点的功率重新计算斜率，取平均
+\begin{align}
+  \delta_{k+1}&=\delta_k+\frac{1}{2}\left(\Delta\omega_k+\Delta\omega_{k+1}^{(0)}\right)\Delta t,\\
+  \Delta\omega_{k+1}&=\Delta\omega_k+\frac{1}{2T_J}
+  \left[P_T-P_e\left(\delta_k\right)+P_T-P_e\left(\delta_{k+1}^{(0)}\right)\right]\Delta t .
+\end{align}
+改进欧拉法是二阶精度的显式方法，比分段计算法准确，且不必迭代，
+是暂态稳定计算中最常用的基本方法。更精确时可用龙格—库塔法。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三种数值解法的比较}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.24\linewidth}p{0.24\linewidth}p{0.26\linewidth}@{}}
+    \toprule
+    方法 & 精度 & 计算量 & 特点 \\
+    \midrule
+    分段计算法 & 一阶（误差较大） & 最小 & 手算方便，须取小步长 \\
+    改进欧拉法 & 二阶 & 中等 & 显式，不需迭代，工程常用 \\
+    龙格—库塔法 & 四阶 & 较大 & 精度高，程序计算常用 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{复杂电力系统暂态稳定的分析计算}
+
+\subsection{大扰动后各发电机转子运动的特点}
+
+多机系统中，大扰动后各机转子运动不再是“单摆”，而是：
+\begin{itemize}
+  \item 各机加速程度不同（电气距离近、惯量小的机组加速快），
+        功角差 $\delta_{ij}$ 迅速拉开；
+  \item 系统可能分化为\textbf{两个机群}（一群加速、一群减速），表现为\textbf{区域间振荡}；
+  \item 也可能出现\textbf{多群振荡}或“一台机对系统”的模式（该机远离其余机组）。
+\end{itemize}
+稳定判断的实质是：\textbf{是否存在一个机群相对其余机群持续发散}。
+
+\subsection{复杂电力系统暂态稳定的近似计算}
+
+实用近似方法：
+\begin{enumerate}
+  \item \textbf{单机等值}：把被研究机组（或机群）等值为一台机，其余系统等值为无穷大母线，
+        用等面积定则估算；
+  \item \textbf{两机等值}：把系统分为两个机群，各自聚合为等值机（惯量、电抗按容量加权），
+        化为两机系统后用相对角方程求解；
+  \item \textbf{数值积分}：对全部机组联立求解转子运动方程与网络方程（交替求解），
+        逐点判断各机相对角是否发散——这是工程标准做法。
+\end{enumerate}
+
+\subsection{复杂电力系统暂态稳定的判断}
+
+工程判据通常取：
+\begin{itemize}
+  \item 任两台机的相对角 $\delta_{ij}$ 超过某阈值（如 $180^\circ$ 或 $360^\circ$）且持续增大，
+        判为失步；
+  \item 或各机相对角在仿真时段内（如 $5$~s）保持有界且趋于新的平衡，判为稳定；
+  \item 也可用\textbf{能量函数法}（暂态能量裕度）作快速判断，但需构造李雅普诺夫函数。
+\end{itemize}
+
+\section{暂态稳定实际计算中系统各元件的数学模型}
+
+（选学内容）精确的暂态稳定计算须为各元件建立动态模型，并与网络方程联立：
+
+\begin{table}[htbp]
+  \centering
+  \caption{暂态稳定计算中各元件的模型}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.38\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    元件 & 模型 & 说明 \\
+    \midrule
+    发电机 & 二阶（$E'$ 恒定）到五阶（计 $E_q'$、$E_d'$、$E_q''$、$E_d''$）
+      & 阶数越高越精确，计算量越大 \\
+    励磁系统 & 一阶或二阶传递函数（含强励顶值与时间常数） & 影响暂态过程中的 $E_q$ \\
+    原动机及调速器 & 一阶惯性环节 $+$ 调差特性 & 影响 $P_T$ 的变化（慢过程） \\
+    负荷 & 恒定阻抗、恒定功率、或“阻抗 $+$ 电动机”组合 & 影响扰动后的功率平衡 \\
+    网络 & 代数方程（节点导纳矩阵） & 与发电机方程交替求解 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+求解思路是“\textbf{交替求解}”：每一时步先用当前 $\delta$、$E$ 解网络方程得各机电磁功率，
+再积分转子运动方程得新的 $\delta$，逐步推进。
+
+\section{电力系统异步运行的概念}
+
+（选学内容）异步运行指发电机\textbf{失去同步但仍与系统并联}运行的状态（转差不为零）。
+
+\subsection{发电机异步运行时的功率特性}
+
+失步后转子转速偏离同步速，转差 $s\ne0$，定子电流产生相对转子滑动的旋转磁场，
+在转子绕组中感应出转差频率电流，产生\textbf{异步转矩}。异步转矩随转差增大而增大，
+故异步运行时的平均功率由“异步转矩—转差”特性决定，而不是由功角特性决定。
+凸极机因有磁阻功率，异步运行能力较强；隐极机较弱。
+
+\subsection{发电机由失步过渡到稳态异步运行的过程}
+
+失步瞬间，转子相对角持续增大（或减小），电磁功率与机械功率在“转差”意义上重新平衡，
+经过一段振荡后进入稳态异步运行：转速稳定在某个偏离同步速的值，功率以异步转矩传递。
+这一过程伴随大电流、转子发热与机械振动，对机组危害很大。
+
+\subsection{实现再同步的必要条件和促使再同步的措施}
+
+再同步指失步机组重新被拉入同步。必要条件是：
+\begin{enumerate}
+  \item 系统中要有足够的\textbf{同步功率}（即功率特性足够高）把转子拉回；
+  \item 转差不能太大，否则异步转矩过大、难以牵入；
+  \item 机组须能承受异步运行期间的电流与发热。
+\end{enumerate}
+促使再同步的措施：增大励磁（提高同步功率）、减小原动机出力（降低转速）、
+切除部分负荷、投入制动电阻等。
+
+\corepoint{本章的计算骨架只有三步：（1） 写出三个阶段的功率特性 $P_{\text{I}}$、$P_{\text{II}}$、
+$P_{\text{III}}$（关键是把故障期间的等值电抗画对）；（2） 用等面积定则或
+$\delta_{cm}$ 公式判断稳定；（3） 若要求时间，用分段计算法或改进欧拉法积分。
+判断“稳定与否”用面积，判断“切除时间够不够”用极限切除角 $+$ 数值积分，
+这两件事不要混。}

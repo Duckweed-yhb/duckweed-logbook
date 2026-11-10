@@ -1,0 +1,282 @@
+﻿% ============================================================
+% 第 14 章  电力系统的经济运行
+% （教材：何仰赞、温增银《电力系统分析》下册 第 14 章）
+% 结构对齐 14.1—14.4；例题、习题不录
+% ============================================================
+
+\chapter{电力系统的经济运行}
+
+前两章解决“电压合格”“频率合格”，本章解决“花最少的燃料与最少的损耗，发出同样的电”。
+经济运行有两条战线：\textbf{降低网损}（输配环节）与\textbf{负荷经济分配}（发输环节）。
+两者的数学工具都是\textbf{等微增率准则}——一个由拉格朗日乘子法导出的、极为简洁的结论：
+\textbf{各机组的耗量微增率相等时，总耗量最小}。
+
+\section{电力网中的能量损耗}
+
+\subsection{电力网的能量损耗和损耗率}
+
+电力网的能量损耗由\textbf{线路}和\textbf{变压器}中的电阻损耗（可变损耗）与
+\textbf{变压器励磁、线路电晕}等固定损耗构成。衡量指标是\textbf{网损率}（线损率）：
+\keyformula{\text{网损率}=\frac{\Delta W}{W_{\text{供电}}}\times100\%
+  =\frac{W_{\text{供电}}-W_{\text{售电}}}{W_{\text{供电}}}\times100\%}
+我国电网的网损率一般在 $5\%\sim8\%$ 之间。降低网损是电力系统节能的主要着力点，
+因为网损是“发了电却没用上”的部分。
+
+网损可分解为两部分，二者的变化规律完全不同：
+
+\begin{table}[htbp]
+  \centering
+  \caption{网损的两个组成部分}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.32\linewidth}p{0.38\linewidth}@{}}
+    \toprule
+    类别 & 组成 & 随负荷的变化 \\
+    \midrule
+    可变损耗（铜耗） & 线路电阻、变压器绕组电阻中的损耗 & 与电流平方成正比，
+      随负荷剧烈变化，$\Delta P\propto S^{2}$ \\
+    固定损耗（铁耗） & 变压器励磁损耗、线路电晕损耗 & 与电压有关、与负荷几乎无关，
+      只要设备带电就存在 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+这一分解解释了两个反直觉的现象：（1）轻载时网损率反而升高（固定损耗不变、售电量减少）；
+（2）多台变压器并列轻载运行不如少投几台经济（见 14.1.3 的临界负载系数）。
+
+\subsection{线路中能量损耗的计算方法}
+
+线路的有功损耗随负荷变化，全年损耗须对时间积分：
+\begin{equation}
+  \Delta W=\int_{0}^{8760}\Delta P(t)\,\mathrm{d}t
+  =\int_{0}^{8760}\frac{P^{2}(t)+Q^{2}(t)}{U^{2}(t)}R\,\mathrm{d}t .
+\end{equation}
+直接积分需全年负荷曲线，工程上用\textbf{最大负荷损耗时间}折算：
+\keyformula{\Delta W=\Delta P_{\max}\,\tau}
+其中 $\Delta P_{\max}$ 为全年最大负荷时的功率损耗，$\tau$ 称\textbf{最大负荷损耗时间}
+（一年中若损耗始终等于 $\Delta P_{\max}$，经过 $\tau$ 小时所耗电能恰等于全年实际损耗）。
+$\tau$ 与\textbf{最大负荷利用小时数} $T_{\max}$、功率因数 $\cos\varphi$ 有关，
+可由曲线或表格查得，一般 $\tau<T_{\max}$（因损耗与电流平方成正比，轻载时损耗小）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三个“时间”概念的区别}
+  \small
+  \begin{tabular}{@{}p{0.22\linewidth}p{0.30\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    量 & 定义 & 用途 \\
+    \midrule
+    $T_{\max}$（最大负荷利用小时数） & $W/P_{\max}$ & 衡量负荷平稳程度（第 9 章） \\
+    $\tau$（最大负荷损耗时间） & $\Delta W/\Delta P_{\max}$ & 由负荷曲线折算全年电能损耗 \\
+    $t$（运行小时数） & 实际运行时间 & 设备可用率统计 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{降低网损的技术措施}
+
+\begin{table}[htbp]
+  \centering
+  \caption{降低网损的措施及其机理}
+  \small
+  \begin{tabular}{@{}p{0.20\linewidth}p{0.34\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    措施 & 机理 & 备注 \\
+    \midrule
+    提高电压等级 & $\Delta P\propto1/U^{2}$ & 规划阶段措施，效果最显著 \\
+    升高运行电压水平 & 同上 & 运行措施，受电压允许上限约束 \\
+    无功就地补偿 & 减少无功传输，降低 $I$ 与 $\Delta P$ & 兼顾调压（第 12 章） \\
+    合理确定运行方式 & 停运轻载变压器、解开环流、经济调度 & 运行措施，成本最低 \\
+    增大导线截面 & 减小 $R$ & 需投资，按经济电流密度选择 \\
+    减少变压器损耗 & 选用低损耗变压器、合理配置 & 固定损耗为主 \\
+    降低环流（循环功率） & 消除变比失配、调整潮流 & 环流不传输功率却全部变成损耗 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+其中“\textbf{停运轻载变压器}”最容易被忽视：变压器空载损耗基本固定，
+多一台变压器并网就多一份固定损耗，故轻载时应把负荷集中到少数变压器上。
+反之，负载重时应多台并联以减小绕组损耗——这就是“变压器经济运行的临界负载系数”。
+
+设两台同容量变压器，单台的额定铜耗为 $\Delta P_{cu}$、空载损耗为 $\Delta P_0$，
+总负荷为 $S$。若只用一台，损耗为
+\begin{equation}
+  \Delta P_{(1)}=\Delta P_0+\Delta P_{cu}\left(\frac{S}{S_N}\right)^{2};
+\end{equation}
+若两台并联，损耗为
+\begin{equation}
+  \Delta P_{(2)}=2\Delta P_0+2\Delta P_{cu}\left(\frac{S}{2S_N}\right)^{2}.
+\end{equation}
+令两式相等，得\textbf{临界负载系数}
+\keyformula{S_{cr}=S_N\sqrt{\frac{2\Delta P_0}{\Delta P_{cu}}}}
+当 $S<S_{cr}$ 时投一台经济，$S>S_{cr}$ 时投两台经济。这一判据可直接推广到 $n$ 台并联的情形。
+
+\section{火电厂间有功功率负荷的经济分配}
+
+\subsection{耗量特性}
+
+火电厂的燃料消耗 $F$（t/h 或元/h）与有功出力 $P$（MW）的关系称\textbf{耗量特性}，
+通常呈下凸曲线。描述它的两个量：
+\begin{itemize}
+  \item \textbf{比耗量} $\mu=F/P$：单位出力的燃料消耗，$\mu$ 最小时对应最高效率点；
+  \item \textbf{耗量微增率} $\lambda=\mathrm{d}F/\mathrm{d}P$：增加单位出力所增加的燃料消耗，
+        它是经济分配的\textbf{判据量}。
+\end{itemize}
+耗量特性为下凸，意味着 $\lambda$ 随 $P$ 单调上升——这是等微增率准则有唯一解的前提。
+
+\subsection{等微增率准则}
+
+设系统有 $n$ 台机组（或电厂），总负荷 $P_L$ 给定，目标是最小化总耗量
+\begin{equation}
+  \min F_{\Sigma}=\sum_{i=1}^{n}F_i\left(P_i\right),
+  \qquad \text{s.t.}\ \sum_{i=1}^{n}P_i=P_L .
+\end{equation}
+用拉格朗日乘子法，构造 $L=\sum F_i+\lambda\left(P_L-\sum P_i\right)$，令 $\partial L/\partial P_i=0$，得
+\keyformula{\frac{\mathrm{d}F_1}{\mathrm{d}P_1}=\frac{\mathrm{d}F_2}{\mathrm{d}P_2}=\cdots
+  =\frac{\mathrm{d}F_n}{\mathrm{d}P_n}=\lambda}
+即\textbf{等微增率准则}：各机组的耗量微增率相等时，总耗量最小。
+$\lambda$ 称\textbf{能量价格}（系统的边际成本），是负荷增加单位功率时总耗量的增量。
+
+\textbf{适用条件}（必须写清）：
+\begin{enumerate}
+  \item 各机组的耗量特性为\textbf{下凸}（$\mathrm{d}^{2}F/\mathrm{d}P^{2}>0$），保证解唯一；
+  \item 各机组出力满足上下限约束 $P_{i\min}\le P_i\le P_{i\max}$——
+        越限的机组按极限运行，不参与等微增率分配；
+  \item 不计网损（或已作网损修正）；
+  \item 系统频率、电压维持额定，即只考虑有功的静态经济分配。
+\end{enumerate}
+
+\subsection{多个发电厂间的负荷经济分配}
+
+对多个电厂，仍按等微增率分配，但须按\textbf{电厂总耗量特性}（由厂内机组等微增率先分配后
+汇总得到）参与全网分配。做法分两层：
+\begin{enumerate}
+  \item 厂内：各机组按等微增率分配厂负荷；
+  \item 全网：各厂按等微增率分配系统负荷。
+\end{enumerate}
+若某厂机组效率差异大，也可直接用“机组级”等微增率，效果更好。
+
+\subsection{计及网损的有功负荷经济分配}
+
+计及网损时，约束变为 $\sum P_i=P_L+\Delta P_{\Sigma}$，拉格朗日函数为
+\begin{equation}
+  L=\sum_{i}F_i+\lambda\left(P_L+\Delta P_{\Sigma}-\sum_{i}P_i\right),
+\end{equation}
+令 $\partial L/\partial P_i=0$ 得
+\keyformula{\frac{\mathrm{d}F_i}{\mathrm{d}P_i}\cdot\frac{1}{1-\dfrac{\partial\Delta P_{\Sigma}}{\partial P_i}}
+  =\lambda\qquad(i=1,2,\dots,n)}
+$\partial\Delta P_{\Sigma}/\partial P_i$ 称\textbf{网损微增率}，
+$1/(1-\partial\Delta P_{\Sigma}/\partial P_i)$ 称\textbf{网损修正系数}。
+其物理含义：机组 $i$ 多发出 $1$~MW，扣除它引起的网损增量后，实际送到负荷的只有
+$1-\partial\Delta P_{\Sigma}/\partial P_i$ MW，故其“有效”微增率被放大。
+\textbf{离负荷中心近的机组网损微增率小，应多发}——这是“就近供电”的经济学解释。
+
+\section{水、火电厂间有功功率负荷的经济分配}
+
+\subsection{一个水电厂和一个火电厂间负荷的经济分配}
+
+水电厂的特点是：\textbf{燃料不花钱，但水量有限}。故目标函数只含火电厂的燃料消耗，
+约束除功率平衡外还有\textbf{水量约束}：
+\begin{equation}
+  \min F_T\left(P_T\right),\qquad
+  \text{s.t.}\ P_T+P_H=P_L,\qquad \int_{0}^{T}W_H\left(P_H\right)\mathrm{d}t=W_{\Sigma},
+\end{equation}
+$W_H(P_H)$ 为水电厂的耗水量特性。构造拉格朗日函数并对时间积分，可得
+\keyformula{\frac{\mathrm{d}F_T}{\mathrm{d}P_T}=\gamma\,\frac{\mathrm{d}W_H}{\mathrm{d}P_H}}
+$\gamma$ 为\textbf{水的折算系数}（把水量折算为燃料量的乘子，单位 元/m$^3$ 或 t/m$^3$）。
+其含义是：火电的燃料微增率应等于水电的“耗水微增率乘以水价”。
+若 $\gamma$ 取得大，说明水宝贵，应少用水电、多带火电；反之则多用水电。
+
+工程上常用\textbf{等微增率 $+$ 水火折算}的实用做法：先假定一个 $\gamma$，
+按等微增率分配各时段出力，校验总用水量是否等于给定水量，不等则调整 $\gamma$ 重算
+（即“$\gamma$ 迭代法”）。
+
+\subsection{计及网损时若干个水、火电厂间负荷的经济分配}
+
+含网损时，对每个电厂（火或水）都须乘网损修正系数，形式为
+\begin{equation}
+  \frac{\mathrm{d}F_i}{\mathrm{d}P_i}\cdot\frac{1}{1-\partial\Delta P_{\Sigma}/\partial P_i}
+  =\lambda\quad(\text{火电厂}),\qquad
+  \gamma\frac{\mathrm{d}W_j}{\mathrm{d}P_j}\cdot\frac{1}{1-\partial\Delta P_{\Sigma}/\partial P_j}
+  =\lambda\quad(\text{水电厂}).
+\end{equation}
+这样，不同类型电厂的经济分配就统一到“\textbf{修正后的微增率相等}”这一条准则上。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三类经济分配问题的对照}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.30\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    问题 & 目标函数 & 判据 \\
+    \midrule
+    火电之间（不计网损） & $\sum F_i$ & $\mathrm{d}F_i/\mathrm{d}P_i=\lambda$ \\
+    火电之间（计网损） & $\sum F_i$ & 修正后微增率相等 \\
+    水火之间 & $F_T$，水量约束 & $\mathrm{d}F_T/\mathrm{d}P_T=\gamma\,\mathrm{d}W_H/\mathrm{d}P_H$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{等微增率准则的形式会变（加网损修正、加水火折算），但\textbf{结构不变}：
+“各方的边际代价相等”。记住这一点，三类问题就只是一种问题的三种写法。
+另外必须写清适用条件（耗量特性下凸、出力上下限、不计或已修正网损），
+否则“相等”只是必要条件而非充分条件。}
+
+\section{无功功率负荷的经济分配}
+
+\subsection{等微增率准则的应用}
+
+无功功率的经济分配与有功类似，但目标不同：无功不消耗燃料（除发电机组的附带损耗外），
+分配无功的目的是\textbf{使网损最小}。设系统有若干无功电源（发电机、调相机、电容器），
+其无功出力 $Q_i$，则网损 $\Delta P_{\Sigma}$ 是各 $Q_i$ 的函数，问题为
+\begin{equation}
+  \min\Delta P_{\Sigma}\left(Q_1,\dots,Q_n\right),
+  \qquad \text{s.t.}\ \sum Q_i=Q_L+\Delta Q_{\Sigma}.
+\end{equation}
+用拉格朗日乘子法得
+\keyformula{\frac{\partial\Delta P_{\Sigma}}{\partial Q_1}
+  =\frac{\partial\Delta P_{\Sigma}}{\partial Q_2}=\cdots
+  =\frac{\partial\Delta P_{\Sigma}}{\partial Q_n}}
+即\textbf{各无功电源的网损微增率相等}时网损最小。这与有功的等微增率准则形式一致，
+只是把“耗量微增率”换成了“网损微增率”。
+
+\subsection{无功功率补偿的经济配置}
+
+无功补偿装置（电容器）有投资成本，其经济配置须在“减少网损的收益”与“投资成本”之间权衡。
+设第 $i$ 个节点装设补偿容量 $Q_{Ci}$，投资为 $K_i(Q_{Ci})$，年网损费用为 $C\Delta P_{\Sigma}$，
+则目标为
+\begin{equation}
+  \min\left\{C\,\Delta P_{\Sigma}\left(Q_{C1},\dots,Q_{Cn}\right)+\sum_{i}K_i\left(Q_{Ci}\right)\right\}.
+\end{equation}
+对 $Q_{Ci}$ 求偏导并令其为零，得
+\begin{equation}
+  C\frac{\partial\Delta P_{\Sigma}}{\partial Q_{Ci}}+\frac{\mathrm{d}K_i}{\mathrm{d}Q_{Ci}}=0 ,
+\end{equation}
+即\textbf{各补偿点的“网损减少的边际收益”等于“补偿投资的边际成本”}。
+工程近似结论：
+\begin{itemize}
+  \item 补偿应优先装设在\textbf{网损微增率大}的节点（一般是远离电源、无功缺额大的负荷点）；
+  \item 补偿容量应按“\textbf{等网损微增率}”分配，而不是平均分配；
+  \item 考虑投资时，单位容量投资低的地点应多装。
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \caption{有功经济分配与无功经济分配的比较}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.34\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    比较项 & 有功经济分配 & 无功经济分配 \\
+    \midrule
+    目标 & 燃料消耗最小 & 网损最小（或综合费用最小） \\
+    判据量 & 耗量微增率 $\mathrm{d}F/\mathrm{d}P$ & 网损微增率 $\partial\Delta P/\partial Q$ \\
+    约束 & 功率平衡、出力上下限 & 无功平衡、电压约束 \\
+    价格乘子 & 能量价格 $\lambda$ & 网损电价 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{本章四个“微增率”不要混：\textbf{耗量微增率}（火电，$\mathrm{d}F/\mathrm{d}P$）、
+\textbf{耗水微增率}（水电，$\mathrm{d}W/\mathrm{d}P$）、
+\textbf{网损微增率}（$\partial\Delta P/\partial P$ 或 $\partial\Delta P/\partial Q$）、
+\textbf{比耗量}（$F/P$，不是微增量）。等微增率准则比较的是“微增率”，不是“比耗量”——
+这是最常见的概念错误。}

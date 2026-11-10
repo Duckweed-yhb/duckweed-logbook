@@ -1,270 +1,628 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第八章 线性动态电路暂态过程的时域分析}
+% 电路与电子学III 课程笔记 —— 第八章（教材第8章）线性动态电路暂态过程的时域分析
+\chapter{线性动态电路暂态过程的时域分析}
 
 \section{动态电路的暂态过程}
-电容元件。
 
-在前面。
+\subsection{动态元件与动态电路}
+电容元件的电压、电流关系为 $i_C=C\dfrac{\mathrm{d}u_C}{\mathrm{d}t}$，电感元件的电压、电流关系为
+$u_L=L\dfrac{\mathrm{d}i_L}{\mathrm{d}t}$，二者都是导数（或积分）关系，这种关系属于\textbf{动态相关}。
+\begin{itemize}
+  \item \textbf{动态元件}：电压与电流之间为导数或积分关系的元件，即电容元件和电感元件；
+  \item \textbf{动态电路}：含有动态元件的电路；
+  \item \textbf{电阻电路}：只含电阻元件和电源的电路，其方程是代数方程。
+\end{itemize}
 
-动态。
+\subsection{稳态、换路与暂态}
+在直流电路、正弦电流电路和非正弦周期电流电路中，电流、电压是常量或周期量，电路的这种工作状态称为
+\textbf{稳定状态}（简称稳态）。实际电路工作时总要发生变动：开关接通或断开、电源量值突变、元件参数变动、
+遭遇事故或干扰等。这些\textbf{引起电路工作状态变动的因素统称为换路}（commutation）。
 
-所以
-\[
-\]
-式中 $i$。
+动态电路换路后，动态元件的储能规律也要改变。实际电路中动态元件吸收或释放一定能量不可能瞬间完成，
+需要经历一段过渡过程，过渡过程中电路的工作状态称为\textbf{暂态}（transient state）。
+换路后电路从原来的稳态出发，经暂态最终到达新的稳态；而电阻电路换路后电压、电流立即跃变到新的稳态值，
+不存在暂态过程。
 
-消去，得到
-\[
-\]
-式是。
+\begin{corepoint}{暂态过程存在的根本原因是储能元件的能量不能跃变。电容储能 $W_C=\tfrac12Cu_C^2$、
+电感储能 $W_L=\tfrac12Li_L^2$，能量变化必须通过功率在一段时间上的积累完成，因而 $u_C$、$i_L$
+只能连续变化，这就是全部时域分析的出发点。}
+\end{corepoint}
 
-一阶。
+\subsection{时域分析法}
+以图 8.1(a) 的 $RC$ 电路为例，$t=0$ 时开关接通，换路后的 KVL 方程为
+\begin{equation}
+  Ri+u_C=U_S,\qquad i=C\frac{\mathrm{d}u_C}{\mathrm{d}t}
+\end{equation}
+消去 $i$，并省略函数标注的自变量 $t$，得
+\begin{equation}
+  RC\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=U_S
+  \label{eq:ch8-first-order}
+\end{equation}
+式 \eqref{eq:ch8-first-order} 是\textbf{常系数线性一阶微分方程}。一阶微分方程定解需要一个初始条件，
+即待求变量在换路后瞬间的初始值（initial value）。设电路在 $t=0$ 时换路，用 $t=0_-$ 和 $t=0_+$
+分别表示换路前、换路后瞬间，则 $u_C(0_+)$、$i_L(0_+)$、$q(0_+)$、$\psi(0_+)$ 等都是电路量的初始值。
 
-综上所述。
+\begin{keyformula}{%
+  \text{\songti 以 }t\text{\songti  为主变量列电路微分方程};\qquad
+  \text{\songti 方程阶数}=\text{\songti 独立储能元件个数}}
+\end{keyformula}
 
-电路。
+时域分析法的步骤可概括为三步：\textbf{（1）} 由 $t=0_-$ 的稳态电路求原始值；\textbf{（2）} 由换路定律与
+$t=0_+$ 的电阻电路求其余初始值；\textbf{（3）} 列换路后的微分方程并求解。其优点是物理概念直观；
+缺点是储能元件较多时初始值和积分常数的确定比较困难（这正是下一章复频域分析法要解决的问题）。
 
 \section{电路量的初始值}
-\subsection{电容电压$u_C$和电感电流$i_L$初始值的确定}
-设在线性电容，则有
-\[
-\]
-电容电荷的初始值可以表示为
-\[
-\]
-式中等号右端第一项积分表示$t=0_-$时的电荷$q(0_-)$，故
-\[
-\]
-若在，于是得到
-\[
-\]
-式中，称为电容电荷和电压的原始值。
 
-综上所述，若换路瞬间电容电流，在$t=0$时是连续变化的或称渐变。
+\subsection{电容电压与电感电流初始值的确定}
+设线性电容 $C$ 上电压 $u_C$ 与电流 $i_C$ 取关联参考方向，则 $q=Cu_C$，
+\begin{equation}
+  q(0_+)=q(0_-)+\int_{0_-}^{0_+}i_C\,\mathrm{d}t
+\end{equation}
+式中右端第一项即 $t=0_-$ 时的电荷 $q(0_-)$。若换路瞬间 $i_C$ 有界，则该积分项必为零，于是
+\begin{equation}
+  q(0_+)=q(0_-),\qquad u_C(0_+)=u_C(0_-)
+  \label{eq:ch8-cap}
+\end{equation}
+应用对偶原理，可写出电感磁链与电流的对应关系
+\begin{equation}
+  \psi(0_+)=\psi(0_-),\qquad i_L(0_+)=i_L(0_-)
+  \label{eq:ch8-ind}
+\end{equation}
+式 \eqref{eq:ch8-ind} 成立的条件是：换路瞬间电感电压 $u_L$ 有界。
 
-应用对偶原理，的关系
-\[
-\]
-式成立的条件是。
+\begin{keyformula}{u_C(0_+)=u_C(0_-)\quad(i_C\text{\songti  有界}),\qquad
+i_L(0_+)=i_L(0_-)\quad(u_L\text{\songti  有界})}
+\end{keyformula}
 
-式及其成立的条件所表示的规律称为换路定律。
+式 \eqref{eq:ch8-cap}、\eqref{eq:ch8-ind} 及其成立条件所表示的规律称为\textbf{换路定律}。
+式中各原始值 $q(0_-)$、$u_C(0_-)$、$\psi(0_-)$、$i_L(0_-)$ 由换路前的电路算出。
 
-上述，即
-\[
-\]
-电路换路将引起电容和电感，吸收或释放的功率为
-\[
-\]
-在。
+从能量角度看，$W_C=\dfrac{q^2}{2C}=\dfrac12Cu_C^2$、$W_L=\dfrac{\psi^2}{2L}=\dfrac12Li_L^2$，
+换路引起电容、电感吸收或释放能量，相应的功率 $\dfrac{\mathrm{d}W_C}{\mathrm{d}t}$、$\dfrac{\mathrm{d}W_L}{\mathrm{d}t}$
+在实际电路中总是有界的，故 $q$、$u_C$ 与 $\psi$、$i_L$ 都连续变化，这就是换路定律的物理依据。
 
-\subsection{其余电量初始值的确定}
-$0_+$瞬间有
+\subsection{其余电压、电流初始值的确定}
+$u_C(0_+)$ 和 $i_L(0_+)$ 由换路定律确定；为求其他电压、电流初始值，需在 $t=0_+$ 瞬间列写电路方程，
+依据仍是结构约束与元件约束：
+\begin{align}
+  &\text{KCL：} &&\sum i(0_+)=0 \notag\\
+  &\text{KVL：} &&\sum u(0_+)=0 \notag\\
+  &\text{\songti 电阻元件：} &&u_R(0_+)=Ri_R(0_+)\ \ \text{\songti 或}\ \ i_R(0_+)=Gu_R(0_+) \notag\\
+  &\text{\songti 电容元件：} &&u_C(0_+)=u_C(0_-) \notag\\
+  &\text{\songti 电感元件：} &&i_L(0_+)=i_L(0_-) \notag
+\end{align}
+由于 $u_C(0_+)$、$i_L(0_+)$ 具有确定的量值，在 $t=0_+$ 瞬间\textbf{电容相当于电压源、电感相当于电流源}，
+即可用电压源和电流源来置换电容和电感（置换定理）。于是电路只剩电阻、受控源和独立源，成为电阻电路，
+可用分析直流电路的各种方法求解。
 
-KCL
-
-KVL
-
-电阻元件
-
-电容元件
-
-电感元件
-
-式中。
+\begin{corepoint}{初始值计算的三步固定流程：\textbf{（1）} 画 $0_-$ 电路——换路前为直流稳态，
+电容开路、电感短路，求出 $u_C(0_-)$、$i_L(0_-)$；\textbf{（2）} 用换路定律写出 $u_C(0_+)$、$i_L(0_+)$；
+\textbf{（3）} 画 $0_+$ 电路——把电容换成电压源 $u_C(0_+)$、电感换成电流源 $i_L(0_+)$，其余照抄，
+再解电阻电路求待求量。三类电路不要混用：$0_-$ 电路、$0_+$ 电路、$t\to\infty$ 电路。}
+\end{corepoint}
 
 \section{一阶电路的零输入响应}
-可用一阶。
 
-在电路的稳态过程中。
+可用一阶常微分方程描述的电路称为\textbf{一阶电路}（first-order circuit）。除电阻外只含一个电容、
+或只含一个电感、或经变换后可等效为一个电容或一个电感的电路，都是一阶电路。
 
-\subsection{$RC$电路的零输入响应}
-图所示电路。
+换路后不含独立电源的电路也会存在响应，它由电容或电感的原始储能引起。这种
+\textbf{仅由储能元件原始储能引起的响应称为零输入响应}（zero-input response）。
 
-根据微分方程
-\[
-\]
-根据换路定律得初始条件 $u_C(0_+)=u_C(0_-)=U_0$。
+\subsection{$RC$ 电路的零输入响应}
+设 $u_C(0_-)=U_0$，$t>0$ 时电容经电阻放电。KVL 方程为 $u_R+u_C=0$，即
+\begin{equation}
+  RC\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=0
+  \label{eq:ch8-rc-zero}
+\end{equation}
+初始条件为 $u_C(0_+)=u_C(0_-)=U_0$。式 \eqref{eq:ch8-rc-zero} 是一阶常系数线性齐次方程，求解步骤为：
+\begin{enumerate}
+  \item 列特征方程 $RCp+1=0$，得特征根 $p=-\dfrac{1}{RC}$；
+  \item 写出通解 $u_C=A\mathrm{e}^{pt}=A\mathrm{e}^{-t/(RC)}$；
+  \item 由初始条件定积分常数：$u_C(0_+)=A=U_0$；
+  \item 由元件方程求其余量：$i_C=C\dfrac{\mathrm{d}u_C}{\mathrm{d}t}$。
+\end{enumerate}
 
-方程。其求解步骤为
+\begin{keyformula}{u_C(t)=U_0\mathrm{e}^{-t/\tau},\qquad
+i_C(t)=-\frac{U_0}{R}\mathrm{e}^{-t/\tau},\qquad \tau=RC\quad(t\ge 0)}
+\end{keyformula}
 
-列出特征方程
+由于 $i_C$ 在 $t=0$ 处不连续，$i_C$ 表达式的定义域不含 $t=0$。零输入响应 $u_C$ 与 $i_C$ 都从各自的初始值
+$U_0$ 与 $U_0/R$ 开始，按同一指数规律衰减至零：$u_C$ 在 $t=0$ 处连续，而 $i_C$ 由零跃变到 $U_0/R$。
+若 $R$ 很小，放电瞬间将产生很大的放电电流。
 
-特征根
+\subsection{时间常数}
+令 $\tau=RC$，称为 $RC$ 电路的\textbf{时间常数}（time constant），它具有时间的量纲
+（$\Omega\cdot\mathrm{F}=\Omega\cdot\mathrm{C/V}=\mathrm{s}$）。由
+$u_C(t_0+\tau)/u_C(t_0)=\mathrm{e}^{-1}\approx0.368$ 可知：\textbf{时间常数是从任意时刻 $t_0$ 算起，
+电压约下降到该时刻值的 $36.8\%$ 所经历的时间}。
 
-微分方程的通解
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{$RC$ 放电电路不同时刻的 $u_C$ 值}
+  \begin{tabular}{cccccc}
+    \toprule
+    $t$ & $0$ & $\tau$ & $2\tau$ & $3\tau$ & $4\tau$ \\
+    \midrule
+    $u_C$ & $U_0$ & $0.368U_0$ & $0.135U_0$ & $0.050U_0$ & $0.018U_0$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-式中来确定
-\[
-\]
-将上式的解为
-\[
-\]
-再由电阻
-\[
-\]
-由于。
+理论上需经无限长时间放电才结束，实际上经过 $3\tau\sim5\tau$ 即可近似认为放电基本结束。
+$R$、$C$ 越大，所需放电时间越长：因为 $C$ 越大储能越多，$R$ 越大消耗功率越小。
 
-将会产生很大的放电电流。
+整个放电过程中电阻消耗的能量为
+\begin{equation}
+  W_R=\int_0^{\infty}i^2R\,\mathrm{d}t=\int_0^{\infty}\frac{U_0^2}{R}\mathrm{e}^{-2t/\tau}\mathrm{d}t
+  =\frac12CU_0^2
+\end{equation}
+它刚好等于电容的原始储能，印证了零输入响应由电容原始储能引起。
 
-由。现令
-\[
-\]
-称为$RC$电路的时间常数。
+\subsection{$RL$ 电路的零输入响应}
+$t=0$ 时开关接通，电感经电阻放电，$i_L(0_-)=I_0$。KVL 方程为 $L\dfrac{\mathrm{d}i_L}{\mathrm{d}t}+Ri_L=0$，
+特征方程 $Lp+R=0$，特征根 $p=-R/L$。
 
-下面。
+\begin{keyformula}{i_L(t)=I_0\mathrm{e}^{-t/\tau},\qquad
+u_L(t)=-RI_0\mathrm{e}^{-t/\tau},\qquad \tau=\frac{L}{R}\quad(t\ge0)}
+\end{keyformula}
 
-\subsection{$RL$电路的零输入响应}
-图所示电路开关原是断开的。其KVL方程为
-\[
-\]
-根据换路定律，得
-\[
-\]
-式，其特征方程和特征根分别为
-\[
-\]
-\[
-\]
-微分方程的通解是
-\[
-\]
-式中$\tau=\dfrac{L}{R}$称为$RL$电路的时间常数。
+$i_L$ 连续变化，而电感电压由 $0_-$ 时的零值跃变到 $t=0_+$ 时的 $-RI_0$。若 $R$ 很大，
+换路时电感两端会出现很高的瞬间电压——这就是切断感性负载必须采取保护措施（如并联续流电阻、
+灭弧装置）的原因。
 
-积分常数$A$
-\[
-\]
-将，得
-\[
-\]
-根据电阻或电感的元件方程求得
-\[
-\]
-式表明。
-
-暂态过程。
+\begin{corepoint}{零输入响应的一般形式是 $y(t)=y(0_+)\mathrm{e}^{-t/\tau}$：\textbf{起点是初始值，
+规律是指数衰减，快慢只由 $\tau$ 决定}，与激励无关。注意 $\tau$ 中的 $R$ 是从储能元件两端看进去的
+戴维南等效电阻（把独立源置零后求得），不是回路中某一个电阻。}
+\end{corepoint}
 
 \section{阶跃函数和冲激函数}
+
+阶跃函数和冲激函数是描述暂态电路中激励源的两种特殊函数，都存在不连续点，属于\textbf{奇异函数}
+（singular function）。
+
 \subsection{单位阶跃函数}
-考察。
+\begin{equation}
+  \varepsilon(t)=\begin{cases}0,&t<0\\[2pt] 1,&t>0\end{cases}
+  \label{eq:ch8-step}
+\end{equation}
+$\varepsilon(t)$ 无量纲，在跃变点 $t=0$ 处函数值无定义。$U_S\varepsilon(t)$ 表示在 $t=0$ 时接入的直流电压源，
+称为阶跃电压。若单位阶跃出现在 $t=t_0$，则称\textbf{延迟单位阶跃函数} $\varepsilon(t-t_0)$。
 
-单位阶跃函数定义为
-\[
-\]
-无量纲。
-
-如果，即
-\[
-\]
-的波形。
-
-用，记为
-\[
-\]
-$G(t)$的波形。
-
-$G(t)$的幅值为。例如
-\[
-\]
-\[
-\]
-分别表示。
+用两个阶跃函数之差可表示幅值为 1 的矩形脉冲
+\begin{equation}
+  G(t)=\varepsilon(t)-\varepsilon(t-t_0)=\begin{cases}
+    1,&0<t<t_0\\ 0,&t<0\ \text{\songti 或}\ t>t_0\end{cases}
+\end{equation}
+描述脉冲波形的参数有：\textbf{幅度、宽度、强度}（脉冲的“面积”）。若脉冲面积等于 1，则称为单位脉冲。
 
 \subsection{单位冲激函数}
-冲激函数，其定义为
-\[
-\]
-$t=0$时。
+单位矩形脉冲的宽度趋于零、面积保持为 1 时的极限，即\textbf{单位冲激函数} $\delta(t)$：
+\begin{equation}
+  \delta(t)=0\ (t\ne0),\qquad \int_{-\infty}^{\infty}\delta(t)\,\mathrm{d}t=1
+  \label{eq:ch8-delta}
+\end{equation}
+$\delta(t)$ 不是普通意义下的函数，图形用带箭头的线表示，箭头旁注明“1”，代表式 \eqref{eq:ch8-delta}
+中的积分值，称为\textbf{冲激强度}。$\delta(t)$ 具有倒时间的量纲，SI 单位为 $\mathrm{s^{-1}}$。
 
-单位冲激函数。
+$K\delta(t)$ 是冲激强度为 $K$ 的一般冲激函数。若 $K\delta(t)$ 代表电流，其单位是 A，
+则 $K$ 的单位是 $\mathrm{A\cdot s}$，即库仑；若代表电压，则 $K$ 的单位是 $\mathrm{V\cdot s}$，即韦伯。
 
-例如。
+\subsection{广义函数的运算规则}
+冲激函数不能按普通函数运算，需按广义函数处理。本课程用到的公式有
+\begin{align}
+  f(t)\delta(t)&=f(0)\delta(t), &
+  f(t)\delta(t-t_0)&=f(t_0)\delta(t-t_0) \label{eq:ch8-gen1}\\
+  \int_{-\infty}^{\infty}f(t)\delta(t-t_0)\,\mathrm{d}t&=f(t_0), &
+  \delta(t)&=\frac{\mathrm{d}\varepsilon(t)}{\mathrm{d}t} \label{eq:ch8-gen2}
+\end{align}
+即 $\delta(t)$ 是 $\varepsilon(t)$ 的导数，$\varepsilon(t)$ 是 $\delta(t)$ 的积分。
 
-短路。
-
-在图。
-
-冲激函数。
+\begin{corepoint}{冲激电流可使电容电压发生“强迫跃变”，冲激电压可使电感电流发生强迫跃变——
+此时 $i_C$（或 $u_L$）不是有界的，换路定律的条件不满足，$u_C$（或 $i_L$）可以跃变。
+一般情形下 $u_C$ 连续、$i_L$ 连续，但 $i_C$、$u_L$ 以及电阻上的量都可以跃变。}
+\end{corepoint}
 
 \section{一阶电路的阶跃响应}
-若电路。
 
-设方程为
-\[
-\]
-将，得
-\[
-\]
-$u_C$的初始值
-\[
-\]
-方程，即
-\[
-\]
-（1）
+若电路中储能元件的原始储能为零，则仅由独立电源作用引起的响应称为\textbf{零状态响应}
+（zero-state response）。本节讨论阶跃电源作用下的零状态响应，即\textbf{阶跃响应}。
 
-图，即
-\[
-\]
-（2）
+设 $u_C(0_-)=0$，$u_S=U_S\varepsilon(t)$，代入 KVL 方程得
+\begin{equation}
+  RC\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=U_S\varepsilon(t),\qquad u_C(0_+)=0
+\end{equation}
+这是一阶常系数线性非齐次方程，其通解由任一特解 $u_{Cp}$ 与对应齐次方程通解 $u_{Ch}$ 组成：
+\begin{enumerate}
+  \item 求特解：$t\to\infty$ 时电路达稳态，$\varepsilon(t)=1$ 相当于直流电压源，故取
+        $u_{Cp}=U_S$（稳态分量）；
+  \item 求齐次通解：$u_{Ch}=A\mathrm{e}^{-t/\tau}$；
+  \item 通解 $u_C=U_S+A\mathrm{e}^{-t/\tau}$，由 $u_C(0_+)=0$ 定出 $A=-U_S$。
+\end{enumerate}
 
-与方程为
-\[
-\]
-方程，其通解为
-\[
-\]
-（3）
+\begin{keyformula}{u_C(t)=U_S\left(1-\mathrm{e}^{-t/\tau}\right)\varepsilon(t),\qquad
+i_C(t)=\frac{U_S}{R}\mathrm{e}^{-t/\tau}\varepsilon(t),\qquad \tau=RC}
+\end{keyformula}
 
-将，得
-\[
-\]
-\[
-\]
-将，阶跃响应
-\[
-\]
-引用，即
-\[
-\]
-$u_C$。
+由于 $u_C(0_+)=0$，$i_C$ 中不含冲激项。阶跃响应从零开始按指数规律上升，$t\to\infty$ 时达到新稳态值
+$U_S$。其中 $U_S$ 称为 $u_C$ 的\textbf{稳态分量}，$-U_S\mathrm{e}^{-t/\tau}$ 随时间衰减至零，称为
+$u_C$ 的\textbf{暂态分量}。即\textbf{一阶电路的阶跃响应等于稳态分量与暂态分量之和}。
 
-根据，求得电容电流为
-\[
-\]
-根据。
+\subsection{单位阶跃特性}
+线性电路的阶跃响应与阶跃电源幅值之比称为该电路的\textbf{单位阶跃特性}，记作 $s(t)$。
+本例中 $s(t)=\left(1-\mathrm{e}^{-t/\tau}\right)\varepsilon(t)$，无量纲（激励与响应同为电压时）。
+一般情形下激励与响应都可能是电压或电流，故 $s(t)$ 还可能具有电阻或电导的量纲。
 
-$i_C$。
+\subsection{延迟与叠加}
+在元件参数与时间无关的\textbf{非时变电路}中，\textbf{激励延迟 $t_0$，响应也延迟 $t_0$}：
+\begin{equation}
+  U_S\varepsilon(t-t_0)\ \longrightarrow\ U_S\left[1-\mathrm{e}^{-(t-t_0)/\tau}\right]\varepsilon(t-t_0)
+\end{equation}
+若把激励换成矩形脉冲 $u_S=U_S\left[\varepsilon(t)-\varepsilon(t-t_0)\right]$，则由叠加定理
+\begin{equation}
+  u_C(t)=U_S\left(1-\mathrm{e}^{-t/\tau}\right)\varepsilon(t)
+        -U_S\left[1-\mathrm{e}^{-(t-t_0)/\tau}\right]\varepsilon(t-t_0)
+  \label{eq:ch8-pulse}
+\end{equation}
+$0<t<t_0$ 时，$u_C$ 是 $RC$ 电路对 $U_S\varepsilon(t)$ 的零状态响应；$t>t_0$ 时，$u_C$ 是以
+$U_S\left(1-\mathrm{e}^{-t_0/\tau}\right)$ 为初始值的零输入响应。式 \eqref{eq:ch8-pulse} 是
+$-\infty<t<\infty$ 内的统一表达式，也可按时间段写出分段表达式。
 
-线性电路，阶跃特性为
-\[
-\]
-式中。
-
-现将响应为
-\[
-\]
-再将，得到
-\[
-\]
-$u_C'$所示。
-
-上述，表达式为
-\[
-\]
-当。
+\begin{corepoint}{用 $\varepsilon(t)$ 把分段函数写成全时域统一表达式，是本课程的基本功：换路时刻、
+脉冲起止都用 $\varepsilon(t-t_0)$ 标记；求导时注意 $\dfrac{\mathrm{d}}{\mathrm{d}t}\varepsilon(t)=\delta(t)$，
+常数乘 $\varepsilon(t)$ 求导会产生冲激项，这一项不能漏。}
+\end{corepoint}
 
 \section{一阶电路的冲激响应}
 
+电路在冲激电源作用下的零状态响应称为\textbf{冲激响应}（impulse response），记作 $h(t)$。
+
+\subsection{由阶跃特性求冲激特性}
+由于 $\delta(t)$ 是单位脉冲宽度趋于零的极限，冲激响应也就是单位脉冲响应当脉宽趋于零的极限。
+对图 8.20 的 $RC$ 电路，把冲激电压源看作幅度为 $1/\Delta$、宽度为 $\Delta$ 的矩形脉冲，
+分解为两个反向阶跃电压之和，由叠加与线性得
+\begin{equation}
+  u_C(t)=\frac{1}{\Delta}\left[s(t)-s(t-\Delta)\right]
+  \ \xrightarrow{\ \Delta\to0\ }\ \frac{\mathrm{d}s(t)}{\mathrm{d}t}
+\end{equation}
+\begin{keyformula}{h(t)=\frac{\mathrm{d}s(t)}{\mathrm{d}t}\qquad
+s(t)=\int_{0_-}^{t}h(\xi)\,\mathrm{d}\xi}
+\end{keyformula}
+即\textbf{单位冲激特性是单位阶跃特性的导数}。这一关系对任意线性非时变电路、任意电压或电流响应都成立。
+用它求冲激响应最简便：先求 $s(t)$，再求导（注意 $\varepsilon'(t)=\delta(t)$ 项）。
+
+\subsection{由冲激引起的跃变求冲激响应}
+另一种方法是先算冲激在电容（电感）中造成的跃变值，再求 $t>0$ 时的零输入响应。
+设 $i_S=Q\delta(t)$ 作用于 $RC$ 电路，对 KCL 方程 $C\dfrac{\mathrm{d}u_C}{\mathrm{d}t}+\dfrac{u_C}{R}=Q\delta(t)$
+两边在 $0_-\sim0_+$ 上积分，其中 $\displaystyle\int u_C\,\mathrm{d}t=0$（$u_C$ 为有限值），得
+\begin{equation}
+  C\left[u_C(0_+)-u_C(0_-)\right]=Q
+  \quad\Longrightarrow\quad
+  u_C(0_+)=\frac{Q}{C}\quad\left(u_C(0_-)=0\right)
+\end{equation}
+即 $t=0$ 瞬间冲激电流给电容充入电荷 $Q$，使电容电压“强迫跃变”。之后 $u_S=0$，相当于短路，
+电路做零输入响应：
+\begin{equation}
+  u_C(t)=\frac{Q}{C}\mathrm{e}^{-t/\tau}\varepsilon(t),\qquad
+  h_C(t)=\frac{1}{C}\mathrm{e}^{-t/\tau}\varepsilon(t)
+\end{equation}
+对偶地，冲激电压源 $\Psi\delta(t)$ 作用于 $RL$ 电路时
+\begin{equation}
+  i_L(0_+)=\frac{\Psi}{L}\quad\Longrightarrow\quad
+  i_L(t)=\frac{\Psi}{L}\mathrm{e}^{-t/\tau}\varepsilon(t)
+\end{equation}
+对于含冲激电源的复杂电路，可先用戴维南定理或诺顿定理把电路化简为简单 $RC$ 或 $RL$ 电路，
+再按上述公式求初始值。
+
+\begin{corepoint}{冲激响应的两种求法要对号入座：\textbf{（1）} 冲激只作为一般激励的一部分（未直接作用于
+储能元件）时，用 $h(t)=\mathrm{d}s(t)/\mathrm{d}t$；\textbf{（2）} 冲激直接作用于电容或电感、使
+$u_C$ 或 $i_L$ 强迫跃变时，用“跃变值 $+$ 零输入响应”。判断依据是 $u_C$、$i_L$ 在 $t=0$ 处是否连续。}
+\end{corepoint}
+
 \section{正弦电源作用下的一阶电路}
+
+设 $RL$ 电路中 $u_S=U_m\cos(\omega t+\psi)\varepsilon(t)$，其中 $\psi$ 是开关接通时刻 $u_S$ 的相位，
+称为\textbf{接入相角}。换路后方程为
+\begin{equation}
+  L\frac{\mathrm{d}i}{\mathrm{d}t}+Ri=U_m\cos(\omega t+\psi)\varepsilon(t),\qquad i(0_+)=0
+\end{equation}
+其解由特解（正弦稳态解）与齐次通解（自由分量）组成。特解用相量法求：
+$\dot{I}_m=\dfrac{\dot{U}_m}{R+\mathrm{j}\omega L}=\dfrac{U_m}{|Z|}\angle(\psi-\varphi)$，于是
+\begin{keyformula}{i(t)=\underbrace{I_m\cos(\omega t+\psi-\varphi)}_{\text{\songti 强制（稳态）分量}}
+  -\underbrace{I_m\cos(\psi-\varphi)\mathrm{e}^{-t/\tau}}_{\text{\songti 自由（暂态）分量}},\quad
+  \tau=\frac{L}{R},\ \varphi=\arctan\frac{\omega L}{R}}
+\end{keyformula}
+
+自由分量的量值与接入相角 $\psi$ 有关，分两种特殊情况：
+\begin{enumerate}
+  \item 若 $\psi-\varphi=\pm\dfrac{\pi}{2}$，则 $\cos(\psi-\varphi)=0$，自由分量为零，
+        $i$ 中只有稳态分量。原因是 $t=0_+$ 时稳态分量本身为零，满足 $i(0_+)=0$，
+        不需经历暂态过程而立即进入正弦稳态。
+  \item 若 $\psi-\varphi=0$ 或 $\pi$，则自由分量绝对值最大，此时
+        \begin{equation}
+          i=I_m\left[\cos(\omega t+\psi)-\cos\psi\cdot\mathrm{e}^{-t/\tau}\right]
+        \end{equation}
+        若时间常数较大，自由分量衰减较慢，开关接通后经过半个周期 $t=\pi/\omega$ 时，
+        电流近似为稳态电流最大值的两倍，即 $|i|\approx2I_m$。
+\end{enumerate}
+
+\begin{corepoint}{合闸角决定暂态分量的初值：\textbf{最有利合闸角}（$\psi-\varphi=\pm\pi/2$）无暂态过程；
+\textbf{最不利合闸角}（$\psi=\varphi$）出现接近 $2I_m$ 的过电流。计算电气设备承受的电动斥力时必须
+考虑这种过电流；对偶地，切断电容性电路时可能出现接近 $2U_m$ 的过电压。}
+\end{corepoint}
 
 \section{一阶电路的全响应}
 
-\section{一阶电路暂态响应的一般形式}
+由独立源和储能元件的原始储能共同作用引起的响应称为\textbf{全响应}（complete response）。
+以 $RC$ 电路为例，设 $u_C(0_-)=U_0$，方程为
+\begin{equation}
+  RC\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=U_S,\qquad u_C(0_+)=U_0
+\end{equation}
+解得
+\begin{keyformula}{u_C(t)=U_0\mathrm{e}^{-t/\tau}+U_S\left(1-\mathrm{e}^{-t/\tau}\right)
+  =U_S+\left(U_0-U_S\right)\mathrm{e}^{-t/\tau}}
+\end{keyformula}
+
+\subsection{按原因分解：零输入响应 $+$ 零状态响应}
+把 $u_C$ 的表达式按“谁引起的”重新分组：第一项 $U_0\mathrm{e}^{-t/\tau}$ 正是仅由 $u_C(0_-)=U_0$
+引起的零输入响应，第二项 $U_S\left(1-\mathrm{e}^{-t/\tau}\right)$ 正是仅由独立源引起的零状态响应。
+由线性电路的叠加性，
+\begin{equation}
+  \text{\songti 全响应}=\text{\songti 零输入响应}+\text{\songti 零状态响应}
+\end{equation}
+此式对所有线性动态电路都成立。这样分解的意义在于：引起响应的原因不同，联系原因与结果的因果关系就不同，
+涉及这种因果关系时必须分成两个分量分别研究。
+
+\subsection{按规律分解：强制分量 $+$ 自由分量}
+全响应作为非齐次方程的解，又可分解为
+\begin{equation}
+  \text{\songti 全响应}=\text{\songti 强制分量}+\text{\songti 自由分量}
+\end{equation}
+其中强制分量（特解，通常取稳态解）的变化规律由独立电源决定；自由分量（齐次通解）的变化规律与独立电源无关，
+只决定于电路结构与参数。$u_C=U_S+\left(U_0-U_S\right)\mathrm{e}^{-t/\tau}$ 中 $U_S$ 是强制分量，
+$\left(U_0-U_S\right)\mathrm{e}^{-t/\tau}$ 是自由分量。
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{两类分解的对应关系}
+  \begin{tabular}{lll}
+    \toprule
+    响应 & 含强制分量？ & 含自由分量？ \\
+    \midrule
+    全响应 & 有（由激励决定） & 有（由电路参数与初始值决定） \\
+    零状态响应 & 有（$0_+$ 时通常不为零） & 有 \\
+    零输入响应 & 无（电路无独立源） & 有 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{一阶电路暂态响应的一般形式（三要素法）}
+
+\subsection{一般形式的导出}
+对含一个电容或一个电感的任意复杂电路，用戴维南定理或诺顿定理可化简为简单 $RC$ 或 $RL$ 电路，
+其方程与初始条件统一写为
+\begin{equation}
+  \tau\frac{\mathrm{d}y(t)}{\mathrm{d}t}+y(t)=w(t),\qquad y(0_+)=y_0
+  \label{eq:ch8-general}
+\end{equation}
+式中 $y$ 表示待求响应（$u_C$ 或 $i_L$），$w$ 表示等效独立源，$\tau=RC$（或 $\tau=L/R$），
+$R$、$G$ 分别为戴维南等效电阻与诺顿等效电导。式 \eqref{eq:ch8-general} 的通解为
+$y=y_p+A\mathrm{e}^{-t/\tau}$，代入 $t=0_+$ 得 $A=y(0_+)-y_p(0_+)$，故
+\begin{keyformula}{y(t)=y_p(t)+\left[y(0_+)-y_p(0_+)\right]\mathrm{e}^{-t/\tau}}
+\end{keyformula}
+若外加激励是\textbf{直流或阶跃电源}，则强制分量 $y_p$ 是常量，恒有 $y_p(t)=y_p(0_+)=y(\infty)$，于是得到
+\textbf{简单且常用的三要素公式}
+\begin{keyformula}{y(t)=y(\infty)+\left[y(0_+)-y(\infty)\right]\mathrm{e}^{-t/\tau}\qquad(t\ge0)}
+\end{keyformula}
+三个要素是：\textbf{初始值} $y(0_+)$、\textbf{稳态值} $y(\infty)$、\textbf{时间常数} $\tau$。
+这种通过列写微分方程并计算强制分量和自由分量的方法称为\textbf{经典法}。
+
+\subsection{三要素的求法（解题流程）}
+\begin{enumerate}
+  \item \textbf{求 $y(0_+)$}：画 $0_-$ 电路（换路前直流稳态，$C$ 开路、$L$ 短路）求 $u_C(0_-)$、$i_L(0_-)$；
+        由换路定律得 $u_C(0_+)$、$i_L(0_+)$；再画 $0_+$ 电路（$C\to$ 电压源，$L\to$ 电流源）解出 $y(0_+)$。
+  \item \textbf{求 $y(\infty)$}：画换路后的稳态电路（直流稳态，$C$ 开路、$L$ 短路），用电阻电路方法求解。
+  \item \textbf{求 $\tau$}：把独立源置零（电压源短路、电流源开路），从储能元件两端看进去求等效电阻
+        $R_{\mathrm{eq}}$，$\tau=R_{\mathrm{eq}}C$ 或 $\tau=L/R_{\mathrm{eq}}$。含受控源时用外加电源法求 $R_{\mathrm{eq}}$。
+  \item \textbf{代公式}：写出 $y(t)$，必要时乘 $\varepsilon(t)$ 写成全时域表达式。
+\end{enumerate}
+
+\subsection{非直流激励时强制分量的形式}
+强制分量的函数形式决定于独立电源 $w(t)$。在直流电源、正弦电源和其他周期电源作用下，
+可用稳态解作为强制分量；除此之外需将下表对应的形式代入方程，用比较系数法确定待定系数。
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{强制分量 $y_p(t)$ 与激励 $w(t)$ 的对应关系}
+  \begin{tabular}{ll}
+    \toprule
+    $w(t)$ 的形式 & $y_p(t)$ 的形式 \\
+    \midrule
+    $K$（直流、阶跃） & $A$（常量，即稳态值） \\
+    $K\mathrm{e}^{-bt}$（$b\ne 1/\tau$） & $A\mathrm{e}^{-bt}$ \\
+    $K\cos(\omega t+\varphi)$ & $A\cos(\omega t+\theta)$ \\
+    $Kt$（斜坡） & $At+B$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{corepoint}{三要素公式 \ $y(\infty)+\left[y(0_+)-y(\infty)\right]\mathrm{e}^{-t/\tau}$ \ 只适用于
+\textbf{一阶电路 $+$ 直流或阶跃激励}。若激励是正弦量，应把 $y(\infty)$ 换成正弦稳态解
+$y_p(t)$ 并注意 $y_p(0_+)\ne y_p(\infty)$；若激励是斜坡、指数等非周期量，必须解微分方程定 $y_p$。
+另外 $\tau$ 与激励无关，同一电路换路前后 $\tau$ 可能改变，务必用\textbf{换路后}的等效电阻。}
+\end{corepoint}
 
 \section{求解暂态响应的卷积积分法}
 
+若已知电路的冲激响应 $h(t)$，便可求出该电路对任意激励 $e(t)$ 的零状态响应。把 $0\sim t$ 区间内的激励
+划分为许多等宽窄脉冲，每个窄脉冲近似为延迟的微分冲激激励 $e(\xi)\mathrm{d}\xi\,\delta(t-\xi)$，
+由 $h(t)$ 的定义，它产生的响应为 $e(\xi)\mathrm{d}\xi\cdot h(t-\xi)$。把 $t$ 时刻之前全部窄脉冲的响应叠加，
+并令脉宽趋于零，得
+\begin{keyformula}{r(t)=\int_{0}^{t}e(\xi)h(t-\xi)\,\mathrm{d}\xi
+  =\int_{0}^{t}h(\xi)e(t-\xi)\,\mathrm{d}\xi=e(t)*h(t)}
+\end{keyformula}
+式中积分称为\textbf{卷积}（convolution）。即在零状态下，\textbf{线性电路对任意激励的零状态响应等于
+激励与单位冲激特性的卷积}。若在 $0_-$ 或 $t_+$ 时刻存在冲激分量，积分上、下限应分别改为 $t_+$ 和 $0_-$。
+令 $\xi=t-\tau$ 可证卷积满足交换律。
+
+解题步骤：\textbf{（1）} 求 $s(t)$（用三要素公式）；\textbf{（2）} 求导得 $h(t)=\mathrm{d}s(t)/\mathrm{d}t$；
+\textbf{（3）} 按上式作卷积积分（注意激励的区间，必要时分段积分）。
+
+\begin{corepoint}{卷积积分只给出\textbf{零状态响应}；求全响应还须加上零输入响应。
+卷积的积分上限是 $t$（不是 $t_0$），因为因果电路中 $h(t-\xi)=0$ 当 $\xi>t$。
+当 $h(t)$ 含 $\varepsilon(t)$ 因子时，被积函数自动在 $\xi>t$ 处为零。}
+\end{corepoint}
+
 \section{二阶电路的暂态过程}
 
+用二阶微分方程描述的电路称为\textbf{二阶电路}（second-order circuit），一般含有两个储能元件。
+
+\subsection{零输入响应与特征根}
+以 $RLC$ 串联电路为例，设 $u_C(0_-)=U_{C0}>0$、$i_L(0_-)=0$，$t=0$ 时开关接通。由 KVL 得
+$u_R+u_L+u_C=0$，代入元件方程得到描述 $u_C$ 的二阶微分方程
+\begin{equation}
+  LC\frac{\mathrm{d}^2u_C}{\mathrm{d}t^2}+RC\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=0
+  \label{eq:ch8-rlc}
+\end{equation}
+这是二阶常系数线性齐次方程，定解需要两个初始条件
+\begin{equation}
+  u_C(0_+)=U_{C0},\qquad
+  \left.\frac{\mathrm{d}u_C}{\mathrm{d}t}\right|_{0_+}=\frac{i_C(0_+)}{C}=0
+\end{equation}
+其特征方程与特征根为
+\begin{equation}
+  LCp^2+RCp+1=0,\qquad
+  p_{1,2}=-\frac{R}{2L}\pm\sqrt{\left(\frac{R}{2L}\right)^2-\frac{1}{LC}}
+\end{equation}
+令 $\alpha=\dfrac{R}{2L}$（衰减系数）、$\omega_0=\dfrac{1}{\sqrt{LC}}$（谐振角频率），则
+\begin{keyformula}{p_{1,2}=-\alpha\pm\sqrt{\alpha^2-\omega_0^2}
+  =-\frac{R}{2L}\pm\sqrt{\left(\frac{R}{2L}\right)^2-\frac{1}{LC}}}
+\end{keyformula}
+特征根只决定于电路参数。当参数不同时，$p_1,p_2$ 可为相异实根、重根或共轭复根，通解具有不同形式。
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{二阶电路三种暂态过程（以 $RLC$ 串联为例）}
+  \begin{tabular}{llll}
+    \toprule
+    判别式 & 参数条件 & 特征根 & 过程性质 \\
+    \midrule
+    $\alpha>\omega_0$ & $R>2\sqrt{L/C}$ & 两个相异负实根 & 非振荡（过阻尼） \\
+    $\alpha=\omega_0$ & $R=2\sqrt{L/C}$ & 两个相等负实根（二重根） & 临界状态（仍属非振荡） \\
+    $\alpha<\omega_0$ & $R<2\sqrt{L/C}$ & 一对共轭复根 $-\alpha\pm\mathrm{j}\omega_d$ & 衰减振荡（欠阻尼） \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+其中 $\omega_d=\sqrt{\omega_0^2-\alpha^2}$ 为振荡角频率，$R=2\sqrt{L/C}$ 时的电阻称为\textbf{临界电阻}。
+
+\subsection{三种情况的解}
+\textbf{（1）过阻尼} $\alpha>\omega_0$，$p_1\ne p_2$ 且均为负实数，通解为 $u_C=A_1\mathrm{e}^{p_1t}+A_2\mathrm{e}^{p_2t}$，
+由初始条件解得
+\begin{equation}
+  A_1=\frac{p_2U_{C0}}{p_2-p_1},\qquad A_2=\frac{-p_1U_{C0}}{p_2-p_1}
+\end{equation}
+$u_C>0$、$i_C<0$ 恒成立：整个暂态过程中电容一直处于放电状态，放电电流从零出发经负的极小值后又趋于零。
+电压、电流没有正负交替变化，故称\textbf{非振荡}（unoscillation）过程或过阻尼（over damped）过程。
+
+\textbf{（2）欠阻尼} $\alpha<\omega_0$，$p_{1,2}=-\alpha\pm\mathrm{j}\omega_d$，通解为
+\begin{equation}
+  u_C=\mathrm{e}^{-\alpha t}\left(A_1\sin\omega_dt+A_2\cos\omega_dt\right)
+     =A\mathrm{e}^{-\alpha t}\sin\left(\omega_dt+\theta\right)
+\end{equation}
+由初始条件定出 $A$、$\theta$ 后，$u_C$、$i_C$ 都是振幅按指数规律衰减的正弦函数，按相同角频率正负交替变化。
+这种现象称为\textbf{自由振荡}；因振幅不断衰减，故为\textbf{衰减振荡}（阻尼振荡），$\alpha$ 称为衰减系数。
+这种暂态过程称为振荡过程或\textbf{欠阻尼}（under damped）过程。$\alpha$ 越大衰减越快。
+
+\textbf{（3）临界情况} $\alpha=\omega_0$，$R=2\sqrt{L/C}$，$p_1=p_2=-\alpha$ 为二重根，通解为
+\begin{equation}
+  u_C=(A_1+A_2t)\mathrm{e}^{-\alpha t},\qquad
+  u_C=U_{C0}(1+\alpha t)\mathrm{e}^{-\alpha t}
+\end{equation}
+临界状态介于振荡与非振荡之间，仍属于非振荡情形。电阻小于临界电阻时是振荡情形，否则是非振荡情形。
+
+\textbf{（4）无阻尼自由振荡} 若 $R=0$（仍属 $\alpha<\omega_0$），则 $\alpha=0$，$\omega_d=\omega_0$，
+$u_C=U_{C0}\cos\omega_0t$，$i_C=\omega_0CU_{C0}\sin\omega_0t$，为不衰减的自由振荡，振荡角频率等于
+电路的谐振角频率。物理过程是：电容与电感不断进行电场与磁场能量转换，回路无电阻，总能量不减少，故等幅振荡；
+$0<R<2\sqrt{L/C}$ 时电阻消耗能量，便形成衰减振荡。
+
+\subsection{非零状态与一般二阶电路}
+若要求计算外加电源作用下的零状态响应或全响应，则既要计算强制分量，又要计算自由分量：强制分量仍由外加
+电源决定，自由分量仍取决于电路的结构和参数。对其他二阶电路（如含两个电容或两个电感的电路），
+分析方法仍遵循 $RLC$ 串联电路的思路：基于 KCL、KVL 和元件方程列写关于响应的二阶微分方程，
+确定初始值后求解；解是振荡、临界还是非振荡取决于特征方程根的判别式。
+
+\begin{corepoint}{二阶电路解题的四个易错点：\textbf{（1）} 第二个初始条件要用 $\dfrac{\mathrm{d}u_C}{\mathrm{d}t}\Big|_{0_+}=\dfrac{i_C(0_+)}{C}$，
+$i_C(0_+)$ 由 $0_+$ 电路求出，不能想当然取零（除非确有 $i_C(0_+)=0$）；
+\textbf{（2）} 判别式是 $R$ 与 $2\sqrt{L/C}$ 比较，不是与 $1/\sqrt{LC}$ 比较；
+\textbf{（3）} 欠阻尼解中 $\omega_d=\sqrt{\omega_0^2-\alpha^2}<\omega_0$，振荡频率低于谐振频率；
+\textbf{（4）} 临界与过阻尼都\textbf{不}振荡，临界是二者分界。}
+\end{corepoint}
+
 \section{状态变量分析}
+
+\subsection{状态变量与状态方程}
+一阶、二阶电路的分析表明：只要确定了 $u_C$ 与 $i_L$ 在 $t=0_+$ 时的初始值，又已知 $t>0$ 时的外施激励，
+动态电路在 $t>0$ 时的响应就完全确定。故称 $u_C$ 和 $i_L$ 为电路的\textbf{状态变量}（state variable）
+（非线性动态电路中有时用电容电荷和电感磁链作状态变量）。由状态变量及其一阶导数组成的\textbf{一阶微分方程组}
+称为电路的\textbf{状态方程}（state equation）。
+
+对含两个储能元件的电路，取 $u_C$、$i_L$ 为状态变量，对含电容的节点列 KCL、对含电感的回路列 KVL，
+再用置换定理（$u_S=u_C$ 置换电容、$i_S=i_L$ 置换电感）得到电阻电路，消去非状态变量，
+整理成矩阵形式：
+\begin{keyformula}{\dot{\boldsymbol{X}}=\boldsymbol{A}\boldsymbol{X}+\boldsymbol{B}\boldsymbol{V},
+  \qquad \boldsymbol{Y}=\boldsymbol{C}\boldsymbol{X}+\boldsymbol{D}\boldsymbol{V}}
+\end{keyformula}
+其中 $\boldsymbol{X}$ 为状态向量（$n$ 个元素），$\dot{\boldsymbol{X}}$ 为其一阶导数向量，$\boldsymbol{V}$ 为输入向量
+（$m$ 个独立电源），$\boldsymbol{A}$ 为 $n\times n$ 方阵，$\boldsymbol{B}$ 为 $n\times m$ 矩阵，
+$\boldsymbol{C}$、$\boldsymbol{D}$ 分别为 $p\times n$、$p\times m$ 矩阵（$p$ 为输出变量个数）。
+$\boldsymbol{A}$、$\boldsymbol{B}$、$\boldsymbol{C}$、$\boldsymbol{D}$ 均由电路的结构和参数决定。
+$\boldsymbol{Y}=\boldsymbol{C}\boldsymbol{X}+\boldsymbol{D}\boldsymbol{V}$ 称为\textbf{输出方程}。
+
+\subsection{状态方程的列写步骤}
+\begin{enumerate}
+  \item 对只连接一个电容的节点列 KCL 方程，对只包含一个电感的回路列 KVL 方程；
+  \item 为消去上述方程中的非状态变量，用电压源 $u_S=u_C$ 和电流源 $i_S=i_L$ 分别置换电容和电感，
+        由所得电阻电路求出待消去的非状态变量；
+  \item 代入消去，整理成标准形式的状​态方程 $\dot{\boldsymbol{X}}=\boldsymbol{A}\boldsymbol{X}+\boldsymbol{B}\boldsymbol{V}$；
+  \item 需要时再列输出方程 $\boldsymbol{Y}=\boldsymbol{C}\boldsymbol{X}+\boldsymbol{D}\boldsymbol{V}$。
+\end{enumerate}
+初始条件 $\boldsymbol{X}(0_+)$ 一般可直接用换路定律确定，这是状态变量法的突出优点。
+
+\subsection{状态变量法的优点}
+与列写高阶微分方程相比：状态方程易于列写；初始值易于确定（不需要确定高阶导数的初始值）；
+一阶方程组便于利用计算机求数值解，是目前分析高阶动态电路的常用方法。
+
+\begin{corepoint}{状态变量的个数等于电路中\textbf{独立}储能元件的个数，也等于微分方程的阶数。
+若存在纯电容回路或纯电感割集，独立储能元件数小于储能元件总数，状态变量须相应减少——
+这与换路定律失效是同一个原因。}
+\end{corepoint}
+
+\section{本章小结}
+\begin{enumerate}
+  \item 动态电路换路后，动态元件的储能要发生变化；由于能量变化的连续性，换路后一般要经历暂态过程。
+        暂态过程用微分方程描述，为求解必须确定电路量的初始值。
+  \item 根据换路定律可确定 $u_C(0_+)=u_C(0_-)$、$i_L(0_+)=i_L(0_-)$；除此以外的电压、电流初始值
+        需通过 $0_+$ 电路（$C\to$ 电压源、$L\to$ 电流源）求解电路方程确定。
+  \item 线性动态电路的暂态解按变动规律可分为强制分量与自由分量：强制分量的函数形式由外加激励决定，
+        自由分量的函数形式由电路结构与参数决定。
+  \item 全响应按引起响应的原因可分解为零输入响应与零状态响应，即
+        \textbf{全响应 $=$ 零输入响应 $+$ 零状态响应}。
+  \item 单位阶跃电源和单位冲激电源单独作用引起的零状态响应分别为单位阶跃特性 $s(t)$ 与单位冲激特性
+        $h(t)$，二者关系为 $h(t)=\dfrac{\mathrm{d}s(t)}{\mathrm{d}t}$。
+  \item 一阶电路响应的三要素公式为
+        $y(t)=y(\infty)+\left[y(0_+)-y(\infty)\right]\mathrm{e}^{-t/\tau}$，
+        其中 $RC$ 电路 $\tau=RC$，$RL$ 电路 $\tau=L/R$。
+  \item 若线性动态电路的单位冲激特性为 $h(t)$，则对任意激励 $e(t)$ 的零状态响应为卷积
+        $r(t)=\displaystyle\int_0^t e(\xi)h(t-\xi)\,\mathrm{d}\xi$。
+  \item 二阶电路微分方程的两个特征根及对应的自由分量有三种形式：
+        相异实根 $A_1\mathrm{e}^{p_1t}+A_2\mathrm{e}^{p_2t}$；二重根 $(A_1+A_2t)\mathrm{e}^{pt}$；
+        共轭复根 $A\mathrm{e}^{-\alpha t}\sin(\omega_dt+\theta)$。
+  \item 状态方程是关于状态变量的一阶微分方程组，标准形式为
+        $\dot{\boldsymbol{X}}=\boldsymbol{A}\boldsymbol{X}+\boldsymbol{B}\boldsymbol{V}$。
+\end{enumerate}
 
 \endinput

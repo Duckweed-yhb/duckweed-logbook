@@ -1,44 +1,359 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第九章 线性动态电路暂态过程的复频域分析}
+% 电路与电子学III 课程笔记 —— 第九章（教材第9章）线性动态电路暂态过程的复频域分析
+\chapter{线性动态电路暂态过程的复频域分析}
 
 \section{拉普拉斯变换}
-单位阶跃函数。
 
-指数函数。
+上一章指出：在储能元件较多、电路微分方程阶数较高的情况下，确定积分常数十分繁杂。本章用拉普拉斯变换
+分析线性动态电路，其要点是把各个时间函数通过拉普拉斯变换化为复变量 $s$ 的函数，
+\textbf{从而使常微分方程问题化为代数方程问题}。由于 $s$ 是复变量且具有频率的量纲，故称\textbf{复频域分析法}。
+它属于变换域分析法——第 4 章把正弦量变换为相量再分析，也属于变换域分析法，只是所用数学变换不同。
 
-单位冲激函数。
+\subsection{定义}
+设函数 $f(t)$ 在 $t>0$ 及 $t=0$ 的某个邻域内有定义，且积分 $\displaystyle\int_{0_-}^{\infty}f(t)\mathrm{e}^{-st}\,\mathrm{d}t$
+（$s$ 是复参量）在复平面某一域内收敛，则由该积分确定的函数
+\begin{keyformula}{F(s)=\mathcal{L}\{f(t)\}=\int_{0_-}^{\infty}f(t)\mathrm{e}^{-st}\,\mathrm{d}t}
+\end{keyformula}
+称为 $f(t)$ 的\textbf{拉普拉斯变换}（Laplace transform），简称拉氏变换。$F(s)$ 称为 $f(t)$ 的\textbf{象函数}
+（image function），$f(t)$ 称为 $F(s)$ 的\textbf{原函数}（original function），二者构成\textbf{拉氏变换对}。
+本书原函数用小写字母、象函数用相应大写字母表示，如 $u(t)\leftrightarrow U(s)$、$i(t)\leftrightarrow I(s)$。
+
+积分下限取 $0_-$ 是为了把 $f(t)$ 中可能包含的单位冲激函数 $\delta(t)$ 也计入。复参量 $s=\sigma+\mathrm{j}\omega$，
+在电路中 $t$ 代表时间，故 $s$ 具有时间的倒数量纲即频率的量纲，称为\textbf{复频率}（complex frequency）。
+$F(s)$ 的单位是相应 $f(t)$ 的单位乘以时间的单位，例如电流、电压的象函数单位分别为 $\mathrm{A\cdot s}$
+（库仑）和 $\mathrm{V\cdot s}$（韦伯）。
+
+\textbf{存在条件}：（1） $f(t)$ 在 $t\ge0$ 的任何有限区间内分段连续；（2） 存在常数 $M>0$ 和 $\sigma_0>0$，
+使得在 $[0,\infty)$ 上 $|f(t)|\le M\mathrm{e}^{\sigma_0t}$。工程上大部分函数都能满足此条件。
+
+\subsection{常用函数的拉氏变换}
+按定义式直接积分可得（$s$ 的实部足够大时积分收敛）：
+\begin{align}
+  \mathcal{L}\{\varepsilon(t)\}&=\frac1s &
+  \mathcal{L}\{\mathrm{e}^{at}\}&=\frac{1}{s-a} &
+  \mathcal{L}\{\delta(t)\}&=1 \label{eq:ch9-basic}\\
+  \mathcal{L}\{t\}&=\frac{1}{s^2} &
+  \mathcal{L}\{t^n\}&=\frac{n!}{s^{n+1}} &
+  \mathcal{L}\{t\mathrm{e}^{-at}\}&=\frac{1}{(s+a)^2} \notag\\
+  \mathcal{L}\{\sin\omega t\}&=\frac{\omega}{s^2+\omega^2} &
+  \mathcal{L}\{\cos\omega t\}&=\frac{s}{s^2+\omega^2} &
+  \mathcal{L}\{\mathrm{e}^{-at}\sin\omega t\}&=\frac{\omega}{(s+a)^2+\omega^2} \notag
+\end{align}
+以 $\mathcal{L}\{\varepsilon(t)\}=1/s$ 为例：$\displaystyle\int_{0_-}^{\infty}\mathrm{e}^{-st}\mathrm{d}t
+=\left.-\frac1s\mathrm{e}^{-st}\right|_0^\infty$，当 $\sigma>0$ 时 $\lim\limits_{t\to\infty}\mathrm{e}^{-st}=0$，
+积分收敛于 $1/s$。又因拉氏变换不考察 $t<0$ 的情况，故 $\mathcal{L}\{1\}=1/s$ 与 $\mathcal{L}\{\varepsilon(t)\}=1/s$ 相同。
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{常用拉普拉斯变换对}
+  \begin{tabular}{llll}
+    \toprule
+    原函数 $f(t)$ & 象函数 $F(s)$ & 原函数 $f(t)$ & 象函数 $F(s)$ \\
+    \midrule
+    $\delta(t)$ & $1$ & $\varepsilon(t)$ & $1/s$ \\
+    $t$ & $1/s^2$ & $t^n$ & $n!/s^{n+1}$ \\
+    $\mathrm{e}^{-at}$ & $1/(s+a)$ & $t\mathrm{e}^{-at}$ & $1/(s+a)^2$ \\
+    $\sin\omega t$ & $\omega/(s^2+\omega^2)$ & $\cos\omega t$ & $s/(s^2+\omega^2)$ \\
+    $\mathrm{e}^{-at}\sin\omega t$ & $\omega/[(s+a)^2+\omega^2]$ & $\mathrm{e}^{-at}\cos\omega t$ & $(s+a)/[(s+a)^2+\omega^2]$ \\
+    $(1-at)\mathrm{e}^{-at}$ & $s/(s+a)^2$ & $1-\mathrm{e}^{-at}$ & $a/[s(s+a)]$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{拉普拉斯变换的基本性质}
-\begin{itemize}
-    \item 线性性质
-    \item 微分性质
-    \item 积分性质
-    \item 延迟性质
-    \item 位移性质
-    \item 初值定理
-    \item 终值定理
-    \item 卷积定理
-\end{itemize}
+
+\begin{enumerate}
+  \item \textbf{线性性质}：若 $\mathcal{L}\{f_1(t)\}=F_1(s)$、$\mathcal{L}\{f_2(t)\}=F_2(s)$，$a$、$b$ 为任意常数，则
+        \begin{equation}
+          \mathcal{L}\{af_1(t)+bf_2(t)\}=aF_1(s)+bF_2(s)
+        \end{equation}
+        拉氏逆变换也有相同的线性性质。
+  \item \textbf{微分性质}：若 $\mathcal{L}\{f(t)\}=F(s)$，则
+        \begin{keyformula}{\mathcal{L}\left\{\frac{\mathrm{d}f(t)}{\mathrm{d}t}\right\}=sF(s)-f(0_-)}
+        \end{keyformula}
+        即\textbf{函数求导的拉氏变换等于其象函数乘以 $s$，再减去 $0_-$ 时刻的原始值}。推论：二阶导数
+        $\mathcal{L}\{f''(t)\}=s^2F(s)-sf(0_-)-f'(0_-)$。使用该性质可把关于 $f(t)$ 的微分方程转化为
+        关于 $F(s)$ 的代数方程，这对分析线性系统有重要作用。
+  \item \textbf{积分性质}：若 $\mathcal{L}\{f(t)\}=F(s)$，则
+        \begin{equation}
+          \mathcal{L}\left\{\int_{0_-}^{t}f(\xi)\,\mathrm{d}\xi\right\}=\frac{F(s)}{s}
+        \end{equation}
+  \item \textbf{延迟性质}：若 $\mathcal{L}\{f(t)\}=F(s)$，则
+        \begin{keyformula}{\mathcal{L}\{f(t-t_0)\varepsilon(t-t_0)\}=\mathrm{e}^{-st_0}F(s)}
+        \end{keyformula}
+        其中 $f(t-t_0)\varepsilon(t-t_0)$ 表示把 $f(t)$ 延迟至 $t_0$。据此可方便地求矩形脉冲的象函数：
+        高度为 $A$、宽度为 $t_0$ 的矩形脉冲 $f(t)=A\left[\varepsilon(t)-\varepsilon(t-t_0)\right]$，其象函数为
+        $F(s)=\dfrac{A}{s}\left(1-\mathrm{e}^{-st_0}\right)$。
+  \item \textbf{位移性质}：若 $\mathcal{L}\{f(t)\}=F(s)$，则
+        \begin{equation}
+          \mathcal{L}\left\{\mathrm{e}^{at}f(t)\right\}=F(s-a),\qquad \mathrm{Re}[s-a]>0
+        \end{equation}
+        即函数乘以 $\mathrm{e}^{at}$ 的拉氏变换等于其象函数作位移 $a$。
+  \item \textbf{初值定理}：若 $\mathcal{L}\{f(t)\}=F(s)$，且 $\lim\limits_{t\to0_+}f(t)$ 存在，则
+        \begin{equation}
+          f(0_+)=\lim_{t\to0_+}f(t)=\lim_{s\to\infty}sF(s)
+        \end{equation}
+  \item \textbf{终值定理}：若 $\mathcal{L}\{f(t)\}=F(s)$，且 $F(s)$ 的所有奇点都在 $s$ 平面的\textbf{左半平面}，
+        则
+        \begin{equation}
+          f(\infty)=\lim_{t\to\infty}f(t)=\lim_{s\to0}sF(s)
+        \end{equation}
+        应用初值、终值定理，仅在 $s$ 域即可直接求出原函数的初值和终值，不必作逆变换。
+  \item \textbf{卷积定理}：若 $\mathcal{L}\{f_1(t)\}=F_1(s)$、$\mathcal{L}\{f_2(t)\}=F_2(s)$，则
+        \begin{keyformula}{\mathcal{L}\left\{f_1(t)*f_2(t)\right\}=F_1(s)F_2(s),\qquad
+          \mathcal{L}^{-1}\left\{F_1(s)F_2(s)\right\}=f_1(t)*f_2(t)}
+        \end{keyformula}
+        即原函数卷积的象函数等于相应象函数的乘积；象函数乘积的原函数等于原函数的卷积。
+\end{enumerate}
+
+\begin{corepoint}{微分性质中的 $f(0_-)$ 是\textbf{原始值}而不是 $f(0_+)$，这是复频域法能自动处理“强迫跃变”
+的关键（见 9.4 节的附加电源）。使用终值定理必须先确认 $F(s)$ 的奇点全在左半平面，
+否则 $f(\infty)$ 不存在，强行套公式会得出错误结论。}
+\end{corepoint}
 
 \section{拉普拉斯逆变换}
-$n>m$情况。
 
-$n\le m$的情况。
+用复频域法分析电路，既需由已知时间函数求象函数，也需由象函数求原函数，即计算拉氏逆变换。线性集中参数
+电路中电压、电流的象函数都是 $s$ 的\textbf{有理分式}，可展开成部分分式之和，再对各部分分式求原函数，
+最后按线性性质代数相加。
+
+设
+\begin{equation}
+  F(s)=\frac{F_1(s)}{F_2(s)}
+\end{equation}
+$F_1(s)$、$F_2(s)$ 均为实系数多项式且无公因式。
+
+\subsection{情形一：$n>m$（真分式），$F_2(s)=0$ 只有单根}
+此时 $F(s)$ 可展开为
+\begin{equation}
+  F(s)=\frac{A_1}{s-p_1}+\frac{A_2}{s-p_2}+\cdots+\frac{A_n}{s-p_n}
+  \label{eq:ch9-partial}
+\end{equation}
+$p_1,p_2,\cdots,p_n$ 为 $F_2(s)=0$ 的 $n$ 个不同根。由于 $s\to p_k$ 时 $|F(s)|\to\infty$，
+故称这些根为 $F(s)$ 的\textbf{极点}（pole）。用 $(s-p_k)$ 乘式 \eqref{eq:ch9-partial} 两边并取 $s\to p_k$ 的极限，
+右边只剩下 $A_k$，于是
+\begin{keyformula}{A_k=\lim_{s\to p_k}(s-p_k)F(s)
+  =\left.\frac{F_1(s)}{F_2'(s)}\right|_{s=p_k},\qquad k=1,2,\cdots,n}
+\end{keyformula}
+当 $s=p_k$ 时分子、分母均为零，是不定式，可先约去公因式 $(s-p_k)$ 再代入，或用罗必塔法则
+（分子、分母分别对 $s$ 求一次导后再代 $s=p_k$）。求出各 $A_k$ 后取逆变换，利用线性性质得
+\begin{equation}
+  f(t)=\sum_{k=1}^{n}A_k\mathrm{e}^{p_kt}\qquad(t\ge0)
+\end{equation}
+
+\subsection{情形二：$F_2(s)=0$ 有共轭复根}
+对单复根仍可按上式求，只是要作复数运算。由于 $F(s)$ 的系数为实数，其复数极点均以共轭形式出现，
+对应待定系数也是共轭关系，利用这一特点可简化计算。设极点为 $p_1=\alpha+\mathrm{j}\beta$、
+$p_2=\alpha-\mathrm{j}\beta$，对应系数 $A_1=|A|\angle\theta$、$A_2=|A|\angle(-\theta)$，则
+\begin{keyformula}{f(t)=A_1\mathrm{e}^{p_1t}+A_2\mathrm{e}^{p_2t}
+  =2|A|\mathrm{e}^{\alpha t}\cos(\beta t+\theta)\qquad(t\ge0)}
+\end{keyformula}
+即一对共轭极点对应一个按指数规律衰减（$\alpha<0$）的余弦振荡项。
+
+\subsection{情形三：$F_2(s)=0$ 有重根}
+设 $p_1$ 为 $r$ 重根，其余为单根，则展开式为
+\begin{equation}
+  F(s)=\frac{A_{11}}{(s-p_1)^r}+\frac{A_{12}}{(s-p_1)^{r-1}}+\cdots+\frac{A_{1r}}{s-p_1}
+  +\sum\frac{A_k}{s-p_k}
+\end{equation}
+重根对应的系数按下式求：
+\begin{equation}
+  A_{1j}=\frac{1}{(j-1)!}\lim_{s\to p_1}\frac{\mathrm{d}^{j-1}}{\mathrm{d}s^{j-1}}
+  \left[(s-p_1)^rF(s)\right],\qquad j=1,2,\cdots,r
+\end{equation}
+对应原函数含 $t^{j-1}\mathrm{e}^{p_1t}/(j-1)!$ 形式的项（$r=2$ 时出现 $t\mathrm{e}^{p_1t}$ 项，
+正是第八章二阶电路临界情形的解的形式）。
+
+\subsection{情形四：$n\le m$（假分式）}
+先用多项式长除法把 $F(s)$ 化为多项式与真分式之和，多项式部分对应冲激函数及其各阶导数，
+真分式部分再按上述三种情形展开。
+
+\begin{corepoint}{逆变换的三个固定动作：\textbf{（1）} 先判断真/假分式（分子次数 $\ge$ 分母次数要先除）；
+\textbf{（2）} 求分母的根并分类（单根、共轭复根、重根）；\textbf{（3）} 用留数公式（或罗必塔法则）求系数。
+复频域法的最后一步永远是逆变换，系数算错则全题皆错，务必回代校验 $\sum A_k=F(\infty)$ 等关系。}
+\end{corepoint}
 
 \section{复频域中的电路定律与电路模型}
-\subsection{复频域中的基尔霍夫定律}
 
-\subsection{复频域中的元件电压与电流关系}
+\subsection{基尔霍夫定律的复频域形式}
+对 KCL、KVL 的时域方程取拉氏变换，由线性性质得
+\begin{equation}
+  \sum I(s)=0,\qquad \sum U(s)=0
+\end{equation}
+即基尔霍夫定律在复频域中仍成立，形式与直流电路完全相同。
 
-\subsection{复频域电路模型、运算阻抗与运算导纳}
+\subsection{元件方程的复频域形式}
+\textbf{（1）电阻元件}：$u_R=Ri_R$，取变换得 $U_R(s)=RI_R(s)$，形式与直流电路相同。
+
+\textbf{（2）电容元件}：$i_C=C\dfrac{\mathrm{d}u_C}{\mathrm{d}t}$，取变换并利用微分性质得
+\begin{equation}
+  I_C(s)=sCU_C(s)-Cu_C(0_-)
+  \quad\Longleftrightarrow\quad
+  U_C(s)=\frac{1}{sC}I_C(s)+\frac{u_C(0_-)}{s}
+  \label{eq:ch9-cap}
+\end{equation}
+式中 $\dfrac{1}{sC}$ 具有电阻的量纲，称为\textbf{运算容抗}；$\dfrac{u_C(0_-)}{s}$ 称为\textbf{附加电压源}，
+它反映电容原始储能对暂态过程的影响。由此得电容的复频域模型：一个原始值为零的电容与一个电压为
+$u_C(0_-)/s$ 的电压源\textbf{串联}；经电源等效变换可得\textbf{并联}形式，其中 $Cu_C(0_-)$ 称为附加电流源。
+
+\textbf{（3）电感元件}：$u_L=L\dfrac{\mathrm{d}i_L}{\mathrm{d}t}$，取变换得
+\begin{equation}
+  U_L(s)=sLI_L(s)-Li_L(0_-)
+  \label{eq:ch9-ind}
+\end{equation}
+式中 $sL$ 具有电阻量纲，称为\textbf{运算感抗}；$Li_L(0_-)$ 也是附加电压源，与 $sL$ 串联，
+方向与 $I_L(s)$ 在 $sL$ 上的压降相反；经等效变换可化为并联形式（附加电流源 $i_L(0_-)/s$）。
+
+\textbf{（4）互感元件}：设两线圈电压电流关系为 $u_1=L_1\dfrac{\mathrm{d}i_1}{\mathrm{d}t}
++M\dfrac{\mathrm{d}i_2}{\mathrm{d}t}$ 等，取变换得
+\begin{align}
+  U_1(s)&=sL_1I_1(s)+sMI_2(s)-\left[L_1i_1(0_-)+Mi_2(0_-)\right]\\
+  U_2(s)&=sMI_1(s)+sL_2I_2(s)-\left[Mi_1(0_-)+L_2i_2(0_-)\right]
+\end{align}
+附加电压源与两个线圈电流的原始值都有关。受控电源、理想变压器、理想运算放大器的时域方程均为线性代数方程，
+只要把时域方程中的电压、电流用相应象函数代替，即得其复频域形式。
+
+\textbf{（5）独立电源}：对给定的时间函数取拉氏变换即得其复频域模型，如 $U_S\varepsilon(t)\to U_S/s$、
+$U_m\cos\omega t\to U_m s/(s^2+\omega^2)$。
+
+\subsection{运算电路、运算阻抗与运算导纳}
+将电路中所有元件均用其复频域模型表示，所得电路模型称为原电路的\textbf{复频域电路模型}或\textbf{运算电路}
+（operational circuit）。以 $RLC$ 串联电路为例，由复频域 KVL 得
+\begin{equation}
+  U_S(s)+\frac{u_C(0_-)}{s}-Li_L(0_-)=I(s)\left[R+sL+\frac{1}{sC}\right]
+\end{equation}
+\begin{keyformula}{Z(s)=R+sL+\frac{1}{sC},\qquad Y(s)=\frac{1}{Z(s)}}
+\end{keyformula}
+$Z(s)$ 称为\textbf{复频域阻抗}或\textbf{运算阻抗}，$Y(s)$ 称为\textbf{运算导纳}。当电路为零状态
+（$u_C(0_-)=0$、$i_L(0_-)=0$）时运算电路中无附加电源，有
+\begin{equation}
+  U(s)=Z(s)I(s)
+\end{equation}
+形式上与欧姆定律相似，称为\textbf{复频域的欧姆定律}。多个元件串联可直接写运算阻抗之和，并联可写运算导纳之和，
+这与相量分析法中阻抗、导纳的形式与应用完全一致。
+
+\begin{corepoint}{运算阻抗、运算导纳虽是 $s$ 的函数，但\textbf{不是象函数}，仍为阻抗、导纳的量纲，
+不能对它们作逆变换。另外，附加电源的方向不要弄错：电容的附加电压源 $u_C(0_-)/s$ 极性与 $u_C$ 的参考方向
+一致（与 $I_C(s)$ 在 $1/sC$ 上的压降\textbf{同}方向相加）；电感的附加电压源 $Li_L(0_-)$ 则与
+$I_L(s)$ 在 $sL$ 上的压降\textbf{反}方向。}
+\end{corepoint}
 
 \section{用拉普拉斯变换分析线性动态电路的暂态过程}
 
+复频域中的基尔霍夫方程和各元件特性方程都是线性代数方程。零状态下这些方程与线性直流电路的相应方程相似；
+非零状态下，电容电压、电感电流原始值的作用表现为附加电压源 $u_C(0_-)/s$ 和 $Li_L(0_-)$。
+因此在第 2、3 章针对直流电路提出的各种分析方法、定理和公式都可推广用于运算电路：\textbf{只需把电阻推广为
+运算阻抗、电导推广为运算导纳、恒定电压电流推广为象函数}即可。
+
+\subsection{解题步骤}
+\begin{enumerate}
+  \item 由换路前的电路求出全部电容的 $u_C(0_-)$ 和全部电感的 $i_L(0_-)$，并把激励的时域函数变换成象函数；
+  \item 根据换路后的电路画出运算电路：$u_C(0_-)$、$i_L(0_-)$ 的作用用附加电源表示，$R$、$L$、$C$ 用
+        复频域阻抗表示，已知和待求的电压、电流均用象函数表示；
+  \item 把求解直流电路的方法（节点电压法、回路电流法、叠加定理、戴维南定理等）推广用于运算电路，
+        求出响应的象函数；
+  \item 用部分分式展开法或查积分变换表把响应的象函数变换为原函数（必要时乘 $\varepsilon(t)$）。
+\end{enumerate}
+
+\subsection{方法特点}
+\begin{itemize}
+  \item \textbf{自动满足初始条件}：微分性质中的 $f(0_-)$ 已把原始储能计入附加电源，故\textbf{不需另列初始条件}，
+        也不需求积分常数；
+  \item \textbf{能自然处理强迫跃变}：运算电路用的是 $0_-$ 时刻的原始值而非 $0_+$ 时刻的初始值，
+        因此即使 $u_C$ 或 $i_L$ 在 $t=0$ 处发生跃变（如冲激电流给电容充电），复频域法照常计算，
+        比时域法有明显优越性；
+  \item \textbf{分解的对应}：令运算电路中的附加电源为零，仅由 $U_S(s)$ 作用产生的响应即零状态响应；
+        令 $U_S(s)=0$，仅由附加电源作用产生的响应即零输入响应——这与第八章
+        “全响应 $=$ 零输入响应 $+$ 零状态响应”的结论一致。
+\end{itemize}
+
+\begin{corepoint}{复频域法最易错的三个环节：\textbf{（1）} 漏画附加电源（等价于漏掉初始条件）；
+\textbf{（2）} $u_C(0_-)$ 与 $i_L(0_-)$ 要在\textbf{换路前}的稳态电路中求，不能拿换路后的值；
+\textbf{（3）} 求得的 $U(s)$、$I(s)$ 是象函数，必须做逆变换并注明 $t\ge0$，用时域表达式回答问题。}
+\end{corepoint}
+
 \section{网络函数}
-网络函数。
 
-网络函数的极点位置与单位冲激特性的关系。
+\subsection{定义}
+设网络为线性零状态且只有一个独立电源，激励为 $x(t)$，响应为 $y(t)$。在只有一个独立电源作用的线性
+零状态电路中，响应的象函数 $Y(s)$ 与激励的象函数 $X(s)$ 成正比：
+\begin{keyformula}{H(s)=\frac{Y(s)}{X(s)}\qquad(\text{\songti 零状态})}
+\end{keyformula}
+$H(s)$ 称为复频域中的\textbf{网络函数}。由单位冲激特性的定义及齐性原理，当激励 $x(t)=K\delta(t)$ 时
+零状态响应 $y(t)=Kh(t)$，即 $X(s)=K$、$Y(s)=K\mathcal{L}\{h(t)\}$，代入定义式得
+\begin{keyformula}{H(s)=\mathcal{L}\{h(t)\},\qquad h(t)=\mathcal{L}^{-1}\{H(s)\}}
+\end{keyformula}
+即\textbf{网络函数就是网络单位冲激特性的象函数}；反之，网络函数的原函数就是单位冲激特性。
+$H(s)$ 与 $h(t)$ 都反映了网络的固有性质。若已知 $H(s)$ 和激励象函数 $X(s)$，则零状态响应的象函数为
+$Y(s)=H(s)X(s)$。
 
-复频域网络函数与复数网络函数的关系。
+\subsection{极点、零点与响应结构}
+网络函数一般是 $s$ 的有理分式
+\begin{equation}
+  H(s)=\frac{N(s)}{D(s)},\qquad
+  Y(s)=H(s)X(s)=\frac{N(s)}{D(s)}\cdot\frac{P(s)}{Q(s)}
+\end{equation}
+其中 $N$、$D$、$P$、$Q$ 都是 $s$ 的多项式。用部分分式展开求 $Y(s)$ 的原函数时，分母 $D(s)Q(s)=0$
+的根包括 $Q(s)=0$ 与 $D(s)=0$ 的根。与 $Q(s)=0$ 的根对应的项与外加激励的函数形式相同，属于\textbf{强制分量}；
+与 $D(s)=0$ 的根（即网络函数的极点）对应的项，其性质由网络结构与参数决定，属于\textbf{自由分量}。
+因此\textbf{网络函数极点的性质决定了网络暂态过程的特性}。极点在 $s$ 平面上的位置也称为网络的
+\textbf{自然频率}（natural frequency）。
+
+\subsection{极点位置与单位冲激特性的关系}
+设网络函数仅含一阶极点且 $n>m$，$H(s)$ 可展开为 $\sum\dfrac{A_k}{s-p_k}$，则
+$h(t)=\sum A_k\mathrm{e}^{p_kt}$。设 $p_k=\alpha_k+\mathrm{j}\beta_k$、$A_k=|A_k|\angle\theta_k$，
+按极点位置分六种情况：
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{$H(s)$ 的极点位置与单位冲激特性 $h(t)$ 的关系}
+  \begin{tabular}{llll}
+    \toprule
+    序号 & 极点位置 & 对应 $h(t)$ 的项 & 过程性质 \\
+    \midrule
+    1 & 原点 $p_k=0$ & $A_k$（阶跃函数） & 恒定 \\
+    2 & 左半实轴 $\alpha_k<0,\ \beta_k=0$ & $A_k\mathrm{e}^{\alpha_kt}$，指数衰减 & 稳定、非振荡 \\
+    3 & 右半实轴 $\alpha_k>0,\ \beta_k=0$ & $A_k\mathrm{e}^{\alpha_kt}$，指数增长 & 不稳定、非振荡 \\
+    4 & 虚轴 $\alpha_k=0,\ \beta_k\ne0$ & $2|A_k|\cos(\beta_kt+\theta_k)$ & 临界稳定、等幅振荡 \\
+    5 & 左半平面 $\alpha_k<0,\ \beta_k\ne0$ & $2|A_k|\mathrm{e}^{\alpha_kt}\cos(\beta_kt+\theta_k)$ & 稳定、衰减振荡 \\
+    6 & 右半平面 $\alpha_k>0,\ \beta_k\ne0$ & $2|A_k|\mathrm{e}^{\alpha_kt}\cos(\beta_kt+\theta_k)$ & 不稳定、增幅振荡 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+概括起来：\textbf{极点位于左半平面时}，对应特性随时间增加而减小、最终衰减为零，暂态过程\textbf{稳定}；
+\textbf{极点位于右半平面时}，对应特性随时间发散，暂态过程\textbf{不稳定}；\textbf{极点位于虚轴上时}
+属于\textbf{临界稳定}。另外，\textbf{极点位于实轴上时响应是非振荡的}，否则均为振荡的暂态过程。
+极点距虚轴越远衰减（或增长）越快，距实轴越远振荡频率越高。
+
+\subsection{复频域网络函数与复数网络函数的关系}
+第 7 章定义的 $H(\mathrm{j}\omega)$（相量之比）用于讨论网络的频率特性，计算时用相量模型。
+比较复频域模型与相量模型可见：把复频域模型中的 $s$ 代以 $\mathrm{j}\omega$、把象函数代以相量，
+就得到相应的相量模型。故
+\begin{keyformula}{H(\mathrm{j}\omega)=\left.H(s)\right|_{s=\mathrm{j}\omega}}
+\end{keyformula}
+即令 $H(s)$ 中的 $s=\mathrm{j}\omega$ 便得 $H(\mathrm{j}\omega)$；反之令 $H(\mathrm{j}\omega)$ 中的
+$\mathrm{j}\omega=s$ 便得 $H(s)$。
+
+\begin{corepoint}{网络函数必须在\textbf{零状态}条件下定义（否则响应中还含零输入分量，与激励不成正比）。
+求 $H(s)$ 时附加电源一律置零，即把 $L$、$C$ 的原始值全取为零。若题目要求“全响应”，
+则 $Y(s)=H(s)X(s)+$ 零输入响应的象函数，两部分都不能漏。}
+\end{corepoint}
+
+\section{本章小结}
+\begin{enumerate}
+  \item 拉氏变换把时域函数 $f(t)$ 变为复频域函数 $F(s)$，把微分方程变为代数方程；常用变换对与八条基本性质
+        必须熟记，尤其是\textbf{微分性质}（带来初始值）与\textbf{延迟性质}。
+  \item 逆变换用部分分式展开法：单根用留数公式、共轭复根配成 $2|A|\mathrm{e}^{\alpha t}\cos(\beta t+\theta)$、
+        重根用求导公式，假分式先做多项式除法。
+  \item 复频域中 KCL、KVL 形式不变；元件方程变为 $U_R=RI_R$、$U_C=\dfrac{1}{sC}I_C+\dfrac{u_C(0_-)}{s}$、
+        $U_L=sLI_L-Li_L(0_-)$，原始储能体现为\textbf{附加电源}。
+  \item 运算阻抗 $Z(s)=R+sL+\dfrac{1}{sC}$，运算电路可按直流电路的一切方法求解；
+        复频域法\textbf{不需另列初始条件}，能自动处理强迫跃变。
+  \item 网络函数 $H(s)=\dfrac{Y(s)}{X(s)}$（零状态），且 $H(s)=\mathcal{L}\{h(t)\}$；
+        $H(s)$ 的极点即网络的自然频率，其位置决定暂态过程是稳定、临界还是不稳定，是振荡还是非振荡。
+  \item 令 $s=\mathrm{j}\omega$ 即由复频域网络函数得复数网络函数，从而把暂态分析与频率特性分析统一起来。
+\end{enumerate}
 
 \endinput

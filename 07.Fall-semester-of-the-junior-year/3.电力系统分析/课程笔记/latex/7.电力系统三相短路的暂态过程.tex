@@ -1,0 +1,341 @@
+% ============================================================
+% 第 5 章  电力系统三相短路的暂态过程
+% （教材：何仰赞、温增银《电力系统分析》上册 第 5 章）
+% 结构对齐 5.1—5.6；例题、习题不录
+% 本文件用 \chapter 承接教材第 5 章
+% ============================================================
+
+\chapter{电力系统三相短路的暂态过程}
+
+短路是电力系统最严重的故障。三相短路是对称短路，可以用一相电路分析，是全部短路计算的
+基础；而各种不对称短路（第 7、8 章）最终也都要回到“正序等效网络 $+$ 附加电抗”的形式，
+其正序部分与三相短路同构。因此本章既是暂态分析的第一课，也是短路计算的总入口。
+
+\section{短路的一般概念}
+
+\subsection{短路的原因、类型及后果}
+
+\textbf{原因}：绝缘损坏（老化、污秽、受潮、机械损伤）、误操作（带负荷拉刀闸、带地线合闸）、
+鸟兽跨接、线路断线倒杆、雷击过电压等。
+
+\textbf{类型}（按相数与接地情况）：
+
+\begin{table}[htbp]
+  \centering
+  \caption{短路的类型与特点}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    类型 & 符号 & 是否对称 & 出现概率与说明 \\
+    \midrule
+    三相短路 & $f^{(3)}$ & 对称 & 概率最低（约 $5\%$），但后果最严重 \\
+    两相短路 & $f^{(2)}$ & 不对称 & 约 $10\%\sim15\%$，无零序分量 \\
+    单相接地短路 & $f^{(1)}$ & 不对称 & 概率最高（约 $65\%\sim70\%$），有零序分量 \\
+    两相接地短路 & $f^{(1,1)}$ & 不对称 & 约 $10\%\sim20\%$，有零序分量 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{后果}：
+\begin{enumerate}
+  \item \textbf{电动力效应}：短路电流可达额定电流的十几到几十倍，导体间电动力与电流平方成正比，
+        可使设备变形、损坏；
+  \item \textbf{热效应}：巨大电流在导体和设备中产生大量热量，短时即可使绝缘烧毁；
+  \item \textbf{电压骤降}：短路点附近电压大幅下降，影响用户用电，严重时导致电动机失速、
+        系统失去同步；
+  \item \textbf{破坏稳定}：短路切除不及时会引发系统振荡甚至崩溃；
+  \item \textbf{不对称短路的附加危害}：零序电流产生零序磁通，对邻近通信线路产生干扰。
+\end{enumerate}
+
+\subsection{短路计算的目的}
+
+\begin{itemize}
+  \item 选择电气设备：按短路电流校验\textbf{动稳定}（电动力）与\textbf{热稳定}（发热），
+        并据此选定断路器开断能力；
+  \item 继电保护的设计与整定：确定保护范围、整定值与灵敏度；
+  \item 确定运行方式：比较不同接线与开机方式下的短路电流水平，选择限制短路电流的措施
+        （如变压器中性点接地方式、加装电抗器、分段运行）；
+  \item 为稳定计算提供初值：短路期间的电磁功率、切除时刻的功角都依赖短路电流。
+\end{itemize}
+
+\corepoint{短路计算的两条主线贯穿全书：\textbf{手算}路线（等值电路 $+$ 化简 $+$ 查计算曲线，
+第 6 章）与\textbf{计算机}路线（节点阻抗矩阵 $+$ 序网方程，第 4、8 章）。
+两条路线的物理模型完全相同，区别只在“化简到多小”和“谁来解方程”。}
+
+\section{恒定电势源电路的三相短路}
+
+\subsection{短路的暂态过程}
+
+设无限大功率电源（内阻抗为零、端电压恒定）经 $R$、$L$ 供电，$t=0$ 时在出口发生三相短路。
+短路前稳态电流
+\begin{equation}
+  i=\frac{E_m}{\sqrt{R^{2}+(\omega L)^{2}}}\sin(\omega t+\alpha-\varphi)
+  =I_m\sin(\omega t+\alpha-\varphi),
+\end{equation}
+短路后电路成为无源 $R$-$L$ 回路，回路方程为
+\begin{equation}
+  L\frac{\mathrm{d}i}{\mathrm{d}t}+Ri=E_m\sin(\omega t+\alpha).
+\end{equation}
+其解为\textbf{周期分量（强制分量）}与\textbf{非周期分量（自由分量）}之和
+\keyformula{i=I_{pm}\sin(\omega t+\alpha-\varphi')+C\,e^{-t/T_a},
+  \qquad I_{pm}=\frac{E_m}{\sqrt{R^{2}+(\omega L)^{2}}},\quad T_a=\frac{L}{R}}
+积分常数由\textbf{短路瞬间电流不能突变}（电感中电流连续）确定：
+\begin{equation}
+  C=I_m\sin(\alpha-\varphi)-I_{pm}\sin(\alpha-\varphi').
+\end{equation}
+即自由分量的初值等于“短路前瞬间电流”与“短路后周期分量在 $t=0$ 的值”之差。
+
+\textbf{结论（写清条件）}：
+\begin{enumerate}
+  \item 短路电流最大可能值出现在\textbf{短路前空载}（$I_m=0$）且
+        $\alpha-\varphi'=\pm90^\circ$（即电压过零瞬间短路）时，
+        此时自由分量初值等于周期分量幅值，半周后出现最大瞬时值；
+  \item 若短路瞬间恰好 $C=0$，则不出现非周期分量，电流立即进入稳态——这是“最有利”的合闸角；
+  \item 非周期分量按 $T_a=L/R$ 衰减，$R$ 越大衰减越快；
+  \item 周期分量幅值由回路阻抗决定，与合闸角无关。
+\end{enumerate}
+
+\subsection{短路冲击电流}
+
+短路电流最大瞬时值称\textbf{短路冲击电流} $i_{sh}$，出现在短路后约半个周期（$t=0.01$~s，
+即 $50$~Hz 的半周）：
+\keyformula{i_{sh}=I_{pm}+I_{pm}e^{-0.01/T_a}=\left(1+e^{-0.01/T_a}\right)I_{pm}
+  =K_{sh}I_{pm}=K_{sh}\sqrt{2}I''}
+其中 $I''$ 为短路电流周期分量的\textbf{起始有效值}（次暂态电流），
+$K_{sh}=1+e^{-0.01/T_a}$ 称\textbf{冲击系数}，$1<K_{sh}<2$。
+工程上：发电机出口短路取 $K_{sh}=1.90$（$i_{sh}=2.69I''$）；
+一般高压电网取 $K_{sh}=1.80$（$i_{sh}=2.55I''$）。
+
+\subsection{短路电流的最大有效值}
+
+以 $i_{sh}$ 出现的那个周期为考察对象，该周期内电流有效值称\textbf{短路电流最大有效值}
+（冲击电流有效值）：
+\keyformula{I_{sh}=\sqrt{I''^{2}+i_{sh}^{2}}\approx I''\sqrt{1+2\left(K_{sh}-1\right)^{2}}}
+$K_{sh}=1.8$ 时 $I_{sh}=1.52I''$；$K_{sh}=1.9$ 时 $I_{sh}=1.62I''$。
+$I_{sh}$ 用于校验电气设备的\textbf{动稳定}（与制造厂给出的动稳定电流峰值比较）。
+
+\subsection{短路功率}
+
+短路功率（短路容量）定义为短路点处三相视在功率
+\keyformula{S_k=\sqrt{3}U_{av}I''}
+$U_{av}$ 为短路点所在电压级的平均额定电压（kV），$I''$ 单位 kA，$S_k$ 单位 MV$\cdot$A。
+其物理含义是“短路点看进去的等值阻抗所对应的容量”，$S_k=U_{av}^{2}/X_{\Sigma}$
+（标幺制下 $S_{k*}=1/X_{\Sigma*}$）。断路器开断能力即按 $S_k$ 选择。
+
+\begin{table}[htbp]
+  \centering
+  \caption{短路电流的三个特征量及其用途}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.28\linewidth}p{0.42\linewidth}@{}}
+    \toprule
+    量 & 定义 & 用途 \\
+    \midrule
+    $I''$ & 周期分量起始有效值（次暂态电流） & 短路容量、继电保护整定、热稳定校验 \\
+    $i_{sh}$ & 最大瞬时值，$t\approx0.01$~s & 动稳定校验（峰值） \\
+    $I_{sh}$ & 含非周期分量的最大有效值 & 动稳定校验（有效值） \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{$i_{sh}$ 与 $I_{sh}$ 都建立在“最不利合闸角 $+$ 空载”这一\textbf{条件}上，
+是偏保守的校验值；而 $I''$ 与合闸角无关，只由电网阻抗决定。
+三者中只有 $I''$ 是“电路算出来的量”，另两个是“由 $I''$ 派生的校验量”。}
+
+\section{同步电机突然三相短路的物理分析}
+
+\subsection{突然短路暂态过程的特点}
+
+与恒定电势源电路相比，同步电机突然短路有三个新特点：
+\begin{enumerate}
+  \item \textbf{电源内阻抗不能忽略且随时间变化}：短路瞬间电枢反应磁通被转子绕组“挡住”，
+        只能走漏磁路径，等值电抗小（$X_d''$）；随时间推移磁通逐渐穿入转子，
+        电抗增大到 $X_d'$ 直至 $X_d$；
+  \item \textbf{励磁磁链不能突变}：转子励磁绕组和阻尼绕组都是闭合回路，电阻很小，
+        短路瞬间磁链近似守恒，从而产生一系列自由电流（定子非周期分量、转子自由分量）；
+  \item \textbf{定子电流中含有倍频分量}：凸极机 $X_d\ne X_q$，转子纵、横轴磁阻不同，
+        转子磁极旋转时定子绕组看到的磁阻周期性变化，产生 $2\omega$ 分量。
+\end{enumerate}
+
+\subsection{超导体闭合回路磁链守恒原则}
+
+若闭合回路的电阻为零，则由 $\oint\boldsymbol E\cdot\mathrm{d}\boldsymbol l=-\mathrm{d}\psi/\mathrm{d}t$
+与 $\oint\boldsymbol E\cdot\mathrm{d}\boldsymbol l=Ri=0$ 得
+\keyformula{\psi=\text{常数}\qquad(R=0)}
+即\textbf{超导体闭合回路的磁链不能突变}。发电机转子绕组电阻很小，在短路初期的几个周期内
+可近似按此处理。这是整个“突然短路物理分析”的唯一出发点：
+\begin{itemize}
+  \item 励磁绕组磁链 $\psi_f$ 短路瞬间不变 $\Rightarrow$ 产生励磁绕组自由直流分量，
+        以抵消定子电流对它的去磁作用；
+  \item 阻尼绕组磁链 $\psi_D$、$\psi_Q$ 不变 $\Rightarrow$ 产生阻尼绕组自由分量（衰减很快）；
+  \item 定子各相绕组磁链 $\psi_a$、$\psi_b$、$\psi_c$ 在短路瞬间不变 $\Rightarrow$ 定子电流出现
+        非周期（直流）分量与倍频分量。
+\end{itemize}
+
+\subsection{无阻尼绕组同步电机突然三相短路的物理分析}
+
+短路瞬间：定子电流突增，电枢反应磁通试图穿入转子，但被励磁绕组的感应电流所抵消，
+磁通只能经励磁绕组漏磁路径闭合。此时从定子看进去的等值电抗为
+\begin{equation}
+  X_d'=X_\sigma+\frac{X_{ad}X_{f\sigma}}{X_{ad}+X_{f\sigma}},
+\end{equation}
+即“$X_{ad}$ 与励磁绕组漏抗 $X_{f\sigma}$ 并联后再串定子漏抗”，显然 $X_d'<X_d$。
+对应地定义\textbf{暂态电势}
+\begin{equation}
+  E_q'=U_q+X_d'I_d ,
+\end{equation}
+它正比于励磁绕组磁链 $\psi_f$，故\textbf{短路瞬间 $E_q'$ 不变}——这使短路电流的初值
+可以用短路前的运行状态直接算出。这就是“暂态电势”这个概念的全部价值。
+
+\section{无阻尼绕组同步电机三相短路电流计算}
+
+\subsection{暂态电势和暂态电抗}
+
+由 $X_d'$、$E_q'$ 的定义可得，短路后定子电流的\textbf{周期分量}（强制分量）为
+\keyformula{I'=\frac{E_q'}{X_d'+X_e}}
+$X_e$ 为短路点至机端的外部电抗（含变压器、线路）。因为 $E_q'$ 在短路瞬间等于短路前值，
+故 $I'$ 可由短路前运行状态一次算出，无需迭代。
+稳态短路电流则为
+\begin{equation}
+  I_\infty=\frac{E_q}{X_d+X_e},
+\end{equation}
+$E_q$、$X_d$ 对应转子磁链完全穿入转子的稳态。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三个电抗、三个电势与三个电流阶段的对应（无阻尼绕组）}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    阶段 & 电抗 & 电势 & 电流 \\
+    \midrule
+    短路瞬间（初值） & $X_d'$ & $E_q'$（不变） & $I'=E_q'/(X_d'+X_e)$ \\
+    暂态过程 & $X_d'\to X_d$ & $E_q'\to E_q$ & 周期分量由 $I'$ 衰减到 $I_\infty$ \\
+    稳态 & $X_d$ & $E_q$ & $I_\infty=E_q/(X_d+X_e)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{不计衰减时的短路电流算式}
+
+不计各自由分量衰减时，定子电流可分解为三部分：
+\begin{itemize}
+  \item \textbf{基频周期分量}：幅值 $\sqrt{2}I'$，由 $E_q'$、$X_d'$ 决定，是“强制分量”；
+  \item \textbf{非周期（直流）分量}：由定子绕组磁链守恒产生，初值使 $t=0$ 时总电流连续；
+  \item \textbf{倍频分量}：凸极机 $X_d\ne X_q$ 引起，频率 $2\omega$，幅值较小。
+\end{itemize}
+三者之和在 $t=0$ 时必须等于短路前瞬间的电流值，这是确定自由分量初值的唯一条件。
+工程实用计算中通常只关心基频周期分量的起始有效值 $I''$（即 $I'$ 在不计衰减的近似下），
+以及由它派生的 $i_{sh}$、$I_{sh}$。
+
+\subsection{自由电流的衰减}
+
+各自由分量按不同时间常数衰减，形成短路电流的“三段式”特征：
+
+\begin{table}[htbp]
+  \centering
+  \caption{短路电流各分量的时间常数}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    分量 & 时间常数 & 典型值 \\
+    \midrule
+    定子非周期分量 & $T_a\approx X''/(\omega r)$（近似 $L/R$） & $0.05\sim0.2$~s \\
+    励磁绕组自由分量（暂态） & $T_d'=T_{d0}'\,X_d'/X_d$，$T_{d0}'=X_{ff}/(\omega r_f)$ & $0.5\sim2$~s \\
+    阻尼绕组自由分量（次暂态） & $T_d''=T_{d0}''\,X_d''/X_d$ & $0.02\sim0.05$~s \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+可见：阻尼绕组分量衰减最快（几个周期即消失），励磁绕组分量衰减较慢（数秒），
+定子直流分量居中。三个时间常数相差一个数量级，正是“次暂态—暂态—稳态”分段处理的物理依据。
+
+\subsection{负载状态下的突然短路}
+
+负载短路与空载短路的区别在于\textbf{短路瞬间 $E_q'$ 的取值}：
+负载时 $E_q'$ 由短路前的 $U$、$I$ 算出（$E_q'=U_q+X_d'I_d$），一般大于空载值；
+同时定子非周期分量的初值由短路前负荷电流决定。实用计算中常取
+$E_q'\approx U_0$ 或 $E''\approx1$（标幺），这是偏保守的简化。
+
+\section{有阻尼绕组同步电机的突然三相短路}
+
+\subsection{突然短路的物理过程}
+
+有阻尼绕组时，短路瞬间阻尼绕组（$D$、$Q$）也满足磁链守恒，进一步“挡住”电枢反应磁通，
+磁通只能走\textbf{定子漏磁、励磁绕组漏磁、阻尼绕组漏磁}三条并联路径。此时等值电抗为
+\begin{equation}
+  X_d''=X_\sigma+\left(\frac{1}{X_{ad}}+\frac{1}{X_{f\sigma}}+\frac{1}{X_{D\sigma}}\right)^{-1},
+\end{equation}
+显然 $X_d''<X_d'<X_d$。$q$ 轴同理有
+\begin{equation}
+  X_q''=X_\sigma+\frac{X_{aq}X_{Q\sigma}}{X_{aq}+X_{Q\sigma}}.
+\end{equation}
+过程分为三个阶段：\textbf{次暂态}（阻尼绕组起作用，$0\sim0.05$~s）、
+\textbf{暂态}（阻尼绕组已衰减，励磁绕组起作用，$0.05$~s$\sim$数秒）、
+\textbf{稳态}（转子磁链完全建立）。
+
+\subsection{次暂态电势和次暂态电抗}
+
+定义\textbf{次暂态电势}
+\begin{equation}
+  E''\approx U+\mathrm{j}X''\dot I ,
+\end{equation}
+其纵轴分量 $E_q''=U_q+X_d''I_d$，横轴分量 $E_d''=U_d-X_q''I_q$。
+短路瞬间 $E''$ 不变（对应阻尼绕组磁链不变），于是
+\keyformula{I''=\frac{E''}{X''+X_e}}
+这就是短路电流周期分量起始有效值的\textbf{实用计算式}，也是第 6 章全部实用算法的基石。
+工程上常取 $E''\approx1.0\sim1.1$（标幺），即“短路前电压约为额定值”。
+
+\subsection{有阻尼绕组电机的短路电流}
+
+计及各分量衰减，定子短路电流的完整表达式（一相）可写成
+\begin{equation}
+  i_a=\underbrace{\sqrt{2}I''e^{-t/T_d''}+\sqrt{2}I'e^{-t/T_d'}+\sqrt{2}I_\infty}_{\text{基频周期分量}}
+  +\underbrace{\sqrt{2}I''e^{-t/T_a}\cos\alpha_0}_{\text{非周期分量}}
+  +\underbrace{\cdots\cos 2\omega t}_{\text{倍频分量}} ,
+\end{equation}
+其中 $\alpha_0$ 为短路瞬间电压的相位角。三项周期分量的“接力”关系为
+$I''>I'>I_\infty$，依次由 $T_d''$、$T_d'$ 控制衰减。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三个电抗、三个电势、三个电流的完整对应}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    阶段 & 电抗 & 电势 & 电流 \\
+    \midrule
+    次暂态（$0\sim0.05$~s） & $X_d''$（$X_q''$） & $E''$（不变） & $I''=E''/(X''+X_e)$ \\
+    暂态（$0.05$~s$\sim$数秒） & $X_d'$ & $E_q'$ & $I'=E_q'/(X_d'+X_e)$ \\
+    稳态 & $X_d$ & $E_q$ & $I_\infty=E_q/(X_d+X_e)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{自由电流的衰减}
+
+有阻尼绕组时多了一个时间常数 $T_d''$（阻尼绕组），它与 $T_a$、$T_d'$ 共同决定短路电流波形：
+\begin{itemize}
+  \item $t<0.05$~s：$I''$ 起主导，$i_{sh}$ 就在这个区间出现；
+  \item $0.05\sim2$~s：$I'$ 段，继电保护的主要动作区间；
+  \item $t>2$~s：接近 $I_\infty$，即稳态短路电流。
+\end{itemize}
+
+\section{强行励磁对短路暂态过程的影响}
+
+\textbf{强行励磁}（继电强行励磁）指系统电压因短路而大幅下降时，励磁调节装置快速把励磁电压
+升到顶值（可达额定励磁电压的 $1.8\sim2$ 倍甚至更高），以维持机端电压。
+
+对短路暂态过程的影响：
+\begin{enumerate}
+  \item 提高 $E_q$，使短路电流周期分量的“稳态值”$I_\infty$ 上升，
+        衰减过程被“托住”，短路电流在切除时刻可能明显大于不加强行励磁的情形；
+  \item 提高发电机电磁功率，改善\textbf{暂态稳定}（第 17 章）——
+        这是强行励磁最重要的作用；
+  \item 对短路电流计算的影响是\textbf{偏保守}的：若不考虑强行励磁，算得的短路电流偏小，
+        校验设备时须留裕度；但在稳定计算中必须计入，否则结果偏于乐观。
+\end{enumerate}
+
+\corepoint{本章的主线是一句话：\textbf{磁链守恒 $\Rightarrow$ 电势不变 $\Rightarrow$ 电流可算}。
+短路瞬间哪个绕组的磁链守恒，就从定子看进去得到哪个电抗（$X''$、$X'$、$X_d$），
+相应地就有哪个电势（$E''$、$E_q'$、$E_q$）不变，从而直接算出对应阶段的电流。
+把这条链理顺，5.4、5.5 两节的十几个公式其实是三组同构的结果。}

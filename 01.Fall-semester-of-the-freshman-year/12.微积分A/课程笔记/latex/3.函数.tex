@@ -1,48 +1,207 @@
-% file: 1.函数与极坐标.tex
-% 作为主文档 \input{1.函数与极坐标} 的子文件，不要写 \documentclass、\begin{document}、\end{document}
-% 宏包统一在 1.main.tex 导言区加载（原此处 amsmath/amssymb 会触发 "Can be used only in preamble"，2026-11-06 移除）
+% 子文件：3.函数.tex
+% 对应教材（同济《高等数学》第七版·上册）第一章第一节「映射与函数」
+% 主文档使用 \input{3.函数.tex} 引入，不含 \documentclass / \begin{document}
 
-\section{函数的概念}
-\subsection{实数与数轴}
-实数的两个性质
+\section{映射与函数}
+
+\subsection{映射}
+
+\textbf{定义（映射）}\quad 设 $X,Y$ 是两个非空集合，如果存在一个法则 $f$，使得对 $X$ 中每个元素 $x$，按法则 $f$，在 $Y$ 中有唯一确定的元素 $y$ 与之对应，那么称 $f$ 为从 $X$ 到 $Y$ 的映射，记作
+\[
+f:\ X\to Y,\qquad y=f(x),\ x\in X .
+\]
+其中 $y$ 称为元素 $x$ 在映射 $f$ 下的像，$x$ 称为 $y$ 的一个原像；集合 $X$ 称为映射 $f$ 的定义域，记作 $D_f=X$；$X$ 中所有元素的像组成的集合称为 $f$ 的值域，记作 $R_f$ 或 $f(X)$，即
+\[
+R_f=f(X)=\{\,f(x)\mid x\in X\,\}\subseteq Y .
+\]
+
+\subsubsection{构成映射的三要素}
 \begin{enumerate}
-    \item 有序性：任意两个互异的实数$a,b$都可比较大小，或者$a<b$，或者$a>b$。实数按照由小到大的顺序排列在数轴上。
-    \item 完备性：因为任何两个有理点 $a,b$ 之间都有一个有理点 $\dfrac{a+b}{2}$，从而它们之间有无穷多个有理点，我们说有理点处处稠密。但有理点并未充满整个数轴，比如还有$\sqrt{2}$这样一些无理点。因为有理数与无理数之和为无理数，所以无理点也处处稠密。实际上，无理数远比有理数多得多。实数充满整个数轴，没有空隙，这就是实数的完备性(或连续性)。
+    \item 定义域 $X$；
+    \item 值域的范围 $Y$（注意 $R_f\subseteq Y$，不一定 $R_f=Y$）；
+    \item 对应法则 $f$，使每个 $x\in X$ 有唯一确定的 $y=f(x)$ 与之对应。
 \end{enumerate}
 
-\noindent 数集与界
+\noindent 由定义可直接得到两点：对每个 $x\in X$，像 $f(x)$ 是唯一的；但对每个 $y\in R_f$，原像不一定唯一。
 
-\noindent 绝对值
+\subsubsection{满射、单射与一一映射}
+设 $f$ 是从 $X$ 到 $Y$ 的映射。
+\begin{itemize}
+    \item 若 $R_f=Y$，即 $Y$ 中任一元素 $y$ 都是 $X$ 中某元素的像，则称 $f$ 为 $X$ 到 $Y$ 上的映射或满射；
+    \item 若对 $X$ 中任意两个不同元素 $x_1\neq x_2$，它们的像 $f(x_1)\neq f(x_2)$，则称 $f$ 为 $X$ 到 $Y$ 的单射；
+    \item 若 $f$ 既是单射又是满射，则称 $f$ 为一一映射（或双射）。
+\end{itemize}
 
-\noindent 函数的概念
-
-\section{常用的概念}
-\noindent 函数的特性
-
-\noindent 隐函数和参数方程表示的函数
-
-\noindent 单值函数与多值函数、反函数
-
-\section{初等函数}
-\subsection{基本初等函数及其图形}
-\subsubsection{三角函数}
+\subsubsection{逆映射与复合映射}
+\textbf{逆映射}\quad 设 $f$ 是 $X$ 到 $Y$ 的单射，则对每个 $y\in R_f$，有唯一的 $x\in X$ 使 $f(x)=y$。于是可定义一个从 $R_f$ 到 $X$ 的新映射 $g$，即
 \[
-\sin x=\frac{1}{\csc x}
+g:\ R_f\to X,\qquad g(y)=x\ \ (\text{当 }f(x)=y),
 \]
-和差化积
+称 $g$ 为 $f$ 的逆映射，记作 $f^{-1}$，其定义域 $D_{f^{-1}}=R_f$，值域 $R_{f^{-1}}=X$。只有单射才存在逆映射。反函数（见 \ref{sec:fanhanshu} 小节）就是逆映射的特例。
 
-积化和差
+\textbf{复合映射}\quad 设有映射 $g:Y_1\to Y_2$，$f:X\to Y_1$，则
+\[
+(f\circ g)(x)=f\bigl[g(x)\bigr],\quad x\in X,
+\]
+确定了一个从 $X$ 到 $Y_2$ 的映射，称为 $g$ 和 $f$ 构成的复合映射。
 
-\subsection{复合函数与初等函数}
-双曲正弦
+\corepoint{两个映射 $g:X\to Y_1$、$f:Y_1\to Y_2$ 能构成复合映射 $f\circ g$ 的条件是 $R_g\subseteq D_f$（内层值域含于外层定义域）。复合是有顺序的：$f\circ g$ 有意义不表示 $g\circ f$ 有意义；即使两者都有意义，一般 $f\circ g\neq g\circ f$。}
 
-双曲余弦
+\subsection{函数}
 
-双曲正切
+\textbf{定义（函数）}\quad 设数集 $D\subseteq\mathbb{R}$，则称映射 $f:D\to\mathbb{R}$ 为定义在 $D$ 上的函数，简记为
+\[
+y=f(x),\quad x\in D ,
+\]
+其中 $x$ 称为自变量，$y$ 称为因变量，$D$ 称为定义域，记作 $D_f=D$；函数值 $f(x)$ 的全体构成的集合称为函数 $f$ 的值域，记作 $R_f$ 或 $f(D)$。
 
-双曲余切
+\subsubsection{函数的两要素}
+函数的定义中只有两个要素：\textbf{定义域}与\textbf{对应法则}。由此得判别两条函数是否相同的准则：
+\begin{equation}
+f=g\iff D_f=D_g\ \text{且}\ f(x)=g(x)\ (\forall x\in D_f).
+\end{equation}
 
-\section{极坐标}
-\noindent 极坐标的概念
+\corepoint{判断两个函数是否相同，只看定义域与对应法则，与自变量用什么字母无关：$f(x)=x^2$（$x\in\mathbb{R}$）与 $g(t)=t^2$（$t\in\mathbb{R}$）是同一个函数；而 $y=x$ 与 $y=\sqrt{x^2}$ 不同（后者是 $y=|x|$）；$y=\ln x^2=2\ln|x|$ 与 $y=2\ln x$ 的定义域不同、不是同一函数。}
 
-\noindent 极坐标与直角坐标的关系
+\subsubsection{几个常用的分段函数}
+\textbf{绝对值函数}
+\[
+y=|x|=\begin{cases}x, & x\ge 0,\\ -x, & x<0;\end{cases}
+\]
+\textbf{符号函数}
+\[
+y=\operatorname{sgn}x=\begin{cases}1, & x>0,\\ 0, & x=0,\\ -1, & x<0,\end{cases}
+\qquad \text{且}\quad x=|x|\operatorname{sgn}x .
+\]
+\textbf{取整函数} $y=[x]$，表示不超过 $x$ 的最大整数，其图形是阶梯曲线，且
+\[
+x-1<[x]\le x .
+\]
+\textbf{狄利克雷函数}
+\[
+y=D(x)=\begin{cases}1, & x\in\mathbb{Q},\\ 0, & x\in\mathbb{R}\setminus\mathbb{Q}.\end{cases}
+\]
+分段函数的定义域是各段定义域的并集；求值时按所在区间取相应表达式。
+
+\subsection{函数的几种特性}
+
+\subsubsection{有界性}
+设函数 $f$ 的定义域为 $D$。
+\begin{itemize}
+    \item 若存在正数 $M$，使对任一 $x\in D$ 都有 $|f(x)|\le M$，则称 $f$ 在 $D$ 上\textbf{有界}，否则称\textbf{无界}；
+    \item 若存在 $K_1$，使 $f(x)\le K_1\ (\forall x\in D)$，则 $K_1$ 为 $f$ 的一个上界；类似定义下界；有界 $\iff$ 既有上界又有下界。
+\end{itemize}
+
+\corepoint{有界性中的 $M$ 必须与 $x$ 无关（一个常数“统管”整个 $D$），且要求“存在”；无界的正面表述是：对任意 $M>0$，都存在 $x_0\in D$ 使 $|f(x_0)|>M$。$f$ 在 $D$ 上有界 $\iff$ $f(D)$ 是有界集。}
+
+\subsubsection{单调性}
+设 $f$ 在区间 $I$ 上有定义。若对 $I$ 上任意两点 $x_1<x_2$ 恒有
+\[
+f(x_1)<f(x_2)\quad(\text{或 }f(x_1)>f(x_2)),
+\]
+则称 $f$ 在 $I$ 上\textbf{单调增加}（或单调减少）。单调增加与单调减少统称单调。
+
+\subsubsection{奇偶性}
+设 $D$ 关于原点对称。若对任一 $x\in D$ 有
+\[
+f(-x)=f(x),
+\]
+则称 $f$ 为\textbf{偶函数}，其图形关于 $y$ 轴对称；若对任一 $x\in D$ 有
+\[
+f(-x)=-f(x),
+\]
+则称 $f$ 为\textbf{奇函数}，其图形关于原点对称。
+
+\corepoint{奇偶性的前提是定义域关于原点对称，否则谈不上奇偶。判奇偶必须先看定义域：$f(x)=\ln\frac{1-x}{1+x}$ 定义域 $(-1,1)$ 对称，$f(-x)=-f(x)$ 为奇函数。奇函数若在 $x=0$ 有定义则 $f(0)=0$。}
+
+\subsubsection{周期性}
+设 $f$ 的定义域为 $D$。若存在正数 $T$，使对任一 $x\in D$ 有 $x\pm T\in D$ 且
+\[
+f(x+T)=f(x),
+\]
+则称 $f$ 为\textbf{周期函数}，$T$ 称为 $f$ 的周期。使上式成立的最小正数（如果存在）称为\textbf{最小正周期}。
+
+\corepoint{周期函数的定义域必须是（双向）无界的，否则 $f(x\pm T)$ 未必有定义；并不是每个周期函数都有最小正周期，如常数函数、狄利克雷函数。常用的“周期”结论：$\sin x,\cos x$ 周期 $2\pi$；$\sin\omega x$（$\omega>0$）周期 $\frac{2\pi}{\omega}$。}
+
+\subsection{反函数与复合函数}\label{sec:fanhanshu}
+
+\subsubsection{反函数}
+设函数 $f:D\to f(D)$ 是单射，则由它确定的逆映射 $f^{-1}:f(D)\to D$ 称为函数 $f$ 的\textbf{反函数}，记作
+\[
+y=f^{-1}(x),\quad x\in f(D).
+\]
+原函数与反函数的图形关于直线 $y=x$ 对称；且
+\[
+f^{-1}\bigl[f(x)\bigr]=x\ (x\in D),\qquad f\bigl[f^{-1}(y)\bigr]=y\ (y\in f(D)).
+\]
+
+\corepoint{求反函数的步骤：由 $y=f(x)$ 解出 $x=f^{-1}(y)$，再交换 $x,y$ 的记号得 $y=f^{-1}(x)$，最后写出反函数的定义域 $=$ 原函数的值域。只有严格单调的函数才有反函数（充分条件），且反函数与原函数单调性一致。}
+
+\subsubsection{复合函数}
+设函数 $y=f(u)$ 的定义域为 $D_f$，$u=g(x)$ 的定义域为 $D_g$，值域为 $R_g$，若 $R_g\subseteq D_f$，则由
+\[
+y=f\bigl[g(x)\bigr],\quad x\in D_g
+\]
+确定的函数称为由 $g$ 和 $f$ 构成的\textbf{复合函数}，$u$ 称中间变量。
+
+\corepoint{复合的关键是“内层值域 $\subseteq$ 外层定义域”。分解复合函数时按“由外向内”逐层拆开，如 $y=\arcsin\sqrt{1-x^2}$ 分解为 $y=\arcsin u$、$u=\sqrt{v}$、$v=1-x^2$；求复合函数的定义域，要从最内层开始，把外层的限制逐层翻译成对 $x$ 的条件再取交集。}
+
+\subsection{初等函数}
+
+\subsubsection{基本初等函数}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+类别 & 表达式 & 定义域与备注 \\
+\midrule
+幂函数 & $y=x^{\mu}$（$\mu\in\mathbb{R}$） & 定义域随 $\mu$ 而异 \\
+指数函数 & $y=a^{x}$（$a>0,\ a\neq1$） & $D=\mathbb{R}$，$R=(0,+\infty)$ \\
+对数函数 & $y=\log_a x$（$a>0,\ a\neq1$） & $D=(0,+\infty)$，$R=\mathbb{R}$ \\
+三角函数 & $\sin x,\ \cos x,\ \tan x,\ \cot x,\ \sec x,\ \csc x$ & 后四个需去掉分母零点 \\
+反三角函数 & $\arcsin x,\ \arccos x,\ \arctan x,\ \operatorname{arccot} x$ & 主值分支，见下表 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\keyformula{\arcsin x\in\Bigl[-\tfrac{\pi}{2},\tfrac{\pi}{2}\Bigr],\quad \arccos x\in[0,\pi],\quad \arctan x\in\Bigl(-\tfrac{\pi}{2},\tfrac{\pi}{2}\Bigr),\quad \operatorname{arccot} x\in(0,\pi)}
+
+\subsubsection{初等函数}
+由常数和基本初等函数经过\textbf{有限次}的四则运算和\textbf{有限次}函数复合所构成、并可用一个式子表示的函数，称为\textbf{初等函数}。
+
+\corepoint{“可用一个式子表示”这个条件不能丢：分段函数一般不是初等函数。但 $|x|=\sqrt{x^2}$、$y=\max\{x,0\}=\frac{x+|x|}{2}$ 这类分段函数可以改写成一个式子，仍是初等函数。另外，幂指函数 $u(x)^{v(x)}=e^{v(x)\ln u(x)}$（$u(x)>0$）也是初等函数，这一恒等变形是后面求极限、求导的常用手段。}
+
+\subsubsection{双曲函数与反双曲函数}
+双曲正弦、双曲余弦、双曲正切、双曲余切定义为
+\[
+\operatorname{sh}x=\frac{e^{x}-e^{-x}}{2},\qquad
+\operatorname{ch}x=\frac{e^{x}+e^{-x}}{2},\qquad
+\operatorname{th}x=\frac{\operatorname{sh}x}{\operatorname{ch}x}=\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}} .
+\]
+它们与三角函数有类似的关系式：
+\keyformula{\operatorname{ch}^2 x-\operatorname{sh}^2 x=1,\qquad \operatorname{sh}2x=2\operatorname{sh}x\operatorname{ch}x,\qquad \operatorname{ch}2x=\operatorname{ch}^2x+\operatorname{sh}^2x}
+反双曲函数可用对数表示：
+\keyformula{\operatorname{arsh}x=\ln\bigl(x+\sqrt{x^2+1}\bigr),\quad \operatorname{arch}x=\ln\bigl(x+\sqrt{x^2-1}\bigr)\ (x\ge1),\quad \operatorname{arth}x=\frac12\ln\frac{1+x}{1-x}\ (|x|<1)}
+\noindent 其中 $\operatorname{sh}x,\operatorname{th}x,\operatorname{arsh}x,\operatorname{arth}x$ 是奇函数，$\operatorname{ch}x$ 是偶函数；$\operatorname{ch}x\ge1$，其图形即悬链线。
+
+\subsection{极坐标（补充）}
+在平面上取定点 $O$（极点）和射线 $Ox$（极轴），则平面上任一点 $M$ 的位置可用
+\[
+(\rho,\ \theta),\qquad \rho=|OM|,\quad \theta=\angle xOM
+\]
+确定，称为点 $M$ 的极坐标（$\rho\ge0$，$\theta\in[0,2\pi)$ 或 $(-\pi,\pi]$）。极坐标与直角坐标的互化公式为
+\keyformula{x=\rho\cos\theta,\quad y=\rho\sin\theta;\qquad \rho^2=x^2+y^2,\quad \tan\theta=\frac{y}{x}\ (x\neq0)}
+\noindent 注意由 $\tan\theta=\frac yx$ 定 $\theta$ 时必须结合 $M$ 所在象限，不能只取反正切主值。几种常见极坐标曲线：
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+曲线 & 极坐标方程 \\
+\midrule
+圆（圆心在极轴、过极点） & $\rho=2a\cos\theta$ \\
+心脏线 & $\rho=a(1+\cos\theta)$ \\
+双纽线 & $\rho^2=a^2\cos2\theta$ \\
+三叶玫瑰线 & $\rho=a\sin3\theta$ \\
+阿基米德螺线 & $\rho=a\theta$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+极坐标在求弧长、作曲线图形时较直角坐标方便（第 3 章弧微分、第 5 章定积分应用都会用到）。

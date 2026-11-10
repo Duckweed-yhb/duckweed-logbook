@@ -1,219 +1,343 @@
-% 子文件：8.多元函数微分学.tex
-% 主文档使用 \input{8.多元函数微分学} 引入，不含 document 环境
+% 子文件：3.多元函数微分学.tex
+% 对应教材：同济《高等数学》第七版 下册 第九章 多元函数微分法及其应用
+% 主文档使用 \input{3.多元函数微分学.tex} 引入，不含 document 环境
 
 \section{多元函数的基本概念}
-\subsection{预备知识}
 
-\subsection{多元函数}
+\subsection{平面点集\ n维空间}
 
-定义8.1\quad 设$D$是$Oxy$平面的点集，若变量$z$与$D$中的变量$x,y$之间有一个依赖关系，使得在，记为
+设 $P_0(x_0,y_0)$，$\delta>0$，点集 $U(P_0,\delta)=\{P\mid|PP_0|<\delta\}$ 称为 $P_0$ 的 \textbf{$\delta$ 邻域}，去掉中心点即去心邻域。由此定义：\textbf{内点}（存在 $U(P)\subset E$）、\textbf{外点}（存在 $U(P)\cap E=\varnothing$）、\textbf{边界点}（任一邻域内既有 $E$ 的点又有非 $E$ 的点）、\textbf{聚点}（任一去心邻域含 $E$ 的点）。
 
-\subsection{多元函数的极限与连续}
+若 $E$ 的点全为内点，则 $E$ 为\textbf{开集}；$E$ 的边界点全体为\textbf{边界}。$E$ 内任意两点可用 $E$ 内折线相连则称 $E$ \textbf{连通}；连通开集称为\textbf{开区域}（区域），开区域连同边界称为\textbf{闭区域}；存在 $M$ 使 $E\subset U(O,M)$ 则 $E$ \textbf{有界}。
 
-设集合
+$\mathbb R^n$ 中两点 $P(x_1,\dots,x_n)$、$Q(y_1,\dots,y_n)$ 的距离规定为 $|PQ|=\sqrt{\sum_{i=1}^{n}(y_i-x_i)^{2}}$，邻域、内点、聚点、开集、区域等概念与平面上完全平行。
 
-定义8.8\quad 设$u$是$D$的聚点。
+\subsection{多元函数的概念}
 
-多元函数极限的含义是：
+定义 9.1\quad 设 $D\subset\mathbb R^2$ 非空，若对每个 $(x,y)\in D$ 按法则 $f$ 有唯一实数 $z$ 与之对应，则称 $f$ 为定义在 $D$ 上的\textbf{二元函数}，记 $z=f(x,y),\ (x,y)\in D$；$D$ 为\textbf{定义域}，$f(D)$ 为\textbf{值域}。二元及二元以上函数统称\textbf{多元函数}。
 
-务必注意，虽然多元函数的极限与一元函数的极限定义相似，但它复杂得多。一元函数在某点处极限存在的充要条件是左右极限存在且相等。
+二元函数 $z=f(x,y)$ 的\textbf{图形}是点集 $\{(x,y,z)\mid z=f(x,y),(x,y)\in D\}$，一般为空间曲面。求定义域须同时满足：分母不为零、偶次根号下非负、对数真数为正、反三角函数的变量在 $[-1,1]$ 内。
 
-顺便指出：$(x,y)\to(x_0,y_0)$的过程中，$x$和$y$是作为点的坐标。
+\subsection{多元函数的极限}
 
-定义8.9\quad 设函数$f(P)$的定义域为，且，则说函数。
+定义 9.2\quad 设 $f(P)$ 定义域为 $D$，$P_0$ 为 $D$ 的聚点。若存在常数 $A$，对任意 $\varepsilon>0$ 存在 $\delta>0$，只要 $P\in D$ 且 $0<|PP_0|<\delta$ 就有 $|f(P)-A|<\varepsilon$，则称 $A$ 为 $f$ 当 $P\to P_0$ 时的\textbf{极限}（二重极限），记 $\lim\limits_{P\to P_0}f(P)=A$。
 
-若
+\keyformula{\lim_{(x,y)\to(x_0,y_0)}f(x,y)=A\iff
+\forall\varepsilon>0,\ \exists\delta>0:\ 0<\sqrt{(x-x_0)^{2}+(y-y_0)^{2}}<\delta\ \Rightarrow\ |f(x,y)-A|<\varepsilon}
 
-有界闭区域上的多元连续函数有如下重要性质：
+关键在于 $P\to P_0$ 可沿\textbf{任意路径、任意方式}。故：证明极限存在须用定义、夹逼或等价无穷小，不能只验几条路径；证明不存在，只需找两条路径使极限不等（如取 $y=kx$，结果随 $k$ 变），或找一条路径使极限不存在。极限的四则运算、夹逼准则与一元情形相同。
+
+\textbf{二重极限与累次极限} $\lim\limits_{x\to x_0}\lim\limits_{y\to y_0}f(x,y)$ 不同：二重极限存在时累次极限可能不存在；两累次极限存在且相等时二重极限仍可能不存在；两者都存在时必相等。
+
+\corepoint{用 $y=kx$ 代入后结果随 $k$ 变，即可断定二重极限不存在；但沿所有直线极限相同\textbf{不能}断定存在（还需考察沿抛物线等路径）。}
+
+\subsection{多元函数的连续性}
+
+定义 9.3\quad 设 $P_0\in D$ 且为聚点，若 $\lim\limits_{P\to P_0}f(P)=f(P_0)$，则称 $f$ 在 $P_0$ \textbf{连续}，否则 $P_0$ 为\textbf{间断点}；在 $D$ 内每点连续则称 $f$ 在 $D$ 上连续。连续函数的四则运算（分母非零）与复合仍连续；\textbf{一切多元初等函数在其定义区域内连续}，故求这类极限可直接代值。
+
+有界闭区域 $D$ 上的连续函数具有：
 \begin{enumerate}
-    \item 在
-    \item 在
+  \item \textbf{有界性与最大值最小值定理}：$f$ 有界，且必在 $D$ 上取得最大值与最小值；
+  \item \textbf{介值定理}：对最小值 $m$ 与最大值 $M$ 之间的任意 $\mu$，存在 $P\in D$ 使 $f(P)=\mu$；
+  \item \textbf{一致连续性定理}：$f$ 在 $D$ 上一致连续。
 \end{enumerate}
 
-\section{偏导数与高阶偏导数}
-\subsection{偏导数}
+\corepoint{多元函数各偏导数都存在也未必连续（沿坐标轴方向“连续”控制不了所有方向），这与一元函数“可导必连续”截然不同。}
 
-定义8.10\quad 设函数$z=f(x,y)$在点，称为。若极限
-\[
-\lim_{\Delta x\to0}\frac{f(x+\Delta x,y)-f(x,y)}{\Delta x}
-\]
-存在，则称此极限值为关于$x$的偏导数，记为。同样定义处关于$y$的偏导数为。
+\section{偏导数}
 
-如果在区域$E$内每一点，记为。同样，$z=$记为。
+\subsection{偏导数的定义及其计算法}
 
-\noindent 偏导函数
+定义 9.4\quad 设 $z=f(x,y)$ 在 $(x_0,y_0)$ 某邻域内有定义，固定 $y=y_0$，若极限
+\begin{equation}
+\lim_{\Delta x\to0}\frac{f(x_0+\Delta x,y_0)-f(x_0,y_0)}{\Delta x}
+\end{equation}
+存在，则称之为 $f$ 在 $(x_0,y_0)$ 处对 $x$ 的\textbf{偏导数}，记 $\dfrac{\partial z}{\partial x}\Big|_{(x_0,y_0)}$、$f_x(x_0,y_0)$ 等；对 $y$ 的偏导数 $f_y$ 同理。若在区域 $D$ 内每点都有偏导数，则得\textbf{偏导函数}（简称偏导数）。
 
-对一般。
+\keyformula{f_x(x_0,y_0)=\lim_{\Delta x\to0}\frac{f(x_0+\Delta x,y_0)-f(x_0,y_0)}{\Delta x},\qquad
+f_y(x_0,y_0)=\lim_{\Delta y\to0}\frac{f(x_0,y_0+\Delta y)-f(x_0,y_0)}{\Delta y}}
 
-由偏导数的定义知，
-
-一元函数可导必连续，但对多元函数，偏导数都存在，函数未必有极限。
-
-因为偏导数。
+\textbf{几何意义}：$f_x(x_0,y_0)$ 是曲面 $z=f(x,y)$ 与平面 $y=y_0$ 的交线在点 $M_0$ 处切线对 $x$ 轴的斜率。\textbf{计算}：对 $x$ 求偏导时把 $y$ 视为常数，按一元法则求导；分界点处用定义。
 
 \subsection{高阶偏导数}
 
-记函数，它们仍是$E$内$x,y$的函数。，其中称为混合二阶偏导数。
+二阶偏导数 $f_{xx},f_{xy},f_{yx},f_{yy}$ 中 $f_{xy},f_{yx}$ 称为\textbf{混合偏导数}；再求导得三阶、$n$ 阶偏导数。
 
-递推地可以定义各阶偏导数，二阶。
+\textbf{定理 9.1}\quad 若 $z=f(x,y)$ 的二阶混合偏导数 $f_{xy},f_{yx}$ 在区域 $D$ 内连续，则在 $D$ 内 $f_{xy}=f_{yx}$，即求导次序可交换。
 
-定理8.1\quad 如果在点。
+\corepoint{混合偏导数相等须有“连续”条件；求高阶偏导可先化简（合并、约分）再求下一次，能显著减少计算量。}
 
 \section{全微分}
 
-设函数
+\subsection{全微分的定义}
 
-定义8.11\quad 若函数。
+定义 9.5\quad 设 $z=f(x,y)$ 在 $(x,y)$ 某邻域内有定义，若全增量
+\begin{equation}
+\Delta z=f(x+\Delta x,y+\Delta y)-f(x,y)=A\Delta x+B\Delta y+o(\rho),\qquad
+\rho=\sqrt{(\Delta x)^{2}+(\Delta y)^{2}},
+\end{equation}
+其中 $A,B$ 只与 $x,y$ 有关，则称 $f$ 在该点\textbf{可微分}，$A\Delta x+B\Delta y$ 称为\textbf{全微分}，记 $\mathrm dz=A\Delta x+B\Delta y$。
 
-定理8.2\quad 若函数$z=f(x,y)$在点$P(x,y)$处可微，则在点$P$处偏导数$\dfrac{\partial z}{\partial x}$及$\dfrac{\partial z}{\partial y}$都存在，且
-\[
-\frac{\partial z}{\partial x}=A,\quad \frac{\partial z}{\partial y}=B.
-\]
-因为，我们把。
+\textbf{定理 9.2（可微的必要条件）}\quad 若 $f$ 在 $(x,y)$ 处可微，则 $f_x,f_y$ 在该点存在，且 $A=f_x,\ B=f_y$，故
+\begin{equation}
+\mathrm dz=\frac{\partial z}{\partial x}\mathrm dx+\frac{\partial z}{\partial y}\mathrm dy .
+\end{equation}
 
-定理8.3\quad 若在点。
+\textbf{定理 9.3（可微的充分条件）}\quad 若 $f_x,f_y$ 在点 $(x,y)$ 处连续，则 $f$ 在该点可微。
 
-\section{复合函数求导法}
+\keyformula{\mathrm dz=\frac{\partial z}{\partial x}\mathrm dx+\frac{\partial z}{\partial y}\mathrm dy,\qquad
+\mathrm du=\frac{\partial u}{\partial x}\mathrm dx+\frac{\partial u}{\partial y}\mathrm dy+\frac{\partial u}{\partial z}\mathrm dz}
 
-定理8.4\quad 如果函数在点
-\[
-\frac{\partial z}{\partial x}=\frac{\partial z}{\partial u}\frac{\partial u}{\partial x}+
-\]
+三者关系：偏导数连续 $\Rightarrow$ 可微 $\Rightarrow$ 偏导数存在，且可微 $\Rightarrow$ 连续；箭头均不可逆（$f=\sqrt{|xy|}$ 在原点偏导存在但不可微）。
 
-由上式。
+\corepoint{判断可微性的步骤：先求 $f_x(P_0),f_y(P_0)$（分界点用定义），再检验 $\Delta z-f_x\Delta x-f_y\Delta y$ 是否为 $\rho$ 的高阶无穷小（即 $=o(\rho)$）。只验证偏导数存在就断言可微是最常见的错误。}
 
-同样条件下，公式可以推广到一般复合函数上去，设，则$z$关于某个自变量$x_j$的偏导数等于$z$对每个与$x_j$有关的中间变量$u_i$的偏导数与这个中间变量$u_i$对$x_j$的偏导数之积的总和，即。该公式称为链导法则。
+\subsection{全微分在近似计算中的应用}
 
-在，当中间变量都是同一个自变量的一元函数时，，称为$z$的全导数公式。
+当 $f$ 可微且 $|\Delta x|,|\Delta y|$ 很小时 $\Delta z\approx\mathrm dz$，即
 
-链导法则公式可借助，称矩阵为函数，记为，则链导法则公式。
+\keyformula{f(x_0+\Delta x,y_0+\Delta y)\approx f(x_0,y_0)+f_x(x_0,y_0)\Delta x+f_y(x_0,y_0)\Delta y}
 
-\noindent 全微分形式不变性。
+\textbf{误差估计}：若 $x,y$ 的绝对误差限为 $\delta_x,\delta_y$，则 $z=f(x,y)$ 的绝对误差限与相对误差限为
+\begin{equation}
+\delta_z\approx|f_x|\delta_x+|f_y|\delta_y,\qquad
+\frac{\delta_z}{|z|}\approx\frac{|f_x|\delta_x+|f_y|\delta_y}{|f(x,y)|}.
+\end{equation}
 
-\noindent 四则运算的全微分法则：
+\corepoint{近似公式的前提是“可微 $+$ 增量很小”；误差估计取绝对值相加（最坏情形），不可让正负相消。}
 
-\section{隐函数求导法}
-\subsection{一个方程的情况}
+\section{多元复合函数的求导法则}
 
-定理8.5（隐函数存在定理）\quad 设函数$F(x,y,z)$在点$(x_0,y_0,z_0)$的某邻域内具有连续的偏导数，且，则方程在点的某邻域内确定唯一一个函数，满足，且有偏导数公式
-\[
-\frac{\partial z}{\partial x}=-\frac{F'_x(x,y,z)}{F'_z(x,y,z)},\quad
-\frac{\partial z}{\partial y}=-\frac{F'_y(x,y,z)}{F'_z(x,y,z)}.
-\]
+\textbf{定理 9.4（链式法则）}\quad 设 $u=\varphi(t)$、$v=\psi(t)$ 在 $t$ 处可导，$z=f(u,v)$ 在对应点有连续偏导数，则 $z=f[\varphi(t),\psi(t)]$ 在 $t$ 处可导且
+\begin{equation}
+\frac{\mathrm dz}{\mathrm dt}=\frac{\partial z}{\partial u}\frac{\mathrm du}{\mathrm dt}+\frac{\partial z}{\partial v}\frac{\mathrm dv}{\mathrm dt}.
+\end{equation}
 
-\subsection{方程组的情况}
+\textbf{定理 9.5}\quad 设 $u=u(x,y)$、$v=v(x,y)$ 有偏导数，$z=f(u,v)$ 在对应点有连续偏导数，则
+\begin{equation}
+\frac{\partial z}{\partial x}=\frac{\partial z}{\partial u}\frac{\partial u}{\partial x}+\frac{\partial z}{\partial v}\frac{\partial v}{\partial x},\qquad
+\frac{\partial z}{\partial y}=\frac{\partial z}{\partial u}\frac{\partial u}{\partial y}+\frac{\partial z}{\partial v}\frac{\partial v}{\partial y}.
+\end{equation}
+一般地，$z$ 对某自变量的偏导数，等于 $z$ 对每个与该自变量有关的中间变量的偏导数乘该中间变量对该自变量的偏导数之和。
 
-设由方程组
-\[
-\begin{cases}
-F(x,y,u,v)=0,\\
-G(x,y,u,v)=0
-\end{cases}
-\]
-确定两个二元函数$u=u(x,y),\ v=v(x,y)$。将恒等式
-\[
-\begin{cases}
-F\bigl(x,y,u(x,y),v(x,y)\bigr)=0,\\
-G\bigl(x,y,u(x,y),v(x,y)\bigr)=0
-\end{cases}
-\]
-两边关于$x$求偏导，由链导法得到。解这个以$\dfrac{\partial u}{\partial x},\dfrac{\partial v}{\partial x}$为未知量的代数方程组，当系数行列式不为零时，即
-\[
-\begin{vmatrix}
-\frac{\partial F}{\partial u} & \frac{\partial F}{\partial v}\\[4pt]
-\frac{\partial G}{\partial u} & \frac{\partial G}{\partial v}
-\end{vmatrix}\neq 0,
-\]
-解得。上面出现的由函数的偏导数构成的行列式称为雅可比行列式，记。于是。如果。
+若 $z=f(u,x,y)$ 而 $u=u(x,y)$，则 $x$ 兼为中间变量与自变量：
+\begin{equation}
+\frac{\partial z}{\partial x}=\frac{\partial f}{\partial u}\frac{\partial u}{\partial x}+\frac{\partial f}{\partial x},
+\end{equation}
+末项是 $f$ 直接对 $x$ 的偏导（$u,y$ 视为常数），不能漏。若中间变量都是一元函数、$z$ 只有一个自变量，则得\textbf{全导数}公式。
 
-\section{偏导数的几何应用}
+\textbf{全微分形式不变性}：只要 $z=f(u,v)$ 可微，无论 $u,v$ 是自变量还是中间变量，都有
+\begin{equation}
+\mathrm dz=\frac{\partial z}{\partial u}\mathrm du+\frac{\partial z}{\partial v}\mathrm dv .
+\end{equation}
+
+\corepoint{画“变量关系图”是避免漏项的唯一可靠办法：从 $z$ 到目标自变量有几条路径就有几项相加，每条路径上各段偏导相乘。$f_x$ 与 $f_u$（即 $\partial f/\partial u$）不可混用同一记号。}
+
+\section{隐函数的求导公式}
+
+\subsection{一个方程的情形}
+
+\textbf{定理 9.6（隐函数存在定理 1）}\quad 设 $F(x,y)$ 在 $P_0(x_0,y_0)$ 某邻域内有连续偏导数，$F(x_0,y_0)=0$，$F_y(x_0,y_0)\neq0$，则 $F(x,y)=0$ 在 $P_0$ 某邻域内确定唯一连续可导函数 $y=f(x)$，满足 $y_0=f(x_0)$，且
+\begin{equation}
+\frac{\mathrm dy}{\mathrm dx}=-\frac{F_x}{F_y}.
+\end{equation}
+
+\textbf{定理 9.7（隐函数存在定理 2）}\quad 设 $F(x,y,z)$ 在 $P_0(x_0,y_0,z_0)$ 某邻域内有连续偏导数，$F(P_0)=0$，$F_z(P_0)\neq0$，则 $F(x,y,z)=0$ 确定唯一连续可微函数 $z=f(x,y)$，满足 $z_0=f(x_0,y_0)$，且
+
+\keyformula{\frac{\partial z}{\partial x}=-\frac{F_x}{F_z},\qquad
+\frac{\partial z}{\partial y}=-\frac{F_y}{F_z}}
+
+\subsection{方程组的情形}
+
+设 $\begin{cases}F(x,y,u,v)=0\\ G(x,y,u,v)=0\end{cases}$ 确定 $u=u(x,y),v=v(x,y)$。两端对 $x$ 求偏导得线性方程组
+\begin{equation}
+\begin{cases}F_u\,u_x+F_v\,v_x=-F_x,\\ G_u\,u_x+G_v\,v_x=-G_x ,\end{cases}
+\end{equation}
+当\textbf{雅可比行列式} $J=\dfrac{\partial(F,G)}{\partial(u,v)}=\begin{vmatrix}F_u&F_v\\G_u&G_v\end{vmatrix}\neq0$ 时由克拉默法则解出 $u_x,v_x$；把右端换成 $-F_y,-G_y$ 即得 $u_y,v_y$。
+
+\keyformula{\frac{\partial(u,v)}{\partial(x,y)}=
+\begin{vmatrix}u_x&u_y\\v_x&v_y\end{vmatrix}
+=\frac{\partial(F,G)}{\partial(x,y)}\Big/\frac{\partial(F,G)}{\partial(u,v)}}
+
+\corepoint{公式分子对自变量求偏导、分母对因变量求偏导，负号不可丢；方程组情形不要死记解的公式，掌握“对自变量求偏导 $\to$ 解线性方程组”即可。能否确定隐函数组看的是对因变量的雅可比行列式。}
+
+\section{多元函数微分学的几何应用}
+
+\subsection{一元向量值函数及其导数}
+
+定义 9.6\quad 设 $D\subset\mathbb R$，若对每个 $t\in D$ 有唯一向量 $\boldsymbol r$ 对应，则称 $\boldsymbol r=\boldsymbol f(t)$ 为\textbf{一元向量值函数}，其坐标式为
+\begin{equation}
+\boldsymbol r=f_1(t)\boldsymbol i+f_2(t)\boldsymbol j+f_3(t)\boldsymbol k,\qquad t\in D .
+\end{equation}
+极限、连续、导数均按分量定义：$\boldsymbol f'(t)=\bigl(f_1',f_2',f_3'\bigr)$；$\boldsymbol f'(t_0)\neq\boldsymbol 0$ 时它指向对应点处的\textbf{切向}。
+
 \subsection{空间曲线的切线与法平面}
 
-设曲线$l$以参数方程给出。设，所以向量是切线的方向向量，称为曲线$l$在。故曲线的切线方程为。过点，其方程为。
+设曲线 $\Gamma:x=\varphi(t),\ y=\psi(t),\ z=\omega(t)$，在 $M_0(x_0,y_0,z_0)$ 处三个导数不全为零，则切向量为
+\begin{equation}
+\boldsymbol T=\bigl(\varphi'(t_0),\ \psi'(t_0),\ \omega'(t_0)\bigr).
+\end{equation}
+
+\keyformula{\text{切线：}\ \frac{x-x_0}{\varphi'(t_0)}=\frac{y-y_0}{\psi'(t_0)}=\frac{z-z_0}{\omega'(t_0)},\qquad
+\text{法平面：}\ \varphi'(t_0)(x-x_0)+\psi'(t_0)(y-y_0)+\omega'(t_0)(z-z_0)=0}
+
+若曲线为 $y=y(x),\ z=z(x)$，取 $x$ 为参数，切向量为 $\bigl(1,y'(x_0),z'(x_0)\bigr)$。若曲线由两张曲面 $F=0,\ G=0$ 给出，则
+\begin{equation}
+\boldsymbol T=\boldsymbol n_1\times\boldsymbol n_2=\nabla F\times\nabla G
+=\bigl(F_x,F_y,F_z\bigr)\times\bigl(G_x,G_y,G_z\bigr).
+\end{equation}
 
 \subsection{曲面的切平面与法线}
 
-设曲面的隐函数方程给出，设其方程为。点，于是有。两边在，由全导数公式得。此式表明：向量与，切平面方程为。过，其方程为。现在。
+设曲面 $\Sigma:F(x,y,z)=0$，$F$ 有连续偏导数且三偏导在 $M_0$ 不全为零，则 $\Sigma$ 在 $M_0$ 处有切平面，\textbf{法向量} $\boldsymbol n=\bigl(F_x(M_0),F_y(M_0),F_z(M_0)\bigr)$。
 
-\subsection{二元函数全微分的几何意义}
+\keyformula{\text{切平面：}\ F_x(x-x_0)+F_y(y-y_0)+F_z(z-z_0)=0,\qquad
+\text{法线：}\ \frac{x-x_0}{F_x}=\frac{y-y_0}{F_y}=\frac{z-z_0}{F_z}}
 
-二元函数在点处可微。
+若曲面为 $z=f(x,y)$，令 $F=f(x,y)-z$，则 $\boldsymbol n=\bigl(f_x(x_0,y_0),f_y(x_0,y_0),-1\bigr)$，切平面为 $z-z_0=f_x(x-x_0)+f_y(y-y_0)$。
 
-\section{多元函数的一阶泰勒公式与极值}
-\subsection{多元函数的一阶泰勒公式}
+\textbf{全微分的几何意义}：$\mathrm dz=f_x\Delta x+f_y\Delta y$ 是切平面上对应点的竖坐标增量，即曲面竖坐标增量 $\Delta z$ 的线性主部。
 
-设$z=f(x,y)$在点$X_0(x_0,y_0)$的某邻域$U(X_0)$内有二阶连续的偏导数，$X(x,y)$是$U(X_0)$内的点。记$\Delta X=(\Delta x,\Delta y)=(x-x_0,y-y_0)$。称函数$z=f(x,y)$的两个一阶偏导数构成的向量$(f'_x,f'_y)_X$为$f(x,y)$的梯度。四个二阶偏导数构成的方阵
-\[
-H(X)=
-\begin{pmatrix}
-f''_{xx} & f''_{xy}\\
-f''_{yx} & f''_{yy}
-\end{pmatrix}_X
-\]
-称为$f(x,y)$的黑塞矩阵。
+\corepoint{三类“平面”须分清：法平面以曲线切向量为法向量；切平面以曲面法向量为法向量；“过点且垂直某直线”的平面也用点法式。切线方程分母允许为零（写成分子为零），不可当比例式约分。}
 
-定理8.6\quad 若二元函数，则对，存在，使得
-\[
-f(x,y)=
-\]
-其中
-\[
-R=\frac1{2!}\bigl(\Delta x\quad \Delta y\bigr)
-\begin{pmatrix}
-f''_{xx} & f''_{xy}\\
-f''_{yx} & f''_{yy}
-\end{pmatrix}_{X^*}
-\begin{pmatrix}
-\Delta x\\
-\Delta y
-\end{pmatrix}.
-\]
-称上式为$f(x,y)$的一阶泰勒公式。
+\section{方向导数与梯度}
 
-\noindent 推论\quad 在定理8.6的条件下。
-
-\subsection{多元函数的极值}
-
-定义8.12\quad 设二元函数，且，则说函数。
-
-定理8.7（极值的必要条件）\quad 设函数在$X_0$处取极值，且在该点处函数的偏导数都存在，则必有
-\[
-\bigl(f'_x,f'_y\bigr)_{X_0}=\boldsymbol{0}.
-\]
-
-定理8.8（极值的充分条件）\quad 设是函数的驻点。若$f(X)$在点$X_0$的黑塞矩阵正定（负定），则为极小值（极大值）。
-
-\noindent 推论\quad 设，记$f''_{XX}(x_0,y_0)$。
-\begin{enumerate}
-    \item 若
-    \item
-    \item
-\end{enumerate}
-
-\subsection{条件极值、拉格朗日乘数法}
-
-设函数$z=f(x,y)$在约束条件$\psi(x,y)=0$下，在点$(x_0,y_0)$处取极值。
-
-\section{方向导数和梯度}
 \subsection{方向导数}
 
-在数量场。
+定义 9.7\quad 设 $f(P)$ 在 $P_0$ 某邻域内有定义，$\boldsymbol e_l=(\cos\alpha,\cos\beta,\cos\gamma)$ 是与方向 $l$ 同向的单位向量，若
+\begin{equation}
+\left.\frac{\partial f}{\partial l}\right|_{P_0}
+=\lim_{t\to0^{+}}\frac{f(P_0+t\boldsymbol e_l)-f(P_0)}{t}
+\end{equation}
+存在，则称之为 $f$ 在 $P_0$ 处沿 $l$ 的\textbf{方向导数}，它刻画 $f$ 沿该方向的变化率。
 
-定义8.13\quad 设点，比式的极限存在，则称方向导数，记为，即。由定义。
+\textbf{定理 9.8}\quad 若 $f(x,y,z)$ 在 $P_0$ 处可微，则沿任一方向 $l$ 的方向导数都存在，且
 
-定理8.9\quad 设在点$P_0$处可微，则函数，且，其中是$l$的方向余弦。
+\keyformula{\left.\frac{\partial f}{\partial l}\right|_{P_0}
+=f_x(P_0)\cos\alpha+f_y(P_0)\cos\beta+f_z(P_0)\cos\gamma}
+
+二元情形为 $f_l=f_x\cos\alpha+f_y\cos\beta$。
+
+\corepoint{定理只给“可微 $\Rightarrow$ 方向导数存在”，反之不成立；沿 $x$ 轴负向的方向导数是 $-f_x$（方向余弦为 $(-1,0,0)$）；给出的方向向量必须先单位化。}
 
 \subsection{梯度}
 
-定义8.14\quad 数量场（函数）$u(P)$在点$P$处的梯度是个向量，其方向为$u(P)$在点$P$的变化率最大的方向，其模恰好等于这个最大的变化率，记为$\mathrm{grad}\,u$。
-
-在空间直角坐标系下，梯度的表达式为。
-
-可以直接推出下列性质及运算法则。
+定义 9.8\quad 设 $f(x,y,z)$ 在 $P_0$ 处偏导数存在，称
+\begin{equation}
+\mathrm{grad}\,f(P_0)=\bigl(f_x(P_0),f_y(P_0),f_z(P_0)\bigr)=\nabla f(P_0)
+\end{equation}
+为 $f$ 在 $P_0$ 处的\textbf{梯度}；二元函数为 $(f_x,f_y)$。设 $\theta$ 为梯度与 $l$ 的夹角，则
+\begin{equation}
+\frac{\partial f}{\partial l}=\mathrm{grad}\,f\cdot\boldsymbol e_l=|\mathrm{grad}\,f|\cos\theta .
+\end{equation}
+由此：
 \begin{enumerate}
-    \item
-    \item
-    \item
-    \item
-    \item
+  \item $|\mathrm{grad}\,f|$ 是所有方向导数的最大值；
+  \item 沿梯度方向方向导数最大（函数增长最快），沿负梯度方向减小最快；
+  \item 梯度垂直于该点的等值面（等值线），指向函数值增大的方向；
+  \item 满足线性性与乘积法则 $\mathrm{grad}(fg)=f\,\mathrm{grad}g+g\,\mathrm{grad}f$。
 \end{enumerate}
+
+\corepoint{“函数沿某方向变化最快”的答案即梯度方向，最大变化率为 $|\mathrm{grad}f|$。}
+
+\section{多元函数的极值及其求法}
+
+\subsection{多元函数的极值及最大值与最小值}
+
+定义 9.9\quad 若 $f$ 在 $P_0$ 某邻域内对异于 $P_0$ 的一切 $P$ 都有 $f(P)<f(P_0)$（或 $>f(P_0)$），则称 $f$ 在 $P_0$ 取\textbf{极大值}（极小值），$P_0$ 为极大（小）值点，统称极值与极值点。
+
+\textbf{定理 9.9（极值的必要条件）}\quad 若 $f(x,y)$ 在 $(x_0,y_0)$ 处偏导数存在且取极值，则
+\begin{equation}
+f_x(x_0,y_0)=0,\qquad f_y(x_0,y_0)=0 ,
+\end{equation}
+即极值点必为\textbf{驻点}；反之驻点未必是极值点（如 $z=xy$ 在原点），偏导数不存在的点也可能是极值点。
+
+\textbf{定理 9.10（极值的充分条件）}\quad 设 $f$ 在 $P_0$ 某邻域内二阶偏导连续且 $f_x(P_0)=f_y(P_0)=0$，记 $A=f_{xx}(P_0)$，$B=f_{xy}(P_0)$，$C=f_{yy}(P_0)$，则
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+判别式 & 结论 \\
+\midrule
+$AC-B^{2}>0$ & 是极值点：$A<0$ 取极大值，$A>0$ 取极小值 \\
+$AC-B^{2}<0$ & 不是极值点（鞍点）\\
+$AC-B^{2}=0$ & 不能判定，另行讨论 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{求极值步骤}：(1) 解 $f_x=f_y=0$ 求全部驻点；(2) 对每个驻点算 $A,B,C$ 按上表判别；(3) 偏导数不存在的点另行用定义或邻域比较判断。
+
+\textbf{最大值与最小值}：有界闭区域上的连续函数必取得最值。求法：求内部驻点与偏导不存在的点并算函数值；求边界上的最值（代入边界方程化为一元或条件极值）；比较全部候选值。
+
+\corepoint{$AC-B^2>0$ 时看 $A$ 的符号定极大极小；判别式只对“驻点且二阶偏导连续”有效，界点、不可导点不适用。实际问题若由题意知最值必在内部且只有唯一驻点，则该驻点即所求。}
+
+\subsection{条件极值\ 拉格朗日乘数法}
+
+求 $z=f(x,y)$ 在约束 $\varphi(x,y)=0$ 下的极值称为\textbf{条件极值}，构造\textbf{拉格朗日函数}
+\begin{equation}
+L(x,y,\lambda)=f(x,y)+\lambda\,\varphi(x,y),
+\end{equation}
+则条件极值点必满足
+
+\keyformula{\begin{cases}
+f_x(x,y)+\lambda\,\varphi_x(x,y)=0,\\
+f_y(x,y)+\lambda\,\varphi_y(x,y)=0,\\
+\varphi(x,y)=0 .
+\end{cases}}
+
+解出 $(x,y)$ 及 $\lambda$ 后再判断是否为极值。三元函数带一个约束 $\varphi(x,y,z)=0$ 时取 $L=f+\lambda\varphi$，方程组为三个偏导方程加约束方程；多个约束（$\varphi=0,\psi=0$）时取 $L=f+\lambda\varphi+\mu\psi$，对每个变量及 $\lambda,\mu$ 求偏导令其为零。
+
+\corepoint{三个易错点：约束须写成 $\varphi=0$ 的标准形；方程组是“$f$ 的偏导 $+\lambda\varphi$ 的偏导 $=0$”（不是乘积）；解出的只是可能极值点，须回到问题判断（唯一驻点法或比较函数值）。}
+
+\section{二元函数的泰勒公式}
+
+\textbf{定理 9.11}\quad 设 $z=f(x,y)$ 在 $P_0(x_0,y_0)$ 某邻域内有直到 $n+1$ 阶的连续偏导数，$(x_0+h,y_0+k)$ 为该邻域内任一点，则
+\begin{equation}
+f(x_0+h,y_0+k)=\sum_{m=0}^{n}\frac{1}{m!}\left(h\frac{\partial}{\partial x}+k\frac{\partial}{\partial y}\right)^{m}f(x_0,y_0)+R_n,
+\end{equation}
+其中
+\begin{equation}
+R_n=\frac{1}{(n+1)!}\left(h\frac{\partial}{\partial x}+k\frac{\partial}{\partial y}\right)^{n+1}
+f(x_0+\theta h,\ y_0+\theta k),\qquad 0<\theta<1 ,
+\end{equation}
+记号 $\left(h\partial_x+k\partial_y\right)^{m}f$ 表示按二项式展开后各项作用于 $f$ 再在 $(x_0,y_0)$ 取值。
+
+$n=0$ 时得\textbf{二元函数拉格朗日中值公式}
+\begin{equation}
+f(x_0+h,y_0+k)-f(x_0,y_0)=hf_x(x_0+\theta h,y_0+\theta k)+kf_y(x_0+\theta h,y_0+\theta k);
+\end{equation}
+$n=1$ 时得一阶泰勒公式，余项含二次型 $h^{2}f_{xx}+2hkf_{xy}+k^{2}f_{yy}$。
+
+\textbf{极值充分条件的证明思路}：由一阶泰勒公式，$f(P)-f(P_0)$ 的符号由二次型 $Q(h,k)=Ah^{2}+2Bhk+Ck^{2}$ 决定。$AC-B^{2}>0$ 时 $Q$ 正定（$A>0$）或负定（$A<0$），$f(P)-f(P_0)$ 定号，故取极小或极大；$AC-B^{2}<0$ 时 $Q$ 变号，沿不同方向增量符号相反，故非极值。
+
+\corepoint{余项中的点 $(x_0+\theta h,y_0+\theta k)$ 不能换成 $(x_0,y_0)$（那是麦克劳林展开）；求展开式时优先用已知一元展开式相乘，比逐阶求偏导快。}
+
+\section{最小二乘法}
+
+对一组观测数据 $(x_i,y_i)\ (i=1,2,\dots,n)$ 求两变量间函数关系的近似表达式（\textbf{经验公式}）：先由散点图判断函数类型（常取线性 $y=ax+b$，$a$ 为斜率、$b$ 为截距），再选常数使各点偏差 $y_i-f(x_i)$ 都很小。因偏差有正负会抵消、取绝对值又不便分析，故以\textbf{偏差平方和}
+\begin{equation}
+M=\sum_{i=1}^{n}\bigl[y_i-f(x_i)\bigr]^{2}
+\end{equation}
+最小为准则，这就是\textbf{最小二乘法}。
+
+对 $y=ax+b$ 有 $M(a,b)=\sum\bigl[y_i-(ax_i+b)\bigr]^{2}$，令 $M_a=M_b=0$ 得\textbf{正规方程组}
+
+\keyformula{\begin{cases}
+a\displaystyle\sum_{i=1}^{n}x_i^{2}+b\sum_{i=1}^{n}x_i=\sum_{i=1}^{n}x_iy_i,\\[6pt]
+a\displaystyle\sum_{i=1}^{n}x_i+nb=\sum_{i=1}^{n}y_i ,
+\end{cases}}
+
+解得
+\begin{equation}
+a=\frac{n\sum x_iy_i-\sum x_i\sum y_i}{n\sum x_i^{2}-\bigl(\sum x_i\bigr)^{2}},\qquad
+b=\frac{\sum x_i^{2}\sum y_i-\sum x_i\sum x_iy_i}{n\sum x_i^{2}-\bigl(\sum x_i\bigr)^{2}} .
+\end{equation}
+
+\textbf{一般线性最小二乘}：取 $y=a_0+a_1x+\cdots+a_mx^{m}\ (m<n)$，由 $M_{a_j}=0$ 得
+\begin{equation}
+\sum_{j=0}^{m}a_j\Bigl(\sum_{i=1}^{n}x_i^{j+k}\Bigr)=\sum_{i=1}^{n}y_ix_i^{k},
+\qquad k=0,1,\dots,m,
+\end{equation}
+这是关于 $a_0,\dots,a_m$ 的对称线性方程组，通常有唯一解。
+
+\corepoint{最小二乘法的本质是“多元函数求最小值”：把待定常数当自变量，对偏差平方和求偏导令其为零。函数类型须先由散点图或物理机理选定；数据个数 $n$ 必须大于待定常数个数。}

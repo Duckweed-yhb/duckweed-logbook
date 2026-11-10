@@ -1,49 +1,235 @@
+% 子文件：6.级数.tex
+% 对应教材：《复变函数与积分变换》(哈工大, 第三版) 第 4 章（§4.5 孤立奇点分类取自教材第 5 章 §5.1）
+% 对应讲义：包益欣《复变函数》第 4 章（数项级数与函数项级数 / 幂级数与泰勒展开 / 广义幂级数与洛朗展开）
+% 节次：§4.1 复变函数项级数（4.1.1 复数序列 / 4.1.2 复数项级数 / 4.1.3 复变函数项级数）
+%       §4.2 幂级数（4.2.1 概念 / 4.2.2 收敛圆与收敛半径 / 4.2.3 性质 / 4.2.4 运算）
+%       §4.3 泰勒级数（4.3.1 展开定理 / 4.3.2 初等函数的展开式）
+%       §4.4 洛朗级数（4.4.1 概念与性质 / 4.4.2 展开定理 / 4.4.3 求展开式的方法）
+%       §4.5 孤立奇点的分类（洛朗展开的直接应用）
+% 由 1.main.tex 用 \input 引入
+
 \chapter{级数}
 
-\section{数项级数的基本性质}
+级数是研究解析函数的第二套工具（第一套是积分）。本章的逻辑主线是：复数项级数 \(\to\) 幂级数（圆盘内） \(\to\) 泰勒级数（解析函数的幂级数表示） \(\to\) 洛朗级数（圆环内的广义幂级数） \(\to\) 孤立奇点分类。
+
+\section{复变函数项级数}
+
+\subsection{复数序列}
+设 \(\{z_{n}\}\) 为复数序列，\(z_{n}=a_{n}+\mathrm{i}b_{n}\)。若存在复数 \(z_{0}=a_{0}+\mathrm{i}b_{0}\)，使 \(\lim\limits_{n\to\infty}|z_{n}-z_{0}|=0\)，则称 \(\{z_{n}\}\) \textbf{收敛}于 \(z_{0}\)。由于
+\[
+|a_{n}-a_{0}|\leqslant|z_{n}-z_{0}|,\qquad |b_{n}-b_{0}|\leqslant|z_{n}-z_{0}|,
+\]
+故
+\keyformula{\lim_{n\to\infty}z_{n}=z_{0}\iff\lim_{n\to\infty}a_{n}=a_{0}\ \text{且}\ \lim_{n\to\infty}b_{n}=b_{0}}
+即复数序列的收敛问题完全化归为两个实数列的收敛问题。由此得\textbf{柯西收敛准则}：\(\{z_{n}\}\) 收敛 \(\iff\) 对任意 \(\varepsilon>0\) 存在 \(N\)，当 \(n,m>N\) 时 \(|z_{n}-z_{m}|<\varepsilon\)。收敛序列必有界。
+
+\subsection{复数项级数}
+称 \(\sum\limits_{n=1}^{\infty}z_{n}=z_{1}+z_{2}+\cdots\) 为\textbf{复数项级数}，其部分和 \(S_{n}=\sum\limits_{k=1}^{n}z_{k}\)。若 \(\{S_{n}\}\) 收敛于 \(S\)，称级数\textbf{收敛}，\(S\) 为级数的和；否则称\textbf{发散}。
+
+\textbf{定理}\quad \(\sum z_{n}\) 收敛 \(\iff\) \(\sum a_{n}\) 与 \(\sum b_{n}\) 都收敛；且此时 \(\sum z_{n}=\sum a_{n}+\mathrm{i}\sum b_{n}\)。
+
+\textbf{基本性质}
 \begin{itemize}[leftmargin=2em]
-    \item 级数 \( \sum_{n=0}^{\infty} a_n \) 收敛 \( \implies \lim_{n \to \infty} a_n = 0 \)。
-    \item 级数 \( \sum_{n=0}^{\infty} a_n \) 绝对收敛 \( \iff \sum_{n=0}^{\infty} |a_n| \) 收敛。
-    \item 级数 \( \sum_{n=0}^{\infty} a_n \) 绝对收敛 \( \implies \sum_{n=0}^{\infty} a_n \) 收敛。
+  \item 收敛的\textbf{必要条件}：若 \(\sum z_{n}\) 收敛，则 \(\lim\limits_{n\to\infty}z_{n}=0\)（逆不成立）；
+  \item 线性性：\(\sum(\alpha z_{n}+\beta w_{n})=\alpha\sum z_{n}+\beta\sum w_{n}\)；
+  \item 改变或去掉有限项不改变收敛性。
 \end{itemize}
 
-\section{幂级数的收敛半径}
-\subsection{达朗贝尔检比法}
-给定幂级数 \( \sum_{n=0}^{\infty} a_n w^n \)，若极限 \( \lambda = \lim_{n \to \infty} \frac{|a_{n+1}|}{|a_n|} \) 广义存在，则收敛半径
+若 \(\sum|z_{n}|\) 收敛，称 \(\sum z_{n}\) \textbf{绝对收敛}。因为
 \[
-R = \frac{1}{\lambda}.
+|a_{n}|\leqslant|z_{n}|,\qquad |b_{n}|\leqslant|z_{n}|,\qquad |z_{n}|\leqslant|a_{n}|+|b_{n}|,
 \]
+故
+\keyformula{\sum z_{n}\ \text{绝对收敛}\iff\sum|z_{n}|\ \text{收敛}
+\iff\sum a_{n},\ \sum b_{n}\ \text{都绝对收敛}}
+并且\textbf{绝对收敛 \(\Rightarrow\) 收敛}（反之不成立）。判断绝对收敛时可直接套用正项级数的比值法、根值法、比较法。
 
-\subsection{柯西检根法}
-幂级数 \( \sum_{n=0}^{\infty} a_n w^n \) 的收敛半径为
-\[
-R = \frac{1}{\varlimsup_{n \to \infty} \sqrt[n]{|a_n|}}.
-\]
+\subsection{复变函数项级数}
+设 \(f_{n}(z)\ (n=1,2,\cdots)\) 是点集 \(E\) 上的复函数。若对每个 \(z\in E\)，数项级数 \(\sum f_{n}(z)\) 都收敛，则称 \(\sum f_{n}(z)\) 在 \(E\) 上\textbf{逐点收敛}，其和函数记 \(S(z)=\sum\limits_{n=1}^{\infty}f_{n}(z)\)，部分和 \(S_{n}(z)=\sum\limits_{k=1}^{n}f_{k}(z)\)。
 
-\section{泰勒展开}
-设函数 \( f(z) \) 是开圆盘 \( B(z_0, R) \) 上的解析函数，则
-\[
-f(z) = \sum_{n=0}^{\infty} a_n (z - z_0)^n = \sum_{n=0}^{\infty} \frac{f^{(n)}(z_0)}{n!} (z - z_0)^n,
-\]
-其中
-\[
-a_0 = f(z_0),\quad a_n = \frac{1}{2\pi i} \oint_{|\xi - z_0|=r} \frac{f(\xi)}{(\xi - z_0)^{n+1}} d\xi = \frac{f^{(n)}(z_0)}{n!},\quad r < R.
-\]
-若圆盘 \( B(z_0, R) \) 上的解析函数 \( f(z) \) 可展为幂级数 \( \sum_{n=0}^{\infty} a_n (z - z_0)^n \)，则必有 \( a_n = \frac{f^{(n)}(z_0)}{n!} \)。
+若对任意 \(\varepsilon>0\) 存在\textbf{与 \(z\) 无关}的 \(N\)，当 \(n>N\) 时对一切 \(z\in E\) 都有 \(|S_{n}(z)-S(z)|<\varepsilon\)，则称 \(\sum f_{n}(z)\) 在 \(E\) 上\textbf{一致收敛}。若它在区域 \(D\) 的任意有界闭子集上都一致收敛，则称在 \(D\) 上\textbf{内闭一致收敛}。
 
-\section{洛朗展开}
-设 \( f(z) \) 是圆环区域 \( r < |z - z_0| < R \) 上的解析函数，则 \( f(z) \) 在圆环上可展开为广义幂级数：
-\[
-f(z) = \sum_{n=-\infty}^{\infty} a_n (z - z_0)^n, \quad r < |z - z_0| < R,
-\]
-其中
-\[
-a_n = \frac{1}{2\pi i} \oint_{|\xi - z_0|=l} \frac{f(\xi)}{(\xi - z_0)^{n+1}} d\xi, \quad r < l < R.
-\]
+\textbf{优级数判别法（Weierstrass）}\quad 若存在收敛的正项级数 \(\sum M_{n}\)，使对一切 \(z\in E\) 有 \(|f_{n}(z)|\leqslant M_{n}\)，则 \(\sum f_{n}(z)\) 在 \(E\) 上一致收敛（且绝对收敛）。
 
-% ===== 以下内容原在 markdown 稿中、tex 里没有，2026-10-21 归并时以注释保留 =====
-% （片段按公式切分，断句不整；需要时手工整理进正文，整理完删掉这段注释）
-% 求解析函数的洛朗展开式的一些方法。
-% 几个初等函数的幂级数展开式。
-% 幂级数的收敛圆与收敛半径。
-% 洛朗级数的概念及性质。
+\textbf{内闭一致收敛的性质}\quad 设 \(f_{n}(z)\) 都在区域 \(D\) 内解析，且 \(\sum f_{n}(z)\) 在 \(D\) 上内闭一致收敛于 \(S(z)\)，则
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{（解析性）} \(S(z)\) 在 \(D\) 内解析；
+  \item \textbf{（逐项求导）} \(S'(z)=\sum\limits_{n=1}^{\infty}f_{n}'(z)\)，且导数级数在 \(D\) 上内闭一致收敛；
+  \item \textbf{（逐项积分）} 对 \(D\) 内任一条逐段光滑曲线 \(C\)，\(\displaystyle\int_{C}S(z)\,\mathrm{d}z=\sum_{n=1}^{\infty}\int_{C}f_{n}(z)\,\mathrm{d}z\)。
+\end{itemize}
+
+\corepoint{“逐点收敛”远不够用：\(\sum z^{n}\) 在 \(|z|<1\) 内逐点收敛于 \(\frac{1}{1-z}\)，但在整个开圆盘上\textbf{不一致}收敛（越靠近边界收敛越慢，\(S_{n}\) 在 \(|z|<1\) 上无界）。正确说法是“在 \(|z|\leqslant r\ (r<1)\) 上一致收敛”，即\textbf{内闭一致收敛}——它恰好是在开集上做逐项求导、逐项积分所需的强度。凡写“幂级数在其收敛圆内可逐项求导”，依据都是内闭一致收敛。}
+
+\section{幂级数}
+
+\subsection{幂级数的概念}
+形如
+\[
+\sum_{n=0}^{\infty}a_{n}(z-z_{0})^{n}=a_{0}+a_{1}(z-z_{0})+a_{2}(z-z_{0})^{2}+\cdots
+\]
+的函数项级数称为以 \(z_{0}\) 为中心的\textbf{幂级数}，\(a_{n}\) 为系数。作平移 \(w=z-z_{0}\) 即可化为中心在原点的幂级数 \(\sum a_{n}w^{n}\)，故先研究后者。
+
+\textbf{阿贝尔（Abel）定理}\quad 若 \(\sum a_{n}w^{n}\) 在 \(w_{0}\neq 0\) 处收敛，则它在 \(|w|<|w_{0}|\) 内\textbf{绝对收敛}；若在 \(w_{1}\) 处发散，则它在 \(|w|>|w_{1}|\) 内\textbf{发散}。
+
+证明思路：由 \(\sum a_{n}w_{0}^{n}\) 收敛得 \(a_{n}w_{0}^{n}\) 有界，设 \(|a_{n}w_{0}^{n}|\leqslant M\)；对 \(|w|<|w_{0}|\) 有 \(|a_{n}w^{n}|\leqslant M\left|\frac{w}{w_{0}}\right|^{n}\)，与收敛的几何级数比较即得。
+
+\subsection{幂级数的收敛圆与收敛半径}
+由 Abel 定理，幂级数的收敛点集必是一个以 \(z_{0}\) 为心的圆盘内部（可能添上边界上的部分点）。定义
+\[
+R=\sup\left\{|z-z_{0}|:\ \sum_{n=0}^{\infty}a_{n}(z-z_{0})^{n}\ \text{收敛}\right\}
+\]
+为幂级数的\textbf{收敛半径}，圆盘 \(|z-z_{0}|<R\) 为\textbf{收敛圆}（\(R\) 可取 \(0\) 或 \(+\infty\)）。
+
+\textbf{定理}\quad 设收敛半径为 \(R\)，则
+\begin{itemize}[leftmargin=2em]
+  \item 在 \(|z-z_{0}|<R\) 内幂级数\textbf{绝对收敛}且\textbf{内闭一致收敛}；
+  \item 在 \(|z-z_{0}|>R\) 内幂级数\textbf{发散}；
+  \item 在边界 \(|z-z_{0}|=R\) 上收敛性\textbf{不确定}，须具体讨论。
+\end{itemize}
+
+\textbf{收敛半径的计算}
+\keyformula{R=\frac{1}{\varlimsup\limits_{n\to\infty}\sqrt[n]{|a_{n}|}}}
+（约定 \(\frac{1}{0}=+\infty\)，\(\frac{1}{+\infty}=0\)。）若极限存在，也可用\textbf{比值法}
+\[
+R=\lim_{n\to\infty}\left|\frac{a_{n}}{a_{n+1}}\right|.
+\]
+实际计算时还可利用：幂级数在 \(z=z_{1}\) 处收敛 \(\Rightarrow R\geqslant|z_{1}-z_{0}|\)；在 \(z_{2}\) 处发散 \(\Rightarrow R\leqslant|z_{2}-z_{0}|\)；而 \(R\) 又等于 \(f(z)\) 在 \(z_{0}\) 的泰勒展开成立的最大圆盘半径，即 \(z_{0}\) 到 \(f\) 最近奇点的距离（这一条最快，见 §4.3）。
+
+\corepoint{三个高频陷阱：(1) \textbf{缺项级数}（如 \(\sum 2^{n}z^{2n}\)、\(\sum a_{n}z^{kn}\)）不能直接用比值法 \(R=\lim|a_{n}/a_{n+1}|\)（此时 \(\lim\) 一般不存在），应把 \(z^{k}\) 看成整体或直接用根值公式 \(R=1/\varlimsup\sqrt[n]{|a_{n}|}\)；(2) 收敛半径只由系数决定，与 \(z\) 无关，圆心是展开中心 \(z_{0}\) 而非原点；(3) 收敛半径相同，边界上的收敛性可以完全不同——\(\sum z^{n}\) 在 \(|z|=1\) 上处处发散，\(\sum z^{n}/n^{2}\) 在 \(|z|=1\) 上处处绝对收敛，\(\sum z^{n}/n\) 在 \(|z|=1,z\neq 1\) 处收敛而在 \(z=1\) 处发散。所以“\(|z|=R\) 上收敛吗”必须单独讨论。}
+
+\subsection{幂级数的性质}
+\textbf{定理}\quad 幂级数 \(\sum a_{n}(z-z_{0})^{n}\) 的和函数 \(S(z)\) 在其收敛圆 \(|z-z_{0}|<R\) 内解析，且
+\begin{itemize}[leftmargin=2em]
+  \item 可\textbf{逐项求导}：\(S'(z)=\sum\limits_{n=1}^{\infty}na_{n}(z-z_{0})^{n-1}\)，收敛半径仍为 \(R\)；
+  \item 可\textbf{逐项积分}：\(\displaystyle\int_{z_{0}}^{z}S(\xi)\,\mathrm{d}\xi=\sum_{n=0}^{\infty}\frac{a_{n}}{n+1}(z-z_{0})^{n+1}\)，收敛半径仍为 \(R\)；
+  \item 反复求导可知 \(S(z)\) 在收敛圆内\textbf{无穷次可导}，且 \(a_{n}=\dfrac{S^{(n)}(z_{0})}{n!}\)（系数被和函数唯一确定）。
+\end{itemize}
+
+\subsection{幂级数的运算}
+设 \(\sum a_{n}(z-z_{0})^{n}\)、\(\sum b_{n}(z-z_{0})^{n}\) 的收敛半径分别为 \(R_{1},R_{2}\)，\(R=\min\{R_{1},R_{2}\}\)。在 \(|z-z_{0}|<R\) 内可作
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{加减法}：\(\sum(a_{n}\pm b_{n})(z-z_{0})^{n}\)，收敛半径至少为 \(R\)；
+  \item \textbf{乘法}（柯西乘积）：\(\left(\sum a_{n}w^{n}\right)\left(\sum b_{n}w^{n}\right)=\sum c_{n}w^{n}\)，其中 \(c_{n}=\sum\limits_{k=0}^{n}a_{k}b_{n-k}\)，收敛半径至少为 \(R\)；
+  \item \textbf{除法}：当 \(b_{0}\neq 0\) 时商仍为幂级数，系数由 \(\sum a_{n}w^{n}=\left(\sum b_{n}w^{n}\right)\left(\sum d_{n}w^{n}\right)\) 逐项比较（\textbf{待定系数法}）确定；
+  \item \textbf{复合}：若 \(g(z)=\sum b_{n}w^{n}\) 且 \(w=f(z)\) 在 \(|z-z_{0}|<\rho\) 内解析、\(|f(z)|<R_{2}\)，则 \(g[f(z)]\) 可展成幂级数。
+\end{itemize}
+
+\section{泰勒级数}
+
+\subsection{泰勒展开定理}
+\textbf{定理（泰勒 Taylor 展开）}\quad 设 \(f(z)\) 在圆盘 \(B(z_{0},R):|z-z_{0}|<R\) 内解析，则 \(f\) 在该圆盘内可唯一地展成幂级数
+\keyformula{f(z)=\sum_{n=0}^{\infty}a_{n}(z-z_{0})^{n},\qquad
+a_{n}=\frac{f^{(n)}(z_{0})}{n!}=\frac{1}{2\pi\mathrm{i}}\oint_{C}\frac{f(\zeta)}{(\zeta-z_{0})^{n+1}}\,\mathrm{d}\zeta}
+其中 \(C\) 为 \(|z-z_{0}|=\rho\ (0<\rho<R)\)，且该级数在 \(B(z_{0},R)\) 内绝对收敛、内闭一致收敛。
+
+证明思路：对 \(|z-z_{0}|<r<R\)，由柯西积分公式
+\(f(z)=\frac{1}{2\pi\mathrm{i}}\oint_{|\zeta-z_{0}|=r}\frac{f(\zeta)}{\zeta-z_{0}}\cdot\frac{1}{1-\frac{z-z_{0}}{\zeta-z_{0}}}\mathrm{d}\zeta\)，
+把 \(\frac{1}{1-w}\) 展成几何级数（\(|w|<1\)）并逐项积分，再用高阶导数公式即得系数表达式。\(z_{0}=0\) 时称为\textbf{麦克劳林（Maclaurin）展开}。
+
+\textbf{几点说明}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{收敛范围}：定理只保证在 \(B(z_{0},R)\) 内成立；实际展开的收敛半径等于 \(z_{0}\) 到 \(f\) 的\textbf{最近奇点}的距离（若 \(f\) 是整函数则 \(R=+\infty\)）。
+  \item \textbf{唯一性}：解析函数在一点处的幂级数展开式唯一（系数只能是 \(f^{(n)}(z_{0})/n!\)）。这条性质是“间接展开法”的合法性依据。
+  \item \textbf{解析的等价刻画}：\(f\) 在 \(z_{0}\) 解析 \(\iff f\) 在 \(z_{0}\) 的某邻域内可展成幂级数。
+\end{itemize}
+
+\textbf{两个重要推论}
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{零点孤立性定理}：设 \(f\) 在区域 \(D\) 内解析且不恒为零，则 \(f\) 的每个零点是\textbf{孤立}的——即若 \(f(z_{0})=0\)，则存在 \(z_{0}\) 的去心邻域使 \(f\) 在其中不为零。
+  \item \textbf{唯一性定理}：设 \(f,g\) 在区域 \(D\) 内解析，若存在 \(D\) 内一列互不相同的点 \(\{z_{n}\}\)（有聚点 \(z^{*}\in D\)）使 \(f(z_{n})=g(z_{n})\)，则 \(f\equiv g\) 于 \(D\)。
+\end{itemize}
+
+\subsection{几个初等函数的幂级数展开式}
+以下展开式必须记熟（\(z_{0}=0\)）：
+\keyformula{\mathrm{e}^{z}=\sum_{n=0}^{\infty}\frac{z^{n}}{n!},
+\qquad \sin z=\sum_{n=0}^{\infty}\frac{(-1)^{n}z^{2n+1}}{(2n+1)!},
+\qquad \cos z=\sum_{n=0}^{\infty}\frac{(-1)^{n}z^{2n}}{(2n)!}\qquad (|z|<+\infty)}
+\keyformula{\frac{1}{1-z}=\sum_{n=0}^{\infty}z^{n}\ (|z|<1),\qquad
+\ln(1+z)=\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n}z^{n}\ (|z|<1)}
+\keyformula{(1+z)^{\alpha}=1+\alpha z+\frac{\alpha(\alpha-1)}{2!}z^{2}+\cdots
++\frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{n!}z^{n}+\cdots\qquad (|z|<1)}
+
+\textbf{间接展开法（最常用）}\quad 由展开式的唯一性，可用下列手段从已知展开式得到新的展开式，而不必逐阶求导：
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{代换}：如 \(\mathrm{e}^{z^{2}}=\sum\frac{z^{2n}}{n!}\)、\(\dfrac{1}{1+z^{2}}=\sum(-1)^{n}z^{2n}\)；
+  \item \textbf{分拆为部分分式}：如有理函数先拆成 \(\frac{A}{z-a}+\frac{B}{z-b}\) 再逐个展开；
+  \item \textbf{逐项求导或逐项积分}：如由 \(\frac{1}{1-z}\) 求导得 \(\frac{1}{(1-z)^{2}}\) 的展开，由 \(\frac{1}{1+z}\) 积分得 \(\ln(1+z)\)；
+  \item \textbf{乘除法与待定系数}：如求 \(\tan z\)、\(\sec z\) 的展开。
+\end{enumerate}
+
+\corepoint{展开式后面\textbf{必须写明成立范围}（\(|z|<1\) 还是 \(|z|<+\infty\)），这是泰勒展开与洛朗展开的“坐标”。另外，间接法只允许在\textbf{收敛圆内}做代数变形：由 \(\ln(1+z)=\sum(-1)^{n-1}z^{n}/n\ (|z|<1)\) 不能直接推出 \(\ln(1+z^{2})\) 在 \(|z|<+\infty\) 成立，只能得 \(|z|<1\)；正确范围由“最近奇点”判断——\(1+z^{2}=0\) 的根 \(\pm\mathrm{i}\) 在 \(|z|=1\) 上，故半径确为 \(1\)。}
+
+\section{洛朗级数}
+
+\subsection{洛朗级数的概念及性质}
+形如
+\[
+\sum_{n=-\infty}^{+\infty}a_{n}(z-z_{0})^{n}
+=\underbrace{\sum_{n=0}^{\infty}a_{n}(z-z_{0})^{n}}_{\text{正部}}
++\underbrace{\sum_{n=1}^{\infty}a_{-n}(z-z_{0})^{-n}}_{\text{负部}}
+\]
+的函数项级数称为以 \(z_{0}\) 为中心的\textbf{广义幂级数}（洛朗级数）。它收敛 \(\iff\) 正部与负部同时收敛。
+
+设正部收敛半径为 \(R_{1}\)，负部在 \(|z-z_{0}|>R_{2}\) 收敛，则当 \(R_{2}<R_{1}\) 时，级数在\textbf{圆环}
+\[
+R_{2}<|z-z_{0}|<R_{1}
+\]
+内绝对收敛且内闭一致收敛，此圆环称为\textbf{收敛圆环}；在圆环外发散，在边界上不确定。特别当 \(R_{2}=0\) 时圆环退化为去心圆盘 \(0<|z-z_{0}|<R_{1}\)。
+
+\subsection{洛朗展开定理}
+\textbf{定理（洛朗 Laurent 展开）}\quad 设 \(f(z)\) 在圆环 \(D:r<|z-z_{0}|<R\) 内解析，则 \(f\) 在 \(D\) 内可唯一地展成洛朗级数
+\keyformula{f(z)=\sum_{n=-\infty}^{+\infty}a_{n}(z-z_{0})^{n},\qquad
+a_{n}=\frac{1}{2\pi\mathrm{i}}\oint_{C}\frac{f(\zeta)}{(\zeta-z_{0})^{n+1}}\,\mathrm{d}\zeta
+\quad(n=0,\pm 1,\pm 2,\cdots)}
+其中 \(C\) 为圆环内任一以 \(z_{0}\) 为心的圆周 \(|\zeta-z_{0}|=\rho\ (r<\rho<R)\)，且级数在 \(D\) 内绝对收敛、内闭一致收敛。
+
+与泰勒定理的两个差别：
+\begin{itemize}[leftmargin=2em]
+  \item 系数一般\textbf{不能}写成 \(\frac{f^{(n)}(z_{0})}{n!}\)（\(f\) 在 \(z_{0}\) 处可能没有定义，谈不上求导）；
+  \item 展开式依赖\textbf{圆环}：同一个 \(f\) 在 \(z_{0}\) 的不同圆环上有不同的洛朗展开。
+\end{itemize}
+
+\textbf{唯一性}\quad \(f\) 在给定圆环内的洛朗展开式是唯一的；故用任何合法手段（代换、分拆、乘除）得到的展开式就是它。
+
+\subsection{求洛朗展开式的方法}
+\textbf{步骤}
+\begin{enumerate}[leftmargin=2em]
+  \item 找出 \(f\) 的全部奇点，确定展开中心 \(z_{0}\)；
+  \item 由奇点到 \(z_{0}\) 的距离把平面分成若干圆环，题目指定哪个就在哪个圆环内做；
+  \item 把 \(f\) 拆成若干“简单分式”之和（有理函数用部分分式）；
+  \item 对每个分式，按“\(|z-z_{0}|\) 与奇点距离的大小”选择展开方向：
+  若 \(|w|<1\) 用 \(\dfrac{1}{1-w}=\sum w^{n}\)；若 \(|w|>1\) 用 \(\dfrac{1}{1-w}=-\dfrac{1}{w}\cdot\dfrac{1}{1-1/w}=-\sum\limits_{n=1}^{\infty}w^{-n}\)；
+  \item 合并同类项，并\textbf{写明成立区域}。
+\end{enumerate}
+
+\textbf{判别准则}\quad 对每个因子 \(\dfrac{1}{z-a}\)：若 \(|z-z_{0}|<|a-z_{0}|\)（奇点 \(a\) 落在圆环\textbf{之外}），展成 \(z-z_{0}\) 的\textbf{正幂}；若 \(|z-z_{0}|>|a-z_{0}|\)（\(a\) 落在圆环\textbf{之内}），先提出 \((z-z_{0})\) 作公因子再展成\textbf{负幂}。同一函数在不同圆环上的展开式互不相同，但在各自圆环内都表示同一个 \(f\)。
+
+\corepoint{洛朗展开最容易错的三处：(1) 忘了区分圆环，把 \(|z|<1\) 的展开式拿去用在 \(1<|z|<2\) 上；(2) 该出负幂时仍机械地写 \(\frac{1}{1-z}=\sum z^{n}\)（此式只在 \(|z|<1\) 成立）；(3) 展开中心不在原点时忘记把 \(z-z_{0}\) 当作整体 \(w\)。判别口诀：看 \(|z-z_{0}|\) 与“该分式的奇点到 \(z_{0}\) 的距离”谁大——\(|z-z_{0}|\) 大就用负幂，小就用正幂。}
+
+\section{孤立奇点的分类}
+
+本节是洛朗展开的直接应用（教材排在 §5.1，留数的计算见第 5 章）。
+
+\textbf{定义}\quad 若 \(f(z)\) 在 \(z_{0}\) 的某个\textbf{去心邻域} \(0<|z-z_{0}|<\delta\) 内解析，而在 \(z_{0}\) 处不解析（或未定义），则称 \(z_{0}\) 为 \(f\) 的\textbf{孤立奇点}。
+
+设 \(f\) 在 \(0<|z-z_{0}|<R\) 内的洛朗展开为 \(f(z)=\sum\limits_{n=-\infty}^{+\infty}a_{n}(z-z_{0})^{n}\)，其负幂项部分 \(\sum\limits_{n=1}^{\infty}a_{-n}(z-z_{0})^{-n}\) 称为\textbf{主要部分}。
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+类型 & 主要部分 & 极限特征 & 等价刻画 \\
+\midrule
+可去奇点 & 无（\(a_{-n}=0\)） & \(\lim f(z)\) 存在且有限 & 去心邻域内有界 \\
+\(m\) 阶极点 & 有限项，最低次 \(-m\) & \(\lim f(z)=\infty\) & \(f=\dfrac{g(z)}{(z-z_{0})^{m}}\)，\(g(z_{0})\neq0\) \\
+本性奇点 & 无穷多项 & \(\lim f(z)\) 不存在 & 取值稠密（Picard） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{零点与极点的关系}\quad 若 \(f(z)=(z-z_{0})^{m}\varphi(z)\)，\(\varphi\) 在 \(z_{0}\) 解析且 \(\varphi(z_{0})\neq0\)，则称 \(z_{0}\) 为 \(f\) 的 \textbf{\(m\) 阶零点}。此时
+\[
+z_{0}\ \text{是}\ f\ \text{的}\ m\ \text{阶零点}\iff z_{0}\ \text{是}\ \frac{1}{f}\ \text{的}\ m\ \text{阶极点}.
+\]
+对有理函数 \(f=\dfrac{P(z)}{Q(z)}\)（\(P,Q\) 在 \(z_{0}\) 解析，\(z_{0}\) 分别是 \(P\) 的 \(m\) 阶零点、\(Q\) 的 \(n\) 阶零点）：\(m>n\) 时 \(z_{0}\) 是 \(f\) 的 \(m-n\) 阶零点；\(m=n\) 时是可去奇点；\(m<n\) 时是 \(n-m\) 阶极点。
+
+\corepoint{判定顺序：先看\textbf{极限}，再用\textbf{洛朗展开}定阶数。“极限不存在”不等于“本性奇点”——极限既不有限也不为 \(\infty\) 才是本性奇点（如 \(\mathrm{e}^{1/z}\) 在 \(0\) 处）；而 \(\lim f=\infty\) 只说明是极点，阶数还要靠展开式或零点阶数确定。又：孤立奇点要求“去心邻域内解析”，故 \(\operatorname{Ln}z\) 的支点 \(0\)、\(\frac{1}{\sin(1/z)}\) 在 \(z=0\) 处的奇点聚点都\textbf{不是}孤立奇点。}

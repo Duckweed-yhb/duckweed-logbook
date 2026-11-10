@@ -1,0 +1,400 @@
+% 第12章 结构体和数据结构基础（教材 12.1--12.11）
+% 只写内容：不重复 \usepackage，不改字号与页面设置
+
+\section{从基本数据类型到抽象数据类型}
+前面用过的类型（\texttt{int}、\texttt{double}、\texttt{char}、数组）都只能描述"单个值"或"同类型的一批值"。而现实中的对象往往是\textbf{多种属性的组合}：一个学生有学号（整数）、姓名（字符串）、成绩（实数），这三者逻辑上属于同一个整体，却类型不同。用三个互不相干的变量表示，既容易在函数间传递时遗漏，也无法表达"它们是一伙的"这层语义。
+
+把"数据"和"作用于数据的操作"打包在一起，只暴露必要的接口、隐藏内部表示，这种思想叫\textbf{抽象数据类型}（Abstract Data Type，ADT）。C 语言没有类的语法，但用\textbf{结构体}可以把若干不同类型的数据成员组织成一个整体，再用一组函数充当"操作"，就能近似地实现 ADT：
+
+\begin{itemize}
+  \item \textbf{数据封装}：结构体把相关数据成员捆在一起，作为一个整体定义、传递、返回。
+  \item \textbf{操作分离}：对结构体的操作由一组函数完成（如 \texttt{PrintStudent}、\texttt{SortByScore}），函数原型就是"接口"。
+  \item \textbf{信息隐藏}：调用者只需要知道结构体"有什么"，不必关心成员在内存里如何排列。
+\end{itemize}
+
+这正是本章的主线：从基本类型 $\to$ 结构体 $\to$ 结构体数组 $\to$ 结构体指针 $\to$ 链表等动态数据结构。
+
+\section{结构体的定义}
+\subsection{为什么要定义结构体类型}
+结构体（structure）是由若干\textbf{类型可以不同}的数据成员（member）组成的构造类型。它解决的第一个问题是"命名"：给"学生"这种复合数据起一个类型名，之后就能像 \texttt{int} 一样用它定义变量、作函数参数、放进数组。解决的第二个问题是"整体性"：可以整体赋值、整体传递，而不必逐个成员搬运。
+
+\subsection{结构体类型的定义与变量定义}
+定义结构体类型的一般形式：
+\begin{verbatim}
+struct 结构体名 {
+    类型1  成员名1;
+    类型2  成员名2;
+    ...
+};
+\end{verbatim}
+\begin{lstlisting}
+struct student {          /* 定义"学生"类型：此时不分配内存，只是一个模板 */
+    long   num;           /* 学号 */
+    char   name[20];      /* 姓名 */
+    double score;         /* 成绩 */
+};                        /* 末尾的分号不能少！ */
+\end{lstlisting}
+
+定义变量有三种写法：
+\begin{lstlisting}
+/* 写法一：先定义类型，再定义变量（最常用，类型可复用） */
+struct student s1, s2;
+
+/* 写法二：定义类型的同时定义变量 */
+struct student { long num; char name[20]; double score; } s1, s2;
+
+/* 写法三：匿名结构体，只此一次，无法再用该类型定义新变量 */
+struct { long num; char name[20]; double score; } s3;
+\end{lstlisting}
+
+\corepoint{\texttt{struct student \{ ... \};} 这一行末尾的分号必须写。漏掉它，编译器会认为你在继续声明变量，错误信息往往指向下一行，看起来毫无关系——这是结构体最经典的"报错位置与错误位置不一致"陷阱。}
+
+\subsection{用 typedef 定义数据类型}
+\texttt{typedef} 给已有类型起别名，能让结构体的使用摆脱 \texttt{struct} 关键字：
+\begin{lstlisting}
+typedef struct student {
+    long   num;
+    char   name[20];
+    double score;
+} Student;                 /* Student 是"struct student"的别名 */
+
+Student s1;                /* 不必再写 struct */
+\end{lstlisting}
+两种常见习惯：一是如上的"\texttt{typedef struct 标签 \{...\} 别名;}"，标签与别名并存；二是匿名加别名 \texttt{typedef struct \{...\} Student;}，此后只能用别名。别名本身也是类型名，可以再 \texttt{typedef} 出指针类型：\texttt{typedef Student *StudentPtr;}。
+
+\subsection{结构体变量的初始化}
+\begin{lstlisting}
+Student s1 = {20240101, "Zhang San", 92.5};   /* 按成员顺序依次赋值 */
+Student s2 = {20240102, "Li Si"};             /* 部分初始化：score 得 0.0 */
+Student s3 = {.name = "Wang Wu", .num = 20240103, .score = 88.0};
+                                              /* C99 指定初始化，顺序无关 */
+\end{lstlisting}
+若成员本身是数组或结构体，则用嵌套的花括号：\texttt{\{20240101, "Zhang San", \{1990, 5, 20\}\}}。
+
+\subsection{嵌套的结构体}
+成员可以是另一个结构体类型（\textbf{不能是自身}，但可以是指向自身的指针，链表正是这样构造的）：
+\begin{lstlisting}
+struct date { int year, month, day; };
+
+struct employee {
+    long  id;
+    char  name[20];
+    struct date birthday;      /* 嵌套：成员是一个结构体 */
+    struct date hireDay;
+};
+/* 引用最内层成员要一层层点下去 */
+e.birthday.year = 1990;
+\end{lstlisting}
+
+\subsection{结构体变量的引用}
+\begin{itemize}
+  \item \textbf{成员运算符 \texttt{.}}：\texttt{s1.num}、\texttt{s1.name}、\texttt{s1.score}。成员可以像普通变量一样参与运算、赋值、输入输出。
+  \item \textbf{同类型结构体可以整体赋值}：\texttt{s1 = s2;} 会把所有成员逐字节复制过去（含数组）。
+  \item \textbf{但整体比较、整体输入输出都不允许}：\texttt{s1 == s2} 编译错误；\texttt{printf("\%s", s1)} 也编译错误。要比较就逐成员比较，要输出就逐成员输出。
+  \item 成员是数组时，\textbf{不能对成员数组名整体赋值}：\texttt{s1.name = "Li Si";} 非法，须用 \texttt{strcpy} 函数逐个字符复制。
+\end{itemize}
+
+\subsection{结构体所占内存的字节数}
+结构体的字节数\textbf{不等于}各成员字节数的简单相加，编译器会插入"填充字节"以满足\textbf{内存对齐}（alignment）要求：每个成员的起始偏移必须是其自身大小的整数倍，结构体总大小必须是"最大成员大小"的整数倍。
+
+\begin{lstlisting}
+struct A { char c; int i; };   /* 成员字节和为 5，实际 sizeof 通常为 8 */
+struct B { int i; char c; };   /* 实际 sizeof 通常也为 8 */
+struct C { char c; double d; };/* 通常为 16：1 + 7 填充 + 8 */
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering
+\caption{\texttt{struct A \{ char c; int i; \};} 的典型内存布局（32 位）}
+\footnotesize
+\begin{tabular}{@{}llll@{}}
+\toprule
+偏移 & 0 & 1--3 & 4--7 \\
+\midrule
+内容 & \texttt{c} & 填充（未使用） & \texttt{i} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{实用结论}：求结构体大小一律用 \texttt{sizeof}，不要自己加；需要把结构体整体写进文件或通过网络发送时，填充字节里可能是随机值，应使用 \texttt{memset} 清零或用 \texttt{fwrite} 逐成员写出。
+
+\section{结构体数组的定义和初始化}
+\subsection{结构体数组的定义}
+\begin{lstlisting}
+Student stu[3];                 /* 3 个学生，每个都含完整的成员 */
+#define N 40
+Student class1[N];              /* 一片连续内存，元素是结构体 */
+\end{lstlisting}
+结构体数组的元素在内存中依次连续排列，因此可以用下标访问、可以整体传给函数（退化为指针），与普通数组别无二致。
+
+\subsection{结构体数组的初始化}
+\begin{lstlisting}
+Student stu[3] = {
+    {20240101, "Zhang San", 92.5},
+    {20240102, "Li Si",     85.0},
+    {20240103, "Wang Wu",   78.5}
+};                              /* 外层花括号是数组，内层是每个结构体 */
+\end{lstlisting}
+遍历与排序都很自然：把"按成绩排序"写成"交换结构体元素"，成员顺序跟着整体走，不会出现"学号换了成绩没换"的错位。
+\begin{lstlisting}
+/* 按成绩由高到低排序：元素整体交换，成员自动保持一致 */
+void SortByScore(Student a[], int n)
+{
+    int i, j; Student t;
+    for (i = 0; i < n - 1; i++)
+        for (j = i + 1; j < n; j++)
+            if (a[j].score > a[i].score) { t = a[i]; a[i] = a[j]; a[j] = t; }
+}
+\end{lstlisting}
+
+\section{结构体指针的定义和初始化}
+\subsection{指向结构体变量的指针}
+\begin{lstlisting}
+Student s1 = {20240101, "Zhang San", 92.5};
+Student *p = &s1;              /* p 指向一个结构体变量 */
+\end{lstlisting}
+通过指针访问成员有两种等价写法：
+\keyformula{(*p).name \;\equiv\; p \rightarrow name}
+\texttt{->} 称为\textbf{指向运算符}，它的左边必须是指针。二者等价的原因很直白："先解引用拿到结构体，再取成员"与"顺着指针直接取成员"是同一件事。
+
+\corepoint{为什么必须写 \texttt{(*p).name} 而不能写 \texttt{*p.name}？因为成员运算符 \texttt{.} 的优先级高于 \texttt{*}，\texttt{*p.name} 会被解释成 \texttt{*(p.name)}，而 \texttt{p} 是指针、没有 \texttt{name} 成员，直接编译错误。所以要么加括号，要么用 \texttt{->}。}
+
+\subsection{指向结构体数组的指针}
+\begin{lstlisting}
+Student stu[3] = {...};
+Student *p = stu;              /* 指向第 0 个元素 */
+p++;                           /* 移动一个"结构体"的大小，指向 stu[1] */
+printf("%s\n", p->name);       /* 输出第 1 个学生的姓名 */
+printf("%s\n", (p + 1)->name); /* 第 2 个学生 */
+\end{lstlisting}
+指针的加减仍以"元素"为单位，只不过这里的"一个元素"是一整个结构体（其大小由 \texttt{sizeof} 给出），这正是指针运算"按基类型移动"规则的又一次体现。
+
+\section{向函数传递结构体}
+结构体可以按值传递，也可以传地址，二者差别很大：
+
+\begin{table}[htbp]
+\centering
+\caption{结构体的两种传参方式}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}p{3.6cm}X@{}}
+\toprule
+方式 & 形参写法 & 特点 \\
+\midrule
+值传递 & \texttt{void f(Student s)} & 复制整个结构体；函数内修改不影响实参；成员多、数组大时开销大 \\
+地址传递 & \texttt{void f(Student *p)} & 只复制一个地址；函数内可通过 \texttt{p->x} 改实参；效率高，推荐 \\
+只读地址传递 & \texttt{void f(const Student *p)} & 传地址但禁止修改，兼具效率与安全 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}
+/* 只读访问：传地址 + const，既快又安全 */
+void PrintStudent(const Student *p)
+{
+    printf("%-10ld %-20s %6.1f\n", p->num, p->name, p->score);
+}
+/* 需要修改实参时传地址 */
+void AddBonus(Student *p, double delta) { p->score += delta; }
+/* 调用 */
+PrintStudent(&stu[0]);
+AddBonus(&stu[1], 5.0);        /* stu[1].score 真的被改了 */
+\end{lstlisting}
+经验法则：结构体较大或需要在函数内修改时传指针；结构体很小（如只有两三个 \texttt{int}）且不需修改时，值传递也无可厚非。
+
+\section{共用体}
+\textbf{共用体}（union，也称联合体）的语法与结构体几乎一样，但内存模型完全相反：\textbf{所有成员共用同一段存储空间}，起始地址相同。
+\begin{lstlisting}
+union data {
+    int   i;
+    char  ch;
+    double d;
+};
+union data u;
+u.i = 65;                 /* 此刻按 int 解释这 8 个字节 */
+printf("%c\n", u.ch);     /* 再按 char 解释同一段内存的首字节 */
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering
+\caption{结构体与共用体的对比}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}p{4.2cm}X@{}}
+\toprule
+比较项 & 结构体 struct & 共用体 union \\
+\midrule
+内存分配 & 各成员各占一块，依次排列 & 所有成员共用一块，起始地址相同 \\
+占用字节数 & 各成员之和 + 填充 & 最大成员的大小（并按对齐要求取整） \\
+同时有效 & 所有成员同时有效 & 同一时刻只有一个成员有效 \\
+典型用途 & 描述"由多个属性组成的对象" & 节省空间；同一段内存的多种解释 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+要点：共用体的值取决于\textbf{最后一次写入}的是哪个成员；读一个"不是最后写入"的成员，得到的只是那段字节的另一种解释（结果依赖具体实现），不是类型转换。共用体最实用的两个场景是节省存储（同一字段在不同情形下类型不同）与探测字节序（写入 \texttt{int} 1 后看首字节是否为 1）。
+
+\section{枚举数据类型}
+\textbf{枚举}（enumeration）用于表示"取值只有有限几个"的变量，如星期、颜色、状态：
+\begin{lstlisting}
+enum weekday { SUN, MON, TUE, WED, THU, FRI, SAT };
+enum weekday today;
+today = WED;                    /* 直接用名字，可读性远好于写 3 */
+\end{lstlisting}
+规则：
+\begin{itemize}
+  \item 枚举元素是\textbf{整型常量}，默认从 0 开始依次加 1（\texttt{SUN}=0，\texttt{SAT}=6）；可以显式指定 \texttt{enum \{A = 1, B, C = 10, D\};}，则 B=2、D=11。
+  \item 枚举变量的本质是整型，可以参与比较、可以用于 \texttt{switch}，但不能直接 \texttt{scanf("\%d", \&today)}（类型不匹配，需先读入 \texttt{int} 再转换）。
+  \item 枚举的价值在\textbf{可读性与可维护性}：用 \texttt{if (state == RUNNING)} 远比 \texttt{if (state == 2)} 清楚；元素增删时也不必改遍全程序的魔数。
+  \item C 语言对枚举\textbf{不做严格类型检查}（\texttt{today = 100;} 可能只给警告），这是它与 C++ 的差别之一。
+\end{itemize}
+
+\section{动态数据结构——单向链表}
+\subsection{问题的提出}
+数组有两个先天限制：\textbf{长度固定}（编译期确定，运行中不能伸缩）、\textbf{插入删除代价高}（要在中间插入一个元素，后面所有元素都得后移）。若数据量在运行中不断变化，就需要一种"按需申请、用指针串起来"的结构——\textbf{链表}（linked list）。
+
+\subsection{链表的定义}
+链表由若干\textbf{结点}（node）组成，每个结点含两部分：\textbf{数据域}（存数据）与\textbf{指针域}（存下一个结点的地址）。结点之间靠指针相连，内存上\textbf{不必连续}。
+\begin{lstlisting}
+typedef struct node {
+    int          data;      /* 数据域 */
+    struct node *next;      /* 指针域：指向同类型结点，形成"自引用" */
+} Node;
+\end{lstlisting}
+\begin{itemize}
+  \item \textbf{自引用}必须写 \texttt{struct node *next}，不能写 \texttt{Node *next}——因为在 \texttt{typedef} 完成之前，\texttt{Node} 这个名字还不存在。
+  \item 通常用一个\textbf{头指针} \texttt{Node *head} 记住第一个结点；最后一个结点的 \texttt{next} 置为 \texttt{NULL}，表示链表结束。
+  \item 空链表就是 \texttt{head == NULL}。
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{数组与链表对照}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.4cm}p{4.0cm}X@{}}
+\toprule
+比较项 & 数组 & 单向链表 \\
+\midrule
+内存布局 & 连续 & 离散，靠指针相连 \\
+长度 & 编译期固定 & 运行期按需增长 \\
+随机访问 & $O(1)$，\texttt{a[i]} 直接定位 & $O(n)$，必须从头走 \\
+插入/删除 & $O(n)$，需移动元素 & $O(1)$（已定位前驱时），只改指针 \\
+额外开销 & 无 & 每个结点多一个指针 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{单向链表的建立}
+建表就是"反复申请结点、接到链尾（或链头）"：
+\begin{lstlisting}
+/* 尾插法：新结点接在表尾，输出顺序与输入顺序一致 */
+Node *CreateList(void)
+{
+    Node *head = NULL, *tail = NULL, *p;
+    int x;
+    while (scanf("%d", &x) == 1 && x != -1) {   /* 以 -1 表示输入结束 */
+        p = (Node *)malloc(sizeof(Node));
+        if (p == NULL) return head;             /* 申请失败，返回已有链表 */
+        p->data = x;
+        p->next = NULL;
+        if (head == NULL) head = p;             /* 第一个结点 */
+        else              tail->next = p;       /* 接到表尾 */
+        tail = p;                               /* 更新尾指针 */
+    }
+    return head;
+}
+/* 遍历：从头走到 NULL */
+void PrintList(Node *head)
+{
+    Node *p;
+    for (p = head; p != NULL; p = p->next)
+        printf("%d ", p->data);
+    printf("\n");
+}
+\end{lstlisting}
+若改用\textbf{头插法}（\texttt{p->next = head; head = p;}），则每次插在表头，输出顺序与输入顺序\textbf{相反}——这也是"逆序建表"的常用技巧。
+
+\subsection{单向链表的删除操作}
+删除的关键是\textbf{找到前驱}：让前驱"绕过"待删结点。删除头结点要单独处理（因为没有前驱），这也是很多实现引入"带头结点（哨兵）"链表的原因。
+\begin{lstlisting}
+/* 删除第一个值为 key 的结点，返回新的头指针 */
+Node *DeleteNode(Node *head, int key)
+{
+    Node *p = head, *pre = NULL;
+    while (p != NULL && p->data != key) {   /* 找目标结点及其前驱 */
+        pre = p;
+        p = p->next;
+    }
+    if (p == NULL) return head;             /* 没找到 */
+    if (pre == NULL) head = p->next;        /* 删的是头结点 */
+    else             pre->next = p->next;   /* 让前驱绕过 p */
+    free(p);                                /* 释放被删结点 */
+    return head;
+}
+\end{lstlisting}
+
+\subsection{单向链表的插入操作}
+在结点 \texttt{p} 之后插入新结点 \texttt{s}，两条语句的\textbf{顺序不能颠倒}：
+\begin{lstlisting}
+s->next = p->next;    /* 第一步：新结点先接上后半个链 */
+p->next = s;          /* 第二步：前驱再指向新结点     */
+\end{lstlisting}
+若先写 \texttt{p->next = s;}，\texttt{p->next} 原来的值（后半条链的入口）就丢失了，\texttt{s->next} 再也接不回去，链表从 \texttt{p} 处\textbf{断链}——这是链表操作最经典的错误。
+
+\corepoint{链表的所有操作都可以归结为三句话：\textbf{先接后、再断前}（插入）；\textbf{找到前驱才能删除}；\textbf{每次 malloc 都要有对应的 free}。写链表代码时先在纸上画出 3 个结点的图，指针改一条划一条，能避免绝大多数断链与内存泄漏。}
+
+\section{本章扩充内容}
+\subsection{栈和队列}
+\begin{itemize}
+  \item \textbf{栈}（stack）：只允许在\textbf{一端}（栈顶）插入和删除，特点是\textbf{后进先出}（LIFO）。基本操作是入栈 \texttt{push} 与出栈 \texttt{pop}。可用数组实现（顺序栈，需判栈满/栈空），也可用链表实现（链栈）。函数调用、表达式求值、括号匹配都依赖栈。
+  \item \textbf{队列}（queue）：一端入队（队尾）、另一端出队（队首），特点是\textbf{先进先出}（FIFO）。用数组实现时为避免"假溢出"，通常做成\textbf{循环队列}，用 \texttt{(rear+1) \% MAX} 回绕；用链表实现则只需维护队首、队尾两个指针。
+\end{itemize}
+
+\subsection{树和图}
+\begin{itemize}
+  \item \textbf{树}（tree）：一种\textbf{层次}结构，有唯一的根结点，每个结点可有若干子结点且只有一个父结点（根除外）。最常用的是\textbf{二叉树}（每个结点至多两个子结点），其遍历分先序、中序、后序与层次遍历。文件目录、表达式结构、查找树都是树的实例。
+  \item \textbf{图}（graph）：由顶点集合与边集合构成，结点之间可以任意相连，可带权、可有向。社交网络、地图路径、任务依赖都是图。
+\end{itemize}
+
+\subsection{数据的逻辑结构和存储结构}
+\begin{table}[htbp]
+\centering
+\caption{逻辑结构与存储结构}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}p{4.4cm}X@{}}
+\toprule
+分类 & 类型 & 说明 \\
+\midrule
+逻辑结构 & 集合、线性结构、树形结构、图状结构 & 数据元素之间的逻辑关系，与内存无关 \\
+存储结构 & 顺序存储、链式存储、索引存储、散列存储 & 逻辑结构在内存中的实现方式 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+同一个逻辑结构可以有多种存储实现：线性表既可以用数组（顺序存储，随机访问快），也可以用链表（链式存储，插入删除快）。"选哪种"取决于实际最频繁的操作是什么，这正是数据结构设计的核心权衡。
+
+\section{本章知识点小结}
+\begin{itemize}
+  \item 结构体把不同类型的数据成员组织成一个整体，是 C 语言实现抽象数据类型的基础。
+  \item 结构体类型定义末尾的\textbf{分号不能少}；定义类型不分配内存，定义变量才分配。
+  \item \texttt{typedef} 可为结构体起别名，之后无需再写 \texttt{struct}。
+  \item 成员用 \texttt{.} 访问；同类型结构体可整体赋值，但不可整体比较、整体输入输出。
+  \item 结构体大小受\textbf{内存对齐}影响，一律用 \texttt{sizeof} 求，不要手工相加。
+  \item 结构体数组的元素连续存放，可整体传给函数；排序时整体交换元素，成员不会错位。
+  \item 结构体指针用 \texttt{->} 访问成员：\texttt{(*p).name $\equiv$ p->name}；\texttt{p++} 移动一个结构体。
+  \item 传结构体：小结构可值传递，大结构或需修改时传指针，只读时加 \texttt{const}。
+  \item 共用体所有成员共享同一段内存，大小取最大成员；枚举用命名常量提高可读性。
+  \item 链表结点含数据域与指针域，靠 \texttt{struct node *next} 自引用；插入"先接后、再断前"，删除要先找前驱。
+\end{itemize}
+
+\section{第十一节：本章常见错误小结}
+\begin{enumerate}
+  \item \textbf{结构体定义漏分号}：\texttt{struct student \{ ... \}} 后面少写 \texttt{;}，报错却指向下一行。
+  \item \textbf{忘记写 \texttt{struct} 或别名}：定义了 \texttt{struct student}，却直接写 \texttt{student s;}，除非有 \texttt{typedef}，否则编译错误。
+  \item \textbf{用 \texttt{==} 比较结构体}：\texttt{if (s1 == s2)} 非法；应逐成员比较，或比较 \texttt{memcmp}（注意填充字节）。
+  \item \textbf{直接 \texttt{scanf} 整个结构体}：\texttt{scanf("\%s", s1)} 非法，必须逐个成员读。
+  \item \textbf{给成员数组整体赋值}：\texttt{s1.name = "Li Si";} 非法，须用 \texttt{strcpy} 函数复制。
+  \item \textbf{用 \texttt{*p.name} 访问成员}：优先级错误，应为 \texttt{(*p).name} 或 \texttt{p->name}。
+  \item \textbf{自己累加结构体大小}：忽略填充字节，导致 \texttt{fread}/\texttt{fwrite} 读写错位。
+  \item \textbf{链表插入顺序颠倒}：先 \texttt{p->next = s;} 导致后半条链丢失，链表断链。
+  \item \textbf{删除结点忘记 \texttt{free}}：结点从链上摘下来了，内存却没还，形成泄漏。
+  \item \textbf{自引用写成别名}：\texttt{typedef struct node \{ Node *next; \} Node;} 在 \texttt{typedef} 完成前 \texttt{Node} 尚不存在，编译失败。
+  \item \textbf{返回局部结点地址}：函数内 \texttt{Node n;} 的地址在函数返回后失效，应 \texttt{malloc}。
+\end{enumerate}

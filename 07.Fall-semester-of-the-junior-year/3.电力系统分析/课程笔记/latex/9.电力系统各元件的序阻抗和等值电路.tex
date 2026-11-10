@@ -1,0 +1,331 @@
+% ============================================================
+% 第 7 章  电力系统各元件的序阻抗和等值电路
+% （教材：何仰赞、温增银《电力系统分析》上册 第 7 章）
+% 结构对齐 7.1—7.7；例题、习题不录
+% ============================================================
+
+\chapter{电力系统各元件的序阻抗和等值电路}
+
+不对称短路不能用一相电路直接分析，但如果把不对称的三相量分解为三组对称分量，
+则对每一组对称分量，网络仍是三相对称的，可以用单相等值电路处理。
+本章做两件事：把\textbf{对称分量法}装到短路计算上；给出各元件在\textbf{正序、负序、零序}
+三种情况下的等值电路与参数——这是第 8 章全部不对称故障计算的物质基础。
+
+\section{对称分量法在不对称短路计算中的应用}
+
+\subsection{不对称三相量的分解}
+
+任一组不对称三相相量（电压或电流）都可唯一分解为三组对称分量：
+\textbf{正序}（$a\to b\to c$ 依次滞后 $120^\circ$）、\textbf{负序}（相序相反）、
+\textbf{零序}（三相同相）。引入算子
+\begin{equation}
+  a=e^{j120^\circ}=-\tfrac{1}{2}+j\tfrac{\sqrt{3}}{2},\qquad
+  a^{2}=e^{j240^\circ}=e^{-j120^\circ},\qquad 1+a+a^{2}=0,
+\end{equation}
+则
+\keyformula{
+  \begin{bmatrix}\dot F_a\\ \dot F_b\\ \dot F_c\end{bmatrix}
+  =\begin{bmatrix}1&1&1\\ a^{2}&a&1\\ a&a^{2}&1\end{bmatrix}
+  \begin{bmatrix}\dot F_{a1}\\ \dot F_{a2}\\ \dot F_{a0}\end{bmatrix},
+  \qquad
+  \begin{bmatrix}\dot F_{a1}\\ \dot F_{a2}\\ \dot F_{a0}\end{bmatrix}
+  =\frac{1}{3}\begin{bmatrix}1&a&a^{2}\\ 1&a^{2}&a\\ 1&1&1\end{bmatrix}
+  \begin{bmatrix}\dot F_a\\ \dot F_b\\ \dot F_c\end{bmatrix}}
+即 $\dot F_{a1}=\frac{1}{3}(\dot F_a+a\dot F_b+a^{2}\dot F_c)$，
+$\dot F_{a2}=\frac{1}{3}(\dot F_a+a^{2}\dot F_b+a\dot F_c)$，
+$\dot F_{a0}=\frac{1}{3}(\dot F_a+\dot F_b+\dot F_c)$。
+零序分量三相相等，故\textbf{零序电流必须有通路}才能存在（中性点接地、三角形回路）。
+
+\subsection{序阻抗的概念}
+
+对线性、三相对称的元件（或网络），三序分量彼此\textbf{解耦}：正序电压只产生正序电流，
+负序、零序亦然。故可对每一序单独定义阻抗：
+\begin{equation}
+  \dot U_{1}=Z_{1}\dot I_{1},\qquad \dot U_{2}=Z_{2}\dot I_{2},\qquad \dot U_{0}=Z_{0}\dot I_{0}.
+\end{equation}
+$Z_1$、$Z_2$、$Z_0$ 分别称\textbf{正序、负序、零序阻抗}。
+\begin{itemize}
+  \item 静止元件（线路、变压器、电抗器）：$Z_1=Z_2$（正、负序所见的磁路完全相同，
+        只是相序相反）；
+  \item 旋转元件（同步电机、异步电动机）：$Z_1\ne Z_2$（负序磁场与转子转向相反，
+        相对转速为 $2n_1$，转子绕组对负序磁场的作用类似短路绕组，故 $Z_2$ 远小于 $Z_1$）；
+  \item 零序阻抗与前三者都可能不同，且强烈依赖\textbf{接线方式与接地情况}。
+\end{itemize}
+
+\subsection{对称分量法在不对称短路计算中的应用}
+
+做法分三步：
+\begin{enumerate}
+  \item \textbf{分解}：把故障处的三相不对称边界条件（电压、电流）用对称分量表示；
+  \item \textbf{分序}：对正、负、零序分别作出等值网络（序网），在故障端口列出序网方程；
+  \item \textbf{合成}：由边界条件与序网方程联立求出各序分量，再合成为相量，
+        求各相电流、电压。
+\end{enumerate}
+
+\begin{table}[htbp]
+  \centering
+  \caption{三序网络的一般结构}
+  \small
+  \begin{tabular}{@{}p{0.10\linewidth}p{0.30\linewidth}p{0.48\linewidth}@{}}
+    \toprule
+    序网 & 电源 & 特点 \\
+    \midrule
+    正序 & 有（各发电机 $\dot E''$） & 与三相短路网络同构；故障点为正序电流的“出口” \\
+    负序 & 无（发电机负序电势为零） & 无源网络；故障点可视为负序电流的“注入点” \\
+    零序 & 无 & 只有零序电流通路存在时才成立；网络结构与接地方式强相关 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{三序网络只有\textbf{正序}有电源，负序、零序都是无源网络——这是全部不对称短路
+计算的结构性事实。因此正序网中的故障端口电势就是 $E_{\Sigma}$（或 $\dot U_f(0)$），
+负序、零序网在端口上只表现为“从故障点看进去的等值阻抗”。}
+
+\section{同步发电机的负序和零序电抗}
+
+\textbf{负序电抗 $X_2$}：负序电流产生的磁场与转子反向旋转，相对速度为 $2n_1$，
+在转子绕组中感应出 $2f$ 的电流，其作用使负序磁通被“挤”到漏磁路径，
+故 $X_2$ 接近 $X_d''$、$X_q''$ 的某种平均值：
+\begin{equation}
+  X_2\approx\frac{1}{2}\left(X_d''+X_q''\right)
+\end{equation}
+实用计算中常取 $X_2\approx1.22X_d''$（汽轮发电机）或按制造厂数据。
+对无阻尼绕组电机，$X_2\approx\sqrt{X_d'X_q}$ 一类的近似式也可用，但精度较低。
+
+\textbf{零序电抗 $X_0$}：零序电流三相同相，合成磁势为零（只在定子绕组漏磁路径中闭合），
+故 $X_0$ 很小，且与绕组节距、接线有关，一般
+\begin{equation}
+  X_0=(0.15\sim0.6)X_d'' ,
+\end{equation}
+具体值须查制造厂数据。零序电流不能在发电机内部流通时（如中性点不接地），
+$X_0$ 无意义，零序网在该处断开。
+
+\begin{table}[htbp]
+  \centering
+  \caption{同步电机三序电抗的数量关系}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    电抗 & 相对大小 & 物理原因 \\
+    \midrule
+    $X_d$ & 最大 & 稳态，电枢反应磁通完全穿入转子 \\
+    $X_d'$ & 中 & 励磁绕组挡住磁通，走漏磁路径 \\
+    $X_d''$ & 小 & 阻尼绕组也挡住磁通，三路漏磁并联 \\
+    $X_2$ & 与 $X_d''$、$X_q''$ 同量级 & 负序磁场相对转子 $2n_1$，转子绕组近似短路 \\
+    $X_0$ & 最小 & 零序合成磁势为零，只有定子漏磁 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{变压器的零序等值电路及其参数}
+
+变压器的正序、负序等值电路与参数和正常运行时完全相同（静止元件 $Z_1=Z_2$），
+\textbf{零序则完全不同}，原因有二：
+\begin{enumerate}
+  \item 零序电流三相同相，能否流通取决于绕组接线方式（Y 不接地则无通路，$\Delta$ 内可环流，
+        Y$_0$ 经中性点入地）；
+  \item 零序磁通路径与正序不同——三柱式铁芯中零序磁通不能经铁芯闭合，
+        须经油、油箱壁等结构件闭合，磁阻大、损耗大，故零序励磁阻抗远小于正序励磁阻抗。
+\end{enumerate}
+
+\subsection{普通变压器的零序等值电路及其参数}
+
+零序等值电路的形式（三支路：一次漏抗、励磁支路、二次漏抗）与正序相同，
+但有三点区别：
+\begin{itemize}
+  \item 各绕组漏抗 $X_1$、$X_2$ 与正序相同（漏磁路径不受相序影响）；
+  \item 零序励磁电抗 $X_{\mu0}$ 远小于正序励磁电抗：三柱式铁芯 $X_{\mu0}\approx0.3\sim1.0$
+        （标幺，以绕组容量为基准），五柱式或壳式可接近正序值；
+  \item 零序电流能否流过某个绕组，取决于该绕组的接线与中性点接地情况。
+\end{itemize}
+
+\subsection{变压器零序等值电路与外电路的联接}
+
+把零序等值电路“挂”到序网上时，用一个等效开关表示各侧的通断：
+
+\begin{table}[htbp]
+  \centering
+  \caption{变压器各侧接线方式对零序通断的规定}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    绕组接线 & 零序电流能否流出（与外电路相接） & 等值处理 \\
+    \midrule
+    Y 中性点接地（Y$_0$） & 能（经中性点入地） & 该侧与外电路接通 \\
+    Y 中性点不接地 & 不能（无通路） & 该侧开路 \\
+    $\Delta$（三角形） & 不能流出，但可在内部环流 & 该侧对零序相当于\textbf{短路接地}（端口电压为零） \\
+    Y$_0$/$\Delta$ 组合 & 零序电流在 $\Delta$ 内环流，不流出 & $\Delta$ 侧短接，Y$_0$ 侧接通 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+因此常用“三句话”判断：\textbf{Y$_0$ 通、Y 断、$\Delta$ 短}（对零序而言）。
+
+\subsection{中性点有接地阻抗时变压器的零序等值电路}
+
+若中性点经阻抗 $Z_n$ 接地，零序电流 $3\dot I_0$ 流经 $Z_n$，在中性点产生的电位升高为
+$3\dot I_0Z_n$。折算到每相，等值电路中串入
+\begin{equation}
+  Z_n'=3Z_n .
+\end{equation}
+\keyformula{Z_{n}'=3Z_{n}}
+“三倍”来自零序电流三相之和为 $3I_0$；这个 $3$ 倍关系是不对称短路计算中出现频率最高的
+系数之一，与后面“零序网中线路阻抗取 $3Z_m$”同源。
+
+\subsection{自耦变压器的零序等值电路及其参数}
+
+自耦变压器的零序等值电路与普通三绕组变压器形式相同，但有三点特殊：
+\begin{enumerate}
+  \item 高、中压绕组间有\textbf{直接电气联系}，零序电流可以直接从高压侧传到中压侧，
+        因此零序通断不再只看“是否 Y$_0$”，还要看高、中压侧是否都接地；
+  \item 第三绕组（低压）总是接成 $\Delta$，为零序电流提供环流通路，同时消除三次谐波；
+  \item 若高、中压侧中性点均接地，则零序电流可在两侧流通，等值电路须按三绕组方式
+        （三支路星形）处理，且要考虑中性点接地阻抗的 $3Z_n$（分别在高、中压侧）。
+\end{enumerate}
+
+\corepoint{变压器零序等值电路有三件事必须同时交代：\textbf{接线方式}（Y$_0$／Y／$\Delta$）、
+\textbf{中性点是否接地及接地阻抗}、\textbf{铁芯结构}（决定 $X_{\mu0}$ 大小）。
+缺任何一条，零序网就画不对。考试中“画出零序网络”失分，多半是漏了 $\Delta$ 侧短接。}
+
+\section{架空输电线路的零序阻抗及其等值电路}
+
+\subsection{单导线-大地回路的自阻抗和互阻抗}
+
+零序电流经导线流向故障点、经大地返回，故必须考虑大地回路。引入\textbf{大地等值深度}
+\begin{equation}
+  D_e=660\sqrt{\frac{\rho}{f}}\quad(\text{m}),
+\end{equation}
+$\rho$ 为大地电阻率（$\Omega\cdot$m），$f$ 为频率。则单导线-大地回路的自阻抗
+\begin{equation}
+  Z_s=\left(r_a+r_g\right)+j0.1445\lg\frac{D_e}{D_s}\quad(\Omega/\text{km}),
+\end{equation}
+两根导线-大地回路间的互阻抗
+\begin{equation}
+  Z_m=r_g+j0.1445\lg\frac{D_e}{D}\quad(\Omega/\text{km}),
+\end{equation}
+其中 $r_a$ 为导线电阻，$D_s=0.779r$ 为导线自几何均距，$D$ 为两导线间距，
+$r_g$ 为大地电阻
+\begin{equation}
+  r_g=\pi^{2}f\times10^{-4}\ \Omega/\text{km}\approx0.05\ \Omega/\text{km}\ (f=50\ \text{Hz}).
+\end{equation}
+
+\subsection{三相输电线路的零序阻抗}
+
+零序时三相电流同相，与 $a$ 相交链的磁通由本相电流与 $b$、$c$ 相电流共同产生，
+且三者同相叠加（不像正序那样相互抵消），故
+\keyformula{Z_0=Z_s+2Z_m
+  =\left(r_a+3r_g\right)+j0.1445\lg\frac{D_e^{3}}{D_sD_{eq}^{2}}\quad(\Omega/\text{km})}
+与正序阻抗相比：
+\begin{itemize}
+  \item 零序磁通经大地返回，磁路磁阻大，故 $Z_0>Z_1$，工程上\textbf{单回架空线}
+        $Z_0\approx(3.0\sim3.5)Z_1$；
+  \item 有良导体架空地线或电缆时，零序电流可经地线返回，$Z_0$ 明显下降；
+  \item 零序电抗与正序电抗之比记作 $k=Z_0/Z_1$，是不对称短路计算中的重要参数。
+\end{itemize}
+
+\subsection{平行架设的双回输电线路的零序阻抗及等值电路}
+
+双回线并行时，两回线之间不仅有各相间的互感，还有\textbf{回路间}的零序互感 $Z_{m0}$。
+零序网中不能把两回线简单并联，须用两端口方程
+\begin{equation}
+  \begin{bmatrix}\dot U_{0\text{I}}\\ \dot U_{0\text{II}}\end{bmatrix}
+  =\begin{bmatrix}Z_0 & Z_{m0}\\ Z_{m0} & Z_0\end{bmatrix}
+  \begin{bmatrix}\dot I_{0\text{I}}\\ \dot I_{0\text{II}}\end{bmatrix}
+\end{equation}
+处理，或用第 4.1.4 节的 $\boldsymbol Y=\boldsymbol A\boldsymbol Z_b^{-1}\boldsymbol A^{\mathsf T}$
+组装。当两回线零序电流方向相同时（同向并联），等值阻抗为
+$Z_0+Z_{m0}$ 的一半形式；方向相反时（一回线检修接地），互感使等值阻抗增大。
+
+\subsection{架空地线对输电线路零序阻抗及等值电路的影响}
+
+架空地线（避雷线）经杆塔接地，为零序电流提供并联通路，且与三相导线间有互感。
+其效果是\textbf{降低}线路的零序阻抗（相当于在零序网中并联一条阻抗支路），
+减小系数约为 $10\%\sim15\%$（钢绞线）或更多（良导体地线）。
+精确计算时把地线作为独立支路，用互感耦合的三支路方程处理；工程估算可按经验系数折减。
+
+\begin{table}[htbp]
+  \centering
+  \caption{线路零序阻抗的估算与影响因素}
+  \small
+  \begin{tabular}{@{}p{0.24\linewidth}p{0.26\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    情形 & $Z_0/Z_1$ & 说明 \\
+    \midrule
+    单回架空线（无地线） & $3.0\sim3.5$ & 常用估算值 \\
+    有架空地线 & 约降 $10\%\sim15\%$ & 地线提供并联返回通路 \\
+    电缆线路 & 远小于 $3.5$，可接近 $1$ & 铅包、铠装提供低阻返回通路 \\
+    平行双回线 & 与两回线电流方向有关 & 互感耦合，不能简单并联 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{架空输电线路的零序电纳}
+
+（选学内容）零序电纳的计算与正序类似，但零序时三相电荷同相，电场分布不同，
+且架空地线的镜像会影响电场。无架空地线时零序电容按“三相导线 $+$ 大地 $+$ 镜像”系统计算；
+有地线时须把地线及其镜像一并计入。工程上零序电纳对短路电流的影响较小，
+一般在零序网中按经验值取用；只有在需要精确计算零序电流分布时才详细计算。
+
+\section{综合负荷的序阻抗}
+
+综合负荷以异步电动机为主。
+\begin{itemize}
+  \item \textbf{正序阻抗}：按额定电压、额定功率因数下的等值阻抗计，标幺值约 $1.2$；
+  \item \textbf{负序阻抗}：负序磁场相对转子以 $2n_1$ 旋转，转子绕组（笼型）近似短接，
+        故负序阻抗远小于正序阻抗，标幺值约 $0.2\sim0.35$；
+  \item \textbf{零序阻抗}：取决于负荷的接线与接地方式；若负荷接于 $\Delta$ 或中性点不接地，
+        零序网在该处断开（$Z_0\to\infty$）；若中性点接地，则零序阻抗与负序阻抗同量级。
+\end{itemize}
+短路实用计算中，一般\textbf{略去负荷}（除短路点附近的大电动机外），
+这使短路电流略偏大，属于偏保守的处理。
+
+\section{电力系统各序网络的制订}
+
+\subsection{正序网络}
+
+正序网络与三相短路时的网络完全一样：
+\begin{itemize}
+  \item 发电机用 $\dot E''$ 串 $jX_d''$（或按精度要求用 $\dot E_q'$ 串 $jX_d'$）；
+  \item 变压器、线路用正序参数，负荷可略去或按恒定阻抗；
+  \item 故障点作为正序网的端口，端口电势为 $\dot U_f(0)$（短路前该点电压）。
+\end{itemize}
+
+\subsection{负序网络}
+
+负序网络与正序网络\textbf{结构相同，但所有电源电势为零}（发电机负序电势为零），
+发电机用 $jX_2$ 代替 $jX_d''$，其余元件用负序参数（静止元件 $Z_2=Z_1$）。
+故负序网是\textbf{无源网络}，从故障点看进去的等值阻抗记为 $Z_{2\Sigma}$。
+
+\subsection{零序网络}
+
+零序网络的制订最需要小心，步骤是：
+\begin{enumerate}
+  \item 从故障点出发，凡\textbf{零序电流能流通}的路径才画入；
+  \item 变压器按“Y$_0$ 通、Y 断、$\Delta$ 短”处理（$\Delta$ 侧在零序网中接地）；
+  \item 中性点接地阻抗按 $3Z_n$ 串入；
+  \item 线路用 $Z_0$，平行双回线计及零序互感，有架空地线时计入地线支路；
+  \item 发电机中性点不接地时，零序网在发电机处断开（$X_0$ 不出现）。
+\end{enumerate}
+零序网也是无源网络，从故障点看进去的等值阻抗记为 $Z_{0\Sigma}$。
+若故障点与电源之间没有零序通路（如全部变压器均为 Y/$\Delta$ 且中性点不接地），
+则 $Z_{0\Sigma}\to\infty$，零序电流为零，该故障不产生零序分量。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三序网络制订要点对照}
+  \small
+  \begin{tabular}{@{}p{0.09\linewidth}p{0.16\linewidth}p{0.26\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    序网 & 电源 & 发电机 & 关键处理 \\
+    \midrule
+    正序 & 有 & $\dot E''$ 串 $jX_d''$ & 与三相短路同构，端口电势为 $\dot U_f(0)$ \\
+    负序 & 无 & $jX_2$ & 结构同正序，全部电势置零 \\
+    零序 & 无 & $jX_0$（中性点接地时） & 逐条检查零序通路；$\Delta$ 短接、Y 断开、$3Z_n$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{画零序网的唯一标准是“零序电流有没有路走”。判断顺序：
+从故障点往外走 $\to$ 遇到变压器看接线 $\to$ 看中性点是否接地 $\to$ 看线路有无地线。
+三序网画对之后，第 8 章的各种故障公式只是“在三个序网的端口上接不同的边界条件”，
+不需要再记新的网络知识。}

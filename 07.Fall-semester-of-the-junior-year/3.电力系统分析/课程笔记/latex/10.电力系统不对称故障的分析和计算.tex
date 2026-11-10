@@ -1,0 +1,306 @@
+﻿% ============================================================
+% 第 8 章  电力系统不对称故障的分析和计算
+% （教材：何仰赞、温增银《电力系统分析》上册 第 8 章）
+% 结构对齐 8.1—8.5；例题、习题不录
+% ============================================================
+
+\chapter{电力系统不对称故障的分析和计算}
+
+有了第 7 章的三序网络，不对称故障的计算就变成一套固定套路：
+\textbf{在故障端口列出边界条件 $\to$ 化为序分量 $\to$ 接入三序网 $\to$ 解出各序电流电压
+$\to$ 合成相量}。本章把四种简单不对称短路、非全相断线都用这一套路走一遍，
+最后归纳为“正序等效定则”与“计算通式”，使不同故障之间的差别只剩一个附加阻抗 $Z_\Delta$。
+
+\section{简单不对称短路的分析}
+
+设故障发生前故障点电压为 $\dot U_f(0)$，三序网从故障点看进去的等值阻抗分别为
+$Z_{1\Sigma}$、$Z_{2\Sigma}$、$Z_{0\Sigma}$；以 $a$ 相为特殊相（故障相或非故障相的基准相）。
+
+\subsection{单相（$a$ 相）接地短路}
+
+\textbf{边界条件}：$b$、$c$ 相无电流，$a$ 相电压为零
+\begin{equation}
+  \dot I_b=\dot I_c=0,\qquad \dot U_a=0 .
+\end{equation}
+化为序分量：
+\begin{equation}
+  \dot I_{a1}=\dot I_{a2}=\dot I_{a0}=\tfrac{1}{3}\dot I_a,
+  \qquad \dot U_{a1}+\dot U_{a2}+\dot U_{a0}=0 .
+\end{equation}
+即三序电流相等、三序电压之和为零——在序网中相当于\textbf{三个序网串联}。
+代入序网方程
+$\dot U_{a1}=\dot U_f(0)-Z_{1\Sigma}\dot I_{a1}$、$\dot U_{a2}=-Z_{2\Sigma}\dot I_{a2}$、
+$\dot U_{a0}=-Z_{0\Sigma}\dot I_{a0}$，得
+\keyformula{\dot I_{a1}=\frac{\dot U_f(0)}{Z_{1\Sigma}+Z_{2\Sigma}+Z_{0\Sigma}},
+  \qquad \dot I_f=\dot I_a=3\dot I_{a1}}
+故障相电流为三倍正序电流，这是单相接地最显著的特征。
+
+\subsection{两相（$b$ 相和 $c$ 相）短路}
+
+\textbf{边界条件}：$a$ 相无电流，$b$、$c$ 相电流相反、电压相等
+\begin{equation}
+  \dot I_a=0,\qquad \dot I_b=-\dot I_c,\qquad \dot U_b=\dot U_c .
+\end{equation}
+化为序分量：
+\begin{equation}
+  \dot I_{a0}=0,\qquad \dot I_{a1}=-\dot I_{a2},\qquad \dot U_{a1}=\dot U_{a2}.
+\end{equation}
+零序无通路（$I_0=0$），正、负序网\textbf{并联}。于是
+\keyformula{\dot I_{a1}=\frac{\dot U_f(0)}{Z_{1\Sigma}+Z_{2\Sigma}},\qquad
+  \dot I_b=-j\sqrt{3}\dot I_{a1},\qquad I_f=\sqrt{3}\left|\dot I_{a1}\right|}
+两相短路电流为正序电流的 $\sqrt{3}$ 倍，且比同一点三相短路电流小
+（$I^{(2)}=\frac{\sqrt{3}Z_{1\Sigma}}{Z_{1\Sigma}+Z_{2\Sigma}}I^{(3)}$，
+当 $Z_{1\Sigma}\approx Z_{2\Sigma}$ 时 $I^{(2)}\approx0.866I^{(3)}$）。
+
+\subsection{两相（$b$ 相和 $c$ 相）短路接地}
+
+\textbf{边界条件}：$a$ 相无电流，$b$、$c$ 相电压为零
+\begin{equation}
+  \dot I_a=0,\qquad \dot U_b=\dot U_c=0 .
+\end{equation}
+化为序分量：
+\begin{equation}
+  \dot I_{a1}+\dot I_{a2}+\dot I_{a0}=0,\qquad
+  \dot U_{a1}=\dot U_{a2}=\dot U_{a0}.
+\end{equation}
+三序网\textbf{并联}。于是
+\keyformula{\dot I_{a1}=\frac{\dot U_f(0)}{Z_{1\Sigma}+Z_{2\Sigma}\parallel Z_{0\Sigma}},
+  \qquad Z_{2\Sigma}\parallel Z_{0\Sigma}=\frac{Z_{2\Sigma}Z_{0\Sigma}}{Z_{2\Sigma}+Z_{0\Sigma}}}
+两故障相电流为
+\begin{equation}
+  \dot I_b=\dot I_{a0}+a^{2}\dot I_{a1}+a\dot I_{a2},\qquad
+  \dot I_c=\dot I_{a0}+a\dot I_{a1}+a^{2}\dot I_{a2},
+\end{equation}
+其模相等，$I_f=\sqrt{3}\sqrt{1-\dfrac{Z_{2\Sigma}Z_{0\Sigma}}{\left(Z_{2\Sigma}+Z_{0\Sigma}\right)^{2}}}\left|\dot I_{a1}\right|$。
+流入大地的电流为 $3\dot I_{a0}$。
+
+\begin{table}[htbp]
+  \centering
+  \caption{四种简单不对称短路的边界条件与序网联接方式}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    故障类型 & 边界条件 & 序网联接 & 故障电流 \\
+    \midrule
+    三相短路 & $\dot U_a=\dot U_b=\dot U_c=0$ & 只有正序网 & $I_f=I_{a1}$ \\
+    两相短路 & $\dot I_a=0$，$\dot I_b=-\dot I_c$，$\dot U_b=\dot U_c$ & 正、负序并联 & $I_f=\sqrt{3}I_{a1}$ \\
+    单相接地 & $\dot I_b=\dot I_c=0$，$\dot U_a=0$ & 三序串联 & $I_f=3I_{a1}$ \\
+    两相接地 & $\dot I_a=0$，$\dot U_b=\dot U_c=0$ & 三序并联 & $I_f=mI_{a1}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{正序等效定则}
+
+把上述四式写成同一形式：
+\keyformula{\dot I_{a1}=\frac{\dot U_f(0)}{Z_{1\Sigma}+Z_{\Delta}},\qquad I_f=m\left|\dot I_{a1}\right|}
+即：\textbf{任何不对称短路，其正序电流等于“在正序网故障点串入一个附加阻抗 $Z_\Delta$ 后
+发生三相短路”的正序电流}。$Z_\Delta$ 与 $m$ 只由故障类型决定：
+
+\begin{table}[htbp]
+  \centering
+  \caption{正序等效定则中的附加阻抗与电流倍数}
+  \label{tab:zDelta}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    故障类型 & 附加阻抗 $Z_\Delta$ & 倍数 $m$ \\
+    \midrule
+    三相短路 & $0$ & $1$ \\
+    两相短路 & $Z_{2\Sigma}$ & $\sqrt{3}$ \\
+    单相接地短路 & $Z_{2\Sigma}+Z_{0\Sigma}$ & $3$ \\
+    两相接地短路 & $Z_{2\Sigma}\parallel Z_{0\Sigma}$ &
+      $\sqrt{3}\sqrt{1-\dfrac{Z_{2\Sigma}Z_{0\Sigma}}{\left(Z_{2\Sigma}+Z_{0\Sigma}\right)^{2}}}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+正序等效定则的价值在于：\textbf{三相短路的全部算法（节点阻抗法、转移阻抗法、计算曲线）
+都可以直接用于不对称短路}，只需把正序网的故障点串入 $Z_\Delta$，最后乘以 $m$。
+
+\corepoint{三个必须记牢的结构性事实：（1） 单相接地是\textbf{三序串联}（电流相等、电压和为零），
+故 $Z_\Delta$ 为三者之和，故障电流最大；（2） 两相短路\textbf{无零序}，故 $Z_\Delta$ 只含负序；
+（3） 两相接地是\textbf{三序并联}，故 $Z_\Delta$ 为负序与零序的并联值，介于前两者之间。
+“串/并”这两个字记住了，公式可以现场推出来。}
+
+\subsection{非故障处的电流和电压的计算}
+
+求出故障点各序分量后，网络中任一点 $i$ 的各序电压、电流由序网的电压方程给出：
+\begin{align}
+  \dot U_{i1}&=\dot U_i(0)-Z_{i f,1}\dot I_1,\\
+  \dot U_{i2}&=-Z_{i f,2}\dot I_2,\\
+  \dot U_{i0}&=-Z_{i f,0}\dot I_0,
+\end{align}
+其中 $Z_{if,k}$ 为第 $k$ 序网中 $i$ 与故障点 $f$ 之间的转移阻抗。再把三序分量合成即得
+各相电压、电流。工程上关心两件事：
+\begin{itemize}
+  \item \textbf{非故障相电压升高}：单相接地时非故障相电压可能升到线电压甚至更高
+        （中性点不接地系统中可达 $1.7\sim1.9$ 倍相电压），是绝缘配合的依据；
+  \item \textbf{零序电流的分布}：决定接地保护的灵敏度与对通信线路的干扰。
+\end{itemize}
+
+\section{电压和电流对称分量经变压器后的相位变换}
+
+变压器绕组接线（Y,y；Y,d；D,y；D,d）会使正序、负序分量经过变压器时产生\textbf{相位移动}，
+而零序分量则可能根本不能通过。以最常见的 \textbf{Y,d11} 接线为例：
+\begin{itemize}
+  \item \textbf{正序分量}：由 Y 侧到 $\Delta$ 侧相位\textbf{滞后 $30^\circ$}（由 $\Delta$ 侧到 Y 侧则超前 $30^\circ$）；
+  \item \textbf{负序分量}：移相方向与正序\textbf{相反}，即由 Y 侧到 $\Delta$ 侧超前 $30^\circ$；
+  \item \textbf{零序分量}：$\Delta$ 侧无零序电流流出通路，零序分量\textbf{不能通过}该变压器。
+\end{itemize}
+因此，在两侧分别取基准相计算时，须按接线组别引入移相系数
+$e^{\pm j30^\circ}$；若全网统一在一侧计算（把另一侧的量折算过来），则移相在折算中自动抵消，
+不必另行处理——这是实用计算中常用的简化。
+
+\begin{table}[htbp]
+  \centering
+  \caption{不同接线变压器的序分量通过情况}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    接线 & 正序 & 负序 & 零序 \\
+    \midrule
+    Y,y（中性点均接地） & 通，无移相 & 通，无移相 & 通（须两侧均接地） \\
+    Y,d11 & 通，移相 $-30^\circ$ & 通，移相 $+30^\circ$ & 不通 \\
+    D,y11 & 通，移相 $+30^\circ$ & 通，移相 $-30^\circ$ & 不通 \\
+    Y,$\Delta$（Y 侧中性点不接地） & 通 & 通 & 不通 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{相位变换只影响“两侧分别计算再对接”的情形，不影响故障点本身的电流大小。
+考试中若题目要求“求 $\Delta$ 侧各相电流”，就必须移相；若只问“故障点电流”，可完全忽略。
+判断依据是：所要求的量在变压器的哪一侧。}
+
+\section{非全相断线的分析计算}
+
+非全相断线（一相或两相断开）是\textbf{纵向故障}：故障处不是“相对地短路”，
+而是“导体断开”，故其边界条件写在\textbf{断口两端}。
+
+\subsection{单相（$a$ 相）断线}
+
+断口处 $a$ 相电流为零，$b$、$c$ 相仍连通（断口电压为零）：
+\begin{equation}
+  \dot I_a=0,\qquad \Delta\dot U_b=\Delta\dot U_c=0,
+\end{equation}
+其中 $\Delta\dot U$ 为断口两侧的电压差。化为序分量：
+\begin{equation}
+  \dot I_{a1}+\dot I_{a2}+\dot I_{a0}=0,\qquad
+  \Delta\dot U_{a1}=\Delta\dot U_{a2}=\Delta\dot U_{a0},
+\end{equation}
+即\textbf{三序网在断口处并联}——与两相接地短路的序网联接方式相同，只是“端口”从横向
+（相对地）变为纵向（串联在支路中）。故可用同一套正序等效定则，只是把
+$Z_\Delta$ 换成“断口两端看进去的序阻抗”。
+
+\subsection{两相（$b$ 相和 $c$ 相）断开}
+
+\begin{equation}
+  \dot I_b=\dot I_c=0,\qquad \Delta\dot U_a=0,
+\end{equation}
+化为
+\begin{equation}
+  \dot I_{a1}=\dot I_{a2}=\dot I_{a0},\qquad
+  \Delta\dot U_{a1}+\Delta\dot U_{a2}+\Delta\dot U_{a0}=0,
+\end{equation}
+即\textbf{三序网串联}——与单相接地短路对应。
+
+\begin{table}[htbp]
+  \centering
+  \caption{横向故障（短路）与纵向故障（断线）的对应关系}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    短路（横向） & 断线（纵向） & 序网联接 \\
+    \midrule
+    单相接地 & 两相断开 & 三序串联 \\
+    两相短路 & （无对应简单情形） & 正、负序并联 \\
+    两相接地 & 单相断线 & 三序并联 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+断线的危害不在于过电流（断线处电流反而减小），而在于：
+\begin{enumerate}
+  \item 断口两侧电压不对称，负序、零序电流可能引起保护误动；
+  \item 单相断线时非故障相电压升高、负荷电流重新分配，可能造成设备过负荷；
+  \item 断线常与接地故障同时发生（断线落地），形成复杂故障。
+\end{enumerate}
+
+\section{应用节点阻抗矩阵计算不对称故障}
+
+\subsection{各序网络的电压方程式}
+
+设故障点为节点 $f$，三序网的节点阻抗矩阵分别为 $\boldsymbol Z_1$、$\boldsymbol Z_2$、$\boldsymbol Z_0$。
+故障点各序电压为
+\begin{align}
+  \dot U_{f1}&=\dot U_f(0)-Z_{ff1}\dot I_1,\\
+  \dot U_{f2}&=-Z_{ff2}\dot I_2,\\
+  \dot U_{f0}&=-Z_{ff0}\dot I_0,
+\end{align}
+其中 $Z_{ffk}$ 为第 $k$ 序网中故障点的自阻抗（输入阻抗）。
+把这三式与故障边界条件联立，即得各序电流。对四种横向故障，
+其结果可统一写成
+\keyformula{\dot I_1=\frac{\dot U_f(0)}{Z_{ff1}+Z_{\Delta}},\qquad
+  Z_{\Delta}=\begin{cases}
+    0, & \text{三相短路}\\
+    Z_{ff2}, & \text{两相短路}\\
+    Z_{ff2}+Z_{ff0}, & \text{单相接地}\\
+    Z_{ff2}\parallel Z_{ff0}, & \text{两相接地}
+  \end{cases}}
+这正是正序等效定则在节点阻抗矩阵形式下的表述：$Z_{1\Sigma}$ 换成 $Z_{ff1}$。
+
+\subsection{横向不对称故障}
+
+横向故障（短路）的故障端口在“节点与地”之间：
+\begin{itemize}
+  \item 先由第 4 章方法求出 $\boldsymbol Z_1$、$\boldsymbol Z_2$、$\boldsymbol Z_0$ 中所需的一列；
+  \item 按故障类型取 $Z_\Delta$，由上式求 $\dot I_1$，再由边界条件求 $\dot I_2$、$\dot I_0$；
+  \item 由 $\dot U_{ik}=\dot U_i(0)-Z_{ifk}\dot I_k$ 求任一点各序电压，合成即得相电压、相电流。
+\end{itemize}
+
+\subsection{纵向不对称故障}
+
+纵向故障（断线）的故障端口在“支路两端”之间。设断线支路连接节点 $p$、$q$，
+则断口电压为 $\Delta\dot U=\dot U_p-\dot U_q$，端口阻抗要取“$p$、$q$ 之间的转移阻抗”：
+\begin{equation}
+  Z_{\Delta}^{(\text{纵})}=Z_{pp}+Z_{qq}-2Z_{pq},
+\end{equation}
+再按断线类型（单相断线并联、两相断开串联）取用。这与第 4 章“支路追加法”中
+连支回路阻抗 $z_\Sigma=Z_{ii}+Z_{jj}-2Z_{ij}+z$ 是同一个式子（令 $z=0$）。
+
+\subsection{简单不对称故障的计算通式}
+
+把四种横向故障与两种纵向故障统一起来，可得计算通式
+\begin{equation}
+  \dot I_1=\frac{\dot U_f(0)}{Z_{11}+Z_{\Delta}},\qquad
+  \dot I_k=c_k\dot I_1\ (k=1,2,0),\qquad
+  \dot I_{\text{fault}}=m\dot I_1 ,
+\end{equation}
+其中系数 $c_k$ 由边界条件决定（如单相接地 $c_1=c_2=c_0=1$；
+两相短路 $c_2=-1$、$c_0=0$；两相接地 $c_2=-Z_0/(Z_2+Z_0)$、$c_0=-Z_2/(Z_2+Z_0)$）。
+计算通式的好处是：\textbf{程序只需一份代码}，故障类型作为输入参数（$Z_\Delta$ 与 $c_k$）即可。
+
+\section{复杂故障的计算方法}
+
+（选学内容）复杂故障指\textbf{同时或相继发生两个及以上故障}，如一点断线加另一点接地、
+双重接地等。分析方法的一般思路：
+\begin{enumerate}
+  \item 把每个故障都视为一个“端口”，横向故障为并联端口、纵向故障为串联端口；
+  \item 对每个端口写出边界条件，化为序分量后得到端口电压、电流的关系；
+  \item 联立各端口的序网方程（用节点阻抗矩阵表示），解出各端口的序电流；
+  \item 再求全网各点电压、电流。
+\end{enumerate}
+端口数增多时方程阶数增加，手算困难，故实际用计算机求解。
+
+\textbf{不对称故障的通用边界条件}可写成一个矩阵形式：对第 $j$ 个端口，
+\begin{equation}
+  \boldsymbol M_j\dot{\boldsymbol U}_{j,(120)}=\boldsymbol N_j\dot{\boldsymbol I}_{j,(120)},
+\end{equation}
+其中 $\boldsymbol M_j$、$\boldsymbol N_j$ 由故障类型决定。这一写法把“串/并联”统一为矩阵约束，
+是编制通用故障计算程序的基础。
+
+\corepoint{本章的复习线索只有两条：
+（1） \textbf{边界条件 $\to$ 序网串并联}（单相接地串联、两相短路正负序并联、两相接地三序并联、
+单相断线并联、两相断开串联）；
+（2） \textbf{正序等效定则}把一切故障折算成“三相短路 $+$ 附加阻抗 $Z_\Delta$”。
+把表 \ref{tab:zDelta} 与“串/并”对应关系背熟，剩下都是代数运算。}

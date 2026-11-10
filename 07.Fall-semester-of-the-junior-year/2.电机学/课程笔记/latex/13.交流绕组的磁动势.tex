@@ -1,0 +1,157 @@
+% ============================================================
+% 第 10 章 交流绕组的磁动势（教材第三篇，印刷页 104--115）
+% 节名：第一节 单相绕组的脉振磁动势；第二节 单相脉振磁动势的分解；第三节 三相绕组的合成磁动势——旋转磁动势
+% ============================================================
+\chapter{交流绕组的磁动势}
+
+第 9 章解决了"磁通变 $\rightarrow$ 电动势"，本章解决反向的问题："电流变 $\rightarrow$ 磁动势"。这一章是全书最抽象的一章，也是后面感应电机、同步电机全部理论的落脚点：感应电机的转矩来自定、转子磁动势的合成，同步电机的电枢反应就是电枢磁动势对励磁磁动势的作用。看这一章要抓住一条主线：\textbf{一个脉振磁动势 = 两个反向旋转磁动势；三个脉振磁动势合成 = 一个圆形旋转磁动势}。
+
+\section{单相绕组的脉振磁动势}
+
+\subsection{整距集中线圈的磁动势}
+先看最简单的两极电机、一个整距集中线圈。线圈中通入电流 $i$ 时，线圈产生的磁动势沿气隙圆周的分布是一个\textbf{矩形波}：在包含线圈边的范围内磁动势为 $N_ci/2$（每极安匝），在范围外为 $-N_ci/2$，跳变发生在线圈边处。
+
+对 $p$ 对极电机，每极磁动势幅值为
+\begin{equation}
+F_c=\frac{N_ci}{2p}.
+\end{equation}
+矩形波可分解为基波与一系列奇次谐波（1、3、5、…）。用傅里叶分解，基波幅值为矩形波幅值的 $4/\pi$ 倍：
+\begin{equation}
+F_{c1}=\frac{4}{\pi}\cdot\frac{N_ci}{2p}=0.9\frac{N_ci}{p}.
+\end{equation}
+$v$ 次谐波幅值为基波的 $1/v$：
+\begin{equation}
+F_{cv}=\frac{1}{v}F_{c1}=\frac{0.9}{v}\cdot\frac{N_ci}{p}.
+\end{equation}
+可见谐波磁动势的幅值随次数迅速减小，但次数越高、极对数越多、转速越低，其影响不可一概忽略。
+
+\subsection{短距与分布的影响}
+实际绕组不是整距集中线圈，而是短距、分布的线圈组。与电动势的处理完全类似：
+\begin{itemize}
+  \item 线圈\textbf{短距}时，两个线圈边的磁动势波在空间错开 $\beta$ 角，合成后基波幅值乘以\textbf{节距因数} $k_{p1}$；
+  \item $q$ 个线圈\textbf{分布}放置时，各线圈的脉振磁动势在空间依次错开槽距角 $\alpha$，合成后基波幅值乘以\textbf{分布因数} $k_{d1}$；
+  \item 两者的乘积 $k_{w1}=k_{p1}k_{d1}$ 即\textbf{绕组因数}。
+\end{itemize}
+
+\subsection{单相绕组的基波脉振磁动势}
+设一相绕组每相串联匝数为 $N$，通入正弦电流 $i=\sqrt2I\sin\omega t$，则单相绕组产生的基波磁动势幅值为
+\begin{equation}
+F_{\phi1}=0.9\frac{Nk_{w1}}{p}I ,
+\end{equation}
+其沿气隙圆周的分布与时间变化可写成
+\begin{equation}
+f_{\phi1}(x,t)=F_{\phi1}\cos\frac{\pi}{\tau}x\cdot\sin\omega t ,
+\end{equation}
+其中 $x$ 为沿气隙圆周的坐标，$\tau$ 为极距。
+
+\keyformula{F_{\phi1}=0.9\frac{Nk_{w1}}{p}I}
+
+\subsubsection{"脉振"的含义}
+上式表明：在空间任一固定点（$x$ 固定），磁动势随时间按 $\sin\omega t$ 交变；在任一固定时刻（$t$ 固定），磁动势沿空间按余弦分布。\textbf{空间位置固定、幅值随时间交变}的磁动势称为\textbf{脉振磁动势}。它的轴线固定在该相绕组的轴线上，忽正忽负地"原地脉动"，不旋转。
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+层次 & 基波幅值 & 说明 \\
+\midrule
+整距集中线圈（两极） & $F_{c1}=0.9N_ci$ & 矩形波的 $4/\pi$ 倍 \\
+整距集中线圈（$p$ 对极） & $F_{c1}=0.9N_ci/p$ & 每极安匝 $N_ci/(2p)$ \\
+短距线圈 & 乘 $k_{p1}$ & 两边磁动势波错开 \\
+分布线圈组 & 再乘 $k_{d1}$ & $q$ 个波错开 $\alpha$ \\
+一相绕组 & $F_{\phi1}=0.9Nk_{w1}I/p$ & $N$ 为每相串联匝数 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{磁动势这一章的所有幅值公式都长成"$0.9\times$ 每极安匝 $\times$ 因数"的样子：$0.9$ 来自矩形波分解的 $4/\pi$ 与 $\sqrt2$ 的合成，$1/p$ 来自"每极分摊"，因数来自短距与分布。记住这个结构，就不会把 $0.9$ 与电动势里的 $2.22$、$4.44$ 搞混——\textbf{电动势公式里是 2.22/4.44，磁动势公式里是 0.9}，这是两个不同的傅里叶系数。}
+
+\section{单相脉振磁动势的分解}
+
+单相绕组通以交流电流时，产生基波和一系列谐波脉振磁动势。基波磁动势产生的磁场幅值随时间脉振。利用三角恒等式
+\begin{equation}
+\cos\frac{\pi}{\tau}x\cdot\sin\omega t
+=\frac12\sin\left(\omega t-\frac{\pi}{\tau}x\right)+\frac12\sin\left(\omega t+\frac{\pi}{\tau}x\right),
+\end{equation}
+即
+\begin{equation}
+f_{\phi1}(x,t)=\frac{F_{\phi1}}{2}\sin\left(\omega t-\frac{\pi}{\tau}x\right)
++\frac{F_{\phi1}}{2}\sin\left(\omega t+\frac{\pi}{\tau}x\right).
+\end{equation}
+
+\keyformula{f_{\phi1}=\underbrace{\frac{F_{\phi1}}{2}\sin\left(\omega t-\frac{\pi}{\tau}x\right)}_{\text{正向旋转波}}
++\underbrace{\frac{F_{\phi1}}{2}\sin\left(\omega t+\frac{\pi}{\tau}x\right)}_{\text{反向旋转波}}}
+
+两个分量都是行波：
+\begin{itemize}
+  \item 第一项 $\sin\left(\omega t-\pi x/\tau\right)$ 代表一个\textbf{正向旋转磁动势}，其幅值为 $F_{\phi1}/2$，转速为同步转速 $n_1=60f/p$，转向为 $+x$ 方向；
+  \item 第二项 $\sin\left(\omega t+\pi x/\tau\right)$ 代表一个\textbf{反向旋转磁动势}，幅值同为 $F_{\phi1}/2$，转速仍为 $n_1$，但转向相反。
+\end{itemize}
+
+\subsection{结论}
+\textbf{一个脉振磁动势可以分解为两个幅值相等（各为脉振幅值的一半）、转速相同（均为同步转速）、转向相反的两个旋转磁动势。}反过来，两个幅值相等、转向相反的旋转磁动势合成，就是一个脉振磁动势。
+
+这个结论是理解单相感应电动机（第 15 章）的钥匙：单相绕组产生的磁场可看作正、反两个旋转磁场叠加，转子对正转磁场转差率为 $s$、对反转磁场转差率为 $2-s$，两个转矩方向相反，故单相感应电动机\textbf{没有起动转矩}。
+
+\section{三相绕组的合成磁动势——旋转磁动势}
+
+第 8 章已定性地说明：三相对称绕组通以三相对称电流，产生旋转磁场的磁动势。本节给出定量的结果。
+
+\subsection{合成磁动势的表达式}
+设三相绕组在空间互差 $120^\circ$ 电角度，三相电流对称且互差 $120^\circ$ 时间电角度。取 $A$ 相绕组轴线为坐标原点，则三相脉振磁动势分别为
+\begin{equation}
+\begin{aligned}
+f_A&=F_{\phi1}\cos\frac{\pi}{\tau}x\sin\omega t,\\
+f_B&=F_{\phi1}\cos\left(\frac{\pi}{\tau}x-120^\circ\right)\sin\left(\omega t-120^\circ\right),\\
+f_C&=F_{\phi1}\cos\left(\frac{\pi}{\tau}x-240^\circ\right)\sin\left(\omega t-240^\circ\right).
+\end{aligned}
+\end{equation}
+把每一个脉振磁动势分解为两个旋转磁动势，再三相相加。结果：\textbf{反转的两个分量互相抵消，正转的三个分量同相位相加}，合成的基波磁动势为
+\begin{equation}
+f_1(x,t)=\frac32F_{\phi1}\sin\left(\omega t-\frac{\pi}{\tau}x\right).
+\end{equation}
+
+\subsection{旋转磁动势的三个特征}
+\begin{enumerate}
+  \item \textbf{幅值恒定}：
+  \begin{equation}
+  F_1=\frac32F_{\phi1}=1.35\frac{Nk_{w1}}{p}I .
+  \end{equation}
+  幅值不随时间变化，故称\textbf{圆形旋转磁动势}（若三相电流不对称，则幅值随时间变化，轨迹为椭圆，称椭圆形旋转磁动势）。
+  \item \textbf{转速为同步转速}：
+  \begin{equation}
+  n_1=\frac{60f}{p}.
+  \end{equation}
+  \item \textbf{转向由电流相序决定}：合成磁动势的轴线总是\textbf{从电流超前相绕组轴线转向电流滞后相绕组轴线}。当某相电流达到最大值时，合成磁动势的幅值恰好位于该相绕组的轴线上（第 8 章已用图解法验证过这一点）。
+\end{enumerate}
+
+\keyformula{F_1=\frac32F_{\phi1}=1.35\frac{Nk_{w1}}{p}I,\qquad n_1=\frac{60f}{p}}
+
+\subsection{改变转向的方法}
+由特征 3 立即可得：\textbf{把三相电源线中的任意两根对调}（即改变相序），旋转磁场即反向旋转。这就是三相感应电动机"改变相序实现反转"的原理。
+
+\subsection{谐波磁动势的合成}
+三相绕组产生的谐波磁动势中：
+\begin{itemize}
+  \item \textbf{3 次及 3 的倍数次谐波}：三相在空间互差 $3\times120^\circ=360^\circ$（同相位），在时间上也同相位，三相合成结果\textbf{为零}——即三相对称绕组中不存在 3 次谐波旋转磁动势（这与第 9 章"线电动势中无 3 次谐波"是同一件事的两面）。
+  \item \textbf{5 次谐波}：三相合成后为一个\textbf{反向}旋转磁动势，幅值为基波的 $1/5$，转速为 $n_1/5$（极对数为 $5p$）。
+  \item \textbf{7 次谐波}：三相合成后为\textbf{正向}旋转磁动势，幅值为基波的 $1/7$，转速为 $n_1/7$。
+  \item 一般地，$v=6k\pm1$ 次谐波存在，$v=6k\pm3$ 次谐波为零；$v=6k+1$ 次正转、$v=6k-1$ 次反转（$k=1,2,\dots$）。
+\end{itemize}
+谐波磁动势会产生附加转矩、附加损耗和振动噪声，故用短距、分布、斜槽加以削弱（同第 9 章第六节）。
+
+\begin{center}
+\begin{tabular}{@{}p{1.6cm}p{2.6cm}p{2.6cm}p{3.4cm}@{}}
+\toprule
+磁动势类型 & 幅值 & 转速/转向 & 特征 \\
+\midrule
+单相基波脉振 & $F_{\phi1}=0.9Nk_{w1}I/p$ & 原地脉振（不转） & 轴线固定于该相绕组轴线 \\
+两个旋转分量 & 各 $F_{\phi1}/2$ & $\pm n_1$，转向相反 & 合成即脉振波 \\
+三相基波合成 & $F_1=\tfrac32F_{\phi1}=1.35Nk_{w1}I/p$ & $n_1$，由相序决定 & 幅值恒定（圆形旋转） \\
+三相 3 次谐波 & 0 & — & 三相合成互相抵消 \\
+三相 5 次谐波 & $F_1/5$ & $n_1/5$，反向 & 引起附加转矩与损耗 \\
+三相 7 次谐波 & $F_1/7$ & $n_1/7$，正向 & 同上 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{本章三条"必须能默写"的结论：① $F_{\phi1}=0.9Nk_{w1}I/p$（单相基波脉振幅值）；② 脉振 $=$ 两个幅值各半、转向相反的旋转波（这条解释单相电机为何无起动转矩）；③ $F_1=\tfrac32F_{\phi1}=1.35Nk_{w1}I/p$，转速 $n_1=60f/p$，转向由相序决定（这条是感应电机、同步电机全部理论的起点）。注意 $\tfrac32$ 这个系数：三相合成磁动势是单相脉振幅值的 1.5 倍，不是 3 倍，也不是 $\sqrt3$ 倍。}

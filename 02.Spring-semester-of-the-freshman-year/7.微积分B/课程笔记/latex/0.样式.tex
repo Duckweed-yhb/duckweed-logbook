@@ -1,0 +1,149 @@
+% ============================================================
+% 0.样式.tex —— 课程笔记统一正文排版
+% 用法：主文件先定义课程信息与主色，再 \input{0.样式.tex}
+%   \newcommand{\YHBcourse}{微积分A}      % 课程名（页眉与书签用）
+%   \newcommand{\YHBversion}{v1.2}        % 版本号（封面用）
+%   \newcommand{\YHBquote}{……}            % 封面题句
+%   \definecolor{yhbAccent}{HTML}{24465C} % 主色（深）
+%   \definecolor{yhbAccent2}{HTML}{347A80}% 辅色（浅）
+%   \YHBbooktrue / \YHBbookfalse          % 是否 book 文档类（有 \chapter）
+% 章节文件只写内容，不要重复 \usepackage、不要改字号。
+% ============================================================
+
+% ---------- 页面与字体 ----------
+\usepackage{geometry}
+\geometry{a4paper,left=24mm,right=24mm,top=23mm,bottom=24mm,headheight=15pt,headsep=7mm,footskip=13mm}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{esint}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{array,booktabs,multirow,makecell,tabularx,longtable}
+\usepackage{xcolor,colortbl}
+\usepackage{enumitem}
+\usepackage{needspace,etoolbox}
+\usepackage{titlesec,titletoc}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage[most]{tcolorbox}
+
+% ---------- 颜色别名（章节里用的旧名继续有效） ----------
+\colorlet{mainblue}{yhbAccent}
+\colorlet{secondcyan}{yhbAccent2}
+\colorlet{thirdteal}{yhbAccent2}
+\colorlet{highlight}{yhbAccent!6!white}
+\colorlet{tablehead}{yhbAccent!12!white}
+\definecolor{textgray}{HTML}{4A5057}
+
+% ---------- 课程标签 ----------
+\providecommand{\YHBdoclabel}{课程笔记}
+% ---------- 正文节奏 ----------
+\linespread{1.3}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 1.5pt minus 1.5pt}
+\setlength{\emergencystretch}{2.5em}
+\raggedbottom
+\widowpenalty=10000
+\clubpenalty=10000
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.3}
+\allowdisplaybreaks[2]
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{10pt plus 2pt minus 2pt}%
+  \setlength{\belowdisplayskip}{10pt plus 2pt minus 2pt}%
+  \setlength{\abovedisplayshortskip}{6pt}%
+  \setlength{\belowdisplayshortskip}{6pt}%
+}
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+\renewcommand{\tablename}{表}
+\renewcommand{\figurename}{图}
+
+% ---------- 列表 ----------
+\setlist{leftmargin=2em,labelsep=0.6em,itemsep=4pt,parsep=2pt,topsep=6pt,partopsep=0pt}
+\setlist[itemize,2]{label=\textbullet,leftmargin=1.6em}
+
+% ---------- 标题层级 ----------
+\ifdefined\YHBbooktrue
+  \titleformat{\chapter}[display]
+    {\sffamily\bfseries\color{yhbAccent}}
+    {\normalsize\sffamily 第\,\thechapter\,章}
+    {6pt}
+    {\LARGE}
+    [{\vspace{5pt}{\color{yhbAccent!55}\titlerule[1pt]}}]
+  \titlespacing*{\chapter}{0pt}{14pt}{24pt}
+  \titleformat{\section}{\Large\sffamily\bfseries\color{yhbAccent}}{\thesection}{0.7em}{}
+  \titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\else
+  \titleformat{\section}{\Large\sffamily\bfseries\color{yhbAccent}}{\thesection}{0.7em}{}[{\vspace{3pt}{\color{yhbAccent!45}\titlerule[0.7pt]}}]
+  \titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{9pt}
+\fi
+\titleformat{\subsection}{\large\sffamily\bfseries\color{yhbAccent!85!black}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{black!85}}{\thesubsubsection}{0.7em}{}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt plus 2pt minus 1pt}{4pt}
+\pretocmd{\section}{\Needspace{6\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{}
+\pretocmd{\subsubsection}{\Needspace{4\baselineskip}}{}{}
+
+\ifdefined\YHBbooktrue
+  \setcounter{secnumdepth}{2}
+  \setcounter{tocdepth}{1}
+\else
+  \setcounter{secnumdepth}{3}
+  \setcounter{tocdepth}{2}
+\fi
+\renewcommand{\contentsname}{目录}
+% 目录编号颜色由 titletoc 的 titlecontents 控制，不再重定义 \numberline
+
+% ---------- 目录样式 ----------
+\ifdefined\YHBbooktrue
+  \titlecontents{chapter}[0pt]
+    {\addvspace{6pt}\sffamily\bfseries\color{yhbAccent}}
+    {\contentslabel{2.2em}}{}{\titlerule*[0.6em]{.}\contentspage}
+  \titlecontents{section}[2.2em]
+    {\addvspace{2pt}}
+    {\contentslabel{2.2em}}{}{\titlerule*[0.6em]{.}\contentspage}
+\else
+  \titlecontents{section}[0pt]
+    {\addvspace{5pt}\sffamily\bfseries\color{yhbAccent}}
+    {\contentslabel{2.2em}}{}{\titlerule*[0.6em]{.}\contentspage}
+  \titlecontents{subsection}[2.2em]
+    {\addvspace{2pt}}
+    {\contentslabel{2.4em}}{}{\titlerule*[0.6em]{.}\contentspage}
+\fi
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{textgray}\YHBcourse\ \YHBdoclabel}
+\ifdefined\YHBbooktrue
+  \fancyhead[R]{\footnotesize\sffamily\color{textgray}\nouppercase{\leftmark}}
+  \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\else
+  \fancyhead[R]{\footnotesize\sffamily\color{textgray}\nouppercase{\rightmark}}
+  \renewcommand{\sectionmark}[1]{\markright{#1}}
+\fi
+\fancyfoot[C]{\footnotesize\color{textgray}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\headrule}{{\color{yhbAccent!45}\hrule width\headwidth height\headrulewidth}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\footnotesize\color{textgray}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+% ---------- 公式与考点框 ----------
+\newcommand{\keyformula}[1]{%
+  \begin{tcolorbox}[enhanced,breakable,colback=highlight,colframe=yhbAccent!30!white,boxrule=0.5pt,arc=2.5pt,left=11pt,right=11pt,top=9pt,bottom=9pt,boxsep=0pt,before skip=11pt,after skip=11pt,halign=center,width=\linewidth]
+  \adjustbox{max width=\linewidth-2em}{$\displaystyle #1$}
+  \end{tcolorbox}}
+\newcommand{\corepoint}[1]{%
+  \begin{tcolorbox}[enhanced,breakable,colback=highlight,colframe=yhbAccent2,boxrule=0pt,borderline west={2.4pt}{0pt}{yhbAccent2},arc=0pt,left=11pt,right=11pt,top=8pt,bottom=8pt,before skip=11pt,after skip=11pt]
+  \textbf{\color{yhbAccent}核心考点}\quad #1
+  \end{tcolorbox}}
+\newcommand{\symb}[2]{\textbf{#1}：#2\par}
+
+% ---------- 超链接（务必最后加载） ----------
+\usepackage[unicode=true,colorlinks=true,linkcolor=yhbAccent,citecolor=yhbAccent,urlcolor=yhbAccent!85!black,pdfborder={0 0 0},bookmarksnumbered=true,pdfstartview=FitH]{hyperref}
+\usepackage{hypcap}
+\hypersetup{pdftitle={\YHBcourse 课程笔记},pdfauthor={浮萍},pdfsubject={课程学习与复习笔记},pdfcreator={XeLaTeX}}

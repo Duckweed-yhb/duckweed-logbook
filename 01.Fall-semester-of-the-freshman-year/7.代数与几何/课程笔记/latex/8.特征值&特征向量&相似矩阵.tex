@@ -1,129 +1,397 @@
-\section{特征值与特征向量}
+% 第5章 相似矩阵及二次型（同济《线性代数》第七版 第5章）§1–§4
+% §1 向量的内积、长度及正交性；§2 方阵的特征值与特征向量；§3 相似矩阵；§4 对称矩阵的对角化
+% §5–§7（二次型）见 10.二次型与二次曲面.tex。正文不写例题与习题。
+
+\section{向量的内积、长度及正交性}
+
+\subsection{内积及其性质}
+\begin{definition}[内积]
+设有$n$维向量
+\[
+\boldsymbol{x}=\begin{pmatrix}x_1\\x_2\\\vdots\\x_n\end{pmatrix},
+\qquad
+\boldsymbol{y}=\begin{pmatrix}y_1\\y_2\\\vdots\\y_n\end{pmatrix},
+\]
+令
+\[
+(\boldsymbol{x},\boldsymbol{y})=x_1y_1+x_2y_2+\dots+x_ny_n=\sum_{i=1}^{n}x_iy_i,
+\]
+称$(\boldsymbol{x},\boldsymbol{y})$为向量$\boldsymbol{x}$与$\boldsymbol{y}$的\textbf{内积}。
+\end{definition}
+
+内积是两向量之间的运算，其结果是一个实数。用矩阵记号表示，当$\boldsymbol{x},\boldsymbol{y}$都是列向量时，
+\[
+(\boldsymbol{x},\boldsymbol{y})=\boldsymbol{x}^{T}\boldsymbol{y}=\boldsymbol{y}^{T}\boldsymbol{x}.
+\]
+$n$维向量的内积是解析几何中数量积（点积）的推广，但$n>3$时没有直观的"长度""夹角"，因此反过来用内积去定义长度和夹角。
+
+内积满足下列性质（$\boldsymbol{x},\boldsymbol{y},\boldsymbol{z}$为$n$维向量，$\lambda\in\mathbb{R}$）：
+\begin{enumerate}
+    \item $(\boldsymbol{x},\boldsymbol{y})=(\boldsymbol{y},\boldsymbol{x})$（对称性）；
+    \item $(\lambda\boldsymbol{x},\boldsymbol{y})=\lambda(\boldsymbol{x},\boldsymbol{y})$（关于第一个变量的齐次性）；
+    \item $(\boldsymbol{x}+\boldsymbol{y},\boldsymbol{z})=(\boldsymbol{x},\boldsymbol{z})+(\boldsymbol{y},\boldsymbol{z})$（关于第一个变量的可加性）；
+    \item $(\boldsymbol{x},\boldsymbol{x})\ge0$，且$(\boldsymbol{x},\boldsymbol{x})=0\iff\boldsymbol{x}=\boldsymbol{0}$（正定性）；
+    \item $(\boldsymbol{x},\lambda\boldsymbol{y}+\mu\boldsymbol{z})=\lambda(\boldsymbol{x},\boldsymbol{y})+\mu(\boldsymbol{x},\boldsymbol{z})$（关于第二个变量的线性性）。
+\end{enumerate}
+
+\subsection{夹角与正交}
+\begin{definition}[长度、单位向量]
+令
+\[
+\|\boldsymbol{x}\|=\sqrt{(\boldsymbol{x},\boldsymbol{x})}=\sqrt{x_1^2+x_2^2+\dots+x_n^2},
+\]
+称$\|\boldsymbol{x}\|$为$n$维向量$\boldsymbol{x}$的\textbf{长度}（或范数）。长度为$1$的向量称为\textbf{单位向量}；若$\boldsymbol{x}\ne\boldsymbol{0}$，取$\boldsymbol{x}/\|\boldsymbol{x}\|$即得单位向量，这一过程称为把向量\textbf{单位化}。
+\end{definition}
+
+向量长度具有与解析几何中向量长度相同的三条基本性质：
+\begin{enumerate}
+    \item 非负性：$\|\boldsymbol{x}\|\ge0$，且$\|\boldsymbol{x}\|=0\iff\boldsymbol{x}=\boldsymbol{0}$；
+    \item 齐次性：$\|\lambda\boldsymbol{x}\|=|\lambda|\,\|\boldsymbol{x}\|$；
+    \item 三角不等式：$\|\boldsymbol{x}+\boldsymbol{y}\|\le\|\boldsymbol{x}\|+\|\boldsymbol{y}\|$。
+\end{enumerate}
+
+\begin{theorem}[施瓦茨不等式]
+对任意$n$维向量$\boldsymbol{x},\boldsymbol{y}$，有
+\[
+(\boldsymbol{x},\boldsymbol{y})^{2}\le(\boldsymbol{x},\boldsymbol{x})(\boldsymbol{y},\boldsymbol{y}),
+\qquad\text{即}\qquad
+|(\boldsymbol{x},\boldsymbol{y})|\le\|\boldsymbol{x}\|\,\|\boldsymbol{y}\|.
+\]
+\end{theorem}
+
+由施瓦茨不等式，当$\boldsymbol{x}\ne\boldsymbol{0},\boldsymbol{y}\ne\boldsymbol{0}$时$\left|\dfrac{(\boldsymbol{x},\boldsymbol{y})}{\|\boldsymbol{x}\|\|\boldsymbol{y}\|}\right|\le1$，故可定义夹角：
+
+\begin{definition}[夹角、正交]
+当$\boldsymbol{x}\ne\boldsymbol{0},\boldsymbol{y}\ne\boldsymbol{0}$时，令
+\[
+\theta=\arccos\frac{(\boldsymbol{x},\boldsymbol{y})}{\|\boldsymbol{x}\|\,\|\boldsymbol{y}\|}
+\qquad(0\le\theta\le\pi),
+\]
+称$\theta$为$n$维向量$\boldsymbol{x}$与$\boldsymbol{y}$的\textbf{夹角}。当$(\boldsymbol{x},\boldsymbol{y})=0$时，称向量$\boldsymbol{x}$与$\boldsymbol{y}$\textbf{正交}，记作$\boldsymbol{x}\perp\boldsymbol{y}$。
+\end{definition}
+
+零向量与任何向量都正交。由两两正交的非零向量构成的向量组称为\textbf{正交向量组}；由单位向量构成的正交向量组称为\textbf{规范正交向量组}（标准正交向量组）。
+
+\begin{theorem}
+若$n$维向量$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$是一组两两正交的非零向量，则它们线性无关。
+\end{theorem}
+
+\textbf{证明}\quad 设有$\lambda_1\boldsymbol{\alpha}_1+\dots+\lambda_r\boldsymbol{\alpha}_r=\boldsymbol{0}$。用$\boldsymbol{\alpha}_i$与两端作内积，由两两正交得$\lambda_i(\boldsymbol{\alpha}_i,\boldsymbol{\alpha}_i)=0$，而$(\boldsymbol{\alpha}_i,\boldsymbol{\alpha}_i)=\|\boldsymbol{\alpha}_i\|^{2}>0$，故$\lambda_i=0$（$i=1,\dots,r$），所以线性无关。\hfill$\square$
+
+推论：$n$维向量空间中两两正交的非零向量不多于$n$个。
+
+\subsection{规范正交基}
+\begin{definition}[规范正交基]
+设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$是向量空间$V$（$V\subseteq\mathbb{R}^{n}$）的一个基，若它们两两正交且都是单位向量，则称$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$是$V$的一个\textbf{规范正交基}（标准正交基）。
+\end{definition}
+
+$\boldsymbol{e}_1,\dots,\boldsymbol{e}_n$就是$\mathbb{R}^{n}$的一个规范正交基。若$\boldsymbol{e}_1,\dots,\boldsymbol{e}_n$是$V$的规范正交基，则$V$中任一向量$\boldsymbol{x}$可表示为$\boldsymbol{x}=\lambda_1\boldsymbol{e}_1+\dots+\lambda_n\boldsymbol{e}_n$，两端与$\boldsymbol{e}_i$作内积得
+
+\keyformula{
+\lambda_i=(\boldsymbol{x},\boldsymbol{e}_i),\qquad
+\boldsymbol{x}=\sum_{i=1}^{n}(\boldsymbol{x},\boldsymbol{e}_i)\,\boldsymbol{e}_i .
+}
+
+即在规范正交基下，坐标就是内积，不必解方程组——这是取规范正交基的最大好处。
+
+\subsubsection{施密特（Schmidt）正交化方法}
+设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$线性无关，要由此构造与它等价的规范正交组，分两步：
+
+\textbf{(1) 正交化}\quad 取
+\[
+\begin{aligned}
+\boldsymbol{\beta}_1&=\boldsymbol{\alpha}_1,\\
+\boldsymbol{\beta}_2&=\boldsymbol{\alpha}_2-\frac{(\boldsymbol{\alpha}_2,\boldsymbol{\beta}_1)}{(\boldsymbol{\beta}_1,\boldsymbol{\beta}_1)}\boldsymbol{\beta}_1,\\
+\boldsymbol{\beta}_3&=\boldsymbol{\alpha}_3-\frac{(\boldsymbol{\alpha}_3,\boldsymbol{\beta}_1)}{(\boldsymbol{\beta}_1,\boldsymbol{\beta}_1)}\boldsymbol{\beta}_1
+-\frac{(\boldsymbol{\alpha}_3,\boldsymbol{\beta}_2)}{(\boldsymbol{\beta}_2,\boldsymbol{\beta}_2)}\boldsymbol{\beta}_2,\\
+&\ \ \vdots\\
+\boldsymbol{\beta}_r&=\boldsymbol{\alpha}_r-\sum_{j=1}^{r-1}\frac{(\boldsymbol{\alpha}_r,\boldsymbol{\beta}_j)}{(\boldsymbol{\beta}_j,\boldsymbol{\beta}_j)}\boldsymbol{\beta}_j .
+\end{aligned}
+\]
+
+\textbf{(2) 单位化}\quad 令
+\[
+\boldsymbol{e}_i=\frac{\boldsymbol{\beta}_i}{\|\boldsymbol{\beta}_i\|}\qquad(i=1,2,\dots,r).
+\]
+则$\boldsymbol{e}_1,\dots,\boldsymbol{e}_r$就是与$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$等价的规范正交组。
+
+该方法的优点是：不仅整体等价，而且对每个$i$都有
+\[
+\operatorname{Span}\{\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_i\}=\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_i\},
+\qquad i=1,2,\dots,r .
+\]
+
+\subsection{正交矩阵与正交变换}
+\begin{definition}[正交矩阵]
+如果$n$阶实矩阵$A$满足
+\[
+A^{T}A=E\quad(\text{即}\ A^{-1}=A^{T}),
+\]
+则称$A$为\textbf{正交矩阵}。
+\end{definition}
+
+用$A$的列向量表示，$A^{T}A=E$即$a_{ij}$满足$(\boldsymbol{\alpha}_i,\boldsymbol{\alpha}_j)=\delta_{ij}$。因此：\textbf{$A$为正交矩阵$\iff$$A$的列向量都是单位向量且两两正交}，即列向量组是$\mathbb{R}^{n}$的规范正交基；由于$A^{T}A=E$与$AA^{T}=E$等价，结论对行向量同样成立。
+
+$n$阶正交矩阵$A$有以下性质：
+\begin{enumerate}
+    \item $A$可逆，且$A^{-1}=A^{T}$；
+    \item $A^{T}$（从而$A^{-1}$）也是正交矩阵；
+    \item 若$A,B$都是$n$阶正交矩阵，则$AB$也是正交矩阵；
+    \item $|A|=1$或$|A|=-1$；
+    \item 对任意$n$维列向量$\boldsymbol{x},\boldsymbol{y}$，有$\|A\boldsymbol{x}\|=\|\boldsymbol{x}\|$且$(A\boldsymbol{x},A\boldsymbol{y})=(\boldsymbol{x},\boldsymbol{y})$（保长度、保内积）。
+\end{enumerate}
+
+\begin{definition}[正交变换]
+若$P$为正交矩阵，则线性变换$\boldsymbol{x}=P\boldsymbol{y}$称为\textbf{正交变换}。
+\end{definition}
+
+由性质5，正交变换保持向量的长度（从而保持线段长度、三角形形状）和内积不变。$\mathbb{R}^{n}$中向量在两组规范正交基之间的坐标变换就是正交变换。
+
+\keyformula{(\boldsymbol{x},\boldsymbol{y})=\boldsymbol{x}^{T}\boldsymbol{y},\qquad \|\boldsymbol{x}\|=\sqrt{(\boldsymbol{x},\boldsymbol{x})},\qquad \boldsymbol{x}\perp\boldsymbol{y}\iff\boldsymbol{x}^{T}\boldsymbol{y}=0}
+
+\keyformula{A^{T}A=E\iff A^{-1}=A^{T}\iff A\ \text{的列（行）向量组为}\ \mathbb{R}^{n}\ \text{的规范正交基}}
+
+\corepoint{
+（1）正交化公式的分母是$(\boldsymbol{\beta}_j,\boldsymbol{\beta}_j)=\|\boldsymbol{\beta}_j\|^{2}$，分子是$(\boldsymbol{\alpha}_i,\boldsymbol{\beta}_j)$，减的是$\boldsymbol{\beta}_j$（已正交化的向量），不能写成$\boldsymbol{\alpha}_j$。\\
+（2）必须"先正交化、后单位化"；顺序颠倒会破坏正交性。\\
+（3）施密特正交化只在同一线性无关组内部使用；若两组向量本来就要合并正交化，须按给定顺序整体处理。\\
+（4）内积对第二个变量是线性的，对第一个变量也是线性的（实向量情形），但写成$(k\boldsymbol{x},\boldsymbol{y})=k(\boldsymbol{x},\boldsymbol{y})$时注意别把$k$漏在括号外。
+}
+
+\section{方阵的特征值与特征向量}
+
 \subsection{特征值与特征向量的概念}
-\textbf{定义6.1}\quad 设$A$是数域$F$上的$n$阶方阵，如果有数$\lambda\in F$及$F$上的$n$维列向量$X=(x_1,x_2,\cdots,x_n)'\neq \boldsymbol{0}$，使得
+\begin{definition}[特征值、特征向量]
+设$A$是$n$阶矩阵，如果数$\lambda$和$n$维\textbf{非零}列向量$\boldsymbol{x}$使关系式
 \[
-AX=\lambda X \tag{1}
+A\boldsymbol{x}=\lambda\boldsymbol{x}
 \]
-成立，那么称$\lambda$为$A$的一个特征值，非零向量$X$为$A$的属于特征值$\lambda$的一个特征向量。
+成立，那么这样的数$\lambda$称为矩阵$A$的\textbf{特征值}，非零向量$\boldsymbol{x}$称为$A$的对应于特征值$\lambda$的\textbf{特征向量}。
+\end{definition}
 
-如无特别声明，我们在复数域内讨论特征值、特征向量问题。
-
-因为对任意$n$维非零列向量$X$都有$E_nX=1\cdot X$，所以$1$是$E_n$的特征值，任意$n$维非零列向量$X$都是$E_n$的属于特征值$1$的特征向量。
-
-式（1）可以写成
+$A\boldsymbol{x}=\lambda\boldsymbol{x}$可写成
 \[
-(\lambda E_n-A)X=\boldsymbol{0}. \tag{2}
+(\lambda E-A)\boldsymbol{x}=\boldsymbol{0},
 \]
-这是一个含有$n$个未知数$n$个方程的齐次线性方程组，它有非零解的充要条件是
+这是$n$个未知数$n$个方程的齐次线性方程组，它有非零解的充分必要条件是系数行列式
 \[
-|\lambda E_n-A|=0, \tag{3}
+|\lambda E-A|=0,
 \]
 即
 \[
 \begin{vmatrix}
-\lambda-a_{11} & -a_{12} & \cdots & -a_{1n}\\
--a_{21} & \lambda-a_{22} & \cdots & -a_{2n}\\
-\vdots & \vdots &  & \vdots\\
--a_{n1} & -a_{n2} &  & \lambda-a_{nn}
-\end{vmatrix}=0. \tag{4}
+\lambda-a_{11}&-a_{12}&\dots&-a_{1n}\\
+-a_{21}&\lambda-a_{22}&\dots&-a_{2n}\\
+\vdots&\vdots&&\vdots\\
+-a_{n1}&-a_{n2}&\dots&\lambda-a_{nn}
+\end{vmatrix}=0 .
 \]
-这是以$\lambda$为未知数的一元$n$次方程，称为方阵$A$的特征方程。其左端$|\lambda E_n-A|$是关于$\lambda$的$n$次多项式，称之为方阵$A$的特征多项式。
+这是以$\lambda$为未知数的一元$n$次方程，称为矩阵$A$的\textbf{特征方程}；其左端$|\lambda E-A|$是$\lambda$的$n$次多项式，称为$A$的\textbf{特征多项式}。
 
-显然，$A$的特征值就是特征方程（3）的解（根），$A$的属于特征值$\lambda_i$的特征向量就是齐次线性方程组
-\[
-(\lambda_iE_n-A)X=\boldsymbol{0} \tag{5}
-\]
-的非零解向量，称（5）的解空间$N(\lambda_iE_n-A)$为$A$的关于特征值$\lambda_i$的特征子空间。在特征子空间 $N(\lambda_iE_n-A)$内，除零向量外，其余向量全是$A$的关于$\lambda_i$的特征向量。
-
-\subsection{特征值与特征向量的性质}
-特征方程（4）在复数范围内恒有解，解的个数等于特征方程的次数（重根按重数计算），因此，$n$阶方阵$A$在复数域内有$n$个特征值。
-
-$n$阶方阵$A$的特征值满足：
+于是：
 \begin{enumerate}
-    \item 矩阵$A$的$n$个特征值之和等于$A$的$n$个对角线元素之和（$A$的迹$\mathrm{tr}(A)$），即
-    \[
-    \lambda_1+\lambda_2+\cdots+\lambda_n=a_{11}+a_{22}+\cdots+a_{nn}=\mathrm{tr}(A).
-    \]
-    \item 矩阵$A$的$n$个特征值的乘积等于$A$的行列式的值，即
-    \[
-    \lambda_1\lambda_2\cdots\lambda_n=|A|.
-    \]
+    \item $A$的特征值就是特征方程的根；$n$阶矩阵在复数范围内有$n$个特征值（重根按重数计）。
+    \item $A$的属于特征值$\lambda_i$的特征向量，就是齐次方程组$(\lambda_iE-A)\boldsymbol{x}=\boldsymbol{0}$的\textbf{非零}解向量。
+    \item 该方程组的解空间$N(\lambda_iE-A)$称为$A$的关于$\lambda_i$的\textbf{特征子空间}；其中除零向量外，其余向量全是属于$\lambda_i$的特征向量。
 \end{enumerate}
 
-\textbf{定理6.1}\quad 设$\lambda_1,\lambda_2,\cdots,\lambda_m$是$n$阶方阵$A$的互不相同的特征值。如果$T_{i1},T_{i2},\cdots,T_{ir_i}$是特征值$\lambda_i$对应的$r_i$个线性无关的特征向量，则
-\[
-T_{11},T_{12},\cdots,T_{1r_1},T_{21},T_{22},\cdots,T_{2r_2},\cdots,T_{m1},T_{m2},\cdots,T_{mr_m}
-\]
-线性无关。
-
-\subsection{实对称矩阵的特征值与特征向量}
-实对称矩阵有下面两个重要的性质：
+\subsection{特征值的性质}
+设$n$阶矩阵$A=(a_{ij})$的特征值为$\lambda_1,\lambda_2,\dots,\lambda_n$，则
 \begin{enumerate}
-    \item 实对称矩阵的特征值都是实数；
-    \item 实对称矩阵的对应于不同特征值的实特征向量必正交。
+    \item $\lambda_1+\lambda_2+\dots+\lambda_n=a_{11}+a_{22}+\dots+a_{nn}=\operatorname{tr}(A)$（$A$的迹）；
+    \item $\lambda_1\lambda_2\cdots\lambda_n=|A|$。
 \end{enumerate}
+由此可得：$A$可逆$\iff$$A$的$n$个特征值全不为零；$|A|=0$$\iff$$0$是$A$的特征值。
+
+特征值还有下列常用性质（$\lambda$为$A$的特征值，$\boldsymbol{x}$为对应特征向量）：
+\begin{enumerate}
+    \item $k\lambda$是$kA$的特征值；$\lambda^{m}$是$A^{m}$的特征值；
+    \item 若$f(x)=a_mx^{m}+\dots+a_1x+a_0$是多项式，则$f(\lambda)$是$f(A)=a_mA^{m}+\dots+a_1A+a_0E$的特征值，且$\boldsymbol{x}$仍是对应特征向量；
+    \item 当$A$可逆时，$\lambda\ne0$，$\lambda^{-1}$是$A^{-1}$的特征值，$\dfrac{|A|}{\lambda}$是$A^{*}$（伴随矩阵）的特征值；
+    \item $A^{T}$与$A$有相同的特征值（但特征向量一般不同）。
+\end{enumerate}
+
+\begin{theorem}[不同特征值的特征向量线性无关]
+设$\lambda_1,\lambda_2,\dots,\lambda_m$是$n$阶矩阵$A$的$m$个\textbf{互不相等}的特征值，$\boldsymbol{p}_1,\dots,\boldsymbol{p}_m$依次是与它们对应的特征向量，则$\boldsymbol{p}_1,\dots,\boldsymbol{p}_m$线性无关。
+\end{theorem}
+
+\begin{corollary}
+设$\lambda_1\ne\lambda_2$是$A$的两个不同特征值，$\boldsymbol{p}_{1},\dots,\boldsymbol{p}_{r}$与$\boldsymbol{q}_{1},\dots,\boldsymbol{q}_{s}$分别是属于$\lambda_1$与$\lambda_2$的线性无关特征向量，则$\boldsymbol{p}_1,\dots,\boldsymbol{p}_r,\boldsymbol{q}_1,\dots,\boldsymbol{q}_s$线性无关。
+\end{corollary}
+
+注意：属于同一特征值的特征向量的任意非零线性组合仍是该特征值的特征向量（因为特征子空间是向量空间）；但属于两个不同特征值的特征向量之和\textbf{不再是}特征向量。
+
+\subsection{求特征值与特征向量的步骤}
+\begin{enumerate}
+    \item 计算特征多项式$|\lambda E-A|$，解特征方程$|\lambda E-A|=0$，求出全部特征值$\lambda_1,\dots,\lambda_n$（重根按重数记）。
+    \item 对每个特征值$\lambda_i$，解齐次方程组$(\lambda_iE-A)\boldsymbol{x}=\boldsymbol{0}$，求其基础解系$\boldsymbol{\xi}_1,\dots,\boldsymbol{\xi}_{t}$。
+    \item 则属于$\lambda_i$的全部特征向量为$k_1\boldsymbol{\xi}_1+\dots+k_t\boldsymbol{\xi}_t$（$k_1,\dots,k_t$不全为零）。
+\end{enumerate}
+
+\corepoint{
+（1）特征向量必须\textbf{非零}，答"全部特征向量"时要写"不全为零"的线性组合，不能只写基础解系。\\
+（2）特征方程用$|\lambda E-A|=0$或$|A-\lambda E|=0$都可以（两者只差$(-1)^{n}$），但\textbf{代入求特征向量时必须用同一个形式}，否则符号出错。\\
+（3）解$(\lambda_iE-A)\boldsymbol{x}=\boldsymbol{0}$时，若$\lambda_i$是重根，得到的线性无关特征向量个数可能少于重数（这正是"不可对角化"的原因）。\\
+（4）验算：$\sum\lambda_i=\operatorname{tr}(A)$、$\prod\lambda_i=|A|$，两式能查出大部分计算错误；再把$\boldsymbol{x}$代回$A\boldsymbol{x}=\lambda\boldsymbol{x}$验证。
+}
+
+\keyformula{A\boldsymbol{x}=\lambda\boldsymbol{x}\ (\boldsymbol{x}\ne\boldsymbol{0})\quad\Longleftrightarrow\quad (\lambda E-A)\boldsymbol{x}=\boldsymbol{0}\ \text{有非零解}\quad\Longleftrightarrow\quad |\lambda E-A|=0}
+
+\keyformula{\sum_{i=1}^{n}\lambda_i=\operatorname{tr}(A),\qquad \prod_{i=1}^{n}\lambda_i=|A|,\qquad f(\lambda)\ \text{是}\ f(A)\ \text{的特征值},\qquad \lambda^{-1}\ \text{是}\ A^{-1}\ \text{的特征值}}
 
 \section{相似矩阵}
-\subsection{相似矩阵的概念}
-\textbf{定义6.2}\quad 设$A$，$B$都是$n$阶方阵，若存在可逆矩阵$T$，使
-\[
-B=T^{-1}AT,
-\]
-则称$A$与$B$相似，称从$A$到$B$的这种变换为相似变换，称这个矩阵$T$为相似变换矩阵。
 
-矩阵的相似满足：
+\subsection{相似矩阵的概念与性质}
+\begin{definition}[相似]
+设$A,B$都是$n$阶矩阵，若有可逆矩阵$P$，使
+\[
+P^{-1}AP=B,
+\]
+则称$B$是$A$的\textbf{相似矩阵}，或说矩阵$A$与$B$\textbf{相似}；对$A$进行运算$P^{-1}AP$称为对$A$进行\textbf{相似变换}，可逆矩阵$P$称为把$A$变成$B$的\textbf{相似变换矩阵}。
+\end{definition}
+
+矩阵的相似关系具有：
 \begin{enumerate}
-    \item 自反性：任一$n$阶方阵都与自身相似；
-    \item 对称性：若矩阵$A$与$B$相似，则$B$与$A$也相似；
-    \item 传递性：若矩阵$A$与$B$相似，且矩阵$B$与$C$相似，则矩阵$A$与$C$相似。
+    \item 自反性：$A$与$A$相似；
+    \item 对称性：$A$与$B$相似，则$B$与$A$相似；
+    \item 传递性：$A$与$B$相似、$B$与$C$相似，则$A$与$C$相似。
 \end{enumerate}
 
-若$A$与一个对角矩阵$D$相似，则称$A$可以相似对角化。
+\begin{theorem}[相似矩阵的特征多项式相同]
+若$n$阶矩阵$A$与$B$相似，则$A$与$B$的特征多项式相同，从而$A$与$B$的特征值亦相同。
+\end{theorem}
 
-\textbf{定理6.2}\quad 若$A$与$B$相似，则$A$与$B$的特征多项式相同。
-
-由定理6.2容易得到：
-\begin{enumerate}
-    \item 若$A$与$B$相似，则$A$与$B$的特征值相同。反之未必成立，即两个矩阵特征值相同，它们不一定相似；
-    \item 若$A$与$B$相似，则$\mathrm{tr}(A)=\mathrm{tr}(B)$，且$|A|=|B|$。
-\end{enumerate}
-
-\textbf{推论6.1}\quad 若$n$阶方阵$A$与对角矩阵
+\textbf{证明}\quad 由$P^{-1}AP=B$得
 \[
-D=\begin{pmatrix}
-\lambda_1 & & & \\
-& \lambda_2 & & \\
-& & \ddots & \\
-& & & \lambda_n
-\end{pmatrix}
+|B-\lambda E|=|P^{-1}AP-P^{-1}(\lambda E)P|=|P^{-1}(A-\lambda E)P|
+=|P|^{-1}|A-\lambda E||P|=|A-\lambda E| .
 \]
-相似，则$\lambda_1,\lambda_2,\cdots,\lambda_n$是$A$的$n$个特征值。
+\hfill$\square$
 
-\subsection{方阵相似对角化的条件及方法}
-\textbf{定理6.3}\quad $n$阶方阵$A$与对角矩阵相似的充要条件是$A$有$n$个线性无关的特征向量，并且$T^{-1}AT=D$为对角矩阵的充要条件是，$T$的$n$个列向量是$A$的$n$个线性无关的特征向量，且这$n$个特征向量对应的特征值依次为对角矩阵$D$的主对角线上的元素。
+由此还可得到：相似矩阵有相同的迹、相同的行列式、相同的秩。反之不成立——特征值相同（甚至$|A|=|B|$、$\operatorname{tr}A=\operatorname{tr}B$）的两个矩阵未必相似。
 
-\textbf{推论6.2}\quad 如果$n$阶方阵$A$的$n$个特征值互不相等，则$A$与对角矩阵相似。
+\begin{corollary}
+若$n$阶矩阵$A$与对角矩阵
+\[
+\Lambda=\begin{pmatrix}\lambda_1&&&\\&\lambda_2&&\\&&\ddots&\\&&&\lambda_n\end{pmatrix}
+\]
+相似，则$\lambda_1,\lambda_2,\dots,\lambda_n$即是$A$的$n$个特征值。
+\end{corollary}
+
+若$A=P\Lambda P^{-1}$，则$A^{k}=P\Lambda^{k}P^{-1}$，且对多项式$f$有$f(A)=Pf(\Lambda)P^{-1}$，而对角矩阵的幂与多项式极易计算。这正是要求"把矩阵化为对角矩阵"的原因。
+
+\subsection{方阵可对角化的条件}
+\begin{theorem}[可对角化的充要条件]
+$n$阶矩阵$A$与对角矩阵相似（即$A$能对角化）的充分必要条件是$A$有$n$个线性无关的特征向量。
+
+进一步，$P^{-1}AP=\Lambda$为对角矩阵$\iff$$P$的$n$个列向量是$A$的$n$个线性无关的特征向量，且$\Lambda$的主对角线元素依次是这些特征向量所对应的特征值。
+\end{theorem}
+
+\textbf{证明要点}\quad 设$P=(\boldsymbol{p}_1,\dots,\boldsymbol{p}_n)$可逆，则$P^{-1}AP=\Lambda\iff AP=P\Lambda\iff(A\boldsymbol{p}_1,\dots,A\boldsymbol{p}_n)=(\lambda_1\boldsymbol{p}_1,\dots,\lambda_n\boldsymbol{p}_n)\iff A\boldsymbol{p}_i=\lambda_i\boldsymbol{p}_i$。由于$P$可逆$\iff$$\boldsymbol{p}_1,\dots,\boldsymbol{p}_n$线性无关，即得结论。
+
+\begin{corollary}
+若$n$阶矩阵$A$的$n$个特征值互不相等，则$A$与对角矩阵相似。
+\end{corollary}
+
+反之不成立：有重特征值时也可能可对角化，只是\textbf{不一定}。
 
 \subsection{几何重数与代数重数}
-\textbf{定义6.3}\quad 设$\lambda_0$是$n$阶方阵$A$的一个特征值，若$\lambda_0$是$A$的特征方程的$m$重根，则称$m$是特征值$\lambda_0$的代数重数。称$\lambda_0$对应的特征子空间（即$(\lambda_0E-A)X=\boldsymbol{0}$的解空间）的维数为$\lambda_0$的几何重数。
+\begin{definition}[代数重数、几何重数]
+设$\lambda_0$是$n$阶矩阵$A$的特征值，若$\lambda_0$是特征方程的$m$重根，称$m$为$\lambda_0$的\textbf{代数重数}；称$\lambda_0$对应的特征子空间（即$(\lambda_0E-A)\boldsymbol{x}=\boldsymbol{0}$的解空间）的维数为$\lambda_0$的\textbf{几何重数}，它等于属于$\lambda_0$的线性无关特征向量的最大个数，即$n-R(\lambda_0E-A)$。
+\end{definition}
 
-\textbf{定理6.4}\quad 矩阵的特征值的几何重数小于等于它的代数重数。
-
-实对称矩阵的特征值的几何重数与代数重数相等。
-
-\textbf{定理6.5}\quad 设$A$是$n$阶实对称矩阵，则$A$的互不相同的特征值的几何重数之和为$n$。
-
-\textbf{定理6.6}\quad 复矩阵$A$与对角矩阵相似的充要条件是$A$的每一特征值的几何重数都等于它的代数重数。
-
-\subsection{实对称矩阵的正交相似对角化}
-\textbf{定理6.7}\quad 设$A$为$n$阶实对称矩阵，则存在$n$阶正交矩阵$P$，使
+\begin{theorem}
+矩阵的任一特征值的几何重数不超过它的代数重数，即
 \[
-P^{-1}AP=
-\begin{pmatrix}
-\lambda_1 & & & \\
-& \lambda_2 & & \\
-& & \ddots & \\
-& & & \lambda_n
-\end{pmatrix}
+n-R(\lambda_0E-A)\le m .
 \]
-其中$\lambda_1,\lambda_2,\cdots,\lambda_n$是$A$的$n$个特征值。
+\end{theorem}
+
+\begin{theorem}[可对角化的重数判据]
+$n$阶矩阵$A$与对角矩阵相似的充分必要条件是：$A$的每一个特征值的几何重数都等于它的代数重数，即对每个特征值$\lambda_i$有
+\[
+n-R(\lambda_iE-A)=m_i .
+\]
+等价地：$\sum_i\left[n-R(\lambda_iE-A)\right]=n$，即$A$共有$n$个线性无关的特征向量。
+\end{theorem}
+
+于是判断能否对角化有两条路：(a) 数一数线性无关特征向量是否够$n$个；(b) 比较每个特征值的两个重数。
+
+\subsection{对角化的步骤}
+\begin{enumerate}
+    \item 求$A$的全部特征值$\lambda_1,\dots,\lambda_s$（互异）及其代数重数$m_1,\dots,m_s$。
+    \item 对每个$\lambda_i$解$(\lambda_iE-A)\boldsymbol{x}=\boldsymbol{0}$，求基础解系，得$t_i=n-R(\lambda_iE-A)$个线性无关特征向量。
+    \item 若$\sum t_i<n$，则$A$不可对角化（重特征值处向量不够）；若$\sum t_i=n$，令
+    \[
+    P=(\boldsymbol{p}_1,\boldsymbol{p}_2,\dots,\boldsymbol{p}_n),\qquad
+    \Lambda=\operatorname{diag}(\lambda_1',\lambda_2',\dots,\lambda_n'),
+    \]
+    则$P^{-1}AP=\Lambda$。
+\end{enumerate}
+
+\corepoint{
+（1）$P$中列向量的\textbf{排列顺序}必须与$\Lambda$中对角元的顺序一一对应；顺序错则等式不成立（这是阅卷最常见的扣分点）。\\
+（2）$P$不唯一：同一特征值的特征向量可换成任意非零倍数或其他等价组，$\Lambda$中同特征值的对角元也可交换。\\
+（3）"特征值互不相同$\Rightarrow$可对角化"成立，但"有重根$\Rightarrow$不可对角化"不成立。\\
+（4）注意相似与合同、等价是三种不同的关系：相似是$P^{-1}AP$，合同是$C^{T}AC$，等价是$PAQ$。
+}
+
+\keyformula{B=P^{-1}AP\ \Rightarrow\ |\lambda E-B|=|\lambda E-A|,\quad \operatorname{tr}B=\operatorname{tr}A,\quad |B|=|A|}
+
+\keyformula{A\ \text{可对角化}\iff A\ \text{有}\ n\ \text{个线性无关的特征向量}\iff n-R(\lambda_iE-A)=m_i\ (\forall i)}
+
+\keyformula{P^{-1}AP=\Lambda,\quad P=(\boldsymbol{p}_1,\dots,\boldsymbol{p}_n),\quad A\boldsymbol{p}_i=\lambda_i\boldsymbol{p}_i}
+
+\section{对称矩阵的对角化}
+
+实对称矩阵是一类一定能对角化、而且可以用\textbf{正交}矩阵对角化的矩阵，这是二次型理论的基础。
+
+\subsection{实对称矩阵特征值与特征向量的性质}
+\begin{theorem}[性质1：特征值为实数]
+实对称矩阵$A$的特征值都是实数。
+\end{theorem}
+
+证明思路：设$\lambda$为特征值、$\boldsymbol{x}$为对应复特征向量，取共轭转置比较$A\bar{\boldsymbol{x}}=\bar\lambda\bar{\boldsymbol{x}}$与$\boldsymbol{x}^{T}A=\lambda\boldsymbol{x}^{T}$，得$(\lambda-\bar\lambda)\bar{\boldsymbol{x}}^{T}\boldsymbol{x}=0$，而$\bar{\boldsymbol{x}}^{T}\boldsymbol{x}>0$，故$\lambda=\bar\lambda$。此时$(\lambda E-A)\boldsymbol{x}=\boldsymbol{0}$是实系数方程组，特征向量可取实向量。
+
+\begin{theorem}[性质2：不同特征值的特征向量正交]
+设$\lambda_1,\lambda_2$是实对称矩阵$A$的两个特征值，$\boldsymbol{p}_1,\boldsymbol{p}_2$是对应的特征向量。若$\lambda_1\ne\lambda_2$，则$\boldsymbol{p}_1$与$\boldsymbol{p}_2$正交。
+\end{theorem}
+
+\textbf{证明}\quad $\lambda_1\boldsymbol{p}_1^{T}\boldsymbol{p}_2=(A\boldsymbol{p}_1)^{T}\boldsymbol{p}_2=\boldsymbol{p}_1^{T}A^{T}\boldsymbol{p}_2=\boldsymbol{p}_1^{T}A\boldsymbol{p}_2=\lambda_2\boldsymbol{p}_1^{T}\boldsymbol{p}_2$，故$(\lambda_1-\lambda_2)\boldsymbol{p}_1^{T}\boldsymbol{p}_2=0$，而$\lambda_1\ne\lambda_2$，得$\boldsymbol{p}_1^{T}\boldsymbol{p}_2=0$。\hfill$\square$
+
+\begin{theorem}[性质3：重根的几何重数等于代数重数]
+设$A$为$n$阶实对称矩阵，$\lambda_0$是$A$的特征方程的$m$重根，则矩阵$\lambda_0E-A$的秩$R(\lambda_0E-A)=n-m$，从而对应于$\lambda_0$恰有$m$个线性无关的特征向量。
+\end{theorem}
+
+\begin{theorem}[实对称矩阵的正交对角化]
+设$A$为$n$阶实对称矩阵，则必有正交矩阵$P$，使
+\[
+P^{-1}AP=P^{T}AP=\Lambda=
+\begin{pmatrix}\lambda_1&&&\\&\lambda_2&&\\&&\ddots&\\&&&\lambda_n\end{pmatrix},
+\]
+其中$\lambda_1,\dots,\lambda_n$是$A$的$n$个特征值。
+\end{theorem}
+
+即：实对称矩阵一定可以正交相似对角化，且相似变换矩阵可取为正交矩阵（此时$P^{-1}=P^{T}$，求逆变成转置）。
+
+\subsection{用正交矩阵对角化的步骤}
+\begin{enumerate}
+    \item 求出$A$的全部互不相等的特征值$\lambda_1,\dots,\lambda_s$，重数依次为$m_1,\dots,m_s$（$\sum m_i=n$）。
+    \item 对每个重特征值$\lambda_i$，解$(\lambda_iE-A)\boldsymbol{x}=\boldsymbol{0}$，求基础解系（恰含$m_i$个向量），再把这$m_i$个向量\textbf{施密特正交化并单位化}，得$m_i$个两两正交的单位特征向量。
+    \item 因不同特征值的特征向量已自动正交，把这$n$个两两正交的单位特征向量构成正交矩阵$P$，便有
+    \[
+    P^{-1}AP=P^{T}AP=\Lambda,
+    \]
+    其中$\Lambda$对角元的排列次序与$P$中列向量的排列次序相对应。
+\end{enumerate}
+
+\corepoint{
+（1）\textbf{同一重特征值}对应的特征向量只保证线性无关，不保证正交，必须自己做施密特正交化；\textbf{不同特征值}的特征向量已正交，不能再混在一起正交化（会破坏原有的方向）。\\
+（2）最后必须\textbf{单位化}，否则$P$只是可逆矩阵而不是正交矩阵，"$P^{-1}AP$"就不再等于"$P^{T}AP$"。\\
+（3）$A$是实对称矩阵时一定成功；若$A$不是对称矩阵，即使特征值全是实数，也不能保证存在正交$P$。\\
+（4）验算：$P^{T}P=E$、$P^{T}AP=\Lambda$两条都要检查。
+}
+
+\keyformula{A^{T}=A\ \Longrightarrow\ \exists\,P\ (P^{T}P=E):\ P^{-1}AP=P^{T}AP=\operatorname{diag}(\lambda_1,\dots,\lambda_n)}
+
+\keyformula{\lambda_i\in\mathbb{R};\qquad \lambda_i\ne\lambda_j\ \Rightarrow\ \boldsymbol{p}_i\perp\boldsymbol{p}_j;\qquad R(\lambda_0E-A)=n-m_0}

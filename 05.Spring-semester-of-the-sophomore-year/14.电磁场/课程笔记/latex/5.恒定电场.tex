@@ -1,558 +1,423 @@
-% 恒定电场核心知识点 - 子文件（仅用于 \input 引入）
-% 电磁场课程笔记
-% 注意：本文件为子文件，无 document 环境，由主文档统一管理
-% 依赖宏包（主文档导言区已配置）：
-% \usepackage{tcolorbox}
-% \tcbuselibrary{skins}
-% 彩色公式框定义（同静电场，主文档统一定义，此处不再重复）
+﻿% ==================== 第2章 恒定电场 ====================
+% 子文件：仅正文，由 1.电磁场笔记.tex \input 引入
+% 教材：《工程电磁场导论》第2章 §2-1 ~ §2-5
+% 公式统一用 formulaBox（本目录 3.矢量分析.tex 中定义）
+% ==========================================================
 
-% -------------------------- 正文 --------------------------
-\section{恒定电场}
+\chapter{恒定电场}
 
-\subsection{本章内容概览}
-本章系统讲解导电媒质中恒定电场的基础理论，核心知识点如下：
+\textbf{研究对象}：导电媒质中的恒定电场，即导电媒质内有恒定电流通过时，媒质内、外建立的电场。
+
+\textbf{基本特征}：电荷分布不随时间变化，处处保持动态平衡；场量（$\vec{E}$、$\vec{J}$、$\rho$）均与时间无关，
+\begin{formulaBox}
+\[
+\frac{\partial}{\partial t}(\bullet)=0
+\]
+\end{formulaBox}
+这一条件把恒定电场与静电场、时变电磁场区分开：静电场由\emph{静止}电荷产生、场域内无电流；恒定电场由\emph{恒定运动}的电荷（恒定电流）维持，导电媒质内部有电流通过。因此恒定电场中\textbf{导体不再是等位体}，导体内部场强不为零（$E=J/\gamma \neq 0$），这是它与静电场最容易被混淆的区别。
+
+本章按教材节序展开：导电媒质中的电流（\S2-1）$\to$ 电源电动势与局外场强（\S2-2）$\to$ 基本方程与分界面衔接条件（\S2-3）$\to$ 恒定电场与静电场的比拟（\S2-4）$\to$ 电导和部分电导（\S2-5）。
+
+% ---------------------------------------------------------
+\section{导电媒质中的电流}
+
+\subsection{传导电流与运流电流}
+按电流形成的物理机制分类：
 \begin{itemize}
-    \item 恒定电场的形成条件与基本特征
-    \item 电流、电流密度（体/面/线）与\textbf{欧姆定律的微分形式}
-    \item \textbf{焦耳定律微分形式}与功率损耗计算
-    \item \textbf{电流连续性方程}（电荷守恒定律）
-    \item 恒定电场基本方程组（微分/积分形式）
-    \item 分界面衔接条件（标量/矢量形式）与\textbf{电场折射定律}
-    \item 导电媒质中恒定电荷的分布
-    \item 恒定电场边值问题与\textbf{静电比拟法}
-    \item \textbf{电导与部分电导}的计算方法与典型模型
-    \item \textbf{接地电阻}、\textbf{跨步电压}的工程应用
+  \item \textbf{传导电流}：导电媒质（导体、电解液、大地等）中自由电荷的定向运动形成，服从欧姆定律；
+  \item \textbf{运流电流}：自由空间（真空、气体）中带电体的机械运动形成，\textbf{不服从欧姆定律}。
 \end{itemize}
+本章只讨论传导电流。描述电流有两个层次的物理量：电流强度（整体量）与电流密度（分布量）。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{恒定电场的基本概念与特征}
-\subsubsection{研究对象与形成条件}
-恒定电场的研究对象为\textbf{导电媒质中的恒定电流电场}。
-形成条件：
-\begin{enumerate}
-    \item 导体回路中存在\textbf{恒定电源}（维持电荷分布恒定）
-    \item 导电媒质内形成闭合的电流通路
-    \item 电荷分布不随时间变化，场量处于动态平衡状态
-\end{enumerate}
-
-\subsubsection{核心特征}
-恒定电场最根本的特征是：电荷分布不随时间变化，因此场量也不随时间变化，满足：
+\subsection{电流强度与电流密度矢量}
+\textbf{电流强度}定义为单位时间内通过某一曲面的电量，
 \begin{formulaBox}
 \[
-\frac{\partial}{\partial t}(\bullet) = 0
+I=\frac{\mathrm{d}q}{\mathrm{d}t}\qquad(\mathrm{A})
 \]
 \end{formulaBox}
+它是\textbf{通量}概念，只说明每秒通过某面积的总电量，无法反映电荷在截面各点的流动情况。
 
-\noindent 这一特性直接导致：
-- 恒定电场与静电场具有形式上的相似性，可采用\textbf{静电比拟法}求解
-- 导电媒质内存在恒定电场，导体不再是等位体（除非电流为零）
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{导电媒质中的电流}
-\subsubsection{电流的分类}
-根据电流形成的物理机制，可分为两类：
-\begin{itemize}
-    \item \textbf{传导电流}：在导电媒质中（如导体、电解液等）电荷的定向运动形成的电流。
-    \item \textbf{运流电流}：在自由空间（如真空等）中，电荷的运动形成的电流，不满足欧姆定律。
-\end{itemize}
-
-\subsubsection{电流强度}
-电流强度描述了单位时间内通过某一曲面的总电荷量，定义为：
+\textbf{电流密度矢量} $\vec{J}$ 描述电流的空间分布：方向取正电荷运动方向；大小为单位时间内穿过与该方向垂直的单位面积的净电量。对以速度 $\vec{v}$ 运动的体电荷分布，
 \begin{formulaBox}
 \[
-I = \frac{\mathrm{d} q}{\mathrm{d} t}
+\vec{J}=\rho\vec{v}\qquad(\mathrm{A/m^2})
 \]
 \end{formulaBox}
-单位：安培（$\mathrm{A}$），方向规定为正电荷运动的方向。
-
-\paragraph{物理意义说明}
-电流强度是一个具有\textbf{通量概念}的物理量，它只描述了每秒通过某一面积的电荷总量，\textbf{无法反映电荷在导体截面上每一点的流动情况}。为了描述电流的空间分布，需要引入\textbf{电流密度矢量}。
-
-\subsubsection{电流密度矢量}
-电流密度矢量是描述电流空间分布的基本物理量，其定义为：
-\begin{itemize}
-    \item \textbf{方向}：与正电荷运动的方向一致；
-    \item \textbf{大小}：
-    \begin{enumerate}
-        \item 单位时间内穿过与电荷运动方向相垂直的单位面积的净电量；
-        \item 单位体积内的电荷，以速度 $\vec{v}$ 作匀速运动时，形成的电流密度矢量；
-        \item 垂直于电荷运动方向单位面积上通过的电流。
-    \end{enumerate}
-\end{itemize}
-
-其表达式为：
+其中 $\rho$ 为电荷体密度。穿过任意曲面 $S$ 的电流是 $\vec{J}$ 的通量：
 \begin{formulaBox}
 \[
-\vec{J} = \rho \vec{v}
+I=\iint_S \vec{J}\cdot\mathrm{d}\vec{S}
 \]
 \end{formulaBox}
-单位：$\mathrm{A/m^2}$。
-
-\subsubsection{不同电荷分布形成的电流}
-根据电荷分布的形式，电流可分为三类：
-
-\paragraph{体电流（体电流密度矢量）}
-按体密度 $\rho$ 分布的电荷，以速度 $\vec{v}$ 作匀速运动时，形成\textbf{体电流密度}（电流面密度矢量），表达式为：
-\begin{formulaBox}
-\[
-\vec{J} = \rho \vec{v}
-\]
-\end{formulaBox}
-单位：$\mathrm{A/m^2}$。
-穿过任意曲面 $S$ 的电流为：
-\begin{formulaBox}
-\[
-I = \iint_S \vec{J} \cdot \mathrm{d}\vec{S}
-\]
-\end{formulaBox}
-
-\paragraph{面电流（面电流密度矢量）}
-按面密度 $\sigma$ 分布的电荷，以速度 $\vec{v}$ 作匀速运动时，形成\textbf{面电流密度}（电流线密度矢量），表达式为：
-\begin{formulaBox}
-\[
-\vec{K} = \sigma \vec{v}
-\]
-\end{formulaBox}
-单位：$\mathrm{A/m}$。
-穿过线元 $L$ 的电流为：
-\begin{formulaBox}
-\[
-I = \int_L \vec{K} \cdot \vec{e}_n \, \mathrm{d} l
-\]
-\end{formulaBox}
-其中 $\vec{e}_n$ 为面电流所在表面的法向单位矢量。
-
-\paragraph{线电流}
-电荷沿导线轴线流动时，可视为\textbf{线电流}，表达式为：
-\begin{formulaBox}
-\[
-I = \tau v
-\]
-\end{formulaBox}
-其中 $\tau$ 为单位长度电荷，$v$ 为电荷运动速度。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{欧姆定律与焦耳定律的微分形式}
-\subsubsection{欧姆定律的微分形式}
-在线性、各向同性导电媒质中，任一点传导电流密度与电场强度成正比：
-\begin{formulaBox}
-\[
-\vec{J}_c = \gamma \vec{E}
-\]
-\end{formulaBox}
-其中：
-\begin{itemize}
-    \item $\gamma$ 为媒质的\textbf{电导率}，单位：$\mathrm{S/m}$（西门子/米）；
-    \item 电阻率 $\rho_r = 1/\gamma$，单位：$\Omega \cdot \mathrm{m}$。
-\end{itemize}
-
-\noindent 该式表明：电流密度的方向与电场强度方向一致，大小与电场强度成正比。可与电介质的物性方程 $\vec{D} = \varepsilon \vec{E}$ 类比理解。
-
-\paragraph{与电路欧姆定律的关系}
-电路中的欧姆定律 $U=IR$ 是微分形式的宏观表现。对于一段导体，有：
-\begin{formulaBox}
-\[
-I = GU, \quad U = IR
-\]
-\end{formulaBox}
-其中 $G$ 为\textbf{电导}，是电阻 $R$ 的倒数。
-
-\subsubsection{焦耳定律的微分形式}
-描述单位体积内的功率损耗（热功率密度），定义为：
-\begin{formulaBox}
-\[
-p = \lim_{\Delta V \to 0} \frac{\Delta P}{\Delta V} = \vec{J}_c \cdot \vec{E}
-\]
-\end{formulaBox}
-单位：$\mathrm{W/m^3}$。
-
-在线性、各向同性导电媒质中，也可表示为：
-\begin{formulaBox}
-\[
-p = \gamma E^2 = \frac{J_c^2}{\gamma}
-\]
-\end{formulaBox}
-又称\textbf{热功率体密度}，描述导体内任一点单位体积的功率损耗。
-
-\noindent 对整个导体体积分，得到总功率损耗：
-\begin{formulaBox}
-\[
-P = \int_V p \,\mathrm{d}V = \int_V \vec{E} \cdot \vec{J}_c \,\mathrm{d}V = I^2 R
-\]
-\end{formulaBox}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{电流连续性方程（电荷守恒定律）}
-由\textbf{电荷守恒定律}可推导出电流连续性方程，是恒定电场的核心方程之一。
-
-\subsubsection{电荷守恒定律的一般形式}
-电荷守恒定律表明：单位时间流出区域 $V$ 的电荷总量等于 $V$ 内电量的减少率，即：
-\begin{formulaBox}
-\[
-\oint_S \vec{J} \cdot \mathrm{d}\vec{S} = -\frac{\partial q}{\partial t}
-\]
-\end{formulaBox}
-
-\noindent 利用高斯定理可推导出其微分形式：
-\begin{formulaBox}
-\[
-\nabla \cdot \vec{J} + \frac{\partial \rho}{\partial t} = 0
-\]
-\end{formulaBox}
-该式也称为\textbf{电流连续性方程}。
-
-\subsubsection{恒定条件下的简化形式}
-对于\textbf{恒定电场}，电荷分布不随时间变化，$\partial \rho/\partial t = 0$，因此方程退化为：
-\begin{formulaBox}
-\[
-\nabla \cdot \vec{J}_c = 0
-\]
-\end{formulaBox}
-积分形式为：
-\begin{formulaBox}
-\[
-\oint_S \vec{J}_c \cdot \mathrm{d}\vec{S} = 0
-\]
-\end{formulaBox}
-物理意义：恒定电流没有头和尾，电流线总是闭合的，流入闭合面的电流等于流出的电流。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{电源电动势与局外场强}
-电源通过局外力（非静电力）维持导体两端的电位差，其作用可等效为\textbf{局外场强} $\vec{E}_e$。
-
-\subsubsection{本节重点}
-\begin{itemize}
-    \item 区分\textbf{局外场强}和\textbf{电场强度}；
-    \item 静电场的电场强度环路线积分为零，电源外恒定电场的环路线积分恒也等于零。
-\end{itemize}
-
-\subsubsection{局外力与局外场强}
-- \textbf{局外力}：电源中能将正负电荷分离开来的非电磁力 $f_e$；
-- \textbf{局外场强}：作用于单位正电荷上的局外力的等效场强，定义为：
-\begin{formulaBox}
-\[
-\vec{E}_e = \lim_{q \to 0} \frac{\vec{f}_e}{q}
-\]
-\end{formulaBox}
-方向由电源负极指向正极，它不是真正的电场强度，仅在引起电流这一点上与电场强度等效。
-
-\subsubsection{含源导电媒质的电流}
-在电源内部，电场包括库仑场强 $\vec{E}_c$ 和局外场强 $\vec{E}_e$，因此通过含源导电媒质的电流为：
-\begin{formulaBox}
-\[
-\vec{J} = \gamma (\vec{E}_e + \vec{E}_c)
-\]
-\end{formulaBox}
-在电源以外区域，只存在库仑场强 $\vec{E}_c$。
-
-\subsubsection{电动势定义}
-\textbf{电动势}是衡量电源作功能力的物理量，定义为单位正电荷从电源负极运动到正极时，局外力所做的功：
-\begin{formulaBox}
-\[
-\varepsilon = \int_{B}^{A} \vec{E}_e \cdot \mathrm{d}\vec{l}
-\]
-\end{formulaBox}
-
-\subsubsection{电源内外的场强与环路积分}
-\begin{itemize}
-    \item 在电源中：总场强 $\vec{E}_\text{T} = \vec{E}_c + \vec{E}_e$；
-    \item 在电源外：总场强 $\vec{E}_\text{T} = \vec{E}_c$。
-\end{itemize}
-
-若 $L$ 为不经过电源的闭合曲线，则：
-\begin{formulaBox}
-\[
-\oint_L \vec{E}_\text{T} \cdot \mathrm{d}\vec{l} = \oint_L \vec{E}_c \cdot \mathrm{d}\vec{l} = 0
-\]
-\end{formulaBox}
-即恒定电场的环路线积分恒等于零，恒定电场仍是守恒场。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{恒定电场的基本方程组}
-本节核心内容包括：电荷守恒与电流连续性、电场强度的环路线积分、恒定电场的基本方程、分界面衔接条件、导电媒质中恒定电荷的分布、恒定电场的边值问题。
-
-\subsubsection{电源外区域的基本场方程}
-恒定电场（电源外）的\textbf{基本方程组}包括微分形式和积分形式：
-
-\begin{itemize}
-    \item 电场无旋性：
-    \begin{formulaBox}
-    \[
-    \nabla \times \vec{E} = 0
-    \]
-    \end{formulaBox}
-    积分形式：
-    \begin{formulaBox}
-    \[
-    \oint_L \vec{E} \cdot \mathrm{d}\vec{l} = 0
-    \]
-    \end{formulaBox}
-    物理意义：恒定电场是\textbf{无旋场}，仍是守恒场。
-
-    \item 电流连续性方程（恒定条件）：
-    \begin{formulaBox}
-    \[
-    \nabla \cdot \vec{J}_c = 0
-    \]
-    \end{formulaBox}
-    积分形式：
-    \begin{formulaBox}
-    \[
-    \oint_S \vec{J}_c \cdot \mathrm{d}\vec{S} = 0
-    \]
-    \end{formulaBox}
-    物理意义：恒定电场是\textbf{无源场}，电流线是无头无尾的闭合曲线。
-
-    \item 本构关系（欧姆定律微分形式）：
-    \begin{formulaBox}
-    \[
-    \vec{J}_c = \gamma \vec{E}
-    \]
-    \end{formulaBox}
-    物理意义：导电媒质的物性方程。
-
-    \item 辅助方程（高斯定理与电位移物性方程）：
-    \begin{formulaBox}
-    \[
-    \nabla \cdot \vec{D} = \rho_f, \quad \oint_S \vec{D} \cdot \mathrm{d}\vec{S} = q
-    \]
-    \end{formulaBox}
-    \begin{formulaBox}
-    \[
-    \vec{D} = \varepsilon \vec{E}
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{媒质分界面的衔接条件}
-不同导电媒质分界面处，场量满足特定的\textbf{边界条件（衔接条件）}，是求解恒定电场边值问题的关键。
-
-\subsubsection{电场强度的切向分量衔接条件}
-由场量闭合曲线的积分方程可得：
-\begin{formulaBox}
-\[
-E_{2t} - E_{1t} = 0 \quad \text{或} \quad \vec{n}_{12} \times (\vec{E}_2 - \vec{E}_1) = 0
-\]
-\end{formulaBox}
-物理意义：分界面两侧电场强度的\textbf{切线分量连续}。
-
-\subsubsection{电流密度的法向分量衔接条件}
-由场量闭合曲面的积分方程可得：
-\begin{formulaBox}
-\[
-J_{2n} - J_{1n} = 0 \quad \text{或} \quad \vec{n}_{12} \cdot (\vec{J}_2 - \vec{J}_1) = 0
-\]
-\end{formulaBox}
-物理意义：分界面两侧电流密度的\textbf{法向分量连续}。
-
-\subsubsection{电位移矢量的衔接条件}
-电位移矢量 $\vec{D}$ 的衔接条件在恒定电场中依然成立：
-\begin{formulaBox}
-\[
-D_{2n} - D_{1n} = \sigma_f \quad \text{或} \quad \vec{n} \cdot (\vec{D}_2 - \vec{D}_1) = \sigma_f
-\]
-\end{formulaBox}
-物理意义：分界面两侧电位移的法向分量不连续，其差值等于分界面上的\textbf{自由面电荷密度}。
-
-\subsubsection{电位形式的衔接条件}
-由 $E_t$ 连续和 $J_n$ 连续可推导出电位的边界条件：
-\begin{formulaBox}
-\[
-\begin{cases}
-\varphi_1 = \varphi_2 \\
-\gamma_1 \dfrac{\partial \varphi_1}{\partial n} = \gamma_2 \dfrac{\partial \varphi_2}{\partial n}
-\end{cases}
-\]
-\end{formulaBox}
-
-\subsubsection{电场折射定律}
-结合上述条件，以及本构关系 $\vec{J} = \gamma \vec{E}$，可推导出恒定电场的\textbf{折射定律}：
-\begin{formulaBox}
-\[
-\frac{\tan\theta_2}{\tan\theta_1} = \frac{\gamma_2}{\gamma_1}
-\]
-\end{formulaBox}
-其中 $\theta_1$、$\theta_2$ 分别为两侧媒质中电流密度（或电场强度）与分界面法线的夹角。
-
-\noindent 对比静电场折射定律：
-\begin{formulaBox}
-\[
-\frac{\tan\alpha_1}{\tan\alpha_2} = \frac{\varepsilon_1}{\varepsilon_2}
-\]
-\end{formulaBox}
-
-\subsubsection{两类特殊分界面讨论}
-\begin{itemize}
-    \item \textbf{良导体与不良导体分界面}：假设 $\gamma_2 \gg \gamma_1$，则 $\theta_1 \approx 0$。结论：
-    \begin{enumerate}
-        \item 从不良导体一侧观察，进入的电流线近似与分界面垂直；
-        \item 在不良导体中放入良导体电极，从不良导体一侧看，可认为电流线垂直进入或流出电极表面，电极表面可作为等位面处理。
-    \end{enumerate}
-
-    \item \textbf{导体与理想介质分界面}（如架空线与空气）：理想介质中 $\gamma_2=0$，则 $J_{2n}=J_{1n}=0$。结论：
-    \begin{enumerate}
-        \item 分界面导体侧的电流一定与导体表面平行；
-        \item 导体与理想介质分界面上必有电荷分布；
-        \item 电场切向分量不为零，导体表面的电场不再与导体表面垂直；一般情况下，法向分量远大于切向分量，可认为 $\vec{E}_2$ 近似垂直于导体表面。
-    \end{enumerate}
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{导电媒质中恒定电荷的分布}
-恒定电场中，高斯定理 $\nabla \cdot \vec{D} = \rho$ 依然成立，结合本构关系可分析导电媒质中的电荷分布。
-
-\subsubsection{均匀导电媒质中的电荷分布}
-在各向同性、线性、均匀导电媒质中（$\gamma = \text{常数}$）：
-\[
-\nabla \cdot \vec{J} = 0 \implies \nabla \cdot (\gamma \vec{E}) = 0 \implies \nabla \cdot \left( \gamma \frac{\vec{D}}{\varepsilon} \right) = 0
-\]
-由于 $\gamma, \varepsilon$ 为常数，可推出：
-\begin{formulaBox}
-\[
-\rho = 0
-\]
-\end{formulaBox}
-结论：\textbf{均匀导电媒质中无体电荷分布}，电荷只能分布在导电媒质的分界面上。
-
-\subsubsection{不均匀导电媒质中的电荷分布}
-在各向同性、线性、不均匀导电媒质中（$\gamma \neq \text{常数}$）：
-\[
-\rho = \nabla \cdot \vec{D} = \nabla \cdot (\varepsilon \vec{E}) = \nabla \cdot \left( \varepsilon \frac{\vec{J}}{\gamma} \right) = \vec{J} \cdot \nabla \left( \frac{\varepsilon}{\gamma} \right)
-\]
-由于恒定电场中 $\nabla \cdot \vec{J} = 0$，上式化简为：
-\begin{formulaBox}
-\[
-\rho = \vec{J} \cdot \nabla \left( \frac{\varepsilon}{\gamma} \right)
-\]
-\end{formulaBox}
-结论：不均匀导电媒质中不仅分界面上有面电荷分布，导电媒质内部也有体电荷分布。
-
-\subsubsection{分界面上的自由面电荷密度}
-分界面上的自由面电荷密度可由电位移矢量的衔接条件求得：
-\begin{formulaBox}
-\[
-\sigma = D_{2n} - D_{1n} = \varepsilon_2 E_{2n} - \varepsilon_1 E_{1n} = \left( \frac{\varepsilon_2}{\gamma_2} - \frac{\varepsilon_1}{\gamma_1} \right) J_{1n}
-\]
-\end{formulaBox}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{恒定电场的边值问题与静电比拟法}
-\subsubsection{电位的控制方程}
-在恒定电场中，$\nabla \times \vec{E} = 0$，因此可引入标量电位函数 $\varphi$，满足：
-\begin{formulaBox}
-\[
-\vec{E} = -\nabla\varphi
-\]
-\end{formulaBox}
-在各向同性的线性均匀介质中，将 $\vec{J} = \gamma \vec{E} = -\gamma \nabla\varphi$ 代入 $\nabla \cdot \vec{J} = 0$，可得：
-\begin{formulaBox}
-\[
-\nabla^2 \varphi = 0
-\]
-\end{formulaBox}
-即恒定电场的电位满足\textbf{拉普拉斯方程}。
-
-\subsubsection{电位的衔接条件}
-分界面上的电位满足：
-\begin{formulaBox}
-\[
-\begin{cases}
-\varphi_1 = \varphi_2 \\
-\gamma_1 \dfrac{\partial \varphi_1}{\partial n} = \gamma_2 \dfrac{\partial \varphi_2}{\partial n}
-\end{cases}
-\]
-\end{formulaBox}
-
-\subsubsection{静电比拟法的原理}
-均匀导电媒质中的恒定电场与均匀介质中的静电场，其电位均满足拉普拉斯方程，且边界条件形式相似，因此可以通过\textbf{静电场的解}来类比求解恒定电场问题。
-
-\subsubsection{对应关系}
+按电荷分布形态，电流分为三类（$\vec{J}$、$\vec{K}$、$I$ 分别对应体、面、线分布）：
 \begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\textbf{静电场} & \textbf{恒定电场} \\
-\hline
-电位 $\varphi$ & 电位 $\varphi$ \\
-\hline
-电位移矢量 $\vec{D}$ & 电流密度矢量 $\vec{J}$ \\
-\hline
-电场强度 $\vec{E}$ & 电场强度 $\vec{E}$ \\
-\hline
-介电常数 $\varepsilon$ & 电导率 $\gamma$ \\
-\hline
-电荷 $q$ & 电流 $I$ \\
-\hline
-电容 $C = q/U$ & 电导 $G = I/U$ \\
-\hline
-\end{tabular}
+\small
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+\textbf{分布} & \textbf{密度} & \textbf{与电流强度的关系} \\
+\midrule
+体电流 & $\vec{J}=\rho\vec{v}$\ ($\mathrm{A/m^2}$) & $I=\displaystyle\iint_S \vec{J}\cdot\mathrm{d}\vec{S}$ \\
+面电流 & $\vec{K}=\sigma\vec{v}$\ ($\mathrm{A/m}$) & $I=\displaystyle\int_l \vec{K}\cdot\vec{e}_n\,\mathrm{d}l$（$\vec{e}_n$ 为面法向） \\
+线电流 & $I=\tau v$（$\tau$ 为单位长度电荷） & 沿导线流动，$I$ 即电流强度 \\
+\bottomrule
+\end{tabularx}
 \end{center}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\corepoint{三层关系不要写反：$\vec{J}$ 是\emph{点}函数（$\mathrm{A/m^2}$），$\vec{K}$ 是\emph{面}上的密度（$\mathrm{A/m}$，沿面法向线元积分），$I$ 是\emph{积分}结果（$\mathrm{A}$）。凡是题目给"电流线密度 $K$"，就要用 $\int K\,\mathrm{d}l$ 而不是 $\iint J\,\mathrm{d}S$。}
 
-\subsection{电导与部分电导的计算}
-\subsubsection{电导与电阻的定义}
-\textbf{电导} $G$ 描述导体的导电能力，定义为：
+\subsection{欧姆定律的微分形式}
+在线性、各向同性导电媒质中，任一点传导电流密度与该点电场强度成正比：
 \begin{formulaBox}
 \[
-G = \frac{I}{U} = \frac{\int_S \vec{J} \cdot \mathrm{d}\vec{S}}{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}} = \frac{\int_S \gamma \vec{E} \cdot \mathrm{d}\vec{S}}{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}}
+\vec{J}=\gamma\vec{E}
 \]
 \end{formulaBox}
-单位：西门子（$\mathrm{S}$）。\textbf{电阻} $R$ 是电导的倒数：$R = 1/G$，单位：欧姆（$\Omega$）。
-
-\subsubsection{电导的计算思路}
 \begin{itemize}
-    \item 已知电流 $I$：$I \to \vec{J} = \gamma \vec{E} \to \vec{E} \to U = \int \vec{E} \cdot \mathrm{d}\vec{l} \to G = I/U$；
-    \item 已知电压 $U$：$U \to \vec{E} \to \vec{J} = \gamma \vec{E} \to I = \int \vec{J} \cdot \mathrm{d}\vec{S} \to G = I/U$（不常用）。
+  \item $\gamma$ 为媒质的\textbf{电导率}（$\mathrm{S/m}$），$\rho_r=1/\gamma$ 为电阻率（$\Omega\cdot\mathrm{m}$）；
+  \item 适用条件：线性、各向同性导电媒质，且为\emph{点}的方程，与导体形状无关；
+  \item 物理意义：导电媒质的物性方程，地位与电介质的 $\vec{D}=\varepsilon\vec{E}$、磁介质的 $\vec{B}=\mu\vec{H}$ 相当。
+\end{itemize}
+对一段均匀导体积分即得电路形式的欧姆定律 $U=IR$、$I=GU$，故 $U=IR$ 只是微分形式的宏观平均结果。
+
+\subsection{焦耳定律的微分形式}
+单位体积内的功率损耗（热功率体密度）为
+\begin{formulaBox}
+\[
+p=\lim_{\Delta V\to 0}\frac{\Delta P}{\Delta V}=\vec{J}\cdot\vec{E}
+\qquad(\mathrm{W/m^3})
+\]
+\end{formulaBox}
+在线性、各向同性媒质中，代入 $\vec{J}=\gamma\vec{E}$ 得常用的三种等价写法：
+\begin{formulaBox}
+\[
+p=\gamma E^2=\frac{J^2}{\gamma}
+\]
+\end{formulaBox}
+对整个导体体积分得总功率损耗
+\begin{formulaBox}
+\[
+P=\int_V p\,\mathrm{d}V=\int_V \vec{E}\cdot\vec{J}\,\mathrm{d}V=I^2R
+\]
+\end{formulaBox}
+\textbf{物理意义}：恒定电场中电流的流动必然伴随能量损耗，要维持恒定电流必须持续由电源补充能量；$p$ 是\emph{点}的损耗，$P=I^2R$ 是整体结果，两者不能混用。
+
+% ---------------------------------------------------------
+\section{电源电动势与局外场强}
+
+\subsection{局外力与局外场强}
+要维持恒定电流，必须有非静电力把正电荷从低电位处"搬"回高电位处，这种力称为\textbf{局外力} $\vec{f}_e$（不是电磁力）。把作用于单位正电荷的局外力等效为一个场强，称为\textbf{局外场强}：
+\begin{formulaBox}
+\[
+\vec{E}_e=\lim_{q\to 0}\frac{\vec{f}_e}{q}
+\]
+\end{formulaBox}
+\begin{itemize}
+  \item 方向：由电源负极指向正极（电源内部）；
+  \item 它\textbf{不是}真正的电场强度，只在"引起电流"这一点上与电场强度等效；它不满足保守场条件；
+  \item 电源外部不存在局外场强，只有库仑场强 $\vec{E}_c$。
 \end{itemize}
 
-\subsubsection{绝缘电阻}
-\textbf{绝缘电阻}是指用绝缘材料隔开的两个导体之间的直流电阻。绝缘材料中存在绝缘缺陷（如内部气隙、局部开裂、受潮等），在两个导体之间接上高压直流电压时，绝缘材料中会有微弱的泄漏电流流过，其绝缘电阻定义为：
+\subsection{含源导电媒质中的电流与电动势}
+电源内部总场强为 $\vec{E}_c+\vec{E}_e$，故通过含源导电媒质的电流密度为
 \begin{formulaBox}
 \[
-R = \frac{\text{两导体间的直流电压 } U}{\text{两导体间的泄漏电流 } I}
+\vec{J}=\gamma(\vec{E}_e+\vec{E}_c)
 \]
 \end{formulaBox}
-单位：欧姆（$\Omega$），可用于判断绝缘状态。
-
-\subsubsection{静电比拟法计算电导}
-利用恒定电场与静电场的相似性，可通过电容 $C$ 类比计算电导 $G$：
-\[
-C = \frac{Q}{U} = \frac{\int_S \vec{D} \cdot \mathrm{d}\vec{S}}{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}} = \frac{\varepsilon \int_S \vec{E} \cdot \mathrm{d}\vec{S}}{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}}
-\]
-\[
-G = \frac{I}{U} = \frac{\int_S \vec{J} \cdot \mathrm{d}\vec{S}}{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}} = \frac{\gamma \int_S \vec{E} \cdot \mathrm{d}\vec{S}}{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}}
-\]
-两者具有相同的积分形式，因此可得：
+\textbf{电动势}衡量电源做功能力，定义为单位正电荷从负极移到正极时局外力所做的功：
 \begin{formulaBox}
 \[
-\frac{C}{G} = \frac{\varepsilon}{\gamma}
+\varepsilon=\int_{B}^{A}\vec{E}_e\cdot\mathrm{d}\vec{l}
 \]
 \end{formulaBox}
-即已知电容 $C$ 时，可直接得到电导 $G = \frac{\gamma}{\varepsilon} C$。
+（$B$ 为负极、$A$ 为正极，积分只在电源内部进行。）
 
-\subsubsection{典型电导模型}
-常见的电导计算模型包括：
+\subsection{电源外恒定电场的守恒性}
+对不经过电源的任意闭合路径 $L$，
+\begin{formulaBox}
+\[
+\oint_L \vec{E}\cdot\mathrm{d}\vec{l}=\oint_L \vec{E}_c\cdot\mathrm{d}\vec{l}=0
+\]
+\end{formulaBox}
+即\textbf{电源外恒定电场仍是无旋（保守）场}，可以引入标量电位 $\vec{E}=-\nabla\varphi$。
+
+\corepoint{$\oint_L\vec{E}_e\cdot\mathrm{d}\vec{l}\neq 0$（局外场非保守），但 $\oint_L\vec{E}_c\cdot\mathrm{d}\vec{l}=0$。讨论"恒定电场是否无旋"时，指的是库仑场强 $\vec{E}_c$，且积分路径\emph{不穿过电源}；若路径穿过电源，总场强的环路积分等于电动势而不是零。}
+
+% ---------------------------------------------------------
+\section{恒定电场的基本方程与分界面上的衔接条件}
+
+\subsection{电荷守恒定律与电流连续性方程}
+单位时间流出闭合面 $S$ 的电荷等于体积 $V$ 内电量的减少率：
+\begin{formulaBox}
+\[
+\oint_S \vec{J}\cdot\mathrm{d}\vec{S}=-\frac{\mathrm{d}q}{\mathrm{d}t}
+\]
+\end{formulaBox}
+由高斯散度定理得\textbf{电流连续性方程}（微分形式）
+\begin{formulaBox}
+\[
+\nabla\cdot\vec{J}+\frac{\partial\rho}{\partial t}=0
+\]
+\end{formulaBox}
+恒定条件下 $\partial\rho/\partial t=0$，退化为
+\begin{formulaBox}
+\[
+\nabla\cdot\vec{J}=0,\qquad \oint_S \vec{J}\cdot\mathrm{d}\vec{S}=0
+\]
+\end{formulaBox}
+\textbf{物理意义}：恒定电流"无头无尾"，电流线是闭合曲线；任一闭合面净流出的传导电流为零（流入等于流出）。
+
+\subsection{恒定电场的基本方程组}
+电源外导电媒质中的恒定电场由下列方程完整描述（三种形式并列，缺一不可）：
+\begin{formulaBox}
+\[
+\begin{cases}
+\nabla\times\vec{E}=0 & \text{（无旋）}\\[2pt]
+\nabla\cdot\vec{J}=0 & \text{（无源）}\\[2pt]
+\vec{J}=\gamma\vec{E} & \text{（物性方程）}
+\end{cases}
+\qquad\Longleftrightarrow\qquad
+\begin{cases}
+\displaystyle\oint_L \vec{E}\cdot\mathrm{d}\vec{l}=0\\[6pt]
+\displaystyle\oint_S \vec{J}\cdot\mathrm{d}\vec{S}=0
+\end{cases}
+\]
+\end{formulaBox}
 \begin{itemize}
-    \item 平板结构电导
-    \item 圆柱形导体电导
-    \item 球形导体电导
+  \item $\nabla\times\vec{E}=0$：恒定电场是无旋场，可引入电位 $\vec{E}=-\nabla\varphi$；
+  \item $\nabla\cdot\vec{J}=0$：恒定电场是无源场\emph{（就电流线而言）}，但注意 $\nabla\cdot\vec{D}=\rho$ 仍可能成立（见下款）；
+  \item 辅助方程（有电介质时）：$\nabla\cdot\vec{D}=\rho$，$\vec{D}=\varepsilon\vec{E}$，与静电场相同。
 \end{itemize}
-计算方法与电容计算类似，可通过静电比拟法求解。
 
-\subsubsection{接地电阻}
-\textbf{接地电阻}是电流由接地装置流入大地并扩散至无穷远时所遇到的电阻，包括接地体本身的电阻、接触电阻和大地的散流电阻，常用简化模型为半球形接地体。
+\subsection{分界面上的衔接条件}
+设 $\vec{e}_n$ 为分界面上由媒质 1 指向媒质 2 的单位法向，由积分形式的基本方程可导出四个衔接条件（前两个是\emph{场量}形式，后两个是\emph{电位}形式）：
+\begin{formulaBox}
+\[
+\begin{cases}
+E_{1t}=E_{2t}\ \ \text{或}\ \ \vec{e}_n\times(\vec{E}_2-\vec{E}_1)=0 & \text{（切向：}E_t\text{连续）}\\[4pt]
+J_{1n}=J_{2n}\ \ \text{或}\ \ \vec{e}_n\cdot(\vec{J}_2-\vec{J}_1)=0 & \text{（法向：}J_n\text{连续）}\\[4pt]
+D_{2n}-D_{1n}=\sigma\ \ \text{或}\ \ \vec{e}_n\cdot(\vec{D}_2-\vec{D}_1)=\sigma & \text{（法向：}D_n\text{跃变）}\\[4pt]
+\varphi_1=\varphi_2,\quad \gamma_1\dfrac{\partial\varphi_1}{\partial n}=\gamma_2\dfrac{\partial\varphi_2}{\partial n} & \text{（电位形式）}
+\end{cases}
+\]
+\end{formulaBox}
+\textbf{条件与含义}：$E_t$ 连续来自 $\oint\vec{E}\cdot\mathrm{d}\vec{l}=0$（沿跨界面小矩形回路）；$J_n$ 连续来自 $\oint\vec{J}\cdot\mathrm{d}\vec{S}=0$（跨界面小扁盒）；$D_n$ 的跃变量恰为分界面上的自由面电荷密度 $\sigma$。注意 $J_n$ 连续\textbf{不意味着} $D_n$ 连续——因为两侧的 $\varepsilon/\gamma$ 不同。
 
-\subsubsection{跨步电压}
-\textbf{跨步电压}：接地电流流入大地后，地面上相距一步距离（约0.8m）的两点间电位差，是电气安全分析的重要参数。
+综合 $E_{1t}=E_{2t}$、$J_{1n}=J_{2n}$ 与 $\vec{J}=\gamma\vec{E}$，得\textbf{恒定电场的折射定律}：
+\begin{formulaBox}
+\[
+\frac{\tan\theta_1}{\tan\theta_2}=\frac{\gamma_1}{\gamma_2}
+\]
+\end{formulaBox}
+其中 $\theta_1,\theta_2$ 分别为两侧电流密度（或电场强度）与界面法线的夹角。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{两类特殊分界面的讨论}
+\begin{enumerate}
+  \item \textbf{良导体—不良导体}（$\gamma_2\gg\gamma_1$）：由折射定律 $\tan\theta_1=(\gamma_1/\gamma_2)\tan\theta_2\to 0$，故 $\theta_1\approx0$。结论：从不良导体一侧看，电流线（及 $\vec{E}$ 线）近似\emph{垂直于}分界面；良导体一侧的界面可近似当作\textbf{等位面}。
+  \item \textbf{导体—理想介质}（如架空线与空气，$\gamma_2=0$）：由 $J_{2n}=J_{1n}$ 得 $J_{2n}=0$，即介质中无电流，导体侧电流只能沿表面流动（$J_1=J_{1t}$）；同时
+  \[
+  D_{2n}-D_{1n}=\sigma \Rightarrow D_{2n}=\sigma,\qquad E_{1t}=E_{2t},\ E_1=E_{1t}
+  \]
+  结论：分界面上\textbf{必有面电荷分布}；电场切向分量不为零，介质中紧贴导体表面的 $\vec{E}$ \emph{不再}垂直于导体表面。但通常 $E_{2n}\gg E_{2t}$，故工程上仍近似认为导体表面外的场垂直于表面。
+\end{enumerate}
+
+\corepoint{本节最易错的三处：(1) 把"$J_n$ 连续"写成"$D_n$ 连续"；(2) 把"$E_t$ 连续"与"$D_t$ 连续"混淆（$D_t$ 一般不连续）；(3) 直接套用静电场"导体表面场垂直于表面"的结论——在恒定电场中它只是近似。}
+
+\subsection{导电媒质中恒定电荷的分布}
+\begin{enumerate}
+  \item \textbf{均匀媒质}（$\gamma$、$\varepsilon$ 均为常数）：由 $\nabla\cdot\vec{J}=0$ 得
+  \begin{formulaBox}
+  \[
+  \nabla\cdot(\gamma\vec{E})=\nabla\cdot\Big(\frac{\gamma}{\varepsilon}\vec{D}\Big)=0
+  \ \Longrightarrow\ \rho=0
+  \]
+  \end{formulaBox}
+  即均匀导电媒质内部\textbf{无体电荷}，电荷只能分布在分界面上或电极表面。
+  \item \textbf{不均匀媒质}（$\gamma$ 随位置变化）：
+  \begin{formulaBox}
+  \[
+  \rho=\nabla\cdot\vec{D}=\nabla\cdot\Big(\frac{\varepsilon}{\gamma}\vec{J}\Big)
+  =\vec{J}\cdot\nabla\Big(\frac{\varepsilon}{\gamma}\Big)
+  \]
+  \end{formulaBox}
+  即媒质内部\textbf{可以存在体电荷}，其分布取决于 $\varepsilon/\gamma$ 的梯度方向与电流方向的关系。
+  \item \textbf{分界面上的面电荷}：
+  \begin{formulaBox}
+  \[
+  \sigma=D_{2n}-D_{1n}=\varepsilon_2E_{2n}-\varepsilon_1E_{1n}
+  =\Big(\frac{\varepsilon_2}{\gamma_2}-\frac{\varepsilon_1}{\gamma_1}\Big)J_{1n}
+  \]
+  \end{formulaBox}
+  对两种\emph{金属}导体的分界面，经典电子论给出各金属的 $\varepsilon$ 近似相同，故 $\sigma\approx0$；而对金属—介质、不同电解液的分界面一般 $\sigma\neq0$。
+\end{enumerate}
+
+\subsection{恒定电场的边值问题}
+由 $\nabla\times\vec{E}=0$ 引入 $\vec{E}=-\nabla\varphi$，代入 $\nabla\cdot(\gamma\vec{E})=0$。均匀媒质中 $\gamma$ 为常数，得
+\begin{formulaBox}
+\[
+\nabla^2\varphi=0
+\]
+\end{formulaBox}
+即恒定电场的电位满足\textbf{拉普拉斯方程}，配合衔接条件 $\varphi_1=\varphi_2$、$\gamma_1\partial\varphi_1/\partial n=\gamma_2\partial\varphi_2/\partial n$ 与场域边界条件（给定电位的第一类边界、给定法向电流密度的第二类边界），构成恒定电场的\textbf{边值问题}。它与静电场边值问题同型，故解法（分离变量、镜像、有限差分）完全可借用——这正是下一节"比拟"的依据。
+
+% ---------------------------------------------------------
+\section{导电媒质中的恒定电场与静电场的比拟}
+
+\subsection{比拟的依据与条件}
+比较\emph{电源外}导电媒质中的恒定电场与\emph{无电荷分布区}的静电场：
+\[
+\text{静电场：}\ \nabla\times\vec{E}=0,\ \nabla\cdot\vec{D}=0
+\qquad
+\text{恒定电场：}\ \nabla\times\vec{E}=0,\ \nabla\cdot\vec{J}=0
+\]
+两者的\emph{无旋}方程完全相同，\emph{无源}方程形式相同，本构方程 $\vec{D}=\varepsilon\vec{E}$ 与 $\vec{J}=\gamma\vec{E}$ 一一对应，衔接条件也一一对应。因此，只要两个场的\textbf{边界条件相同}，其电位函数 $\varphi$ 的解答就完全相同，场图（等位面、场线）一致。
+
+\textbf{适用条件}（缺一不可）：
+\begin{enumerate}
+  \item 恒定电场须取\emph{电源外}区域（否则 $\oint\vec{E}\cdot\mathrm{d}\vec{l}\neq0$，无旋性不成立）；
+  \item 静电场须取\emph{无自由电荷}区域（$\rho=0$），否则 $\nabla\cdot\vec{D}\neq0$；
+  \item 若媒质分区不均匀，还须满足 $\varepsilon_1/\varepsilon_2=\gamma_1/\gamma_2$（即各分区内 $\varepsilon/\gamma$ 为同一常数），否则分界面折射情况不同，比拟不成立。
+\end{enumerate}
+
+\subsection{对应量对照表}
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+\textbf{物理量/关系} & \textbf{静电场（$\rho=0$）} & \textbf{恒定电场（电源外）} \\
+\midrule
+基本方程（无旋） & $\nabla\times\vec{E}=0$，$\oint\vec{E}\cdot\mathrm{d}\vec{l}=0$ & 同左 \\
+基本方程（无源） & $\nabla\cdot\vec{D}=0$，$\oint\vec{D}\cdot\mathrm{d}\vec{S}=0$ & $\nabla\cdot\vec{J}=0$，$\oint\vec{J}\cdot\mathrm{d}\vec{S}=0$ \\
+本构方程 & $\vec{D}=\varepsilon\vec{E}$ & $\vec{J}=\gamma\vec{E}$ \\
+场量 & $\vec{E}$，$\vec{D}$ & $\vec{E}$，$\vec{J}$ \\
+位函数 & 电位 $\varphi$，$\vec{E}=-\nabla\varphi$ & 电位 $\varphi$，$\vec{E}=-\nabla\varphi$ \\
+控制方程 & $\nabla^2\varphi=0$ & $\nabla^2\varphi=0$ \\
+衔接条件 & $\varphi_1=\varphi_2$，$\varepsilon_1\partial\varphi_1/\partial n=\varepsilon_2\partial\varphi_2/\partial n$ & $\varphi_1=\varphi_2$，$\gamma_1\partial\varphi_1/\partial n=\gamma_2\partial\varphi_2/\partial n$ \\
+源量 & 电荷 $q$，面电荷 $\sigma$ & 电流 $I$，面电流 $K$ \\
+集总参数 & 电容 $C=q/U$ & 电导 $G=I/U$ \\
+参数关系 & $C=\dfrac{\varepsilon\int_S\vec{E}\cdot\mathrm{d}\vec{S}}{\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}}$ & $G=\dfrac{\gamma\int_S\vec{E}\cdot\mathrm{d}\vec{S}}{\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}}$ \\
+能量 & 静电能量 $W=\frac12\int\vec{D}\cdot\vec{E}\,\mathrm{d}V$ & 功率损耗 $P=\int\vec{J}\cdot\vec{E}\,\mathrm{d}V$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+由表中两式相比立得核心关系式
+\begin{formulaBox}
+\[
+\frac{C}{G}=\frac{\varepsilon}{\gamma}
+\qquad\Longleftrightarrow\qquad
+G=\frac{\gamma}{\varepsilon}C
+\]
+\end{formulaBox}
+\textbf{用法}：已知（或易求）电容 $C$，把 $\varepsilon\to\gamma$ 即得电导 $G$；反之亦然。这是计算电导最省力的途径。
+
+\subsection{比拟法的三种用法}
+\begin{enumerate}
+  \item \textbf{参数置换}：由已知的电容公式直接写出电导公式（$C\to G$，$\varepsilon\to\gamma$）；
+  \item \textbf{镜像法}：导电媒质分界面（如土壤—空气）中的线电流问题，可用静电场中点电荷对介质分界面的镜像结果换算（$\varepsilon\to\gamma$，$q\to I$）；
+  \item \textbf{模拟实验}：用导电溶液（电解槽）中的恒定电流场模拟难以直接测量的静电场（如高压套管、电缆头、绝缘子电场），测电位分布即得原静电场分布，称为\textbf{电解槽模拟}。
+\end{enumerate}
+
+\corepoint{比拟是"同型方程 + 同边界条件"的数学对应，不是物理等价。使用时必须声明三条适用条件，尤其是"电源外"和"$\varepsilon/\gamma$ 为常数"。若媒质不均匀且不满足 $\varepsilon_1/\varepsilon_2=\gamma_1/\gamma_2$，只能逐区求解，不能整体置换。}
+
+% ---------------------------------------------------------
+\section{电导和部分电导}
+
+\subsection{电导与电阻的定义}
+\textbf{电导} $G$ 定义为流经导电媒质的电流与两端电压之比（电阻 $R=1/G$）：
+\begin{formulaBox}
+\[
+G=\frac{I}{U}
+=\frac{\displaystyle\iint_S \vec{J}\cdot\mathrm{d}\vec{S}}
+     {\displaystyle\int_A^B \vec{E}\cdot\mathrm{d}\vec{l}}
+=\frac{\gamma\displaystyle\iint_S \vec{E}\cdot\mathrm{d}\vec{S}}
+     {\displaystyle\int_A^B \vec{E}\cdot\mathrm{d}\vec{l}}
+\qquad(\mathrm{S})
+\]
+\end{formulaBox}
+可见 $G$ 只与两电极的形状、尺寸、相互位置及媒质电导率有关，与所加电压、电流大小无关；\emph{电阻（电导）的计算实质上是电场的计算}。
+
+\textbf{三条计算路线}：
+\begin{enumerate}
+  \item 假设电流 $I$：$I\to\vec{J}\to\vec{E}=\vec{J}/\gamma\to U=\int\vec{E}\cdot\mathrm{d}\vec{l}\to G=I/U$（有对称性时最常用）；
+  \item 假设电压 $U$：$U\to\vec{E}\to\vec{J}=\gamma\vec{E}\to I=\iint\vec{J}\cdot\mathrm{d}\vec{S}\to G$（不常用）；
+  \item 解拉普拉斯方程求 $\varphi$，再积分求 $I$、$U$（一般情形）；
+  \item 静电比拟：先求同形电极系统的 $C$，再由 $G=(\gamma/\varepsilon)C$ 换算。
+\end{enumerate}
+
+\textbf{三个必须记住的结果}（均可由比拟法立即得到）：
+\begin{formulaBox}
+\[
+G_{\text{平板}}=\frac{\gamma S}{d},\qquad
+G_{\text{同轴}}=\frac{2\pi\gamma l}{\ln(R_2/R_1)},\qquad
+G_{\text{同心球}}=\frac{4\pi\gamma R_1R_2}{R_2-R_1}
+\]
+\end{formulaBox}
+同轴电缆的\textbf{绝缘电阻}即 $R=1/G=\dfrac{\ln(R_2/R_1)}{2\pi\gamma l}$，它是用绝缘材料隔开的两个导体之间的直流电阻，由绝缘缺陷（气隙、开裂、受潮、老化）引起的微弱泄漏电流决定，可用于判断绝缘状态。
+
+\subsection{部分电导}
+当导电媒质中有三个及以上良导体电极（可视为等位体）时，任意两电极间的电流不仅取决于它们自身的电压，还受其它电极电压影响，单一电导不足以描述，需引入\textbf{部分电导}。
+
+设 $(n+1)$ 个电极（0 号取作参考电极），线性各向同性媒质中由叠加原理可写出各电极电流与电压的关系：
+\begin{formulaBox}
+\[
+\begin{cases}
+I_1=G_{10}U_{10}+G_{12}U_{12}+\cdots+G_{1n}U_{1n}\\
+I_2=G_{21}U_{21}+G_{20}U_{20}+\cdots+G_{2n}U_{2n}\\
+\qquad\vdots
+\end{cases}
+\qquad U_{kj}=\varphi_k-\varphi_j
+\]
+\end{formulaBox}
+\begin{itemize}
+  \item $G_{k0}$ 称为\textbf{自有部分电导}（电极 $k$ 与参考电极之间）；
+  \item $G_{kj}$（$k\neq j$）称为\textbf{互有部分电导}（电极 $k$、$j$ 之间）；
+  \item 全部部分电导均为正值（互有部分电导描述两电极间的直接漏电通道，故与"互有电导"式的负系数不同）；
+  \item $(n+1)$ 个电极的系统共有 $\dfrac{n(n+1)}{2}$ 个部分电导，与部分电容一一对应（$C_{kj}\leftrightarrow G_{kj}$，$\varepsilon\leftrightarrow\gamma$）。
+\end{itemize}
+工程上"三极法"测接地电阻、多电极系统的漏电分析都用部分电导描述。
+
+\subsection{接地电阻}
+把电气设备的一部分与大地连接称为\textbf{接地}；埋入地中并与设备相连的导体（系统）称为\textbf{接地体}，接地体与接地线合称接地装置。\textbf{接地电阻}是电流由接地装置流入大地、再经大地向远处扩散所遇到的电阻，包括接地线与接地体本身电阻、接地体与大地间的接触电阻、大地电阻，其中\textbf{以前者为主的是大地电阻}（前三项远小于最后一项）。
+
+计算时把接地体看作电极、取无穷远为零电位，且因电流在电极附近密度最大，接地电阻主要集中于电极附近，故远端电流如何汇聚影响很小。
+
+\textbf{深埋导体球}（半径 $a$，可不计地面影响）：$J=I/(4\pi r^2)$，$E=I/(4\pi\gamma r^2)$，
+\begin{formulaBox}
+\[
+R=\int_a^\infty \frac{I}{4\pi\gamma r^2}\,\mathrm{d}r=\frac{1}{4\pi\gamma a}
+\]
+\end{formulaBox}
+\textbf{紧靠地面的半球形接地体}：用镜像法，实际电极与其镜像构成完整球，系统中流出的电流为实际的两倍，故实际接地电阻为完整球的两倍：
+\begin{formulaBox}
+\[
+R=2\cdot\frac{1}{4\pi\gamma a}=\frac{1}{2\pi\gamma a}
+\]
+\end{formulaBox}
+
+\subsection{跨步电压与危险区}
+接地体附近有大的入地电流时，地面上相距一个步距的两点间存在电位差，称为\textbf{跨步电压}。对半径为 $a$ 、入地电流为 $I$ 的半球形接地体，距球心 $r$ 处
+\begin{formulaBox}
+\[
+J=\frac{I}{2\pi r^2},\qquad E=\frac{I}{2\pi\gamma r^2},\qquad
+\varphi(r)=\frac{I}{2\pi\gamma r}
+\]
+\end{formulaBox}
+设 $A$、$B$ 两点与球心距离分别为 $l$、$l+b$（$b$ 为步距），则跨步电压
+\begin{formulaBox}
+\[
+U_{BA}=\varphi_A-\varphi_B=\frac{I}{2\pi\gamma}\Big(\frac{1}{l}-\frac{1}{l+b}\Big)
+=\frac{I\,b}{2\pi\gamma\,l(l+b)}
+\]
+\end{formulaBox}
+若对人体有危险的临界电压为 $U_0$，令 $U_{BA}=U_0$ 解出的 $l$ 即\textbf{危险区}边界，危险区是以接地体中心为圆心、半径 $l$ 的圆面积。当 $l\gg b$ 时可近似
+\begin{formulaBox}
+\[
+U_{BA}\approx\frac{I\,b}{2\pi\gamma l^2}
+\ \Longrightarrow\
+l\approx\sqrt{\frac{I\,b}{2\pi\gamma U_0}}
+\]
+\end{formulaBox}
+真正危及生命的不是电压而是通过人体的电流（工频电流超过约 30\,mA 即有生命危险），故 $U_0$ 应按人体允许电流与人体电阻折算。
+
+\corepoint{接地电阻常见三个错误：把"接地体本身的电阻"当接地电阻（它只占极小部分）；忘记半球形接地体要\emph{乘 2}（镜像法带来的倍数）；把跨步电压写成 $\varphi_A+\varphi_B$ 或漏掉步距 $b$ 的影响。}

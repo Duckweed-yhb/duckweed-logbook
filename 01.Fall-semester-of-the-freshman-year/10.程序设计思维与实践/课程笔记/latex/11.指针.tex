@@ -1,0 +1,282 @@
+% 第9章 指针（教材 9.1--9.8）
+% 只写内容：不重复 \usepackage，不改字号与页面设置
+
+\section{变量的内存地址}
+程序中的每个变量都要占用一段存储单元，而内存是按\textbf{字节}编号的，每个字节有一个唯一的编号，这个编号就叫该字节的\textbf{地址}（address）。一个变量往往占若干个连续字节，C 语言规定：\textbf{变量所占存储单元的首字节地址就是这个变量的地址}。
+
+取地址用单目运算符 \texttt{\&}（取地址运算符，address-of operator）：
+\begin{lstlisting}
+int a = 10;
+printf("a = %d\n", a);
+printf("&a = %p\n", (void *)&a);   /* %p 专门用于以十六进制输出地址 */
+\end{lstlisting}
+说明：
+\begin{itemize}
+  \item \texttt{\&} 的操作数必须是\textbf{内存中实实在在的对象}，如变量、数组元素、结构体成员。\texttt{\&10}、\texttt{\&(a+b)}、\texttt{\&a++} 都非法，因为常量与表达式的中间结果不占（或不长期占）一个可寻址的存储单元。
+  \item \texttt{\&} 的结果是一个\textbf{地址值}，它的类型是"指向操作数类型的指针"，\texttt{\&a} 的类型是 \texttt{int *}。
+  \item 输出地址必须用 \texttt{\%p}（或 \texttt{\%x} 加转换），用 \texttt{\%d} 打印地址在 64 位环境下会截断，属常见错误。
+  \item 同一个变量的地址在程序运行期间一般不变，但两次运行之间可能不同——\textbf{不要在程序里写死具体地址}。
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{变量与地址的关系（示意，地址值仅为举例）}
+\footnotesize
+\begin{tabular}{@{}llll@{}}
+\toprule
+变量名 & 类型 & 存储单元（字节） & 地址（首字节） \\
+\midrule
+\texttt{char c} & 1 字节 & 0x0061FE0F & 0x0061FE0F \\
+\texttt{int a} & 4 字节 & 0x0061FE08--0x0061FE0B & 0x0061FE08 \\
+\texttt{double d} & 8 字节 & 0x0061FE00--0x0061FE07 & 0x0061FE00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{指针变量的定义和初始化}
+\subsection{指针变量的概念}
+地址本身也是一种数据，也可以存放在变量里。\textbf{专门用来存放变量地址的变量称为指针变量}（pointer variable）。指针变量与普通变量的区别只在于"它肚子里装的是地址"，而不是普通的数值。
+
+定义指针变量的一般形式为：
+\begin{verbatim}
+类型关键字  *指针变量名;
+\end{verbatim}
+其中 \texttt{*} 是\textbf{定义的一部分}（声明符），不是运算符；前面的"类型关键字"称为该指针的\textbf{基类型}，表示"这个指针指向什么类型的数据"。
+
+\begin{lstlisting}
+int   *p;      /* p 是指向 int 型数据的指针，p 的类型是 int *      */
+char  *q;      /* q 是指向 char 型数据的指针                       */
+double *r;     /* r 是指向 double 型数据的指针                     */
+int   *s, t;   /* 只有 s 是指针，t 是普通 int！这是极易错的一行     */
+\end{lstlisting}
+
+\corepoint{\texttt{int *s, t;} 中 \texttt{*} 只作用于紧跟其后的 \texttt{s}。想让两个都是指针必须写 \texttt{int *s, *t;}。更稳妥的写法是"一行为一个变量"：\texttt{int *s;} 另起一行 \texttt{int *t;}。}
+
+\subsection{指针变量的初始化}
+指针变量可以用"取某个变量的地址"来初始化：
+\begin{lstlisting}
+int a = 10;
+int *p = &a;      /* 定义 p 的同时让它指向 a，推荐写法 */
+int *q;
+q = &a;           /* 先定义、后赋值，与上面等价 */
+\end{lstlisting}
+
+三点语法规则：
+\begin{enumerate}
+  \item \textbf{基类型必须与被指向变量的类型一致}。\texttt{int a; char *p = \&a;} 在语法上可能只给一条警告，但用 \texttt{*p} 按 1 字节解释 4 字节的 \texttt{int}，结果必然错。
+  \item \textbf{指针变量本身也占内存}，大小与平台有关：32 位环境通常 4 字节，64 位环境通常 8 字节，可用 \texttt{sizeof(int *)} 查证。所以"指针占几个字节"和"它指向的数据占几个字节"是两件不同的事。
+  \item \textbf{未初始化的指针是"野指针"}，里面是随机的残留地址，可能指向任何地方；对它解引用等于在未知地址上读写，往往导致程序崩溃或数据被莫名改写。定义指针后若暂时没有目标，应初始化为 \texttt{NULL}：
+\begin{lstlisting}
+int *p = NULL;    /* NULL 是值为 0 的符号常量，表示"不指向任何有效单元" */
+if (p != NULL) {  /* 使用前先判空，是一种防御式编程习惯 */
+    /* ... */
+}
+\end{lstlisting}
+\end{enumerate}
+
+\subsection{指针的内存模型}
+把"变量"和"指针变量"放在一起看，内存里是这样的关系：
+\begin{table}[htbp]
+\centering
+\caption{\texttt{int a = 10; int *p = \&a;} 的内存模型}
+\footnotesize
+\begin{tabular}{@{}llll@{}}
+\toprule
+变量 & 地址 & 存储内容 & 说明 \\
+\midrule
+\texttt{a} & 0x0061FE08 & \texttt{10} & 普通变量，存数值 \\
+\texttt{p} & 0x0061FE00 & \texttt{0x0061FE08} & 指针变量，存的是 \texttt{a} 的地址 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+也就是说：\texttt{p} 的值是 \texttt{\&a}，\texttt{*p} 访问到的是 \texttt{a} 这个存储单元，二者指向同一块内存。
+
+\section{间接寻址运算符}
+\subsection{运算符 * 的含义}
+单目运算符 \texttt{*}（间接寻址运算符，也称解引用运算符，dereference operator）的作用是\textbf{通过指针访问它所指向的存储单元}：
+\begin{lstlisting}
+int a = 10, b;
+int *p = &a;
+b = *p;        /* 把 p 所指单元的值（即 a 的值 10）赋给 b   */
+*p = 20;       /* 把 20 写入 p 所指单元，等价于 a = 20      */
+printf("a = %d\n", a);   /* 输出 20：a 被"隔着指针"改掉了 */
+\end{lstlisting}
+核心认识：\texttt{*p} 与 \texttt{a} 表示\textbf{同一个存储单元}，所以 \texttt{*p} 既可以当右值读取，也可以当左值写入。
+
+\subsection{\& 与 * 的关系}
+\texttt{\&}（取地址）与 \texttt{*}（取内容）是一对互逆运算，满足
+\keyformula{*( \&a ) \equiv a, \qquad \&( *p ) \equiv p}
+即"先取地址再解引用"得到原变量，"先解引用再取地址"得到原指针。
+
+\subsection{定义中的 * 与表达式中的 *}
+这是初学者最容易混淆的一点：
+\begin{table}[htbp]
+\centering
+\caption{\texttt{*} 的两种身份}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.4cm}p{3.6cm}X@{}}
+\toprule
+出现位置 & 身份 & 例子与含义 \\
+\midrule
+变量定义/声明中 & 类型的一部分（声明符） & \texttt{int *p;} 声明 p 是 \texttt{int *} 型变量，此处没有运算 \\
+表达式中 & 单目运算符 & \texttt{b = *p;} 取出 p 所指单元的值 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\corepoint{\texttt{*p} 的类型是"所指数据的类型"，\texttt{p} 的类型是"指针类型"：对 \texttt{int *p} 来说，\texttt{*p} 是 \texttt{int}，\texttt{p} 是 \texttt{int *}。写错类型最常见的后果出现在 \texttt{printf} 里：\texttt{printf("\%d", p)} 输出的是地址的低位，\texttt{printf("\%d", *p)} 输出的才是数据。}
+
+\subsection{指针的算术运算（预告）}
+指针可以做加减一个整数的运算，其含义是\textbf{按基类型大小移动}，而不是按字节移动：
+\keyformula{p + i \;\equiv\; p \text{ 的地址值} + i \times \texttt{sizeof(基类型)}}
+例如 \texttt{int *p} 中 \texttt{p+1} 的实际地址值加 4 字节；\texttt{char *q} 中 \texttt{q+1} 只加 1 字节。指针还可以相减（得到相隔的元素个数）、比较大小（判断谁在前），但\textbf{两个指针相加没有意义}，编译器会直接报错。这一部分在第 11 章与数组结合后会讲得更透。
+
+\section{按值调用与模拟按引用调用}
+\subsection{C 语言只有按值调用}
+C 语言中，函数调用时\textbf{实参的值被复制一份传给形参}，形参是函数内部的局部变量，函数里怎么改形参，都不会影响外面的实参——这叫\textbf{按值调用}（call by value）。
+\begin{lstlisting}
+void SwapWrong(int x, int y)     /* 只交换了副本，实参不变 */
+{
+    int t = x; x = y; y = t;
+}
+/* 调用：SwapWrong(a, b);  a、b 的值原封不动 */
+\end{lstlisting}
+
+\subsection{用指针模拟按引用调用}
+如果传给形参的不是变量的值，而是\textbf{变量的地址}，那么形参（指针）就指向了实参那块存储单元；函数里通过 \texttt{*形参} 写入，等于直接改写实参——效果上相当于其他语言的"按引用调用"，所以称为\textbf{模拟按引用调用}（simulated call by reference）。
+\begin{lstlisting}
+void Swap(int *px, int *py)      /* 形参是指针 */
+{
+    int t = *px;
+    *px = *py;
+    *py = t;
+}
+/* 调用时必须传地址：Swap(&a, &b); */
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering
+\caption{按值调用与模拟按引用调用对照}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.4cm}p{3.1cm}p{3.4cm}X@{}}
+\toprule
+ & 实参形式 & 形参形式 & 函数内能否改变实参 \\
+\midrule
+按值调用 & \texttt{f(a)} & \texttt{int x} & 不能，改的是副本 \\
+模拟按引用调用 & \texttt{f(\&a)} & \texttt{int *px} & 能，\texttt{*px} 就是实参本身 \\
+数组作参数 & \texttt{f(a, n)} & \texttt{int a[]} & 能（数组名退化为地址，本质上仍是按值传递地址） \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\corepoint{调用 \texttt{Swap} 时写成 \texttt{Swap(a, b)} 而不是 \texttt{Swap(\&a, \&b)}，编译器多半会给一条"参数类型不匹配"的警告或错误；若强行转换通过，函数会把 \texttt{a}、\texttt{b} 的\textbf{值}当地址去改写内存，运行期直接崩溃。凡是形参为指针的函数，调用时先问一句"要不要加 \texttt{\&}"。}
+
+\section{用指针变量作函数参数的程序实例}
+指针作函数参数有三大典型用途：改写多个实参、让函数"返回"多个结果、在函数内操作大块数据（数组）而不必复制。
+
+\subsection{让函数返回多个结果}
+C 函数只能有一个返回值，需要带回多个结果时，用指针形参"带出去"：
+\begin{lstlisting}
+/* 同时求最大值和最小值：返回值给出状态，结果通过指针带回 */
+void MaxMin(const int a[], int n, int *pmax, int *pmin)
+{
+    int i;
+    *pmax = *pmin = a[0];
+    for (i = 1; i < n; i++) {
+        if (a[i] > *pmax) *pmax = a[i];
+        if (a[i] < *pmin) *pmin = a[i];
+    }
+}
+/* 调用：MaxMin(a, 10, &max, &min); */
+\end{lstlisting}
+
+\subsection{指针形参与数组形参的等价性}
+\texttt{int a[]} 与 \texttt{int *a} 作形参完全等价，因为数组名作实参传递的本来就是首地址；函数内既可以写 \texttt{a[i]}，也可以写 \texttt{*(a+i)}。这一点在第 11 章会系统展开。
+
+\subsection{常见写法与风格}
+\begin{itemize}
+  \item 只读取不修改时，形参加 \texttt{const}：\texttt{const int *p}，让编译器帮你拦住误写。
+  \item 函数入口先检查指针是否为空：\texttt{if (p == NULL) return;}，这叫防御式编程。
+  \item 形参是指针时，注释里写清"输入/输出/输入输出"，避免调用者不知道该不该加 \texttt{\&}。
+\end{itemize}
+
+\section{函数指针及其应用}
+\subsection{函数指针的定义与初始化}
+程序中的函数也要占用一段内存，\textbf{函数名就代表该函数代码的首地址}。因此可以定义指向函数的指针——\textbf{函数指针}：
+\begin{lstlisting}
+int Max(int a, int b) { return a > b ? a : b; }
+
+int (*pf)(int, int);     /* 定义函数指针 pf：指向"两个 int 参数、返回 int"的函数 */
+pf = Max;                /* 函数名即地址，等价于 pf = &Max;                     */
+int m = (*pf)(3, 5);     /* 通过指针调用，等价于 pf(3, 5)                       */
+\end{lstlisting}
+
+语法要点：
+\begin{enumerate}
+  \item \textbf{括号不能省}。\texttt{int *pf(int, int);} 是"返回 \texttt{int *} 的函数"的声明，与函数指针是两回事。记忆口诀：\texttt{(*pf)} 先说明"pf 是指针"，再看外层。
+  \item 函数指针的\textbf{签名必须匹配}：参数个数、参数类型、返回类型都要一致，否则行为未定义。
+  \item 调用时 \texttt{(*pf)(a,b)} 与 \texttt{pf(a,b)} 等价。后者更简洁，但前者更能提醒读者"这是通过指针调用"。
+  \item 函数指针可以指向不同函数，从而实现"同一段代码、不同行为"。
+\end{enumerate}
+
+\subsection{函数指针作函数参数：回调}
+把函数指针作参数传入，被调函数在合适的时机"回头调用"它，这种机制称为\textbf{回调}（callback）。它是实现通用算法的标准手法：
+\begin{lstlisting}
+/* 通用冒泡排序：比较规则由调用者以函数指针传入 */
+void Sort(int a[], int n, int (*cmp)(int, int))
+{
+    int i, j, t;
+    for (i = 0; i < n - 1; i++)
+        for (j = 0; j < n - 1 - i; j++)
+            if (cmp(a[j], a[j + 1]) > 0) {   /* 用外部规则判断是否逆序 */
+                t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;
+            }
+}
+int Asc(int x, int y)  { return x - y; }     /* 升序规则 */
+int Desc(int x, int y) { return y - x; }     /* 降序规则 */
+/* 调用：Sort(a, n, Asc);  或  Sort(a, n, Desc); */
+\end{lstlisting}
+
+\subsection{函数指针的典型应用场景}
+\begin{itemize}
+  \item \textbf{菜单驱动程序}：把"加、减、乘、除"四个函数放进函数指针数组，用下标选择，避免长长的 \texttt{switch}。
+  \item \textbf{通用算法}：如上例的排序、查找、遍历框架，把"比较/访问"这一变化点抽出来。
+  \item \textbf{回调与事件处理}：库函数在特定事件发生时调用用户注册的函数（标准库 \texttt{qsort} 的第四个参数就是比较函数指针）。
+\end{itemize}
+
+\begin{lstlisting}
+/* 函数指针数组：一个简易计算器 */
+int Add(int a, int b) { return a + b; }
+int Sub(int a, int b) { return a - b; }
+int Mul(int a, int b) { return a * b; }
+
+int (*op[3])(int, int) = { Add, Sub, Mul };   /* 三个元素，各指向一个函数 */
+int r = op[1](7, 3);                          /* 调用 Sub，结果 4 */
+\end{lstlisting}
+
+\corepoint{不要返回\textbf{局部变量}的地址。函数返回后其栈帧被回收，返回的地址指向"已不存在的变量"，这类指针叫悬垂指针（dangling pointer），用它是未定义行为。要返回指针，只能返回静态变量、动态分配的内存，或调用者传进来的缓冲区地址。}
+
+\section{本章知识点小结}
+\begin{itemize}
+  \item 内存按字节编址，变量的地址是其首字节地址，用 \texttt{\&} 取得，用 \texttt{\%p} 输出。
+  \item 指针变量存放地址，定义形式 \texttt{类型 *p;}，基类型决定"一次访问几个字节、如何解释这些字节"。
+  \item 指针本身占 4 字节（32 位）或 8 字节（64 位）；未初始化即为野指针，应初始化为 \texttt{NULL} 并判空使用。
+  \item \texttt{*} 是间接寻址运算符：\texttt{*p} 与 \texttt{p} 所指变量是同一存储单元；\texttt{\&} 与 \texttt{*} 互逆。
+  \item 定义中的 \texttt{*} 属于类型声明，表达式中的 \texttt{*} 是运算符，切勿混淆。
+  \item 指针加减整数按"基类型大小"移动；两指针可相减、可比较，不可相加。
+  \item C 只有按值调用；传地址（\texttt{\&}）即可在函数内改写实参，称为模拟按引用调用。
+  \item 函数名即函数代码首地址；函数指针定义须写 \texttt{(*pf)}，可用于回调、通用算法与函数指针数组。
+\end{itemize}
+
+\section{本章常见错误小结}
+\begin{enumerate}
+  \item \textbf{使用未初始化的指针}：\texttt{int *p; *p = 5;} 把 5 写到随机地址，典型表现是"程序运行时崩溃"或"某个无关变量被改"。
+  \item \textbf{混淆 p 与 *p}：\texttt{scanf("\%d", p);} 少了 \texttt{\&}，\texttt{p} 若未初始化就是往随机地址写；应为 \texttt{scanf("\%d", \&a);} 或让 \texttt{p} 先指向 \texttt{a} 再传 \texttt{p}。
+  \item \textbf{指针类型不匹配}：\texttt{int *p; char *q = p;} 需要显式转换且语义可疑；\texttt{int *} 与 \texttt{double *} 混用会按错误的字节数取值。
+  \item \textbf{把 \texttt{*} 的优先级弄错}：\texttt{*p++} 是"先取 \texttt{*p}，再让 \texttt{p} 自增"；\texttt{(*p)++} 是"让 \texttt{p} 所指的值加 1"；\texttt{++*p} 与 \texttt{++(*p)} 同义。三者结果完全不同。
+  \item \textbf{试图交换指针本身}：在函数里写 \texttt{t = px; px = py; py = t;} 只交换了形参（局部指针），实参指针不受影响；要交换的是 \texttt{*px} 与 \texttt{*py}。
+  \item \textbf{返回局部变量的地址}：函数结束后该地址失效，返回的是悬垂指针。
+  \item \textbf{两个指针相加}：\texttt{p + q} 无意义，编译报错；只有相减（求元素个数差）才有定义。
+  \item \textbf{用 \%d 打印地址}：64 位环境下地址是 8 字节，\texttt{\%d} 只取低 4 字节，输出错乱甚至崩溃。
+\end{enumerate}

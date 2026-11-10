@@ -1,31 +1,287 @@
-% 5.1 第十一章 振动学基础.tex
-\chapter{第十一章 振动学基础}
+\chapter{第11章\texorpdfstring{\hspace{0.5em}}{ }振动学基础}
 
-\section{简谐运动的描述}
+\section{简谐振动的描述}
     \subsection{弹簧振子}
-    \subsection{简谐运动的表达式}
-    \subsection{简谐运动的速度和加速度}
+    质量为 $m$ 的物体连接在劲度系数为 $k$ 的轻弹簧上，置于光滑水平面上，这样的系统称为水平弹簧振子。取物体的平衡位置为坐标原点 $O$，$x$ 轴沿弹簧方向。当物体偏离平衡位置的位移为 $x$ 时，弹簧对物体的作用力（回复力）为
+    \[
+    F=-kx,
+    \]
+    负号表示回复力的方向总是指向平衡位置，其大小与位移成正比。
+
+    由牛顿第二定律 $F=m\dfrac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}$ 得
+    \[
+    \frac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}+\frac{k}{m}x=0.
+    \]
+    令 $\omega=\sqrt{k/m}$，则上式化为简谐振动微分方程
+    \[
+    \frac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}+\omega^{2}x=0,
+    \]
+    其解为 $x=A\cos(\omega t+\varphi)$。可见，在弹性回复力作用下的弹簧振子作简谐振动，其角频率、周期和频率分别为
+    \[
+    \omega=\sqrt{\frac{k}{m}},\qquad
+    T=\frac{2\pi}{\omega}=2\pi\sqrt{\frac{m}{k}},\qquad
+    \nu=\frac{1}{T}=\frac{1}{2\pi}\sqrt{\frac{k}{m}}.
+    \]
+    周期只由系统的性质（$m$、$k$）决定，与振幅无关，这一性质称为简谐振动的等时性。
+
+    \subsection{简谐振动的表达式}
+    作简谐振动的物体的位移随时间按余弦（或正弦）规律变化：
+    \keyformula{x=A\cos(\omega t+\varphi)}
+    式中 $x$ 为 $t$ 时刻相对平衡位置的位移，$A$ 为振幅（位移的最大绝对值），$\omega$ 为角频率，$(\omega t+\varphi)$ 为 $t$ 时刻的相位，$\varphi$ 为初相位（$t=0$ 时的相位）。
+
+    $A$、$\omega$、$\varphi$ 称为简谐振动的三个特征量。其中 $\omega$（或 $T$、$\nu$）由振动系统本身的性质决定，称固有角频率；$A$ 和 $\varphi$ 由初始条件（初位移 $x_0$ 和初速度 $v_0$）决定。由
+    \[
+    x_0=A\cos\varphi,\qquad v_0=-A\omega\sin\varphi
+    \]
+    可得
+    \[
+    A=\sqrt{x_0^{2}+\frac{v_0^{2}}{\omega^{2}}},\qquad
+    \tan\varphi=-\frac{v_0}{\omega x_0}.
+    \]
+    初相 $\varphi$ 所在的象限由 $x_0$ 和 $v_0$ 的正负共同确定，不能只由 $\tan\varphi$ 的值判断。
+
+    \subsection{简谐振动的速度和加速度}
+    将位移对时间求导，得速度和加速度：
+    \[
+    v=\frac{\mathrm{d}x}{\mathrm{d}t}=-A\omega\sin(\omega t+\varphi)=A\omega\cos\left(\omega t+\varphi+\frac{\pi}{2}\right),
+    \]
+    \[
+    a=\frac{\mathrm{d}v}{\mathrm{d}t}=-A\omega^{2}\cos(\omega t+\varphi)=-\omega^{2}x.
+    \]
+    可见：（1）速度的相位比位移超前 $\pi/2$，加速度的相位比位移超前 $\pi$（即二者反相）；（2）加速度与位移成正比而方向相反，这正是简谐振动的动力学特征；（3）速度的最大值 $v_{\max}=A\omega$，加速度的最大值 $a_{\max}=A\omega^{2}$。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{简谐振动中位移、速度、加速度的比较}
+    \begin{tabular}{llll}
+    \toprule
+    量 & 表达式 & 最大值 & 与位移的相位差 \\
+    \midrule
+    位移 & $x=A\cos(\omega t+\varphi)$ & $A$ & $0$ \\
+    速度 & $v=-A\omega\sin(\omega t+\varphi)$ & $A\omega$ & $\pi/2$（超前） \\
+    加速度 & $a=-A\omega^{2}\cos(\omega t+\varphi)$ & $A\omega^{2}$ & $\pi$（反相） \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
     \subsection{振动的相位}
+    相位 $\Phi=\omega t+\varphi$ 是决定简谐振动状态的物理量：给定振幅和角频率后，相位唯一地确定了 $t$ 时刻的位移、速度和加速度（大小和方向）。
+
+    两个同频率简谐振动的相位之差称相位差：
+    \[
+    \Delta\Phi=\Phi_2-\Phi_1=(\omega t+\varphi_2)-(\omega t+\varphi_1)=\varphi_2-\varphi_1,
+    \]
+    同频率的两振动相位差等于初相差，与时间无关。当 $\Delta\Phi=2k\pi$（$k$ 为整数）时称两振动同相，它们同时达到最大、同时过平衡位置且方向相同；当 $\Delta\Phi=(2k+1)\pi$ 时称反相，一个达到正最大时另一个恰在负最大。
+
+    相位是描述周期性运动的重要概念，比较两个振动的步调、研究振动的合成与波的干涉，都要用相位差。
+
     \subsection{旋转矢量表示法}
+    简谐振动可以用旋转矢量直观地表示：作一长度等于振幅 $A$ 的矢量 $\boldsymbol{A}$，使其以角频率 $\omega$ 绕原点 $O$ 逆时针匀速转动，$t=0$ 时它与 $x$ 轴正方向的夹角为初相 $\varphi$，则 $t$ 时刻它与 $x$ 轴的夹角为 $\omega t+\varphi$，该矢量在 $x$ 轴上的投影为
+    \[
+    x=A\cos(\omega t+\varphi),
+    \]
+    恰为简谐振动的位移。
+
+    旋转矢量法的优点：（1）把相位直观地表示为角度，便于确定初相和相位差；（2）矢量的转动一周对应振动的一个周期，便于理解周期、频率的物理意义；（3）求振动的合成时，可直接用矢量（多边形）合成，把三角函数的运算化为几何运算。
+
+    \corepoint{（1）振幅 $A$ 恒为正，初相 $\varphi$ 的取值通常限定在 $-\pi<\varphi\le\pi$ 或 $0\le\varphi<2\pi$；（2）由 $\tan\varphi=-v_0/(\omega x_0)$ 求 $\varphi$ 时必须结合 $x_0$、$v_0$ 的符号确定象限；（3）"相位"与"初相"不同，前者随时间变化，后者是常数。}
 
 \section{简谐振动的动力学特征}
     \subsection{简谐振动的动力学定义}
+    若质点所受的合力与它相对平衡位置的位移成正比、方向相反，即
+    \[
+    \boldsymbol{F}=-k\boldsymbol{x},
+    \]
+    则质点作简谐振动，这称为简谐振动的动力学定义。其微分形式为
+    \[
+    \frac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}+\omega^{2}x=0,\qquad \omega=\sqrt{\frac{k}{m}}.
+    \]
+    凡是运动方程可化为上述形式的运动都是简谐振动。判断一个振动是否为简谐振动，关键是看回复力是否与位移成正比且反向，或运动微分方程是否为上述形式。
+
     \subsection{简谐振动的实例}
+    \begin{enumerate}
+        \item 单摆：长为 $l$ 的细线悬挂质量为 $m$ 的小球。当摆角很小（$\theta<5^{\circ}$）时，$\sin\theta\approx\theta$，回复力矩为 $-mgl\theta$，运动方程为 $\dfrac{\mathrm{d}^{2}\theta}{\mathrm{d}t^{2}}+\dfrac{g}{l}\theta=0$，故
+        \[
+        T=2\pi\sqrt{\frac{l}{g}},
+        \]
+        与摆球质量无关，与振幅无关（等时性），这是摆钟的原理；
+        \item 复摆（物理摆）：刚体绕水平轴摆动，小角度时
+        \[
+        T=2\pi\sqrt{\frac{J}{mgd}},
+        \]
+        $J$ 为刚体对转轴的转动惯量，$d$ 为质心到转轴的距离；
+        \item 扭摆：圆盘由金属丝悬挂，扭转 $\theta$ 角时回复力矩 $-k\theta$，$T=2\pi\sqrt{J/k}$。
+    \end{enumerate}
+
     \subsection{简谐振动的能量}
+    以弹簧振子为例，振子的动能为
+    \[
+    E_\mathrm{k}=\frac{1}{2}mv^{2}=\frac{1}{2}mA^{2}\omega^{2}\sin^{2}(\omega t+\varphi),
+    \]
+    系统的弹性势能为
+    \[
+    E_\mathrm{p}=\frac{1}{2}kx^{2}=\frac{1}{2}kA^{2}\cos^{2}(\omega t+\varphi).
+    \]
+    由 $\omega^{2}=k/m$ 得 $m\omega^{2}=k$，故总机械能为
+    \keyformula{E=E_\mathrm{k}+E_\mathrm{p}=\frac{1}{2}kA^{2}=\frac{1}{2}m\omega^{2}A^{2}=\text{常量}}
+    即简谐振动的总能量与振幅的平方成正比，在振动过程中动能和势能相互转化，但总能量守恒。
+
+    动能、势能随时间变化的周期是位移周期的一半（因为含 $\sin^{2}$、$\cos^{2}$）。在一个周期内，动能和势能的平均值相等，均为总能量的一半：
+    \[
+    \bar{E}_\mathrm{k}=\bar{E}_\mathrm{p}=\frac{1}{4}kA^{2}=\frac{1}{2}E.
+    \]
+    这一结论在讨论分子热运动、电磁振荡等问题时经常用到。
+
+    \corepoint{（1）简谐振动的总能量 $E=\frac{1}{2}kA^{2}$ 与振幅平方成正比，这是"振幅"物理意义的体现；（2）动能、势能都随时间周期性变化，但二者之和恒定；（3）注意 $\omega^{2}=k/m$ 才使 $m\omega^{2}=k$，不能把 $m\omega^{2}A^{2}$ 与 $kA^{2}$ 看成两个不同的结果。}
 
 \section{简谐振动的合成}
     \subsection{两个同方向同频率简谐振动的合成}
+    设两个同方向、同频率的简谐振动
+    \[
+    x_1=A_1\cos(\omega t+\varphi_1),\qquad x_2=A_2\cos(\omega t+\varphi_2),
+    \]
+    其合振动仍为同频率的简谐振动：
+    \[
+    x=x_1+x_2=A\cos(\omega t+\varphi).
+    \]
+    由旋转矢量法（或三角函数展开）可得合振幅和初相：
+    \keyformula{A=\sqrt{A_1^{2}+A_2^{2}+2A_1A_2\cos(\varphi_2-\varphi_1)}}
+    \[
+    \tan\varphi=\frac{A_1\sin\varphi_1+A_2\sin\varphi_2}{A_1\cos\varphi_1+A_2\cos\varphi_2}.
+    \]
+    合振幅由两分振动的相位差决定：
+    \begin{enumerate}
+        \item 当 $\Delta\varphi=\varphi_2-\varphi_1=\pm2k\pi$（同相）时，$A=A_1+A_2$，合振动加强；
+        \item 当 $\Delta\varphi=\pm(2k+1)\pi$（反相）时，$A=|A_1-A_2|$，合振动减弱；
+        \item 一般情况下 $|A_1-A_2|<A<A_1+A_2$。
+    \end{enumerate}
+    注意合振幅不仅取决于两个分振幅，还取决于它们的相位差，这是"振动合成"与"标量相加"的根本区别。
+
     \subsection{两个同方向不同频率简谐振动的合成}
+    设两振动同方向、振幅相同而频率略有不同：
+    \[
+    x_1=A\cos(2\pi\nu_1t),\qquad x_2=A\cos(2\pi\nu_2t).
+    \]
+    合振动为
+    \[
+    x=2A\cos\left[2\pi\frac{\nu_2-\nu_1}{2}t\right]\cos\left[2\pi\frac{\nu_1+\nu_2}{2}t\right].
+    \]
+    合振动不再是简谐振动，表现为振幅随时间缓慢变化的现象，称为拍。合振幅变化的频率（拍频）为两频率之差：
+    \[
+    \nu_{\text{拍}}=|\nu_2-\nu_1|.
+    \]
+    拍现象可用于乐器调音、测量频率微小差异等。若两分振动频率相差较大或不成简单整数比，合振动将更为复杂，不再是周期运动（或周期极长）。
+
     \subsection{相互垂直的简谐振动的合成}
-    质点的轨迹方程为
-    %\[
-    %\frac{x^2}{A_1^2}+\frac{y^2}{A_2^2}-\frac{2xy}{A_1A_2}\cos\Delta\varphi=\sin^2\Delta\varphi
-    %\]
+    设质点同时参与两个相互垂直、同频率的简谐振动
+    \[
+    x=A_1\cos(\omega t+\varphi_1),\qquad y=A_2\cos(\omega t+\varphi_2).
+    \]
+    消去时间 $t$，得质点运动的轨迹方程
+    \keyformula{\frac{x^{2}}{A_1^{2}}+\frac{y^{2}}{A_2^{2}}-\frac{2xy}{A_1A_2}\cos(\varphi_2-\varphi_1)=\sin^{2}(\varphi_2-\varphi_1)}
+    这是一般情形下的椭圆方程。轨迹的形状和走向由相位差 $\Delta\varphi=\varphi_2-\varphi_1$ 决定：
+    \begin{enumerate}
+        \item $\Delta\varphi=0$（同相）：轨迹为直线 $y=\dfrac{A_2}{A_1}x$，质点作斜率为正的直线简谐振动；
+        \item $\Delta\varphi=\pi$（反相）：轨迹为直线 $y=-\dfrac{A_2}{A_1}x$；
+        \item $\Delta\varphi=\pm\pi/2$：轨迹为正椭圆，其半轴分别沿 $x$、$y$ 轴，即 $\dfrac{x^{2}}{A_1^{2}}+\dfrac{y^{2}}{A_2^{2}}=1$。当 $\Delta\varphi=\pi/2$ 时质点沿顺时针方向运动，$\Delta\varphi=-\pi/2$ 时沿逆时针方向运动；
+        \item $\Delta\varphi$ 为其他值：轨迹为倾斜的椭圆，其长、短轴与坐标轴成一定角度。
+    \end{enumerate}
+    若两个相互垂直的振动频率之比为简单的整数比（如 $1:2$、$2:3$），合运动的轨迹是一系列稳定的闭合曲线，称为李萨如图形。利用李萨如图形可以精确比较两个振动的频率。
+
+    \corepoint{（1）同方向同频率合成的合振幅公式中，$\cos(\varphi_2-\varphi_1)$ 起决定作用，同相最大、反相最小；（2）"拍"不是简谐振动，其振幅在变化，拍频等于两频率之差而不是之和；（3）相互垂直同频率合成的轨迹是椭圆（含直线、圆为特例），判方向要用相位差的正负。}
 
 \section{阻尼振动}
+    实际振动总受到阻力作用，振幅随时间逐渐减小，这种振动称为阻尼振动。当运动速度不太大时，阻力与速度成正比，$\boldsymbol{F}_r=-\gamma\boldsymbol{v}$（$\gamma$ 为阻力系数），于是运动方程为
+    \[
+    m\frac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}=-kx-\gamma\frac{\mathrm{d}x}{\mathrm{d}t},
+    \]
+    即
+    \[
+    \frac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}+2\beta\frac{\mathrm{d}x}{\mathrm{d}t}+\omega_0^{2}x=0,
+    \]
+    其中 $\beta=\dfrac{\gamma}{2m}$ 称阻尼因数，$\omega_0=\sqrt{k/m}$ 为固有角频率。
 
-\section{受迫振动和共振}
+    按阻尼大小的不同，有三种情形：
+    \begin{enumerate}
+        \item 欠阻尼（$\beta<\omega_0$）：振幅按指数规律衰减，
+        \[
+        x=A_0\mathrm{e}^{-\beta t}\cos\left(\sqrt{\omega_0^{2}-\beta^{2}}\,t+\varphi\right),
+        \]
+        振动"周期" $T=\dfrac{2\pi}{\sqrt{\omega_0^{2}-\beta^{2}}}$ 略大于无阻尼时的周期，这种振动称准周期振动；
+        \item 过阻尼（$\beta>\omega_0$）：物体不再往复运动，而是缓慢地回到平衡位置；
+        \item 临界阻尼（$\beta=\omega_0$）：物体最快地回到平衡位置而不发生往复运动，是两者之间的分界。
+    \end{enumerate}
+    临界阻尼和过阻尼在仪表（如天平、电表）中得到应用，使指针尽快稳定而不摆动。阻尼振动中能量不断被消耗，振幅减小，但若外界不断补充能量，振动可以持续。
+
+    \corepoint{阻尼振动的振幅按 $\mathrm{e}^{-\beta t}$ 衰减，但"周期"仍近似为常数；临界阻尼不是"阻尼最大"，而是恰好不往复运动且回到平衡位置最快的情形。}
+
+\section{受迫振动 共振}
+    \subsection{受迫振动}
+    在周期性外力（驱动力）作用下的振动称为受迫振动。设驱动力 $F=F_0\cos\omega_d t$，则运动方程为
+    \[
+    m\frac{\mathrm{d}^{2}x}{\mathrm{d}t^{2}}=-kx-\gamma\frac{\mathrm{d}x}{\mathrm{d}t}+F_0\cos\omega_d t.
+    \]
+    经过一段时间后，阻尼引起的自由振动衰减殆尽，系统进入稳态，其位移为
+    \[
+    x=A\cos(\omega_d t+\varphi),
+    \]
+    即稳态受迫振动的频率等于驱动力的频率，与系统的固有频率无关；其振幅
+    \[
+    A=\frac{F_0}{m\sqrt{(\omega_0^{2}-\omega_d^{2})^{2}+4\beta^{2}\omega_d^{2}}},
+    \]
+    由系统性质、阻尼和驱动频率共同决定。
+
+    \subsection{共振}
+    当驱动力的角频率 $\omega_d$ 接近系统的固有角频率 $\omega_0$ 时，受迫振动的振幅达到最大，这种现象称为共振。使振幅最大的驱动频率为
+    \[
+    \omega_d=\sqrt{\omega_0^{2}-2\beta^{2}},
+    \]
+    当阻尼很小时，可近似认为 $\omega_d\approx\omega_0$。与速度振幅最大对应的共振频率为 $\omega_d=\omega_0$，称为速度共振。
+
+    共振时系统从外界吸收能量的本领最强。共振有利也有害：利用共振可制造超声波发生器、共振筛、乐器的共鸣箱；而共振也可能造成破坏，如军队过桥必须便步走、机器转速要避开共振区、地震中建筑物按固有频率共振而倒塌。
+
+    \corepoint{（1）稳态受迫振动的频率由驱动力频率决定，不是系统的固有频率；（2）共振的条件是 $\omega_d\approx\omega_0$，阻尼越小共振峰越高、越尖锐；（3）受迫振动开始时是暂态过程（自由振动与受迫振动的叠加），稳态后只剩受迫振动。}
 
 \section{电磁振荡}
+    \subsection{LC 振荡电路}
+    由电感 $L$ 和电容 $C$ 组成的闭合电路，在无电阻、无辐射的理想情况下，电路中会发生电荷和电流的周期性变化，称为电磁振荡。
 
-\endinput
+    设某时刻电容器极板上的电荷量为 $q$，回路中的电流为 $i=\dfrac{\mathrm{d}q}{\mathrm{d}t}$，则电容器两端电压为 $q/C$，自感电动势为 $-L\dfrac{\mathrm{d}i}{\mathrm{d}t}$，由基尔霍夫定律
+    \[
+    \frac{q}{C}+L\frac{\mathrm{d}i}{\mathrm{d}t}=0
+    \quad\Longrightarrow\quad
+    \frac{\mathrm{d}^{2}q}{\mathrm{d}t^{2}}+\frac{1}{LC}q=0.
+    \]
+    这与弹簧振子的微分方程形式完全相同，故
+    \[
+    q=q_0\cos(\omega t+\varphi),\qquad \omega=\frac{1}{\sqrt{LC}},\qquad T=2\pi\sqrt{LC}.
+    \]
+
+    \subsection{电磁振荡的能量}
+    LC 回路中的电场能量为 $\dfrac{q^{2}}{2C}$，磁场能量为 $\dfrac{1}{2}Li^{2}$，二者相互转化，总能量守恒：
+    \[
+    \frac{q^{2}}{2C}+\frac{1}{2}Li^{2}=\frac{q_0^{2}}{2C}=\text{常量}.
+    \]
+    这与弹簧振子的 $E_\mathrm{p}+E_\mathrm{k}=\frac{1}{2}kA^{2}$ 完全对应。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{弹簧振子与 LC 振荡电路的类比}
+    \begin{tabular}{lll}
+    \toprule
+    项目 & 弹簧振子 & LC 振荡电路 \\
+    \midrule
+    坐标 & 位移 $x$ & 电荷量 $q$ \\
+    速度 & $v=\mathrm{d}x/\mathrm{d}t$ & 电流 $i=\mathrm{d}q/\mathrm{d}t$ \\
+    惯性量 & 质量 $m$ & 电感 $L$ \\
+    回复量 & 劲度系数 $k$ & $1/C$ \\
+    角频率 & $\omega=\sqrt{k/m}$ & $\omega=1/\sqrt{LC}$ \\
+    势能 & $\frac{1}{2}kx^{2}$ & $q^{2}/(2C)$ \\
+    动能 & $\frac{1}{2}mv^{2}$ & $\frac{1}{2}Li^{2}$ \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    实际的振荡电路总有电阻，能量逐渐耗散为焦耳热，形成阻尼振荡；若用晶体管电路周期性地补充能量，则可维持等幅振荡（振荡器）。电磁振荡是电磁波发射的基础，当振荡频率足够高时，电磁能量以电磁波的形式向外辐射。
+
+    \corepoint{LC 振荡电路的角频率是 $\omega=1/\sqrt{LC}$，不是 $1/(LC)$；振荡过程中电荷最大时电流为零、磁场能为零，电荷为零时电流最大、电场能为零，这与弹簧振子的"位移最大时速度为零"相对应。}

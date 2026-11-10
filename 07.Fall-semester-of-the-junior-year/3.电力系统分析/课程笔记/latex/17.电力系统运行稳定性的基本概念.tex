@@ -1,0 +1,260 @@
+% ============================================================
+% 第 15 章  电力系统运行稳定性的基本概念
+% （教材：何仰赞、温增银《电力系统分析》下册 第 15 章）
+% 结构对齐 15.1—15.7；例题、习题不录
+% ============================================================
+
+\chapter{电力系统运行稳定性的基本概念}
+
+前面十四章讲的是“稳态”——系统在一个平衡点附近运行。本章开始讲“稳定性”：
+\textbf{系统受到扰动后能否回到（或进入）一个可接受的运行状态}。
+稳定性问题的一切讨论都围绕一个变量展开——\textbf{功角 $\delta$}；
+也围绕一个方程展开——\textbf{转子运动方程}。本章的任务是把这两个对象建立起来，
+并区分清楚“静态稳定”“暂态稳定”“负荷稳定”“电压稳定”四个容易混淆的概念。
+
+\section{概述}
+
+电力系统稳定性的一般定义是：系统在某一运行状态下受到扰动后，
+经过一段过渡过程，能够恢复到原来的运行状态（或进入一个新的可接受的运行状态），
+则称系统在该运行状态下是\textbf{稳定}的；否则是\textbf{不稳定}的。
+
+按扰动大小与物理机理，稳定性分为：
+
+\begin{table}[htbp]
+  \centering
+  \caption{电力系统稳定性的分类}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.20\linewidth}p{0.26\linewidth}p{0.26\linewidth}@{}}
+    \toprule
+    类型 & 扰动 & 判别对象 & 主要分析工具 \\
+    \midrule
+    静态稳定 & 小扰动 & 发电机间功角 & 小扰动法（线性化）、$K_p$ 储备系数 \\
+    暂态稳定 & 大扰动（短路、切机、切负荷） & 发电机间功角 & 等面积定则、数值积分 \\
+    负荷稳定 & 小扰动 & 异步电动机转差 & 电动机转矩—转差特性 \\
+    电压稳定 & 小／大扰动 & 节点电压 & $P$-$U$ 曲线、$\mathrm{d}Q/\mathrm{d}U$ 判据 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+本章及第 16～19 章主要讨论\textbf{功角稳定}（发电机保持同步运行的能力），
+这是电力系统稳定性中最经典、最主要的部分。电压稳定与负荷稳定在本章作概念性介绍。
+
+\section{功角的概念}
+
+\subsection{功角的定义}
+
+同步发电机并网运行时，其转子转速与电网同步速一致（平均而言），
+但转子磁极轴线与定子合成磁极轴线之间总有一个空间夹角，这个夹角就是\textbf{功角} $\delta$
+（电角度）。它有两重含义：
+\begin{itemize}
+  \item \textbf{空间上}：转子磁极轴线领先定子（气隙）合成磁极轴线的电角度，
+        反映发电机转子的实际位置；
+  \item \textbf{时间上}：发电机空载电势 $\dot E_q$ 与机端电压 $\dot U$（或系统某参考点电压）
+        之间的相位差，反映各发电机电动势相量的相对位置。
+\end{itemize}
+两者是同一件事的两种描述：转子位置决定电动势相位。
+
+\subsection{功角与有功功率的关系}
+
+对“发电机经电抗 $X$ 接无限大母线（电压 $U$ 恒定）”的简单系统，发电机输出的有功功率为
+\keyformula{P_e=\frac{E_qU}{X}\sin\delta}
+这就是\textbf{功角特性}。它说明：
+\begin{itemize}
+  \item 有功功率的传输必须靠功角差（第 10 章“有功靠相角差传输”的定量表述）；
+  \item $\delta>0$ 表示发电机向系统送有功（发电机状态）；$\delta<0$ 表示吸收有功（电动机状态）；
+  \item $P_e$ 是 $\delta$ 的正弦函数，$\delta=90^\circ$ 时达最大值 $P_{\max}=E_qU/X$。
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \caption{功角的物理意义与运行状态}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    功角 $\delta$ & 状态 & 说明 \\
+    \midrule
+    $\delta>0$ & 发电机 & 转子磁极领先定子磁极，向系统送有功 \\
+    $\delta=0$ & 空载 & 不送有功 \\
+    $\delta<0$ & 电动机 & 吸收有功 \\
+    $0<\delta<90^\circ$ & 静态稳定区 & $\mathrm{d}P/\mathrm{d}\delta>0$ \\
+    $\delta=90^\circ$ & 静态稳定极限 & $P=P_{\max}$ \\
+    $\delta>90^\circ$ & 不稳定区 & $\mathrm{d}P/\mathrm{d}\delta<0$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{功角不是“几何角度”，而是\textbf{电磁功率与机械功率的平衡状态在角度上的表现}。
+稳态时 $\delta$ 由 $P_e=P_T$ 唯一确定（$P_T$ 为原动机机械功率）；
+暂态时 $\delta$ 由转子运动方程决定。因此讨论稳定就是讨论“$\delta$ 会不会越过临界点”。
+这一句话把第 15～19 章全部串起来了。}
+
+\section{静态稳定的初步概念}
+
+\textbf{静态稳定}指系统在某一运行状态下受到\textbf{小扰动}后，能否恢复到原运行状态的能力。
+
+由功角特性，设原动机机械功率 $P_T$ 不变，系统原运行于 $\delta_0$：
+\begin{itemize}
+  \item 若 $\delta_0<90^\circ$，则 $\mathrm{d}P_e/\mathrm{d}\delta>0$。当扰动使 $\delta$ 略增时，
+        $P_e$ 增大， 电磁转矩大于机械转矩，使转子减速、$\delta$ 回落到 $\delta_0$——
+        系统稳定；
+  \item 若 $\delta_0>90^\circ$，则 $\mathrm{d}P_e/\mathrm{d}\delta<0$。$\delta$ 略增使 $P_e$ 减小，
+        电磁转矩小于机械转矩，转子进一步加速、$\delta$ 继续增大——系统不稳定（失步）。
+\end{itemize}
+故\textbf{静态稳定的判据}为
+\keyformula{\frac{\mathrm{d}P_e}{\mathrm{d}\delta}>0}
+临界点为 $\delta=90^\circ$，对应 $P_{\max}=E_qU/X$。
+
+工程上用\textbf{静态稳定储备系数}衡量裕度：
+\keyformula{K_p=\frac{P_{\max}-P_0}{P_0}\times100\%}
+正常运行时要求 $K_p\ge15\%\sim20\%$；事故后（或特殊运行方式）允许降低，但一般不低于 $10\%$。
+
+\section{暂态稳定的初步概念}
+
+\textbf{暂态稳定}指系统受到\textbf{大扰动}（短路、切除线路、切机、切负荷）后，
+各发电机能否保持同步运行。分析方法与静态稳定不同：不能用线性化，
+必须研究\textbf{大扰动后转子运动的整个过渡过程}。
+
+以“单机—无限大系统”发生短路为例：
+\begin{enumerate}
+  \item \textbf{故障期间}：短路使发电机端电压降低，电磁功率 $P_e$ 大幅下降，
+        而机械功率 $P_T$ 不变，故转子受到加速转矩，$\delta$ 不断增大，转子积累动能。
+        这一段在 $P$-$\delta$ 平面上对应“加速面积”；
+  \item \textbf{故障切除后}：电磁功率恢复到（或接近）正常值，若此时 $P_e>P_T$，
+        转子减速，$\delta$ 继续增大但增速减慢，积累的动能被消耗。这一段对应“减速面积”。
+\end{enumerate}
+\textbf{暂态稳定的判据（等面积定则的雏形）}：若最大可能的减速面积大于加速面积，
+则转子在 $\delta$ 达到临界角之前减速到零，系统保持稳定；否则失步。
+
+\begin{table}[htbp]
+  \centering
+  \caption{静态稳定与暂态稳定的比较}
+  \small
+  \begin{tabular}{@{}p{0.12\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    比较项 & 静态稳定 & 暂态稳定 \\
+    \midrule
+    扰动 & 小扰动（负荷波动） & 大扰动（短路、切线路） \\
+    分析方法 & 线性化、小扰动法 & 非线性、数值积分、等面积定则 \\
+    判据 & $\mathrm{d}P/\mathrm{d}\delta>0$ & 减速面积 $>$ 加速面积 \\
+    指标 & $K_p$（储备系数） & 极限切除角 $\delta_{cm}$、极限切除时间 \\
+    关注时段 & 扰动后无穷小邻域 & 扰动后 $1\sim5$ s \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{负荷稳定的概念}
+
+\textbf{负荷稳定}主要指异步电动机运行的稳定性。异步电动机的电磁转矩 $M_e$ 与转差 $s$
+的关系曲线中，$M_e$ 有一个最大值 $M_{\max}$（临界转差 $s_{cr}$ 处）。
+\begin{itemize}
+  \item 若负载转矩 $M_L<M_{\max}$，则存在两个平衡点：$s<s_{cr}$（稳定运行点）与
+        $s>s_{cr}$（不稳定运行点）；
+  \item 当电压下降使 $M_{\max}$ 减小到小于 $M_L$ 时，电动机\textbf{堵转}（失速），
+        转差急剧增大，定子电流剧增，可能引起电压进一步下降——这是电压崩溃的重要诱因。
+\end{itemize}
+负荷稳定的判据可写成 $\mathrm{d}M_e/\mathrm{d}s<0$（在稳定运行点附近）。
+
+\section{电压稳定性的概念}
+
+\textbf{电压稳定}指系统在扰动后维持各节点电压在可接受范围的能力。
+它与功角稳定不同：功角稳定关心“发电机能否保持同步”，
+电压稳定关心“负荷节点电压能否维持在可接受水平”。
+
+\paragraph{$P$-$U$ 曲线（鼻形曲线）}
+对“电源经阻抗送负荷”的系统，负荷功率 $P$ 与负荷节点电压 $U$ 的关系是一条向右弯回的曲线
+（形如鼻子）。曲线的顶点（鼻点）对应\textbf{电压稳定极限}：
+\begin{itemize}
+  \item 鼻点以上（$U$ 较高的一支）：$\mathrm{d}P/\mathrm{d}U<0$，是\textbf{可运行区}；
+        负荷增加时电压下降，系统可自我调节；
+  \item 鼻点以下：$\mathrm{d}P/\mathrm{d}U>0$，不可运行；
+  \item 负荷超过极限功率后，不存在平衡点，电压\textbf{崩溃}（collapse）。
+\end{itemize}
+
+\paragraph{$\mathrm{d}Q/\mathrm{d}U<0$ 判据}
+在电压稳定分析中，常把“负荷所需无功 $Q_L(U)$”与“系统可提供的无功 $Q_S(U)$”画在同一张图上。
+稳定运行要求
+\begin{equation}
+  \frac{\mathrm{d}Q}{\mathrm{d}U}<0 ,
+\end{equation}
+其物理含义是：电压略降时，系统能提供的无功增量大于负荷需求的增量，故能把电压“托住”。
+当该条件破坏（$\mathrm{d}Q/\mathrm{d}U>0$）时，任何微小扰动都会使电压持续下降，即电压崩溃。
+第 18 章 18.4.3 节将给出这一判据的详细推导与工程用法。
+
+\corepoint{电压稳定与功角稳定的区别要能说清：\textbf{功角稳定}是“有功—角度”问题，
+失稳表现为发电机失步、功率振荡；\textbf{电压稳定}是“无功—电压”问题，
+失稳表现为负荷节点电压持续下降、电动机堵转。
+两者可相互诱发（电压下降 $\to$ 电动机堵转 $\to$ 无功需求剧增 $\to$ 电压更低），
+故实际系统常表现为“电压崩溃引发功角失稳”的复合过程。}
+
+\section{发电机转子运动方程}
+
+\subsection{转子运动方程}
+
+发电机转子是一个刚体，其转动服从牛顿第二定律。设转子转动惯量为 $J$，
+机械角速度为 $\omega$，机械转矩为 $M_T$、电磁转矩为 $M_e$（均取加速方向为正），则
+\keyformula{J\frac{\mathrm{d}\omega}{\mathrm{d}t}=M_T-M_e=M_a}
+$M_a$ 称\textbf{加速转矩}。由于功角 $\delta$ 与电角速度 $\omega$ 的关系为
+$\dfrac{\mathrm{d}\delta}{\mathrm{d}t}=\omega-\omega_N$（$\omega_N$ 为同步角速度），
+故转子运动方程通常写成联立形式
+\begin{equation}
+  \begin{cases}
+    J\dfrac{\mathrm{d}\omega}{\mathrm{d}t}=M_T-M_e,\\[4pt]
+    \dfrac{\mathrm{d}\delta}{\mathrm{d}t}=\omega-\omega_N .
+  \end{cases}
+\end{equation}
+用功率表示（$M=P/\omega$，在同步速附近 $\omega\approx\omega_N$）：
+\begin{equation}
+  J\omega_N\frac{\mathrm{d}\omega}{\mathrm{d}t}=P_T-P_e .
+\end{equation}
+
+\textbf{转矩与功率的对应}：取转矩基值 $M_B=S_B/\omega_N$（$\omega_N$ 为同步机械角速度），
+则标幺转矩 $m=M/M_B$ 与标幺功率 $p=P/S_B$ 的关系为
+\begin{equation}
+  m=\frac{M}{M_B}=\frac{P/\omega}{S_B/\omega_N}=p\,\frac{\omega_N}{\omega}\approx p
+\end{equation}
+因暂态过程中 $\omega$ 偏离额定值很小（一般不超过 $\pm2\%$），故\textbf{标幺制下转矩与功率数值相等}，
+这是转子运动方程可以直接用功率差表示加速度的依据。
+若用有名值，则须除以 $\omega$，且须注意机械角速度与电角速度相差极对数 $p_n$ 倍。
+
+\subsection{用标幺值表示的转子运动方程}
+
+取转矩基值为 $M_B=S_B/\omega_N$、时间基值为 $1/\omega_N$（即用电角度为时间单位），
+可得标幺形式
+\keyformula{T_J\frac{\mathrm{d}^{2}\delta}{\mathrm{d}t^{2}}=P_T-P_e,\qquad
+  \frac{\mathrm{d}\delta}{\mathrm{d}t}=\omega-1}
+其中 $\delta$ 单位为弧度（电角度），$t$ 单位为秒，$\omega$ 为标幺角速度，
+$T_J$ 为\textbf{惯性时间常数}。
+
+\subsection{惯性时间常数的意义}
+
+惯性时间常数定义为
+\keyformula{T_J=\frac{J\omega_N^{2}}{S_N}\quad(\text{s})}
+其物理意义是：\textbf{若在转子上施加额定转矩（即额定功率），转子从静止加速到额定转速
+所需的时间}。因为角加速度为 $M_N/J$，从 $0$ 到 $\omega_N$ 需时
+$t=J\omega_N/M_N=J\omega_N^{2}/S_N=T_J$。
+
+\begin{table}[htbp]
+  \centering
+  \caption{惯性时间常数的典型值}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    机组类型 & $T_J$ 典型值 & 说明 \\
+    \midrule
+    汽轮发电机 & $6\sim12$ s & 转速高、转子细长，$T_J$ 较小 \\
+    水轮发电机 & $4\sim10$ s & 转速低、转子粗大，$J$ 大但 $\omega_N$ 小 \\
+    同步调相机 & $3\sim6$ s & 惯性小，对稳定不利 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+$T_J$ 越大，转子惯性越大，同样的功率不平衡引起的角加速度越小，$\delta$ 变化越慢，
+\textbf{对暂态稳定越有利}（给保护切除争取时间）；但 $\omega$ 的变化也越慢，
+对调频不利。这一矛盾在第 19 章“改善元件特性”中还要提到。
+
+\corepoint{转子运动方程是本课程唯一的\textbf{微分方程}，也是全部稳定计算的出发点。
+要记牢三点：（1） 右边是“机械功率减电磁功率”（加速转矩），符号不能反；
+（2） 标幺形式下“功率差直接等于角加速度乘 $T_J$”，无需再乘 $\omega$；
+（3） 方程是二阶的，须两个初始条件（$\delta_0$ 与 $\Delta\omega_0=0$），
+稳态起始时 $\mathrm{d}\delta/\mathrm{d}t=0$。第 17 章的数值解法、第 18 章的小扰动法
+都是解这一个方程，区别只在“扰动大小”与“是否线性化”。}

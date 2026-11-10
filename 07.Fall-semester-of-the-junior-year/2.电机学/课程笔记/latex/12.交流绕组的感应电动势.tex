@@ -1,0 +1,188 @@
+% ============================================================
+% 第 9 章 交流绕组的感应电动势（教材第三篇，印刷页 90--103）
+% 节名：第一节 导体电动势星形图；第二节 导体基波电动势；第三节 线圈基波电动势及节距因数；
+%       第四节 线圈组基波电动势及分布因数；第五节 谐波电动势的计算；第六节 削弱谐波电动势的方法
+% ============================================================
+\chapter{交流绕组的感应电动势}
+
+第 8 章定性地说明了交流绕组中产生感应电动势的原理。本章把它定量化：先求一根导体，再求一个线圈，再求一个线圈组（极相组），最后求一相绕组。这条"导体 $\rightarrow$ 线圈 $\rightarrow$ 线圈组 $\rightarrow$ 相绕组"的链条，每一步只多乘一个因数（节距因数、分布因数、绕组因数），把整章串起来记最省力。
+
+\section{导体电动势星形图}
+
+交流绕组内的感应电动势通常为正弦交流电动势，可用相量表示和运算。对于多极电机，由第 8 章可知：转子旋转一周，定子绕组感应电动势变化 $p$ 次。
+
+把定子各槽中导体的基波电动势画成相量，由于相邻两槽在空间相差电角度 $\alpha=p\cdot360^\circ/Q$，其感应电动势在时间上也相差 $\alpha$，于是各导体电动势相量构成一个\textbf{辐射形相量图}——这就是\textbf{导体电动势星形图}。$p$ 对极电机中，导体电动势星形图有 $p$ 个重合的"层"，每层包含 $Q/p$ 个相量，相邻相量夹角为 $\alpha$。
+
+导体电动势星形图的作用：
+\begin{itemize}
+  \item 决定绕组的连接方式（哪些导体属于同一相带、如何串联）；
+  \item 计算每相绕组感应电动势的大小（把属于同一相的导体电动势按相量相加）。
+\end{itemize}
+对于复杂的绕组（尤其是分数槽绕组），更需要借助电动势星形图才能解决绕组连接和感应电动势的计算问题。
+
+\section{导体基波电动势}
+
+由电磁感应定律，导体在正弦分布的气隙磁场中切割磁力线，感应电动势的有效值为
+\begin{equation}
+E_{c1}=2.22f\Phi_1 ,
+\end{equation}
+其中 $f$ 为电动势频率（$f=pn/60$），$\Phi_1$ 为每极基波磁通。
+
+\keyformula{E_{c1}=2.22f\Phi_1}
+
+\subsubsection{系数 2.22 的来源}
+设气隙基波磁密幅值为 $B_1$，导体有效长度为 $l$，极距为 $\tau$，则每极基波磁通 $\Phi_1=\dfrac{2}{\pi}B_1\tau l$。导体以同步速度切割该磁场，感应电动势幅值 $E_{cm}=B_1lv$，而 $v=2\tau f$，故
+\begin{equation}
+E_{cm}=B_1l\cdot2\tau f=\frac{\pi}{\sqrt2}\cdot\frac{\sqrt2}{\pi}B_1l\tau\omega
+=\pi f\left(\frac{2}{\pi}B_1\tau l\right)\sqrt2 ,
+\end{equation}
+取有效值即得 $E_{c1}=\dfrac{\pi}{\sqrt2}f\Phi_1=2.22f\Phi_1$。\textbf{2.22 是"一根导体、一个极距、正弦磁场"的标志}；后面线圈、线圈组、相绕组乘上各自的因数，系数就变成 4.44。
+
+\section{线圈基波电动势及节距因数}
+
+单层或双层绕组均由线圈构成。线圈的节距 $y_1$ 通常为整距（$y_1=\tau$）或短距（$y_1<\tau$）。
+
+\subsection{整距线圈}
+整距线圈的两个边相距 $\tau$（即 $180^\circ$ 电角度），两边中的感应电动势大小相等、方向相反（沿回路相加），故线圈电动势为两个导体电动势的\textbf{代数和}：
+\begin{equation}
+E_{y1}=2E_{c1}=4.44fN_c\Phi_1 ,
+\end{equation}
+其中 $N_c$ 为线圈匝数。
+
+\subsection{短距线圈与节距因数}
+当线圈短距时，两个线圈边相距 $y_1<\tau$，对应的空间电角度为 $\beta=\dfrac{y_1}{\tau}\times180^\circ$。两个边的电动势相量不共线，而是相差 $\beta$，其相量和为
+\begin{equation}
+E_{y1}=2E_{c1}N_c\cos\frac{180^\circ-\beta}{2}=2E_{c1}N_c\sin\frac{\beta}{2}
+=4.44fN_c\Phi_1k_{p1},
+\end{equation}
+其中
+\begin{equation}
+k_{p1}=\sin\frac{\beta}{2}=\sin\left(\frac{y_1}{\tau}\times90^\circ\right)
+\end{equation}
+称为基波\textbf{节距因数}（短距因数）。
+
+\keyformula{k_{p1}=\sin\left(\frac{y_1}{\tau}\times90^\circ\right),\qquad E_{y1}=4.44fN_c\Phi_1k_{p1}}
+
+$k_{p1}<1$，表示短距使基波电动势"打了折扣"。整距时 $y_1=\tau$，$k_{p1}=1$；短距时 $k_{p1}<1$。例如 $y_1=\tfrac56\tau$ 时 $k_{p1}=\sin75^\circ=0.966$，基波只损失 3.4\%，却能把 5、7 次谐波大幅削弱——这是双层绕组普遍采用 $\tfrac56$ 短距的原因。
+
+\section{线圈组基波电动势及分布因数}
+
+\subsection{分布绕组}
+实际电机的每相绕组由 $q$ 个线圈（分布在 $q$ 个槽中）串联组成，这 $q$ 个线圈构成一个\textbf{线圈组}（极相组）。由于 $q$ 个槽在空间依次相差槽距角 $\alpha$，各线圈电动势相量也依次相差 $\alpha$，其相量和小于代数和。
+
+\subsection{分布因数}
+设 $q$ 个线圈电动势大小相等、依次相差 $\alpha$，其相量和为 $qE_{y1}k_{d1}$，其中
+\begin{equation}
+k_{d1}=\frac{\sin\left(q\dfrac{\alpha}{2}\right)}{q\sin\dfrac{\alpha}{2}}
+\end{equation}
+称为基波\textbf{分布因数}。
+
+\keyformula{k_{d1}=\frac{\sin\left(q\alpha/2\right)}{q\sin\left(\alpha/2\right)}}
+
+$k_{d1}<1$，表示分布使基波电动势减小。$q=1$（集中绕组）时 $k_{d1}=1$。
+
+\subsection{线圈组电动势与绕组因数}
+一个线圈组（极相组）的基波电动势为
+\begin{equation}
+E_{q1}=qE_{y1}k_{d1}=4.44fqN_c\Phi_1k_{p1}k_{d1}=4.44fqN_c\Phi_1k_{w1},
+\end{equation}
+其中
+\begin{equation}
+k_{w1}=k_{p1}k_{d1}
+\end{equation}
+称为基波\textbf{绕组因数}。
+
+\subsection{一相绕组的电动势}
+设每相绕组串联总匝数为 $N$（$N=$ 每相串联线圈数 $\times$ 每个线圈匝数 $N_c$），则一相绕组的基波电动势为
+\begin{equation}
+E_{\phi1}=4.44fN\Phi_1k_{w1}.
+\end{equation}
+
+\keyformula{E_{\phi1}=4.44fN\Phi_1k_{w1},\qquad k_{w1}=k_{p1}k_{d1}}
+
+若绕组为双层、每相有 $a$ 条并联支路，则每相串联匝数 $N=\dfrac{2pqN_c\cdot(\text{每极相组数}/\text{支路})}{a}$，计算时注意\textbf{串联}二字——并联支路中的匝数不参与串联相加。
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+层次 & 电动势表达式 & 新增因数 & 因数表达式 \\
+\midrule
+一根导体 & $E_{c1}=2.22f\Phi_1$ & — & — \\
+一个线圈 & $E_{y1}=4.44fN_c\Phi_1k_{p1}$ & 节距因数 & $k_{p1}=\sin\left(\dfrac{y_1}{\tau}90^\circ\right)$ \\
+一个线圈组 & $E_{q1}=4.44fqN_c\Phi_1k_{w1}$ & 分布因数 & $k_{d1}=\dfrac{\sin(q\alpha/2)}{q\sin(\alpha/2)}$ \\
+一相绕组 & $E_{\phi1}=4.44fN\Phi_1k_{w1}$ & 绕组因数 & $k_{w1}=k_{p1}k_{d1}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{这一节的"递进结构"必须记牢：\textbf{2.22（导体）$\rightarrow$ 4.44（线圈，整距）$\rightarrow$ 乘 $k_{p1}$（短距）$\rightarrow$ 乘 $k_{d1}$（分布）}。做题时先判断问的是哪一层，再决定乘哪些因数；$k_{w1}$ 永远等于 $k_{p1}k_{d1}$，若题目给了 $k_{w1}$ 就不必分开算。另外注意 $N$ 是"每相串联匝数"，不是"每相总匝数"，并联支路要除以 $a$。}
+
+\section{谐波电动势的计算}
+
+前四节假定主磁极产生的气隙磁场沿定子内表面\textbf{正弦分布}，此时绕组中感应电动势是频率为 $f$ 的正弦波。实际气隙磁场并非正弦分布（因磁极形状、齿槽、饱和等），可分解为基波与一系列奇次谐波（3、5、7、…）。$v$ 次谐波磁场的极对数为 $vp$，故其感应电动势频率为
+\begin{equation}
+f_v=vf .
+\end{equation}
+仿照基波的推导，$v$ 次谐波电动势的有效值为
+\begin{equation}
+E_{\phi v}=4.44f_vN\Phi_vk_{wv}=4.44(vf)N\Phi_vk_{wv},
+\end{equation}
+其中
+\begin{equation}
+k_{pv}=\sin\left(\frac{vy_1}{\tau}\times90^\circ\right),\qquad
+k_{dv}=\frac{\sin\left(vq\dfrac{\alpha}{2}\right)}{q\sin\left(v\dfrac{\alpha}{2}\right)},\qquad
+k_{wv}=k_{pv}k_{dv}.
+\end{equation}
+相电动势的有效值为基波与各次谐波电动势的\textbf{平方和开方}：
+\begin{equation}
+E_\phi=\sqrt{E_{\phi1}^{2}+E_{\phi3}^{2}+E_{\phi5}^{2}+E_{\phi7}^{2}+\cdots}
+\end{equation}
+
+\subsection{三相绕组中的 3 次及 3 的倍数次谐波}
+在三相绕组中，3 次谐波电动势在三相之间\textbf{同相位}（相位差 $3\times120^\circ=360^\circ$）。因此：
+\begin{itemize}
+  \item 若三相接成\textbf{星形}，3 次谐波电动势在相电动势中存在，但\textbf{线电动势中互相抵消为零}；
+  \item 若三相接成\textbf{三角形}，3 次谐波电动势将在闭合三角形回路内产生 3 次谐波\textbf{环流}，引起附加损耗和发热。
+\end{itemize}
+因此同步发电机大多采用\textbf{星形接法}——既消除线电动势中的 3 次谐波，又避免三角形接法中的环流。
+
+\section{削弱谐波电动势的方法}
+
+实际交流电机绕组中总会存在谐波电动势。谐波电动势使电动势波形畸变，谐波电流引起附加损耗、发热、振动和通信干扰，因此必须削弱。常用方法有四条。
+
+\subsection{采用短距绕组}
+短距可以削弱或消除某一指定次数的谐波。要使 $v$ 次谐波电动势为零，须 $k_{pv}=0$，即
+\begin{equation}
+\frac{vy_1}{\tau}\times90^\circ=180^\circ
+\quad\Longrightarrow\quad
+y_1=\tau\left(1-\frac1v\right).
+\end{equation}
+例如要消除 5 次谐波，取 $y_1=\tfrac45\tau=0.8\tau$；要消除 7 次谐波，取 $y_1=\tfrac67\tau\approx0.857\tau$。工程上常取 $y_1\approx\tfrac56\tau$（$0.833\tau$）——此时 5 次和 7 次谐波都被削弱到很小（$k_{p5}\approx0.259$、$k_{p7}\approx-0.259$），而基波只损失约 3.4\%，是"一笔划算的买卖"。
+
+\subsection{采用分布绕组}
+采用分布绕组也可以削弱谐波电动势，削弱的程度取决于谐波电动势的\textbf{分布因数} $k_{dv}$。$q$ 越大，$k_{dv}$ 越小（对 $v>1$ 的谐波尤其显著），而基波分布因数 $k_{d1}$ 下降不多，因此分布绕组对谐波"削得很狠、对基波很温柔"。当然 $q$ 增大会使槽数增多、槽利用率下降，工程上一般取 $q=2\sim6$。
+
+\subsection{采用斜槽}
+把定子（或转子）槽沿轴向扭斜一个角度，使同一根导体沿轴向各点切割的磁场相位不同，从而削弱齿谐波电动势。斜槽因数
+\begin{equation}
+k_{skv}=\frac{\sin\left(v\dfrac{\beta}{2}\right)}{v\dfrac{\beta}{2}},
+\end{equation}
+其中 $\beta$ 为斜槽对应的空间电角度。斜槽主要用于削弱\textbf{齿谐波}（$v=Q/p\pm1$ 次），因为齿谐波的绕组因数与基波相同，靠短距和分布无法削弱，只能靠斜槽或增大气隙。
+
+\subsection{采用星形接法}
+如第 9.5 节所述，星形接法使线电动势中不含 3 次及 3 的倍数次谐波，代价为零，因此几乎所有同步发电机都采用星形接法。
+
+\begin{center}
+\begin{tabular}{@{}p{2.4cm}p{4.0cm}p{5.6cm}@{}}
+\toprule
+方法 & 削弱对象 & 代价/限制 \\
+\midrule
+短距绕组 & 指定次数谐波（如 5、7 次） & 基波电动势略降（$\tfrac56\tau$ 时降 3.4\%） \\
+分布绕组 & 各次谐波（$q$ 越大越显著） & 槽数增多、槽利用率下降，$q=2\sim6$ \\
+斜槽 & 齿谐波（$Q/p\pm1$ 次） & 制造工艺复杂，基波略有削弱 \\
+星形接法 & 线电动势中的 3 次及倍数次谐波 & 无代价；避免三角形环流 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{四条措施的"分工"要分清：\textbf{短距}打指定次谐波（$v$ 次要 $y_1=\tau(1-1/v)$）；\textbf{分布}打所有高次谐波（$q$ 越大越狠）；\textbf{斜槽}专打齿谐波（因为齿谐波的 $k_w$ 与基波相同，短距、分布都无效）；\textbf{星形接法}清掉线电动势里的 3 次谐波。考试若问"为什么取 $y_1\approx5/6\tau$"，答"同时削弱 5、7 次且基波仅损失 3.4\%，综合最经济"。}

@@ -1,0 +1,45 @@
+﻿% 电力系统分析课程笔记 —— 主文件（正文排版在 0.样式.tex，章节文件只放内容）
+% 编译：xelatex 1.main.tex 两遍；成品见 build.ps1
+\documentclass[11pt,a4paper,oneside,openany]{book}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
+\newcommand{\YHBbooktrue}{}
+\newcommand{\YHBcourse}{电力系统分析}
+\newcommand{\YHBversion}{v0.1}
+\newcommand{\YHBquote}{电压、功率与稳定，三者不可兼得。}
+\newcommand{\YHBcoverSize}{40pt}
+\newcommand{\YHBcoverLead}{48pt}
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{1E4E3A}
+\definecolor{yhbAccent2}{HTML}{3F7A5C}
+\input{0.样式.tex}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\begin{document}
+\input{2.cover.tex}
+\newpage
+\tableofcontents
+\newpage
+% ===== 章节目录：在此按教材章节顺序 \input =====
+\input{3.绪论.tex}          % 第 1 章  电力系统的基本概念
+\input{4.电力网络各元件的等值电路和参数计算.tex}  % 第 2 章
+\input{5.同步发电机的基本方程.tex}  % 第 3 章
+\input{6.电力网络的数学模型.tex}  % 第 4 章
+\input{7.电力系统三相短路的暂态过程.tex}  % 第 5 章
+\input{8.电力系统三相短路电流的实用计算.tex}  % 第 6 章
+\input{9.电力系统各元件的序阻抗和等值电路.tex}  % 第 7 章
+\input{10.电力系统不对称故障的分析和计算.tex}  % 第 8 章
+\input{11.电力系统的负荷.tex}  % 第 9 章
+\input{12.电力传输的基本概念.tex}  % 第 10 章
+\input{13.电力系统的潮流计算.tex}  % 第 11 章
+\input{14.电力系统的无功功率平衡和电压调整.tex}  % 第 12 章
+\input{15.电力系统的有功功率平衡和频率调整.tex}  % 第 13 章
+\input{16.电力系统的经济运行.tex}  % 第 14 章
+\input{17.电力系统运行稳定性的基本概念.tex}  % 第 15 章
+\input{18.电力系统的电磁功率特性.tex}  % 第 16 章
+\input{19.电力系统暂态稳定性.tex}  % 第 17 章
+\input{20.电力系统静态稳定性.tex}  % 第 18 章
+\input{21.提高电力系统稳定性的措施.tex}  % 第 19 章
+\end{document}

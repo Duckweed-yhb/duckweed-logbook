@@ -1,0 +1,488 @@
+\chapter{线性系统的校正方法}
+
+% 圈号 ①②③ 交给中文字体，避免“Missing character”（本章大量使用）
+\xeCJKDeclareCharClass{CJK}{"2460->"2473}
+
+% ===== 局部排版（仅本章）=====
+\setlength{\parskip}{0.8ex plus 0.3ex minus 0.2ex}
+\setlist{leftmargin=2.5em, itemsep=0.5em, parsep=0.3em, topsep=0.8em, partopsep=0.3em}
+\renewcommand{\arraystretch}{1.45}
+\setlength{\tabcolsep}{9pt}
+% ==============================
+
+\bigskip
+
+\section{本章考核要点}
+\begin{enumerate}
+    \item 校正的概念与串联／反馈／复合三类结构；
+    \item 频域指标 $\gamma$、$h$、$M_r$ 及其与 $\sigma_p$、$t_s$ 的经验换算；
+    \item 超前环节的传函、$\varphi_m$ 与 $\alpha$ 的换算、$\omega_m=1/(T\sqrt{\alpha})$ 及三套设计步骤；
+    \item 滞后环节的高频衰减特性、$1/\tau=(0.1\sim0.2)\omega_c$ 的取法及两种用法（提 $\gamma$／提精度）；
+    \item 滞后-超前校正的两种设计次序；
+    \item 期望频率特性法的三频段与七步流程；
+    \item 反馈校正的四项功能、强反馈近似与“消除不希望折点”。
+\end{enumerate}
+\noindent\textbf{说明：}本章是第 4--7 章的综合应用。前面各章回答“系统好不好”，本章回答“系统不好怎么改”，全部工作都在频域指标上完成，故须先熟练画 Bode 图、读 $\omega_c$ 与 $\gamma$。
+
+\bigskip
+
+\section{校正的基本概念与性能指标}
+
+\subsection{校正与校正装置}
+\textbf{系统分析}：已知模型算指标，判断是否满足要求。\textbf{系统综合（校正）}：模型与指标已定而性能不满足，引入附加装置 $G_c(s)$，改变系统结构或参数，使各指标同时满足。
+
+被控对象 $G_0(s)$（不可变部分）给定，能改的只有 $G_c(s)$。校正的实质：\textbf{在保证闭环稳定的前提下重新配置零极点，等价地在频域上重新“塑造”开环对数频率特性，在“稳、准、快”之间取工程折中。}
+
+按连接方式分三类：\textbf{串联校正}（$G_c$ 串在前向通道前端，信号功率小、易实现，本章第 3--6 节）、\textbf{反馈校正}（$G_c$ 接成局部反馈，只“改造”被包围的环节）、\textbf{复合校正}（再加前馈通道，本课程课件未展开）。
+
+\subsection{三个频域性能指标}
+设 $\omega_c$ 为\textbf{剪切（截止）频率}，$|G(\mathrm{j}\omega_c)|=1$；$\omega_g$ 为\textbf{相角穿越频率}，$\angle G(\mathrm{j}\omega_g)=-180^\circ$。
+\[
+\gamma=180^\circ+\angle G(\mathrm{j}\omega_c),\qquad
+h_{\mathrm{dB}}=-20\lg\bigl|G(\mathrm{j}\omega_g)\bigr|,\qquad
+M_r\approx\frac{1}{\sin\gamma}
+\]
+\textbf{物理意义}：$\gamma$ 是相位安全余量（相位再滞后 $\gamma$ 度即临界稳定）；$h$ 是增益安全余量（开环增益再放大 $h$ 倍即临界稳定）；$M_r=A_{\max}/A(0)$ 为闭环谐振峰值，越大谐振越尖锐、超调越大。判据：$\gamma>0^\circ$、$h_{\mathrm{dB}}>0$ 稳定；工程要求 $\gamma=30^\circ\sim60^\circ$、$h_{\mathrm{dB}}>6$\,dB。
+
+\subsection{与时域指标的换算}
+指标常给 $\sigma_p$、$t_s$，设计在频域做，须先翻译。对高阶系统用经验公式（非解析解）：
+\begin{align}
+\sigma_p&=\left[0.16+0.4\left(\frac{1}{\sin\gamma}-1\right)\right]\times100\%
+=\left[0.16+0.4\left(M_r-1\right)\right]\times100\%\\
+t_s&=\frac{\pi}{\omega_c}\left[2+1.5\left(\frac{1}{\sin\gamma}-1\right)+2.5\left(\frac{1}{\sin\gamma}-1\right)^{2}\right]
+=\frac{\pi}{\omega_r}\left[2+1.5\left(M_r-1\right)+2.5\left(M_r-1\right)^{2}\right]
+\end{align}
+用法是\textbf{反解}：由 $\sigma_p$ 要求解出 $\gamma$ 下限，由 $t_s$ 要求解出 $\omega_c$ 下限，得“$\gamma\ge\gamma^*$、$\omega_c\ge\omega_c^*$”。
+
+\noindent\textbf{三个量不要混}：$\omega_c$ 是\textbf{开环}幅频穿越 $0$\,dB 的频率，$\omega_r$ 是\textbf{闭环}谐振频率，$\omega_b$ 是\textbf{闭环}带宽频率（降至 $0.707$ 处）。三者接近但不同，代错量是最常见的失分点。
+
+\subsection{校正设计的两条路线}
+\textbf{分析法（试探法）}：先按经验定装置类型，算参数再校验，不满足则重来；每步有明确物理依据，但可能反复试凑。\textbf{综合法（期望特性法）}：先按指标“画”出期望开环特性 $G(s)$，再反解 $G_c=G/G_0$；指标一次到位，但期望特性可能不可实现。本章第 3--6 节走分析法，第 8 节走综合法，第 9 节把两者与反馈校正结合。
+
+\bigskip
+
+\section{超前校正环节的性质与实现}
+
+\subsection{传递函数与频率特性}
+\[
+G_c(s)=\frac{\tau s+1}{Ts+1}\ (\tau>T),\qquad
+G_c(s)=\frac{\alpha Ts+1}{Ts+1}\ (\tau=\alpha T,\ \alpha>1)
+\]
+$\alpha$ 称\textbf{分度系数}。以 $\mathrm{j}\omega$ 代入：
+\begin{align}
+G_c(\mathrm{j}\omega)&=\frac{\mathrm{j}\tau\omega+1}{\mathrm{j}T\omega+1}\\
+\varphi(\omega)&=\arctan\tau\omega-\arctan T\omega
+=\arctan\frac{(\tau-T)\omega}{1+T\tau\omega^{2}}>0\\
+\bigl|G_c(\mathrm{j}\omega)\bigr|&=\frac{\sqrt{\tau^{2}\omega^{2}+1}}{\sqrt{T^{2}\omega^{2}+1}}
+\end{align}
+零点 $-1/\tau$、极点 $-1/T$。因 $\tau>T$，$1/\tau<1/T$，\textbf{零点总在极点右侧}，故任何频率上相角为正——“超前”由此得名。Bode 图上 $1/\tau\sim1/T$ 之间是 $+20$\,dB/dec 的上升台阶：低频段 $0$\,dB，高频段 $20\lg\alpha$\,dB，即超前环节把高频段整体抬高 $20\lg\alpha$\,dB，这正是它抬高 $\omega_c$ 的代价来源。
+
+\subsection{最大超前角：命题 6.1}
+\begin{tcolorbox}[colback=blue!4,colframe=blue!45,title=\textbf{命题 6.1}]
+对 $\tau=\alpha T$、$\alpha>1$ 的超前环节：
+\[
+\omega_m=\frac{1}{T\sqrt{\alpha}}=\frac{1}{\sqrt{T\tau}},\qquad
+\varphi_m=\arcsin\frac{\alpha-1}{\alpha+1}=\arctan\frac{\alpha-1}{2\sqrt{\alpha}},\qquad
+20\lg\bigl|G_c(\mathrm{j}\omega_m)\bigr|=10\lg\alpha
+\]
+\end{tcolorbox}
+三个结论：① 令 $\mathrm{d}\varphi/\mathrm{d}\omega=0$ 得 $\omega_m$，它恰是 $1/\tau$ 与 $1/T$ 的\textbf{几何中心}，即“最大相角位于两转折频率的中点”；② $\varphi_m$ \textbf{只与 $\alpha$ 有关}、与 $T$ 无关——$\alpha$ 定能力、$T$ 定位置；③ $\omega_m$ 处幅值抬升是 $10\lg\alpha$（不是 $20\lg\alpha$，后者是高频极限值），这个 $\frac12$ 关系是全部设计公式的枢纽。
+
+$\alpha$ 越大 $\varphi_m$ 越大，但 $20\lg\alpha$ 的噪声放大也越重，工程上 $\alpha\le20$（此时 $\varphi_m\approx65^\circ$）；单级超前最多不到 $90^\circ$，实际只用其中一部分。
+
+\begin{table}[htbp]
+\centering
+\caption{$\alpha$ 与 $\varphi_m$、$10\lg\alpha$ 的对照}
+\begin{tabular}{cccccccccc}
+\toprule
+$\alpha$ & 3 & 5 & 8 & 10 & 15 & 20 & 30 & 50 & 100 \\
+\midrule
+$\varphi_m$ & $30^\circ$ & $41.8^\circ$ & $51^\circ$ & $55^\circ$ & $61^\circ$ & $64.8^\circ$ & $69.3^\circ$ & $74^\circ$ & $78.6^\circ$ \\
+$10\lg\alpha$/dB & 4.8 & 7.0 & 9.0 & 10 & 11.8 & 13.0 & 14.8 & 17.0 & 20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent 由 $\varphi_m$ 反求 $\alpha$（设计中最常用）：
+\[
+\boxed{\ \alpha=\frac{1+\sin\varphi_m}{1-\sin\varphi_m}\ }
+\]
+两式互为反函数，\textbf{方向不能倒}：由 $\varphi_m$ 求 $\alpha$ 用上式，由 $\alpha$ 求 $\varphi_m$ 用 $\arcsin\frac{\alpha-1}{\alpha+1}$。
+
+\subsection{无源超前网络与有源网络}
+$R_2$ 与 $C$ 并联后再串 $R_1$、输出取自 $R_1$ 两端，即最简单的无源超前网络。在“信号源内阻为零、负载阻抗无穷大”条件下
+\[
+G_c(s)=K_c\frac{\alpha Ts+1}{Ts+1},\quad
+K_c=\frac{R_1}{R_1+R_2}=\frac{1}{\alpha},\quad
+\alpha=\frac{R_1+R_2}{R_1},\quad
+T=\frac{R_1R_2C}{R_1+R_2}
+\]
+$K_c=1/\alpha$ 意味着\textbf{无源网络把开环增益压低到 $1/\alpha$}，稳态误差随之变差，必须另加放大器把增益补回 $\alpha$ 倍。
+
+\noindent\textbf{有源网络}（教材 6-2 节补充，课件未展开）：把无源网络接在运放反馈通路中，增益不衰减（无需补偿），$\alpha$ 可取得更大，还能实现 P、I、D、PD、PI、PID 等规律；同相输入的超前（微分）有源网络为 $G_o(s)=K\dfrac{1+T_1s}{1+T_2s}$，$K>1$、$T_1>T_2$，形式与 $G_c(s)=\dfrac{\tau s+1}{Ts+1}$ 一致，只多一个大于 $1$ 的增益。
+
+\subsection{超前环节的 Bode 特征}
+\begin{itemize}
+    \item 幅频：$1/\tau\sim1/T$ 间为 $+20$\,dB/dec 台阶，$0\to20\lg\alpha$\,dB，$\omega_m$ 处正在中点、抬升 $10\lg\alpha$\,dB；
+    \item 相频：$0^\circ\to\varphi_m\to0^\circ$，正相角集中在 $1/\tau\sim1/T$ 的一个多十倍频程内；
+    \item 把 $\omega_m$ 对准 $\omega_c$，即可在 $\omega_c$ 处拿到几乎全部 $\varphi_m$、同时抬升 $10\lg\alpha$——这两个“同时”正是设计公式的来源；远离 $\omega_m$ 一个十倍频程以上时相角趋 $0$，只抬幅值不给相角、反把 $\omega_c$ 推远，是“$\alpha$ 过大而 $T$ 配错”的典型病态。
+\end{itemize}
+
+\bigskip
+
+\section{串联超前校正}
+
+\subsection{校正原理}
+$R\to G_c\to G_0\to H\to C$。超前环节串入后同时产生两个效果：① \textbf{抬相角}——在 $\omega_c$ 附近提供 $\varphi_m$，$\gamma=180^\circ+\varphi(\omega_c)$ 增大，超调减小、稳定性提高；② \textbf{抬幅值}——$L(\omega)$ 在 $\omega>1/\tau$ 段整体抬高，$L=0$ 点右移、$\omega_c$ 增大，响应加快。代价是高频增益抬高 $20\lg\alpha$，抗高频噪声能力下降；且 $\omega_c$ 右移后原系统在该处相角更负，会“吃掉”一部分 $\varphi_m$，故须预留补偿量 $\Delta$。
+
+在 $\omega_c$ 处须有 $|G_0(\mathrm{j}\omega_c)|\cdot|G_c(\mathrm{j}\omega_c)|=1$；若 $\omega_c$ 对准 $\omega_m$，则 $|G_c(\mathrm{j}\omega_m)|=\sqrt{\alpha}$，于是
+\[
+\boxed{\ 20\lg\bigl|G_0(\mathrm{j}\omega_c)\bigr|=-10\lg\alpha\ }
+\]
+即“用未校正系统的负分贝值抵消校正环节的 $10\lg\alpha$ 抬升”。这是第 4 步的核心等式，也是检验设计是否自洽的判据。
+
+\subsection{设计步骤（方案一：相角裕度优先）}
+先定“需要多少相角”，由相角定 $\alpha$，再由 $\alpha$ 反求 $\omega_c$ 与 $T$。适用于以 $\gamma$ 为主、$\omega_c$ 只要求“不低于某值”的场合。
+\begin{enumerate}
+    \item \textbf{由稳态误差定 $K$}。条件：指标给的 $e_{ss}$ 与系统型别，例如斜坡输入 $e_{ss}=R/K\le e^*$，取 $K$。此后型别与增益“冻结”。
+    \item \textbf{求 $\omega_{c0}$、$\gamma_0$}。条件：$20\lg|G_0(\mathrm{j}\omega_{c0})|=0$（按渐近特性分段列式），再算 $\gamma_0=180^\circ+\angle G_0(\mathrm{j}\omega_{c0})$。若 $\gamma_0$ 已达标，无需校正。
+    \item \textbf{定 $\varphi_m$ 与 $\alpha$}。条件：“补足差额再加余量”
+    \[
+    \varphi_m=\gamma-\gamma_0+\Delta,\qquad \alpha=\frac{1+\sin\varphi_m}{1-\sin\varphi_m}
+    \]
+    $\Delta$ 为补偿量，课件取 $\Delta=10^\circ$（一般 $5^\circ\sim10^\circ$）。若 $\alpha>20$，说明单级超前不够，改用两级超前或滞后-超前。
+    \item \textbf{由 $\alpha$ 定 $\omega_c$}。条件：$20\lg|G_0(\mathrm{j}\omega_c)|=-10\lg\alpha$，解方程得 $\omega_c$，令 $\omega_c\approx\omega_m$。\textbf{方案一的特征：$\omega_c$ 是算出来的，不是指定的。}
+    \item \textbf{定 $T$，写 $G_c(s)$}。条件：$\omega_m$ 对准 $\omega_c$，
+    \[
+    T=\frac{1}{\omega_m\sqrt{\alpha}}=\frac{1}{\omega_c\sqrt{\alpha}},\qquad
+    G_c(s)=\frac{\alpha Ts+1}{Ts+1}
+    \]
+    最后必须回代求新 $\omega_c$、$\gamma=180^\circ+\angle G_0+\varphi_c$、$h_{\mathrm{dB}}$；不满足则加大 $\Delta$ 重算。
+\end{enumerate}
+
+\subsection{设计步骤（方案二：剪切频率优先）}
+先定“要多快”（直接取 $\omega_c$），由该处幅值定 $\alpha$，再反查这台 $\alpha$ 能否提供足够相角。
+\begin{enumerate}
+    \item 第 1、2 步同方案一。
+    \item \textbf{按指标直接取 $\omega_c$}，留 $10\%$ 余量（如要求 $>40$\,rad/s 取 $50$\,rad/s）。依据是“$\omega_c$ 与快速性成正比”。
+    \item \textbf{由 $\omega_c$ 处幅值定 $\alpha$}。条件：$|G_0(\mathrm{j}\omega_c)|\sqrt{\alpha}=1$，
+    \[
+    \alpha=\frac{1}{\bigl|G_0(\mathrm{j}\omega_c)\bigr|^{2}}
+    \]
+    分母是幅值\textbf{平方}，不是分贝值。
+    \item \textbf{校验相角}：$\varphi_m=\arcsin\dfrac{\alpha-1}{\alpha+1}$，要求 $\varphi_m\ge\gamma-\gamma_0+\Delta$。满足则该 $\omega_c$ 可行；不满足说明 $\omega_c$ 取高了（该处相角已太负），须减小 $\omega_c$ 重算——\textbf{方案二的“校验”就是这一步}。
+    \item \textbf{定 $T$}：$T=1/(\omega_c\sqrt{\alpha})$，写出 $G_c(s)$，回代校验。
+\end{enumerate}
+
+\subsection{方案三与适用场合}
+指标只给 $\omega_c$ 下限时，可取 $1.2$ 倍左右并\textbf{直接令 $\omega_m=\omega_c$}；$\alpha$ 仍按方案一由相角要求确定（或查 $\alpha$--$\varphi_m$ 表）；$T=1/(\omega_m\sqrt{\alpha})$。步骤最少、误差也最大，必须回代校验。
+
+\textbf{适合}：系统稳定但 $\gamma$ 偏小（$\gamma_0$ 接近 $0^\circ$ 甚至略负）、$\omega_c$ 偏小、希望同时提高稳定性和快速性；且在期望 $\omega_c$ 附近幅频斜率为 $-20$\,dB/dec。\textbf{不适合}：$\gamma_0$ 已很不负（如 $-30^\circ$ 以下），单级补不上；对高频噪声敏感；要求 $\omega_c$ 大幅右移（$\alpha\le20$ 时只有约 $26$\,dB 抬升）。
+
+\subsection{易错点}
+\begin{itemize}
+    \item 忘补偿量 $\Delta$：直接令 $\varphi_m=\gamma-\gamma_0$，因 $\omega_c$ 右移后相角更负，$\gamma$ 必不达标。超前取 $\Delta=10^\circ$、滞后取 $\Delta=6^\circ$，不可混用。
+    \item 把 $\omega_c$ 与 $\omega_m$ 当两个独立量：任何方案都要求 $\omega_c\approx\omega_m$，错开后只用到部分 $\varphi_m$，幅值抬升也不再是 $10\lg\alpha$，公式全部失效。
+    \item 把 $|G_c(\mathrm{j}\omega_c)|$ 写成 $\alpha$：$\omega_m$ 处是 $\sqrt{\alpha}$（$10\lg\alpha$\,dB），$\alpha$ 是高频极限（$20\lg\alpha$\,dB），写成 $\alpha$ 会把 $\alpha$ 算成平方关系。
+    \item $\alpha$ 与 $\varphi_m$ 换算方向倒置；用无源网络却忘补增益（$K_c=1/\alpha$，稳态误差变差 $\alpha$ 倍）；只算不验。
+\end{itemize}
+
+\bigskip
+
+\section{滞后校正环节的性质与实现}
+
+\subsection{传递函数与频率特性}
+\[
+G_c(s)=\frac{\tau s+1}{\beta\tau s+1}\ (\beta>1),\qquad
+\varphi(\omega)=\arctan\tau\omega-\arctan\beta\tau\omega<0,\qquad
+\bigl|G_c(\mathrm{j}\omega)\bigr|=\frac{\sqrt{\tau^{2}\omega^{2}+1}}{\sqrt{\beta^{2}\tau^{2}\omega^{2}+1}}
+\]
+零点 $-1/\tau$、极点 $-1/(\beta\tau)$。因 $\beta>1$，$1/(\beta\tau)<1/\tau$，\textbf{极点总在零点左侧}，故相角恒为负——“滞后”由此得名。
+
+幅频：\textbf{低频段 $0$\,dB}（$\omega\ll1/\tau$ 时 $|G_c|\to1$），\textbf{高频段衰减到 $1/\beta$}（$-20\lg\beta$\,dB），中间以 $-20$\,dB/dec 下降。这个“低频不衰减、高频衰减”的形状，是滞后校正既能保稳态精度又能压 $\omega_c$ 的根本原因。
+
+\subsection{最大滞后角与相角滞后的“避开”}
+与超前完全对偶：
+\[
+\omega_m=\frac{1}{\tau\sqrt{\beta}},\qquad
+\varphi_m=-\arcsin\frac{\beta-1}{\beta+1}
+\]
+$\omega_m$ 同样位于 $1/\tau$ 与 $1/(\beta\tau)$ 的几何中点，$\varphi_m$ 同样只与 $\beta$ 有关。
+
+设计的全部技巧在于\textbf{不让最大滞后角落在 $\omega_c$ 上}：把 $1/\tau$ 取得远小于 $\omega_c$，使 $\omega_c$ 处相角已回升到接近 $0^\circ$。课件取法
+\[
+\boxed{\ \frac{1}{\tau}=(0.1\sim0.2)\,\omega_c\ }
+\]
+此时 $\omega_c$ 处只剩 $-5^\circ\sim-6^\circ$ 的相角滞后，而幅值已基本衰减到位：$L(\omega_c)=-20\lg\beta$。
+
+\begin{table}[htbp]
+\centering
+\caption{取 $1/\tau=0.1\omega_c$ 时滞后环节在 $\omega_c$ 处的相角与幅值}
+\begin{tabular}{ccccc}
+\toprule
+$\beta$ & 5 & 10 & 20 & 50 \\
+\midrule
+$\varphi(\omega_c)$ & $-4.6^\circ$ & $-5.1^\circ$ & $-5.4^\circ$ & $-5.5^\circ$ \\
+$L(\omega_c)$/dB & $-14$ & $-20$ & $-26$ & $-34$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent 由表可见：一旦 $1/\tau=0.1\omega_c$，$\varphi(\omega_c)$ 基本固定在 $-5^\circ$ 左右、几乎与 $\beta$ 无关，而衰减 $-20\lg\beta$ 随 $\beta$ 线性增加——这就是滞后校正“用幅值换相角”的本钱：几乎不付相角代价，就换来几十 dB 的幅值压缩。若取 $1/\tau=0.2\omega_c$，$\varphi(\omega_c)$ 约 $-10^\circ\sim-11^\circ$，代价翻倍；取到 $\omega_c$ 附近则直接把 $\varphi_m$ 送进 $\omega_c$，\textbf{相角裕度反而下降}，这是滞后校正最致命的设计错误。
+
+\subsection{无源滞后网络与记号对应}
+$R_1$、$R_2$ 串联后再与 $C$ 并接、输出取自 $R_2$ 两端，得
+\[
+G_c(s)=\frac{1+bTs}{1+Ts},\qquad b=\frac{R_2}{R_1+R_2}<1,\qquad T=(R_1+R_2)C
+\]
+$b$ 称分度系数，表示滞后深度。两套记号完全等价：
+\[
+\frac{1+bTs}{1+Ts}=\frac{\tau s+1}{\beta\tau s+1}\quad\Longleftrightarrow\quad
+\tau=bT,\ \ \beta=\frac1b
+\]
+\textbf{注意方向}：$b<1$ 而 $\beta>1$；教材用 $b$、课件用 $\beta$，做题先在草稿上统一成一种记号，否则极易把分子分母写反。
+
+\bigskip
+
+\section{串联滞后校正}
+
+\subsection{用滞后校正提高相角裕度}
+\textbf{原理（课件原话）}：利用校正装置高频段的幅值衰减特性，降低剪切频率；利用自身的相位储备提高相位裕度。三步因果：① $\beta$ 把 $L(\omega)$ 在 $\omega>1/\tau$ 段整体压低 $20\lg\beta$\,dB；② 于是 $L=0$ 点左移，$\omega_c$ 降到原系统相角更“富裕”的低频区；③ 新 $\omega_c$ 处惯性环节的滞后相角更小，$\gamma=180^\circ+\varphi(\omega_c)$ 自然变大，再扣掉滞后环节自身约 $-5^\circ$，净结果 $\gamma$ 显著提高。
+
+\textbf{代价}：带宽变窄、响应变慢（$t_s$ 反比于 $\omega_c$）。故滞后校正是“牺牲快速性换稳定性”，与超前正好相反——\textbf{要快用超前，要稳用滞后}，这是选择校正方式的第一判据。
+
+\subsection{设计步骤（方案一：相角裕度优先）}
+\begin{enumerate}
+    \item \textbf{由稳态误差定 $K$}，得 $G_0(s)$（同超前第 1 步）。滞后不改变低频段，$K$ 定下不再动。
+    \item \textbf{画 $L_0(\omega)$、$\varphi_0(\omega)$}，读 $\omega_{c0}$、$\gamma_0$。
+    \item \textbf{由相角条件定校正后的 $\omega_c$}。条件：在\textbf{原系统}相角曲线上找一点，使相角裕度多出 $\Delta$：
+    \[
+    180^\circ+\angle G_0(\mathrm{j}\omega_c)=\gamma+\Delta
+    \]
+    课件取 $\Delta=6^\circ$——正是留给滞后环节在 $\omega_c$ 处那 $-5^\circ\sim-6^\circ$ 的余量。解此 $\arctan$ 方程（或直接在 $\varphi_0(\omega)$ 曲线上查）得 $\omega_c$。\textbf{用的是原系统相角，不是校正后的相角}，因为滞后环节的相角已折算进 $\Delta$。
+    \item \textbf{由幅值条件定 $\beta$}。条件：$\omega_c$ 处未校正系统的正分贝值正好被压回 $0$\,dB，
+    \[
+    20\lg\bigl|G_0(\mathrm{j}\omega_c)\bigr|=20\lg\beta\quad\Longrightarrow\quad \beta=\bigl|G_0(\mathrm{j}\omega_c)\bigr|
+    \]
+    新 $\omega_c$ 处 $L_0$ 还有 $+20\lg\beta$\,dB，需滞后环节给 $-20\lg\beta$\,dB 才落到 $0$\,dB。
+    \item \textbf{定 $\tau$，写 $G_c(s)$}。条件：最大滞后角远离 $\omega_c$，
+    \[
+    \frac1\tau=\left(\frac15\sim\frac1{10}\right)\omega_c,\qquad
+    G_c(s)=\frac{\tau s+1}{\beta\tau s+1}
+    \]
+    若 $\beta$ 很小（如 $<2$）说明 $\omega_c$ 只降了一点点，应检查第 3 步或改选超前。最后回代校验。
+\end{enumerate}
+
+\subsection{设计步骤（方案二：剪切频率优先）}
+\begin{enumerate}
+    \item 第 1、2 步同上。
+    \item \textbf{按指标直接取 $\omega_c$}（如要求 $>2.5$\,rad/s 取 $2.6$\,rad/s），并\textbf{立即校验}
+    \[
+    180^\circ+\angle G_0(\mathrm{j}\omega_c)\ge\gamma
+    \]
+    满足且有余量则方案成立；不满足说明 $\omega_c$ 取高了——\textbf{滞后校正的本质是充分利用原系统的相位储备，$\omega_c$ 只能往低取，不能硬拔高}。
+    \item \textbf{定 $\beta$}：$\beta=|G_0(\mathrm{j}\omega_c)|$。
+    \item \textbf{定 $\tau$}：$1/\tau=(1/5\sim1/10)\omega_c$，写出 $G_c(s)$，回代校验。
+\end{enumerate}
+两方案形式完全相同（$\beta$ 由幅值定、$\tau$ 由 $1/\tau$ 与 $\omega_c$ 的比例定），差别只在第 3 步：方案一由相角\textbf{反解} $\omega_c$，方案二先\textbf{指定}再校验。这与超前校正的两方案结构同构，只是 $\omega_c$ 移动方向相反。
+
+\subsection{用滞后校正提高稳态精度}
+滞后网络低频增益为 $1$，本身不能提高开环增益。要提精度必须\textbf{先把增益提上去，再把中高频压回来}：① 令 $K'=\beta K$，低频段整体抬高 $20\lg\beta$\,dB，\textbf{稳态误差降为 $1/\beta$}（如斜坡输入 $e_{ss}=R/K'$）；② 串入 $G_c=\dfrac{\tau s+1}{\beta\tau s+1}$，它在 $\omega>1/\tau$ 后衰减 $20\lg\beta$\,dB，正好把抬上去的幅值压回；③ 于是 $\omega\gg1/\tau$ 处幅频与原来几乎重合，\textbf{$\omega_c$、$\gamma$ 基本不变}，而低频增益提高 $\beta$ 倍。一句话：\textbf{“低频抬、高频压”，用中高频幅值换低频精度。}前提是 $1/\tau$ 远低于 $\omega_c$，否则相角滞后带进 $\omega_c$，$\gamma$ 反降。
+
+\subsection{适用场合与易错点}
+\textbf{适合}：$\gamma$ 不足但 $\omega_c$ 已足够大（甚至偏大）、希望保持或降低带宽、对高频噪声敏感；稳态精度要求高但型别不能提高（提高型别会破坏稳定性）。\textbf{不适合}：$\omega_c$ 已偏小、要求加快响应；相角曲线很“陡”（很宽频段内已接近 $-180^\circ$）的系统。
+
+易错点：
+\begin{itemize}
+    \item 把 $1/\tau$ 取在 $\omega_c$ 附近：$\varphi_m$ 直接落在 $\omega_c$ 上，$\gamma$ 不升反降。应取 $(0.1\sim0.2)\omega_c$，$\beta$ 越大越往低取。
+    \item 误以为网络能提高低频增益：其低频增益恒为 $1$，必须\textbf{同时}把 $K$ 提高 $\beta$ 倍，只串网络不改 $K$ 无效。
+    \item $\beta$ 方向搞反（$\beta$ 在\textbf{分母}且 $>1$，写到分子就成超前）；漏 $\varphi_m$ 的负号（$\varphi_m=-\arcsin\frac{\beta-1}{\beta+1}$）。
+    \item 第 3 步用错相角：方案一用\textbf{未校正}系统相角，误用校正后相角等于把 $-5^\circ$ 扣两次；忽略快速性变差，$t_s$ 必变大须回代检查。
+\end{itemize}
+
+\bigskip
+
+\section{串联滞后-超前校正}
+
+\subsection{传递函数}
+\[
+\boxed{\ G_c(s)=\underbrace{\frac{\tau_1s+1}{\beta\tau_1s+1}}_{\text{滞后}}\cdot
+\underbrace{\frac{\alpha Ts+1}{Ts+1}}_{\text{超前}},\qquad \alpha>1,\ \beta>1\ }
+\]
+Bode 图呈“三段式”：低频 $0$\,dB（滞后未起作用）$\to$ 中频 $-20\lg\beta$\,dB（滞后已衰减、超前未抬起）$\to$ 高频 $0$\,dB（超前抬回），表现为“下凹再回升”的台阶。无源滞后-超前网络（教材写法）可整理为
+\[
+G_c(s)=\frac{(1+T_as)(1+T_bs)}{(1+\alpha T_as)\left(1+\dfrac{T_b}{\alpha}s\right)},\qquad \alpha>1
+\]
+其中 $(1+T_as)/(1+\alpha T_as)$ 为滞后部分，$(1+T_bs)/(1+T_bs/\alpha)$ 为超前部分；确定 $T_a$、$T_b$、$\alpha$ 三个独立参数，渐近特性形状即完全确定。
+
+\subsection{为什么需要它}
+单级超前只能“抬相角、抬 $\omega_c$”，单级滞后只能“压 $\omega_c$、提 $\gamma$”。若指标同时要求 $\omega_c$ 大（快）、$\gamma$ 大（稳）、稳态精度高（$K$ 大），单级无法兼顾：只用超前则 $K$ 大时 $\gamma_0$ 很负、$\alpha$ 过大而噪声压不住；只用滞后则 $\omega_c$ 被压低、快速性不达标。滞后-超前的分工是：\textbf{滞后管低频（保增益、提精度），超前管中频（提 $\gamma$、抬 $\omega_c$）}，两段各管一段频率、互不干扰。
+
+\subsection{设计次序一：滞后环节优先}
+先用滞后把 $\omega_c$ 压到略低于目标，再用超前把 $\gamma$ 补上并把 $\omega_c$ 抬回。适用于 $\gamma_0$ 很负、必须大幅降 $\omega_c$ 才能拿到相角的系统。
+\begin{enumerate}
+    \item 由稳态误差定 $K$，得 $G_0(s)$。
+    \item \textbf{取 $\omega_{c1}$ 略小于设计要求的 $\omega_c$}。这是关键：随后串超前会\textbf{抬高} $\omega_c$，故滞后阶段要故意压低一点留余量（课件取 $\omega_{c1}=2.5$\,rad/s，目标 $\ge3.5$\,rad/s）。
+    \item \textbf{用“剪切频率优先”的滞后法确定滞后部分}：$\beta=|G_0(\mathrm{j}\omega_{c1})|$，$1/\tau_1=(1/10)\omega_{c1}$，得 $G_{c1}(s)=\dfrac{\tau_1s+1}{\beta\tau_1s+1}$。
+    \item \textbf{对 $G_0G_{c1}$ 设计超前部分}：被校正对象已变为 $G_0G_{c1}$，用第 4 节的超前法求 $\alpha$、$T$ 得 $G_{c2}(s)$。此时 $\omega_{c1}$ 处 $\gamma$ 只有十几度，要补的相角量很大。
+    \item \textbf{合成并校验}：$G_c=G_{c1}G_{c2}$，回代求新 $\omega_c$、$\gamma$、$h_{\mathrm{dB}}$。
+\end{enumerate}
+\textbf{特点}：滞后先“锁定带宽与低频增益”，超前只补相角，故\textbf{超前的 $\alpha$ 较小}、高频噪声放大少；缺点是步骤多，第 4 步要在已校正对象上重算。
+
+\subsection{设计次序二：超前环节优先}
+先用超前把 $\gamma$、$\omega_c$ 提上去，再用滞后把低频增益抬回。适用于 $\gamma_0$ 尚可、稳态精度差、要求 $\omega_c$ 较大的系统。
+\begin{enumerate}
+    \item 先按“只满足动态指标”的增益定 $K$（此时 $K$ 可能小于稳态要求），得 $G_0(s)$；
+    \item 用第 4 节超前法把 $\gamma$、$\omega_c$ 做到要求，得 $G_{c2}(s)$；
+    \item 若稳态精度仍不够，再串滞后部分并把增益乘 $\beta$：$1/\tau_1$ 取在 $\omega_c$ 的 $1/10$，使 $\omega_c$、$\gamma$ 基本不变（原理同第 6.4 节）；
+    \item 合成 $G_c=G_{c1}G_{c2}$，校验三项指标。
+\end{enumerate}
+\textbf{特点}：超前先“定动态”、滞后只做“精度微调”，物理意义清楚、步骤少；缺点是 $\gamma_0$ 很差时超前所需 $\alpha$ 很大，噪声问题突出。两种次序的取舍可概括为：\textbf{滞后优先}抓带宽与低频增益，超前 $\alpha$ 小、噪声小，但步骤多、需二次设计；\textbf{超前优先}抓 $\gamma$ 与快速性，动态指标一次到位，但 $\alpha$ 可能过大、噪声放大。
+
+\bigskip
+
+\section{期望频率特性法}
+
+\subsection{基本思想与三频段划分}
+前面各节是“分析法”，此法是“综合法”：\textbf{不管用什么装置，先按指标把满足要求的开环特性 $G(s)$ 画出来}（期望特性），再令 $G_c(s)=G(s)/G_0(s)$，把“设计校正装置”变成“两个频率特性相除”。只要期望特性物理可实现（分母阶次 $\ge$ 分子阶次、无右半平面极点），$G_c$ 就由频域“相减”直接得到。
+
+\begin{table}[htbp]
+\centering
+\caption{期望特性三频段及其对应的指标}
+\begin{tabular}{p{1.6cm}p{3.2cm}p{3.4cm}p{4.6cm}}
+\toprule
+频段 & 范围 & 决定的指标 & 形状要求 \\
+\midrule
+低频段 & $\omega\ll\omega_c$ & 稳态误差（型别 $\nu$、增益 $K$） & 斜率 $-20\nu$\,dB/dec，位置由 $K$ 定 \\
+中频段 & $\omega_c$ 附近 & 稳定性（$\gamma$、$h$）与快速性（$\omega_c$） & 以 $-20$\,dB/dec 穿越 $0$\,dB，且有足够宽度 \\
+高频段 & $\omega\gg\omega_c$ & 抗高频噪声能力 & 尽快衰减（$-40$、$-60$\,dB/dec） \\
+\bottomrule
+\end{tabular}
+\end{table}
+三频段之间还有两段\textbf{过渡段}（低频-中频、中频-高频），斜率一般取 $-40$\,dB/dec：取 $-20$ 则过渡太缓、中频段不独立；取 $-60$ 及以下则相位滞后太大，$\gamma$ 被吃掉。
+
+\subsection{中频段宽度与 $M_r$、$\gamma$ 的关系}
+设中频段下限 $\omega_2$、上限 $\omega_3$，定义\textbf{中频段宽度} $h=\omega_3/\omega_2$。课件给出
+\[
+M_r\approx\frac{1}{\sin\gamma},\qquad
+\frac{1}{\sin\gamma}\approx\frac{h+1}{h-1},\qquad
+M_r=\frac{h+1}{h-1},\qquad
+h=\frac{M_r+1}{M_r-1}
+\]
+另有（由 $M_r$ 圆与开环特性的几何关系）
+\[
+\bigl|G(\mathrm{j}\omega_m)\bigr|=\frac{M_r}{\sqrt{M_r^{2}-1}},\qquad
+\frac{\omega_c}{\omega_m}=\frac{M_r}{\sqrt{M_r^{2}-1}}
+\]
+$\omega_m$ 为 $|G(\mathrm{j}\omega)|$ 与 $M_r$ 圆相切处的频率。\textbf{结论}：$h$ 越大 $\Rightarrow$ $M_r$ 越小 $\Rightarrow$ $\gamma$ 越大、$\sigma_p$ 越小；但中频段越宽，所需校正装置阶次越高。由 $h=\frac{M_r+1}{M_r-1}$ 反算：$h=5$ 对应 $\gamma\approx41.8^\circ$，$h=10$ 对应 $\gamma\approx54.9^\circ$，故工程上 $h$ 取 $5\sim10$ 是常见折中。
+
+\subsection{设计步骤（七步）}
+\begin{enumerate}
+    \item \textbf{定低频段}。由稳态误差定型别 $\nu$ 与增益 $K$，画 $G_0$ 的幅频特性。期望特性低频段与未校正系统\textbf{完全相同}：$G_L(s)=K/s^{\nu}$。低频段不能动——稳态精度由它唯一决定，动它等于改指标。
+    \item \textbf{定中频段}。由动态要求定 $\omega_c$、上限 $\omega_3$、下限 $\omega_2$，斜率取 $-20$\,dB/dec。$\omega_c$ 由 $t_s$ 要求反解，$\gamma$ 由 $\sigma_p$ 要求反解（用第 2.3 节经验公式）。
+    \item \textbf{定低频-中频过渡段}。斜率一般取 $-40$\,dB/dec，把 $K/s^\nu$ 与中频段连起来。
+    \item \textbf{定高频段}。为使校正装置尽可能简单，高频段应\textbf{尽量等于或平行于}未校正系统的高频段——这样 $G_c$ 在高频段的极零点可与 $G_0$ 相消，阶次最低。
+    \item \textbf{定中频-高频过渡段}。斜率一般取 $-40$\,dB/dec。
+    \item \textbf{写出期望特性 $G(s)$ 并校验}。由五段折线写出 $G(s)$，算 $\omega_c$、$\gamma$、$h_{\mathrm{dB}}$，检查是否满足全部指标。\textbf{不满足则回第 2 步重画中频段}（改 $\omega_c$、改 $h$、改 $\omega_3$），而不是改低频段。
+    \item \textbf{反解校正装置}：
+    \[
+    \boxed{\ G_c(s)=\frac{G(s)}{G_0(s)}\ }
+    \]
+    并检查 $G_c$ 分子阶次是否高于分母（高于则物理不可实现，说明期望特性的高频衰减比 $G_0$ 更快，须回第 4 步）。
+\end{enumerate}
+
+\subsection{中频段上下限频率的选取}
+\begin{itemize}
+    \item \textbf{下限 $\omega_2$}：由中频段宽度 $h$ 与 $\omega_c$ 的位置反解。若把 $\omega_c$ 取在中频段几何中点，则 $\omega_2=\omega_c/\sqrt{h}$、$\omega_3=\omega_c\sqrt{h}$。
+    \item \textbf{上限 $\omega_3$}：自由度最大的一步，课件给两条做法：① \textbf{取未校正系统的最后一个转折频率}（即让高频段与未校正系统重合），$G_c$ 最简单；② \textbf{直接按公式取一个较大的 $\omega_3$}，因为高频段对相角裕度有“损耗”作用，$\omega_3$ 取大一些可补偿这部分损耗，使实际 $\gamma$ 更接近设计值。
+    \item $\omega_3$ 越大，中频段越宽、$\gamma$ 越大，但所需超前环节越多、$G_c$ 阶次越高。两种取法的 $\gamma$ 可能相差好几度（课件例中同一系统取两种 $\omega_3$，$\gamma$ 分别为 $40.99^\circ$ 与 $47.05^\circ$），必须逐一校验后定稿。
+\end{itemize}
+
+\subsection{易错点}
+\begin{itemize}
+    \item 动了低频段：期望特性低频段必须与 $G_0$ 一致（$K$、$\nu$ 不变），否则稳态精度失控。
+    \item 中频段不以 $-20$\,dB/dec 穿越（以 $-40$ 穿越时 $\gamma$ 急剧下降）；过渡段取 $-60$\,dB/dec，中频段被“孤立”、相位滞后叠加，$\gamma$ 反而不达标。
+    \item 忘检验 $G_c$ 可实现性：$G$ 的高频衰减比 $G_0$ 快时，$G_c$ 分子阶次高于分母，无法实现。
+    \item 只画不算：折线是近似，必须由折线写出 $G(s)$ 后用 $\arctan$ 求和精确算 $\gamma$，不能看图估。
+\end{itemize}
+
+\bigskip
+
+\section{反馈校正}
+
+\subsection{反馈校正的功能}
+$G_c(s)$ 接成局部反馈包围前向通道中的 $G_2(s)$，局部闭环等效为 $G_{\text{eq}}=G_2/(1+G_2G_c)$。三类典型结果（均为负反馈）：
+\begin{itemize}
+    \item \textbf{位置反馈}：包围积分环节 $K/s$，得 $\dfrac{1/\beta}{\frac{1}{K\beta}s+1}$——积分变惯性，增益降为 $1/\beta$、时间常数 $1/(K\beta)$；包围惯性环节 $\dfrac{K}{Ts+1}$，得 $\dfrac{K}{1+\beta K}\cdot\dfrac{1}{\frac{T}{1+\beta K}s+1}$——时间常数缩小 $1+\beta K$ 倍（加快）。
+    \item \textbf{速度反馈} $\tau s$：包围 $\dfrac{K}{Ts+1}$ 得 $\dfrac{K}{(T+K\tau)s+1}$，时间常数增大为 $T+K\tau$（减慢，用于提高阻尼）；包围二阶环节 $\dfrac{K}{T^2s^2+2\zeta Ts+1}$ 得 $\dfrac{K}{T^2s^2+(2\zeta T+K\tau)s+1}$，等效阻尼比增大。
+    \item \textbf{PD 反馈} $\beta(\tau s+1)$：包围二阶环节后仍为二阶，等效参数为
+    \[
+    \bar T=\frac{T}{\sqrt{1+K\beta}},\qquad
+    \bar\xi=\frac{2\zeta T+K\beta\tau}{2T\sqrt{1+K\beta}},\qquad
+    \bar K=\frac{K}{1+K\beta}
+    \]
+    即同时做到“时间常数缩小（加快）、阻尼比增大（平稳）、增益下降”。
+\end{itemize}
+
+\noindent 汇总功能四条：① \textbf{改变局部结构与参数}（积分变惯性、时间常数放大或缩小、阻尼比调大）；② \textbf{降低参数敏感性}；③ 抑制被包围环节的非线性与扰动（反馈深度足够时）；④ 消除不希望有的折点（见 9.3）。
+
+\noindent\textbf{降低参数敏感性}：单个惯性环节 $\dfrac{K}{Ts+1}$ 中 $K$、$T$ 直接决定全部性能，元件老化即破坏指标。加反馈 $\beta$ 后
+\[
+\frac{C(s)}{R(s)}=\frac{K/(1+\beta K)}{\dfrac{T}{1+\beta K}s+1}
+\approx\frac{1/\beta}{\dfrac{T}{\beta K}s+1}\quad(\beta K\gg1)
+\]
+即\textbf{闭环增益只由 $\beta$ 决定、与 $K$ 基本无关}——这就是“用精度不高的元件靠深度负反馈做出高精度系统”的原理，也是反馈校正相对串联校正最本质的优势。
+
+\subsection{局部强反馈的近似}
+设 $G_0=G_1G_2G_3$、$G_c$ 只包围 $G_2$，则校正后开环传递函数
+\[
+\boxed{\ G(s)=\frac{G_0(s)}{1+G_2(s)G_c(s)}\ }
+\]
+按反馈深度分两种：\textbf{弱反馈频段}（$20\lg|G_2G_c|\ll0$，即 $|G_2G_c|\ll1$）分母 $\approx1$，$G(s)\approx G_0(s)$，反馈几乎不起作用；\textbf{强反馈频段}（$20\lg|G_2G_c|\gg0$，即 $|G_2G_c|\gg1$）分母 $\approx G_2G_c$，
+\[
+G(s)\approx\frac{G_0(s)}{G_2(s)G_c(s)}=\frac{G_1(s)G_3(s)}{G_c(s)}
+\]
+此时 $G_2$ 被 $1/G_c$ \textbf{完全取代}——$G_2$ 的大时间常数、谐振峰、非线性都被“屏蔽”。两式是反馈校正设计的全部依据：\textbf{想让反馈起作用，必须在目标频段内保证 $|G_2G_c|\gg1$}；判断一个方案可行与否，只需检查这一点。
+
+\subsection{利用反馈校正消除不希望有的折点}
+若 $G_0$ 中某个惯性环节 $\dfrac{1}{\frac{1}{\omega_A}s+1}$ 的转折频率 $\omega_A$ 落在中频段，会使 $L(\omega)$ 过早由 $-20$\,dB/dec 折向 $-40$\,dB/dec，$\omega_c$ 被压低、$\gamma$ 变差——这就是“不希望有的折点”。\textbf{做法}：在该惯性环节两端加局部反馈 $G_c$，使其在 $\omega>\omega_A$ 频段内 $|G_2G_c|\gg1$，则该频段等效特性变为 $1/G_c$（强反馈近似），原折点被“抹平”，$L(\omega)$ 在中频段恢复 $-20$\,dB/dec，$\omega_c$ 右移、$\gamma$ 提高。
+
+\textbf{成立条件}：① $|G_2G_c|\gg1$ 只在有限频段成立，超出即失效、特性回到 $G_0$，故只能抹掉折点，不能改变低频段与高频段走向；② $G_c$ 自身的极点不能落在需改造的频段内，否则 $1/G_c$ 引入新折点；③ 局部闭环 $1+G_2G_c$ 必须稳定，且不引入右半平面零点。
+
+\subsection{期望特性下的反馈校正设计}
+结构为 $R\to G_1\to X\to G_2\to Y\to G_3\to C$、$G_c$ 包围 $G_2$。思路与第 8 节一致，只是第 7 步的反解公式不同：
+\begin{enumerate}
+    \item 由指标定期望开环特性 $G(s)$（同第 8 节七步法第 1--6 步）；
+    \item 在需反馈起作用的频段用强反馈近似反解
+    \[
+    G(s)\approx\frac{G_0(s)}{G_2(s)G_c(s)}
+    \Longrightarrow
+    G_2(s)G_c(s)\approx\frac{G_0(s)}{G(s)},\quad
+    \boxed{\ G_c(s)\approx\frac{G_0(s)}{G(s)G_2(s)}\ }
+    \]
+    \item \textbf{校验反馈深度}：该频段内是否 $20\lg|G_2G_c|\gg0$。不满足说明该频段特性不能靠反馈“改造”（等于没接），须改用串联校正或更换 $G_2$ 结构；
+    \item \textbf{校验局部闭环稳定性}：$1+G_2G_c$ 的根不能在右半平面——局部反馈虽不改主回路，但局部闭环不稳则整系统必失稳。
+\end{enumerate}
+反馈校正的“改造能力”只作用在 $|G_2G_c|\gg1$ 的频段，超出就“看不见”。故\textbf{串联校正管全频段，反馈校正管局部频段}，两者常配合使用。
+
+\bigskip
+
+\section{本章小结}
+\begin{itemize}
+    \item \textbf{超前}（提供正相角、抬幅频）：$\omega_c$ 右移（快）、$\gamma$ 提高、稳态精度基本不变（无源需补增益）；代价是噪声放大，$\alpha\le20$、$\varphi_m<90^\circ$。
+    \item \textbf{滞后}（高频段幅值衰减）：$\omega_c$ 左移（慢）、$\gamma$ 提高、稳态精度可提高（$K$ 乘 $\beta$）；代价是带宽变窄、响应变慢。
+    \item \textbf{滞后-超前}（低频保增益 $+$ 中频补相角）：可右移 $\omega_c$、提高 $\gamma$、提高精度；代价是结构与步骤复杂。
+    \item \textbf{反馈}（改局部参数、降参数敏感）：$\omega_c$ 可变、$\gamma$ 可调，稳态精度取决于局部闭环；仅在 $|G_2G_c|\gg1$ 频段有效，须防局部失稳。
+    \item \textbf{期望特性法}（直接按指标构造 $G(s)$）：$\omega_c$、$\gamma$ 直接指定，低频段锁定；计算量大，$G_c$ 可能不可实现。
+\end{itemize}
+
+\noindent\textbf{选择校正方式的三条判据}：① \textbf{看 $\omega_c$}——要求变快用超前，允许或要求变慢用滞后，两者都要用滞后-超前；② \textbf{看 $\gamma_0$}——离 $0^\circ$ 不远用超前即可，很负、须靠降 $\omega_c$ 才拿到相角则用滞后；③ \textbf{看精度与噪声}——精度差而型别不能提用滞后（提增益）或滞后-超前，对高频噪声敏感则避免超前、优先滞后。
+
+\bigskip
+
+% ===== 恢复全局默认间距 =====
+\setlength{\parskip}{0pt plus 1pt}
+\setlist{leftmargin=2em, itemsep=0.2em, parsep=0pt}
+\renewcommand{\arraystretch}{1}
+\setlength{\tabcolsep}{6pt}
+% ==============================

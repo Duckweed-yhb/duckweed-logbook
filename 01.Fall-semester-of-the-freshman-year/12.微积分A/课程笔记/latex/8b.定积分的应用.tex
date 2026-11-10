@@ -1,0 +1,211 @@
+% ============================================================
+% 8b.定积分的应用.tex —— 第6章 定积分的应用（同济《高等数学》第七版·上册）
+% 与教材"节"对齐：
+%   第一节 定积分的元素法
+%   第二节 定积分在几何学上的应用（平面图形的面积 / 体积 / 平面曲线的弧长）
+%   第三节 定积分在物理学上的应用（变力沿直线所作的功 / 水压力 / 引力）
+% 只写知识点与方法，不抄例题与习题。
+% ============================================================
+
+\section{定积分的元素法}
+
+用定积分表达某个量$U$，关键是把$U$写成"元素$f(x)\,\mathrm{d}x$在$[a,b]$上的积分"。适用前提是$U$满足三个条件：
+\begin{enumerate}
+  \item $U$与一个变量的变化区间$[a,b]$有关；
+  \item $U$对区间$[a,b]$具有\textbf{可加性}：把$[a,b]$分成若干小区间，则$U$相应地分成若干部分量$\Delta U_i$，且$U=\sum\Delta U_i$；
+  \item 部分量$\Delta U_i$的近似值可表示为$f(\xi_i)\Delta x_i$，其中$f$连续。
+\end{enumerate}
+
+\noindent\textbf{元素法的三个步骤}
+\begin{enumerate}
+  \item 选取积分变量（如$x$）并确定其变化区间$[a,b]$；
+  \item 在$[a,b]$上任取小区间$[x,x+\mathrm{d}x]$，求出该小区间上部分量$\Delta U$的近似值。若$\Delta U$可近似表示为$[x,x+\mathrm{d}x]$上一个连续函数在$x$处的值$f(x)$与$\mathrm{d}x$的乘积，就把$f(x)\,\mathrm{d}x$称为量$U$的\emph{元素}（微元），记作
+\[
+\mathrm{d}U=f(x)\,\mathrm{d}x ;
+\]
+  \item 以$\mathrm{d}U=f(x)\mathrm{d}x$为被积表达式，在$[a,b]$上作定积分：
+\[
+U=\int_a^bf(x)\,\mathrm{d}x .
+\]
+\end{enumerate}
+
+\keyformula{\mathrm{d}U=f(x)\,\mathrm{d}x\ \Longrightarrow\ U=\int_a^b f(x)\,\mathrm{d}x}
+
+\corepoint{元素法的合法性来自"$\Delta U$与$f(x)\mathrm{d}x$之差是比$\mathrm{d}x$高阶的无穷小"，所以第二步\textbf{只保留一阶项}，$\mathrm{d}x$的高次项一律丢弃。常见错误：忘记先判断可加性；变量与区间不对应（如求绕$y$轴旋转的体积却仍对$x$积分而未换元）。}
+
+\section{定积分在几何学上的应用}
+
+\subsection{平面图形的面积}
+
+\noindent\textbf{1. 直角坐标情形}
+\begin{itemize}
+  \item 由$y=f(x)\ (\ge0)$、$x=a$、$x=b$、$x$轴围成的曲边梯形：面积元素$\mathrm{d}A=f(x)\,\mathrm{d}x$，
+\[
+A=\int_a^bf(x)\,\mathrm{d}x ;
+\]
+  \item 由上下两条曲线$y=f(x)\ge g(x)$与$x=a$、$x=b$围成的图形：
+\[
+A=\int_a^b\bigl[f(x)-g(x)\bigr]\mathrm{d}x ;
+\]
+  \item 若图形左右边界由$x=\varphi(y)\ge\psi(y)$给出，取$y$为积分变量更简便：
+\[
+A=\int_c^d\bigl[\varphi(y)-\psi(y)\bigr]\mathrm{d}y .
+\]
+\end{itemize}
+
+\noindent\textbf{2. 极坐标情形}\quad 设曲边扇形由曲线$\rho=\rho(\theta)$（$\rho(\theta)\ge0$，连续）与射线$\theta=\alpha$、$\theta=\beta$（$\alpha<\beta$，$\beta-\alpha\le2\pi$）围成。取极角$\theta$为积分变量，小区间$[\theta,\theta+\mathrm{d}\theta]$上的窄曲边扇形近似为半径$\rho(\theta)$、中心角$\mathrm{d}\theta$的扇形，得面积元素
+\[
+\mathrm{d}A=\frac{1}{2}\bigl[\rho(\theta)\bigr]^2\mathrm{d}\theta ,
+\qquad
+A=\frac{1}{2}\int_{\alpha}^{\beta}\bigl[\rho(\theta)\bigr]^2\,\mathrm{d}\theta .
+\]
+
+\keyformula{A=\int_a^b\bigl[f(x)-g(x)\bigr]\mathrm{d}x;\qquad A=\frac{1}{2}\int_\alpha^\beta\rho^2(\theta)\,\mathrm{d}\theta}
+
+\corepoint{面积永远非负，所以\textbf{先定上下（或左右）边界再积分}，必要时在交点处\textbf{分段}。极坐标下别忘系数$\frac{1}{2}$，也别忘了先画图定$\alpha,\beta$；若图形关于极轴或极点对称，可用"求一半再乘2/4"减少计算。直角坐标与极坐标的选择标准：边界是圆弧/射线型用极坐标，是函数图像型用直角坐标。}
+
+\subsection{体积}
+
+\noindent\textbf{1. 旋转体的体积}\quad 平面图形绕一条直线旋转一周所得的立体称为\emph{旋转体}，该直线称为旋转轴。
+
+\noindent 设曲边梯形（$y=f(x)\ge0$，$x\in[a,b]$）绕$x$轴旋转。小区间$[x,x+\mathrm{d}x]$上的窄条旋转成厚$\mathrm{d}x$、底半径$f(x)$的薄圆片，体积元素
+\[
+\mathrm{d}V=\pi\bigl[f(x)\bigr]^2\mathrm{d}x ,
+\qquad
+V_x=\pi\int_a^b\bigl[f(x)\bigr]^2\mathrm{d}x .
+\]
+
+\noindent 若曲边梯形由$x=\varphi(y)\ (\ge0)$、$y=c$、$y=d$与$y$轴围成，绕$y$轴旋转：
+\[
+V_y=\pi\int_c^d\bigl[\varphi(y)\bigr]^2\mathrm{d}y .
+\]
+
+\noindent\textbf{柱壳法}（绕$y$轴，图形由$y=f(x)$、$x=a$、$x=b$、$x$轴围成）：小区间上的窄条绕$y$轴转成薄壁圆柱壳，体积元素$\mathrm{d}V=2\pi x\bigl|f(x)\bigr|\mathrm{d}x$，
+\[
+V=2\pi\int_a^bx\bigl|f(x)\bigr|\mathrm{d}x .
+\]
+
+\noindent\textbf{2. 平行截面面积已知的立体的体积}\quad 设立体夹在$x=a$与$x=b$两平面之间，过点$x$且垂直于$x$轴的截面面积$A(x)$为已知连续函数。小区间上的薄片近似为底面积$A(x)$、高$\mathrm{d}x$的柱体，得
+\[
+\mathrm{d}V=A(x)\,\mathrm{d}x ,
+\qquad
+V=\int_a^bA(x)\,\mathrm{d}x .
+\]
+
+\keyformula{V_x=\pi\int_a^by^2\,\mathrm{d}x;\qquad V_y=\pi\int_c^dx^2\,\mathrm{d}y;\qquad V=\int_a^bA(x)\,\mathrm{d}x}
+
+\corepoint{选公式看\emph{旋转轴}与\emph{积分变量}是否匹配：绕$x$轴用$y^2\mathrm{d}x$，绕$y$轴用$x^2\mathrm{d}y$（要求边界能写成$x=\varphi(y)$）。若绕$y$轴而$y=f(x)$解不出反函数，改用柱壳法$2\pi\int x|f(x)|\mathrm{d}x$，比强行求反函数安全。薄片法要求截面\emph{垂直于}积分变量轴。}
+
+\subsection{平面曲线的弧长}
+
+\noindent\textbf{弧长的定义}\quad 在曲线弧$AB$上依次任取分点$A=M_0,M_1,\cdots,M_{n-1},M_n=B$，连接相邻分点得内接折线。当分点数无限增加且每小段都缩向一点时，若折线长的极限存在，则称此极限为曲线弧$AB$的\emph{弧长}，并称该弧\emph{可求长}。
+
+\noindent\textbf{定理（光滑弧可求长）}\quad 光滑曲线弧是可求长的（教材不加证明地引用）。
+
+\noindent 由于小弧段长近似等于对应弦长$\sqrt{(\Delta x)^2+(\Delta y)^2}$，得\textbf{弧微分}
+\[
+\mathrm{d}s=\sqrt{(\mathrm{d}x)^2+(\mathrm{d}y)^2}.
+\]
+
+\noindent\textbf{三种形式的弧长公式}
+\begin{itemize}
+  \item 参数方程$x=\varphi(t)$，$y=\psi(t)$（$\alpha\le t\le\beta$，$\varphi',\psi'$连续且不同时为零）：
+\[
+s=\int_{\alpha}^{\beta}\sqrt{\bigl[\varphi'(t)\bigr]^2+\bigl[\psi'(t)\bigr]^2}\,\mathrm{d}t ;
+\]
+  \item 直角坐标$y=f(x)$（$f'$连续）：
+\[
+s=\int_a^b\sqrt{1+\bigl[f'(x)\bigr]^2}\,\mathrm{d}x ;
+\]
+  \item 极坐标$\rho=\rho(\theta)$（$\rho'$连续，$\alpha\le\theta\le\beta$）：
+\[
+s=\int_{\alpha}^{\beta}\sqrt{\bigl[\rho(\theta)\bigr]^2+\bigl[\rho'(\theta)\bigr]^2}\,\mathrm{d}\theta .
+\]
+\end{itemize}
+
+\keyformula{s=\int_\alpha^\beta\sqrt{x'^2(t)+y'^2(t)}\,\mathrm{d}t;\quad s=\int_a^b\sqrt{1+y'^2}\,\mathrm{d}x;\quad s=\int_\alpha^\beta\sqrt{\rho^2+\rho'^2}\,\mathrm{d}\theta}
+
+\corepoint{弧长公式的共同结构是$\int\sqrt{(\text{对参数求导})^2+\cdots}$。参数方程下\textbf{不要}先把$t$消去再套直角坐标公式，直接算$x'^2+y'^2$更简单。极坐标公式可由直角坐标公式代入$x=\rho\cos\theta$、$y=\rho\sin\theta$推出，记不住时可现场推。开方后要保证被开方式非负，必要时加绝对值。}
+
+\section{定积分在物理学上的应用}
+
+\subsection{变力沿直线所作的功}
+
+设物体在变力$F(x)$作用下沿$x$轴由$a$移到$b$，且力的方向与运动方向一致。取$x$为积分变量，小区间$[x,x+\mathrm{d}x]$上力近似为常量，得功元素
+\[
+\mathrm{d}W=F(x)\,\mathrm{d}x ,
+\qquad
+W=\int_a^bF(x)\,\mathrm{d}x .
+\]
+
+\noindent\textbf{抽水（提水）问题}\quad 把比重为$\gamma$（单位体积重量，水为$\rho g$）的液体从容器中抽出，若深度$x$处水平截面面积为$A(x)$，则把厚$\mathrm{d}x$的薄层提升到容器口（或指定高度$H$）需作功
+\[
+\mathrm{d}W=\gamma\,(H-x)A(x)\,\mathrm{d}x ,
+\]
+再对$x$在其所在范围上积分。关键是\textbf{把"提升高度"写成$x$的函数}。
+
+\noindent\textbf{常用模型}
+\begin{itemize}
+  \item 弹簧：$F=ks$（胡克定律），拉伸$s$所作功$W=\frac{1}{2}ks^2$；
+  \item 库仑力：$F=\dfrac{kq}{r^2}$，从$r=a$到$r=b$作功$W=kq\bigl(\frac1a-\frac1b\bigr)$；
+  \item 等温膨胀：$pV=C$，活塞从$a$移到$b$作功$W=C\ln\dfrac{b}{a}$。
+\end{itemize}
+
+\subsection{水压力}
+
+水深$h$处的压强为$p=\rho gh$（$\rho$为液体密度，$g$为重力加速度）。面积为$S$的水平平板一侧所受压力为$pS$。若平板\textbf{铅直}放置，各点深度不同，压强不是常量，必须用元素法。
+
+\noindent 取深度$x$为积分变量，在深度$x$处取高$\mathrm{d}x$、宽$w(x)$的窄条（$w(x)$为该深度处平板的水平宽度），窄条上压强近似为常量$\rho gx$，得压力元素
+\[
+\mathrm{d}P=\rho g\,x\,w(x)\,\mathrm{d}x ,
+\qquad
+P=\rho g\int_a^bx\,w(x)\,\mathrm{d}x .
+\]
+
+\keyformula{P=\rho g\int_a^bx\,w(x)\,\mathrm{d}x}
+
+\corepoint{三个易错处：(1) $x$必须从\textbf{液面}往下量（深度），不是坐标原点到该点的距离；(2) $w(x)$是该深度处平板的\textbf{水平宽度}，随$x$变化，要由边界方程解出（如半圆$w=2\sqrt{R^2-x^2}$）；(3) 液体不是水时用$\rho$替换，比重$\gamma=\rho g$，单位要统一（常取$\mathrm{kN}$、$\mathrm{m}$）。}
+
+\subsection{引力}
+
+两质点间引力大小为$F=G\dfrac{m_1m_2}{r^2}$，方向沿两质点连线。当其中一个物体是\textbf{细棒、圆弧}等连续体时，各点到质点的距离与方向都在变化，需用元素法。
+
+\noindent\textbf{处理步骤}
+\begin{enumerate}
+  \item 建立坐标系，使细棒位于某坐标轴上，质点位于另一轴上；
+  \item 在棒上取长$\mathrm{d}l$的微元，其质量$\mathrm{d}m=\mu\,\mathrm{d}l$（$\mu$为线密度），把微元近似为质点；
+  \item 写出微元对质点的引力大小$\mathrm{d}F=G\dfrac{m\,\mathrm{d}m}{r^2}$，其中$r$为微元到质点的距离；
+  \item \textbf{分解为分量}：$\mathrm{d}F_x=\mathrm{d}F\cos\theta$，$\mathrm{d}F_y=\mathrm{d}F\sin\theta$，分别积分；由对称性常可使某一分量为零；
+  \item 合成：$F=\sqrt{F_x^2+F_y^2}$（若需要）。
+\end{enumerate}
+
+\noindent 细直棒（长$l$、线密度$\mu$）在中垂线上距棒$a$处对质量$m$的质点的引力，水平分量为
+\[
+F_x=\frac{2Gm\mu l}{a\sqrt{4a^2+l^2}}\quad(\text{方向垂直于棒指向棒}),
+\]
+由对称性铅直分量$F_y=0$。
+
+\corepoint{引力是\textbf{矢量}，绝对不能直接对大小积分再当标量用，必须先分解、后积分、再合成。距离$r$要用微元坐标表示（如$r=\sqrt{a^2+y^2}$），不要当常数提出积分号。对称性判断要在积分前完成，能省一半计算。}
+
+\section*{本章知识结构与复习提示}
+\addcontentsline{toc}{section}{本章知识结构与复习提示}
+
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.42\linewidth}p{0.26\linewidth}@{}}
+\toprule
+\textbf{应用} & \textbf{元素（微元）} & \textbf{积分公式} \\
+\midrule
+直角坐标面积 & $\mathrm{d}A=[f(x)-g(x)]\mathrm{d}x$ & $\int_a^b[f-g]\mathrm{d}x$ \\
+极坐标面积 & $\mathrm{d}A=\frac12\rho^2\mathrm{d}\theta$ & $\frac12\int_\alpha^\beta\rho^2\mathrm{d}\theta$ \\
+旋转体（绕$x$轴） & $\mathrm{d}V=\pi y^2\mathrm{d}x$ & $\pi\int_a^by^2\mathrm{d}x$ \\
+旋转体（绕$y$轴） & $\mathrm{d}V=\pi x^2\mathrm{d}y$ & $\pi\int_c^dx^2\mathrm{d}y$ \\
+柱壳（绕$y$轴） & $\mathrm{d}V=2\pi x|f(x)|\mathrm{d}x$ & $2\pi\int_a^bx|f(x)|\mathrm{d}x$ \\
+平行截面 & $\mathrm{d}V=A(x)\mathrm{d}x$ & $\int_a^bA(x)\mathrm{d}x$ \\
+弧长（参数） & $\mathrm{d}s=\sqrt{x'^2+y'^2}\mathrm{d}t$ & $\int_\alpha^\beta\sqrt{x'^2+y'^2}\mathrm{d}t$ \\
+弧长（极坐标） & $\mathrm{d}s=\sqrt{\rho^2+\rho'^2}\mathrm{d}\theta$ & $\int_\alpha^\beta\sqrt{\rho^2+\rho'^2}\mathrm{d}\theta$ \\
+变力作功 & $\mathrm{d}W=F(x)\mathrm{d}x$ & $\int_a^bF(x)\mathrm{d}x$ \\
+水压力 & $\mathrm{d}P=\rho gx\,w(x)\mathrm{d}x$ & $\rho g\int_a^bxw(x)\mathrm{d}x$ \\
+引力 & $\mathrm{d}F=G\frac{m\,\mathrm{d}m}{r^2}$ & 分解后分别积分 \\
+\bottomrule
+\end{tabular}
+\end{center}

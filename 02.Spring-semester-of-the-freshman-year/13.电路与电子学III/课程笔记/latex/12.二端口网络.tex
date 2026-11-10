@@ -1,221 +1,311 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第十章 二端口网络}
+% 电路与电子学III 课程笔记 —— 第十章（教材第10章）二端口网络
+\chapter{二端口网络}
 
 \section{二端口网络}
 
+在电网技术应用中，为便于分析、设计与调试，常将整个网络划分成若干具有简单功能的子网络，
+每个子网络对信号进行不同的传输、变换和控制。最简单的一类子网络只有两个引出端子与外部相连，
+称为\textbf{二端口网络}（two-port network）。
+
+\begin{itemize}
+  \item \textbf{端口}（port）：流入一个端子的电流与从另一个端子流出的电流相等的一对端子。
+  \item \textbf{二端口网络}：具有两个端口、且只通过这两个端口与外部电路连接的线性网络。
+        四个端子成对构成端口，故 $i_1=i_1'$、$i_2=i_2'$ 是二端口的\textbf{前提条件}；
+        若四个端子电流无此约束（如桥式网络），则只能称\textbf{四端网络}，不能称二端口网络。
+  \item \textbf{线性无独立源二端口}：内部只含线性 $R$、$L$、$C$、受控源和理想变压器，
+        不含独立电源，全部元件初始储能为零。
+\end{itemize}
+
+最简单的二端口就是一个元件，如互感元件、受控源都是二端口元件；晶体管、运算放大器、变压器、
+滤波器、传输线等在一定条件下也可视为二端口网络。二端口内部结构可以千差万别，但只要外部端口上的
+电压、电流关系（端口特性）相同，对外电路的作用就完全相同。因此二端口网络的分析方法是：
+\textbf{不管内部结构，只用端口上的四个变量 $U_1,I_1,U_2,I_2$ 之间的关系来描述网络}。
+四个变量中任取两个作自变量、另两个作因变量，便得到一种参数方程；共有六种参数体系。
+
+\begin{corepoint}{二端口的“端口条件”是全部结论成立的前提：只有保证了 $i_1=i_1'$、$i_2=i_2'$，
+才能用两个电流、两个电压共四个量描述网络。若网络有一个端子接地或公共端，实际是“三端网络”，
+可视为二端口的特例。考试中凡出现“求某网络是否为二端口”，先查端口电流是否自动满足约束。}
+\end{corepoint}
+
 \section{导纳参数方程和阻抗参数方程}
+
+设线性无独立源二端口作正弦稳态分析，端口电压、电流取相量，且电流 $I_1$、$I_2$ 均取\textbf{流入}网络为正。
+
 \subsection{导纳参数方程}
-如果二端口$Y$参数同时满足
-
-代数方程
-\[
-\begin{cases}
-\dot{I}_1 = Y_{11}\dot{U}_1 + Y_{12}\dot{U}_2 \\
-\dot{I}_2 = Y_{21}\dot{U}_1 + Y_{22}\dot{U}_2
-\end{cases}
-\]
-
-矩阵方程
-\[
-\begin{bmatrix}
-\dot{I}_1 \\
-\dot{I}_2
-\end{bmatrix}
-=
-\begin{bmatrix}
-Y_{11} & Y_{12} \\
-Y_{21} & Y_{22}
-\end{bmatrix}
-\begin{bmatrix}
-\dot{U}_1 \\
-\dot{U}_2
-\end{bmatrix}
-\]
-
-参数计算
-\begin{align*}
-Y_{11} &= \left. \frac{\dot{I}_1}{\dot{U}_1} \right|_{\dot{U}_2 = 0}\\
-Y_{12} &= \left.  \frac{\dot{I}_1}{\dot{U}_2} \right|_{\dot{U}_1 = 0} \\
-Y_{21} &= \left. \frac{\dot{I}_2}{\dot{U}_1} \right|_{\dot{U}_2 = 0}\\
-Y_{22} &= \left. \frac{\dot{I}_2}{\dot{U}_2} \right|_{\dot{U}_1 = 0}
-\end{align*}
-
-互易对称条件：
-\[
-\text{互易： } Y_{12} = Y_{21},\quad
-\text{对称： } Y_{12} = Y_{21} \text{，且 } Y_{11} = Y_{22}
-\]
+以两个端口电压为自变量、两个端口电流为因变量，得
+\begin{keyformula}{\begin{cases}\dot{I}_1=Y_{11}\dot{U}_1+Y_{12}\dot{U}_2\\
+  \dot{I}_2=Y_{21}\dot{U}_1+Y_{22}\dot{U}_2\end{cases}\qquad
+  \begin{bmatrix}\dot{I}_1\\ \dot{I}_2\end{bmatrix}
+  =\begin{bmatrix}Y_{11}&Y_{12}\\ Y_{21}&Y_{22}\end{bmatrix}
+  \begin{bmatrix}\dot{U}_1\\ \dot{U}_2\end{bmatrix}}
+\end{keyformula}
+矩阵 $\boldsymbol{Y}$ 称为\textbf{导纳参数矩阵}（短路导纳参数矩阵）。各参数的物理意义由“令一个端口短路”
+的两次测量确定：
+\begin{align}
+  Y_{11}&=\left.\frac{\dot{I}_1}{\dot{U}_1}\right|_{\dot{U}_2=0}, &
+  Y_{12}&=\left.\frac{\dot{I}_1}{\dot{U}_2}\right|_{\dot{U}_1=0}, &
+  Y_{21}&=\left.\frac{\dot{I}_2}{\dot{U}_1}\right|_{\dot{U}_2=0}, &
+  Y_{22}&=\left.\frac{\dot{I}_2}{\dot{U}_2}\right|_{\dot{U}_1=0}
+\end{align}
+$Y_{11}$、$Y_{22}$ 是另一端短路时的输入导纳，$Y_{12}$、$Y_{21}$ 是转移导纳。
+\textbf{互易条件}：$Y_{12}=Y_{21}$（由互易定理保证）；\textbf{对称条件}：$Y_{12}=Y_{21}$ 且
+$Y_{11}=Y_{22}$。对称二端口只剩两个独立参数。
 
 \subsection{阻抗参数方程}
-代数方程
-\[
-\begin{cases}
-\dot{U}_1 = Z_{11}\dot{I}_1 + Z_{12}\dot{I}_2 \\
-\dot{U}_2 = Z_{21}\dot{I}_1 + Z_{22}\dot{I}_2
-\end{cases}
-\]
+以两个端口电流为自变量、电压为因变量，得
+\begin{keyformula}{\begin{cases}\dot{U}_1=Z_{11}\dot{I}_1+Z_{12}\dot{I}_2\\
+  \dot{U}_2=Z_{21}\dot{I}_1+Z_{22}\dot{I}_2\end{cases}\qquad
+  \begin{bmatrix}\dot{U}_1\\ \dot{U}_2\end{bmatrix}
+  =\begin{bmatrix}Z_{11}&Z_{12}\\ Z_{21}&Z_{22}\end{bmatrix}
+  \begin{bmatrix}\dot{I}_1\\ \dot{I}_2\end{bmatrix}}
+\end{keyformula}
+\begin{align}
+  Z_{11}&=\left.\frac{\dot{U}_1}{\dot{I}_1}\right|_{\dot{I}_2=0}, &
+  Z_{12}&=\left.\frac{\dot{U}_1}{\dot{I}_2}\right|_{\dot{I}_1=0}, &
+  Z_{21}&=\left.\frac{\dot{U}_2}{\dot{I}_1}\right|_{\dot{I}_2=0}, &
+  Z_{22}&=\left.\frac{\dot{U}_2}{\dot{I}_2}\right|_{\dot{I}_1=0}
+\end{align}
+即在另一端\textbf{开路}的条件下测定。$Z_{11}$、$Z_{22}$ 是另一端开路时的输入阻抗，$Z_{12}$、$Z_{21}$
+是转移阻抗。\textbf{互易条件}：$Z_{12}=Z_{21}$；\textbf{对称条件}：$Z_{12}=Z_{21}$ 且 $Z_{11}=Z_{22}$。
 
-矩阵方程
-\[
-\begin{bmatrix}
-\dot{U}_1 \\
-\dot{U}_2
-\end{bmatrix}
-=
-\begin{bmatrix}
-Z_{11} & Z_{12} \\
-Z_{21} & Z_{22}
-\end{bmatrix}
-\begin{bmatrix}
-\dot{I}_1 \\
-\dot{I}_2
-\end{bmatrix}
-\]
+两种参数矩阵互为逆矩阵：$\boldsymbol{Z}=\boldsymbol{Y}^{-1}$，即
+\begin{equation}
+  Z_{11}=\frac{Y_{22}}{\Delta_Y},\quad Z_{12}=-\frac{Y_{12}}{\Delta_Y},\quad
+  Z_{21}=-\frac{Y_{21}}{\Delta_Y},\quad Z_{22}=\frac{Y_{11}}{\Delta_Y},\quad
+  \Delta_Y=Y_{11}Y_{22}-Y_{12}Y_{21}
+\end{equation}
 
-参数计算
-\begin{align*}
-Z_{11} &= \left. \frac{\dot{U}_1}{\dot{I}_1} \right|_{\dot{I}_2 = 0} \\
-Z_{12} &= \left. \frac{\dot{U}_1}{\dot{I}_2} \right|_{\dot{I}_1 = 0} \\
-Z_{21} &= \left. \frac{\dot{U}_2}{\dot{I}_1} \right|_{\dot{I}_2 = 0} \\
-Z_{22} &= \left. \frac{\dot{U}_2}{\dot{I}_2} \right|_{\dot{I}_1 = 0}
-\end{align*}
-
-互易对称条件：
-\[
-\text{互易： } Z_{12} = Z_{21},\quad
-\text{对称： } Z_{12} = Z_{21} \text{，且 } Z_{11} = Z_{22}
-\]
+\begin{corepoint}{参数测定法的对应关系必须记牢：\textbf{求 $Y$ 参数令端口短路}（电压为零），
+\textbf{求 $Z$ 参数令端口开路}（电流为零），\textbf{求 $A$ 参数开路短路都用}，\textbf{求 $H$ 参数一端短路一端开路}。
+易错点：\textbf{不是}所有二端口都存在 $Y$（或 $Z$）参数——若某端口短路（或开路）会使网络方程退化
+（如理想变压器短路时电流无解），则该参数不存在，应改用其他参数体系。}
+\end{corepoint}
 
 \section{传输参数方程和混合参数方程}
+
 \subsection{传输参数方程}
-代数方程
-\[
-\begin{cases}
-\dot{U}_1 = A_{11}\dot{U}_2 + A_{12}(-\dot{I}_2) \\
-\dot{I}_1 = A_{21}\dot{U}_2 + A_{22}(-\dot{I}_2)
-\end{cases}
-\]
+以端口 2 的电压和电流为自变量、端口 1 的电压和电流为因变量（用于级联），习惯上用 $-\dot{I}_2$
+作自变量（即把流出端口 2 的电流取为正），得
+\begin{keyformula}{\begin{cases}\dot{U}_1=A_{11}\dot{U}_2+A_{12}(-\dot{I}_2)\\
+  \dot{I}_1=A_{21}\dot{U}_2+A_{22}(-\dot{I}_2)\end{cases}\qquad
+  \begin{bmatrix}\dot{U}_1\\ \dot{I}_1\end{bmatrix}
+  =\begin{bmatrix}A_{11}&A_{12}\\ A_{21}&A_{22}\end{bmatrix}
+  \begin{bmatrix}\dot{U}_2\\ -\dot{I}_2\end{bmatrix}}
+\end{keyformula}
+$\boldsymbol{A}$ 称为\textbf{传输参数矩阵}（$T$ 参数、$A$ 参数、链参数矩阵）。各参数为
+\begin{align}
+  A_{11}&=\left.\frac{\dot{U}_1}{\dot{U}_2}\right|_{\dot{I}_2=0}, &
+  A_{21}&=\left.\frac{\dot{I}_1}{\dot{U}_2}\right|_{\dot{I}_2=0}, &
+  A_{12}&=\left.\frac{\dot{U}_1}{-\dot{I}_2}\right|_{\dot{U}_2=0}, &
+  A_{22}&=\left.\frac{\dot{I}_1}{-\dot{I}_2}\right|_{\dot{U}_2=0}
+\end{align}
+其中 $A_{11}$、$A_{21}$ 在端口 2 \textbf{开路}时测定，$A_{12}$、$A_{22}$ 在端口 2 \textbf{短路}时测定。
+$A_{11}$ 无量纲（电压比），$A_{12}$ 具电阻量纲，$A_{21}$ 具电导量纲，$A_{22}$ 无量纲（电流比）。
 
-矩阵方程
-\[
-\begin{bmatrix}
-\dot{U}_1 \\
-\dot{I}_1
-\end{bmatrix}
-=
-\begin{bmatrix}
-A_{11} & A_{12} \\
-A_{21} & A_{22}
-\end{bmatrix}
-\begin{bmatrix}
-\dot{U}_2 \\
--\dot{I}_2
-\end{bmatrix}
-\]
+\textbf{互易条件}：$A_{11}A_{22}-A_{12}A_{21}=1$（即 $\det\boldsymbol{A}=1$）；
+\textbf{对称条件}：$\det\boldsymbol{A}=1$ 且 $A_{11}=A_{22}$。
 
-参数计算
-\begin{align*}
-A_{11} &= \left. \frac{\dot{U}_1}{\dot{U}_2} \right|_{\dot{I}_2 = 0} \\
-A_{21} &= \left. \frac{\dot{I}_1}{\dot{U}_2} \right|_{\dot{I}_2 = 0} \\
-A_{12} &= \left. \frac{\dot{U}_1}{-\dot{I}_2} \right|_{\dot{U}_2 = 0} \\
-A_{22} &= \left. \frac{\dot{I}_1}{-\dot{I}_2} \right|_{\dot{U}_2 = 0}
-\end{align*}
-
-互易对称条件：
-\[
-\text{互易： }A_{11}A_{22} - A_{12}A_{21} = 1,\quad
-\text{对称： } A_{11}A_{22} - A_{12}A_{21} = 1 ,\text{且 } A_{11} = A_{22}
-\]
-
-将$Z$参数转换为$A$参数：
-\[
-A_{11}=\frac{Z_{11}}{Z_{21}},\;
-A_{12}=\frac{Z_{11}Z_{22}-Z_{12}Z_{21}}{Z_{21}},\;
-A_{21}=\frac{1}{Z_{21}},\;
-A_{22}=\frac{Z_{22}}{Z_{21}}.
-\]
+由 $Z$ 参数转换为 $A$ 参数：
+\begin{equation}
+  A_{11}=\frac{Z_{11}}{Z_{21}},\qquad
+  A_{12}=\frac{Z_{11}Z_{22}-Z_{12}Z_{21}}{Z_{21}},\qquad
+  A_{21}=\frac{1}{Z_{21}},\qquad
+  A_{22}=\frac{Z_{22}}{Z_{21}}
+\end{equation}
 
 \subsection{混合参数方程}
-代数方程
-\[
-\begin{cases}
-\dot{U}_1 = H_{11}\dot{I}_1 + H_{12}\dot{U}_2 \\
-\dot{I}_2 = H_{21}\dot{I}_1 + H_{22}\dot{U}_2
-\end{cases}
-\]
+以 $\dot{I}_1$、$\dot{U}_2$ 为自变量（适于分析晶体管电路），得
+\begin{keyformula}{\begin{cases}\dot{U}_1=H_{11}\dot{I}_1+H_{12}\dot{U}_2\\
+  \dot{I}_2=H_{21}\dot{I}_1+H_{22}\dot{U}_2\end{cases}\qquad
+  \boldsymbol{H}=\begin{bmatrix}H_{11}&H_{12}\\ H_{21}&H_{22}\end{bmatrix}}
+\end{keyformula}
+\begin{align}
+  H_{11}&=\left.\frac{\dot{U}_1}{\dot{I}_1}\right|_{\dot{U}_2=0}\ (\text{\songti 输出短路输入阻抗}), &
+  H_{21}&=\left.\frac{\dot{I}_2}{\dot{I}_1}\right|_{\dot{U}_2=0}\ (\text{\songti 输出短路电流放大倍数})\\
+  H_{12}&=\left.\frac{\dot{U}_1}{\dot{U}_2}\right|_{\dot{I}_1=0}\ (\text{\songti 输入端开路反向电压比}), &
+  H_{22}&=\left.\frac{\dot{I}_2}{\dot{U}_2}\right|_{\dot{I}_1=0}\ (\text{\songti 输入端开路输出导纳})
+\end{align}
+\textbf{互易条件}：$H_{12}=-H_{21}$；\textbf{对称条件}：$H_{12}=-H_{21}$ 且
+$H_{11}H_{22}-H_{12}H_{21}=1$。
 
-矩阵方程
-\[
-\begin{bmatrix}
-\dot{U}_1 \\
-\dot{I}_2
-\end{bmatrix}
-=
-\begin{bmatrix}
-H_{11} & H_{12} \\
-H_{21} & H_{22}
-\end{bmatrix}
-\begin{bmatrix}
-\dot{I}_1 \\
-\dot{U}_2
-\end{bmatrix}
-\]
+若以 $\dot{U}_1$、$\dot{I}_2$ 为自变量，则得\textbf{逆混合参数}（$G$ 参数）方程
+\begin{equation}
+  \begin{cases}\dot{I}_1=G_{11}\dot{U}_1+G_{12}\dot{I}_2\\ \dot{U}_2=G_{21}\dot{U}_1+G_{22}\dot{I}_2\end{cases}
+\end{equation}
 
-参数计算
-\begin{align*}
-H_{11} &= \left. \frac{\dot{U}_1}{\dot{I}_1} \right|_{\dot{U}_2 = 0} \\
-H_{21} &= \left. \frac{\dot{I}_2}{\dot{I}_1} \right|_{\dot{U}_2 = 0} \\
-H_{12} &= \left. \frac{\dot{U}_1}{\dot{U}_2} \right|_{\dot{I}_1 = 0}\\
-H_{22} &= \left. \frac{\dot{I}_2}{\dot{U}_2} \right|_{\dot{I}_1 = 0}
-\end{align*}
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{四种参数体系的对照}
+  \begin{tabular}{llll}
+    \toprule
+    参数 & 自变量 $\to$ 因变量 & 矩阵 & 互易 / 对称条件 \\
+    \midrule
+    $Y$ & $U_1,U_2\to I_1,I_2$ & $\begin{bmatrix}Y_{11}&Y_{12}\\ Y_{21}&Y_{22}\end{bmatrix}$ & $Y_{12}=Y_{21}$ / 再加 $Y_{11}=Y_{22}$ \\
+    $Z$ & $I_1,I_2\to U_1,U_2$ & $\begin{bmatrix}Z_{11}&Z_{12}\\ Z_{21}&Z_{22}\end{bmatrix}$ & $Z_{12}=Z_{21}$ / 再加 $Z_{11}=Z_{22}$ \\
+    $A$ & $U_2,-I_2\to U_1,I_1$ & $\begin{bmatrix}A_{11}&A_{12}\\ A_{21}&A_{22}\end{bmatrix}$ & $\det A=1$ / 再加 $A_{11}=A_{22}$ \\
+    $H$ & $I_1,U_2\to U_1,I_2$ & $\begin{bmatrix}H_{11}&H_{12}\\ H_{21}&H_{22}\end{bmatrix}$ & $H_{12}=-H_{21}$ / 再加 $\det H=1$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-互易对称条件：
-\[
-\text{互易: } H_{12} = -H_{21},\quad
-\text{对称: } H_{12} = -H_{21},\text{ 且 } H_{11}H_{22} - H_{12}H_{21} = 1
-\]
+\begin{corepoint}{$A$ 参数方程右边必须写 $-\dot{I}_2$（因为 $\dot{I}_2$ 以流入网络为正，而传输方向是
+从端口 1 到端口 2）。这一负号是全章最高频的错误来源：\textbf{记 $\dot{U}_1=A_{11}\dot{U}_2-A_{12}\dot{I}_2$、
+$\dot{I}_1=A_{21}\dot{U}_2-A_{22}\dot{I}_2$}。$\det\boldsymbol{A}=1$ 是互易的判据，也可用来
+自查 $A$ 参数是否算错（数值应为 1，量纲应为 0）。}
+\end{corepoint}
 
 \section{二端口网络的等效电路}
-如果给定
-\[
-Z_1=Z_{11}-Z_{12};\quad
-Z_2=Z_{22}-Z_{21};\quad
-Z_3=Z_{12}
-\]
-上式应与。
 
-如果二端口网络给定的是$Y$参数，则宜选用$\varPi$形等效电路，以便
-\[
-Y_1=Y_{11}+Y_{12};\quad
-Y_3=-Y_{21}=-Y_{12};\quad
-Y_2=Y_{22}+Y_{21}
-\]
+二端口的外部特性只由参数决定，故可用一个简单电路等效替代，条件是等效电路的参数方程与原网络完全相同。
+\textbf{互易二端口}只有三个独立参数，可用三个阻抗（或导纳）构成的 \textbf{T 形}或 \textbf{$\Pi$ 形}电路等效；
+\textbf{非互易}（含受控源）二端口有四个独立参数，须再加一个受控源。
 
-如果，得
-\[
-Z_1=\frac{A_{11}-1}{A_{21}};\quad
-Z_2=\frac{A_{22}-1}{A_{21}};\quad
-Z_3=\frac{1}{A_{21}}
-\]
-\[
-Y_a=\frac{A_{22}-1}{A_{12}};\quad
-Y_b=\frac{A_{11}-1}{A_{12}};\quad
-Y_c=\frac{1}{A_{12}}
-\]
+\subsection{T 形等效电路（用 $Z$ 参数）}
+设三个阻抗 $Z_1$（串联于端口 1）、$Z_2$（串联于端口 2）、$Z_3$（公共支路），则
+\begin{equation}
+  \dot{U}_1=(Z_1+Z_3)\dot{I}_1+Z_3\dot{I}_2,\qquad
+  \dot{U}_2=Z_3\dot{I}_1+(Z_2+Z_3)\dot{I}_2
+\end{equation}
+与 $Z$ 参数方程逐项比较得
+\begin{keyformula}{Z_1=Z_{11}-Z_{12},\qquad Z_2=Z_{22}-Z_{12},\qquad Z_3=Z_{12}}
+\end{keyformula}
+（互易时 $Z_{12}=Z_{21}$，上式唯一确定。）
+
+\subsection{$\Pi$ 形等效电路（用 $Y$ 参数）}
+设三个导纳 $Y_1$（并于端口 1）、$Y_2$（并于端口 2）、$Y_3$（跨接两支路之间），则
+\begin{equation}
+  \dot{I}_1=(Y_1+Y_3)\dot{U}_1-Y_3\dot{U}_2,\qquad
+  \dot{I}_2=-Y_3\dot{U}_1+(Y_2+Y_3)\dot{U}_2
+\end{equation}
+注意此处 $\dot{U}_2$ 的系数为 $-Y_3$，与 $Y$ 参数方程 $Y_{12}\dot{U}_2$ 比较得
+\begin{keyformula}{Y_1=Y_{11}+Y_{12},\qquad Y_2=Y_{22}+Y_{12},\qquad Y_3=-Y_{12}}
+\end{keyformula}
+（互易时 $-Y_{12}=-Y_{21}=Y_3$。）
+
+\subsection{由 $A$ 参数求等效电路}
+$Z$ 参数与 $A$ 参数的关系代入 T 形公式，得
+\begin{keyformula}{Z_1=\frac{A_{11}-1}{A_{21}},\qquad Z_2=\frac{A_{22}-1}{A_{21}},\qquad
+  Z_3=\frac{1}{A_{21}}}
+\end{keyformula}
+由 $Y$ 参数与 $A$ 参数的关系代入 $\Pi$ 形公式，得
+\begin{equation}
+  Y_a=\frac{A_{22}-1}{A_{12}},\qquad Y_b=\frac{A_{11}-1}{A_{12}},\qquad Y_c=\frac{1}{A_{12}}
+\end{equation}
+（$Y_a$、$Y_b$、$Y_c$ 依次对应端口 1 侧、端口 2 侧和跨接支路的导纳。）
 
 \includegraphics[width=0.6\textwidth]{10.4.1.png}\par
 \includegraphics[width=0.6\textwidth]{10.4.2.png}\par
 
-\section{二端口网络与电源和负载的连接}
-\subsection{输入阻抗、输出阻抗}
-输入阻抗。
+\subsection{含受控源的一般等效电路}
+非互易二端口的 $Z$ 参数满足 $Z_{12}\ne Z_{21}$。把 $Z$ 参数方程改写为
+\begin{equation}
+  \dot{U}_1=Z_{11}\dot{I}_1+Z_{12}\dot{I}_2,\qquad
+  \dot{U}_2=Z_{21}\dot{I}_1+Z_{22}\dot{I}_2
+  =\left[Z_{12}\dot{I}_1+(Z_{22}-Z_{12})\dot{I}_2\right]+(Z_{21}-Z_{12})\dot{I}_1
+\end{equation}
+虚线左侧仍是互易二端口的表达式，可用上述 T 形电路代替；多出的 $(Z_{21}-Z_{12})\dot{I}_1$ 是一个
+\textbf{受控电压源}（受 $\dot{I}_1$ 控制），串接在端口 2 的支路中。这样就得到非互易二端口的一般等效电路。
 
-特性阻抗（不做要求）。
+\begin{corepoint}{等效电路不是唯一的：同一二端口可用 T 形、$\Pi$ 形或含受控源的电路等效，
+选哪种取决于给出的是 $Z$、$Y$ 还是 $A$ 参数，以及计算是否方便。
+\textbf{负电阻/负电导是正常现象}（如 $Z_1=Z_{11}-Z_{12}$ 可能为负），不要以为算错。
+非互易网络\textbf{不能}只用三个无源元件等效——否则等效网络必是互易的，与前提矛盾。}
+\end{corepoint}
+
+\section{二端口网络与电源和负载的连接}
+
+\subsection{输入阻抗与输出阻抗}
+设二端口输出端接负载 $Z_L$，输入端接内阻抗为 $Z_S$、电压为 $\dot{U}_S$ 的电源。由 $A$ 参数方程与
+$\dot{U}_2=-Z_L\dot{I}_2$（负载上电压电流取非关联方向）联立，得\textbf{输入阻抗}
+\begin{keyformula}{Z_{\mathrm{in}}=\frac{\dot{U}_1}{\dot{I}_1}
+  =\frac{A_{11}Z_L+A_{12}}{A_{21}Z_L+A_{22}}}
+\end{keyformula}
+同理，从输出端口向左看进去的\textbf{输出阻抗}（信号源置零、保留 $Z_S$）为
+\begin{keyformula}{Z_{\mathrm{out}}=\frac{A_{22}Z_S+A_{12}}{A_{21}Z_S+A_{11}}}
+\end{keyformula}
+可见 $Z_{\mathrm{in}}$ 随 $Z_L$ 而变，$Z_{\mathrm{out}}$ 随 $Z_S$ 而变——二端口具有\textbf{变换阻抗}的作用。
+若负载开路（$Z_L\to\infty$），$Z_{\mathrm{in}}=A_{11}/A_{21}$；若负载短路（$Z_L=0$），
+$Z_{\mathrm{in}}=A_{12}/A_{22}$，这正是 $A$ 参数的测定条件。
+
+\subsection{转移函数}
+由 $A$ 参数方程消去 $\dot{I}_1$，可得输出电压与电源电压之比
+\begin{equation}
+  \frac{\dot{U}_2}{\dot{U}_S}=\frac{Z_L}{A_{11}Z_L+A_{12}+A_{21}Z_LZ_S+A_{22}Z_S}
+\end{equation}
+类似地可求转移电流比、转移阻抗等，统称\textbf{转移函数}。
 
 \includegraphics[width=0.6\textwidth]{10.3.png}\par
 
-对称二端口网络的传输系数和特性阻抗。
+\subsection{特性阻抗与传输常数}
+若二端口\textbf{对称}（$A_{11}=A_{22}$），当负载 $Z_L$ 取某个特定值 $Z_c$ 时恰有
+$Z_{\mathrm{in}}=Z_c$，则称 $Z_c$ 为该二端口的\textbf{特性阻抗}。由
+$Z_c=\dfrac{A_{11}Z_c+A_{12}}{A_{21}Z_c+A_{22}}$ 解出
+\begin{keyformula}{Z_c=\sqrt{\frac{A_{12}}{A_{21}}}}
+\end{keyformula}
+此时定义\textbf{传输常数} $\gamma=\alpha+\mathrm{j}\beta$ 满足
+\begin{equation}
+  A_{11}=A_{22}=\cosh\gamma,\qquad
+  A_{12}=Z_c\sinh\gamma,\qquad A_{21}=\frac{1}{Z_c}\sinh\gamma
+\end{equation}
+从而
+\begin{equation}
+  \gamma=\operatorname{arcosh}A_{11},\qquad
+  \mathrm{e}^{-\gamma}=\frac{\dot{U}_2}{\dot{U}_1}=\frac{\dot{I}_2}{\dot{I}_1}
+\end{equation}
+实部 $\alpha$ 称为\textbf{衰减常数}，虚部 $\beta$ 称为\textbf{相位常数}。若 $\alpha>0$，则
+$U_1>U_2$、$I_1>I_2$，$\alpha$ 越大信号衰减越大，这正是传输线中“衰减”概念的来源。
+
+\begin{corepoint}{特性阻抗 $Z_c$ 是\textbf{对称二端口}的概念（$A_{11}=A_{22}$ 才存在唯一的 $Z_c$）；
+一般二端口有两个不同的特性阻抗 $Z_{c1}\ne Z_{c2}$。$Z_c$ 只由网络自身参数决定，与所接负载、
+信号源无关，这一点和输入阻抗 $Z_{\mathrm{in}}$（随 $Z_L$ 变）截然不同，两者不要混为一谈。}
+\end{corepoint}
 
 \section{二端口网络的级联}
+
+两个二端口按“前一个的输出端接后一个的输入端”连接，称为\textbf{级联}（链联）。级联时，中间端口的
+电压、电流同时是前者的输出与后者的输入，故用传输参数最方便。设
+\begin{equation}
+  \begin{bmatrix}\dot{U}_1\\ \dot{I}_1\end{bmatrix}
+  =\boldsymbol{A}_1\begin{bmatrix}\dot{U}_2\\ -\dot{I}_2\end{bmatrix},\qquad
+  \begin{bmatrix}\dot{U}_2\\ -\dot{I}_2\end{bmatrix}
+  =\boldsymbol{A}_2\begin{bmatrix}\dot{U}_3\\ -\dot{I}_3\end{bmatrix}
+\end{equation}
+逐级代入得
+\begin{keyformula}{\boldsymbol{A}=\boldsymbol{A}_1\boldsymbol{A}_2\cdots\boldsymbol{A}_n}
+\end{keyformula}
+即\textbf{级联二端口的总传输矩阵等于各级传输矩阵按顺序相乘}（注意\textbf{矩阵乘法不满足交换律}，
+顺序不能颠倒）。对 $n$ 个相同的二端口级联，$\boldsymbol{A}_{\mathrm{tot}}=\boldsymbol{A}^n$。
+
+若每个子网络都是对称的，则总网络也对称，且
+\begin{equation}
+  \gamma_{\mathrm{tot}}=\gamma_1+\gamma_2+\cdots+\gamma_n,\qquad
+  Z_{c,\mathrm{tot}}=Z_{c1}=Z_{c2}=\cdots
+\end{equation}
+级联后衰减常数与相位常数直接相加，这使传输常数的物理意义十分清晰：它描述信号经一级网络后的
+衰减与相移，多级级联则累加。
+
+\begin{corepoint}{级联的三个易错点：\textbf{（1）} 矩阵相乘顺序必须与信号传输方向一致（$\boldsymbol{A}_1$ 在前）；
+\textbf{（2）} 只有用 $A$（传输）参数才能直接相乘，$Z$、$Y$ 参数在级联时没有简单乘积关系；
+\textbf{（3）} 相乘后仍要检验 $\det\boldsymbol{A}=1$（互易）与 $A_{11}=A_{22}$（对称），可用来查错。}
+\end{corepoint}
+
+\section{本章小结}
+\begin{enumerate}
+  \item 二端口网络用端口上的四个变量描述；四个变量中取两个为自变量，得到 $Y$、$Z$、$A$、$H$、$G$、
+        逆传输六种参数方程，其中常用的四种其矩阵及互易、对称条件见本章表格。
+  \item $Y$ 参数在另一端短路时测定，$Z$ 参数在另一端开路时测定；$\boldsymbol{Z}=\boldsymbol{Y}^{-1}$。
+  \item $A$ 参数以 $\dot{U}_2$、$-\dot{I}_2$ 为自变量，便于级联；互易判据 $\det\boldsymbol{A}=1$，
+        对称时还有 $A_{11}=A_{22}$。
+  \item 互易二端口有 3 个独立参数，可用 T 形（$Z_1=Z_{11}-Z_{12}$、$Z_2=Z_{22}-Z_{12}$、$Z_3=Z_{12}$）
+        或 $\Pi$ 形（$Y_1=Y_{11}+Y_{12}$、$Y_2=Y_{22}+Y_{12}$、$Y_3=-Y_{12}$）电路等效；
+        非互易二端口需再加一个受控源。
+  \item 端接负载和电源后，$Z_{\mathrm{in}}=\dfrac{A_{11}Z_L+A_{12}}{A_{21}Z_L+A_{22}}$、
+        $Z_{\mathrm{out}}=\dfrac{A_{22}Z_S+A_{12}}{A_{21}Z_S+A_{11}}$，二端口具有变换阻抗的作用。
+  \item 对称二端口的特性阻抗 $Z_c=\sqrt{A_{12}/A_{21}}$，传输常数
+        $\gamma=\operatorname{arcosh}A_{11}=\alpha+\mathrm{j}\beta$。
+  \item 级联时总传输矩阵为各级传输矩阵之积 $\boldsymbol{A}=\boldsymbol{A}_1\boldsymbol{A}_2$，
+        对称级联时 $\gamma$ 相加。
+\end{enumerate}
 
 \endinput

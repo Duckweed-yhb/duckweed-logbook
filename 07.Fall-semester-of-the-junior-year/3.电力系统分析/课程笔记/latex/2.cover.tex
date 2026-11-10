@@ -1,0 +1,47 @@
+% ============================================================
+% 2.cover.tex —— 统一封面（信息全部来自主文件定义）
+% 需要的宏：\YHBcourse、\YHBversion、\YHBquote、yhbAccent、yhbAccent2
+% 可选：\YHBcoverSize / \YHBcoverLead（课程名字号与行距）、\YHBcoversub（副标题）
+% ============================================================
+\providecommand{\YHBcoverSize}{38pt}
+\providecommand{\YHBcoverLead}{46pt}
+\providecommand{\YHBcoversub}{课程笔记}
+\begin{titlepage}
+\thispagestyle{empty}
+\pdfbookmark[0]{封面}{cover}
+
+\begin{tikzpicture}[remember picture,overlay]
+  % 顶部深色块
+  \fill[yhbAccent] (current page.north west) rectangle ([yshift=-132mm]current page.north east);
+  % 分隔细条（辅色）
+  \fill[yhbAccent2] ([yshift=-132mm]current page.north west) rectangle ([yshift=-135mm]current page.north east);
+  % 极细横线，弱装饰，不压字
+  \foreach \y in {20,34,48,62,76,90,104,118}{%
+    \draw[white,opacity=0.08,line width=0.5pt]
+      ([xshift=16mm,yshift=-\y mm]current page.north west) --
+      ([xshift=-16mm,yshift=-\y mm]current page.north east);}
+\end{tikzpicture}
+
+\vspace*{32mm}
+\noindent
+{\xeCJKsetup{CJKecglue={}}\color{white}\sffamily\bfseries\fontsize{\YHBcoverSize}{\YHBcoverLead}\selectfont \YHBcourse\par}
+\vspace{6mm}
+{\color{white}\sffamily\fontsize{25}{32}\selectfont \YHBcoversub\par}
+\vspace{9mm}
+{\color{white}\fontsize{12.5}{18}\selectfont 作者\quad 浮萍\qquad 版本\quad \YHBversion\par}
+
+\vspace{20mm}
+{\sffamily\bfseries\fontsize{13}{20}\selectfont\color{yhbAccent}\YHBquote\par}
+
+\vfill
+{\color{yhbAccent}\rule{\textwidth}{1.4pt}}\par
+\vspace{7mm}
+{\fontsize{11.5}{17}\selectfont\sffamily
+\textbf{QQ 邮箱}\quad\href{mailto:3071974740@qq.com}{3071974740@qq.com}\par
+\vspace{2mm}
+\textbf{GitHub}\quad\href{https://github.com/Duckweed-yhb}{github.com/Duckweed-yhb}\par}
+\vspace{7mm}
+{\fontsize{10.5}{16}\selectfont\color{black!78}
+本笔记为个人学习整理，内容仍在持续完善。如发现内容、公式、文字或排版问题，欢迎通过上述 QQ 邮箱反馈；请尽量注明版本、页码与问题描述，便于核对和修订。\par}
+\vspace*{12mm}
+\end{titlepage}

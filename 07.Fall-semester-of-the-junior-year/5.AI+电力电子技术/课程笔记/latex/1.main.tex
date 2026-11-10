@@ -1,0 +1,38 @@
+% AI+电力电子技术课程笔记 —— 主文件（正文排版在 0.样式.tex，章节文件只放内容）
+% 编译：xelatex 1.main.tex 两遍；成品见 build.ps1
+\documentclass[11pt,a4paper,oneside,openany]{book}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
+\newcommand{\YHBbooktrue}{}
+\newcommand{\YHBcourse}{AI+电力电子技术}
+\newcommand{\YHBversion}{v0.1}
+\newcommand{\YHBquote}{用开关，把电从一种形态搬到另一种形态。}
+\newcommand{\YHBcoverSize}{40pt}
+\newcommand{\YHBcoverLead}{48pt}
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{2A3A6B}
+\definecolor{yhbAccent2}{HTML}{5169A8}
+\input{0.样式.tex}
+\renewcommand{\tablename}{表}
+\renewcommand{\figurename}{图}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\begin{document}
+\input{2.cover.tex}
+\newpage
+\tableofcontents
+\newpage
+% ===== 章节目录：在此按教材章节顺序 \input =====
+\input{3.绪论.tex}
+\input{4.电力电子器件.tex}
+\input{5.整流电路.tex}
+\input{6.逆变电路.tex}
+\input{7.直流-直流变流电路.tex}
+\input{8.交流-交流变流电路.tex}
+\input{9.PWM控制技术.tex}
+\input{10.软开关技术.tex}
+\input{11.电力电子器件应用的共性问题.tex}
+\input{12.电力电子技术的应用.tex}
+\end{document}

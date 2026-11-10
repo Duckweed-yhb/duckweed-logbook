@@ -1,64 +1,219 @@
-\chapter{第五章 狭义相对论}
+\chapter{第5章\texorpdfstring{\hspace{0.5em}}{ }狭义相对论}
 
-\section{狭义相对论基本原理}
-    \subsection{伽利略相对性原理}
-    \textbf{伽利略相对性原理}：所有惯性系对于描述力学定律来说都是等价的，力学规律在伽利略变换下形式不变。
+\section{伽利略变换与经典时空观}
+    \subsection{力学相对性原理}
+    在彼此作匀速直线运动的一切惯性系中，力学定律的形式都是相同的，这就是伽利略相对性原理。伽利略曾用"封闭大船舱"的例子说明：在匀速直线航行的船舱内，无论做何种力学实验（抛球、摆钟、观察水滴下落），都无法判断船是静止还是在匀速前进。
 
-    \subsection{狭义相对论基本原理}
-    两条公设：狭义相对性原理（物理定律在所有惯性系中形式一致）、光速不变原理（真空中光速对任意惯性系恒为$c$）。
+    由此得到的重要结论是：一切惯性系对描述力学规律来说是等价的，不存在一个特殊的、绝对静止的惯性系，因而无法借助任何力学实验来判定本参考系的速度。
 
-    \subsection{洛伦兹变换}
+    \subsection{伽利略坐标变换}
+    设惯性系 $S'$ 相对于 $S$ 以恒定速度 $v$ 沿 $x$ 轴正方向运动，两坐标系对应轴相互平行，且 $t=t'=0$ 时原点 $O$ 与 $O'$ 重合。同一事件（质点到达某点）在两系中的时空坐标满足
+    \[
+    \begin{cases}
+    x'=x-vt,\\
+    y'=y,\\
+    z'=z,\\
+    t'=t.
+    \end{cases}
+    \]
+    其逆变换为 $x=x'+vt'$，$y=y'$，$z=z'$，$t=t'$。注意 $t'=t$ 是伽利略变换的前提，它把"同时"看成与参考系无关的绝对概念。
+
+    \subsection{伽利略速度变换和加速度变换}
+    将坐标变换对时间求导（因 $t'=t$，有 $\mathrm{d}t'=\mathrm{d}t$），得伽利略速度变换
+    \[
+    u_x'=u_x-v,\qquad u_y'=u_y,\qquad u_z'=u_z,
+    \]
+    即矢量形式 $\boldsymbol{u}'=\boldsymbol{u}-\boldsymbol{v}$。再对时间求导，得加速度变换
+    \[
+    \boldsymbol{a}'=\boldsymbol{a}.
+    \]
+    加速度在一切惯性系中相同（加速度的绝对性），而力与质量在经典力学中也不随参考系改变，所以牛顿第二定律 $\boldsymbol{F}=m\boldsymbol{a}$ 在各惯性系中形式一致。这正是力学相对性原理在伽利略变换下的体现。
+
+    \subsection{经典时空观（绝对时空观）}
+    伽利略变换隐含了下述关于时间与空间的观念，统称经典时空观或绝对时空观：
     \begin{enumerate}
-        \item 洛伦兹坐标变换
-        \[
-        \left\{
-        \begin{aligned}
-        x' &= \frac{x - vt}{\sqrt{1 - \frac{v^2}{c^2}}}, \\
-        y' &= y, \\
-        z' &= z, \\
-        t' &= \frac{t - \frac{v}{c^2} x}{\sqrt{1 - \frac{v^2}{c^2}}}.
-        \end{aligned}
-        \right.
-        \]
-        \item 洛伦兹速度变换
-        \[
-        \left\{
-        \begin{aligned}
-        u'_x &= \frac{u_x - v}{1 - \frac{u_x v}{c^2}}, \\
-        u'_y &= \frac{u_y \sqrt{1 - \beta^2}}{1 - \frac{u_x v}{c^2}}, \\
-        u'_z &= \frac{u_z \sqrt{1 - \beta^2}}{1 - \frac{u_x v}{c^2}}.
-        \end{aligned}
-        \right.
-        \]
-        洛伦兹速度逆变换：
-        \[
-        \left\{
-        \begin{aligned}
-        u_x &= \frac{u'_x + v}{1 + \frac{u'_x v}{c^2}}, \\
-        u_y &= \frac{u'_y \sqrt{1 - \beta^2}}{1 + \frac{u'_x v}{c^2}}, \\
-        u_z &= \frac{u'_z \sqrt{1 - \beta^2}}{1 + \frac{u'_x v}{c^2}}.
-        \end{aligned}
-        \right.
-        \]
-        其中 $\beta=\dfrac{v}{c}$。
+        \item 时间绝对的：存在与参考系无关的、均匀流逝的时间，$t'=t$，两事件的时间间隔在任何惯性系中相同；
+        \item 空间绝对的：空间长度（两点的距离）与参考系无关，物体的"尺长"不因运动而改变；
+        \item 同时性绝对的：在一个惯性系中同时发生的两个事件，在一切惯性系中都同时；
+        \item 速度可以叠加、没有上限，信号传播速度可视为无限大。
     \end{enumerate}
+    经典时空观在宏观低速领域与实验高度符合，但它只是相对论时空观在 $v\ll c$ 时的近似。
 
-\section{狭义相对论时空观}
-    \subsection{“同时”的相对性}
-    不同惯性系下异地事件的同时性不具有绝对性。
-    \subsection{时间的相对性}
-    运动参考系时间流逝变慢（时间膨胀），固有时最短。
-    \subsection{长度的相对性}
-    运动方向上物体发生长度收缩，固有长度最长。
+    \corepoint{加速度是伽利略变换下的不变量，因此"力学规律形式不变"依赖于 $\boldsymbol{a}'=\boldsymbol{a}$；一旦承认光速不变（$c$ 不能与 $v$ 叠加），伽利略变换与整个经典时空观都必须被修改。}
 
-\section{相对论动力学基础}
-    \subsection{相对论的质速关系}
-    运动质量 $m=\dfrac{m_0}{\sqrt{1-v^2/c^2}}$，$m_0$ 为静止质量。
-    \subsection{相对论动力学的基本方程}
-    $\boldsymbol{F}=\dfrac{\mathrm{d}(m\boldsymbol{v})}{\mathrm{d}t}$，动量定义为 $\boldsymbol{p}=m\boldsymbol{v}$。
+\section{狭义相对论的基本原理}
+    \subsection{迈克尔逊-莫雷实验}
+    19 世纪末，人们假设光在"以太"中传播，以太是绝对静止的参考系。迈克尔逊-莫雷实验用干涉仪测量两束相互垂直的光的传播时间差，企图通过仪器转动时干涉条纹的移动来探测地球相对于以太的运动。
+
+    实验结果是：无论怎样转动仪器、无论白天黑夜、无论什么季节，都观察不到干涉条纹的预期移动，即所谓"零结果"。这一结果说明：不存在绝对静止的以太参考系；真空中的光速在各个方向上相同，与地球的运动无关。经典时空观遇到无法克服的困难。
+
+    \subsection{狭义相对性原理}
+    爱因斯坦把伽利略相对性原理从力学推广到整个物理学：
+    \textbf{狭义相对性原理}：一切物理定律（力学的、电磁学的、光学的）在所有惯性系中都具有相同的形式，一切惯性系都是等价的。
+    也就是说，不可能通过任何物理实验（不只是力学实验）来确定一个惯性系是"静止"还是"匀速运动"的。
+
+    \subsection{光速不变原理}
+    真空中光速在一切惯性系中都等于同一常量 $c$，与光源的运动状态无关，也与观察者的运动状态无关：
+    \[
+    c=2.997\,924\,58\times10^{8}\ \mathrm{m/s}\approx 3.00\times10^{8}\ \mathrm{m/s}.
+    \]
+    这条原理与伽利略速度变换直接冲突：按经典速度叠加，迎着光运动应测得 $c+v$，背着光运动应测得 $c-v$，实验却始终给出 $c$。
+
+    \corepoint{两条基本原理是狭义相对论的出发点，只适用于惯性系，不能由别的原理推出。承认"光速不变"，就必须放弃"时间绝对、长度绝对、同时绝对"的经典时空观，并重新寻找满足这两条原理的时空变换关系——这就是洛伦兹变换。}
+
+\section{洛伦兹变换}
+    \subsection{洛伦兹坐标变换}
+    为方便，记
+    \[
+    \beta=\frac{v}{c},\qquad \gamma=\frac{1}{\sqrt{1-\beta^{2}}}=\frac{1}{\sqrt{1-v^{2}/c^{2}}}\ \ (\gamma\ge 1),
+    \]
+    $\gamma$ 称为洛伦兹因子。在 $S'$ 相对 $S$ 以速度 $v$ 沿 $x$ 轴正向运动、$t=t'=0$ 时两原点重合的条件下，同一事件的时空坐标满足洛伦兹变换
+    \keyformula{x'=\gamma(x-vt),\quad y'=y,\quad z'=z,\quad t'=\gamma\left(t-\frac{v}{c^{2}}x\right)}
+    其逆变换只需把 $v$ 换成 $-v$：
+    \[
+    x=\gamma(x'+vt'),\qquad y=y',\qquad z=z',\qquad t=\gamma\left(t'+\frac{v}{c^{2}}x'\right).
+    \]
+    洛伦兹变换成立的条件是：（1）两惯性系作相对匀速直线运动，且对应轴平行；（2）$t=t'=0$ 时两原点重合；（3）$v<c$。若 $v\ge c$，$\gamma$ 变为虚数或无意义，说明任何实物粒子与参考系的速度都不能达到或超过真空中光速。
+
+    当 $v\ll c$ 时 $\beta\to 0$、$\gamma\to 1$，洛伦兹变换退化为伽利略变换，可见伽利略变换是洛伦兹变换的低速极限。
+
+    \subsection{空间间隔的变换}
+    对两个事件作差，得
+    \[
+    \Delta x'=\gamma(\Delta x-v\Delta t),\qquad \Delta t'=\gamma\left(\Delta t-\frac{v}{c^{2}}\Delta x\right),
+    \]
+    这两式是讨论同时的相对性、时间膨胀和长度收缩的基本关系式。注意 $\Delta t'$ 中出现了 $\Delta x$ 项，说明时间与空间不再彼此独立，而是相互联系的——这是相对论时空观的核心。
+
+    \subsection{洛伦兹速度变换}
+    由坐标变换对时间求导（此时 $\mathrm{d}t'\ne\mathrm{d}t$），得速度变换
+    \[
+    u_x'=\frac{u_x-v}{1-\dfrac{u_xv}{c^{2}}},\qquad
+    u_y'=\frac{u_y}{\gamma\left(1-\dfrac{u_xv}{c^{2}}\right)},\qquad
+    u_z'=\frac{u_z}{\gamma\left(1-\dfrac{u_xv}{c^{2}}\right)},
+    \]
+    逆变换为
+    \[
+    u_x=\frac{u_x'+v}{1+\dfrac{u_x'v}{c^{2}}},\qquad
+    u_y=\frac{u_y'}{\gamma\left(1+\dfrac{u_x'v}{c^{2}}\right)},\qquad
+    u_z=\frac{u_z'}{\gamma\left(1+\dfrac{u_x'v}{c^{2}}\right)}.
+    \]
+    速度变换的可靠性可由光速不变性检验：取 $u_x=c$，则
+    \[
+    u_x'=\frac{c-v}{1-\dfrac{cv}{c^{2}}}=\frac{c-v}{1-\dfrac{v}{c}}=c,
+    \]
+    与光速不变原理一致；而按伽利略变换将得出 $c-v$，这是错误的。
+
+    \corepoint{洛伦兹速度变换中分母 $1-u_xv/c^{2}$ 是关键，不可漏写；当 $u_x$、$v$ 都远小于 $c$ 时它趋于 1，退化为伽利略速度变换。任何两个小于 $c$ 的速度合成后仍小于 $c$，因此不能用速度叠加得到超光速。}
+
+\section{狭义相对论的时空观}
+    \subsection{同时的相对性}
+    设在 $S$ 系中两个事件同时发生（$\Delta t=0$）但地点不同（$\Delta x\ne 0$），由间隔变换得
+    \[
+    \Delta t'=\gamma\left(0-\frac{v}{c^{2}}\Delta x\right)=-\gamma\frac{v}{c^{2}}\Delta x\ne 0.
+    \]
+    即：在 $S$ 系中同时发生的两个异地事件，在 $S'$ 系中并不同时。这就是同时的相对性。
+
+    结论：同时性只有相对意义，脱离具体参考系谈论两个异地事件"是否同时"没有意义。只有同地同时（$\Delta x=0$ 且 $\Delta t=0$）的两个事件，才在一切惯性系中都是同时的。需要强调，有因果联系的两个事件，其先后顺序在任何惯性系中都不会颠倒，相对论并不破坏因果律。
+
+    \subsection{时间膨胀（运动的钟变慢）}
+    设某惯性系 $S'$ 中同一地点（$\Delta x'=0$）先后发生两个事件，其时间间隔记为 $\Delta t'=\tau_0$。$\tau_0$ 称为固有时间（本征时间），即与事件相对静止的钟所测得的时间。由逆变换 $\Delta t=\gamma(\Delta t'+v\Delta x'/c^{2})$ 得
+    \keyformula{\Delta t=\gamma\,\tau_0=\frac{\tau_0}{\sqrt{1-v^{2}/c^{2}}}\ \ge\ \tau_0}
+    即：在相对事件运动的惯性系中测得的同一地点两事件的时间间隔，比固有时间更长——运动的钟走得慢，称为时间膨胀（钟慢效应）。
+
+    固有时间是一切惯性系中测得的同类时间间隔中最短的。这里的"钟慢"是相互的：$S$ 看 $S'$ 的钟慢，$S'$ 看 $S$ 的钟也慢，两者并不矛盾，因为比较用的是不同的同时性标准。
+
+    \subsection{长度收缩（运动的尺变短）}
+    设棒相对 $S'$ 静止，沿 $x'$ 方向放置，其长度 $l_0=\Delta x'$ 称为固有长度（静止长度）。在 $S$ 系中测量时，必须同时测出棒两端的坐标（$\Delta t=0$），由 $\Delta x'=\gamma(\Delta x-v\Delta t)=\gamma\Delta x$ 得
+    \keyformula{l=\Delta x=\frac{l_0}{\gamma}=l_0\sqrt{1-v^{2}/c^{2}}\ \le\ l_0}
+    即：在相对物体运动的惯性系中测得的物体沿运动方向的长度，比固有长度短，称为长度收缩（尺缩效应）。
+
+    长度收缩只发生在运动方向上，垂直于运动方向的长度不变（$y'=y$，$z'=z$）。固有长度是最长的。长度收缩与时间膨胀都不是物体"真的被压扁"或"钟真的坏了"，而是时空测量本身具有相对性的表现，二者由同一个洛伦兹因子联系。
+
+    \subsection{相对论时空观的实验验证}
+    高速运动的粒子为相对论时空观提供了直接证据：宇宙线中的 $\mu$ 子固有寿命很短，按经典理论即使以光速运动也来不及穿过大气层到达地面，但由于时间膨胀，地面参考系测得其寿命显著延长，因而能到达地面；同时在地面参考系看来，大气层的厚度对 $\mu$ 子也发生了长度收缩。此外，高速运动粒子的寿命测量、原子钟的环球飞行实验都与相对论预言一致。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{经典时空观与相对论时空观的比较}
+    \begin{tabular}{lll}
+    \toprule
+    项目 & 经典（伽利略）时空观 & 相对论时空观 \\
+    \midrule
+    时间 & 绝对，$\Delta t'=\Delta t$ & 相对，$\Delta t=\gamma\tau_0$ \\
+    长度 & 绝对，$l'=l$ & 相对，$l=l_0/\gamma$ \\
+    同时性 & 绝对 & 相对（异地同时无绝对意义） \\
+    速度合成 & $u'=u-v$ & $u'=\dfrac{u-v}{1-uv/c^{2}}$ \\
+    速度上限 & 无 & $c$，实物粒子 $v<c$ \\
+    适用范围 & $v\ll c$ & 一切惯性系 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \corepoint{三个易混点：（1）"运动的钟慢"是相互的，不能说"绝对是谁慢"；（2）长度收缩只沿运动方向，且必须"同时测两端"才能谈长度；（3）时间膨胀公式中的 $\tau_0$ 必须是同一地点两事件的间隔（固有时间），若两事件不同地，公式不能直接套用。}
+
+\section{相对论性动量和能量}
+    \subsection{相对论质量（质速关系）}
+    为使动量守恒定律在洛伦兹变换下保持形式不变，必须认为物体的质量随其运动速度而改变：
+    \keyformula{m=\frac{m_0}{\sqrt{1-v^{2}/c^{2}}}=\gamma m_0}
+    其中 $m_0$ 为物体相对观察者静止时测得的质量，称静止质量；$m$ 称相对论质量。当 $v\to c$ 时 $m\to\infty$，要继续加速需无穷大的力，因此实物粒子的速度只能无限接近 $c$ 而不能达到 $c$。
+
+    \subsection{相对论动量}
+    相对论动量定义为
+    \[
+    \boldsymbol{p}=m\boldsymbol{v}=\frac{m_0\boldsymbol{v}}{\sqrt{1-v^{2}/c^{2}}}=\gamma m_0\boldsymbol{v}.
+    \]
+
+    \subsection{相对论动力学基本方程}
+    牛顿第二定律在相对论中应写成动量形式
+    \[
+    \boldsymbol{F}=\frac{\mathrm{d}\boldsymbol{p}}{\mathrm{d}t}=\frac{\mathrm{d}(m\boldsymbol{v})}{\mathrm{d}t},
+    \]
+    由于 $m$ 随 $v$ 变化，$\boldsymbol{F}=m\boldsymbol{a}$ 一般不再成立（只有 $v\ll c$ 时近似成立）。可以证明，这样定义的动力学方程在洛伦兹变换下形式不变，且动量守恒、能量守恒同时成立。
+
     \subsection{相对论动能}
-    $E_\mathrm{k}=mc^2-m_0c^2$。
-    \subsection{静能、总能和质能关系}
-    质能方程 $E=mc^2$，静止物体静能 $E_0=m_0c^2$。
+    由动能定理，外力使粒子由静止加速到速度 $v$ 所做的功即为其动能：
+    \[
+    E_\mathrm{k}=\int_0^{v}\boldsymbol{F}\cdot\mathrm{d}\boldsymbol{r}=mc^{2}-m_0c^{2}=(\gamma-1)m_0c^{2}.
+    \]
+    当 $v\ll c$ 时，$\gamma\approx 1+\dfrac{v^{2}}{2c^{2}}$，故
+    \[
+    E_\mathrm{k}\approx\frac{1}{2}m_0v^{2},
+    \]
+    与经典动能公式一致，说明经典力学是相对论力学的低速近似。
+
+    \subsection{总能和质能关系}
+    爱因斯坦指出，物体静止时也具有能量
+    \[
+    E_0=m_0c^{2},
+    \]
+    称为静能；物体的总能量为
+    \keyformula{E=mc^{2}=m_0c^{2}+E_\mathrm{k}=\gamma m_0c^{2}}
+    这就是质能关系。它表明质量与能量是同一事物的两种表现，质量的变化必然伴随能量的变化：
+    \[
+    \Delta E=\Delta m\,c^{2}.
+    \]
+    核反应中的质量亏损会释放巨大的能量，原子能（裂变、聚变）的利用即以此为依据。
+
     \subsection{能量和动量的关系}
-    相对论能量动量关系式 $E^2 = E_0^2 + (pc)^2$。
+    由 $E=\gamma m_0c^{2}$ 与 $p=\gamma m_0v$ 消去 $v$，得相对论的能量-动量关系
+    \keyformula{E^{2}=p^{2}c^{2}+m_0^{2}c^{4}}
+    对于静止质量为零的粒子（如光子），有 $E=pc$，且只能以光速 $c$ 运动。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{经典力学与相对论力学主要公式对照}
+    \begin{tabular}{lll}
+    \toprule
+    物理量 & 经典力学 & 相对论力学 \\
+    \midrule
+    质量 & $m=m_0$ & $m=\gamma m_0$ \\
+    动量 & $\boldsymbol{p}=m_0\boldsymbol{v}$ & $\boldsymbol{p}=\gamma m_0\boldsymbol{v}$ \\
+    动力学方程 & $\boldsymbol{F}=m\boldsymbol{a}$ & $\boldsymbol{F}=\mathrm{d}\boldsymbol{p}/\mathrm{d}t$ \\
+    动能 & $E_\mathrm{k}=\frac{1}{2}m_0v^{2}$ & $E_\mathrm{k}=(\gamma-1)m_0c^{2}$ \\
+    总能 & —— & $E=mc^{2}$ \\
+    能量动量关系 & $E_\mathrm{k}=p^{2}/(2m_0)$ & $E^{2}=p^{2}c^{2}+m_0^{2}c^{4}$ \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \corepoint{易错点：（1）相对论动能不是 $\frac{1}{2}mv^{2}$，而是 $mc^{2}-m_0c^{2}$；（2）质能关系 $E=mc^{2}$ 中的 $m$ 是相对论质量，不能把 $m_0$ 直接代入；（3）光子 $m_0=0$ 但 $E$、$p$ 不为零，不能用 $m=p/v$ 求光子质量；（4）相对论中质量守恒与能量守恒统一为一条定律，不能分别使用。}

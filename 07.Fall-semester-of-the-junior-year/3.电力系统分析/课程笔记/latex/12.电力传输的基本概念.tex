@@ -1,0 +1,297 @@
+% ============================================================
+% 第 10 章  电力传输的基本概念
+% （教材：何仰赞、温增银《电力系统分析》下册 第 10 章）
+% 结构对齐 10.1—10.4；例题、习题不录
+% ============================================================
+
+\chapter{电力传输的基本概念}
+
+本章从“功率怎样在网络上传输”这个角度重新看元件，得到三个贯穿全书的结论：
+\textbf{电压幅值差由无功决定、电压相角差由有功决定}（10.1）；
+\textbf{输电线路存在功率极限，极限由电压与电抗之比决定}（10.2、10.4）；
+\textbf{长线的电压分布由波过程决定，自然功率是“理想运行点”}（10.3）。
+第 11～14 章的潮流、调压、调频、经济运行，全部建立在这几个概念上。
+
+\section{网络元件的电压降落和功率损耗}
+
+\subsection{网络元件的电压降落}
+
+设元件一相等值电路为 $Z=R+jX$，首末端相电压 $\dot U_1$、$\dot U_2$，电流 $\dot I$。则
+\begin{equation}
+  \dot U_1-\dot U_2=(R+jX)\dot I .
+\end{equation}
+以 $\dot U_2$ 为参考轴，把电压降相量 $(R+jX)\dot I$ 分解为与 $\dot U_2$ 同方向的分量
+$\Delta\dot U_2$（\textbf{纵分量}）与垂直的分量 $\delta\dot U_2$（\textbf{横分量}），得
+\begin{align}
+  \Delta U_2&=RI\cos\varphi_2+XI\sin\varphi_2,\\
+  \delta U_2&=XI\cos\varphi_2-RI\sin\varphi_2 .
+\end{align}
+电力网分析习惯用功率运算。以末端一相功率 $S_2=P_2+jQ_2=U_2I^{*}$ 代替电流，得
+\keyformula{\Delta U_2=\frac{P_2R+Q_2X}{U_2},\qquad
+  \delta U_2=\frac{P_2X-Q_2R}{U_2}}
+于是首端电压
+\begin{equation}
+  U_1=\sqrt{\left(U_2+\Delta U_2\right)^{2}+\left(\delta U_2\right)^{2}},
+  \qquad \delta=\arctan\frac{\delta U_2}{U_2+\Delta U_2}.
+\end{equation}
+同理，若以首端电压 $\dot U_1$ 为参考、用首端功率 $S_1=P_1+jQ_1$，则
+\keyformula{\Delta U_1=\frac{P_1R+Q_1X}{U_1},\qquad
+  \delta U_1=\frac{P_1X-Q_1R}{U_1}}
+\begin{equation}
+  U_2=\sqrt{\left(U_1-\Delta U_1\right)^{2}+\left(\delta U_1\right)^{2}} .
+\end{equation}
+
+\textbf{必须注意两点}：
+\begin{enumerate}
+  \item 用某一点的功率，就必须用\textbf{同一点}的电压——$\Delta U_2$ 用 $U_2$、$\Delta U_1$ 用 $U_1$，
+        不能混用；
+  \item 上述公式按“电流落后于电压（功率因数角 $\varphi$ 为正）”导出；若电流超前，
+        $Q$ 应取负值。本书约定：\textbf{感性无功为正，容性无功为负}。
+\end{enumerate}
+显然 $\Delta U_1\ne\Delta U_2$、$\delta U_1\ne\delta U_2$——两种分解的结果不同，
+只是同一相量的不同投影，不可混用。
+
+\subsection{电压损耗与电压偏移}
+
+\paragraph{电压损耗} 两点间电压\textbf{绝对值}之差：
+\begin{equation}
+  \Delta U=U_1-U_2 .
+\end{equation}
+当两端电压相角差 $\delta$ 不大时，$\Delta U$ 与纵分量 $\Delta U_2$ 相差不大，
+可近似认为\textbf{电压损耗就等于电压降落的纵分量}。工程上常用额定电压的百分数表示。
+从电源点到某负荷点的总电压损耗，等于沿途各串联元件电压损耗的代数和。
+
+\paragraph{电压偏移} 网络中某点实际电压与该处额定电压之差：
+\begin{equation}
+  \text{电压偏移}(\%)=\frac{U-U_N}{U_N}\times 100\% .
+\end{equation}
+电压损耗是“元件两端之差”（过程量），电压偏移是“某点对额定值之差”（状态量），
+二者是衡量电压质量的两个不同概念；实际电压的高低对用户有影响，而电压的相位对用户没有影响。
+
+\subsection{电压降落公式的分析}
+
+由 $\Delta U=(PR+QX)/U$、$\delta U=(PX-QR)/U$ 可见：
+\begin{itemize}
+  \item 元件两端电压的\textbf{幅值差}主要由纵分量决定，\textbf{相角差}由横分量决定；
+  \item 高压输电线的电抗远大于电阻，取极端 $R=0$，则
+        \begin{equation}
+          \Delta U=\frac{QX}{U},\qquad \delta U=\frac{PX}{U}.
+        \end{equation}
+\end{itemize}
+\corepoint{纯电抗元件中：电压降落的\textbf{纵分量由传送无功产生}，\textbf{横分量由传送有功产生}。
+换句话说——\textbf{元件两端存在电压幅值差是传送无功的条件，存在电压相角差是传送有功的条件}。
+感性无功从电压高的一端流向电压低的一端；有功从相位超前的一端流向相位落后的一端。
+这两句话是第 11 章（潮流）和第 15 章（功角）的共同起点。}
+
+实际元件都有电阻：电流的有功分量流过电阻会增大纵分量；
+电流的感性无功分量流过电阻会使横分量略有减小。
+
+\subsection{网络元件的功率损耗}
+
+\paragraph{串联阻抗上的功率损耗}
+\begin{equation}
+  \Delta S_L=\Delta P_L+j\Delta Q_L=I^{2}(R+jX)
+  =\frac{P^{2}+Q^{2}}{U^{2}}(R+jX),
+\end{equation}
+其中 $P$、$Q$、$U$ 取同一端的值。可见功率损耗与\textbf{电流平方}（即功率平方）成正比、
+与\textbf{电压平方}成反比——这是“提高电压等级可降低网损”的定量依据。
+
+\paragraph{并联导纳上的功率损耗}
+线路电纳产生容性无功（按本书约定 $Q$ 取负号）：
+\begin{equation}
+  \Delta Q_{B1}=-\tfrac{1}{2}BU_1^{2},\qquad \Delta Q_{B2}=-\tfrac{1}{2}BU_2^{2}.
+\end{equation}
+变压器励磁支路的损耗可直接用空载试验数据：
+\begin{equation}
+  \Delta S_0=\Delta P_0+jQ_0=\Delta P_0+j\frac{I_0\%}{100}S_N ,
+\end{equation}
+一般不考虑电压变化对它的影响。35~kV 以下电网的简化计算中常略去变压器励磁功率。
+
+\paragraph{输电效率}
+\begin{equation}
+  \text{输电效率}=\frac{P_2}{P_1}\times 100\% .
+\end{equation}
+
+以上公式由单相电路导出，实际计算中改用电网习惯的\textbf{线电压与三相功率}时形式不变，
+只需把单位统一为：阻抗 $\Omega$、导纳 S、电压 kV、功率 MV$\cdot$A。
+
+\section{输电线路的功率特性}
+
+\subsection{两端口方程}
+
+线路两端电压电流满足
+\begin{equation}
+  \dot U_1=A\dot U_2+B\dot I_2,\qquad \dot I_1=C\dot U_2+D\dot I_2,
+  \qquad AD-BC=1 .
+\end{equation}
+由之可解出用 $\dot U_1$、$\dot U_2$ 表示的两端功率。
+
+\subsection{功率特性与功率极限}
+
+对“发电机经电抗 $X$ 供一负荷”的最简单系统（略电阻），受端功率为
+\keyformula{P_2=\frac{U_1U_2}{X}\sin\delta,\qquad
+  Q_2=\frac{U_1U_2\cos\delta-U_2^{2}}{X}}
+其中 $\delta$ 为首末端电压的相角差。这两式是全书最重要的两个式子：
+\begin{itemize}
+  \item $P_2$ 随 $\delta$ 按正弦变化，$\delta=90^\circ$ 时达\textbf{功率极限}
+        \begin{equation}
+          P_{\max}=\frac{U_1U_2}{X};
+        \end{equation}
+  \item $Q_2$ 在 $\delta=0$ 时最大（$=U_2(U_1-U_2)/X$），随 $\delta$ 增大而减小，
+        甚至变负（受端发出无功）。
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \caption{功率传输的三个基本结论}
+  \small
+  \begin{tabular}{@{}p{0.26\linewidth}p{0.60\linewidth}@{}}
+    \toprule
+    结论 & 说明 \\
+    \midrule
+    $P\propto\sin\delta$，极限 $P_{\max}=U_1U_2/X$ & 有功传输靠相角差；要增大传输能力，
+      只能提高电压或减小电抗（串补、分裂导线、增加回路数） \\
+    $Q$ 由电压幅值差决定 & 无功从电压高处流向低处；要维持受端电压，须就地补偿无功 \\
+    $P$、$Q$ 相互耦合 & 改变 $\delta$ 会改变 $Q$，改变 $U$ 会改变 $P_{\max}$——
+      这正是潮流计算必须联立求解的原因 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{输送功率与电压水平的关系}
+
+由 $P_2=U_1U_2\sin\delta/X$ 与 $Q_2=(U_1U_2\cos\delta-U_2^{2})/X$ 消去 $\delta$，可得
+\begin{equation}
+  \left(\frac{P_2X}{U_1U_2}\right)^{2}
+  =\sin^{2}\delta
+  =1-\left(\frac{Q_2X+U_2^{2}}{U_1U_2}\right)^{2},
+\end{equation}
+整理即得 $P$-$Q$ 平面上的\textbf{圆方程}：受端功率的轨迹是一族以
+$(0,\,-U_2^{2}/X)$ 为圆心、以 $U_1U_2/X$ 为半径的圆。
+其工程含义是：
+\begin{itemize}
+  \item 输送有功越多，受端能维持的电压越低（同一 $U_1$ 下）；
+  \item 若要保持受端电压不变，输送功率增大时必须相应增加无功补偿（降低 $Q$，即“发无功”）；
+  \item 当 $\delta\to90^\circ$ 时，$P_2\to P_{\max}$、$Q_2\to-U_2^{2}/X$（受端大量发出无功），
+        这是功率极限点，也是静态稳定极限。
+\end{itemize}
+这一结论把“电压”“无功”“有功”“功角”四者放在同一张图上，
+是第 12 章调压与第 18 章静态稳定的共同基础。
+
+\section{沿长线的功率传送}
+
+\subsection{长线的稳态方程}
+
+长线方程（第 2 章）为
+\begin{equation}
+  \dot U=\dot U_2\operatorname{ch}\gamma x+\dot I_2Z_c\operatorname{sh}\gamma x,\qquad
+  \dot I=\frac{\dot U_2}{Z_c}\operatorname{sh}\gamma x+\dot I_2\operatorname{ch}\gamma x .
+\end{equation}
+其中传播常数 $\gamma=\beta+j\alpha$、波阻抗 $Z_c=\sqrt{z_0/y_0}$。
+
+\subsection{输电线路的自然功率}
+
+对\textbf{无损线}（$r_0=g_0=0$），$\gamma=j\alpha=j\omega\sqrt{L_0C_0}$，
+$Z_c=R_c=\sqrt{L_0/C_0}$ 为纯电阻。若线路末端所接负荷恰好等于波阻抗
+\begin{equation}
+  Z_{LD}=Z_c ,
+\end{equation}
+则由长线方程可得沿线各点
+\begin{equation}
+  \dot U=\dot U_2e^{j\alpha x},\qquad \dot I=\dot I_2e^{j\alpha x},
+\end{equation}
+即\textbf{电压、电流的幅值沿线不变，只有相位随距离线性滞后}。
+此时线路输送的功率称\textbf{自然功率}
+\keyformula{S_{nat}=\frac{U^{2}}{Z_c}\quad\Longrightarrow\quad P_{nat}=\frac{U_N^{2}}{Z_c}}
+自然功率是长线的“理想运行点”：
+\begin{itemize}
+  \item 输送功率 $=$ 自然功率时，线路本身既不吸收也不发出无功，沿线电压平坦；
+  \item 输送功率 $<$ 自然功率时，线路呈\textbf{容性}（充电功率大于串联电抗消耗的无功），
+        末端电压升高；
+  \item 输送功率 $>$ 自然功率时，线路呈\textbf{感性}，末端电压降低，需加串补或并联电容。
+\end{itemize}
+波阻抗：单导线架空线 $370\sim410\ \Omega$，分裂导线 $270\sim310\ \Omega$，电缆 $30\sim50\ \Omega$。
+故 $500$~kV 线路的自然功率约 $900\sim1000$~MW，$220$~kV 约 $120\sim150$~MW，
+电缆的自然功率则大得多（因 $Z_c$ 小）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{各级电压线路的自然功率（数量级）}
+  \small
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    额定电压/kV & 波阻抗/$\Omega$（分裂导线） & 自然功率/MW & 说明 \\
+    \midrule
+    110 & $350\sim400$ & 约 $30\sim35$ & 单导线居多 \\
+    220 & $300\sim350$ & 约 $120\sim150$ & 单导线或双分裂 \\
+    330 & $280\sim310$ & 约 $350\sim390$ & 双分裂 \\
+    500 & $250\sim280$ & 约 $900\sim1000$ & 四分裂 \\
+    750 & $240\sim260$ & 约 $2100\sim2300$ & 六分裂 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+这张表给出“一条线能送多少”的数量级依据：若实际输送功率远小于自然功率，
+线路呈容性、末端电压升高，须投并联电抗器；若远大于自然功率，线路呈感性、
+末端电压降低，须加串补或并联电容。超高压线路的设计输送功率一般取自然功率的
+$1.0\sim1.5$ 倍。
+
+\subsection{无损线的功率圆图}
+
+固定首端电压 $U_1$ 时，受端功率 $S_2=P_2+jQ_2$ 随 $\dot U_2$ 变化，
+在 $P$-$Q$ 平面上构成一族圆（\textbf{功率圆图}）。圆心与半径由 $U_1$、$Z_c$、$\alpha l$ 决定。
+圆图的价值在于：把“电压约束”与“功率约束”放在同一张图上，
+可直观看出\textbf{输送功率越大，受端电压越低；要维持电压，必须减少输送功率或补偿无功}。
+
+\subsection{沿长线的电压和电流分布}
+
+\paragraph{无损线}
+由 $\dot U=\dot U_2\cos\alpha x+jZ_c\dot I_2\sin\alpha x$ 可见，沿线电压、电流为
+\textbf{驻波}形式，波长
+\begin{equation}
+  \lambda=\frac{v}{f}\approx\frac{3\times10^{5}\ \text{km/s}}{50\ \text{Hz}}=6000\ \text{km}.
+\end{equation}
+\begin{itemize}
+  \item \textbf{空载}（$\dot I_2=0$）：$\dot U=\dot U_2\cos\alpha x$，
+        末端电压最高，$\dot U_1=\dot U_2\cos\alpha l$，
+        即 $U_2=U_1/\cos\alpha l>U_1$——这就是长线的\textbf{电容效应}（空载末端电压升高），
+        超高压长线必须用并联电抗器补偿。
+  \item \textbf{末端短路}（$\dot U_2=0$）：$\dot U=jZ_c\dot I_2\sin\alpha x$，
+        首端电流由线路波阻抗限制，不会无限增大。
+\end{itemize}
+
+\paragraph{有损耗线路}
+$r_0\ne0$、$g_0\ne0$ 时 $\gamma=\beta+j\alpha$ 有衰减，电压、电流幅值沿线按 $e^{-\beta x}$ 衰减，
+驻波不再是等幅的；末端电压升高的程度比无损线小。工程上仍可用“自然功率”概念作定性判断。
+
+\subsection{单端供电系统的功率特性}
+
+对“电源经阻抗 $Z=R+jX$ 供一负荷、受端电压 $U_2$ 恒定”的单端供电系统，
+受端功率特性与 10.2 节同形（略电阻时 $P_2=U_1U_2\sin\delta/X$），
+但工程上更关心\textbf{首端}（电源侧）的功率与电压关系：
+\begin{equation}
+  P_1=\frac{U_1^{2}}{Z^{2}}R+\frac{U_1U_2}{Z^{2}}\left(R\cos\delta+X\sin\delta\right),
+\end{equation}
+其最大值即\textbf{传输功率极限}，出现在 $\delta$ 略小于 $90^\circ$ 处（计及电阻时）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{本章公式的物理含义一览}
+  \small
+  \begin{tabular}{@{}p{0.24\linewidth}p{0.30\linewidth}p{0.36\linewidth}@{}}
+    \toprule
+    公式 & 说明什么 & 用在哪 \\
+    \midrule
+    $\Delta U=(PR+QX)/U$ & 幅值差由无功主导 & 电压调整（12）、潮流（11） \\
+    $\delta U=(PX-QR)/U$ & 相角差由有功主导 & 功角（15、16）、稳定 \\
+    $P=U_1U_2\sin\delta/X$ & 有功传输与极限 & 静态稳定（18）、暂态稳定（17） \\
+    $Z_c=\sqrt{L_0/C_0}$ & 长线特性阻抗 & 自然功率、过电压 \\
+    $P_{nat}=U^{2}/Z_c$ & 长线理想输送能力 & 超高压输电规划 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{本章要建立的是“数量级感”而不是推导能力：一条 $500$~kV 线路的
+自然功率约 $1000$~MW、波阻抗约 $300\ \Omega$、波长 $6000$~km；
+一条线路的电压降落的纵分量约为 $(QX)/U$，横分量约为 $(PX)/U$。
+有了这些数量级，做题时一眼就能看出结果是否离谱，这是教材反复强调的“相对数值概念”。}

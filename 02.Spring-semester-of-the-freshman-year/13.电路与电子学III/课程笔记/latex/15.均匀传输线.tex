@@ -1,310 +1,440 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第十三章 均匀传输线}
+% 电路与电子学III 课程笔记 —— 第十三章（教材第13章）均匀传输线
+\chapter{均匀传输线}
 
 \section{均匀传输线及其方程}
-电路参数的分布性。
 
-均匀传输线方程：
-\[
-\begin{cases}
--\dfrac{\partial u}{\partial x} = R_0 i + L_0 \dfrac{\partial i}{\partial t} \\
--\dfrac{\partial i}{\partial x} = G_0 u + C_0 \dfrac{\partial u}{\partial t}
-\end{cases}
-\]
+\subsection{电路参数的分布性}
+本章之前研究的都是\textbf{集中参数电路}：认为各种电路参数（电阻、电感和电容）都集中在某些元件上，
+各元件之间用理想导线相连。然而任何实际电路的参数都是分布的——电感线圈的电感分布在它的每一线匝上，
+实际电阻器的电阻分布在它的全部长度上。建立集中参数模型时忽略了参数的分布性，用集中参数元件近似表示其作用。
+
+根据电磁场理论，当电路器件尺寸远小于其工作频率 $f$ 下的电磁波波长 $\lambda$（$v$ 为电磁波波速，
+对于架空线接近光速）时，用集中参数模型分析可以满足实际要求。例如工频 $f=50\ \mathrm{Hz}$ 对应的
+波长约 $6000\ \mathrm{km}$，常见工频电路器件尺寸远小于该长度，故一般工频电路可按集中参数处理。
+集中参数电路中只涉及元件端子上的电磁量，这些电磁量与空间坐标无关。
+
+若实际电路尺寸可与波长相比甚至大于波长，就必须考虑参数的分布性：
+\begin{itemize}
+  \item 长距离电力输电线：$500\ \mathrm{km}$ 与 $6000\ \mathrm{km}$ 相比已不算小，需考虑参数分布性；
+  \item 高频通信线路：$f=300\ \mathrm{MHz}$ 时波长仅 $1\ \mathrm{m}$，器件尺寸接近甚至超过波长，
+        必须用分布参数电路分析。
+\end{itemize}
+
+\subsection{均匀传输线的原参数}
+由两根连续导体（往返两导线）构成的传输线，若其\textbf{电阻、电感、电容和漏电导沿全线均匀分布}，
+则称为\textbf{均匀传输线}。用四个\textbf{原参数}（单位长度的参数）描述：
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{均匀传输线的四个原参数（单位长度值）}
+  \begin{tabular}{llll}
+    \toprule
+    参数 & 名称 & 单位 & 物理含义 \\
+    \midrule
+    $R_0$ & 单位长度电阻 & $\Omega/\mathrm{m}$ & 导线发热损耗 \\
+    $L_0$ & 单位长度电感 & $\mathrm{H/m}$ & 导线周围磁场储能 \\
+    $G_0$ & 单位长度漏电导 & $\mathrm{S/m}$ & 绝缘介质漏电损耗 \\
+    $C_0$ & 单位长度电容 & $\mathrm{F/m}$ & 导线间电场储能 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{传输线方程}
+在距始端 $x$ 处取长度 $\mathrm{d}x$ 的微段，其电阻为 $R_0\mathrm{d}x$、电感为 $L_0\mathrm{d}x$，
+两线间漏电导为 $G_0\mathrm{d}x$、电容为 $C_0\mathrm{d}x$。对该微段列 KVL 与 KCL，
+并忽略二阶无穷小量，得\textbf{均匀传输线方程}（电报方程）
+\begin{keyformula}{-\frac{\partial u}{\partial x}=R_0i+L_0\frac{\partial i}{\partial t},\qquad
+  -\frac{\partial i}{\partial x}=G_0u+C_0\frac{\partial u}{\partial t}}
+\end{keyformula}
+式中 $u=u(x,t)$、$i=i(x,t)$ 既是时间 $t$ 的函数，又是位置 $x$ 的函数——这正是分布参数电路的本质特征：
+电压、电流沿线各点不同。方程左端的负号表示电压、电流随 $x$ 增加而减小（能量沿 $x$ 方向传输）。
+
+\begin{corepoint}{原参数是“单位长度”的量，单位为 $\Omega/\mathrm{m}$、$\mathrm{H/m}$、$\mathrm{S/m}$、$\mathrm{F/m}$，
+全线的总参数则为 $R_0l$、$L_0l$、$G_0l$、$C_0l$。分布参数电路与集中参数电路的根本区别是
+\textbf{电压、电流是空间坐标的函数}，因此必须用偏微分方程描述。}
+\end{corepoint}
 
 \section{均匀传输线方程的正弦稳态解}
-由正弦电源激励的均匀线达到稳态时，线路上任一点的电流和线间电压都是同一频率的正弦量，可以用相量法分析沿线的电压和电流。沿线电压和电流可表示如下
-\[
-u(x,t)=\text{Re}\left[\sqrt{2}\dot{U}(x)\text{e}^{\text{j}\omega t}\right]
-\]
-\[
-i(x,t)=\text{Re}\left[\sqrt{2}\dot{I}(x)\text{e}^{\text{j}\omega t}\right]
-\]
-式中。写成如下的相量形式
-\[
-\begin{cases}
--\dfrac{\mathrm{d}\dot{U}(x)}{\mathrm{d}x} = \left(R_0 + \mathrm{j}\omega L_0\right)\dot{I}(x) = Z_0 \dot{I}(x) \\
--\dfrac{\mathrm{d}\dot{I}(x)}{\mathrm{d}x} = \left(G_0 + \mathrm{j}\omega C_0\right)\dot{U}(x) = Y_0 \dot{U}(x)
-\end{cases}
-\]
-式中，$Z_0=$；。原来，。将式的两边再对$x$求导，得
-\[
-\begin{cases}
-\dfrac{\mathrm{d}^2 \dot{U}(x)}{\mathrm{d}x^2} = Z_0 Y_0 \dot{U}(x) = \gamma^2 \dot{U}(x) \\
-\dfrac{\mathrm{d}^2 \dot{I}(x)}{\mathrm{d}x^2} = Z_0 Y_0 \dot{I}(x) = \gamma^2 \dot{I}(x)
-\end{cases}
-\]
-式中
-\[
-\gamma = \sqrt{\left(R_0 + \mathrm{j}\omega L_0\right)\left(G_0 + \mathrm{j}\omega C_0\right)} = \alpha + \mathrm{j}\beta
-\]
-$\gamma$是由线路原参数和频率决定的复常数，称为线路的传播常数；其实部$\alpha$称为衰减常数，虚部$\beta$称为相位常数。式通解为
-\[
-\begin{cases}
-\dot{U}(x) = A_1 \mathrm{e}^{-\gamma x} + A_2 \mathrm{e}^{\gamma x} \\
-\dot{I}(x) = B_1 \mathrm{e}^{-\gamma x} + B_2 \mathrm{e}^{\gamma x}
-\end{cases}
-\]
-通解中的待定积分系数$A_1$、$A_2$、$B_1$、$B_2$可由边界条件确定，得到
-\[
-\dot{I}(x) = -\frac{1}{Z_0}\frac{\mathrm{d}\dot{U}(x)}{\mathrm{d}x} = \frac{\gamma}{Z_0}\left(A_1 \mathrm{e}^{-\gamma x} - A_2 \mathrm{e}^{\gamma x}\right)
-\]
-令
-\[
-Z_{\mathrm{c}} = \frac{Z_0}{\gamma} = \frac{R_0 + \mathrm{j}\omega L_0}{\sqrt{\left(R_0 + \mathrm{j}\omega L_0\right)\left(G_0 + \mathrm{j}\omega C_0\right)}} = \sqrt{\frac{R_0 + \mathrm{j}\omega L_0}{G_0 + \mathrm{j}\omega C_0}}
-\]
-$Z_\mathrm{c}$特性阻抗或波阻抗，具有，只与传输线路的原参数和频率相关。所以电流可写为
-\[
-\dot{I}(x) = B_1 \mathrm{e}^{-\gamma x} + B_2 \mathrm{e}^{\gamma x} = \frac{A_1}{Z_{\mathrm{c}}} \mathrm{e}^{-\gamma x} - \frac{A_2}{Z_{\mathrm{c}}} \mathrm{e}^{\gamma x}
-\]
-根据边界条件可以确定积分系数$A_1$和。假设，当以，在，$=$，$=$,可以得到
-\[
-\begin{cases}
-\dot{U}_1 = A_1 + A_2 \\
-\dot{I}_1 = \dfrac{A_1}{Z_{\mathrm{c}}} - \dfrac{A_2}{Z_{\mathrm{c}}}
-\end{cases}
-\]
-解得
-\[
-\begin{cases}
-A_1 = \dfrac{1}{2}\left(\dot{U}_1 + Z_{\mathrm{c}} \dot{I}_1\right) \\
-A_2 = \dfrac{1}{2}\left(\dot{U}_1 - Z_{\mathrm{c}} \dot{I}_1\right)
-\end{cases}
-\]
-代入，得
-\[
-\begin{aligned}
-\dot{U}(x) &= \dfrac{1}{2}\left(\dot{U}_1 + Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{-\gamma x} + \dfrac{1}{2}\left(\dot{U}_1 - Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{\gamma x} \\
-&= \dot{U}_1 \cdot \dfrac{\mathrm{e}^{\gamma x} + \mathrm{e}^{-\gamma x}}{2} - Z_{\mathrm{c}} \dot{I}_1 \cdot \dfrac{\mathrm{e}^{\gamma x} - \mathrm{e}^{-\gamma x}}{2} \\
-\dot{I}(x) &= \dfrac{1}{Z_{\mathrm{c}}} \cdot \dfrac{1}{2}\left(\dot{U}_1 + Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{-\gamma x} - \dfrac{1}{Z_{\mathrm{c}}} \cdot \dfrac{1}{2}\left(\dot{U}_1 - Z_{\mathrm{c}} \dot{I}_1\right)\mathrm{e}^{\gamma x} \\
-&= \dot{I}_1 \cdot \dfrac{\mathrm{e}^{\gamma x} + \mathrm{e}^{-\gamma x}}{2} - \dfrac{\dot{U}_1}{Z_{\mathrm{c}}} \cdot \dfrac{\mathrm{e}^{\gamma x} - \mathrm{e}^{-\gamma x}}{2}
-\end{aligned}
-\]
-计，，可写成
-\[
-\begin{cases}
-\dot{U}(x) = \dot{U}_1 \cosh \gamma l - \dot{I}_1 Z_{\mathrm{c}} \sinh \gamma l \\
-\dot{I}(x) = -\dfrac{\dot{U}_1}{Z_{\mathrm{c}}} \sinh \gamma l + \dot{I}_1 \cosh \gamma l
-\end{cases}
-\]
-如果用矩阵表示，可写为
-\[
-\begin{bmatrix}
-\dot{U}(x) \\
-\dot{I}(x)
-\end{bmatrix}
-=
-\begin{bmatrix}
-\cosh \gamma x & -Z_{\text{c}} \sinh \gamma x \\
--\dfrac{1}{Z_{\text{c}}} \sinh \gamma x & \cosh \gamma x
-\end{bmatrix}
-\begin{bmatrix}
-\dot{U}_1 \\
-\dot{I}_1
-\end{bmatrix}
-\]
-若线路长度为$l$，将$x=l$代入上式，则线路终端电压和电流为
-\[
-\left\{
-\begin{aligned}
-\dot{U}_2 &= \dot{U}_1 \cosh \gamma l - \dot{I}_1 Z_{\text{c}} \sinh \gamma l \\
-\dot{I}_2 &= -\frac{\dot{U}_1}{Z_{\text{c}}} \sinh \gamma l + \dot{I}_1 \cosh \gamma l
-\end{aligned}
-\right.
-\]
-如果已知，可得
-\[
-\left\{
-\begin{aligned}
-\dot{U}_1 &= \dot{U}_2 \cosh \gamma l + \dot{I}_2 Z_{\text{c}} \sinh \gamma l \\
-\dot{I}_1 &= \frac{\dot{U}_2}{Z_{\text{c}}} \sinh \gamma l + \dot{I}_2 \cosh \gamma l
-\end{aligned}
-\right.
-\]
-上式写成矩阵形式则为
-\[
-\begin{bmatrix}
-\dot{U}_1 \\
-\dot{I}_1
-\end{bmatrix}
-=
-\begin{bmatrix}
-\cosh \gamma l & Z_{\text{c}} \sinh \gamma l \\
-\dfrac{1}{Z_{\text{c}}} \sinh \gamma l & \cosh \gamma l
-\end{bmatrix}
-\begin{bmatrix}
-\dot{U}_2 \\
-\dot{I}_2
-\end{bmatrix}
-\]
-式实际上。故传输参数矩阵为
-\[
-\begin{bmatrix}
-A_{11} & A_{12} \\
-A_{21} & A_{22}
-\end{bmatrix}
-=
-\begin{bmatrix}
-\cosh \gamma l & Z_{\text{c}} \sinh \gamma l \\
-\dfrac{1}{Z_{\text{c}}} \sinh \gamma l & \cosh \gamma l
-\end{bmatrix}
-\]
-而且有，说明。这是，因为。
 
-当，于是得到
-\[
-\left\{
-\begin{aligned}
-\dot{U}(x') &= \dot{U}_2 \cosh \gamma x' + \dot{I}_2 Z_{\text{c}} \sinh \gamma x' \\
-\dot{I}(x') &= \frac{\dot{U}_2}{Z_{\text{c}}} \sinh \gamma x' + \dot{I}_2 \cosh \gamma x'
-\end{aligned}
-\right.
-\]
+\subsection{相量形式的方程}
+设均匀线由正弦电源激励，达到稳态后线路上任一点的电压、电流都是同一频率的正弦量，可用相量表示：
+\begin{equation}
+  u(x,t)=\mathrm{Re}\left[\sqrt2\dot{U}(x)\mathrm{e}^{\mathrm{j}\omega t}\right],\qquad
+  i(x,t)=\mathrm{Re}\left[\sqrt2\dot{I}(x)\mathrm{e}^{\mathrm{j}\omega t}\right]
+\end{equation}
+代入传输线方程，偏导数变为对 $x$ 的全导数，得
+\begin{keyformula}{-\frac{\mathrm{d}\dot{U}(x)}{\mathrm{d}x}=Z_0\dot{I}(x),\qquad
+  -\frac{\mathrm{d}\dot{I}(x)}{\mathrm{d}x}=Y_0\dot{U}(x)}
+\end{keyformula}
+其中 $Z_0=R_0+\mathrm{j}\omega L_0$ 为单位长度阻抗，$Y_0=G_0+\mathrm{j}\omega C_0$ 为单位长度导纳。
+再对 $x$ 求导一次，得
+\begin{equation}
+  \frac{\mathrm{d}^2\dot{U}(x)}{\mathrm{d}x^2}=Z_0Y_0\dot{U}(x)=\gamma^2\dot{U}(x),\qquad
+  \frac{\mathrm{d}^2\dot{I}(x)}{\mathrm{d}x^2}=\gamma^2\dot{I}(x)
+\end{equation}
+\begin{keyformula}{\gamma=\sqrt{Z_0Y_0}=\sqrt{\left(R_0+\mathrm{j}\omega L_0\right)\left(G_0+\mathrm{j}\omega C_0\right)}
+  =\alpha+\mathrm{j}\beta}
+\end{keyformula}
+$\gamma$ 是由线路原参数和频率决定的复常数，称为线路的\textbf{传播常数}；实部 $\alpha$ 称为
+\textbf{衰减常数}，虚部 $\beta$ 称为\textbf{相位常数}，二者都具有倒长度的量纲（$1/\mathrm{m}$）。
+
+\subsection{通解与特性阻抗}
+方程的通解为
+\begin{equation}
+  \dot{U}(x)=A_1\mathrm{e}^{-\gamma x}+A_2\mathrm{e}^{\gamma x},\qquad
+  \dot{I}(x)=B_1\mathrm{e}^{-\gamma x}+B_2\mathrm{e}^{\gamma x}
+\end{equation}
+由 $-\dfrac{\mathrm{d}\dot{U}}{\mathrm{d}x}=Z_0\dot{I}$ 得
+$\dot{I}=\dfrac{\gamma}{Z_0}\left(A_1\mathrm{e}^{-\gamma x}-A_2\mathrm{e}^{\gamma x}\right)$，令
+\begin{keyformula}{Z_c=\frac{Z_0}{\gamma}=\sqrt{\frac{Z_0}{Y_0}}
+  =\sqrt{\frac{R_0+\mathrm{j}\omega L_0}{G_0+\mathrm{j}\omega C_0}}}
+\end{keyformula}
+$Z_c$ 称为\textbf{特性阻抗}或\textbf{波阻抗}，具有电阻的量纲，只与线路原参数和频率有关，即
+\begin{equation}
+  \dot{I}(x)=\frac{A_1}{Z_c}\mathrm{e}^{-\gamma x}-\frac{A_2}{Z_c}\mathrm{e}^{\gamma x}
+\end{equation}
+
+\subsection{由始端条件确定的解}
+以始端为计算距离的起点（$x=0$ 处 $\dot{U}=\dot{U}_1$、$\dot{I}=\dot{I}_1$），可定出积分常数
+$A_1=\tfrac12(\dot{U}_1+Z_c\dot{I}_1)$、$A_2=\tfrac12(\dot{U}_1-Z_c\dot{I}_1)$，代回并用双曲函数
+$\cosh\gamma x=\tfrac12(\mathrm{e}^{\gamma x}+\mathrm{e}^{-\gamma x})$、
+$\sinh\gamma x=\tfrac12(\mathrm{e}^{\gamma x}-\mathrm{e}^{-\gamma x})$，得
+\begin{keyformula}{\dot{U}(x)=\dot{U}_1\cosh\gamma x-\dot{I}_1Z_c\sinh\gamma x,\qquad
+  \dot{I}(x)=-\frac{\dot{U}_1}{Z_c}\sinh\gamma x+\dot{I}_1\cosh\gamma x}
+\end{keyformula}
+写成矩阵形式
+\begin{equation}
+  \begin{bmatrix}\dot{U}(x)\\ \dot{I}(x)\end{bmatrix}
+  =\begin{bmatrix}\cosh\gamma x & -Z_c\sinh\gamma x\\
+    -\dfrac{1}{Z_c}\sinh\gamma x & \cosh\gamma x\end{bmatrix}
+  \begin{bmatrix}\dot{U}_1\\ \dot{I}_1\end{bmatrix}
+\end{equation}
+令 $x=l$（线路长度）即得终端电压、电流。
+
+\subsection{由终端条件确定的解}
+若已知终端电压 $\dot{U}_2$、电流 $\dot{I}_2$，在 $x=l$ 处代入上式并对 $\dot{U}_1$、$\dot{I}_1$ 求解，
+计及 $\cosh^2\gamma l-\sinh^2\gamma l=1$，得
+\begin{keyformula}{\dot{U}_1=\dot{U}_2\cosh\gamma l+\dot{I}_2Z_c\sinh\gamma l,\qquad
+  \dot{I}_1=\frac{\dot{U}_2}{Z_c}\sinh\gamma l+\dot{I}_2\cosh\gamma l}
+\end{keyformula}
+矩阵形式为
+\begin{equation}
+  \begin{bmatrix}\dot{U}_1\\ \dot{I}_1\end{bmatrix}
+  =\begin{bmatrix}\cosh\gamma l & Z_c\sinh\gamma l\\
+    \dfrac{1}{Z_c}\sinh\gamma l & \cosh\gamma l\end{bmatrix}
+  \begin{bmatrix}\dot{U}_2\\ \dot{I}_2\end{bmatrix}
+\end{equation}
+这正是把均匀线视为一个二端口网络时的\textbf{传输参数方程}，传输参数矩阵为
+\begin{equation}
+  \boldsymbol{A}=\begin{bmatrix}\cosh\gamma l & Z_c\sinh\gamma l\\
+    \dfrac{1}{Z_c}\sinh\gamma l & \cosh\gamma l\end{bmatrix}
+\end{equation}
+其中 $A_{11}=A_{22}=\cosh\gamma l$，$\det\boldsymbol{A}=1$，说明均匀传输线是一个\textbf{对称二端口网络}
+——对调输入、输出端不会改变其端口特性。
+
+若以\textbf{终端为坐标原点}、向始端方向为距离 $x'$ 的正方向，则只需把上式中的 $l$ 改为 $x'$，
+即得距终端 $x'$ 处的电压、电流：
+\begin{equation}
+  \dot{U}(x')=\dot{U}_2\cosh\gamma x'+\dot{I}_2Z_c\sinh\gamma x',\qquad
+  \dot{I}(x')=\frac{\dot{U}_2}{Z_c}\sinh\gamma x'+\dot{I}_2\cosh\gamma x'
+\end{equation}
+
+\begin{corepoint}{两套公式极易混用：\textbf{以始端为原点}时 $x$ 从始端算起，公式中 $\dot{U}_1$ 前取“$+$”、
+$\dot{I}_1Z_c$ 前取“$-$”；\textbf{以终端为原点}时 $x'$ 从终端算起，两项都取“$+$”。
+做题先明确坐标原点与已知量位置，再选对应公式，切勿张冠李戴。}
+\end{corepoint}
 
 \section{均匀传输线上的行波}
-\subsection{行波}
-为了，重写如下
-\[
-\dot{U}(x) = A_1 \text{e}^{-\gamma x} + A_2 \text{e}^{\gamma x} = \dot{U}^+(x) + \dot{U}^-(x)
-\]
-\[
-\dot{I}(x) = \frac{A_1}{Z_{\text{c}}} \text{e}^{-\gamma x} - \frac{A_2}{Z_{\text{c}}} \text{e}^{\gamma x} = \dot{I}^+(x) - \dot{I}^-(x)
-\]
-其中
-\[
-\dot{U}^{+}(x) = A_1 \mathrm{e}^{-\gamma x} = U' \mathrm{e}^{\mathrm{j}\psi'} \mathrm{e}^{-(\alpha + \mathrm{j}\beta)x} = U' \mathrm{e}^{-\alpha x} \mathrm{e}^{\mathrm{j}(-\beta x + \psi')}
-\]
-式中$A_1=U'\mathrm{e}^{}$。表达式为
-\[
-u^{+}(x,t)=\text{Re}[\sqrt{2}\dot{U}^{+}(x)\cdot e^{j\omega t}]=\text{Re}[\sqrt{2}U'e^{-\alpha x}\cdot e^{j(\omega t - \beta x + \psi')}]
-\]
 
-由此可见，在。
+\subsection{正向行波与反向行波}
+把通解改写为两个分量之和：
+\begin{equation}
+  \dot{U}(x)=\underbrace{A_1\mathrm{e}^{-\gamma x}}_{\dot{U}^+(x)}
+  +\underbrace{A_2\mathrm{e}^{\gamma x}}_{\dot{U}^-(x)},\qquad
+  \dot{I}(x)=\underbrace{\frac{A_1}{Z_c}\mathrm{e}^{-\gamma x}}_{\dot{I}^+(x)}
+  -\underbrace{\frac{A_2}{Z_c}\mathrm{e}^{\gamma x}}_{\dot{I}^-(x)}
+\end{equation}
+设 $A_1=U'\mathrm{e}^{\mathrm{j}\psi'}$，则正向电压行波的瞬时值为
+\begin{equation}
+  u^+(x,t)=\mathrm{Re}\left[\sqrt2\dot{U}^+(x)\mathrm{e}^{\mathrm{j}\omega t}\right]
+  =\sqrt2U'\mathrm{e}^{-\alpha x}\cos\left(\omega t-\beta x+\psi'\right)
+\end{equation}
+它表明：沿 $x$ 方向传播的\textbf{正向行波}（入射波）振幅按 $\mathrm{e}^{-\alpha x}$ 衰减，相位随 $x$
+滞后 $\beta x$。同理 $\dot{U}^-(x)$ 对应沿 $-x$ 方向传播的\textbf{反向行波}（反射波）。
 
-现在研究$u$的波形随时间和位置的变化规律，相角为$\theta$。经过$\Delta$时间以后，即。由可得
-\[
-\Delta x=\frac{\omega}{\beta}\Delta t
-\]
-上式。移动的速度是
-\[
-v_p=\frac{\omega}{\beta}
-\]
-$v_p$称为相移速度，简称相速。
+\subsection{相速与波长}
+设某相位点满足 $\omega t-\beta x+\psi'=$ 常数，对时间求导得
+\begin{keyformula}{v_p=\frac{\omega}{\beta}\ \ (\text{\songti 相速}),\qquad
+  \lambda=\frac{2\pi}{\beta}=\frac{v_p}{f}=v_pT\ \ (\text{\songti 波长})}
+\end{keyformula}
+相速 $v_p$ 是等相位点移动的速度；波长 $\lambda$ 是同一时刻相位相差 $2\pi$ 的两点间距离，
+也等于一个周期内波传播的距离。
 
-综上所述，即
-\[
-(\omega)-[\omega t]=2\pi
-\]
-\[
-\lambda=\frac{2\pi}{\beta}
-\]
-如将代入，并，则得
-\[
-\lambda=\frac{v_p}{f}=v_pT
-\]
-此式又说明波长。
+\subsection{波阻抗的物理意义}
+由通解可见
+\begin{keyformula}{\frac{\dot{U}^+(x)}{\dot{I}^+(x)}=\frac{\dot{U}^-(x)}{-\dot{I}^-(x)}=Z_c}
+\end{keyformula}
+即\textbf{波阻抗等于正向行波的电压与电流之比}（对反向行波则差一负号，因为反射波电流方向与正方向相反）。
+$Z_c=|Z_c|\angle\varphi_c$ 一般为复数，其模反映电压波与电流波的幅值比，其辐角表示二者的相位差。
 
-式，瞬时值为$u$，它。
+\subsection{反射与终端匹配}
+设终端接负载 $Z_L$，则 $\dot{U}_2/\dot{I}_2=Z_L$。由终端处的通解可解出反向行波与正向行波之比，
+得\textbf{终端反射系数}
+\begin{keyformula}{N_2=\frac{\dot{U}_2^-}{\dot{U}_2^+}=\frac{\dot{I}_2^-}{\dot{I}_2^+}
+  =\frac{Z_L-Z_c}{Z_L+Z_c}}
+\end{keyformula}
+它是一个与负载阻抗有关的复数。
+\begin{itemize}
+  \item 若 $Z_L=Z_c$，则 $N_2=0$，线路上\textbf{只有正向行波、没有反射波}，这种工作状态称为
+        \textbf{负载与传输线匹配}（无反射工作状态）。此时线路上任一处电压与电流相量之比都等于 $Z_c$，
+        沿线电压、电流有效值按指数规律单调衰减：
+        \begin{equation}
+          U(x)=U_1\mathrm{e}^{-\alpha x},\qquad I(x)=I_1\mathrm{e}^{-\alpha x}
+        \end{equation}
+  \item 若 $Z_L\ne Z_c$，则 $N_2\ne0$，出现反射波，沿线电压、电流是入射波与反射波的叠加，
+        其有效值不再单调衰减，可能出现局部升高（驻波的前兆）。
+\end{itemize}
 
-综上所述，线路上的电压的叠加$u$$=$同样。所以
-\[
-\frac{\dot{U}^{+}(x)}{\dot{I}^{+}(x)}=\frac{\dot{U}^{-}(x)}{\dot{I}^{-}(x)}=Z_{c}=\vert Z_{c}\vert\angle\varphi_{c}
-\]
-即波阻抗等于电压正向行波与电流正向行波之比，为。应当指出。
+\subsection{自然功率与输电效率}
+线路在无反射条件下工作时，终端负载吸收的功率称为\textbf{自然功率}：
+\begin{equation}
+  P_2=U_2I_2\cos\varphi_c=\frac{U_2^2}{|Z_c|}\cos\varphi_c
+\end{equation}
+由于没有反向行波，匹配状态下传输效率很高，一般通信传输线就常处于这种工作状态。
+把 $U_2=U_1\mathrm{e}^{-\alpha l}$、$I_2=I_1\mathrm{e}^{-\alpha l}$ 代入，得
+\begin{equation}
+  P_2=U_1I_1\mathrm{e}^{-2\alpha l}\cos\varphi_c,\qquad
+  \eta=\frac{P_2}{P_1}=\mathrm{e}^{-2\alpha l}
+\end{equation}
+即匹配时输电效率只由衰减常数与线长决定。
 
-\subsection{波的反射与终端匹配}
-设线路终端所接负载阻抗是$Z_L$，如图所示，则终端电压和终端电流之比为$Z_L$而又可以，即。由可得。化简，得。因此
-\[
-\frac{\dot{I}_2^-}{\dot{I}_2^+} = \frac{\dot{U}_2^- / Z_c}{\dot{U}_2^+ / Z_c} = \frac{\dot{U}_2^-}{\dot{U}_2^+} = \frac{Z_L - Z_c}{Z_L + Z_c} = N_2
-\]
-式中$N_2$称为终端反射系数，它是一个与负载阻抗有关的复数。
+\subsection{输入阻抗}
+由终端条件公式可得传输线始端的\textbf{输入阻抗}
+\begin{keyformula}{Z_i=\frac{\dot{U}_1}{\dot{I}_1}
+  =Z_c\frac{Z_L\cosh\gamma l+Z_c\sinh\gamma l}{Z_L\sinh\gamma l+Z_c\cosh\gamma l}}
+\end{keyformula}
+若 $Z_L=Z_c$，则 $Z_i=Z_c$，与前述一致：匹配时沿线任一点的输入阻抗都等于 $Z_c$。
+终端开路（$Z_L\to\infty$）时 $Z_i=Z_c\coth\gamma l$；终端短路（$Z_L=0$）时 $Z_i=Z_c\tanh\gamma l$。
+可见二端口（传输线）具有\textbf{变换阻抗}的作用。
 
-从式可以看出，如果终端负载阻抗等于均匀线的波阻抗，即$Z_L=Z_c$，则均匀线的电压和电流反向行波为零，只有正向行波存在。这种工作状态称为负载与传输线匹配。
-
-反之，在负载的情况下，传输线，又有。因此可以认为而引起的，故称为反射波，又称为入射波。反射系数便是反射波电压（或电流）和入射波电压（或电流）相量的比值。
-
-对于终端，由于，由式任意一位置$x$处的电压和电流分别为
-\[
-\dot{U}(x) = A_1 \mathrm{e}^{-\gamma x} = \dot{U}_1 \mathrm{e}^{-\gamma x}
-\]
-\[
-\dot{I}(x)=\frac{A_1}{Z_c}e^{-\gamma x}=\frac{\dot{U_1}}{Z_c}e^{-\gamma x}=\dot{I_1}e^{-\gamma x}
-\]
-在这种情况，线路上任何一处电压和电流相量之比都等于线路的波阻抗$Z_c$。电压和电流的有效值分别为
-\[
-\begin{cases}
-U(x) = U_1 \mathrm{e}^{-\alpha x} \\
-I(x) = I_1 \mathrm{e}^{-\alpha x}
-\end{cases}
-\]
-沿线电压、电流的有效值均按指数规律从始端到终端单调衰减。
-
-线路在无反射条件工作时，终端负载吸收的功率为
-\[
-P_2 = U_2 I_2 \cos\varphi_c = \frac{U_2^2}{\vert Z_c \vert} \cos\varphi_c
-\]
-这一功率称为均匀传输线的自然功率。由于没有反向行波，工作在此种匹配状态下的传输线路传输效率是很高的，一般通信传输线就常常处于这种工作状态。
-
-由有
-\[
-U_2=U_1e^{-\alpha l}
-\]
-\[
-I_2=I_1e^{-\alpha l}
-\]
-将此$U_2$和$I_2$的值代入式，得
-\[
-P_2 = U_2 I_2 \cos\varphi_c = U_1 I_1 \mathrm{e}^{-2\alpha l} \cos\varphi_c
-\]
-而始端输入功率为
-\[
-P_1=U_1I_1\cos{\psi c}
-\]
-故线路在匹配工作下的输电效率为
-\[
-\eta = \frac{P_2}{P_1} = \mathrm{e}^{-2\alpha l}
-\]
-
-为使线路达成匹配工作状态，终端必须接阻抗等于$Z_c$的负载。线路的波阻抗$Z_c$和传播常数$\gamma$可。
-
-根据以及，可以写出传输线始端的输入阻抗
-\[
-Z_i = \frac{\dot{U}_1}{\dot{I}_1} = \frac{\dot{U}_2 \cosh \gamma l + \dot{I}_2 Z_c \sinh \gamma l}{\frac{\dot{U}_2}{Z_c} \sinh \gamma l + \dot{I}_2 \cosh \gamma l} = Z_c \frac{Z_L \cosh \gamma l + Z_c \sinh \gamma l}{Z_L \sinh \gamma l + Z_c \cosh \gamma l}
-\]
-由此可见，若$Z_L=Z_c$，始端输入阻抗$Z_i=Z_c$，这与前面一致。
-
-当终端开路时，即$Z_L$，测量，阻抗为。同理，输入阻抗为。根据，得。
+\begin{corepoint}{三个易混的量：\textbf{波阻抗} $Z_c$ 只由线路原参数与频率决定，与负载无关；
+\textbf{输入阻抗} $Z_i$ 随负载 $Z_L$ 和线长 $l$ 变化；\textbf{负载阻抗} $Z_L$ 是外接的。
+反射系数 $N_2$ 的取值范围：匹配时 $0$，终端开路时 $+1$（电压全反射、电流反向抵消），
+终端短路时 $-1$（电压反相，电流加倍）。}
+\end{corepoint}
 
 \section{无损耗线、驻波}
-无损耗线。
 
-在，其传播系数为，即。其波阻抗为，是纯实数。
+\subsection{无损耗线的参数}
+若 $R_0=0$、$G_0=0$，则称为\textbf{无损耗线}（理想线）。此时
+\begin{keyformula}{\gamma=\sqrt{\mathrm{j}\omega L_0\cdot\mathrm{j}\omega C_0}
+  =\mathrm{j}\omega\sqrt{L_0C_0}=\mathrm{j}\beta,\qquad
+  Z_c=\sqrt{\frac{L_0}{C_0}}\ \ (\text{\songti 纯电阻})}
+\end{keyformula}
+即 $\alpha=0$、$\beta=\omega\sqrt{L_0C_0}$，波阻抗为纯实数，
+相速 $v_p=\dfrac{\omega}{\beta}=\dfrac{1}{\sqrt{L_0C_0}}$，波长 $\lambda=\dfrac{2\pi}{\beta}$。
+无损耗线上行波不衰减，只发生相位变化。
 
-注意到，因此有。为。为。写出，得。应为。
+\subsection{驻波的形成}
+把无损耗线的解写成
+\begin{equation}
+  \dot{U}(x)=\dot{U}^+\mathrm{e}^{-\mathrm{j}\beta x}+\dot{U}^-\mathrm{e}^{\mathrm{j}\beta x},\qquad
+  \dot{I}(x)=\frac{\dot{U}^+}{Z_c}\mathrm{e}^{-\mathrm{j}\beta x}-\frac{\dot{U}^-}{Z_c}\mathrm{e}^{\mathrm{j}\beta x}
+\end{equation}
+入射波与反射波幅值相等（$|N_2|=1$）时，二者叠加不再是一个行波，而是\textbf{驻波}：
+电压、电流的幅值沿线路按正弦规律分布，出现固定不动的\textbf{波腹}（幅值最大处）与\textbf{波节}
+（幅值为零处），相邻波节（或波腹）间距为 $\lambda/2$，波节与相邻波腹间距为 $\lambda/4$。
 
-\subsection{终端开路，即}
-为。电压。由，的等效阻抗。
+\subsection{终端开路的无损线}
+终端开路时 $\dot{I}_2=0$、$N_2=1$。以终端为原点，由终端条件公式得（$\gamma=\mathrm{j}\beta$）
+\begin{equation}
+  \dot{U}(x')=\dot{U}_2\cos\beta x',\qquad
+  \dot{I}(x')=\mathrm{j}\frac{\dot{U}_2}{Z_c}\sin\beta x'
+\end{equation}
+电压在终端为\textbf{波腹}、电流在终端为\textbf{波节}；距终端 $\lambda/4$ 处电压为波节、电流为波腹。
+输入阻抗
+\begin{keyformula}{Z_i=-\mathrm{j}Z_c\cot\beta l=-\mathrm{j}Z_c\cot\frac{2\pi l}{\lambda}}
+\end{keyformula}
+为纯电抗，随线长作周期性变化：$l=\lambda/4$ 时 $Z_i=0$（相当于短路），$l=\lambda/2$ 时
+$Z_i\to\infty$（相当于开路）。
 
-\subsection{终端短路}
-由为。等效阻抗。
+\subsection{终端短路的无损线}
+终端短路时 $\dot{U}_2=0$、$N_2=-1$，得
+\begin{equation}
+  \dot{U}(x')=\mathrm{j}\dot{I}_2Z_c\sin\beta x',\qquad
+  \dot{I}(x')=\dot{I}_2\cos\beta x'
+\end{equation}
+此时终端是电压\textbf{波节}、电流\textbf{波腹}，与开路情形正好对偶。输入阻抗
+\begin{keyformula}{Z_i=\mathrm{j}Z_c\tan\beta l=\mathrm{j}Z_c\tan\frac{2\pi l}{\lambda}}
+\end{keyformula}
+$l=\lambda/4$ 时 $Z_i\to\infty$（相当于开路），$l=\lambda/2$ 时 $Z_i=0$（相当于短路）。
 
-\subsection{终端接}
-此时终端反射系数为。由于无损线，故。
+\subsection{终端接纯电抗与四分之一波长变换}
+终端接纯电抗时 $|N_2|=1$，线上仍形成驻波，只是波腹、波节的位置随负载而移动。
+当 $l=\lambda/4$ 时，由输入阻抗公式（$\beta l=\pi/2$）得
+\begin{keyformula}{Z_i=\frac{Z_c^2}{Z_L}\qquad\left(l=\frac{\lambda}{4}\right)}
+\end{keyformula}
+即\textbf{四分之一波长无损线可作阻抗变换器}：把负载阻抗 $Z_L$ 变换为 $Z_c^2/Z_L$，
+适当选择 $Z_c$ 便能实现所需的阻抗匹配。这是微波技术中常用的阻抗匹配手段。
+
+\begin{corepoint}{开路、短路两种极端情形要记牢“互换”关系：开路线的输入阻抗为
+$-\mathrm{j}Z_c\cot\beta l$，短路线为 $\mathrm{j}Z_c\tan\beta l$，二者相差 $\lambda/4$ 就互换。
+驻波与行波的区别：行波沿线幅值单调（或按指数）变化、相位随位置连续滞后；
+驻波幅值有固定的波节波腹、各点相位相同或相反。}
+\end{corepoint}
 
 \section{均匀传输线的集中参数等效电路}
 
+当无需研究沿线电压、电流的分布，只需计算始端和终端的电压、电流时，可把均匀线视为集中参数的
+\textbf{对称二端口网络}，用对称的 \textbf{T 形}或 \textbf{$\Pi$ 形}电路等效。
+
+\subsection{精确等效（双曲函数形式）}
+比较 T 形电路的传输参数与式 $\dot{U}_1=\dot{U}_2\cosh\gamma l+\dot{I}_2Z_c\sinh\gamma l$ 等，可得
+\begin{keyformula}{\text{\songti T 形：}\ Z=2Z_c\tanh\frac{\gamma l}{2},\quad Y=\frac{\sinh\gamma l}{Z_c};\qquad
+  \text{\songti $\Pi$ 形：}\ Z=Z_c\sinh\gamma l,\quad Y=\frac{2}{Z_c}\tanh\frac{\gamma l}{2}}
+\end{keyformula}
+其中 T 形的 $Z$ 是两串联臂之和（每臂 $Z/2$），$Y$ 是中间并联臂；$\Pi$ 形的 $Z$ 是串联臂，
+$Y$ 是两并联臂之和（每臂 $Y/2$）。
+
+\subsection{短线近似（集中参数形式）}
+当线路相对波长较短、$|\gamma l|\ll1$ 时，把双曲函数展成级数并只取第一项，得
+\begin{keyformula}{Z\approx Z_0l=\left(R_0+\mathrm{j}\omega L_0\right)l,\qquad
+  Y\approx Y_0l=\left(G_0+\mathrm{j}\omega C_0\right)l}
+\end{keyformula}
+即把全线总阻抗、总导纳集中起来：T 形近似为两臂各 $Z/2$、中间并联 $Y$；$\Pi$ 形近似为串联臂 $Z$、
+两端并联各 $Y/2$。这就是中等距离输电线（例如工频下 $50\sim100\ \mathrm{km}$ 的架空线路）常用的电路模型。
+
+\subsection{链形电路（仿真线）}
+若要更好地模拟均匀线、研究沿线电压电流分布及其暂态过程，可把均匀线等分成 $n$ 段，
+每段看成一个二端口网络，各用 T 形或 $\Pi$ 形等效电路代替，得到由许多相同对称二端口级联而成的
+\textbf{链形电路}。计算每段等效参数时只需用 $l/n$ 代替原来的 $l$。这种链形电路常用于实验室对实际
+均匀线进行仿真研究，称为\textbf{仿真线}或\textbf{人工线}。
+
+\begin{corepoint}{近似等效电路中没有出现频率变量，似乎与频率无关——其实不然：
+近似的前提是 $|\gamma l|\ll1$，而 $\gamma$ 中含 $\omega$。线长一定时，等效的近似程度取决于信号频率，
+频率越高近似越差。工程上常以 $l<\lambda/10$（或 $l<1000\ \mathrm{km}$ 工频）作为可用集中参数近似的界限。}
+\end{corepoint}
+
 \section{无损均匀线方程的通解}
-设，对时间，即。设。
+
+前面讨论的是正弦激励下的稳态。当传输线始端接入任意波形的电源时，需研究无损线的暂态（波）过程。
+对无损耗线，传输线方程化为
+\begin{equation}
+  -\frac{\partial u}{\partial x}=L_0\frac{\partial i}{\partial t},\qquad
+  -\frac{\partial i}{\partial x}=C_0\frac{\partial u}{\partial t}
+\end{equation}
+消去 $i$ 或 $u$，得波动方程
+\begin{equation}
+  \frac{\partial^2u}{\partial x^2}=\frac{1}{v^2}\frac{\partial^2u}{\partial t^2},\qquad
+  v=\frac{1}{\sqrt{L_0C_0}}
+\end{equation}
+其通解（达朗贝尔解）为
+\begin{keyformula}{u(x,t)=f_1\left(t-\frac{x}{v}\right)+f_2\left(t+\frac{x}{v}\right),\qquad
+  i(x,t)=\frac{1}{Z_c}\left[f_1\left(t-\frac{x}{v}\right)-f_2\left(t+\frac{x}{v}\right)\right]}
+\end{keyformula}
+其中 $f_1$ 表示沿 $+x$ 方向以速度 $v$ 传播的\textbf{正向行波}（入射波），$f_2$ 表示沿 $-x$ 方向传播的
+\textbf{反向行波}（反射波）；$v=1/\sqrt{L_0C_0}$ 为波的传播速度，
+$Z_c=\sqrt{L_0/C_0}$ 为波阻抗。函数 $f_1$、$f_2$ 的具体形式由\textbf{边界条件}（始端电源、终端负载）
+与\textbf{初始条件}（$t=0$ 时沿线的电压、电流分布）确定。
+
+\begin{corepoint}{通解中 $f_1\left(t-\frac{x}{v}\right)$ 表示“波形不变、以速度 $v$ 向右平移”，
+这是无损耗、无畸变传输的本质。有损耗时波形会畸变、幅值衰减，需用更复杂的解或数值方法。}
+\end{corepoint}
 
 \section{无损均匀线上波的发出}
 
+设无限长（或尚未发生反射的）无损线始端在 $t=0$ 时接入电压源 $u_S(t)$，电源内阻为 $R_S$。
+由于波尚未到达终端，线路上只有正向行波，始端电压、电流满足
+\begin{equation}
+  u_S=u_1+R_Si_1,\qquad u_1=Z_ci_1
+\end{equation}
+解得始端的入射波
+\begin{keyformula}{u_1^+=\frac{Z_c}{R_S+Z_c}u_S(t),\qquad i_1^+=\frac{1}{R_S+Z_c}u_S(t)}
+\end{keyformula}
+该电压波、电流波以速度 $v$ 沿线路向终端传播，$t$ 时刻波前到达 $x=vt$ 处，波前之后各点的电压、电流
+分别为上述值（无损耗线不衰减）。例如 $u_S(t)=U_S\varepsilon(t)$ 时，$x<vt$ 区段内
+$u=U_SZ_c/(R_S+Z_c)$、$i=U_S/(R_S+Z_c)$，而 $x>vt$ 区段尚未被波及，电压、电流仍为零。
+
+若电源内阻 $R_S=0$（理想电压源直接接入），则 $u_1^+=U_S$、$i_1^+=U_S/Z_c$；
+若 $R_S=Z_c$，则 $u_1^+=U_S/2$——这体现了波阻抗对波的“分压”作用：
+\textbf{波阻抗就相当于线路对入射波呈现的“负载电阻”}。
+
+\begin{corepoint}{波的发出有两个要点：\textbf{（1）}波以有限速度 $v$ 传播，线路上不同位置的电压、电流
+在不同时刻跃变，不能认为“一接通全线同时有电”；\textbf{（2）}始端入射波的幅值由 $R_S$ 与 $Z_c$ 分压决定，
+与终端负载无关（终端尚未起作用）。这正是分布参数电路与集中参数电路最直观的差别。}
+\end{corepoint}
+
 \section{无损均匀线上波的反射}
+
+\subsection{终端反射系数}
+当入射波到达终端，若终端负载 $Z_L\ne Z_c$，则要产生反射波。由终端处电压、电流的连续性
+$u_2=u_2^++u_2^-$、$i_2=i_2^+-i_2^-$ 及 $u_2/i_2=Z_L$、$u_2^+/i_2^+=Z_c$，解得终端反射系数
+\begin{keyformula}{N_2=\frac{u_2^-}{u_2^+}=\frac{i_2^-}{i_2^+}=\frac{Z_L-Z_c}{Z_L+Z_c}}
+\end{keyformula}
+它与正弦稳态下的反射系数形式完全相同。
+
+\subsection{三种典型终端}
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{无损线三种典型终端的反射情况}
+  \begin{tabular}{llll}
+    \toprule
+    终端情况 & $Z_L$ & 反射系数 $N_2$ & 反射波与终端电压、电流 \\
+    \midrule
+    匹配 & $Z_c$ & $0$ & 无反射波，$\ u_2=u_2^+$，$i_2=i_2^+$ \\
+    开路 & $\infty$ & $+1$ & $u_2^-=u_2^+$，终端电压加倍为 $2u_2^+$，电流为零 \\
+    短路 & $0$ & $-1$ & $u_2^-=-u_2^+$，终端电压为零，电流加倍为 $2i_2^+$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+一般情形下终端电压、电流为 $u_2=(1+N_2)u_2^+$、$i_2=(1-N_2)i_2^+$。
+
+\subsection{多次反射与波的往返}
+反射波到达始端后，若始端也不匹配（$R_S\ne Z_c$），则再次发生反射，形成\textbf{多次反射}，
+波在两端之间往返传播，每次反射都按相应端的反射系数改变幅值。设线长为 $l$，波单程传播时间为
+$\tau=l/v$，则
+\begin{itemize}
+  \item $t=\tau$ 时入射波到达终端，产生第一次反射波；
+  \item $t=2\tau$ 时反射波回到始端，产生第二次反射；
+  \item 以后每隔 $\tau$ 时间在两端交替反射一次，直至能量被电阻消耗殆尽而进入稳态。
+\end{itemize}
+始端反射系数为 $N_1=\dfrac{R_S-Z_c}{R_S+Z_c}$。$N_1N_2=0$（任一端匹配）时只反射一次，
+过程最简单；工程上常用终端匹配来消除反射，避免过电压和信号失真。
+
+\subsection{分析方法}
+分析波的多次反射常用“\textbf{格形图}”（bounce diagram）：横轴为距离 $x$、纵轴为时间 $t$，
+波的传播路径为斜率 $\pm v$ 的折线，每到达边界就按反射系数乘以相应幅值，再把某一位置、某一时刻
+所有到达的波叠加，即得该点的电压或电流。这是分析传输线暂态过程最直观的方法。
+
+\begin{corepoint}{反射的三条判据：\textbf{（1）}$N_2>0$（$Z_L>Z_c$）时反射波与入射波同号，
+终端电压升高（开路最甚，加倍）；\textbf{（2）}$N_2<0$（$Z_L<Z_c$）时反射波与入射波异号，
+终端电压降低（短路时为零，电流加倍）；\textbf{（3）}只有 $Z_L=Z_c$ 才无反射。
+工程上为防止开路末端出现过电压，常在终端接匹配电阻或避雷器。}
+\end{corepoint}
+
+\section{本章小结}
 \begin{enumerate}
-    \item 终端开路
-    \item 终端
-    \item 终端
-    \item 波的
-    \item 终端
+  \item 当电路尺寸可与工作频率下的电磁波波长相比时，必须考虑参数的分布性，用分布参数电路分析。
+        均匀传输线用四个原参数 $R_0$、$L_0$、$G_0$、$C_0$（单位长度值）描述，其电压、电流是位置与时间的
+        二元函数，满足传输线方程 $-\dfrac{\partial u}{\partial x}=R_0i+L_0\dfrac{\partial i}{\partial t}$、
+        $-\dfrac{\partial i}{\partial x}=G_0u+C_0\dfrac{\partial u}{\partial t}$。
+  \item 正弦稳态下以相量表示，得 $\dfrac{\mathrm{d}\dot{U}}{\mathrm{d}x}=-Z_0\dot{I}$、
+        $\dfrac{\mathrm{d}\dot{I}}{\mathrm{d}x}=-Y_0\dot{U}$，其解由传播常数
+        $\gamma=\sqrt{Z_0Y_0}=\alpha+\mathrm{j}\beta$ 与特性阻抗 $Z_c=\sqrt{Z_0/Y_0}$ 表征。
+  \item 已知始端或终端条件，用双曲函数写出沿线电压、电流的分布；均匀线等效为一个对称二端口网络，
+        其传输参数矩阵满足 $A_{11}=A_{22}=\cosh\gamma l$、$\det\boldsymbol{A}=1$。
+  \item 沿线电压、电流可分解为正向行波与反向行波；相速 $v_p=\omega/\beta$，波长 $\lambda=v_p/f$，
+        波阻抗等于正向行波电压与电流之比；终端反射系数 $N_2=(Z_L-Z_c)/(Z_L+Z_c)$，
+        $Z_L=Z_c$ 时匹配、无反射，此时传输的功率称自然功率，效率 $\eta=\mathrm{e}^{-2\alpha l}$。
+  \item 无损耗线 $R_0=G_0=0$，$\gamma=\mathrm{j}\beta$、$Z_c=\sqrt{L_0/C_0}$ 为纯电阻，行波不衰减；
+        终端开路或短路时形成驻波，输入阻抗为 $-\mathrm{j}Z_c\cot\beta l$ 或 $\mathrm{j}Z_c\tan\beta l$，
+        $\lambda/4$ 线可实现阻抗变换 $Z_i=Z_c^2/Z_L$。
+  \item 只需计算端量时，可用 T 形或 $\Pi$ 形集中参数等效电路；$|\gamma l|\ll1$ 时
+        $Z\approx Z_0l$、$Y\approx Y_0l$，即短线可用集中参数模型。
+  \item 无损线暂态过程的通解为 $u=f_1(t-x/v)+f_2(t+x/v)$、
+        $i=\left[f_1(t-x/v)-f_2(t+x/v)\right]/Z_c$；始端入射波由 $R_S$ 与 $Z_c$ 分压决定，
+        波以速度 $v=1/\sqrt{L_0C_0}$ 传播，在终端按 $N_2$ 反射，可多次反射直至稳态。
 \end{enumerate}
 
 \endinput

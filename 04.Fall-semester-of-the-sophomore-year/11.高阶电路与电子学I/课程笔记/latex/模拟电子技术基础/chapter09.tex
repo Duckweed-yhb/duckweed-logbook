@@ -1,0 +1,308 @@
+% 第9章 直流电源
+\chapter{直流电源}
+
+本章讨论\textbf{单相小功率直流电源}：把频率 $50\ \mathrm{Hz}$、有效值 $220\ \mathrm{V}$ 的市电，转换为幅值稳定、输出电流在几十安以下的直流电压。它的四个环节构成一条固定的能量链：
+
+\begin{center}
+电源变压器（降压） $\rightarrow$ 整流电路（交流变单向脉动） $\rightarrow$ 滤波电路（平滑脉动） $\rightarrow$ 稳压电路（抗电网与负载扰动）
+\end{center}
+
+其中整流靠二极管的单向导电性，滤波靠储能元件的低通特性，稳压靠负反馈。分析这类电路的方法只有两条：整流看“哪个半周哪只管子导通”，稳压看“输出电压变化如何经反馈反过来抑制这个变化”。
+
+\section{整流电路}
+\subsection{整流电路的分析方法与基本参数}
+整流电路的分析固定四步：
+\begin{enumerate}
+    \item 按输入电压的极性判断二极管的导通与截止，画出输出电压波形；
+    \item 用一个周期内对输出电压的积分求平均值 $U_{O(AV)}$；
+    \item 求脉动系数 $S$（衡量输出电压中交流成分的相对大小）；
+    \item 求二极管承受的平均电流与最大反向电压，据此选管。
+\end{enumerate}
+
+三个基本参数的定义必须记牢：
+\begin{equation}
+U_{O(AV)}=\frac{1}{T}\int_0^{T}u_O\,\mathrm{d}t,\qquad
+I_{O(AV)}=\frac{U_{O(AV)}}{R_L},\qquad
+S=\frac{U_{O1M}}{U_{O(AV)}}
+\end{equation}
+其中 $U_{O1M}$ 是输出电压中\textbf{基波}分量的幅值。$S$ 越小说明脉动越小、波形越平；纯直流的 $S=0$，而半波整流的 $S$ 高达 $1.57$，说明其中交流成分比直流成分还大。
+
+\subsection{单相半波整流电路}
+\subsubsection{工作原理}
+变压器二次电压 $u_2=\sqrt2U_2\sin\omega t$ 加在二极管与负载的串联回路上。正半周二极管加正向电压导通，$u_O=u_2$；负半周二极管承受反压截止，$u_O=0$。负载上只得到半个正弦波，故称半波整流。
+
+\subsubsection{主要参数}
+对正半周积分并取平均：
+\begin{equation}
+U_{O(AV)}=\frac{1}{2\pi}\int_0^{\pi}\sqrt2U_2\sin\omega t\,\mathrm{d}(\omega t)
+=\frac{\sqrt2U_2}{\pi}\approx0.45U_2
+\end{equation}
+\begin{equation}
+I_{O(AV)}=\frac{U_{O(AV)}}{R_L}\approx\frac{0.45U_2}{R_L}
+\end{equation}
+基波幅值为 $U_{O1M}=\dfrac{U_2}{\sqrt2}$，故脉动系数
+\begin{equation}
+S=\frac{U_{O1M}}{U_{O(AV)}}=\frac{U_2/\sqrt2}{\sqrt2U_2/\pi}=\frac{\pi}{2}\approx1.57
+\end{equation}
+
+\subsubsection{二极管的选择}
+半波整流中全部负载电流都流过同一只二极管，且它承受的反向电压最大可达二次电压的峰值：
+\begin{equation}
+I_{D(AV)}=I_{O(AV)}\approx\frac{0.45U_2}{R_L},\qquad
+U_{R\max}=\sqrt2U_2
+\end{equation}
+考虑电网电压有 $\pm10\%$ 的波动，选管时要留出这一成余量：
+\begin{equation}
+I_F>1.1\,I_{D(AV)}=\frac{1.1\sqrt2U_2}{\pi R_L},\qquad
+U_{RM}>1.1\sqrt2U_2
+\end{equation}
+
+\subsection{单相桥式整流电路}
+\subsubsection{工作原理}
+四只二极管接成桥式，负载接在桥的两个对角之间。正半周 $D_1$、$D_3$ 导通，负半周 $D_2$、$D_4$ 导通，电流两次都以同一方向流过负载，故 $u_O=|u_2|$——把负半周“翻”到正半周，输出成为全波脉动电压。与中心抽头式全波整流相比，桥式不需要中心抽头、变压器利用率高，二极管承受的反向电压也低一半（只有 $\sqrt2U_2$ 而不是 $2\sqrt2U_2$），因此是工程上最常用的整流电路。
+
+\subsubsection{主要参数}
+全波的平均值是半波的两倍（积分区间从 $\pi$ 变为 $2\pi$ 内的两个半波）：
+\begin{equation}
+U_{O(AV)}=\frac{1}{\pi}\int_0^{\pi}\sqrt2U_2\sin\omega t\,\mathrm{d}(\omega t)
+=\frac{2\sqrt2U_2}{\pi}\approx0.9U_2
+\end{equation}
+\begin{equation}
+I_{O(AV)}=\frac{0.9U_2}{R_L}
+\end{equation}
+基波幅值为 $\dfrac{4\sqrt2U_2}{3\pi}$，故
+\begin{equation}
+S=\frac{4\sqrt2U_2/3\pi}{2\sqrt2U_2/\pi}=\frac{2}{3}\approx0.67
+\end{equation}
+桥式的脉动系数只有半波的 $42\%$，这是它滤波更容易的根本原因。
+
+\subsubsection{二极管的选择}
+每半周只有两只管子导通，负载电流由两只管子分担：
+\begin{equation}
+I_{D(AV)}=\frac{1}{2}I_{O(AV)}\approx\frac{0.45U_2}{R_L},\qquad
+U_{R\max}=\sqrt2U_2
+\end{equation}
+同样按 $10\%$ 电网波动留余量：$I_F>1.1I_{D(AV)}$，$U_{RM}>1.1\sqrt2U_2$。
+
+\begin{table}[htbp]
+\centering
+\caption{两种整流电路的参数对照（$U_2$ 为二次电压有效值）}
+\begin{tabular}{@{}lll@{}}
+\hline
+参数 & 半波整流 & 桥式整流 \\
+\hline
+输出电压平均值 $U_{O(AV)}$ & $0.45U_2$ & $0.9U_2$ \\
+负载电流平均值 $I_{O(AV)}$ & $0.45U_2/R_L$ & $0.9U_2/R_L$ \\
+脉动系数 $S$ & $1.57$（$\pi/2$） & $0.67$（$2/3$）\\
+二极管平均电流 $I_{D(AV)}$ & $I_{O(AV)}$ & $I_{O(AV)}/2$ \\
+二极管最大反压 $U_{R\max}$ & $\sqrt2U_2$ & $\sqrt2U_2$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\formulaNote{易错}：桥式电路里“每只二极管的最大反向电压是 $\sqrt2U_2$”这一条常被记错成 $2\sqrt2U_2$——后者是中心抽头式全波整流的值。另外桥式输出 $0.9U_2$ 是\textbf{无滤波}时的平均值，接上电容滤波后变成 $1.2U_2$，这两个数不能混。
+
+\section{滤波电路}
+\subsection{电容滤波电路}
+\subsubsection{工作原理}
+电容与负载并联。输入电压高于电容电压时，二极管导通，电流一边供负载一边给电容充电；输入电压下降后，电容通过负载放电，$u_C$ 缓慢下降；当 $u_C$ 的下降速度小于输入电压的下降速度时，二极管因反偏而截止，电容继续单独放电；直到下一个半周输入电压重新超过 $u_C$，再次充电。如此往复，输出电压成为一段段充放电曲线，脉动大为减小。
+
+关键结论：\textbf{电容放电的时间常数 $R_LC$ 越大，放电越慢、输出电压越高、脉动越小}。
+
+\subsubsection{输出电压平均值与脉动系数}
+设充放电在一个周期内近似为直线（锯齿近似），由电荷守恒可得
+\begin{equation}
+\frac{U_{O\max}-U_{O\min}}{U_{O\max}}=\frac{T/2}{R_LC}
+\end{equation}
+（桥式滤波的放电时间为 $T/2$，半波为 $T$）。于是平均值
+\begin{equation}
+U_{O(AV)}=\frac{U_{O\max}+U_{O\min}}{2}
+=U_{O\max}\left(1-\frac{T}{4R_LC}\right)
+=\sqrt2U_2\left(1-\frac{T}{4R_LC}\right)
+\end{equation}
+可见 $C$ 越大、$R_L$ 越大（负载越轻），输出越接近峰值 $\sqrt2U_2$。工程上取
+\begin{equation}
+R_LC=(3\sim5)\frac{T}{2}\ \Longrightarrow\ U_{O(AV)}\approx1.2U_2
+\end{equation}
+这就是“桥式整流加电容滤波，输出约 $1.2U_2$”这一常用估算式的来历；若负载很轻（$R_L\to\infty$）则趋于 $\sqrt2U_2\approx1.4U_2$。脉动系数为
+\begin{equation}
+S=\frac{\dfrac{T}{4R_LC}U_{O\max}}{U_{O\max}\left(1-\dfrac{T}{4R_LC}\right)}
+=\frac{T}{4R_LC-T}
+\end{equation}
+$C$ 越大，$S$ 越小，滤波效果越好。
+
+\subsubsection{外特性与二极管冲击电流}
+电容滤波的输出电压随负载电流增大而明显下降（外特性软）：负载电流大→$R_L$ 小→放电快→平均值低。所以电容滤波只适用于\textbf{负载电流小且变化不大}的场合。
+
+另一个必须注意的副作用是\textbf{冲击电流}：加入电容后二极管的导通角变小，但要在极短时间内把电荷补足，因此流过二极管的是一串幅值很大的窄脉冲，其有效值远大于平均电流。选管时要按较大的电流容量选（并留足余量），变压器内阻也限制了这股冲击。
+
+\subsection{电感滤波电路}
+电感与负载串联。电流增大时自感电动势阻止电流增加并把能量储存起来，电流减小时自感电动势释放能量维持电流，因此电感使输出电流平滑，同时\textbf{增大了二极管的导通角}（电流连续，管子导通时间变长），冲击电流小。
+
+对直流分量，电感相当于短路，故
+\begin{equation}
+U_{O(AV)}=\frac{R_L}{R+R_L}U_{D(AV)}\approx\frac{R_L}{R+R_L}\cdot0.9U_2
+\end{equation}
+对交流分量，电感与负载构成分压，谐波被抑制：
+\begin{equation}
+u_o\approx\frac{R_L}{\sqrt{(\omega L)^2+R_L^2}}\,u_d
+\approx\frac{R_L}{\omega L}\,u_d \qquad(\omega L\gg R_L)
+\end{equation}
+电感滤波适用于\textbf{大电流负载}，且负载变化时输出电压较稳定；缺点是电感体积大、笨重、成本高，低频时滤波效果不如电容。
+
+\subsection{复式滤波电路}
+把电容与电感（或电阻）组合成两级以上，可得到更好的滤波效果，常见三种：
+\begin{itemize}
+    \item \textbf{LC 滤波}：电感串联、电容并联，兼有二者优点，输出约 $0.9U_2$，适应性强；
+    \item \textbf{$\pi$ 型 LC 滤波}：电容—电感—电容，滤波效果最好，用于要求低纹波的场合；
+    \item \textbf{$\pi$ 型 RC 滤波}：用电容—电阻—电容，省去笨重的电感，但电阻上有直流压降与功耗，只适用于小电流。
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{不同类型滤波电路的性能比较}
+\begin{tabular}{@{}lllll@{}}
+\hline
+类型 & 电容滤波 & 电感滤波 & LC 滤波 & RC 或 LC $\pi$ 型 \\
+\hline
+$U_{O(AV)}/U_2$ & 1.2 & 0.9 & 0.9 & 1.2 \\
+二极管导通角 $\theta$ & 小 & 大 & 大 & 小 \\
+适用场合 & 小电流负载 & 大电流负载 & 适应性较强 & 小电流负载 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{倍压整流电路}
+利用电容的储能与二极管的单向导电，把多个电容分别充电后\textbf{串联叠加}，可在变压器二次电压不高的情况下得到高出许多倍的直流电压。
+
+二倍压电路的工作过程：正半周 $D_1$ 导通、$D_2$ 截止，$C_1$ 被充电至 $\sqrt2U_2$；负半周 $D_1$ 截止、$D_2$ 导通，$C_1$ 上的电压与输入电压串联后一起给 $C_2$ 充电，可达 $2\sqrt2U_2$。按同样思路级联即可构成多倍压整流，$n$ 倍压输出约为 $n\sqrt2U_2$（空载）。倍压整流只适用于\textbf{高电压、小电流}的场合（如示波器高压、光电倍增管电源），因为它的等效内阻很大，一帶载输出电压就明显下跌。
+
+\section{稳压电路}
+整流滤波后的电压仍随电网波动和负载变化而变，要得到稳定的直流电压必须加稳压环节。衡量稳压性能用两个指标：
+\begin{equation}
+S_r=\left.\frac{\Delta U_O/U_O}{\Delta U_I/U_I}\right|_{\Delta I_L=0}
+\formulaNote{稳压系数，越小越好},\qquad
+R_o=\left.\frac{\Delta U_O}{\Delta I_O}\right|_{\Delta U_I=0}
+\formulaNote{输出电阻，越小越好}
+\end{equation}
+$S_r$ 描述电网波动的影响，$R_o$ 描述负载变化的影响。
+
+\subsection{稳压管稳压电路}
+\subsubsection{电路与稳压原理}
+稳压管 $D_Z$ 与负载并联，限流电阻 $R$ 串在输入与稳压管之间。稳压管工作在反向击穿区，其端电压 $U_Z$ 基本不随电流变化。基本关系为
+\begin{equation}
+U_I=U_R+U_O,\qquad I_R=I_{DZ}+I_L
+\end{equation}
+稳压过程：若 $U_I$ 升高，$U_O$ 有升高趋势，稳压管电流 $I_{DZ}$ 迅速增大，使 $R$ 上压降 $U_R=I_RR$ 增大，把多余电压“吃掉”，$U_O$ 基本不变；若负载电流 $I_L$ 增大，$U_O$ 有下降趋势，$I_{DZ}$ 迅速减小，$I_R$ 基本不变，$U_O$ 仍基本不变。核心是稳压管的动态电阻 $r_Z$ 极小，能吸收电流的大部分变化。
+
+\subsubsection{性能指标}
+\begin{equation}
+S_r\approx\frac{r_Z}{R}\cdot\frac{U_I}{U_Z},\qquad
+R_o=R\parallel r_Z\approx r_Z
+\end{equation}
+可见要减小 $S_r$，应增大 $R$（但受 $I_{DZ}$ 下限约束）或选 $r_Z$ 更小的稳压管。这种电路输出电阻约为 $r_Z$（几欧到几十欧），稳压精度有限。
+
+\subsubsection{参数选择}
+稳压管的选择要保证在电网最高、最低电压和负载最轻、最重四种极端组合下都能正常工作：
+\begin{equation}
+U_Z=U_O,\qquad
+I_{Z\max}-I_{Z\min}>I_{L\max}-I_{L\min},\qquad
+I_{ZM}\ge I_{L\max}+I_{Z\min}
+\end{equation}
+第一条保证输出电压值；第二条保证稳压管能“吸收”负载电流的全部变化范围；第三条保证最重负载时稳压管仍不低于最小稳定电流。
+
+限流电阻 $R$ 的取值由“稳压管电流必须落在 $[I_{Z\min},I_{ZM}]$ 内”决定。由 $I_{DZ}=I_R-I_L=(U_I-U_Z)/R-I_L$，在两种极端下取等号：
+\begin{equation}
+I_{DZ\max}=\frac{U_{I\max}-U_Z}{R}-I_{L\min}\le I_{ZM},\qquad
+I_{DZ\min}=\frac{U_{I\min}-U_Z}{R}-I_{L\max}\ge I_{Z\min}
+\end{equation}
+解得
+\begin{equation}
+\frac{U_{I\max}-U_Z}{I_{ZM}+I_{L\min}}\le R\le\frac{U_{I\min}-U_Z}{I_{Z\min}+I_{L\max}},
+\qquad I_{L\min}=\frac{U_Z}{R_{L\max}}
+\end{equation}
+\formulaNote{易错}：分子用“最大输入配最小负载、最小输入配最大负载”的交叉组合，写反了就会算出 $R$ 的上下限颠倒。
+
+\subsection{串联型稳压电路}
+\subsubsection{调整管稳压原理}
+把稳压管电路中的限流电阻换成一只\textbf{调整管}（功率三极管），它与负载串联，工作在线性放大区。稳压管接在基极提供基准，输出电压经取样后加在发射极：
+\begin{equation}
+U_{BE}=U_B-U_E=U_Z-U_O
+\end{equation}
+稳压过程是一个\textbf{电压负反馈}：若 $U_O$ 增大，则 $U_E$ 升高，而 $U_B=U_Z$ 不变，于是 $U_{BE}$ 减小，$I_B$ 减小，调整管趋于截止，管压降 $U_{CE}$ 增大，把 $U_O$ 拉回来；$U_O$ 减小时过程相反。由于取样电路的分压比可以设计，输出电压可在基准之上成倍提高：
+\begin{equation}
+U_O=U_Z\left(1+\frac{R_2}{R_1}\right)
+\end{equation}
+其中 $R_1$、$R_2$ 为取样分压电阻。与稳压管电路相比，它的输出电流可以很大（由调整管决定）、输出可调、稳压精度高，是线性稳压器的基本结构。
+
+\subsubsection{调整管的选择}
+调整管是最容易烧坏的元件，三个极限参数都要校核：
+\begin{equation}
+I_{C\max}\approx I_{L\max},\qquad
+U_{CE\max}=U_{I\max}-U_{O\min},\qquad
+P_{C\max}=I_{C\max}U_{CE\max}
+\end{equation}
+据此选管：
+\begin{equation}
+I_{CM}>I_{L\max},\qquad
+U_{(BR)CEO}>U_{I\max}-U_{O\min},\qquad
+P_{CM}>I_{L\max}\left(U_{I\max}-U_{O\min}\right)
+\end{equation}
+最坏情况是“输入电压最高、输出电压最低、负载电流最大”同时出现，此时管压降与电流都最大、功耗最大。实际还要加散热器，并按结温降额。
+
+\subsection{集成稳压器}
+\subsubsection{三端固定式稳压器 W7800 系列}
+W7800 系列输出固定正电压，型号后两位即输出电压：$5,6,9,12,15,18,24\ \mathrm{V}$。三个引脚分别是输入、输出、公共端（地），外接元件极少。按输出电流能力分为 W7800（$1.5\ \mathrm{A}$）、W78M00（$0.5\ \mathrm{A}$）、W78L00（$0.1\ \mathrm{A}$）三档；W7900 系列则输出\textbf{负}电压，引脚排列与 W7800 不同，功能完全对称。
+
+内部基准电压的获得方式很巧妙：由 $T_3\sim T_6$ 四个管子的发射结电压与电阻 $R_2$ 上的压降相加，
+\begin{equation}
+U_{REF}=4U_{BE}+I_2R_2\approx4U_{go}+4\alpha T+\frac{R_2}{R_3}U_T\ln\frac{R_2}{R_1}
+\end{equation}
+其中 $U_{go}$ 为硅的禁带宽度（约 $1.205\ \mathrm{V}$）。适当选取电阻比使后两项（正、负温度系数）相互抵消，得到零温漂的基准 $U_{REF}=4U_{go}=4.82\ \mathrm{V}$，再经分压即得 $5\ \mathrm{V}$ 输出。这就是所谓“带隙基准”的思想：用两种相反温度系数的电压相加，得到与温度无关的基准。
+
+\subsubsection{三端可调式稳压器}
+W117/W217/W317 系列为三端可调正压稳压器，其输出端与调整端之间维持 $1.25\ \mathrm{V}$ 的基准电压，外接两只电阻即可设定输出：
+\begin{equation}
+U_O=1.25\left(1+\frac{R_2}{R_1}\right)+I_WR_2\approx1.25\left(1+\frac{R_2}{R_1}\right)
+\end{equation}
+其中 $I_W$ 为调整端电流（约 $50\ \mu\mathrm{A}$），第二项是误差项；要求 $R_1$ 取值不大（约 $240\ \Omega$）以使 $I_WR_2$ 可忽略。若嫌 $I_W$ 的影响大，可在调整端加一级电压跟随器隔离。
+
+\subsubsection{应用中的实际问题}
+\begin{itemize}
+    \item \textbf{输入电容}：抵消输入引线较长带来的电感效应，防止电路产生自激振荡，容量较小（$0.1\sim1\ \mu\mathrm{F}$）；
+    \item \textbf{输出电容}：消除输出中的高频噪声、改善瞬态响应，可取较大容量，以便输出较大的脉冲电流；
+    \item \textbf{保护二极管}：当输入突然断开时，输出电容上的电压会反向加在稳压器内部电路上，需在输入—输出之间跨接一只反向二极管续流，防止器件损坏；
+    \item \textbf{电流扩展}：外接大功率管分流，$I_{L\max}=(1+\beta)(I_{O\max}-I_R)$；
+    \item \textbf{正负输出}：W7800 与 W7900 配合，可构成 $+U_O/-U_O$ 的对称电源，供运放电路使用。
+\end{itemize}
+
+\subsection{开关型稳压电路}
+\subsubsection{与线性稳压的比较}
+线性稳压器结构简单、调节方便、输出稳定性强、纹波小，但调整管始终工作在放大状态，输入输出之间的压差全部变成管耗，效率只有 $30\%\sim40\%$。开关型稳压器让调整管在\textbf{饱和导通}与\textbf{截止}两种状态间切换，管耗极小，效率可达 $70\%\sim95\%$。代价是输出纹波较大，且 LC 滤波效果依赖负载，不适合负载剧烈变化的场合。开关频率越高，电感电容可以越小，但开关损耗与电磁干扰越大。
+
+\subsubsection{串联开关型（降压）}
+串联开关型即 DC-DC 的\textbf{降压斩波电路（Buck）}：开关管与负载串联，导通时电源向负载供能、电感储能；关断时电感经续流二极管继续向负载供电。输出电压由占空比 $D=T_{on}/T$ 决定：
+\begin{equation}
+U_O=D\,U_I,\qquad D=\frac{T_{on}}{T}
+\end{equation}
+由于 $D\le1$，输出恒低于输入。控制电路把输出电压取样、与基准比较、放大后去调节 $D$（脉冲宽度调制，PWM），即构成闭环稳压：$U_O$ 下降→误差放大→$D$ 增大→$U_O$ 回升。
+
+\subsubsection{并联开关型（升压）}
+并联开关型即\textbf{升压斩波电路（Boost）}：电感与电源串联，开关管与负载并联。开关管导通时电感充电（二极管截止，负载由电容供电）；开关管关断时电感与电源串联一起向负载和电容供电，从而实现升压：
+\begin{equation}
+U_O=\frac{U_I}{1-D}
+\end{equation}
+$D\to1$ 时输出趋于无穷（实际受寄生参数限制）。此外还有极性反转型（Buck-Boost）等结构，原理相同，都是靠电感、电容的储能与释放来改变电压比。
+
+\section{本章小结与易错点}
+\begin{itemize}
+    \item 四个环节的作用要能一句话说清：变压器降压、整流变单向脉动、滤波平滑、稳压抗扰动。稳压电路只抑制“波动”，不能把脉动变成直流，那是滤波的任务。
+    \item 无滤波时的整流输出：半波 $0.45U_2$、桥式 $0.9U_2$；加电容滤波后近似为 $1.2U_2$（重载）或 $1.4U_2$（空载）。这几个数必须分清前提。
+    \item 脉动系数 $S$ 是幅值比：半波 $1.57$、桥式 $0.67$；$S$ 越大说明滤波的负担越重。
+    \item 二极管选型两条底线：平均电流与最大反向电压，都要按 $10\%$ 电网波动留余量；桥式的 $U_{R\max}=\sqrt2U_2$，中心抽头式才是 $2\sqrt2U_2$。
+    \item 电容滤波的代价是导通角小、冲击电流大、外特性软；电感滤波的代价是体积大、低频效果差。二者适用场合恰好互补（小电流用 C、大电流用 L）。
+    \item 稳压管电路中限流电阻的上下限要“交叉配对”：上限用最小输入配最大负载，下限用最大输入配最小负载。
+    \item 串联型稳压是电压负反馈：$U_O\uparrow\to U_{BE}\downarrow\to U_{CE}\uparrow\to U_O\downarrow$。调整管选型要看最坏组合下的 $I_{CM}$、$U_{(BR)CEO}$、$P_{CM}$，并加散热。
+    \item 三端稳压器的输入、输出电容不是可有可无的装饰：前者防自激，后者抑噪声、供瞬态电流；输入断开时要靠反向二极管保护。
+    \item 开关电源的效率优势来自“管子只工作在饱和与截止”，代价是纹波与 EMI；Buck 的 $U_O=DU_I$、Boost 的 $U_O=U_I/(1-D)$ 是两种最基本的变换关系。
+\end{itemize}

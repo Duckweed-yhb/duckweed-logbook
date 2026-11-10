@@ -1,0 +1,341 @@
+﻿% 第5章 选择控制结构（教材第5章 5.1--5.12）
+\lstset{language=C}
+
+\section{生活中与计算机中的问题求解方法}
+
+人解决问题时，会根据情况随时调整做法；计算机不会，它只能执行事先写好的、每一步都明确的指令。因此在让计算机求解之前，必须先把“遇到什么情况就怎么做”想清楚并写成判定规则，这就是\textbf{选择结构}（Selection Structure）的由来。
+
+结构化程序设计的观点是：任何复杂问题都可以只用\textbf{顺序、选择、循环}三种基本结构编程实现。本章讲第二种结构。
+
+\section{算法的概念及其描述方法}
+
+\subsection{算法的概念}
+
+所谓\textbf{算法}（Algorithm），是解决问题的方法和步骤。一个算法必须具备以下特性：
+
+\begin{table}[htbp]
+\centering
+\caption{算法的五个特性}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+特性 & 含义 \\
+\midrule
+有穷性 & 一个算法必须能在执行有限个步骤之后终止，且每一步都能在有限时间内完成 \\
+确定性 & 每一步的含义必须确切无二义，相同的输入必得到相同的输出 \\
+可行性 & 每一步都能通过有限次基本运算实现 \\
+有零个或多个输入 & 算法可以没有输入（如直接打印固定图形），也可以有多个输入 \\
+有一个或多个输出 & 算法必须有结果，没有输出的算法没有意义 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{算法的描述方法}
+
+常用的描述方法有三种，各有适用场合：
+
+\begin{table}[htbp]
+\centering
+\caption{算法描述方法对比}
+\small
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+方法 & 优点 & 缺点 \\
+\midrule
+自然语言 & 易懂，适合口头交流 & 容易产生二义性、不够简洁 \\
+传统流程图 & 直观显示控制流向，判断用菱形、处理用矩形、输入输出用平行四边形 & 复杂算法时连线交叉多，不便于逐步求精 \\
+N-S 图（盒图） & 用矩形框嵌套表示结构，取消流向线，强制结构化 & 修改与扩充不如流程图方便 \\
+伪代码 & 介于自然语言与程序之间，便于直接翻译成代码 & 无统一标准，不能直接运行 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+实际做题时不必强求画图，但养成“先用自然语言写出判定步骤、再翻译成代码”的习惯，可以避免大量逻辑错误。N-S 图的价值在于：它用嵌套的框表示结构，画不出“随意跳转”，因此天然符合结构化程序设计的要求。
+
+\section{关系运算符与关系表达式}
+
+关系运算符用于比较两个操作数的大小关系，共 6 个：\texttt{<}、\texttt{<=}、\texttt{>}、\texttt{>=}、\texttt{==}、\texttt{!=}。由关系运算符及其操作数构成的表达式称为\textbf{关系表达式}。
+
+\textbf{（1）关系表达式的值只有两种：真为 1，假为 0。}这是 C 语言与数学表达最不同的一点。例如 \texttt{5 > 3} 的值是 1，\texttt{5 < 3} 的值是 0，它们可以直接参与算术运算：\texttt{(5 > 3) + 1} 等于 2。
+
+\textbf{（2）关系运算符的优先级低于所有算术运算符。}因此 \texttt{n \% 2 != 0} 先算 \texttt{n \% 2} 再与 0 比较；同理 \texttt{a + b > c} 先算加法。
+
+\textbf{（3）C 中“真”是“非 0”，“假”是“0”。}由于这个约定，\texttt{n \% 2 != 0} 与 \texttt{n \% 2} 在逻辑上完全等价：\texttt{n} 为奇数时 \texttt{n \% 2} 非 0 即为真。这种简化在判奇偶、判非空时很常用，但会降低可读性，需要权衡。
+
+\textbf{（4）判决等要用 \texttt{==}，不是 \texttt{=}。}\texttt{if (a = 5)} 是把 5 赋给 \texttt{a} 再判断 \texttt{a} 的值（永远为真），语法合法所以编译器不报错，是极难查的错误。良好的写法是把常量写在左边：\texttt{if (5 == a)}，一旦误写成 \texttt{if (5 = a)} 编译器立刻报错。
+
+\textbf{（5）浮点数不要直接用 \texttt{==} 比较。}由于实数在内存中以浮点形式近似存储、精度有限，\texttt{0.1 + 0.2 == 0.3} 很可能为假。正确做法是判断二者之差是否小于一个足够小的数（如 $10^{-6}$）：
+
+\begin{lstlisting}
+#define EPS 1e-6
+if (fabs(a - b) <= EPS)      /* 认为 a 与 b 相等 */
+\end{lstlisting}
+
+\corepoint{“实数与 0 比较”必须写成 \texttt{fabs(x) <= EPS}，不能写 \texttt{x == 0}。凡是看到程序里用 \texttt{==} 比较两个实型变量，几乎可以断定这里藏着 bug。}
+
+\section{用于单分支控制的条件语句}
+
+单分支选择结构表示：条件成立时执行 A 操作，否则什么都不做。
+
+\begin{lstlisting}
+if (表达式P)
+    语句A;
+\end{lstlisting}
+
+执行逻辑：若表达式 P 的值为\textbf{真（非 0）}，则执行语句 A，然后继续执行 \texttt{if} 后面的语句；若为假，直接跳过语句 A。
+
+使用要点：
+
+\begin{itemize}
+  \item \texttt{if} 后面的表达式可以是任意类型的表达式，只要其值能判断为 0 或非 0；不必写成 \texttt{if (x == 1)}，写 \texttt{if (x)} 效果相同；
+  \item \texttt{if} 与 \texttt{()} 之间不能加分号，否则 \texttt{if} 的“语句 A”变成了空语句，后面的语句永远执行；
+  \item 分支里若有多条语句，必须用一对花括号（4.4 节讲到的复合语句）变成一条语句。
+\end{itemize}
+
+\section{用于双分支控制的条件语句}
+
+双分支选择结构表示：条件成立执行语句 1，否则执行语句 2。
+
+\begin{lstlisting}
+if (表达式P)
+    语句1;
+else
+    语句2;
+\end{lstlisting}
+
+单分支与双分支的区别在语义上：单分支面临的选择是“执行一条语句，或者跳过它”；双分支面临的选择是“在两条语句中选一条执行”——两条路必走其一。因此双分支能保证\textbf{总有一个结果被处理}，这在“求两个数的最大值”之类的问题上省掉了预先赋值的麻烦。
+
+\begin{lstlisting}
+if (a > b)
+    max = a;
+else
+    max = b;      /* a <= b 的情况，无需再写判断 */
+\end{lstlisting}
+
+\section{条件运算符和条件表达式}
+
+条件运算符 \texttt{? :} 是 C 语言中\textbf{唯一的三元运算符}，需要三个操作数。由它构成的表达式称为\textbf{条件表达式}：
+
+\begin{lstlisting}
+表达式1 ? 表达式2 : 表达式3
+\end{lstlisting}
+
+含义是：若表达式 1 的值非 0，则该条件表达式的值为表达式 2 的值，否则为表达式 3 的值。上面求最大值的语句可以简化为一行：
+
+\begin{lstlisting}
+max = a > b ? a : b;
+\end{lstlisting}
+
+三条注意：
+
+\begin{enumerate}
+  \item 条件运算符的优先级低于关系运算符和算术运算符，高于赋值运算符，因此 \texttt{max = a > b ? a : b} 不需要额外括号；
+  \item 它是右结合的，\texttt{a ? b : c ? d : e} 等价于 \texttt{a ? b : (c ? d : e)}；
+  \item 用条件表达式改写时，两个分支必须是\textbf{表达式}（有值），不能是语句。若分支里要做多件事（如同时赋值和输出），只能老老实实用 \texttt{if-else}。
+\end{enumerate}
+
+\section{用于多分支控制的条件语句}
+
+多分支结构用 \texttt{else-if} 形式实现：
+
+\begin{lstlisting}
+if (表达式1)       语句1
+else if (表达式2)  语句2
+else if (表达式m)  语句m
+else               语句m+1
+\end{lstlisting}
+
+功能是：若表达式 1 为真，执行语句 1；否则若表达式 2 为真，执行语句 2；……若前面所有表达式都为假，执行最后的 \texttt{else} 分支。\textbf{各分支是互斥的}，一旦某条件成立，其余分支全部跳过——这一点决定了条件的书写顺序会直接影响结果。
+
+\textbf{复合语句与花括号。}语法上每个分支只允许放\textbf{一条语句}，而实际操作往往需要多条，这时必须用一对花括号把这些语句括起来构成\textbf{复合语句}（Compound Statement）。复合语句在逻辑上是一个整体，可以被当作一条语句用在任何允许单条语句的位置。
+
+\begin{lstlisting}
+if (a > b) {
+    max = a;
+    printf("max = %d\n", a);     /* 加花括号，两条语句都在分支内 */
+} else {
+    max = b;
+    printf("max = %d\n", b);
+}
+\end{lstlisting}
+
+\textbf{忘记花括号的后果}：编译器只把 \texttt{if} 后面的第 1 条语句当作分支体，第 2 条被放到分支之外，于是 \texttt{else} 找不到匹配的 \texttt{if}，编译时报告 \texttt{else without a previous 'if'}。所以推荐的做法是：\textbf{无论分支里有几条语句，都写成复合语句形式}。这样以后往里添加语句时不必再改结构。
+
+\textbf{悬空 else 的配对规则}：\texttt{else} 总是与它\textbf{前面最近的、尚未配对的 \texttt{if}} 配对，与缩进无关。
+
+\begin{lstlisting}
+if (a > 0)
+    if (b > 0)  printf("both\n");
+else                       /* 这个 else 配的是内层 if，不是外层！ */
+    printf("a <= 0\n");
+\end{lstlisting}
+
+要让 \texttt{else} 配外层 \texttt{if}，必须给内层 \texttt{if} 加花括号。这类错误缩进看起来完全正确，但语义错了，是考试和调试中的高频陷阱。
+
+\section{用于多路选择的 switch 语句}
+
+当需要根据一个表达式的\textbf{多个确定取值}分别处理时，用 \texttt{switch} 比 \texttt{else-if} 链更清晰：
+
+\begin{lstlisting}
+switch (表达式) {
+    case 常量表达式1:  语句序列1;  break;
+    case 常量表达式2:  语句序列2;  break;
+    ...
+    default:           语句序列n;
+}
+\end{lstlisting}
+
+规则与陷阱：
+
+\begin{enumerate}
+  \item \texttt{switch} 后的表达式必须是\textbf{整型或字符型}（不能是实型、字符串）；
+  \item \texttt{case} 后面必须是\textbf{常量表达式}（如 \texttt{1}、\texttt{'A'}、\texttt{2+3}），不能是变量，且各 \texttt{case} 的值不能重复；
+  \item \textbf{\texttt{break} 不是语法必需，而是逻辑必需}。没有 \texttt{break} 时，程序会从匹配的 \texttt{case} 开始\textbf{一路往下执行}（俗称“穿透”，fall through），直到遇到 \texttt{break} 或 \texttt{switch} 结束。多个 \texttt{case} 共用同一段处理代码时，这种穿透是有意为之的写法：
+\begin{lstlisting}
+switch (ch) {
+    case 'a': case 'e': case 'i': case 'o': case 'u':
+        printf("vowel\n");  break;      /* 有意穿透，共用一段代码 */
+    default:
+        printf("consonant\n");
+}
+\end{lstlisting}
+  \item \texttt{default} 可以放在任意位置，通常写在最后；它的作用是“以上 \texttt{case} 都不匹配时执行”；
+  \item \texttt{switch} 的每个分支体内可以定义变量，但若在 \texttt{case} 后直接定义，作用域会跨越后续 \texttt{case}，容易出错，建议加花括号限制作用域。
+\end{enumerate}
+
+\corepoint{判断该用 \texttt{switch} 还是 \texttt{else-if}：如果条件是“某个表达式的值等于若干离散常量”之一，用 \texttt{switch}；如果条件是\textbf{区间或复合条件}（如 \texttt{score >= 90}、\texttt{x > 0 \&\& y > 0}），\texttt{switch} 表达不了，必须用 \texttt{else-if}。}
+
+\section{逻辑运算符和逻辑表达式}
+
+逻辑运算符有 3 个：\texttt{!}（逻辑非）、\texttt{\&\&}（逻辑与）、\texttt{||}（逻辑或）。由它们构成的表达式称为逻辑表达式，其值\textbf{只有 0 和 1 两种}。
+
+\begin{table}[htbp]
+\centering
+\caption{逻辑运算真值表}
+\small
+\begin{tabular}{@{}ccc|cc|c@{}}
+\toprule
+a & b & \texttt{!a} & \texttt{a \&\& b} & \texttt{a || b} & 说明 \\
+\midrule
+0 & 0 & 1 & 0 & 0 & 都假才假（与）、有真即真（或） \\
+0 & 非0 & 1 & 0 & 1 & \\
+非0 & 0 & 0 & 0 & 1 & \\
+非0 & 非0 & 0 & 1 & 1 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{（1）优先级}由高到低为：
+\[
+\texttt{!}\ >\ \text{算术运算符}\ >\ \text{关系运算符}\ >\ \texttt{\&\&}\ >\ \texttt{||}\ >\ \text{赋值运算符}
+\]
+因此 \texttt{a > b \&\& c > d} 不需要加括号；而 \texttt{!a == b} 是 \texttt{(!a) == b}，若想表达“a 不等于 b”必须写 \texttt{a != b} 或 \texttt{!(a == b)}。
+
+\textbf{（2）短路求值}：\texttt{a \&\& b} 中若 \texttt{a} 为假，\texttt{b} 不再求值；\texttt{a || b} 中若 \texttt{a} 为真，\texttt{b} 不再求值。这既是效率优化，也常被用来写“安全的条件”：
+
+\begin{lstlisting}
+if (n != 0 && 10 / n > 2)     /* n 为 0 时不会执行除法，避免除零 */
+\end{lstlisting}
+
+反之要警惕副作用：\texttt{i > 0 \&\& i++} 中 \texttt{i++} 可能根本不执行。
+
+\textbf{（3）数学上的连写不能照搬。}\texttt{0 < x < 10} 在 C 中先算 \texttt{0 < x} 得 0 或 1，再用这个结果与 10 比较，结果恒为真，逻辑完全错了。正确写法是 \texttt{x > 0 \&\& x < 10}。
+
+\textbf{（4）区分逻辑运算符与位运算符}：\texttt{\&\&} 是逻辑与（结果为 0 或 1，有短路），\texttt{\&} 是按位与（逐位运算，无短路）。\texttt{if (a \& b)} 与 \texttt{if (a \&\& b)} 在 \texttt{a}、\texttt{b} 都非 0 时结果可能一致，但语义完全不同，混用是隐蔽的 bug 源。
+
+\section{本章扩充内容}
+
+\subsection{程序测试}
+
+程序写完必须测试，目的是“证明它有错”而不是“证明它没错”。常用两类方法：
+
+\begin{itemize}
+  \item \textbf{白盒法}（结构测试）：依据程序的内部逻辑设计测试用例，追求语句覆盖、分支覆盖——每条语句至少执行一次，每个判定的真、假两个分支都至少走一次；
+  \item \textbf{黑盒法}（功能测试）：不看内部结构，只依据功能说明设计输入，重点考察\textbf{边界值}（最大值、最小值、0、空输入）和异常输入。
+\end{itemize}
+
+对选择结构而言，最容易漏测的是“所有条件都不成立”这条路径，以及边界上的等号（\texttt{>=} 写成 \texttt{>} 时恰好取等值才能发现）。因此每个 \texttt{if} 都应准备至少一组“使条件为真”和一组“使条件为假”的数据。
+
+\subsection{对输入非法字符的检查与处理}
+
+用户输入不受程序控制，防御性程序设计要求对输入做检查。最基本的两条：
+
+\begin{lstlisting}
+int n;
+if (scanf("%d", &n) != 1) {      /* 返回值是成功读入的数据个数 */
+    printf("input error\n");
+    return 1;                     /* 或 exit(1) 直接终止 */
+}
+if (n < 0 || n > 100) {           /* 检查取值范围 */
+    printf("out of range\n");
+    return 1;
+}
+\end{lstlisting}
+
+若输入流中残留了非法字符，可先用 \texttt{getchar()} 逐个读掉，或清空缓冲区后再重新读入。要点是：\textbf{任何来自键盘的数据都必须当作“可能不合法”处理}，而不是假定用户会按提示输入。
+
+\subsection{位运算符}
+
+位运算符直接对整数的二进制位操作，共 6 个：
+
+\begin{table}[htbp]
+\centering
+\caption{位运算符及其典型用途}
+\small
+\begin{tabularx}{\textwidth}{@{}llX@{}}
+\toprule
+运算符 & 名称 & 典型用途 \\
+\midrule
+\texttt{\&} & 按位与 & 取某几位（配合掩码）、清零特定位 \\
+\texttt{|} & 按位或 & 将某几位置 1 \\
+\texttt{\^{}} & 按位异或 & 翻转特定位；不借助临时变量交换两数 \\
+\texttt{\textasciitilde} & 按位取反 & 单目运算符，逐位取反 \\
+\texttt{<<} & 左移 & 左移 $n$ 位相当于乘 $2^{n}$（可能溢出） \\
+\texttt{>>} & 右移 & 右移 $n$ 位相当于除以 $2^{n}$（对无符号数） \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}
+unsigned char x = 0x5A;          /* 0101 1010 */
+x & 0x0F                         /* 0x0A：取出低 4 位 */
+x | 0x01                         /* 0x5B：把最低位置 1 */
+x ^ 0xFF                         /* 0xA5：全部翻转 */
+a ^= b; b ^= a; a ^= b;          /* 交换两个整数，不需要中间变量 */
+\end{lstlisting}
+
+位运算的前提是\textbf{先想清楚每个数的二进制形式}。它与逻辑运算的区别必须分清：\texttt{!}、\texttt{\&\&}、\texttt{||} 把操作数当作“真/假”，结果为 0 或 1；\texttt{\textasciitilde}、\texttt{\&}、\texttt{|}、\texttt{\^{}} 把操作数当作“位串”，逐位运算。
+
+\section{本章知识点小结}
+
+\begin{itemize}
+  \item 算法是解决问题的方法和步骤，必须满足有穷性、确定性、可行性、有输入输出；
+  \item 关系表达式的值是 1 或 0；关系运算符优先级低于算术运算符；实型比较要用 \texttt{fabs(x-y) <= EPS}；
+  \item 三种条件语句：单分支 \texttt{if}、双分支 \texttt{if-else}、多分支 \texttt{else-if}；
+  \item 条件运算符 \texttt{? :} 是唯一的三元运算符，右结合，只能用于表达式；
+  \item 多分支里只要分支含多条语句就必须加花括号；\texttt{else} 与最近的未配对 \texttt{if} 配对；
+  \item \texttt{switch} 的表达式须为整型或字符型，\texttt{case} 后须为常量且互不重复，通常每个 \texttt{case} 后要 \texttt{break}；
+  \item 逻辑运算结果为 0/1，有短路特性；\texttt{0 < x < 10} 这类数学连写在 C 中是错的。
+\end{itemize}
+
+\section{本章常见错误小结}
+
+\begin{table}[htbp]
+\centering
+\caption{第 5 章常见错误与纠正}
+\small
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+易错写法 & 错在哪里 & 纠正 \\
+\midrule
+\texttt{if (a = 5)} & 赋值而非比较，条件恒真 & \texttt{if (a == 5)} 或 \texttt{if (5 == a)} \\
+\texttt{if (x == 0.0)} & 浮点数是近似值，相等判断不可靠 & \texttt{if (fabs(x) <= EPS)} \\
+\texttt{if (a > b);} & 多写分号，分支变成空语句 & 去掉分号 \\
+\texttt{if (0 < x < 10)} & 先得 0/1 再与 10 比较，恒真 & \texttt{x > 0 \&\& x < 10} \\
+\texttt{else} 缺花括号 & 编译器只认第 1 条语句，导致 \texttt{else without previous if} & 分支统一加花括号 \\
+\texttt{switch} 中漏 \texttt{break} & 穿透执行后续 \texttt{case} & 每个分支末尾加 \texttt{break} \\
+\texttt{case x:}（x 为变量） & \texttt{case} 后必须是常量表达式 & 改用 \texttt{else-if} \\
+\texttt{a \& b} 代替 \texttt{a \&\& b} & 按位与不是逻辑与，无短路 & 用 \texttt{\&\&} \\
+\bottomrule
+\end{tabularx}
+\end{table}

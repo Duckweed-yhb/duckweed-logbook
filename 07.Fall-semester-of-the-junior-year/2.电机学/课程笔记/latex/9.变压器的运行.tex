@@ -1,0 +1,176 @@
+% ============================================================
+% 第 6 章 变压器的运行（教材第二篇，印刷页 60--67）
+% 节名：第一节 变压器的电压变化率和效率；第二节 变压器的并联运行
+% ============================================================
+\chapter{变压器的运行}
+
+电压变化率和效率是变压器的主要运行性能指标；并联运行则是电力系统中变压器最常见的运行方式。本章把前面建立的等值电路与参数，用到"输出电压稳不稳、运行经不经济、几台能不能一起带负载"这三个工程问题上。
+
+\section{变压器的电压变化率和效率}
+
+\subsection{电压变化率}
+将变压器一次绕组外加额定电压，二次绕组空载时端电压为空载电压，且 $U_{20}=U_{2N}$。接上负载以后，变压器内部的漏阻抗产生电阻和漏抗压降，使二次绕组端电压随负载电流变化。
+
+在\textbf{一次绕组端电压保持为额定、负载功率因数为常值}时，空载与负载时二次绕组相电压的代数差 $U_{20}-U_2$ 与二次绕组额定相电压 $U_{2N}$ 的比值，称为变压器的\textbf{电压变化率}，用 $\Delta U$ 表示：
+\begin{equation}
+\Delta U=\frac{U_{20}-U_2}{U_{2N}}\times100\%=\frac{U_{2N}-U_2}{U_{2N}}\times100\% ,
+\end{equation}
+其标幺值形式为 $\Delta U^{*}=1-U_2^{*}$（因 $U_{20}^{*}=1$）。
+
+$\Delta U$ 与变压器的参数和负载性质有关。工程上通常应用\textbf{简化等效电路}及其相量图来计算。由于短路阻抗 $Z_k$ 很小，$\dot U_1$ 与 $\dot U_2'$ 之间的夹角 $\theta$ 很小，故有
+\begin{equation}
+\Delta U^{*}\approx I_2^{*}\left(R_k^{*}\cos\varphi_2+X_k^{*}\sin\varphi_2\right).
+\end{equation}
+
+\keyformula{\Delta U^{*}\approx I_2^{*}\left(R_k^{*}\cos\varphi_2+X_k^{*}\sin\varphi_2\right)}
+
+该式表明：电压变化率既与负载电流和功率因数角有关，也与变压器的短路阻抗有关。
+
+\begin{itemize}
+  \item \textbf{感性负载}：$\varphi_2>0$，$\sin\varphi_2>0$、$\cos\varphi_2>0$，$\Delta U^{*}$ 为正值。负载电流越大，二次端电压越低。
+  \item \textbf{容性负载}：$\varphi_2<0$，$\sin\varphi_2<0$，$\Delta U^{*}$ 可能为正也可能为负。当为负值时，随负载电流增加，二次端电压不但不下降反而\textbf{升高}。
+\end{itemize}
+
+当二次负载为额定值（$I_2^{*}=1$）时，
+\begin{equation}
+\Delta U_N^{*}=R_k^{*}\cos\varphi_N+X_k^{*}\sin\varphi_N .
+\end{equation}
+电压变化率的大小反映变压器负载时的供电质量：$\Delta U$ 越小，输出电压越平稳。通常在 $\cos\varphi_2=0.8$（滞后）、$I_2=I_{2N}$ 时，电压变化率为 3\%～6\%。
+
+\subsection{效率}
+变压器运行时内部产生损耗，可分为两类：
+\begin{itemize}
+  \item \textbf{铁耗} $p_{Fe}$：主磁通在铁芯中产生的损耗。由 $P_{Fe}\propto B_m^2$，在已制成的变压器中近似正比于 $U_1^2$。由于一次绕组端电压通常保持 $U_1=U_{1N}$ 不变，故铁耗又称\textbf{不变损耗}，可由空载试验确定（$p_{Fe}\approx p_0$）。
+  \item \textbf{铜耗} $p_{Cu}$：电流通过一、二次绕组产生的电阻损耗。
+  \begin{equation}
+  p_{Cu}=mI_1^{2}R_1+mI_2'^{2}R_2'=mI_2'^{2}R_k' .
+  \end{equation}
+  由于铜耗随负载电流变化，故称\textbf{可变损耗}，可由短路试验确定（$p_{Cu}\approx\beta^2p_{kN}$，$\beta=I_2/I_{2N}$ 为负载系数）。
+\end{itemize}
+
+考虑内部损耗后，输出功率 $P_2$ 与输入功率 $P_1$ 的关系为 $P_1=P_2+p_{Cu}+p_{Fe}$，其中 $p=p_{Cu}+p_{Fe}$ 为总损耗。变压器的输出功率为
+\begin{equation}
+P_2=mU_2I_2\cos\varphi_2 .
+\end{equation}
+由于电压变化率很小，若忽略二次端电压的变化，认为 $U_2\approx U_{20}$，则 $P_2\approx mU_{20}I_2\cos\varphi_2$，故输入功率
+\begin{equation}
+P_1\approx mU_{20}I_2\cos\varphi_2+p_{Fe}+mI_2'^{2}R_k' .
+\end{equation}
+
+变压器的效率是输出功率与输入功率之比：
+\begin{equation}
+\eta=\frac{P_2}{P_1}\times100\%=\frac{mU_{20}I_2\cos\varphi_2}{mU_{20}I_2\cos\varphi_2+p_{Fe}+mI_2'^{2}R_k'}\times100\% .
+\end{equation}
+用额定容量与负载系数表示，即得工程上最常用的效率公式：
+\begin{equation}
+\eta=\frac{S_N\beta\cos\varphi_2}{S_N\beta\cos\varphi_2+p_0+\beta^{2}p_{kN}}\times100\% .
+\end{equation}
+
+\keyformula{\eta=\frac{\beta S_N\cos\varphi_2}{\beta S_N\cos\varphi_2+p_0+\beta^{2}p_{kN}}\times100\%}
+
+保持负载功率因数不变，效率随负载电流 $I_2$ 的变化曲线为一条先升后降的曲线，在某一负载电流时效率达到最大。将上式对 $I_2$（或 $\beta$）求导并令其等于零，得效率最大的条件：
+\begin{equation}
+p_{Fe}=mI_2'^{2}R_k'=p_{Cu}
+\quad\Longleftrightarrow\quad
+p_0=\beta^{2}p_{kN}
+\quad\Longleftrightarrow\quad
+\beta=\sqrt{\frac{p_0}{p_{kN}}} .
+\end{equation}
+
+\keyformula{p_{Fe}=p_{Cu}\ \Longleftrightarrow\ \beta_m=\sqrt{\frac{p_0}{p_{kN}}}}
+
+即\textbf{当铜耗等于铁耗（可变损耗等于不变损耗）时，变压器效率达到最大值}。实际电力变压器中最大效率发生在 $\beta=0.5\sim0.6$ 之间——这是因为 $p_0<p_{kN}$，$\beta_m<1$，故意设计成"常在半载附近运行最经济"。
+
+变压器的效率虽然可以直接测量，但电力变压器效率很高（通常在 95\% 以上，大容量可达 99\% 以上），$P_1$ 与 $P_2$ 差距很小，直接法误差大，且大容量变压器难以找到相适应的负载。故工程上常通过\textbf{空载和短路试验}求出铜耗和铁耗，再用\textbf{间接法}（损耗分析法）计算效率。
+
+\begin{center}
+\begin{tabular}{@{}p{1.9cm}p{3.2cm}p{4.0cm}p{3.9cm}@{}}
+\toprule
+项目 & 定义/公式 & 性质 & 测定方法 \\
+\midrule
+电压变化率 & $\Delta U^{*}\approx I_2^{*}(R_k^{*}\cos\varphi_2+X_k^{*}\sin\varphi_2)$ & 感性为正、容性可为负 & 由短路参数计算 \\
+铁耗 $p_{Fe}$ & $\approx p_0$，$\propto U_1^2$ & 不变损耗 & 空载试验 \\
+铜耗 $p_{Cu}$ & $\approx\beta^2p_{kN}$，$\propto I^2$ & 可变损耗 & 短路试验 \\
+效率 $\eta$ & $\dfrac{\beta S_N\cos\varphi_2}{\beta S_N\cos\varphi_2+p_0+\beta^2p_{kN}}$ & 最大时 $p_{Fe}=p_{Cu}$ & 间接法（损耗分析） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{三个高频错点：① 把 $\Delta U$ 的分子写成 $U_{1N}-U_2$（应是与 $U_{2N}$ 比较，且是相电压之差）；② 容性负载时忘记 $\sin\varphi_2$ 取负号，得出"容性负载端电压下降"的错误结论；③ 求最大效率时用 $\beta=1$ 代入——最大效率条件是 $p_0=\beta^2p_{kN}$，不是满载。另外注意 $p_0$、$p_{kN}$ 都是"三相总损耗"，用标幺值时对应 $S_N$，不要漏乘相数 $m$。}
+
+\section{变压器的并联运行}
+
+所谓变压器的并联运行，是指将两台或多台变压器的一次绕组和二次绕组分别接到各自的公共母线上，共同向负载供电。并联运行可以提高供电可靠性，减小总的备用容量，并可根据负载变化调整投入运行的变压器台数，以提高运行效率。
+
+\subsection{理想并联运行的条件}
+变压器并联运行时，总希望损耗小、效率高、每台变压器都能得到充分利用，即达到理想状态：
+\begin{enumerate}
+  \item \textbf{空载时并联的变压器之间无环流}。环流会增加损耗，严重时使变压器过热甚至烧坏。
+  \item \textbf{负载时各变压器有相同的负载率}。这样容量大的变压器承担负载电流大、容量小的承担小，各变压器容量得到最充分利用。
+  \item \textbf{各变压器输出电流同相位}。这样当总负载电流一定时，各变压器分担的电流最小，总铜耗最小。
+\end{enumerate}
+
+要达到上述理想要求，并联运行的各台变压器应满足如下条件：
+\begin{enumerate}
+  \item 各台变压器的\textbf{额定电压与变比相等}；
+  \item 各台变压器的\textbf{联结组别相同}；
+  \item 各台变压器的\textbf{短路阻抗标幺值相等，阻抗角相同}。
+\end{enumerate}
+
+\subsection{变比不相等时的空载环流}
+以两台变压器并联为例，设联结组相同。由于两台变压器接到公共母线上，一次绕组具有相同的电网电压 $\dot U_1$；当变比不等时，两台变压器二次绕组的感应电动势不相等。设第一台为 $\dot E_{2I}$、第二台为 $\dot E_{2II}$，公共母线把两台变压器的二次绕组构成回路。因此，即使二次母线不接负载，在电动势差 $\Delta\dot E_2=\dot E_{2I}-\dot E_{2II}$ 作用下，二次绕组也会产生\textbf{环流}。由磁平衡关系，二次绕组产生环流的同时一次绕组也产生环流；由于变比不等，两台变压器一次绕组的环流不相同。
+
+应用简化等效电路，可求出变比不等时的空载环流：
+\begin{equation}
+\dot I_c=\frac{\Delta\dot E_2}{Z_{kI}'+Z_{kII}'} .
+\end{equation}
+由于变压器的短路阻抗很小，\textbf{即使变比相差很小也会产生较大的环流}，因此对并联变压器之间的变比差必须严格限制（工程上一般要求变比差不超过 $\pm0.5\%$）。
+
+\subsection{联结组别不同时的空载环流}
+若并联运行的两台变压器联结组别不同，后果更为严重：联结组别不同的两台变压器，线电动势的相位至少相差 $30^\circ$。设两台变压器线电动势大小相等，则二次绕组电动势差为
+\begin{equation}
+\Delta E=2E_{2}\sin\frac{30^\circ}{2}=0.52E_2 .
+\end{equation}
+这么大的电动势差作用在二次绕组回路中，不但会产生很大的空载环流，甚至会烧坏变压器。故\textbf{联结组不同的变压器绝对不能并联运行}。
+
+\subsection{短路阻抗不等时的负载分配}
+分析负载分配时假设两台变压器的变比和联结组别都相同，则变压器内不产生环流，两台变压器具有相同的输入电压 $\dot U_1$ 和输出电压 $\dot U_2$。由简化等效电路，两台变压器并联时短路阻抗上的压降应相等：
+\begin{equation}
+\dot I_I Z_{kI}=\dot I_{II}Z_{kII}
+\quad\Longrightarrow\quad
+\frac{\dot I_I}{\dot I_{II}}=\frac{Z_{kII}}{Z_{kI}} .
+\end{equation}
+即\textbf{并联运行的各台变压器所分担的负载电流与其短路阻抗成反比}。
+
+两边同乘以额定电流并考虑两台变压器额定电压相同，可导出用标幺值表示的负载电流分配：
+\begin{equation}
+\frac{I_I^{*}}{I_{II}^{*}}=\frac{Z_{kII}^{*}}{Z_{kI}^{*}} .
+\end{equation}
+
+\keyformula{\frac{I_I^{*}}{I_{II}^{*}}=\frac{Z_{kII}^{*}}{Z_{kI}^{*}}}
+
+由于两台变压器的额定电压和负载电压均相等，所以有
+\begin{equation}
+\frac{S_I}{S_{II}}=\frac{S_{NI}}{S_{NII}}\cdot\frac{Z_{kII}^{*}}{Z_{kI}^{*}} .
+\end{equation}
+可见：\textbf{短路阻抗标幺值不相等时，并联各变压器所分担的负载不能按额定容量成正比例分配}。由标幺值式还可看出，为满足理想并联运行的第三条（输出电流同相位），各台变压器短路阻抗的\textbf{阻抗角也应相等}。
+
+实际并联运行时：联结组必须相同；变比差要严格控制；漏阻抗标幺值在数值上相差不要太大（通常相对误差小于 10\%），相角可有一定差别，通常不作严格要求。
+
+\subsection{容量利用率}
+若两台变压器短路阻抗标幺值不等，则阻抗小的一台先达到满载，另一台仍欠载，于是总设备容量不能充分利用。设负载按总容量 $S_L$ 分配，为使任何一台都不过载，应取"先满载者"为约束，可承担的最大负载与设备总容量之比即\textbf{容量利用率}。
+
+\begin{center}
+\begin{tabular}{@{}p{2.5cm}p{3.6cm}p{4.4cm}p{2.6cm}@{}}
+\toprule
+条件不满足 & 后果 & 定量关系 & 严重程度 \\
+\midrule
+变比不等 & 空载环流 & $I_c=\Delta E_2/(Z_{kI}'+Z_{kII}')$ & 须限制变比差 \\
+联结组不同 & 巨大空载环流，可烧毁 & $\Delta E=0.52E_2$（差 $30^\circ$） & \textbf{绝对禁止}并联 \\
+短路阻抗标幺值不等 & 负载不能按容量比例分配 & $I_I^{*}/I_{II}^{*}=Z_{kII}^{*}/Z_{kI}^{*}$ & 影响经济性 \\
+阻抗角不等 & 电流不同相位，总电流偏大 & 相量和大于代数和 & 一般不作严格要求 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{把三条条件分成"能不能"和"划不划算"两类，记忆最省力：\textbf{变比相等 + 组别相同}是"能不能并联"的前提（否则空载就有环流）；\textbf{短路阻抗标幺值相等 + 阻抗角相同}是"并得好不好"的条件（否则负载分不匀、总铜耗偏大）。考试若问"两台变压器能否并联"，先答组别，再答变比，最后答阻抗。}

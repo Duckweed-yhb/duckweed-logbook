@@ -1,0 +1,312 @@
+% ============================================================
+% 第 18 章  电力系统静态稳定性
+% （教材：何仰赞、温增银《电力系统分析》下册 第 18 章）
+% 结构对齐 18.1—18.5；例题、习题不录
+% ============================================================
+
+\chapter{电力系统静态稳定性}
+
+暂态稳定研究“大扰动后能否撑住”，静态稳定研究“小扰动后能否站住”。
+后者是系统在运行点附近的\textbf{局部性质}，可以用线性化方法严格分析：
+把非线性方程在工作点线性化，得到状态方程 $\Delta\dot{\boldsymbol x}=\boldsymbol A\Delta\boldsymbol x$，
+再由 $\boldsymbol A$ 的特征值判断稳定性。本章的主线是：\textbf{李雅普诺夫意义下的稳定性
+$\to$ 线性近似判据 $\to$ 简单系统的 $S=\mathrm{d}P_e/\mathrm{d}\delta$ 判据
+$\to$ 励磁调节的影响 $\to$ 复杂系统与电压稳定判据}。
+
+\section{运动稳定性的基本概念和小扰动法原理}
+
+\subsection{未受扰运动与受扰运动}
+
+设系统的运动方程为 $\dot{\boldsymbol x}=\boldsymbol f(\boldsymbol x)$，
+$\boldsymbol x_0$ 为某一平衡点（$\boldsymbol f(\boldsymbol x_0)=\boldsymbol 0$），
+对应的运动称\textbf{未受扰运动}。若有扰动使状态偏离到 $\boldsymbol x_0+\Delta\boldsymbol x_0$，
+此后的运动称\textbf{受扰运动}。
+\begin{itemize}
+  \item 若受扰运动能回到 $\boldsymbol x_0$，称未受扰运动\textbf{稳定}；
+  \item 若受扰运动趋于 $\boldsymbol x_0$，称\textbf{渐近稳定}；
+  \item 若偏离越来越大，称\textbf{不稳定}。
+\end{itemize}
+
+\subsection{李雅普诺夫运动稳定性定义}
+
+对任意给定的 $\varepsilon>0$，若存在 $\eta(\varepsilon)>0$，使得当
+$\left\|\Delta\boldsymbol x_0\right\|<\eta$ 时，对一切 $t\ge0$ 有
+$\left\|\Delta\boldsymbol x(t)\right\|<\varepsilon$，则称未受扰运动\textbf{稳定}（李雅普诺夫意义）；
+若进一步有 $\lim_{t\to\infty}\Delta\boldsymbol x(t)=\boldsymbol 0$，则称\textbf{渐近稳定}。
+
+这一定义的关键是：\textbf{稳定性是“初值扰动的影响是否有界”的性质}，
+它不要求系统回到原状态，也不涉及扰动的大小（那是暂态稳定的问题）。
+
+\subsection{非线性系统的线性近似稳定性判断法}
+
+在平衡点附近作泰勒展开并略去高阶项，得线性化方程
+\begin{equation}
+  \Delta\dot{\boldsymbol x}=\boldsymbol A\Delta\boldsymbol x,
+  \qquad \boldsymbol A=\left.\frac{\partial\boldsymbol f}{\partial\boldsymbol x}\right|_{\boldsymbol x_0}.
+\end{equation}
+设 $\boldsymbol A$ 的特征值为 $\lambda_i=\alpha_i+j\beta_i$，则
+\begin{table}[htbp]
+  \centering
+  \caption{特征值与稳定性的关系（线性近似判据）}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    特征值情况 & 判定 & 说明 \\
+    \midrule
+    全部 $\alpha_i<0$ & \textbf{渐近稳定} & 所有模态衰减 \\
+    存在 $\alpha_i>0$ & \textbf{不稳定} & 至少一个模态发散 \\
+    存在 $\alpha_i=0$（其余 $<0$） & \textbf{临界}，须看高阶项 & 线性近似失效 \\
+    有 $\alpha_i=0$ 且 $\beta_i\ne0$ & 等幅振荡 & 实际由阻尼决定 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{注意}：线性近似只能判断“渐近稳定”与“不稳定”两种情形；
+当出现零实部特征值时，线性化结论不可靠，必须回到非线性方程分析（李雅普诺夫第二方法
+或中心流形理论）。这一条在电力系统静态稳定中正对应“$\delta_0=90^\circ$”的临界情形。
+
+\subsection{用小扰动法分析电力系统静态稳定的步骤}
+
+\begin{enumerate}
+  \item 建立系统的完整数学模型（发电机方程 $+$ 励磁方程 $+$ 网络方程 $+$ 负荷方程）；
+  \item 求出待研究的稳态运行点（潮流解）；
+  \item 在运行点处线性化，消去代数变量，得到状态方程
+        $\Delta\dot{\boldsymbol x}=\boldsymbol A\Delta\boldsymbol x$；
+  \item 求 $\boldsymbol A$ 的特征值，按上表判断稳定性；
+  \item 若不稳定，找出主导特征值（实部最大的），分析其物理来源（通常是阻尼不足或
+        励磁调节引起的负阻尼）。
+\end{enumerate}
+
+\section{简单电力系统的静态稳定}
+
+\subsection{不计发电机组的阻尼作用}
+
+单机—无限大系统，发电机用“$E_q$ 恒定、$X_d$”模型，不计阻尼绕组与励磁调节。
+由转子运动方程
+\begin{equation}
+  T_J\frac{\mathrm{d}^{2}\Delta\delta}{\mathrm{d}t^{2}}=-\Delta P_e
+  =-\left.\frac{\mathrm{d}P_e}{\mathrm{d}\delta}\right|_{\delta_0}\Delta\delta ,
+\end{equation}
+记 \textbf{同步功率系数}
+\keyformula{S=\left.\frac{\mathrm{d}P_e}{\mathrm{d}\delta}\right|_{\delta_0}
+  =P_{m}\cos\delta_0}
+则特征方程为
+\begin{equation}
+  T_Jp^{2}+S=0,\qquad p=\pm\sqrt{-S/T_J}.
+\end{equation}
+\begin{itemize}
+  \item $S>0$（即 $\delta_0<90^\circ$）：$p=\pm j\sqrt{S/T_J}$，特征值为纯虚数，
+        系统作\textbf{等幅振荡}——线性意义下是“临界稳定”，工程上因实际存在阻尼，
+        认为是稳定的；
+  \item $S<0$（即 $\delta_0>90^\circ$）：$p$ 有一正一负实根，$\Delta\delta$ 按指数增长，
+        系统\textbf{单调失稳}（非周期性失步）。
+\end{itemize}
+故静态稳定判据为
+\keyformula{S=\frac{\mathrm{d}P_e}{\mathrm{d}\delta}>0}
+与第 15 章的物理判断完全一致。极限情况 $\delta_0=90^\circ$ 对应 $P_{\max}=E_qU/X_{d\Sigma}$。
+
+\subsection{计及发电机组的阻尼作用}
+
+实际系统中存在阻尼（阻尼绕组、机械摩擦、风阻、负荷的频率效应等），
+用阻尼系数 $D$ 表示，则
+\begin{equation}
+  T_J\frac{\mathrm{d}^{2}\Delta\delta}{\mathrm{d}t^{2}}
+  +D\frac{\mathrm{d}\Delta\delta}{\mathrm{d}t}+S\Delta\delta=0 ,
+\end{equation}
+特征方程
+\keyformula{T_Jp^{2}+Dp+S=0,\qquad
+  p=\frac{-D\pm\sqrt{D^{2}-4T_JS}}{2T_J}}
+稳定条件为
+\begin{equation}
+  S>0\quad\text{且}\quad D>0 .
+\end{equation}
+\begin{itemize}
+  \item $S>0$、$D>0$：特征根实部为负，$\Delta\delta$ 衰减振荡，\textbf{稳定}；
+  \item $S>0$、$D<0$：实部为正，\textbf{振荡失稳}（负阻尼振荡）——这是低频振荡的机理；
+  \item $S<0$：单调失稳。
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \caption{阻尼对静态稳定的影响}
+  \small
+  \begin{tabular}{@{}p{0.10\linewidth}p{0.10\linewidth}p{0.34\linewidth}p{0.30\linewidth}@{}}
+    \toprule
+    $S$ & $D$ & 特征根 & 结论 \\
+    \midrule
+    $>0$ & $>0$ & 实部为负的共轭复根或两个负实根 & 稳定（衰减振荡／单调衰减） \\
+    $>0$ & $<0$ & 实部为正的共轭复根 & 振荡失稳（负阻尼） \\
+    $<0$ & 任意 & 一正一负实根 & 单调失稳 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{$S=\mathrm{d}P_e/\mathrm{d}\delta$ 是“同步力矩”系数，$D$ 是“阻尼力矩”系数。
+前者决定“有没有恢复力”，后者决定“振荡能不能衰减”。
+实际系统中 $D$ 可能因励磁调节、原动机调节而变为负值——这就是“有恢复力却仍然失稳”的原因，
+也是第 18.3 节要讨论的核心。}
+
+\section{自动励磁调节器对静态稳定的影响}
+
+\subsection{按电压偏差调节的比例式调节器}
+
+比例式调节器（AVR）按机端电压偏差 $\Delta U_G$ 调节励磁：
+\begin{equation}
+  \Delta E_{fd}=-K_U\Delta U_G ,
+\end{equation}
+其动态用一阶惯性环节表示：
+\begin{equation}
+  T_e\frac{\mathrm{d}\Delta E_{fd}}{\mathrm{d}t}+\Delta E_{fd}=-K_U\Delta U_G ,
+\end{equation}
+$T_e$ 为励磁系统等值时间常数（$0.02\sim0.5$~s），$K_U$ 为放大倍数。
+
+把发电机方程（含 $\Delta E_q'$）、励磁方程与网络方程联立并线性化，
+消去代数变量后得到三阶（或更高）特征方程：
+\begin{equation}
+  a_3p^{3}+a_2p^{2}+a_1p+a_0=0 .
+\end{equation}
+稳定性由劳斯—胡尔维茨判据判断（各系数为正且 $a_1a_2>a_0a_3$）。
+
+\subsection{比例式调节器对静态稳定的影响}
+
+\begin{itemize}
+  \item \textbf{正面作用}：提高励磁、维持电压，使功率极限从 $E_qU/X_{d\Sigma}$ 提高到
+        $U_GU/X_{\text{外}}$，\textbf{大幅提高静态稳定极限}；
+  \item \textbf{负面作用}：励磁调节有滞后（$T_e$），当 $K_U$ 过大时，
+        调节器的响应会滞后于功角摆动，产生\textbf{负阻尼}，
+        引起\underline{低频振荡}（频率 $0.2\sim2.5$~Hz）。
+\end{itemize}
+因此比例式调节器存在一对矛盾：\textbf{放大倍数越大，稳态精度越高、功率极限越高，
+但动态阻尼越差}。
+
+\subsection{改进励磁调节器的几种途径}
+
+\begin{enumerate}
+  \item \textbf{引入微分环节}（PD 或 PID）：用 $\mathrm{d}U_G/\mathrm{d}t$ 的超前作用补偿滞后，
+        增加正阻尼；
+  \item \textbf{电力系统稳定器（PSS）}：以转速偏差 $\Delta\omega$、功率偏差 $\Delta P$
+        或频率偏差为输入，产生与转速同相的附加励磁，专门提供正阻尼；
+  \item \textbf{采用快速励磁系统}：减小 $T_e$，使调节更及时；
+  \item \textbf{优化参数}：合理选择 $K_U$ 与各时间常数，在稳态精度与动态阻尼之间折中。
+\end{enumerate}
+
+\subsection{电力系统静态稳定的简要述评}
+
+\begin{itemize}
+  \item 无励磁调节时，静态稳定极限由 $E_q$、$X_d$ 决定，$\delta<90^\circ$；
+  \item 有比例式调节时，极限提高到由 $U_G$、$X_{\text{外}}$ 决定，$\delta$ 可接近 $90^\circ$，
+        但可能出现负阻尼振荡；
+  \item 加装 PSS 后，既保留高功率极限，又保证正阻尼，是现代电网的标准配置；
+  \item 静态稳定的\textbf{本质}是“小扰动下的恢复能力”，其判据最终归结为
+        “特征值实部为负”——所有具体判据（$S>0$、劳斯判据、$\mathrm{d}Q/\mathrm{d}U<0$）
+        都是这一条在不同模型下的表现。
+\end{itemize}
+
+\section{电力系统静态稳定实际分析计算的概念}
+
+\subsection{小扰动法在复杂电力系统中的应用}
+
+多机系统的状态方程阶数很高（每台机 $2\sim5$ 阶，加上励磁、调速、负荷），
+矩阵 $\boldsymbol A$ 的维数可达数百甚至数千。实际计算：
+\begin{itemize}
+  \item 用\textbf{稀疏特征值算法}（如 QR 法、Arnoldi 法）只求主导特征值（实部最大的若干个）；
+  \item 对每个特征值分析其\textbf{模态}（参与因子），找出“哪台机、哪个控制器”应对
+        该模态负责——这是振荡源定位的依据；
+  \item 特征值的虚部给出振荡频率，实部给出阻尼比 $\zeta=-\alpha/\left|\lambda\right|$，
+        工程上要求 $\zeta>3\%\sim5\%$。
+\end{itemize}
+
+\subsection{静态稳定储备系数 $K_p$ 的计算问题}
+
+工程上用\textbf{静态稳定储备系数}衡量裕度：
+\keyformula{K_p=\frac{P_{\max}-P_0}{P_0}\times100\%}
+计算中的几个问题：
+\begin{itemize}
+  \item $P_{\max}$ 应按“最不利的运行方式”（如线路检修、机组停运）计算，
+        而不是按正常运行方式；
+  \item 对多机系统，“$P_{\max}$”通常指“保持给定运行方式下可增加的最大输送功率”，
+        须逐台机、逐条断面校核；
+  \item 正常方式要求 $K_p\ge15\%\sim20\%$，事故后允许降至 $10\%$；
+  \item $K_p$ 只反映“有功功率裕度”，不反映阻尼好坏，故须与阻尼比一起考核。
+\end{itemize}
+
+\subsection{$\mathrm{d}Q/\mathrm{d}U<0$ 判据的意义及电压崩溃}
+
+对负荷节点，把“负荷所需无功”$Q_L(U)$ 与“系统可提供的无功”$Q_S(U)$ 画在同一 $Q$-$U$ 图上，
+运行点为两曲线交点。稳定运行要求
+\begin{equation}
+  \frac{\mathrm{d}Q}{\mathrm{d}U}<0 ,
+\end{equation}
+其含义是：\textbf{电压略降时，系统能提供的无功增量大于负荷需求的增量}，
+故电压能被“托住”。反之，若 $\mathrm{d}Q/\mathrm{d}U>0$，电压稍降就使无功缺口更大，
+电压持续下降，直至\textbf{电压崩溃}。
+
+这一判据与 $P$-$U$ 曲线的鼻点对应：鼻点处 $\mathrm{d}P/\mathrm{d}U=0$，
+$\mathrm{d}Q/\mathrm{d}U$ 也变号。故\textbf{电压稳定的临界点就是 $P$-$U$ 曲线的鼻点}。
+
+\subsection{应用 $\mathrm{d}Q/\mathrm{d}U$ 判据计算静态稳定}
+
+实用做法：
+\begin{enumerate}
+  \item 用潮流计算逐点增加某区域负荷，记录负荷节点电压 $U$ 与所需无功 $Q$；
+  \item 作 $Q$-$U$ 曲线（或 $P$-$U$ 曲线），找到 $\mathrm{d}Q/\mathrm{d}U=0$ 的临界点；
+  \item 临界点的负荷功率即\textbf{电压稳定极限}；
+  \item 定义电压稳定储备系数
+        $K_U=\dfrac{P_{cr}-P_0}{P_0}\times100\%$，工程上要求 $K_U\ge10\%\sim15\%$。
+\end{enumerate}
+与功角稳定储备系数 $K_p$ 相比，$K_U$ 反映的是“无功与电压”的裕度，
+在受端系统、大负荷中心、新能源高渗透区域尤为重要。
+
+\section{有关电力系统运行稳定性问题的几个基本概念}
+
+\subsection{电力系统次同步谐振和扭转振荡}
+
+当输电线路装有\textbf{串联电容补偿}时，线路的 $LC$ 回路可能在某一次同步频率下与
+发电机轴系的某一扭振模态发生谐振，称\textbf{次同步谐振}（SSR）。
+其后果是轴系承受很大的交变扭矩，可能导致大轴疲劳损伤甚至断裂。
+防范措施：避开谐振点（调整补偿度）、加装阻塞滤波器、采用可控串补（TCSC）。
+
+\subsection{电力系统的低频振荡}
+
+低频振荡指并列运行的发电机之间以 $0.2\sim2.5$~Hz 的频率发生的功率振荡，
+分为：
+\begin{itemize}
+  \item \textbf{区域间振荡}（$0.1\sim0.7$~Hz）：机群之间通过长距离弱联系线路振荡，
+        幅值大、影响范围广；
+  \item \textbf{局部振荡}（$0.7\sim2.5$~Hz）：一台机（或一个电厂）对系统振荡。
+\end{itemize}
+主要诱因是\textbf{阻尼不足}（快速励磁引起的负阻尼、重负荷长距离输电）。
+抑制手段：加装 PSS、优化励磁参数、增设附加阻尼控制（如储能、直流调制）。
+
+\subsection{电力系统弱联的功率振荡}
+
+“弱联”指两个系统之间仅通过一条（或少数）长距离、大电抗的联络线相连。
+弱联系统的特点是：
+\begin{itemize}
+  \item 同步功率系数 $S$ 小（因电抗大），静态稳定储备低；
+  \item 阻尼弱，容易发生区域间低频振荡；
+  \item 联络线功率波动大，任一侧故障都可能引起联络线过载或失步。
+\end{itemize}
+因此弱联系统须严格控制联络线潮流，并配置足够的阻尼控制与解列措施。
+
+\begin{table}[htbp]
+  \centering
+  \caption{三类振荡问题的比较}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.16\linewidth}p{0.28\linewidth}p{0.30\linewidth}@{}}
+    \toprule
+    问题 & 频率范围 & 机理 & 主要对策 \\
+    \midrule
+    次同步谐振 & $10\sim50$ Hz（轴系扭振） & 串补电容与轴系扭振模态谐振 & 避开谐振、阻塞滤波、TCSC \\
+    区域间低频振荡 & $0.1\sim0.7$ Hz & 弱联系、阻尼不足 & PSS、附加阻尼控制 \\
+    局部低频振荡 & $0.7\sim2.5$ Hz & 单机对系统、励磁负阻尼 & 优化励磁、PSS \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{本章要能把四个判据串成一条线：\textbf{$S=\mathrm{d}P_e/\mathrm{d}\delta>0$}（物理判据）、
+\textbf{特征值实部为负}（数学判据）、\textbf{$K_p$ 储备系数}（工程指标）、
+\textbf{$\mathrm{d}Q/\mathrm{d}U<0$}（电压稳定判据）。
+前两个说的是“功角稳定”，第四个说的是“电压稳定”，不要混为一谈；
+$K_p$ 与阻尼比是同一系统的两个侧面，须同时满足。
+另记住“励磁调节提高极限但可能引入负阻尼，PSS 用来补阻尼”这一条因果链。}

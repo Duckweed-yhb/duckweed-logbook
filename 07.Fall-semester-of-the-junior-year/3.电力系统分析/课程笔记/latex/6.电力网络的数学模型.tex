@@ -1,0 +1,273 @@
+﻿% ============================================================
+% 第 4 章  电力网络的数学模型
+% （教材：何仰赞、温增银《电力系统分析》上册 第 4 章）
+% 结构对齐 4.1—4.4；例题、习题不录
+% ============================================================
+
+\chapter{电力网络的数学模型}
+
+第 2 章给了元件参数与等值电路，第 3 章给了发电机方程。本章把二者按网络的拓扑关系组装起来，
+得到\textbf{网络方程}——用节点电压（或支路电流）描述整个系统状态的代数方程组。
+这一章是短路计算（第 6、8 章）、潮流计算（第 11 章）和稳定计算（第 17、18 章）共同的
+“装配车间”。
+
+\section{节点导纳矩阵}
+
+\subsection{节点方程}
+
+设网络有 $n$ 个节点（不含参考节点），各节点注入电流为 $\dot I_i$（由外部注入网络的电流，
+发电机取正、负荷取负），节点电压为 $\dot U_i$。由基尔霍夫电流定律，对每个节点写出
+“注入电流 $=$ 流出该节点的各支路电流之和”，整理即得节点方程
+\keyformula{
+  \begin{bmatrix}\dot I_1\\ \dot I_2\\ \vdots\\ \dot I_n\end{bmatrix}
+  =\begin{bmatrix}
+    Y_{11} & Y_{12} & \cdots & Y_{1n}\\
+    Y_{21} & Y_{22} & \cdots & Y_{2n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    Y_{n1} & Y_{n2} & \cdots & Y_{nn}
+  \end{bmatrix}
+  \begin{bmatrix}\dot U_1\\ \dot U_2\\ \vdots\\ \dot U_n\end{bmatrix}}
+简记为 $\boldsymbol I=\boldsymbol Y\boldsymbol U$，$\boldsymbol Y$ 称\textbf{节点导纳矩阵}。
+它是 $n$ 阶复数方阵，对称（无互感、无受控源时），且高度稀疏。
+
+\textbf{注意参考节点的处理}：大地（或零电位点）取为参考节点，其电压为零，
+不出现在方程中；与参考节点相连的对地支路（如线路并联电纳、变压器励磁支路）
+只影响相应节点的自导纳。
+
+\subsection{节点导纳矩阵元素的物理意义}
+
+由 $\boldsymbol U=\boldsymbol Y^{-1}\boldsymbol I$ 或直接由节点方程可读出：
+
+\paragraph{对角元素 $Y_{ii}$（自导纳）}
+在节点 $i$ 单独注入单位电流、其余节点注入电流为零（即其余节点短路接地）时，
+节点 $i$ 的电压值。其值为
+\begin{equation}
+  Y_{ii}=\sum_{j\in i}y_{ij}+y_{i0},
+\end{equation}
+即\textbf{与节点 $i$ 相连的所有支路导纳之和}（含节点 $i$ 的对地支路 $y_{i0}$）。
+
+\paragraph{非对角元素 $Y_{ij}$（互导纳）}
+在上述条件下节点 $j$ 的电压值，其值为
+\begin{equation}
+  Y_{ij}=-y_{ij}\qquad(i\ne j),
+\end{equation}
+即\textbf{节点 $i$、$j$ 之间支路导纳的负值}。若 $i$、$j$ 之间无直接支路，则 $Y_{ij}=0$。
+
+\begin{table}[htbp]
+  \centering
+  \caption{节点导纳矩阵元素的构成规则}
+  \small
+  \begin{tabular}{@{}p{0.20\linewidth}p{0.30\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    元素 & 构成 & 说明 \\
+    \midrule
+    $Y_{ii}$ & 与 $i$ 相连全部支路导纳之和（含对地） & 恒不为零，数值最大 \\
+    $Y_{ij}$ & $-y_{ij}$ & 只在 $i$、$j$ 有直接支路时非零 \\
+    对地支路 $y_{i0}$ & 只加到 $Y_{ii}$ & 不出现在非对角元素中 \\
+    无源元件 & 纯虚数（$j\omega$ 或 $1/(j\omega)$） & 实际含电阻时略呈负实部 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{$Y_{ij}$ 带负号，$Y_{ii}$ 是“和”不是“差”，这两个约定几乎所有教材一致；
+但“自导纳含不含对地支路”各书写法有别——本书\textbf{含}。做题时先确认这一条，
+否则对角元素会差一个并联电纳。}
+
+\subsection{节点导纳矩阵的修改}
+
+实际计算中常需在原网络基础上增删元件而不重新组装矩阵，此时只需修改少数元素：
+
+\begin{table}[htbp]
+  \centering
+  \caption{网络结构变化时节点导纳矩阵的修改}
+  \small
+  \begin{tabular}{@{}p{0.22\linewidth}p{0.62\linewidth}@{}}
+    \toprule
+    操作 & 矩阵元素的修改 \\
+    \midrule
+    在 $i$、$j$ 间追加导纳为 $y$ 的支路 &
+      $Y_{ii}\mathrel{+}=y$，$Y_{jj}\mathrel{+}=y$，$Y_{ij}=Y_{ji}\mathrel{-}=y$ \\
+    切除 $i$、$j$ 间导纳为 $y$ 的支路 &
+      $Y_{ii}\mathrel{-}=y$，$Y_{jj}\mathrel{-}=y$，$Y_{ij}=Y_{ji}\mathrel{+}=y$ \\
+    在节点 $i$ 增加对地支路 $y$ & 仅 $Y_{ii}\mathrel{+}=y$ \\
+    切除节点 $i$ 的对地支路 $y$ & 仅 $Y_{ii}\mathrel{-}=y$ \\
+    节点 $i$ 的电压变比改变（变压器非标准变比 $k_*$） &
+      按 $\dfrac{1}{Z_T}\begin{bmatrix}1&-k_*\\-k_*&k_*^{2}\end{bmatrix}$
+      重算与 $i$、$j$ 有关的四个元素（见第 2 章 $\Gamma$ 型等值电路） \\
+    两节点合并（如开关合上） & 把两行两列相加，删去一行一列 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+$k_*$ 改变引起的变化最能说明问题：非标准变比变压器的四个导纳元素
+$Y_{ii}=y_T$、$Y_{ij}=Y_{ji}=-k_*y_T$、$Y_{jj}=k_*^{2}y_T$ 中，
+只有 $k_*=1$ 时才退化为普通串联支路的“$+y$、$-y$、$+y$”形式。
+因此\textbf{有载调压变压器的分接头一动，节点导纳矩阵的四个元素同时变}——
+这也是潮流计算中“变压器分接头是控制变量”的矩阵解释。
+
+\subsection{支路间存在互感时的节点导纳矩阵}
+
+当网络中存在互感支路（如平行架设的双回线、同杆并架线路）时，
+“支路导纳相加”的规则失效，因为支路电流不再只由本支路电压决定。此时用
+\begin{equation}
+  \boldsymbol Y=\boldsymbol A\,\boldsymbol Z_b^{-1}\boldsymbol A^{\mathsf T},
+\end{equation}
+其中 $\boldsymbol A$ 为\textbf{节点-支路关联矩阵}（$n\times b$，
+支路 $k$ 由 $i$ 指向 $j$ 时 $A_{ik}=1$、$A_{jk}=-1$，其余为零），
+$\boldsymbol Z_b$ 为\textbf{支路阻抗矩阵}（$b\times b$，对角为各支路自阻抗，
+非对角为互感支路间的互阻抗）。
+\keyformula{\boldsymbol I=\boldsymbol A\boldsymbol Z_b^{-1}\boldsymbol A^{\mathsf T}\boldsymbol U
+  \;\Longrightarrow\;\boldsymbol Y=\boldsymbol A\boldsymbol Z_b^{-1}\boldsymbol A^{\mathsf T}}
+这一式子把“拓扑”（$\boldsymbol A$）与“参数”（$\boldsymbol Z_b$）分开，
+有互感时先对 $\boldsymbol Z_b$ 求逆再投影到节点空间，结果自动满足耦合关系；
+无互感时 $\boldsymbol Z_b$ 对角，$\boldsymbol Y$ 退化为上面“相加”的规则。
+第 7 章处理零序网络中的平行双回线时，用的就是这个式子。
+
+\section{网络方程的解法}
+
+\subsection{用高斯消去法求解网络方程}
+
+$\boldsymbol Y\boldsymbol U=\boldsymbol I$ 是复数线性方程组。直接求解用高斯消去法
+（按列消去），把 $\boldsymbol Y$ 化为上三角后回代。消去过程中矩阵元素按
+\begin{equation}
+  Y_{ij}^{(k)}=Y_{ij}^{(k-1)}-\frac{Y_{ik}^{(k-1)}Y_{kj}^{(k-1)}}{Y_{kk}^{(k-1)}},
+  \qquad i,j>k,
+\end{equation}
+更新，同时右端项按
+\begin{equation}
+  I_i^{(k)}=I_i^{(k-1)}-\frac{Y_{ik}^{(k-1)}}{Y_{kk}^{(k-1)}}I_k^{(k-1)}
+\end{equation}
+更新。$\boldsymbol Y$ 对称时只需存上三角，运算量约 $n^3/3$。
+
+由于 $\boldsymbol Y$ 高度稀疏，实际计算采用\textbf{稀疏技术}（只存非零元素、只对非零元素运算）
+和\textbf{节点编号优化}（见 4.4 节），使运算量从 $O(n^3)$ 降至近似 $O(n^{1.5})$ 量级。
+
+\subsection{用高斯消去法简化网络}
+
+消去法还有一层\textbf{网络含义}：消去某个节点，等价于按“星-网变换”把该节点从网络中
+抹去，得到保留节点的等值网络。
+
+对节点 $k$ 消去后，保留节点之间的等值导纳为
+\keyformula{Y_{ij}'=Y_{ij}-\frac{Y_{ik}Y_{kj}}{Y_{kk}}\qquad(i,j\ne k)}
+这正是星形（以 $k$ 为中心）化为网形的公式；若 $k$ 只有两条支路，上式就退化为
+两阻抗串联。若 $k$ 是“浮游节点”（只与两个节点相连、无注入），消去它相当于把两条
+支路合并。
+
+这一操作在短路计算中极有用：把不关心的中间节点逐个消去，最后得到“电源点到短路点”的
+等值阻抗，即第 6 章的\textbf{转移阻抗}。
+
+\corepoint{消去法的两种读法：从代数看是高斯消去，从网络看是星-网变换（$Y$-$\Delta$ 变换）。
+两者是同一件事。理解这一点，第 6 章“用节点阻抗矩阵算短路电流”和第 4.3 节
+“支路追加法”才不是两套孤立的算法。}
+
+\section{节点阻抗矩阵}
+
+\subsection{节点阻抗矩阵元素的物理意义}
+
+节点阻抗矩阵定义为节点导纳矩阵的逆
+\begin{equation}
+  \boldsymbol Z=\boldsymbol Y^{-1},\qquad \boldsymbol U=\boldsymbol Z\boldsymbol I .
+\end{equation}
+由 $\boldsymbol U=\boldsymbol Z\boldsymbol I$，令仅在节点 $i$ 注入单位电流（其余节点注入为零），则
+\begin{itemize}
+  \item $Z_{ii}$：节点 $i$ 的电压，称节点 $i$ 的\textbf{自阻抗}（输入阻抗）；
+        它就是\textbf{从节点 $i$ 看进网络、其余节点开路时的等值阻抗}。
+  \item $Z_{ji}$（$j\ne i$）：节点 $j$ 的电压，称节点 $j$ 与 $i$ 之间的\textbf{转移阻抗}。
+\end{itemize}
+\textbf{关键区别}：$Y_{ij}$ 只与 $i$、$j$ 间的直接支路有关（局部量），
+而 $Z_{ij}$ 与\textbf{整个网络}有关（全局量）——任一支路变化都会改变所有 $Z$ 元素。
+因此 $\boldsymbol Z$ 是满阵，不宜直接存储，只在需要少数元素时用。
+
+\begin{table}[htbp]
+  \centering
+  \caption{节点导纳矩阵与节点阻抗矩阵的对比}
+  \small
+  \begin{tabular}{@{}p{0.14\linewidth}p{0.30\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    比较项 & $\boldsymbol Y$ & $\boldsymbol Z=\boldsymbol Y^{-1}$ \\
+    \midrule
+    稀疏性 & 高度稀疏 & 满阵 \\
+    元素含义 & 局部（支路导纳） & 全局（整网的等值阻抗） \\
+    修改一条支路 & 只改 4 个元素 & 全部元素都变 \\
+    主要用途 & 潮流、稳定计算（迭代求解） & 短路计算（$I_f=E/Z_{ff}$，只取少数元素） \\
+    求法 & 直接组装 & 支路追加法、或对 $\boldsymbol Y$ 求逆（部分列） \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{用支路追加法形成节点阻抗矩阵}
+
+支路追加法从“只有一个接地支路的空网络”开始，逐条追加支路，每追加一条就把 $\boldsymbol Z$
+扩充或修改。它避免了求逆，且物理意义直观。分三种情形：
+
+\paragraph{（1）从已有节点 $i$ 引出新节点 $j$（追加树支）}
+新节点 $j$ 经阻抗 $z$ 接到 $i$，则
+\begin{equation}
+  Z_{jj}=Z_{ii}+z,\qquad Z_{jk}=Z_{kj}=Z_{ik}\ (k\le i).
+\end{equation}
+即新行、新列“抄”第 $i$ 行、第 $i$ 列，对角加 $z$。
+
+\paragraph{（2）在原有节点 $i$、$j$ 间追加连支（形成回路）}
+若追加的支路阻抗为 $z$、且 $i$、$j$ 间已存在通路，则回路阻抗为
+$z_{\Sigma}=Z_{ii}+Z_{jj}-2Z_{ij}+z$，全部元素按
+\begin{equation}
+  Z_{kl}'=Z_{kl}-\frac{\left(Z_{ki}-Z_{kj}\right)\left(Z_{il}-Z_{jl}\right)}{z_{\Sigma}}
+\end{equation}
+修正。这是“追加一条连支 $=$ 在回路中并入一个阻抗”的结果。
+
+\paragraph{（3）追加接地支路（从节点 $i$ 到地）}
+\begin{equation}
+  Z_{kl}'=Z_{kl}-\frac{Z_{ki}Z_{il}}{Z_{ii}+z}.
+\end{equation}
+
+三种情形中，只有第（1）种会增加矩阵阶数。追加顺序不同，中间结果不同，但最终 $\boldsymbol Z$ 相同。
+
+\subsection{用线性方程直接解法对导纳矩阵求逆}
+
+实际只需 $\boldsymbol Z$ 的少数元素（如短路点的 $Z_{ff}$）时，不必求全逆：
+用因子表法对 $\boldsymbol Y$ 作三角分解 $\boldsymbol Y=\boldsymbol L\boldsymbol D\boldsymbol L^{\mathsf T}$
+（对称阵），则求 $\boldsymbol Z$ 的第 $j$ 列等价于解
+$\boldsymbol L\boldsymbol D\boldsymbol L^{\mathsf T}\boldsymbol z_j=\boldsymbol e_j$
+（$\boldsymbol e_j$ 为单位向量）。由于 $\boldsymbol e_j$ 稀疏，前代、回代都很快，
+算一列的成本约为一次完整求解的成本。
+
+\corepoint{短路计算只需要 $Z_{ff}$ 和少量 $Z_{if}$，所以\textbf{不要}为了“求逆”去算满阵——
+这是计算量相差几个数量级的区别。教材强调“直接解法求逆的列”，正是这个意思。}
+
+\section{节点编号顺序的优化}
+
+高斯消去时，消去一个节点会在其“邻居”之间产生新的非零元素（注入元，fill-in）。
+注入元的多少强烈依赖\textbf{消去顺序}，因此节点编号顺序直接影响计算量和存储量。
+
+\begin{itemize}
+  \item 直观准则：\textbf{先消去出线数（连接支路数）最少的节点}。消去一个度为 $d$ 的节点，
+        最多新增 $d(d-1)/2$ 条等值支路，度越小注入元越少。
+  \item 工程做法：按“静态最小度”排序，或按消去树（elimination tree）的深度分层编号；
+        实际程序中常用近似最小度（AMD）算法。
+  \item 另一种思路：把网络\textbf{按地理分区}编号——区域内节点连续编号，区域间只留少量联络线，
+        这样消去区内节点时注入元被限制在区内。
+\end{itemize}
+
+编号优化只改变计算过程的稀疏性，\textbf{不改变}任何电气结果（$\boldsymbol Y$、$\boldsymbol Z$
+的元素值按节点对应关系重排而已）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{本章四个工具的分工}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    工具 & 解决什么问题 & 用在哪一章 \\
+    \midrule
+    $\boldsymbol Y$ 矩阵 & 组装网络、迭代求解 & 潮流（11）、稳定（17、18） \\
+    $\boldsymbol Z$ 矩阵 & 快速给出任一点短路的等值阻抗 & 短路（6、8） \\
+    高斯消去 & 解方程、简化网络（星-网变换） & 全网计算 \\
+    编号优化 & 降低注入元、提高速度 & 大规模网络计算 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{本章的考试落点通常是三件事：（1） 给网络图写 $\boldsymbol Y$（注意对地支路只进对角、
+互导纳取负）；（2） 给 $\boldsymbol Y$ 与注入电流求节点电压（或反过来由 $\boldsymbol U$ 求注入电流）；
+（3） 说明 $Z_{ii}$、$Z_{ij}$ 的物理意义并会用“单点注入单位电流”解释。
+把这三件事的物理图像记牢，比背公式有用。}

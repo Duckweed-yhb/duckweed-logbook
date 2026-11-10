@@ -1,0 +1,242 @@
+% 第13章 文件操作（教材 13.1--13.8）
+% 只写内容：不重复 \usepackage，不改字号与页面设置
+
+\section{二进制文件和文本文件}
+此前程序的数据都存放在变量里，程序一结束就全部消失。要把数据\textbf{长期保存}，必须写进外存上的\textbf{文件}（file）——存放在外部介质上、有名字的一组相关数据。C 语言把文件看作\textbf{字节流}，不关心它在磁盘上如何组织，程序只负责"按顺序读/写字节"。
+
+按数据的组织方式，文件分两类：
+
+\begin{table}[htbp]
+\centering
+\caption{文本文件与二进制文件}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}p{4.6cm}X@{}}
+\toprule
+比较项 & 文本文件（ASCII 文件） & 二进制文件 \\
+\midrule
+存储形式 & 每个字符按编码存成字节 & 数据在内存中的字节原样写入 \\
+例：整数 1234 & 存 4 个字符 \texttt{'1''2''3''4'}，4 字节 & 存 4 字节的补码 \\
+可读性 & 可直接用记事本查看、便于交换 & 需专用程序解析，通常不可读 \\
+空间与速度 & 占空间多、需转换，较慢 & 占空间少、无需转换，较快 \\
+精度 & 浮点数转文本可能损失精度 & 完全保真 \\
+换行处理 & 文本模式下 \texttt{\textbackslash n} 在 Windows 上被写成 2 字节 & 不做任何转换 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+要点：\textbf{同一个数，在文本文件和二进制文件里的字节数可能完全不同}。"文件里有多少字节"与"有多少个数据"是两件事，这正是第 13.5 节 \texttt{fread}/\texttt{fwrite} 用"块数"作返回值的原因。
+
+\section{文件的打开和关闭}
+\subsection{文件指针}
+C 程序通过\textbf{文件指针}操作文件。\texttt{FILE} 是系统在 \texttt{stdio.h} 中定义的结构体类型，里面记录了缓冲区地址、当前读写位置、错误标志等信息：
+\begin{lstlisting}
+#include <stdio.h>
+FILE *fp;                  /* 定义文件指针变量，此时尚未与任何文件关联 */
+\end{lstlisting}
+程序启动时，系统自动打开三个标准流：\texttt{stdin}（标准输入，键盘）、\texttt{stdout}（标准输出，屏幕）、\texttt{stderr}（标准错误）。此前用的 \texttt{printf}、\texttt{scanf} 其实都在操作 \texttt{stdout}、\texttt{stdin}。
+
+\subsection{打开文件：fopen}
+\begin{lstlisting}
+FILE *fopen(const char *filename, const char *mode);
+\end{lstlisting}
+打开成功返回文件指针，\textbf{失败返回 \texttt{NULL}}。使用模式（mode）见下表。
+
+\begin{table}[htbp]
+\centering
+\caption{fopen 的常用打开模式}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.8cm}p{5.4cm}X@{}}
+\toprule
+模式 & 含义 & 文件不存在时 \\
+\midrule
+\texttt{"r"} & 只读，文本方式 & \textbf{打开失败}，返回 \texttt{NULL} \\
+\texttt{"w"} & 只写，文本方式 & 创建新文件；\textbf{已存在则清空} \\
+\texttt{"a"} & 追加写，文本方式 & 创建新文件；已有内容保留，写在末尾 \\
+\texttt{"r+"} & 读写，文本方式 & 打开失败 \\
+\texttt{"w+"} & 读写，文本方式 & 创建；已存在则清空 \\
+\texttt{"a+"} & 读写+追加，文本方式 & 创建；写总在末尾 \\
+\texttt{"rb"/"wb"/"ab"} & 同上，\textbf{二进制}方式 & 同对应的文本模式 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}
+FILE *fp = fopen("score.txt", "r");
+if (fp == NULL) {                     /* 必须判空，这是最容易漏的一步 */
+    printf("Cannot open file!\n");
+    return -1;
+}
+\end{lstlisting}
+
+\subsection{关闭文件：fclose}
+\begin{lstlisting}
+int fclose(FILE *fp);      /* 成功返回 0，失败返回 EOF */
+\end{lstlisting}
+关闭做三件事：把缓冲区里尚未写出的数据\textbf{真正写进文件}、释放缓冲区、断开指针与文件的联系。因此\textbf{写完不关闭，数据可能还在缓冲区里没有落盘}。
+
+\corepoint{两条纪律：（1）\texttt{fopen} 之后一定判 \texttt{NULL}，否则后续操作全部作用在空指针上，程序立刻崩溃；（2）\texttt{fopen} 与 \texttt{fclose} 必须成对，函数每一条返回路径都要关闭文件，否则数据丢失、句柄泄漏。特别注意 \texttt{"w"} 模式：文件已存在时会被\textbf{立刻清空}，误用一次就丢数据。}
+
+\section{按字符读写文件}
+最基本的读写单位是字符，适用于文本文件的复制、统计、逐字符处理：
+\begin{lstlisting}
+int fgetc(FILE *fp);            /* 成功返回读到的字符（int 型），失败或到末尾返回 EOF */
+int fputc(int ch, FILE *fp);    /* 成功返回写入的字符，失败返回 EOF               */
+\end{lstlisting}
+
+\begin{lstlisting}
+/* 文件复制：读一个、写一个，直到 EOF */
+FILE *in = fopen("in.txt", "r"), *out = fopen("out.txt", "w");
+int ch;
+if (in == NULL || out == NULL) { printf("open error\n"); return -1; }
+while ((ch = fgetc(in)) != EOF)     /* 用返回值判结束，最可靠 */
+    fputc(ch, out);
+fclose(in);
+fclose(out);
+\end{lstlisting}
+
+\textbf{关于 EOF 与 feof}：
+\begin{itemize}
+  \item \texttt{EOF} 是 \texttt{stdio.h} 中定义的符号常量，值为 $-1$，表示"读取失败或已到文件末尾"。
+  \item \texttt{feof(fp)} 返回非 0 表示"上一次读操作因为到达末尾而失败"。注意它\textbf{是"读完之后"才知道的}，不能在读之前用它判断"还有没有内容"。
+  \item 因此正确写法是 \texttt{while ((ch = fgetc(fp)) != EOF)}；写成 \texttt{while (!feof(fp)) \{ ch = fgetc(fp); ... \}} 会\textbf{多处理一次}末尾的伪数据——这是文件操作最经典的错误。
+\end{itemize}
+
+\section{按格式读写文件}
+\texttt{fprintf} 与 \texttt{fscanf} 的用法与 \texttt{printf}、\texttt{scanf} 几乎一样，只是多了一个文件指针参数，适合\textbf{文本文件}里按"人类可读的格式"存取：
+\begin{lstlisting}
+int fprintf(FILE *fp, const char *format, ...);
+int fscanf (FILE *fp, const char *format, ...);
+\end{lstlisting}
+
+\begin{lstlisting}
+/* 写：每个学生一行，字段用空格分隔 */
+fprintf(fp, "%ld %s %.1f\n", s.num, s.name, s.score);
+/* 读：返回值是"成功读入的项数"，用它判断数据是否完整 */
+int n = fscanf(fp, "%ld %s %lf", &s.num, s.name, &s.score);
+if (n != 3) { /* 数据不完整或格式不符，应停止读取 */ }
+\end{lstlisting}
+
+要点：
+\begin{itemize}
+  \item \texttt{fscanf} 的\textbf{返回值}是成功赋值的项数。循环读文件时，用"读到的项数是否等于预期"作结束条件，比用 \texttt{feof} 更稳。
+  \item \texttt{fscanf} 读 \texttt{\%s} 时遇空白即停，因此\textbf{字符串里不能有空格}；姓名含空格时应改用 \texttt{fgets} 整行读入再解析。
+  \item \texttt{fprintf} 与 \texttt{fscanf} 的格式必须严格对应，否则数据错位且不易察觉。文本文件适合调试与数据交换，不适合存浮点数组（有精度与体积损失）。
+\end{itemize}
+
+\section{按数据块读写文件}
+\texttt{fread}、\texttt{fwrite} 以"块"为单位读写，一次搬若干个固定大小的字节，是\textbf{二进制文件}的标准做法，也最适合结构体数组：
+\begin{lstlisting}
+size_t fread (void *ptr, size_t size, size_t n, FILE *fp);   /* 读 n 块，每块 size 字节 */
+size_t fwrite(const void *ptr, size_t size, size_t n, FILE *fp);
+\end{lstlisting}
+\textbf{返回值是"成功读/写的块数"}，不是字节数；正常时应等于 \texttt{n}，小于 \texttt{n} 说明出错或已到末尾。
+
+\begin{lstlisting}
+Student stu[3] = {{20240101,"Zhang San",92.5},
+                  {20240102,"Li Si",85.0},
+                  {20240103,"Wang Wu",78.5}};
+
+/* 写：把整个数组一次性写进二进制文件 */
+FILE *fp = fopen("stu.dat", "wb");
+if (fp == NULL) return -1;
+size_t w = fwrite(stu, sizeof(Student), 3, fp);   /* 3 块，每块一个结构体 */
+fclose(fp);
+if (w != 3) printf("write error\n");
+
+/* 读：读到数组里，用返回值判断实际读了几条 */
+fp = fopen("stu.dat", "rb");
+if (fp == NULL) return -1;
+Student buf[10];
+size_t r = fread(buf, sizeof(Student), 10, fp);   /* 最多读 10 条 */
+fclose(fp);
+printf("read %u records\n", (unsigned)r);
+\end{lstlisting}
+
+\corepoint{用 \texttt{fread}/\texttt{fwrite} 存结构体时，写进去的是\textbf{内存里的字节，包括对齐填充字节}。所以：（1）读写必须用同一个结构体定义，否则字段错位；（2）填充字节里是随机值，文件里会带"垃圾"，需要干净的文件时先 \texttt{memset} 清零；（3）这种文件不可跨编译器/平台直接通用。}
+
+\section{本章扩充内容}
+\subsection{文件的随机读写}
+前面都是"从头顺序读写"。文件指针内部记录着"当前读写位置"，用 \texttt{fseek} 可以把它挪到任意位置，从而实现随机访问：
+\begin{lstlisting}
+int  fseek(FILE *fp, long offset, int whence);   /* 成功返回 0，失败返回非 0 */
+long ftell(FILE *fp);                            /* 返回当前读写位置（距文件首的字节数） */
+void rewind(FILE *fp);                           /* 回到文件开头，等价于 fseek(fp,0,SEEK_SET) */
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering
+\caption{fseek 的基准位置}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+基准常量 & 含义 & 常见用法 \\
+\midrule
+\texttt{SEEK\_SET} & 从文件开头算起 & \texttt{fseek(fp, 0, SEEK\_SET)} 回到开头 \\
+\texttt{SEEK\_CUR} & 从当前位置算起 & \texttt{fseek(fp, -4, SEEK\_CUR)} 后退 4 字节 \\
+\texttt{SEEK\_END} & 从文件末尾算起 & \texttt{fseek(fp, -8, SEEK\_END)} 定位到倒数第 8 字节 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+随机读写最典型的用法是"按记录号直接定位"，不必把前面所有记录读一遍：
+\begin{lstlisting}
+/* 定位到第 k 条记录（k 从 0 开始），读取一条 */
+long offset = (long)k * sizeof(Student);
+if (fseek(fp, offset, SEEK_SET) == 0)
+    fread(&s, sizeof(Student), 1, fp);
+/* 文件里共有多少条记录？ */
+fseek(fp, 0, SEEK_END);
+long total = ftell(fp);
+printf("records = %ld\n", total / (long)sizeof(Student));
+\end{lstlisting}
+注意：\texttt{fseek} 之后必须\textbf{清掉流上的 EOF 标志}（\texttt{clearerr}）才能继续正常读写；在文本文件中按字节定位是不可移植的（换行可能占 2 字节），随机访问应使用二进制文件。
+
+\subsection{标准输入/输出重定向}
+\texttt{freopen} 可以把一个已经打开的标准流"改接到"文件上，从而让 \texttt{printf}/\texttt{scanf} 直接读写文件，代码一行不必改：
+\begin{lstlisting}
+freopen("input.txt",  "r", stdin);    /* 此后的 scanf 从文件读 */
+freopen("output.txt", "w", stdout);   /* 此后的 printf 写进文件 */
+/* 调试时想把输出恢复到屏幕，可再 freopen("CON", "w", stdout)（Windows） */
+\end{lstlisting}
+在命令行下也可以不改程序直接重定向（由操作系统完成同样的工作）：
+
+\begin{table}[htbp]
+\centering
+\caption{命令行的输入/输出重定向}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+写法 & 作用 & 说明 \\
+\midrule
+\texttt{prog > out.txt} & 标准输出重定向到文件 & \textbf{覆盖}写入 \\
+\texttt{prog >> out.txt} & 标准输出追加到文件 & 保留原内容 \\
+\texttt{prog < in.txt} & 标准输入重定向自文件 & 交互输入改为读文件 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{本章知识点小结}
+\begin{itemize}
+  \item C 把文件看作字节流；文本文件按字符编码存储、可读但占空间，二进制文件按内存字节存储、紧凑保真但不可读。
+  \item 文件通过 \texttt{FILE *} 操作：\texttt{fopen} 打开（失败返回 \texttt{NULL}）、\texttt{fclose} 关闭（把缓冲区落盘）。
+  \item 打开模式 \texttt{r/w/a} 及带 \texttt{+}、带 \texttt{b} 的组合含义要记清，尤其 \texttt{"w"} 会清空已有文件。
+  \item 按字符：\texttt{fgetc/fputc}；用 \texttt{EOF} 判断结束，不要用 \texttt{feof} 作循环条件。
+  \item 按格式：\texttt{fprintf/fscanf}，适合文本文件；\texttt{fscanf} 的返回值是成功读入的项数。
+  \item 按数据块：\texttt{fread/fwrite}，适合二进制文件与结构体数组；返回值是\textbf{块数}。
+  \item 随机读写：\texttt{fseek/ftell/rewind}，基准为 \texttt{SEEK\_SET/CUR/END}，按记录号定位是常见用法。
+  \item 重定向：\texttt{freopen} 改接标准流，命令行用 \texttt{>}、\texttt{>>}、\texttt{<}。
+\end{itemize}
+
+\section{本章常见错误小结}
+\begin{enumerate}
+  \item \textbf{不检查 fopen 的返回值}：文件不存在时 \texttt{fp} 为 \texttt{NULL}，后续 \texttt{fgetc(fp)} 直接崩溃。
+  \item \textbf{忘记 fclose}：写出的数据可能还留在缓冲区，程序异常结束时文件内容残缺；也会泄漏文件句柄。
+  \item \textbf{误用 \texttt{"w"} 模式}：本想追加却用了 \texttt{"w"}，原文件被清空，且无法恢复。
+  \item \textbf{用 \texttt{feof} 作 while 条件}：\texttt{while (!feof(fp))} 会在末尾多读一次，多输出一条"伪记录"。
+  \item \textbf{用 \texttt{\%s} 读带空格的内容}：\texttt{fscanf} 遇空白即停，只能读到第一个单词。
+  \item \textbf{忽略 fscanf 的返回值}：数据格式不符时读到一半就失败，若继续使用变量，用的是未更新的旧值。
+  \item \textbf{把 fread 的返回值当字节数}：它是\textbf{块数}；要算字节数应乘 \texttt{size}。
+  \item \textbf{文本模式打开二进制文件}（或反之）：Windows 下会做换行转换或把 \texttt{0x1A} 当文件结束，数据被破坏。
+  \item \textbf{随机读写时忘清 EOF 标志}：一次读到末尾后，\texttt{fseek} 到别处再读仍会立刻返回 \texttt{EOF}，需 \texttt{clearerr(fp)}。
+  \item \textbf{路径里的反斜杠没转义}：C 字符串中 \texttt{\textbackslash} 是转义引导符，写 Windows 路径必须写成两个反斜杠，或直接用正斜杠。
+\end{enumerate}

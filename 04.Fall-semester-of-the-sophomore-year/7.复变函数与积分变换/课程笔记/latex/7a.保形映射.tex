@@ -1,0 +1,207 @@
+\chapter{保形映射}
+
+本章按教材“概念—分式线性映射—其性质—两个重要映射—初等函数构成的映射”五节展开。全章只有一个想法：解析函数在导数不为零处，局部相当于一次“旋转 + 伸缩”的相似变换，故能把区域“形状不变”地搬走；工程上（绕流、平面静电场、温度场）正是靠它把复杂区域化成上半平面或单位圆盘再求解。
+
+\section{保形映射的概念}
+
+\subsection{导数的辐角：旋转角}
+
+设 \(w=f(z)\) 在 \(D\) 内解析，\(z_{0}\in D\)，\(f'(z_{0})\neq0\)（否则 \(\operatorname{Arg}f'(z_{0})\) 无意义）。取过 \(z_{0}\) 的光滑曲线 \(C:z=z(t)\)，\(z(t_{0})=z_{0}\)；割线的极限即切线，故 \(C\) 在 \(z_{0}\) 处的切线与正实轴夹角为 \(\operatorname{Arg}z'(t_{0})\)。映射把它映成过 \(w_{0}=f(z_{0})\) 的光滑曲线
+\[
+\Gamma:\ w=f[z(t)],\qquad w'(t_{0})=f'[z(t_{0})]\,z'(t_{0}),
+\]
+\(\Gamma\) 在 \(w_{0}\) 处切向的夹角为 \(\operatorname{Arg}w'(t_{0})\)。相减得
+
+\keyformula{\operatorname{Arg}w'(t_{0})-\operatorname{Arg}z'(t_{0})=\operatorname{Arg}f'(z_{0})}
+
+即像切向与原像切向之差恒等于 \(\operatorname{Arg}f'(z_{0})\)，与曲线形状无关。故称 \(\operatorname{Arg}f'(z_{0})\) 为 \(f(z)\) 在 \(z_{0}\) 处的\textbf{旋转角}。
+
+再取第二条曲线 \(C_{2}\)，像为 \(\Gamma_{2}\)；两式相减消去 \(\operatorname{Arg}f'(z_{0})\)，得“\(C_{1},C_{2}\) 的夹角 \(=\) \(\Gamma_{1},\Gamma_{2}\) 的夹角”——夹角大小与旋转方向都不变，称映射在 \(z_{0}\) 处\textbf{保角}。
+
+\textbf{定理}\quad 若 \(w=f(z)\) 在区域 \(D\) 内解析，则在 \(f'(z)\neq0\) 的点处映射 \(w=f(z)\) 是保角的。
+
+\subsection{导数的模：伸缩率}
+
+由 \(f'(z_{0})=\lim\limits_{z\to z_{0}}\dfrac{w-w_{0}}{z-z_{0}}\) 取模。设 \(\Delta s\) 为 \(C\) 上由 \(z_{0}\) 到 \(z\) 的弧长，\(\Delta s'\) 为像曲线 \(\Gamma\) 上的对应弧长，则
+
+\keyformula{|f'(z_{0})|=\lim_{z\to z_{0}}\frac{|w-w_{0}|}{|z-z_{0}|}
+=\lim_{z\to z_{0}}\frac{\Delta s'}{\Delta s}}
+
+比值的极限与曲线形状无关，只与 \(z_{0}\) 有关，且 \(|\Delta w|\approx|f'(z_{0})|\,|\Delta z|\)：\(|f'(z_{0})|>1\) 伸长、\(<1\) 压缩、\(=1\) 近似保长。故 \(|f'(z_{0})|\) 称为\textbf{伸缩率}，此性质称\textbf{伸缩率不变性}。几何上小三角形映成近似相似的曲边三角形，小圆周映成近似圆周。
+
+\subsection{保形映射的定义与判定}
+
+\textbf{定义}\quad 凡在区域 \(D\) 内处处具有保角性和伸缩率不变性的\textbf{一一}映射，称为 \(D\) 内的\textbf{保形映射}。三条件缺一不可：前两条由“解析且 \(f'\neq0\)”保证，单叶性须单独验证——\(w=z^{2}\) 在 \(z\neq0\) 处保角，却在全平面不是一一的。
+
+\textbf{定理}\quad 若 \(w=f(z)\) 在 \(z_{0}\) 处解析且 \(f'(z_{0})\neq0\)，则 \(w=f(z)\) 在 \(z_{0}\) 附近为保形映射。
+
+\textbf{判定步骤}：（1）验证区域内解析；（2）解 \(f'(z)=0\)，把这些点剔除；（3）验证单叶性（能反解出唯一且解析的 \(z=f^{-1}(w)\)）；（4）三条齐备才是该区域上的保形映射。
+
+\corepoint{最常错的是把“解析”当“保形”。\(w=z^{2}\) 在 \(z=0\) 处 \(f'(0)=0\)，该点不保角（顶角被放大 2 倍）。判“某点是否保角”只看 \(f'(z_{0})\neq0\)；判“是否保形映射”还要加单叶性。}
+
+\section{分式线性映射}
+
+\subsection{定义、逆映射与补充对应}
+
+形如
+
+\keyformula{w=\frac{az+b}{cz+d}\qquad(ad-bc\neq0)}
+
+的映射称为\textbf{分式线性映射}（莫比乌斯变换）。\(ad-bc\neq0\) 必要：否则 \(\dfrac{dw}{dz}=\dfrac{ad-bc}{(cz+d)^{2}}\equiv0\)，\(w\) 恒为常数。逆映射 \(z=\dfrac{-dw+b}{cw-a}\) 仍是分式线性映射（行列式仍为 \(ad-bc\)）。
+
+为得到扩充复平面上的一一对应，补两条：\(c=0\) 时 \(w=Az+B\ (A=a/d\neq0)\)，令 \(\infty\leftrightarrow\infty\)；\(c\neq0\) 时 \(z=-d/c\) 是一阶极点，令 \(z=-d/c\leftrightarrow w=\infty\)，又 \(\lim\limits_{z\to\infty}w=a/c\)，令 \(z=\infty\leftrightarrow w=a/c\)。
+
+\subsection{分解为四种基本映射}
+
+\(c\neq0\) 时作除法 \(w=\dfrac{a}{c}+\dfrac{bc-ad}{c^{2}}\cdot\dfrac{1}{z+d/c}\)，故可分解为四步：\(\zeta_{1}=z+\dfrac{d}{c}\)（平移）、\(\zeta_{2}=\dfrac{1}{\zeta_{1}}\)（反演）、\(\zeta_{3}=\dfrac{bc-ad}{c^{2}}\zeta_{2}\)（旋转+伸缩）、\(w=\zeta_{3}+\dfrac{a}{c}\)（平移）。
+
+四种基本映射即：平移 \(w=z+\alpha\)、旋转 \(w=e^{i\theta}z\)、相似 \(w=rz\ (r>0)\)、反演 \(w=1/z\)；前三种导数为 \(1,e^{i\theta},r\)，处处保角。
+
+反演最关键：先取关于单位圆周的对称点 \(\zeta=1/\bar z\)，再取关于实轴的对称点 \(w=\bar\zeta\)。若规定“伸向无穷远的两条曲线在 \(\infty\) 处的夹角等于它们经 \(w=1/z\) 变成的过原点像曲线在原点的夹角”，则 \(w=1/z\) 在扩充复平面处处保角。
+
+\subsection{关于圆周的对称点}
+
+设圆周 \(C:|z-z_{0}|=R\)，若 \(z_{1},z_{2}\) 满足
+
+\keyformula{z_{2}-z_{0}=\frac{R^{2}}{\overline{z_{1}-z_{0}}}}
+
+则称 \(z_{1},z_{2}\) 是\textbf{关于 \(C\) 的一对对称点}。记 \(z_{1}-z_{0}=r_{1}e^{i\theta}\) 可得 \(z_{2}-z_{0}=\dfrac{R^{2}}{r_{1}}e^{i\theta}\)，从而
+
+\[
+|z_{1}-z_{0}|\,|z_{2}-z_{0}|=R^{2}.
+\]
+
+即：在以 \(z_{0}\) 为起点的\textbf{同一射线}上，到圆心距离之积为 \(R^{2}\)，一内一外。约定\textbf{无穷远点关于圆周的对称点是圆心}；关于实轴的对称即共轭，关于 \(|z|=1\) 的对称点是 \(1/\bar z\)。
+
+两个特征：（1）从圆外点 \(z_{2}\) 作切线（切点 \(T\)），由 \(T\) 作 \(z_{0}z_{2}\) 的垂线，垂足即 \(z_{1}\)；（2）\(z_{1},z_{2}\) 关于 \(C\) 对称的\textbf{充要条件}是过 \(z_{1},z_{2}\) 的任一圆周都与 \(C\) \textbf{正交}。
+
+\subsection{三条基本性质}
+
+\textbf{定理}（一一对应与保角性）\quad 分式线性映射在扩充复平面上是一一对应的保角映射。（由四步分解逐步论证，保角性对复合封闭。）
+
+\textbf{定理}（保圆性）\quad 分式线性映射把圆周映射成圆周，这里把\textbf{直线视为半径无穷大的圆周}。把 \(w=1/z\) 代入圆的一般方程 \(A(x^{2}+y^{2})+Bx+Cy+D=0\)，所得仍为同型方程。由此得判据：给定圆周（直线）上\textbf{无}点映成 \(\infty\) 时像是\textbf{圆周}；有\textbf{一个}点映成 \(\infty\) 时像是\textbf{直线}。
+
+\textbf{定理}（保对称性）\quad 若 \(z_{1},z_{2}\) 关于 \(C\) 对称，则其像 \(w_{1},w_{2}\) 关于像曲线 \(\Gamma\) 也对称。证明：过 \(w_{1},w_{2}\) 的任一圆周必是过 \(z_{1},z_{2}\) 的某圆经映射所得，它与 \(C\) 正交，由保角性也与 \(\Gamma\) 正交，用特征（2）即得。
+
+\corepoint{保圆性说的是“圆周与直线”这一类对象封闭，不是“圆一定变圆”。像里出现直线，一定是原像上 \(z=-d/c\) 被映成了 \(\infty\)；判断时先找 \(cz+d=0\) 的点，看它是否落在所给圆周上。}
+
+\section{唯一决定分式线性映射的条件}
+
+\subsection{三对点定理与交比}
+
+四个系数中用一个非零数同除分子分母可化为三个，即\textbf{只有三个独立常数}，故三个条件即可唯一确定。
+
+\textbf{定理}（存在唯一性）\quad 对扩充 \(z\) 平面上任意三个相异点 \(z_{1},z_{2},z_{3}\) 与扩充 \(w\) 平面上任意三个相异点 \(w_{1},w_{2},w_{3}\)，存在唯一的分式线性映射把 \(z_{k}\) 依次映成 \(w_{k}\ (k=1,2,3)\)。
+
+不必解方程组，直接用\textbf{交比}：
+
+\keyformula{\frac{w-w_{1}}{w-w_{2}}:\frac{w_{3}-w_{1}}{w_{3}-w_{2}}
+=\frac{z-z_{1}}{z-z_{2}}:\frac{z_{3}-z_{1}}{z_{3}-z_{2}}}
+
+解出 \(w\) 即得。若某已知点为 \(\infty\)（如 \(w_{3}=\infty\)），只须把含 \(\infty\) 的项整体去掉：
+\[
+\frac{w-w_{1}}{w-w_{2}}=\frac{z-z_{1}}{z-z_{2}}:\frac{z_{3}-z_{1}}{z_{3}-z_{2}} .
+\]
+
+\textbf{定理}（圆到圆）\quad 任一圆都可用分式线性函数映成任一圆：在两圆上各取相异三点，由唯一性定理即得。
+
+\subsection{像域位置的确定：取点法与绕向法}
+
+保圆性只给“边界到边界”，内外需另判。只有两种可能：若 \(C\) 内两点的像一个在内一个在外，像弧与 \(\Gamma\) 的交点就同时是 \(C\) 上一点与线段上一点的像，与一一对应矛盾。
+
+\begin{enumerate}
+    \item \textbf{取点法}：在 \(C\) 内任取 \(z_{0}\) 算像 \(w_{0}\)，\(w_{0}\) 在 \(\Gamma\) 内则内部映内部，否则映外部。
+    \item \textbf{绕向法}：在 \(C\) 上依序取 \(z_{1},z_{2},z_{3}\)，像为 \(w_{1},w_{2},w_{3}\)。绕向 \(z_{1}\to z_{2}\to z_{3}\) 与 \(w_{1}\to w_{2}\to w_{3}\) \textbf{相同}则内部映内部，相反则映外部。
+\end{enumerate}
+
+\(C\) 为圆周、\(\Gamma\) 为直线时，结论改为“\(C\) 内部映成 \(\Gamma\) 的某一侧半平面”，哪一侧仍由上述两法确定。
+
+\subsection{圆弧所围区域的像}
+
+两圆弧所围区域按“交点是否映成 \(\infty\)”分三种像域：无点映成 \(\infty\) 时仍是两圆弧所围区域；圆周上有一点映成 \(\infty\) 时变成一圆弧与一直线所围的区域；两圆\textbf{交点}之一映成 \(\infty\) 时变成角形域。第三条是解题主力——两圆同时成“直线”，区域立刻成角形域，再配幂函数即可张成半平面。
+
+\corepoint{绕向法翻车多在“三点顺序”：顺序取反，绕向就反，内外结论整体颠倒。稳妥做法是用取点法独立验一次——取区域里最好算的点（圆心、原点、\(i\) 等），看像落在哪边。}
+
+\section{两个重要的分式线性映射}
+
+\subsection{将上半平面映成单位圆盘}
+
+设所求为 \(w=\dfrac{az+b}{cz+d}\)，它把实轴映成 \(|w|=1\)。上半平面内取 \(z=\lambda\ (\operatorname{Im}\lambda>0)\) 映成圆心 \(0\)；\(\bar\lambda\) 是 \(\lambda\) 关于实轴的对称点，\(0\) 与 \(\infty\) 关于 \(|w|=1\) 对称，由保对称性 \(z=\bar\lambda\) 必映成 \(\infty\)，故 \(a\lambda+b=0,\ c\bar\lambda+d=0\)，得 \(w=\dfrac{a}{c}\cdot\dfrac{z-\lambda}{z-\bar\lambda}\)；再由 \(z=0\) 时 \(|w|=1\) 定出 \(\left|\dfrac{a}{c}\right|=1\)，即 \(\dfrac{a}{c}=e^{i\theta}\)。故
+
+\keyformula{w=e^{i\theta}\frac{z-\lambda}{z-\bar\lambda}
+\qquad(\operatorname{Im}\lambda>0,\ \theta\in\mathbb{R})}
+
+它把上半平面内以 \(\lambda,\bar\lambda\) 为对称点的圆周族 \(\left|\dfrac{z-\lambda}{z-\bar\lambda}\right|=k\ (0<k<1)\) 映成同心圆周族 \(|w|=k\)。
+
+\subsection{将单位圆盘映成单位圆盘}
+
+设 \(z=\alpha\ (|\alpha|<1)\) 映成 \(w=0\)；\(\alpha\) 关于 \(|z|=1\) 的对称点 \(1/\bar\alpha\) 对应 \(w=\infty\)。由 \(a\alpha+b=0,\ c/\bar\alpha+d=0\) 得
+\[
+w=\frac{a}{c}\cdot\frac{z-\alpha}{z-1/\bar\alpha}
+=k\,\frac{z-\alpha}{1-\bar\alpha z},\qquad k=-\frac{a\bar\alpha}{c}.
+\]
+\(|z|=1\) 时 \(\bar z=1/z\)，算得 \(\left|\dfrac{z-\alpha}{1-\bar\alpha z}\right|=1\)，故 \(|w|=1\) 迫使 \(|k|=1\)，即 \(k=e^{i\varphi}\)。故
+
+\keyformula{w=e^{i\varphi}\frac{z-\alpha}{1-\bar\alpha z}
+\qquad(|\alpha|<1,\ \varphi\in\mathbb{R})}
+
+\subsection{使用步骤}
+
+（1）\textbf{定型}：上半平面→圆盘用 \(\dfrac{z-\lambda}{z-\bar\lambda}\)，圆盘→圆盘用 \(\dfrac{z-\alpha}{1-\bar\alpha z}\)；两域同型时先用平移、伸缩化成标准形。（2）\textbf{定参数}：由“哪点映成圆心”唯一确定 \(\lambda\) 或 \(\alpha\)。（3）\textbf{定旋转因子}：剩下一个 \(e^{i\theta}\)（或 \(e^{i\varphi}\)），由第二个条件（某点的像或 \(\arg f'(z_{0})\)）解出。（4）\textbf{验算}：取边界三点看像是否在边界上，取内点看像是否在内部。
+
+\corepoint{\(\theta\) 是整块的 \(e^{i\theta}\)，不是实数倍数。求 \(\arg f'(z_{0})\) 时先用 \(\theta\) 表示 \(f'(z_{0})\) 再让辐角相等；直接给 \(f'(z_{0})\) 赋值会漏掉模的条件（模已被“映成单位圆”固定为 1）。}
+
+\needspace{9\baselineskip}
+\section{几个初等函数所构成的映射}
+
+\subsection{幂函数 \(w=z^{n}\)}
+
+\(w=z^{n}\ (n=2,3,\dots)\) 处处可导，除原点外 \(nz^{n-1}\neq0\)，故除原点外处处保角。设 \(z=re^{i\theta}\)，则 \(w=r^{n}e^{in\theta}\)，即 \(\rho=r^{n},\ \varphi=n\theta\)：圆周 \(|z|=r\) 映成 \(|w|=r^{n}\)（单位圆映成单位圆），射线 \(\arg z=\theta_{0}\) 映成 \(\arg w=n\theta_{0}\)；以原点为顶点、顶角 \(\alpha\) 的角形域映成顶角 \(n\alpha\) 的角形域。
+
+\keyformula{w=z^{n}:\quad 0<\arg z<\alpha\ \longmapsto\ 0<\arg w<n\alpha
+\qquad\left(0<\alpha<\frac{2\pi}{n}\right)}
+
+特别地 \(0<\arg z<\dfrac{2\pi}{n}\) 映成沿正实轴剪开的 \(w\) 平面 \(0<\arg w<2\pi\)：一边 \(\arg z=0\) 映成正实轴\textbf{上沿}，另一边映成\textbf{下沿}，两域一一对应。反函数 \(z=w^{1/n}\) 的单值解析分支把顶角 \(n\alpha\) 的角形域映成顶角 \(\alpha\) 的角形域。故放大或缩小角形域顶角，就用幂函数或根式。
+
+\subsection{指数函数与对数函数}
+
+\(w=e^{z}\) 以 \(2\pi i\) 为周期，只需在带形域 \(0<\operatorname{Im}z<2\pi\) 中研究。设 \(z=x+iy\)，\(w=e^{x}e^{iy}\)，则 \(|w|=e^{x},\ \arg w=y\)：竖直线 \(x=c\) 映成射线 \(\arg w=c\)；水平线段 \(y=c\) 映成圆周 \(|w|=e^{c}\)（去掉 \(w=0\)）；边界 \(y=0\) 与 \(y=2\pi\) 分别映成正实轴的上沿与下沿。故
+
+\keyformula{w=e^{z}:\quad 0<\operatorname{Im}z<h\ (0<h\le 2\pi)
+\ \longmapsto\ 0<\arg w<h}
+
+因 \((e^{z})'=e^{z}\neq0\)，处处保角。反之 \(z=\ln w\) 的单值解析分支把角形域 \(0<\arg w<h\) 保形映成带形域 \(0<\operatorname{Im}z<h\)，分支的值完全由带形域确定——带形域与角形域互化，就靠这一对函数。
+
+\subsection{儒可夫斯基函数（选学）}
+
+\keyformula{w=\frac{1}{2}\left(z+\frac{a^{2}}{z}\right)\qquad(a>0)}
+
+称为\textbf{儒可夫斯基（Joukowski）函数}。改写为 \(w-a=\dfrac{(z-a)^{2}}{2z}\)、\(w+a=\dfrac{(z+a)^{2}}{2z}\)，相除得
+\[
+\frac{w-a}{w+a}=\left(\frac{z-a}{z+a}\right)^{2},
+\]
+即由 \(w_{1}=\dfrac{z-a}{z+a}\)、\(w_{2}=w_{1}^{2}\)、\(\dfrac{w-a}{w+a}=w_{2}\) 三步复合：第一步把 \(\pm a\) 映成 \(0\) 与 \(\infty\)，把过 \(\pm a\) 的圆周映成过原点的直线（\(z\) 实数时 \(\dfrac{dw_{1}}{dz}>0\)，故外部映成含正实轴的半平面）；第二步平方映成沿射线剪开的平面；第三步映成沿连接 \(-a\) 与 \(a\) 的圆弧割开的平面。
+
+故它把过 \(\pm a\) 的圆周 \(C\) 的外部一一保形映成“除去连接 \(a\) 与 \(-a\) 的圆弧”的平面。\(C\) 取 \(|z|=a\) 时圆弧退化为线段 \([-a,a]\)（\(\operatorname{Im}w=0\)），这正是机翼剖面（儒可夫斯基翼型）绕流的几何基础：割痕即翼型。
+
+\subsection{构造保形映射的步骤}
+
+把 \(D\) 保形映成标准域（上半平面或单位圆盘），按序试：（1）\textbf{看边界}是直线、圆周或兼有；（2）\textbf{去交点}：用分式线性映射把交点之一送到 \(\infty\)，圆变直线、区域变角形域；（3）\textbf{改顶角}：用 \(w=z^{n}\)（放大 \(n\) 倍）或 \(z=w^{1/n}\)（缩小为 \(1/n\)）把顶角调成 \(\pi\)；（4）\textbf{换带形}：带形域用 \(w=e^{z}\)、角形域用 \(z=\ln w\)；（5）\textbf{收尾}：用上节标准映射送到目标域并写出复合函数。遇带割痕区域，在（2）（3）之间插入儒可夫斯基函数或“平方—平移—开方”展平。
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+目标 & 首选工具 & 依据 \\
+\midrule
+圆（直线）$\to$ 圆（直线） & 分式线性映射 & 保圆性 \\
+两圆交点送到 \(\infty\) & 分式线性映射 & 保圆性 + 保角性 \\
+角形域顶角放大／缩小 & \(w=z^{n}\)／\(z=w^{1/n}\) & 幂函数 \\
+带形域与角形域互化 & \(w=e^{z}\)／\(z=\ln w\) & 指数、对数函数 \\
+割痕、圆弧展平 & \(w=\frac{1}{2}(z+a^{2}/z)\) & 儒可夫斯基函数 \\
+上半平面 $\leftrightarrow$ 圆盘 & \(e^{i\theta}(z-\lambda)/(z-\bar\lambda)\) & 保对称性 \\
+圆盘 $\to$ 自身 & \(e^{i\varphi}(z-\alpha)/(1-\bar\alpha z)\) & 保对称性 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{四个高频错误：(1) 只验证“解析”就断言保形，漏掉 \(f'(z)\neq0\) 与一一性；(2) 用 \(w=z^{n}\) 忘记角形域要求 \(\alpha<\frac{2\pi}{n}\)，顶角超界后像域绕回、不再单叶；(3) 圆周被映成直线后仍按“圆内”处理内部，忘了直线只有“某一侧”，必须用取点法重新定位；(4) 儒可夫斯基函数的 \(\dfrac{w-a}{w+a}=\left(\dfrac{z-a}{z+a}\right)^{2}\) 漏掉平方，丢掉“双叶到单叶”这关键一步。}

@@ -1,12 +1,16 @@
 % file: 11.拓展.tex
 % 作为主文档 1.main.tex 的子文件（\input{11.拓展.tex}），不要写 \documentclass、\begin{document}、\end{document}
-% 2026-11-06 由 课程笔记/拓展/拓展.tex 并入 latex/，与知识库 Markdown 版 拓展.md 内容一致
+% 附录B 拓展与补充：整理原残稿（伴随矩阵的秩、降阶公式），并把原稿空缺的几处
+% 按同一主题写实（秩与线性相关性、生成子空间、二次曲面判别、向量方法）。
+% 与教材重复的部分只作指引，不重复推导。不写例题与习题。
 
-\section{拓展}
-\noindent\textit{本部分为补充篇：伴随矩阵的秩、降阶公式，以及两处待补的残稿。}
+\section{矩阵秩的补充结论}
+\noindent\textit{本节的结论第3、5章都已用到，但教材未单独成节，这里集中补出，并说明条件与推导思路。}
 
-\subsection{伴随矩阵的秩与原矩阵的秩的关系}
-设 $A$ 为 $n$ 阶方阵，$A^{*}$ 为其伴随矩阵，则
+\subsection{伴随矩阵的秩}
+
+\begin{theorem}
+设 $A$ 为 $n$ 阶方阵（$n\ge2$），$A^{*}$ 为其伴随矩阵，则
 \[
 r(A^{*})=
 \begin{cases}
@@ -15,16 +19,132 @@ n, & r(A)=n,\\[1mm]
 0, & r(A)\le n-2.
 \end{cases}
 \]
+\end{theorem}
 
-\noindent\textit{（以下直觉解释原图没有，2026-10-20 按标准结论补：$r(A)=n$ 时 $A$ 可逆、$A^{*}=|A|A^{-1}$ 也可逆；
-$r(A)=n-1$ 时由 $AA^{*}=|A|E=O$ 得 $r(A)+r(A^{*})\le n$，又存在 $n-1$ 阶非零子式使 $r(A^{*})\ge1$；
-$r(A)\le n-2$ 时所有 $n-1$ 阶子式为零，$A^{*}=O$。）}
+推导思路（三段都要用 $AA^{*}=A^{*}A=|A|E$）：
+
+\begin{enumerate}
+\item $r(A)=n$：$A$ 可逆，$|A|\neq0$，由 $A^{*}=|A|A^{-1}$ 知 $A^{*}$ 可逆，故 $r(A^{*})=n$；
+\item $r(A)=n-1$：$|A|=0$，故 $AA^{*}=O$，由 $r(A)+r(A^{*})\le n$ 得 $r(A^{*})\le1$；又此时 $A$ 有非零的 $n-1$ 阶子式，即 $A^{*}\neq O$，故 $r(A^{*})=1$；
+\item $r(A)\le n-2$：所有 $n-1$ 阶子式为零，$A^{*}=O$，故 $r(A^{*})=0$。
+\end{enumerate}
+
+\corepoint{
+（1）中间一档最容易记成 $n-1$：$r(A)=n-1$ 时 $A^{*}$ 的秩\textbf{恒为 $1$}，与 $n$ 无关。\\
+（2）结论的三个分界，正是“最高阶非零子式的阶数”这一秩的定义的直接体现；$n=1$ 时约定 $A^{*}=1$，公式不适用。
+}
 
 \subsection{降阶公式}
+
+\begin{theorem}
 设 $A$ 是 $m\times n$ 矩阵，$B$ 是 $n\times m$ 矩阵，$m>n$，$\lambda$ 为任意数，则
 \[
 |\lambda E_m-AB|=\lambda^{m-n}\,|\lambda E_n-BA|.
 \]
+\end{theorem}
 
-\subsection{待补}
-原稿中「生成的向量空间」只有半句定义，「相似的本质」只有标题，均未写出内容，按原样保留待补。
+即 $AB$（$m$ 阶）与 $BA$（$n$ 阶）的特征多项式只差因子 $\lambda^{m-n}$，故它们的\textbf{非零特征值完全相同（含重数）}。又 $r(AB)\le n<m$，$AB$ 必奇异，$0$ 是 $AB$ 的特征值，而 $BA$ 未必以 $0$ 为特征值——差别正好被 $\lambda^{m-n}$ 吸收。
+
+\begin{corollary}
+取 $\lambda=1$ 得 $|E_m-AB|=|E_n-BA|$，可把高阶行列式化为低阶行列式计算。
+\end{corollary}
+
+\corepoint{
+（1）公式要求 $m>n$，且乘法方向不能颠倒：$AB$ 是 $m$ 阶、$BA$ 是 $n$ 阶。\\
+（2）$\lambda=0$ 时两边同为 $0$，等式成立但不提供信息；求特征值须取 $\lambda\neq0$ 讨论。$m=n$ 时退化为恒等式。
+}
+
+\section{线性代数与解析几何的接口}
+
+\subsection{秩与线性相关性}
+
+矩阵的秩、向量组的秩、线性相关性三者是同一件事的三种说法。
+
+\begin{theorem}
+设 $A=(\boldsymbol{a}_1,\dots,\boldsymbol{a}_s)$ 是以向量组为列的矩阵，则
+\begin{enumerate}
+\item $\boldsymbol{a}_1,\dots,\boldsymbol{a}_s$ 线性相关 $\iff r(A)<s$；线性无关 $\iff r(A)=s$；
+\item $r(\boldsymbol{a}_1,\dots,\boldsymbol{a}_s)=r(A)$，即极大线性无关组所含向量的个数；
+\item 当向量个数等于维数（$s=n$）时，线性相关 $\iff|A|=0$。
+\end{enumerate}
+\end{theorem}
+
+搬到三维空间，就得到解析几何中一串“行列式判零”的判据。设 $\boldsymbol{a},\boldsymbol{b},\boldsymbol{c}$ 为三维向量，则
+
+\keyformula{\boldsymbol{a},\boldsymbol{b},\boldsymbol{c}\ \text{共面}\iff[\boldsymbol{a}\boldsymbol{b}\boldsymbol{c}]=0\iff
+\begin{vmatrix}
+a_x&a_y&a_z\\ b_x&b_y&b_z\\ c_x&c_y&c_z
+\end{vmatrix}=0\iff r(\boldsymbol{a},\boldsymbol{b},\boldsymbol{c})<3}
+
+因为混合积正是以三向量为行的三阶行列式（见附录A），而“共面”就是“线性相关”。同理：三点共线 $\iff$ 两方向向量线性相关（秩为 $1$）；四点 $M_0,M_1,M_2,M_3$ 共面 $\iff\overrightarrow{M_0M_1},\overrightarrow{M_0M_2},\overrightarrow{M_0M_3}$ 的行列式为零；两直线异面 $\iff r(\boldsymbol{s}_1,\boldsymbol{s}_2,\overrightarrow{M_1M_2})=3$。
+
+同一套语言也解释线性方程组：$r(A)=r(A\,|\,\boldsymbol{b})=3$ 即三张平面交于一点，$=2$ 即交于一条直线，$=1$ 即三面重合，$r(A)<r(A\,|\,\boldsymbol{b})$ 即无公共点。克拉默法则“系数行列式非零”的几何含义，就是三个法向量不共面。
+
+\subsection{生成子空间}
+
+\begin{definition}
+设 $\boldsymbol{a}_1,\dots,\boldsymbol{a}_s$ 是 $n$ 维向量，其全体线性组合所成的集合
+\[
+\mathrm{span}\{\boldsymbol{a}_1,\dots,\boldsymbol{a}_s\}
+=\bigl\{k_1\boldsymbol{a}_1+\cdots+k_s\boldsymbol{a}_s\ \big|\ k_i\in\mathbb{R}\bigr\}
+\]
+称为由它们\textbf{生成}（张成）的向量空间，也称\textbf{生成子空间}。
+\end{definition}
+
+\begin{theorem}
+$\mathrm{span}\{\boldsymbol{a}_1,\dots,\boldsymbol{a}_s\}$ 是 $\mathbb{R}^{n}$ 的子空间，维数等于向量组的秩，任一极大线性无关组就是它的一组基；它是包含 $\boldsymbol{a}_1,\dots,\boldsymbol{a}_s$ 的\textbf{最小}子空间。
+\end{theorem}
+
+几何上：一个非零向量生成过原点的\textbf{直线}，两个不平行向量生成过原点的\textbf{平面}，三个不共面向量生成整个 $\mathbb{R}^{3}$。所以“三点共线”“四向量共面”本质上是生成子空间的维数降到 $1$ 或 $2$。
+
+\corepoint{
+（1）生成子空间一定\textbf{过原点}：不含原点的直线、平面都不是子空间。解析几何中的 $Ax+By+Cz+D=0$（$D\neq0$）不是向量空间，只有 $Ax+By+Cz=0$ 才是；谈“平面的基”须先平移到过原点。\\
+（2）维数为 $r$ 不代表可以随便挑 $r$ 个向量作基，必须挑线性无关的一组；齐次方程组 $A\boldsymbol{x}=\boldsymbol{0}$ 的解空间维数为 $n-r(A)$，它与 $A$ 的行空间互为正交补。
+}
+
+\section{二次型与二次曲面判别对照}
+
+第5章已用正交变换把二次型化为标准形。设 $f(\boldsymbol{x})=\boldsymbol{x}^{T}A\boldsymbol{x}$（$A^{T}=A$，$\boldsymbol{x}=(x,y,z)^{T}$），$A$ 的特征值为 $\lambda_1,\lambda_2,\lambda_3$，正、负特征值个数记为 $p,q$（$p+q=r(A)$）。由惯性定理，$p,q$ 与正交变换的选法无关。经 $\boldsymbol{x}=P\boldsymbol{y}$ 后 $f=1$ 化为 $\lambda_1x'^{2}+\lambda_2y'^{2}+\lambda_3z'^{2}=1$。
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\tablename}{表}
+\caption{由特征值符号判别 $f(\boldsymbol{x})=1$ 与 $f(\boldsymbol{x})=0$ 的图形}
+\begin{tabular}{@{}cll@{}}
+\toprule
+特征值符号 $(p,q)$ & $f(\boldsymbol{x})=1$ 的图形 & $f(\boldsymbol{x})=0$ 的图形 \\
+\midrule
+$(3,0)$（正定） & 椭球面 & 一个点（原点） \\
+$(2,1)$ & 单叶双曲面 & 二次锥面 \\
+$(1,2)$ & 双叶双曲面 & 二次锥面 \\
+$(2,0)$ & 椭圆柱面 & 一条直线 \\
+$(1,1)$ & 双曲柱面 & 两张相交平面 \\
+$(1,0)$ & 两张平行平面 & 一张平面（二重） \\
+$(0,q)$，$q\ge1$ & 无实图形 & 一个点或一张平面 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+若二次型退化（$r(A)\le2$）而方程中还含\textbf{一次项}，配方后会出现一个“抛物”型变量，得到\textbf{椭圆抛物面}（$p=2$）或\textbf{双曲抛物面}（$p=1,\,q=1$）。抛物面不可能由纯二次型 $f=1$ 得到，这是它与其他五类曲面的本质区别。
+
+判别步骤：写出对称矩阵 $A$，求特征值（或用顺序主子式定符号）$\rightarrow$ 由 $(p,q)$ 与常数项定大类型 $\rightarrow$ 若有一次项先配方平移 $\rightarrow$ 必要时用截痕法核对（见附录A末节）。
+
+\corepoint{
+（1）判别依据是特征值的\textbf{符号}，不是数值：$2x^{2}+3y^{2}+z^{2}=1$ 与 $x^{2}+y^{2}+z^{2}=1$ 都是椭球面。\\
+（2）只数“平方项有两个”就断言是柱面是常见错误：要看有无一次项。抛物面必须有一次项；$r(A)$ 则决定曲面“退化到几维”。
+}
+
+\section{向量方法在立体几何中的用法}
+
+解析几何与线性代数合起来，给立体几何提供了一条“不算几何、只算代数”的通路。固定套路是三步：\textbf{建系、取点、算向量}。原点优先取对称中心或直角顶点，坐标轴取三条两两垂直的棱，并保证是右手系；把各关键点的坐标写出，未知的用参数表示。原则是让尽量多的点落在坐标轴或坐标面上。
+
+\textbf{证明平行与垂直}：两直线平行 $\iff$ 方向向量成比例；线面平行 $\iff\boldsymbol{s}\cdot\boldsymbol{n}=0$ 且线上一点不在面内；线面垂直 $\iff\boldsymbol{s}\parallel\boldsymbol{n}$；面面平行 $\iff$ 两法向量成比例；各种垂直 $\iff$ 相应向量数量积为零；四点共面 $\iff$ 以其中一点为起点的三向量混合积为零。
+
+\textbf{求法向量}：平面内有两个不共线向量 $\boldsymbol{a},\boldsymbol{b}$ 时取 $\boldsymbol{n}=\boldsymbol{a}\times\boldsymbol{b}$；已知三点则取 $\boldsymbol{n}=\overrightarrow{M_1M_2}\times\overrightarrow{M_1M_3}$。也可设 $\boldsymbol{n}=(x,y,z)$ 由 $\boldsymbol{n}\cdot\boldsymbol{a}=\boldsymbol{n}\cdot\boldsymbol{b}=0$ 解出，此时不要习惯性令 $x=1$（若法向量第一分量恰为零就会漏解），应令绝对值最大的分量为 $1$。
+
+\textbf{求角}：异面直线所成角 $\cos\theta=\dfrac{|\boldsymbol{s}_1\cdot\boldsymbol{s}_2|}{|\boldsymbol{s}_1||\boldsymbol{s}_2|}$；直线与平面所成角 $\sin\varphi=\dfrac{|\boldsymbol{s}\cdot\boldsymbol{n}|}{|\boldsymbol{s}||\boldsymbol{n}|}$，两者都取 $\left[0,\frac{\pi}{2}\right]$。二面角先求两半平面的法向量，余弦的绝对值等于 $\dfrac{|\boldsymbol{n}_1\cdot\boldsymbol{n}_2|}{|\boldsymbol{n}_1||\boldsymbol{n}_2|}$，\textbf{锐钝须回原图判断}。各种距离见附录A「位置关系与距离」一节。
+
+\corepoint{
+（1）向量方法只解决“算”，不解决“选路”：二面角是锐是钝、点是否在平面内，都须看图或另行验证，公式本身不会告诉你。\\
+（2）建系必须是右手系，$z$ 轴取反会使叉积、混合积全部变号，距离不变但角度判断会错；法向量可取任意非零倍数，不必“归一化”到唯一形式。
+}

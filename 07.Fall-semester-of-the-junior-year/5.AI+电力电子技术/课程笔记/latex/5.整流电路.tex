@@ -1,0 +1,529 @@
+\chapter{整流电路}
+
+整流电路（Rectifier）是电力电子电路中出现最早、应用最广泛的一种。本章讲的是\textbf{相控整流}：以晶闸管为开关，通过控制触发脉冲的相位（触发延迟角 $\alpha$）来调节输出电压平均值。分析任何整流电路都按同一套步骤走：\textbf{（1） 画电路，认清哪两个管子构成一条导电回路；（2） 定自然换相点（$\alpha$ 的计量起点）；（3） 分段看器件通断、写回路方程；（4） 积分求 $U_d$、求电流有效值；（5） 核对器件的电压电流定额}。
+
+% ============================================================
+\section{单相可控整流电路}
+
+典型的单相可控整流电路包括单相半波、单相桥式全控、单相全波（双半波）、单相桥式半控等。本节先以最简单的半波电路建立“触发延迟角 $\alpha$、导通角 $\theta$、移相范围”等基本概念，再讲工程上最常用的桥式电路。
+
+\subsection{单相半波可控整流电路}
+
+\begin{center}
+\begin{circuitikz}[font=\footnotesize,scale=0.9]
+  \draw (0,0) to[sV, l=$u_2$] (0,-2.2);
+  \draw (0,0) -- (1.6,0) to[thyristor] (3.4,0) -- (4.6,0) to[R, l=$R$] (4.6,-2.2) -- (0,-2.2);
+  \node[above] at (1.0,0.15) {\scriptsize $+$};
+  \node[above] at (2.55,0.35) {$VT$};
+\end{circuitikz}
+\end{center}
+
+\subsubsection*{1. 带电阻负载}
+
+变压器二次电压 $u_2=\sqrt{2}U_2\sin\omega t$。在 $u_2$ 正半周，若门极未加触发脉冲，晶闸管处于正向阻断状态，负载电压为零；在 $\omega t=\alpha$ 时刻给门极加触发脉冲，晶闸管导通，$u_d=u_2$；到 $\omega t=\pi$（$u_2$ 过零）时，流过晶闸管的电流降至零而自然关断。负半周晶闸管承受反压而阻断，$u_d=0$。
+
+\begin{itemize}
+  \item \textbf{触发延迟角} $\alpha$：从晶闸管开始承受正向电压起到施加触发脉冲止的电角度，也称触发角或控制角。
+  \item \textbf{导通角} $\theta$：晶闸管在一个周期内导通的电角度。电阻负载时 $\theta=\pi-\alpha$。
+  \item \textbf{移相范围}：改变 $\alpha$ 使输出电压从一个极端变到另一个极端时 $\alpha$ 的可调范围。电阻负载半波电路为 $0^\circ\sim180^\circ$。
+\end{itemize}
+
+\keyformula{U_d=\frac{1}{2\pi}\int_{\alpha}^{\pi}\sqrt{2}U_2\sin\omega t\,\mathrm{d}(\omega t)=\frac{\sqrt{2}U_2}{2\pi}\left(1+\cos\alpha\right)=0.45U_2\cdot\frac{1+\cos\alpha}{2}}
+
+$\alpha=0$ 时 $U_d$ 最大，记为 $U_{d0}=0.45U_2$；$\alpha=180^\circ$ 时 $U_d=0$。负载电流平均值 $I_d=U_d/R$。晶闸管承受的\textbf{最大正向电压为 $\sqrt{2}U_2$、最大反向电压也为 $\sqrt{2}U_2$}；变压器二次电流即负载电流，含有直流分量。
+
+\subsubsection*{2. 带阻感负载}
+
+电感 $L$ 的存在使 $u_2$ 由正变负时晶闸管不会立即关断——$L$ 的感应电动势试图维持电流，只要 $u_L=u_2-u_d$ 为负使电流下降，晶闸管就继续导通，直到电感储能释放完毕、电流降到零才关断。因此 $u_d$ 波形出现\textbf{负值}，平均值下降。
+
+回路由 $L$、$R$ 串联，晶闸管导通期间有
+\keyformula{L\frac{\mathrm{d}i_d}{\mathrm{d}t}+Ri_d=\sqrt{2}U_2\sin\omega t}
+
+解得 $i_d=\dfrac{\sqrt{2}U_2}{Z}\left[\sin(\omega t-\varphi)-\sin(\alpha-\varphi)\mathrm{e}^{-\frac{\omega t-\alpha}{\omega\tau}}\right]$，其中 $Z=\sqrt{R^2+(\omega L)^2}$、$\varphi=\arctan(\omega L/R)$、$\tau=L/R$。由 $i_d(\alpha+\theta)=0$ 得导通角与 $\alpha$、$\varphi$ 的关系式（超越方程，只能迭代或查曲线）：
+
+\keyformula{\sin(\alpha+\theta-\varphi)=\sin(\alpha-\varphi)\mathrm{e}^{-\frac{\theta}{\omega\tau}}}
+
+$\varphi$ 越大（负载电感越重），导通角 $\theta$ 越大，$u_d$ 负面积越大、$U_d$ 越小；$\alpha$ 增大时 $U_d$ 减小，当 $\alpha$ 大到一定程度 $U_d$ 甚至会降到零（正负面积相等）。
+
+\subsubsection*{3. 带续流二极管的阻感负载}
+
+在负载两端反并联一个二极管 $VD_R$（续流二极管）。$u_2$ 过零变负时 $VD_R$ 导通，$u_d=0$；此时为负的 $u_2$ 通过 $VD_R$ 向晶闸管施加反压使其关断，$L$ 储存的能量保证电流在 $L$—$R$—$VD_R$ 回路中继续流通，这一过程称为\textbf{续流}。
+
+\begin{itemize}
+  \item 有续流二极管后 $u_d$ 波形与电阻负载时基本相同（不再出现负值），故\textbf{计算公式仍为} $U_d=0.45U_2(1+\cos\alpha)/2$。
+  \item 晶闸管不承受反压；晶闸管电流平均值 $I_{dT}=\dfrac{\pi-\alpha}{2\pi}I_d$，续流二极管电流平均值 $I_{dD}=\dfrac{\pi+\alpha}{2\pi}I_d$。
+  \item 电感越大，$i_d$ 越平直，上述按平均电流分配的式子越准确。
+\end{itemize}
+
+\corepoint{单相半波电路元件少、线路简单，但\textbf{变压器二次电流含直流分量}，会造成铁心直流磁化、铁心饱和，需增大铁心截面积、增大设备容量，因此\textbf{实际很少应用}。分析它的主要目的是利用其简单易学的特点，建立整流电路的基本概念。}
+
+\subsection{单相桥式全控整流电路}
+
+把四只晶闸管接成桥式（$VT_1$、$VT_4$ 为一对，$VT_2$、$VT_3$ 为一对），$VT_1$ 与 $VT_4$ 同时触发导通、$VT_2$ 与 $VT_3$ 同时触发导通，两组轮流导电，变压器二次电流正负半周都有，因而不含直流分量。
+
+\begin{center}
+\begin{circuitikz}[font=\footnotesize,scale=0.85]
+  % 左桥臂：VT1 上、VT3 下；右桥臂：VT2 上、VT4 下
+  \draw (0,2.9) to[thyristor] (0,-1) to[thyristor] (0,-4.9);
+  \draw (4,2.9) to[thyristor] (4,-1) to[thyristor] (4,-4.9);
+  % 交流侧：接两桥臂中点
+  \draw (0,-1) -- (1.3,-1) to[sV, l=$u_2$] (2.7,-1) -- (4,-1);
+  % 直流侧：上、下汇流排
+  \draw (0,2.9) -- (5.4,2.9);
+  \draw (0,-4.9) -- (5.4,-4.9);
+  % 负载
+  \draw (5.4,2.9) to[R, l=$R$] (5.4,0.2) to[L, l=$L$] (5.4,-2.4) -- (5.4,-4.9);
+  % 标注
+  \node[left] at (-0.45,2.0) {\scriptsize $VT_1$};
+  \node[left] at (-0.45,-3.7) {\scriptsize $VT_3$};
+  \node[right] at (4.45,2.0) {\scriptsize $VT_2$};
+  \node[right] at (4.45,-3.7) {\scriptsize $VT_4$};
+  \node[right] at (0.1,-1.45) {\scriptsize $a$};
+  \node[left] at (3.9,-1.45) {\scriptsize $b$};
+  \node[right] at (6.15,0.6) {\scriptsize $u_d$};
+\end{circuitikz}
+\end{center}
+
+\subsubsection*{1. 带电阻负载}
+
+$\alpha$ 的起点是 $u_2$ 由负变正的自然换相点。在 $u_2$ 正半周 $\alpha$ 处触发 $VT_1$、$VT_4$，电流路径 $a\to VT_1\to R\to VT_4\to b$；在负半周 $\alpha+\pi$ 处触发 $VT_2$、$VT_3$，电流路径 $b\to VT_2\to R\to VT_3\to a$。两组交替，$u_d$ 为两段相同的脉动波。
+
+\keyformula{U_d=\frac{1}{\pi}\int_{\alpha}^{\pi}\sqrt{2}U_2\sin\omega t\,\mathrm{d}(\omega t)=\frac{2\sqrt{2}U_2}{\pi}\cdot\frac{1+\cos\alpha}{2}=0.9U_2\cdot\frac{1+\cos\alpha}{2}}
+
+$\alpha=0$ 时 $U_{d0}=0.9U_2$；$\alpha=180^\circ$ 时 $U_d=0$，故\textbf{移相范围为 $0^\circ\sim180^\circ$}。$\alpha$ 角相同时，桥式电路的 $U_d$ 是半波电路的\textbf{两倍}。
+
+流过晶闸管的电流平均值 $I_{dT}=I_d/2$，有效值 $I_T=I_d/\sqrt{2}$；变压器二次电流有效值 $I_2=I_d$。晶闸管承受的\textbf{最大反向电压为 $\sqrt{2}U_2$}。
+
+\subsubsection*{2. 带阻感负载（电流连续）}
+
+电感足够大使 $i_d$ 平直（近似水平线）。$u_2$ 过零变负时，因 $L$ 的作用 $VT_1$、$VT_4$ 不关断，直到 $\alpha+\pi$ 处触发 $VT_2$、$VT_3$ 才被迫关断（换相）。因此 $u_d$ 出现\textbf{负值}，正负面积相抵。
+
+\keyformula{U_d=\frac{1}{\pi}\int_{\alpha}^{\pi+\alpha}\sqrt{2}U_2\sin\omega t\,\mathrm{d}(\omega t)=\frac{2\sqrt{2}U_2}{\pi}\cos\alpha=0.9U_2\cos\alpha}
+
+$\alpha=0$ 时 $U_d=0.9U_2$；$\alpha=90^\circ$ 时 $U_d=0$，故\textbf{阻感负载时移相范围为 $0^\circ\sim90^\circ$}。$\alpha>90^\circ$ 时 $U_d<0$，电路进入\textbf{有源逆变状态}（见 3.7 节）。
+
+电流关系：$I_{dT}=I_d/2$，$I_T=I_d/\sqrt{2}=0.707I_d$；变压器二次电流为正负各 $180^\circ$ 的矩形波，有效值 $I_2=I_d$；晶闸管承受的最大正反向电压均为 $\sqrt{2}U_2$。
+
+\subsubsection*{3. 带反电动势—电阻负载（电流断续）}
+
+直流侧为电阻 $R$ 与反电动势 $E$ 串联，且 $E$ 的极性对晶闸管为正（阻碍电流）。只有 $u_2>E$ 时晶闸管才可能导通，故存在\textbf{停止导电角} $\delta=\arcsin\dfrac{E}{\sqrt{2}U_2}$：在 $\omega t=\pi-\delta$ 处 $u_2$ 降到 $E$，电流降为零而关断。
+
+\keyformula{U_d=\frac{\sqrt{2}U_2}{\pi}\left(\cos\alpha+\cos\delta\right)=0.45U_2\left(\cos\alpha+\cos\delta\right)}
+
+\corepoint{整流输出电压 $U_d$ 波形在一个周期内有部分时间为零的情况称为\textbf{电流断续}，不出现为零的情况称为\textbf{电流连续}。$\alpha$ 角相同时，电流断续时的整流输出电压\textbf{比电阻负载时大}（因导通段集中在电压较高处）；$\alpha$ 小于 $\delta$ 时，触发脉冲到来时 $u_2<E$、晶闸管不能导通，须把脉冲留到 $\omega t=\delta$ 之后（“宽脉冲”或“脉冲列”）。这也是判断“电流是否断续”的常用判据：\textbf{先按连续公式算 $I_d$，若 $I_d$ 小到不足以维持连续，则改用断续公式}。}
+
+\subsection{单相全波可控整流电路}
+
+单相全波（又称双半波）可控整流电路用带中心抽头的变压器与两只晶闸管：$u_2$ 正半周 $VT_1$ 导通，负半周 $VT_2$ 导通，两只管子共用一个负载回路。
+
+\begin{itemize}
+  \item 输出电压、电流波形与单相桥式全控电路在\textbf{电阻负载时完全相同}，故 $U_d=0.9U_2(1+\cos\alpha)/2$，阻感负载连续时 $U_d=0.9U_2\cos\alpha$。
+  \item 与桥式相比：\textbf{少一个管压降}（每支路只有一只晶闸管），通态损耗小；但变压器二次绕组需中心抽头，\textbf{变压器利用率低}，且每只晶闸管承受的最大反向电压为 $2\sqrt{2}U_2$（是桥式的两倍）。
+\end{itemize}
+
+\subsection{单相桥式半控整流电路}
+
+在单相桥式全控电路中，每一个导电回路里有两只晶闸管，实际上对每个导电回路进行控制只需一只晶闸管，另一只可以用二极管代替，从而简化电路——把 $VT_2$、$VT_4$ 换成二极管 $VD_2$、$VD_4$，即为\textbf{单相桥式半控整流电路}。
+
+\begin{itemize}
+  \item \textbf{电阻负载}：工作情况与全控桥完全相同，$U_d=0.9U_2(1+\cos\alpha)/2$，移相范围 $0^\circ\sim180^\circ$。
+  \item \textbf{阻感负载（无续流二极管）}：$u_2$ 过零变负时，因电感作用负载电流经 $VT_1$ 和 $VD_2$ 继续流通（$VD_2$ 起续流作用），$u_d=0$ 而不出现负值——$U_d$ 与电阻负载时相同。但此时若 $\alpha$ 突然增大到 $180^\circ$ 或触发脉冲丢失，正在导通的晶闸管会一直导通到下一个周期，电路失去控制，称为\textbf{失控}。
+  \item \textbf{加续流二极管 $VD_R$}：把续流任务交给 $VD_R$，$u_d$ 波形与电阻负载时一样，且续流期间导电回路中只有一只管子，\textbf{少了一个管压降}，有利于降低损耗、避免失控。
+\end{itemize}
+
+\corepoint{半控桥的优点是\textbf{器件少、触发器简单、成本低}，缺点是\textbf{不能用于有源逆变}（$u_d$ 不能为负）、电压调节范围受限。凡“直流侧要出现负电压”的场合，一律必须用全控电路。}
+
+% ============================================================
+\section{三相可控整流电路}
+
+当负载容量较大，或要求直流电压脉动较小、容易滤波时，应采用三相可控整流电路。最基本的\textbf{三相半波可控整流电路}，其整流电压在一个周期内脉动三次（脉波数 $m=3$）——三相桥式全控、双反星形、十二脉波等电路，均可在三相半波的基础上进行分析。
+
+\subsection{三相半波可控整流电路}
+
+三相半波（三相零式）电路把三只晶闸管的阴极连在一起（共阴极）接负载，阳极分别接三相电源。$\alpha$ 的计量起点（自然换相点）是\textbf{相邻两相电压的交点}，即相电压正半周交点，距相电压过零点 $30^\circ$（$\pi/6$）。
+
+\begin{center}
+\begin{circuitikz}[font=\footnotesize,scale=0.85]
+  % 三相电源（下端为中性点 n）
+  \draw (0,0) to[sV, l=$u_a$] (0,-2.0);
+  \draw (2,0) to[sV, l=$u_b$] (2,-2.0);
+  \draw (4,0) to[sV, l=$u_c$] (4,-2.0);
+  \draw (0,-2.0) -- (5.9,-2.0);
+  \node[below] at (2,-2.05) {\scriptsize $n$};
+  % 三只晶闸管共阴极
+  \draw (0,0) to[thyristor] (0,1.6) -- (5.9,1.6);
+  \draw (2,0) to[thyristor] (2,1.6);
+  \draw (4,0) to[thyristor] (4,1.6);
+  % 负载接在共阴极与中性点之间
+  \draw (5.6,1.6) to[R, l=$R$] (5.6,-2.0);
+  \node[right] at (6.7,-0.3) {\scriptsize $u_d$};
+  \node[left] at (-0.45,0.8) {\scriptsize $VT_1$};
+  \node[left] at (1.55,0.8) {\scriptsize $VT_2$};
+  \node[left] at (3.55,0.8) {\scriptsize $VT_3$};
+  \node[left] at (-0.2,2.15) {\scriptsize $+$};
+\end{circuitikz}
+\end{center}
+
+\subsubsection*{1. 电阻负载}
+
+\begin{itemize}
+  \item \textbf{$\alpha\le30^\circ$：电流连续}。负载电流处于连续状态，$u_d$ 为三相相电压正半周的包络线，每只晶闸管导通 $120^\circ$。
+  \item \textbf{$\alpha>30^\circ$：电流断续}。$u_d$ 波形不再出现负值（电阻负载 $u_d$ 不能为负），导通角减小。
+\end{itemize}
+
+\keyformula{U_d=\begin{cases}\dfrac{3\sqrt{6}U_2}{2\pi}\cos\alpha=1.17U_2\cos\alpha, & \alpha\le30^\circ\\[6pt] 0.675U_2\left[1+\cos\left(\dfrac{\pi}{6}+\alpha\right)\right], & \alpha>30^\circ\end{cases}}
+
+$\alpha=0$ 时 $U_d$ 最大，$U_{d0}=1.17U_2$；$\alpha=150^\circ$ 时 $U_d=0$，故\textbf{电阻负载移相范围为 $0^\circ\sim150^\circ$}。负载电流 $I_d=U_d/R$。
+
+晶闸管承受的\textbf{最大反向电压为 $\sqrt{2}\cdot\sqrt{3}U_2=\sqrt{6}U_2=2.45U_2$}（线电压峰值），最大正向电压为 $\sqrt{2}U_2$（相电压峰值）。流过晶闸管的电流平均值 $I_{dT}=I_d/3$。
+
+\subsubsection*{2. 阻感负载}
+
+电感足够大时 $i_d$ 平直，$u_d$ 波形出现负值部分（每周期三段，每段 $-30^\circ+\alpha$ 的负面积）。
+
+\keyformula{U_d=1.17U_2\cos\alpha\qquad(0^\circ\le\alpha\le90^\circ)}
+
+$\alpha=90^\circ$ 时 $U_d=0$；$\alpha>90^\circ$ 时 $U_d<0$，进入有源逆变状态。变压器二次电流为\textbf{正负各 $120^\circ$} 的矩形波，有效值 $I_2=\sqrt{\dfrac{120^\circ}{360^\circ}}I_d=\dfrac{I_d}{\sqrt{3}}=0.577I_d$。
+
+\corepoint{三相半波电路的主要缺点是\textbf{变压器二次电流中含有直流分量}，因此其应用较少。为克服此缺点可采用\textbf{双反星形}电路（3.6 节）。}
+
+\subsection{三相桥式全控整流电路}
+
+三相桥式全控整流电路共 6 只晶闸管，\textbf{共阴极组}（$VT_1$、$VT_3$、$VT_5$）与\textbf{共阳极组}（$VT_4$、$VT_6$、$VT_2$）接成桥。共阴极组的二极管在相电压最高时导通，共阳极组的在相电压最低时导通，因此 $u_d$ 是三相线电压包络线，一周期脉动 6 次（$m=6$）。
+
+\begin{table}[htbp]
+\centering
+\caption{三相桥式全控整流电路的触发顺序（$\alpha=0$ 时）}
+\label{tab:3-1}
+\begin{tabular}{cccccc}
+\toprule
+\textbf{时段} & \textbf{导通管} & \textbf{输出电压 $u_d$} & \textbf{触发时刻（电角度）} & \textbf{换相} & \textbf{备注} \\
+\midrule
+1 & $VT_6$、$VT_1$ & $u_{ab}$ & $0^\circ\sim60^\circ$ & $VT_5\to VT_1$ & 共阴组换相 \\
+2 & $VT_1$、$VT_2$ & $u_{ac}$ & $60^\circ\sim120^\circ$ & $VT_6\to VT_2$ & 共阳组换相 \\
+3 & $VT_2$、$VT_3$ & $u_{bc}$ & $120^\circ\sim180^\circ$ & $VT_1\to VT_3$ & 共阴组换相 \\
+4 & $VT_3$、$VT_4$ & $u_{ba}$ & $180^\circ\sim240^\circ$ & $VT_2\to VT_4$ & 共阳组换相 \\
+5 & $VT_4$、$VT_5$ & $u_{ca}$ & $240^\circ\sim300^\circ$ & $VT_3\to VT_5$ & 共阴组换相 \\
+6 & $VT_5$、$VT_6$ & $u_{cb}$ & $300^\circ\sim360^\circ$ & $VT_4\to VT_6$ & 共阳组换相 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+触发脉冲必须按 $VT_1\to VT_2\to VT_3\to VT_4\to VT_5\to VT_6$ 的顺序、依次相差 $60^\circ$ 送入。为保证合闸后或电流断续后能形成导通回路，须用\textbf{双窄脉冲}（每个触发单元在一个周期内发两个相隔 $60^\circ$ 的窄脉冲）或\textbf{宽脉冲}（脉宽大于 $60^\circ$）。
+
+\subsubsection*{1. 阻感负载（电流连续）}
+
+$i_d$ 平直，$u_d$ 波形出现负值部分，$u_d$ 在一个周期内由 6 段相同形状组成：
+
+\keyformula{U_d=\frac{1}{\pi/3}\int_{\frac{\pi}{3}+\alpha}^{\frac{2\pi}{3}+\alpha}\sqrt{6}U_2\sin\omega t\,\mathrm{d}(\omega t)=\frac{3\sqrt{6}U_2}{\pi}\cos\alpha=2.34U_2\cos\alpha}
+
+$\alpha=0$ 时 $U_{d0}=2.34U_2$；$\alpha=90^\circ$ 时 $U_d=0$，故\textbf{阻感负载移相范围为 $0^\circ\sim90^\circ$}。
+
+数量关系（电流连续、忽略换相）：
+\begin{itemize}
+  \item 流过每只晶闸管的电流平均值 $I_{dT}=I_d/3$，有效值 $I_T=I_d/\sqrt{3}=0.577I_d$；
+  \item 变压器二次电流为正负各 $120^\circ$、前沿相差 $180^\circ$ 的矩形波，有效值 $I_2=\sqrt{2}I_{dT}$，按星形接法 $I_2=\sqrt{\dfrac{2}{3}}I_d=0.816I_d$；
+  \item 晶闸管承受的最大正反向电压均为线电压峰值 $\sqrt{6}U_2=2.45U_2$。
+\end{itemize}
+
+\subsubsection*{2. 电阻负载}
+
+\begin{itemize}
+  \item $\alpha\le60^\circ$：$u_d$ 连续，公式同上 $U_d=2.34U_2\cos\alpha$。
+  \item $\alpha>60^\circ$：$u_d$ 出现为零的段（电流断续），
+\end{itemize}
+
+\keyformula{U_d=2.34U_2\left[1+\cos\left(\frac{\pi}{3}+\alpha\right)\right],\qquad \alpha>60^\circ}
+
+$\alpha=120^\circ$ 时 $U_d=0$，故\textbf{电阻负载移相范围为 $0^\circ\sim120^\circ$}。
+
+\corepoint{三相桥式全控电路输出脉波数 $m=6$，与三相半波相比：输出电压提高一倍（$2.34U_2$ 对 $1.17U_2$）、脉动大大减小（纹波因数 $4.18\%$ 对 $18.27\%$）、变压器二次电流无直流分量、变压器利用率高。它是\textbf{大功率整流装置应用最广泛的一种形式}。}
+
+% ============================================================
+\section{变压器漏感对整流电路的影响}
+
+前面分析都假设整流变压器是理想的，即绕组无漏感、换相瞬间完成。实际上变压器绕组总有漏感，折算到二次侧的每相漏感为 $L_B$（对应漏抗 $X_B=\omega L_B$）。由于电感电流不能突变，换相\textbf{不能瞬间完成}，而需要一段时间——从一相换到另一相的过程称为\textbf{换相过程}，所对应的电角度称为\textbf{换相重叠角} $\gamma$。
+
+以三相半波带大电感负载、从 $VT_1$ 换相到 $VT_2$ 为例。在触发 $VT_2$ 之后的一段时间内，$VT_1$、$VT_2$ 同时导通，两相通过漏感短路，回路方程为
+
+\keyformula{u_a-u_b=2L_B\frac{\mathrm{d}i_k}{\mathrm{d}t}}
+
+换相期间\textbf{整流电压为同时导通的两个晶闸管所对应的两个相电压的平均值}，即 $u_d=(u_a+u_b)/2$。与不考虑漏感时相比，每次换相 $u_d$ 波形都少了一块（阴影面积），导致平均值降低，降低量称为\textbf{换相压降} $\Delta U_d$。
+
+\begin{table}[htbp]
+\centering
+\caption{各种整流电路的换相压降与换相重叠角}
+\label{tab:3-2}
+\begin{tabular}{lll}
+\toprule
+\textbf{电路形式} & \textbf{换相压降 $\Delta U_d$} & \textbf{换相重叠角关系} \\
+\midrule
+单相全波、单相全控桥 & $\Delta U_d=\dfrac{2X_BI_d}{\pi}$ & $\cos\alpha-\cos(\alpha+\gamma)=\dfrac{\sqrt{2}X_BI_d}{U_2}$ \\
+三相半波 & $\Delta U_d=\dfrac{3X_BI_d}{2\pi}$ & $\cos\alpha-\cos(\alpha+\gamma)=\dfrac{2X_BI_d}{\sqrt{6}U_2}$ \\
+三相全控桥 & $\Delta U_d=\dfrac{3X_BI_d}{\pi}$ & 同上式 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+由 $U_d=U_{d0}\cos\alpha-\Delta U_d$ 可算出计及漏感后的输出电压。换相重叠角 $\gamma$ 的变化规律（由上式分析得出）：
+
+\begin{enumerate}
+  \item $I_d$ 越大，$\gamma$ 越大；
+  \item $X_B$ 越大（变压器漏抗越大），$\gamma$ 越大；
+  \item 当 $\alpha<90^\circ$ 时，$\alpha$ 越小，$\gamma$ 越大。
+\end{enumerate}
+
+\corepoint{漏感的存在带来两方面后果：\textbf{坏处}是输出电压平均值降低（$\Delta U_d$）、实际移相范围扩大、功率因数略有下降；\textbf{好处}是使电流变化平缓，相当于在每个桥臂串了一个电感，从而\textbf{限制了晶闸管的 di/dt 和短路电流上升率}，对器件有保护作用——所以实际装置中有时反而人为串入进线电抗器（“换相电抗器”）。}
+
+% ============================================================
+\section{电容滤波的不可控整流电路}
+
+3.1、3.3 节介绍的可控整流电路重点针对阻感负载；而在交—直—交变频器、不间断电源、开关电源等场合，大都采用\textbf{不可控整流电路经电容滤波}后提供直流电源，供后级的逆变器、斩波器使用。把前述各种全控整流电路中的晶闸管换成整流二极管，就是不可控整流电路（二极管整流电路）。
+
+\subsection{电容滤波的单相不可控整流电路}
+
+本电路常用于小功率单相交流输入的场合（微机、电视机等家电产品开关电源的整流部分就是单相桥式电容滤波电路）。
+
+工作原理：$u_2$ 正半周且 $u_2>u_d$ 时，$VD_1$、$VD_4$ 导通，电源向电容 $C$ 充电并向负载供电，$u_d=u_2$；到 $u_2$ 峰值后 $u_2$ 下降，当 $u_2<u_d$ 时二极管关断，$C$ 向 $R$ 放电，$u_d$ 按 $u_d=u_{d0}\mathrm{e}^{-t/(RC)}$ 指数下降；到负半周 $|u_2|>u_d$ 时 $VD_2$、$VD_3$ 导通，又向 $C$ 充电。
+
+\begin{itemize}
+  \item 由于电容储能，\textbf{二极管的导通角小于 $180^\circ$}，且 $RC$ 越大导通角越小、$u_d$ 越平直。二极管中流过的电流是\textbf{窄而高的脉冲}，有效值大、谐波含量高。
+  \item 输出电压平均值与 $RC$ 和负载有关：\textbf{空载时 $U_d=\sqrt{2}U_2$}；负载加重（$R$ 减小）时 $U_d$ 下降，重载时趋近电阻负载的 $0.9U_2$。
+  \item 工程估算常取 $U_d\approx1.2U_2$（$RC$ 足够大时）。$RC$ 的确定还要兼顾：$RC$ 过大则充电冲击电流大、二极管电流峰值高。
+\end{itemize}
+
+\keyformula{U_{d0}=\sqrt{2}U_2\ \ (\text{空载}),\qquad U_d\approx1.2U_2\ \ (\text{工程估算}),\qquad U_d\to0.9U_2\ \ (\text{重载})}
+
+\subsection{电容滤波的三相不可控整流电路}
+
+最常用的是三相桥式结构。某一对二极管导通时，输出直流电压等于交流侧线电压中最大的一个；该线电压既向电容充电，也向负载供电；当线电压最大值过去、电容电压高于线电压时，所有二极管关断，电容向负载放电。
+
+\begin{itemize}
+  \item \textbf{轻载}：直流侧充电电流\textbf{断续}（电容放电时间占主导）；
+  \item \textbf{重载}：$VD$ 一直有导通，换相在相邻二极管间交替进行，电流\textbf{连续}；
+  \item 二者的\textbf{临界情况}：$VD_6$ 和 $VD_1$ 同时导通的阶段与 $VD_1$ 和 $VD_2$ 同时导通的阶段恰好衔接，$i_d$ 恰好连续。临界条件由 $RC$ 与电源频率决定（分界点 $R=\dfrac{1}{\omega C}$ 量级）。
+  \item 输出电压：\textbf{空载时 $U_d=\sqrt{2}U_{LL}=\sqrt{6}U_2$}，满载时趋近 $1.35U_{LL}=2.34U_2$。
+\end{itemize}
+
+\keyformula{U_d\approx1.35U_{LL}=2.34U_2\ \ (\text{工程估算，重载}),\qquad U_{d0}=\sqrt{2}U_{LL}\ \ (\text{空载})}
+
+\corepoint{电容滤波电路的共性问题：\textbf{（1） 二极管导通角小、电流脉冲窄，电流有效值大、谐波大、功率因数低（约 0.6）；（2） 合闸瞬间有很大的充电冲击电流}，实际电路中须串入滤波电感或限流电阻抑制；（3） 输出电压随负载变化大，不宜用于要求稳压的场合（需再加 DC-DC 变换器）。}
+
+% ============================================================
+\section{整流电路的谐波和功率因数}
+
+各种电力电子装置在电力系统、工业、交通、家庭等领域应用日益广泛，由此带来的\textbf{谐波}（Harmonics）和\textbf{无功}（Reactive Power）问题也日益严重。我国已制定《电能质量 公用电网谐波》标准并实施。
+
+\subsection{谐波和无功功率分析基础}
+
+正弦波电压可表示为 $u(t)=\sqrt{2}U\sin(\omega t+\varphi_u)$。当电压为正弦、电流为非正弦（含谐波）时，将电流分解为傅里叶级数
+
+\keyformula{i(t)=I_{dc}+\sum_{n=1}^{\infty}\sqrt{2}I_n\sin(n\omega t+\varphi_n)}
+
+则有功功率只由同频率的电压电流分量产生：$P=UI_1\cos\varphi_1$；视在功率 $S=UI$（$I$ 为电流总有效值）；功率因数
+
+\keyformula{\lambda=\frac{P}{S}=\frac{I_1}{I}\cos\varphi_1=\nu\cos\varphi_1}
+
+式中 $\nu=I_1/I$ 称为\textbf{基波因数}，$\cos\varphi_1$ 称为\textbf{位移因数}（基波功率因数）。可见\textbf{功率因数由基波电流相移和电流波形畸变这两个因素共同决定}。非正弦情况下的无功功率定义很多，一种被广泛接受的定义是 $Q=S\sin\varphi_1$；也可仿照正弦情况定义 $Q_f=UI_1\sin\varphi_1$，二者之差即为\textbf{畸变功率} $D=\sqrt{S^2-P^2-Q_f^2}$。
+
+电流谐波总畸变率定义为 $\mathrm{THD}_i=\dfrac{\sqrt{\sum_{n=2}^{\infty}I_n^2}}{I_1}\times100\%$。
+
+\subsection{带阻感负载时可控整流电路交流侧谐波和功率因数分析}
+
+\subsubsection*{1. 单相桥式全控整流电路}
+
+忽略换相过程和电流脉动，阻感负载、电流连续时，变压器二次电流为\textbf{正负各 $180^\circ$ 的矩形波}，将其分解为傅里叶级数：
+
+\keyformula{i_2=\frac{4I_d}{\pi}\left(\sin\omega t+\frac{1}{3}\sin3\omega t+\frac{1}{5}\sin5\omega t+\cdots\right)=\frac{4I_d}{\pi}\sum_{n=1,3,5,\cdots}\frac{1}{n}\sin n\omega t}
+
+\begin{itemize}
+  \item 电流中仅含\textbf{奇次谐波}（$2k\pm1$，$k$ 为正整数），各次谐波有效值与谐波次数成反比，且与基波有效值的比值为谐波次数的倒数；
+  \item 基波有效值 $I_1=\dfrac{2\sqrt{2}I_d}{\pi}=0.9I_d$，而 $I=I_d$，故\textbf{基波因数 $\nu=0.9$}；
+  \item 由图 3-6 可明显看出，电流基波与电压的相位差就等于控制角 $\alpha$，故\textbf{位移因数 $\cos\varphi_1=\cos\alpha$}。
+\end{itemize}
+
+\keyformula{\lambda=\nu\cos\varphi_1=0.9\cos\alpha}
+
+\subsubsection*{2. 三相桥式全控整流电路}
+
+阻感负载、电流连续时，交流侧电流为\textbf{正负半周各 $120^\circ$ 的方波}，三相电流波形相同且依次相差 $120^\circ$，其有效值与直流电流的关系为 $I=\sqrt{2/3}I_d=0.816I_d$。分解为傅里叶级数（以相电流为例，将负、正两半波的中点作为时间零点）：
+
+\keyformula{i_a=\frac{2\sqrt{3}I_d}{\pi}\left(\sin\omega t-\frac{1}{5}\sin5\omega t-\frac{1}{7}\sin7\omega t+\frac{1}{11}\sin11\omega t+\cdots\right)}
+
+\begin{itemize}
+  \item 电流中仅含 $6k\pm1$（$k$ 为正整数）次谐波，各次谐波有效值与谐波次数成反比，与基波有效值的比值为谐波次数的倒数；
+  \item 基波有效值 $I_1=\dfrac{\sqrt{6}I_d}{\pi}=0.78I_d$，基波因数 $\nu=\dfrac{I_1}{I}=0.955$；
+  \item 位移因数仍为 $\cos\varphi_1=\cos\alpha$。
+\end{itemize}
+
+\keyformula{\lambda=0.955\cos\alpha}
+
+\subsection{电容滤波的不可控整流电路交流侧谐波和功率因数分析}
+
+实用的单相不可控整流电路带电容滤波时，通常串联滤波电感抑制冲击电流，或因电网侧有电感而具有换相过程。此时交流侧电流为\textbf{窄脉冲}，谐波含量大。其特点是：
+
+\begin{enumerate}
+  \item 功率因数低（一般只有 0.6 左右），且\textbf{与输出电压、负载大小有关}；
+  \item 随负载加重（$R$ 减小），总的功率因数提高；同时随滤波电感加大，总功率因数也提高。
+\end{enumerate}
+
+\subsection{整流输出电压和电流的谐波分析}
+
+整流电路的输出电压是周期性非正弦函数，主要成分为直流，同时包含各种频率的谐波。设 $\alpha=0$ 时 $m$ 脉波整流电路，将纵坐标选在整流电压峰值处，在一个周期内整流电压为 $u_d=\sqrt{2}U_2\cos\omega t$，傅里叶分解后得
+
+\keyformula{u_d=U_{d0}\left[1-\sum_{n=mk}\frac{2\cos\frac{n\pi}{m}}{n^2-1}\cos n\omega t\right],\qquad n=mk\ (k=1,2,3,\cdots)}
+
+\begin{itemize}
+  \item $m$ 脉波整流电压的谐波次数为 $mk$ 次，即 $m$ 的倍数次；整流电流的谐波由整流电压的谐波决定，也为 $mk$ 次。
+  \item 当 $m$ 一定时，随谐波次数增大，谐波幅值迅速减小，说明\textbf{低次谐波是最主要的}；$m$ 增大时最低次谐波次数增大、且幅值减小，故\textbf{增加脉波数是减小输出电压脉动的主要手段}。
+  \item 电压纹波因数 $\gamma_u=U_R/U_d$（$U_R$ 为谐波分量有效值），不同脉波数时的值见表~\ref{tab:3-3}。
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{不同脉波数时的电压纹波因数}
+\label{tab:3-3}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{脉波数 $m$} & 2 & 3 & 6 & 12 \\
+\midrule
+\textbf{纹波因数 $\gamma_u$} & $48.2\%$ & $18.27\%$ & $4.18\%$ & $0.994\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\corepoint{记牢两组“谐波次数”：\textbf{交流侧电流}——单相桥为 $2k\pm1$（奇次），三相桥为 $6k\pm1$；\textbf{直流侧电压}——$m$ 脉波为 $mk$ 次。功率因数两个公式 $\lambda=0.9\cos\alpha$（单相桥）与 $\lambda=0.955\cos\alpha$（三相桥）必须能默写，并能说明“$\nu$ 反映波形畸变、$\cos\varphi_1$ 反映相位滞后”。}
+
+% ============================================================
+\section{大功率可控整流电路}
+
+\subsection{双反星形可控整流电路}
+
+双反星形（带平衡电抗器）电路由\textbf{两套三相半波电路}并联组成：变压器二次侧有两组星形绕组，同名端相反（一组接成星形、另一组也接星形但相序相反），两组的三相半波整流电路通过\textbf{平衡电抗器 $L_p$} 并联，共同向负载供电。
+
+\begin{itemize}
+  \item \textbf{平衡电抗器的作用}：使两组整流电路能同时导电。两组输出电压的瞬时值不相等，其差值由 $L_p$ 承担，$L_p$ 的中点即为负载的一端。由于 $L_p$ 的均压作用，两组电流能平均分配。
+  \item \textbf{输出电压}：与三相半波相同，$U_d=1.17U_2\cos\alpha$（$U_2$ 为二次相电压有效值）。
+  \item \textbf{输出电流}：负载电流为两组电流之和 $I_d=2I_{d1}$，每只晶闸管（每组）承担 $I_d/2$，故\textbf{器件电流定额可比三相桥小一半}。
+\end{itemize}
+
+与三相桥式电路的比较（教材结论）：
+
+\begin{enumerate}
+  \item 三相桥式电路谐波次数少（$6k\pm1$），双反星形为 $3k\pm1$，但双反星形的\textbf{变压器磁路平衡、无直流磁化}，变压器利用率高；
+  \item 双反星形在同样的直流输出电压下，\textbf{变压器二次电压可以低一些}（因两组并联，每组的电压即为输出电压），适用于\textbf{低电压、大电流}场合（如电解、电镀）；
+  \item 双反星形需要平衡电抗器，结构较复杂。
+\end{enumerate}
+
+\subsection{多重化整流电路}
+
+随着整流装置功率的进一步加大，它所产生的谐波、无功功率等对电网的干扰也随之加大。为减轻干扰，可采用\textbf{多重化整流电路}：将两个或多个相同结构的整流电路（如三相桥）按一定方式组合，使它们的交流侧电流谐波相互抵消。
+
+\begin{itemize}
+  \item \textbf{串联二重联结}：两台三相桥的变压器二次绕组分别接成星形和三角形（移相 $30^\circ$），直流侧串联。交流侧电流中 \textbf{5、7 次谐波相互抵消}，只含 $12k\pm1$ 次谐波，构成\textbf{12 脉波}整流电路。
+  \item \textbf{串联四重联结}：二次绕组移相 $15^\circ$，构成 \textbf{24 脉波}整流电路，交流侧谐波次数为 $24k\pm1$。
+  \item 多重化的效果：位移因数与功率因数提高。12 脉波时 $\lambda\approx0.9886\cos\alpha$，24 脉波时 $\lambda\approx0.9949\cos\alpha$（单桥时为 $0.955\cos\alpha$）。
+\end{itemize}
+
+\keyformula{\lambda_{12}\approx0.9886\cos\alpha,\qquad \lambda_{24}\approx0.9949\cos\alpha}
+
+% ============================================================
+\section{整流电路的有源逆变工作状态}
+
+\subsection{逆变的概念}
+
+\textbf{逆变}（Inverter）是把直流电变成交流电。按交流侧的去向分为两类：
+
+\begin{itemize}
+  \item \textbf{无源逆变}：交流侧直接接负载（如变频器带动电动机），电能直接送给负载，不送回电网——第 4 章讲。
+  \item \textbf{有源逆变}：交流侧接电网，即把直流电逆变成与电网同频率的交流电送回电网。
+\end{itemize}
+
+同一套晶闸管变流装置，\textbf{整流与逆变是同一装置的两个工作状态}：$\alpha<90^\circ$ 时 $U_d>0$，装置从交流侧吸收有功功率（整流）；$\alpha>90^\circ$ 时 $U_d<0$，装置向交流侧送出有功功率（逆变）。
+
+\begin{table}[htbp]
+\centering
+\caption{实现有源逆变的条件}
+\label{tab:3-4}
+\begin{tabular}{p{1.2cm}p{13.4cm}}
+\toprule
+\textbf{条件} & \textbf{内容} \\
+\midrule
+（1） & 直流侧必须有一个直流电动势，其\textbf{极性需和晶闸管的导通方向一致}，其值应\textbf{大于变流器直流侧的平均电压} \\
+（2） & 要求晶闸管的控制角 $\alpha>\pi/2$，使 $U_d$ 为负值 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+两者必须同时具备才能实现有源逆变。还要注意：\textbf{半控桥或有续流二极管的电路，因其整流电压不能出现负值，也不允许直流侧出现负极性的电动势，故不能实现有源逆变}——欲实现有源逆变，只能采用全控电路。
+
+\textbf{逆变角} $\beta$ 与控制角 $\alpha$ 的计量方向相反，两者关系为
+
+\keyformula{\alpha+\beta=\pi\quad\text{或}\quad\beta=\pi-\alpha}
+
+\subsection{三相桥整流电路的有源逆变工作状态}
+
+以三相桥式全控电路为例，$\alpha>90^\circ$（即 $\beta<90^\circ$）时，$u_d$ 波形负面积大于正面积，$U_d=-2.34U_2\cos\beta<0$，直流侧电动势 $E$ 与 $U_d$ 同极性（$E$ 驱动电流流入变流器），功率由直流侧流向交流电网。
+
+\begin{itemize}
+  \item 逆变状态下，晶闸管承受的电压波形与整流时相同，只是导通区间对应的电压为负；换相仍在自然换相点之后（对逆变而言是之前）发生。
+  \item 每个周期内流经电源的线电流导通角仍为 $120^\circ$，波形与整流时形状相同而相位相反。
+  \item 逆变时交流侧电流的谐波与功率因数分析方法和整流时一样，但因电流基波与电压的相位差大于 $90^\circ$，\textbf{功率因数为负值}（表示功率倒送）。
+\end{itemize}
+
+\subsection{逆变失败与最小逆变角的限制}
+
+\textbf{逆变失败（逆变颠覆）}：逆变运行时一旦发生换相失败，外接的直流电源就会通过晶闸管电路形成短路，或使变流器的输出平均电压和直流电动势变成顺向串联，形成很大的短路电流。
+
+逆变失败的主要原因：
+
+\begin{enumerate}
+  \item \textbf{触发电路工作不可靠}，不能适时、准确地给各晶闸管分配脉冲（脉冲丢失、脉冲延迟）；
+  \item \textbf{晶闸管发生故障}，失去阻断或导通能力；
+  \item \textbf{交流电源缺相或突然消失}；
+  \item \textbf{换相的裕量角不足}，引起换相失败（逆变角 $\beta$ 过小）。
+\end{enumerate}
+
+为防止逆变失败，必须限制\textbf{最小逆变角} $\beta_{\min}$：
+
+\keyformula{\beta_{\min}=\gamma+\delta+\theta'}
+
+式中 $\gamma$ 为换相重叠角（由 $I_d$、$X_B$、$\alpha$ 决定），$\delta$ 为晶闸管关断时间 $t_q$ 所对应的电角度（$\delta=\omega t_q$，普通晶闸管 $t_q$ 约数百微秒，50 Hz 时 $\delta$ 约为 $4^\circ\sim5^\circ$），$\theta'$ 为安全裕量角（考虑电网电压波动、脉冲不对称等，一般取 $10^\circ$ 左右）。
+
+\corepoint{工程上一般取 $\beta_{\min}=30^\circ\sim35^\circ$。触发电路必须保证 $\beta\ge\beta_{\min}$，并在 $\beta_{\min}$ 处设置\textbf{保护（如“最小逆变角限制”）}。判断题常问“为什么 $\beta$ 不能太小”——因为 $\beta$ 太小则换相尚未完成就反向电压到来，正在导通的晶闸管来不及恢复阻断能力，造成直通短路。}
+
+% ============================================================
+\section{整流电路相位控制的实现}
+
+晶闸管可控整流电路是通过控制触发角 $\alpha$ 的大小、即控制触发脉冲起始相位来控制输出电压大小的，属于\textbf{相控电路}。对触发电路的基本要求是：
+
+\begin{enumerate}
+  \item 触发脉冲应具有足够的\textbf{幅值和功率}，前沿要陡（上升时间短）；
+  \item 脉冲的\textbf{宽度}应保证晶闸管可靠导通（阻感负载需宽脉冲或双窄脉冲）；
+  \item 触发脉冲应具有足够的\textbf{移相范围}，并与主电路电源\textbf{同步}；
+  \item 各相触发脉冲应\textbf{对称}（间隔均匀）。
+\end{enumerate}
+
+\subsection{同步信号为锯齿波的触发电路}
+
+在由模拟电子电路构成的整流装置触发电路中，\textbf{以同步信号为锯齿波的触发电路应用最多}。其基本环节为：
+
+\begin{enumerate}
+  \item \textbf{同步环节}：由同步变压器引入与主电路同频率的同步电压，保证锯齿波与主电路电压保持固定相位关系；
+  \item \textbf{锯齿波形成}：利用电容恒流充电（或积分电路）在同步电压作用下形成锯齿波，作为移相的比较波形；
+  \item \textbf{移相控制}：控制电压 $U_c$ 与锯齿波比较，交点即决定脉冲产生的时刻，改变 $U_c$ 即可连续移相；
+  \item \textbf{脉冲形成与放大}：比较后经整形、脉冲变压器隔离与功率放大输出触发脉冲；
+  \item \textbf{双窄脉冲环节}：为实现三相全控桥的“双脉冲触发”，各触发单元之间需按一定规律互连线（如 $VT_1$ 单元的输出端接 $VT_2$ 单元的输入端），使每个单元在一个周期内发出两个相隔 $60^\circ$ 的脉冲。
+\end{enumerate}
+
+\subsection{集成触发器}
+
+集成电路可靠性高、技术性能好、体积小、功耗低、调试方便。随着集成电路制造技术的提高，晶闸管触发电路的集成化已逐渐普及，现已逐步取代分立式电路。
+
+\begin{itemize}
+  \item 国内常用的是 \textbf{KJ004}（旧型号 KC04）移相触发器，一片可输出两路相位互差 $180^\circ$ 的脉冲；\textbf{三片 KJ004 加一片 KJ041（或 KJ042）}即可构成三相全控桥的触发电路。
+  \item 集成触发器的移相范围宽、对称度好，但分立元件与模拟集成方案仍有\textbf{脉冲不对称度较高（可达 $3^\circ\sim4^\circ$）、精度低}的缺点。
+  \item 在对精度要求高的大容量变流装置中，越来越多地采用\textbf{数字触发电路}（如基于单片机的数字触发器），可获得很好的触发脉冲对称度，精度可达 $0.7^\circ$ 甚至更高。
+\end{itemize}
+
+\corepoint{本章的“主线公式”必须能默写并说清适用条件：半波 $0.45U_2\frac{1+\cos\alpha}{2}$（电阻）／$0.9U_2\frac{1+\cos\alpha}{2}$（单相桥电阻）／$0.9U_2\cos\alpha$（单相桥阻感连续）／$1.17U_2\cos\alpha$（三相半波阻感）／$2.34U_2\cos\alpha$（三相桥阻感）。再记住三句判据：\textbf{电阻负载 $u_d$ 不能为负、移相范围到电压自然过零为止；阻感负载电流连续、$u_d$ 可负、移相到 $90^\circ$；要有源逆变必须全控且 $\alpha>90^\circ$}。}

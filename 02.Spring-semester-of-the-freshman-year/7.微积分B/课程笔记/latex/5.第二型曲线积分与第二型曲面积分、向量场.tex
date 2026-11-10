@@ -1,61 +1,251 @@
-% 子文件：10.向量场与第二型积分.tex
-% 主文档使用 \input{10.向量场与第二型积分} 引入，不含 document 环境
+% 子文件：5.第二型曲线积分与第二型曲面积分、向量场.tex
+% 对应教材：同济《高等数学》下册 第十一章 曲线积分与曲面积分
+% 节次：§11.1 对弧长的曲线积分｜§11.2 对坐标的曲线积分｜§11.3 格林公式及其应用
+%       §11.4 对面积的曲面积分｜§11.5 对坐标的曲面积分｜§11.6 高斯公式·通量与散度
+%       §11.7 斯托克斯公式·环流量与旋度
+% 主文档使用 \input{5.第二型曲线积分与第二型曲面积分、向量场} 引入，不含 document 环境
 
-\section{向量场}
-\subsection{向量场}
+\section{对弧长的曲线积分（第一类曲线积分）}
+\subsection{概念与性质}
 
-\subsection{向径的导数}
+引例：曲线形构件的质量（线密度 $\mu(x,y)$ 连续，须"分割—近似—求和—取极限"）。
 
-\section{第二型曲线积分}
-\subsection{变力做功与第二型曲线积分的概念}
+\textbf{定义}\quad 设 $L$ 为光滑曲线弧，$f(x,y)$ 在 $L$ 上有界。把 $L$ 任意分成 $n$ 小段，第 $i$ 段长 $\Delta s_i$，在其上任取 $(\xi_i,\eta_i)$。若各小段长度最大值 $\lambda\to0$ 时和 $\sum\limits_{i=1}^{n}f(\xi_i,\eta_i)\Delta s_i$ 的极限总存在且与分法、取法无关，则称之为 $f$ 在 $L$ 上\textbf{对弧长的曲线积分}：
+\[
+\int_L f(x,y)\,\mathrm{d}s=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i,\eta_i)\,\Delta s_i ,
+\]
+$\mathrm{d}s$ 为\textbf{弧长元素}，$f$ 在分段光滑弧上连续时必存在；闭曲线记 $\oint_L$，空间弧 $\Gamma$ 记 $\int_\Gamma f\,\mathrm{d}s$。
 
-\subsection{第二型曲线积分的计算}
+\textbf{性质}：线性；对弧段可加；比较（$f\le g\Rightarrow\int_Lf\,\mathrm{d}s\le\int_Lg\,\mathrm{d}s$，且 $\left|\int_Lf\,\mathrm{d}s\right|\le\int_L|f|\,\mathrm{d}s$）；$\int_L1\,\mathrm{d}s=s$。
 
-\subsection{第二型曲线积分与第一型曲线积分的关系}
+\subsection{计算法}
 
-\section{格林公式、平面流速场的环量与旋度}
+设 $L:x=\varphi(t)$，$y=\psi(t)$（$\alpha\le t\le\beta$），$\varphi,\psi$ 有一阶连续导数且 $\varphi'^2+\psi'^2\ne0$，则
+\keyformula{\int_Lf(x,y)\,\mathrm{d}s=\int_{\alpha}^{\beta}f\bigl(\varphi(t),\psi(t)\bigr)\sqrt{\varphi'^2(t)+\psi'^2(t)}\,\mathrm{d}t\quad(\alpha<\beta)}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+$L$ 的给出方式 & 弧长元素 $\mathrm{d}s$ \\
+\midrule
+$x=\varphi(t),y=\psi(t)$ & $\sqrt{\varphi'^2+\psi'^2}\,\mathrm{d}t$（$\alpha<\beta$） \\
+$y=y(x)$，$a\le x\le b$ & $\sqrt{1+y'^2}\,\mathrm{d}x$（$a<b$） \\
+$\rho=\rho(\theta)$（极坐标） & $\sqrt{\rho^2+\rho'^2}\,\mathrm{d}\theta$（$\alpha<\beta$） \\
+$x=\varphi,y=\psi,z=\omega$ & $\sqrt{\varphi'^2+\psi'^2+\omega'^2}\,\mathrm{d}t$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{步骤}：写参数方程定范围 $\to$ 算 $\mathrm{d}s$ $\to$ 把 $x,y,z$ 全换成参数 $\to$ 化为定积分。
+
+\corepoint{\textbf{下限必须小于上限}：$\mathrm{d}s>0$ 恒正，这与第二类"起点对应下限"完全不同，是本节第一坑。$\mathrm{d}s$ 的根号不能漏；若 $L$ 在圆 $x^2+y^2=R^2$ 上而积分含 $x^2+y^2$，直接用 $R^2$ 替换。另：\textbf{与方向无关}，$\int_{AB}f\,\mathrm{d}s=\int_{BA}f\,\mathrm{d}s$，$f\equiv1$ 时积分值即弧长。}
+
+\section{对坐标的曲线积分（第二类曲线积分）}
+\subsection{概念与性质}
+
+引例：变力 $\boldsymbol F=P\boldsymbol i+Q\boldsymbol j$ 沿有向弧 $L$ 做的功（小弧段在两轴上的投影为 $\Delta x_i,\Delta y_i$）。
+
+\textbf{定义}\quad 设 $L$ 为从 $A$ 到 $B$ 的\textbf{有向}光滑曲线弧，$P,Q$ 在 $L$ 上有界。沿 $L$ 的方向把它分成 $n$ 个有向小弧段，第 $i$ 段在两轴上的投影为 $\Delta x_i,\Delta y_i$，在其上任取 $(\xi_i,\eta_i)$。若 $\lambda\to0$ 时 $\sum\limits_{i=1}^{n}[P(\xi_i,\eta_i)\Delta x_i+Q(\xi_i,\eta_i)\Delta y_i]$ 的极限总存在且与分法、取法无关，则称之为\textbf{对坐标的曲线积分}：
+\[
+\int_LP(x,y)\,\mathrm{d}x+Q(x,y)\,\mathrm{d}y=\lim_{\lambda\to0}\sum_{i=1}^{n}\bigl[P(\xi_i,\eta_i)\Delta x_i+Q(\xi_i,\eta_i)\Delta y_i\bigr].
+\]
+类似定义 $\int_\Gamma P\mathrm{d}x+Q\mathrm{d}y+R\mathrm{d}z$，闭曲线记 $\oint_L$。\textbf{性质}：线性；\textbf{有向性} $\int_{L^{-}}=-\int_L$；对弧段可加（方向一致拼接）。
+
+\subsection{计算法}
+
+设 $L:x=\varphi(t)$，$y=\psi(t)$，当 $t$ 单调地由 $\alpha$ 变到 $\beta$ 时点从起点 $A$ 沿 $L$ 到终点 $B$，$\varphi,\psi$ 有一阶连续导数且 $\varphi'^2+\psi'^2\ne0$，则
+\keyformula{\int_LP\,\mathrm{d}x+Q\,\mathrm{d}y=\int_{\alpha}^{\beta}\bigl\{P[\varphi(t),\psi(t)]\,\varphi'(t)+Q[\varphi(t),\psi(t)]\,\psi'(t)\bigr\}\mathrm{d}t}
+即把 $x,y,\mathrm{d}x,\mathrm{d}y$ 全用参数表示（$\mathrm{d}x=\varphi'\mathrm{d}t$，$\mathrm{d}y=\psi'\mathrm{d}t$），\textbf{下限对应起点、上限对应终点}（$\alpha$ 可大于 $\beta$）。
+
+\corepoint{第二类\textbf{与方向有关}，上下限由\textbf{起点、终点}决定，不能一律从小到大；符号由参数增减自动带出（$\mathrm{d}x$ 可正可负），不要人为补负号。分段光滑曲线必须分段积分再相加，每段各自定限。}
+
+\subsection{两类曲线积分之间的联系}
+
+设 $\cos\alpha,\cos\beta$ 为有向弧 $L$ 在点 $(x,y)$ 处\textbf{切向量的方向余弦}（与 $L$ 方向一致），由 $\mathrm{d}x=\cos\alpha\,\mathrm{d}s$、$\mathrm{d}y=\cos\beta\,\mathrm{d}s$ 得
+\keyformula{\int_LP\,\mathrm{d}x+Q\,\mathrm{d}y=\int_L(P\cos\alpha+Q\cos\beta)\,\mathrm{d}s}
+空间情形把第三项 $R\cos\gamma$ 补上；向量形式 $\int_L\boldsymbol A\cdot\mathrm{d}\boldsymbol r=\int_L\boldsymbol A\cdot\boldsymbol\tau\,\mathrm{d}s$（$\boldsymbol\tau$ 为单位切向量）。
+
+\corepoint{式中的余弦是\textbf{有向}切向量的方向余弦，$\cos\alpha=\frac{\varphi'}{\sqrt{\varphi'^2+\psi'^2}}$ 的符号取决于 $t$ 增大方向：$t$ 增大时点反向走，两个余弦同时变号。}
+
+\section{格林公式及其应用}
+\subsection{区域与边界正向}
+
+若区域 $D$ 内任一闭曲线所围部分都属于 $D$，称 $D$ 为\textbf{单连通区域}（不含"洞"，含点洞也不算），否则为\textbf{复连通区域}。边界 $L$ 的\textbf{正向}：观察者沿此方向行走时 $D$ 内近处部分总在\textbf{左边}（外边界逆时针，"洞"边界顺时针）。
+
 \subsection{格林公式}
 
-\subsection{平面流速场的环量与旋度}
+\textbf{定理 1（格林公式）}\quad 设闭区域 $D$ 由分段光滑曲线 $L$ 围成，$P,Q$ 在 $D$ 上具有一阶连续偏导数，则
+\keyformula{\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\mathrm{d}x\,\mathrm{d}y=\oint_L P\,\mathrm{d}x+Q\,\mathrm{d}y}
+其中 $L$ 是 $D$ 取正向的边界曲线；对复连通区域，右端应包括沿 $D$ 的\textbf{全部边界}的积分，各边界方向对 $D$ 均为正向。
 
-\section{平面曲线积分与路径无关的条件、保守场}
-\subsection{平面曲线积分与路径无关的条件}
+\textbf{应用（求面积）}：取 $P=-y,Q=x$ 得 $A=\frac{1}{2}\oint_Lx\,\mathrm{d}y-y\,\mathrm{d}x$；取 $P=0,Q=x$ 得 $A=\oint_Lx\,\mathrm{d}y$。
 
-定理10.2\quad
+\textbf{步骤}：(1) $L$ 不闭则\textbf{补线}（补成闭曲线，再减去补线上的积分）；(2) 检查 $P,Q$ 在 $D$ 上一阶偏导连续（有奇点须挖去）；(3) 算 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$；(4) 化为二重积分用适当坐标算出。
 
-\subsection{保守场、原函数、全微分方程}
+\corepoint{三条件\textbf{必查}：$L$ \textbf{闭}、$L$ 取\textbf{正向}（顺时针要整体加负号）、$P,Q$ 在 $D$（含边界）上一阶偏导连续。$D$ 内有奇点（如 $P=\frac{-y}{x^2+y^2},Q=\frac{x}{x^2+y^2}$ 在原点）须用小圆挖去，在复连通区域上用公式。补线常取平行于坐标轴的直线段。}
 
-\section{第二型曲面积分}
-\subsection{预备知识}
+\subsection{平面上曲线积分与路径无关的条件}
+
+若对 $G$ 内任意两点 $A,B$ 及从 $A$ 到 $B$ 的任意两条曲线 $L_1,L_2$ 都有 $\int_{L_1}=\int_{L_2}$，则称该曲线积分\textbf{在 $G$ 内与路径无关}。
+
+\textbf{定理 2}\quad 设 $G$ 是单连通区域，$P,Q$ 在 $G$ 内有一阶连续偏导数，则以下四条\textbf{等价}：
+
 \begin{enumerate}
-    \item 有向曲面
-    \item 有向曲面在坐标面上的投影
+  \item $\int_LP\,\mathrm{d}x+Q\,\mathrm{d}y$ 在 $G$ 内与路径无关；
+  \item 沿 $G$ 内任一闭曲线 $C$ 有 $\oint_CP\,\mathrm{d}x+Q\,\mathrm{d}y=0$；
+  \item 在 $G$ 内恒有 $\dfrac{\partial P}{\partial y}=\dfrac{\partial Q}{\partial x}$；
+  \item 在 $G$ 内存在 $u(x,y)$ 使 $\mathrm{d}u=P\,\mathrm{d}x+Q\,\mathrm{d}y$。
 \end{enumerate}
 
-\subsection{第二型曲面积分的概念}
+\corepoint{"单连通"不能丢：$\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$ 只在\textbf{单连通}区域内才等价于路径无关。反例：$P=\frac{-y}{x^2+y^2},Q=\frac{x}{x^2+y^2}$ 在挖去原点的复连通区域内满足该等式，但绕原点一周积分为 $2\pi\ne0$。}
 
-\subsection{第二型曲面积分的计算}
+\subsection{二元函数的全微分求积}
 
-\section{高斯公式、通量与散度}
+\textbf{定理 3}\quad 设 $G$ 为单连通区域，$P,Q$ 在 $G$ 内有一阶连续偏导数，则 $P\mathrm{d}x+Q\mathrm{d}y$ 在 $G$ 内为某函数 $u$ 的全微分的\textbf{充要条件}是 $\dfrac{\partial P}{\partial y}=\dfrac{\partial Q}{\partial x}$ 在 $G$ 内恒成立；此时可沿任意路径积分求 $u$，通常取折线：
+\keyformula{u(x,y)=\int_{(x_0,y_0)}^{(x,y)}P\,\mathrm{d}x+Q\,\mathrm{d}y=\int_{x_0}^{x}P(x,y_0)\,\mathrm{d}x+\int_{y_0}^{y}Q(x,y)\,\mathrm{d}y}
+（右端为"先水平后竖直"的折线，须全在 $G$ 内；换另一条折线则两项次序互换。）
+
+\textbf{全微分方程}\quad 若 $P\mathrm{d}x+Q\mathrm{d}y=0$ 的左端恰是某 $u$ 的全微分，则称为\textbf{全微分方程}，$u(x,y)=C$ 即隐式通解。$P,Q$ 在单连通区域内有一阶连续偏导时，它为全微分方程的充要条件是 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$。
+
+\corepoint{求 $u$ 的三条路：(1) 折线积分公式（最机械，$(x_0,y_0)$ 常取 $(0,0)$ 或 $(1,0)$）；(2) \textbf{凑微分}；(3) \textbf{偏积分法}（由 $u_x=P$ 得 $u=\int P\mathrm{d}x+\phi(y)$，再对 $y$ 求导与 $Q$ 比较定 $\phi$）。三者结果只差常数。}
+
+\subsection{曲线积分的基本定理}
+
+若 $\int_L\boldsymbol F\cdot\mathrm{d}\boldsymbol r$ 在 $G$ 内与路径无关，称向量场 $\boldsymbol F$ 为\textbf{保守场}。
+
+\textbf{定理 4}\quad 设 $\boldsymbol F=P\boldsymbol i+Q\boldsymbol j$ 是区域 $G$ 内的向量场，$P,Q$ 连续，且存在数量函数 $f$ 使 $\boldsymbol F=\nabla f$，则 $\int_L\boldsymbol F\cdot\mathrm{d}\boldsymbol r$ 在 $G$ 内与路径无关，且
+\keyformula{\int_L\boldsymbol F\cdot\mathrm{d}\boldsymbol r=f(B)-f(A)}
+其中 $L$ 是 $G$ 内起点 $A$、终点 $B$ 的任一分段光滑曲线。$f$ 称为\textbf{势函数}，上式称\textbf{曲线积分的基本公式}，与 $\int_a^bF'(x)\mathrm{d}x=F(b)-F(a)$ 完全类似。
+
+\corepoint{求势函数即求 $u$ 使 $\nabla u=\boldsymbol F$（等价于 $\mathrm{d}u=P\mathrm{d}x+Q\mathrm{d}y$）。判保守场流程：区域单连通 $\to$ 验 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$ $\to$ 求 $f$ $\to$ 用 $f(B)-f(A)$ 算积分。}
+
+\section{对面积的曲面积分（第一类曲面积分）}
+\subsection{概念与性质}
+
+引例：曲面形构件的质量（面密度连续时为变量）。
+
+\textbf{定义}\quad 设 $\Sigma$ 是光滑曲面，$f(x,y,z)$ 在 $\Sigma$ 上有界。把 $\Sigma$ 任意分成 $n$ 小块 $\Delta S_i$，在其上任取一点，若各小块直径最大值 $\lambda\to0$ 时和 $\sum f(\xi_i,\eta_i,\zeta_i)\Delta S_i$ 的极限总存在且与分法、取法无关，则称之为 $f$ 在 $\Sigma$ 上\textbf{对面积的曲面积分}：
+\[
+\iint_\Sigma f(x,y,z)\,\mathrm{d}S=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i,\eta_i,\zeta_i)\,\Delta S_i ,
+\]
+$\mathrm{d}S$ 为\textbf{面积元素}，$f$ 连续时必存在。性质与第一类曲线积分平行：线性、对曲面可加、比较、$\iint_\Sigma1\,\mathrm{d}S=A$（曲面面积），且\textbf{与曲面的侧无关}。
+
+\subsection{计算法}
+
+\textbf{定理}\quad 设 $\Sigma:z=z(x,y)$，其在 $xOy$ 面上的投影区域为 $D_{xy}$，$z(x,y)$ 在 $D_{xy}$ 上有连续偏导数，$f$ 在 $\Sigma$ 上连续，则
+\keyformula{\iint_\Sigma f(x,y,z)\,\mathrm{d}S=\iint_{D_{xy}}f\bigl(x,y,z(x,y)\bigr)\sqrt{1+z_x^{2}+z_y^{2}}\ \mathrm{d}x\,\mathrm{d}y}
+若 $\Sigma:x=x(y,z)$ 或 $y=y(z,x)$，则分别投影到 $yOz$ 面、$zOx$ 面，根号内换成相应两偏导的平方和。
+
+\textbf{步骤（一投、二代、三换）}：投影得 $D$ $\to$ 用曲面方程消去一个变量 $\to$ 把 $\mathrm{d}S$ 换成 $\sqrt{1+z_x^2+z_y^2}\mathrm{d}x\mathrm{d}y$ $\to$ 算二重积分。
+
+\corepoint{三处高频错：(1) 漏乘 $\sqrt{1+z_x^2+z_y^2}$（斜面积与投影面积之比）；(2) 投影面选错——应选使 $\Sigma$ 在该面上\textbf{单值}的坐标面；(3) 与第二类混淆：第一类与侧无关。对称性可用：$\Sigma$ 关于 $xOy$ 面对称时，$f$ 关于 $z$ 为奇函数则积分为 $0$，偶函数则为上半部分的两倍。}
+
+\section{对坐标的曲面积分（第二类曲面积分）}
+\subsection{有向曲面与投影}
+
+\textbf{有向曲面}即指定了侧的曲面：$z=z(x,y)$ 分\textbf{上侧、下侧}，$y=y(z,x)$ 分\textbf{右侧、左侧}，$x=x(y,z)$ 分\textbf{前侧、后侧}；$-\Sigma$ 表示取相反侧。\textbf{带符号的投影}：设 $\Sigma$ 在 $xOy$ 面上投影为 $\Sigma_{xy}$，则
+\[
+(\Delta S)_{xy}=
+\begin{cases}
++\Delta\sigma, & \cos\gamma>0\ (\text{上侧}),\\
+-\Delta\sigma, & \cos\gamma<0\ (\text{下侧}),\\
+0, & \cos\gamma=0\ (\text{法向量垂直于 }z\text{ 轴}).
+\end{cases}
+\]
+
+\subsection{概念与性质}
+
+\textbf{引例}：流量。不可压缩流体速度场 $\boldsymbol v=P\boldsymbol i+Q\boldsymbol j+R\boldsymbol k$ 流过有向曲面 $\Sigma$ 的流量为 $\Phi=\iint_\Sigma P\mathrm{d}y\mathrm{d}z+Q\mathrm{d}z\mathrm{d}x+R\mathrm{d}x\mathrm{d}y$。
+
+\textbf{定义}\quad 设 $\Sigma$ 为光滑有向曲面，$R(x,y,z)$ 在 $\Sigma$ 上有界。把 $\Sigma$ 分成 $n$ 小块 $\Delta S_i$，其在 $xOy$ 面上的投影为 $(\Delta S_i)_{xy}$，在其上任取一点。若 $\lambda\to0$ 时和 $\sum R(\xi_i,\eta_i,\zeta_i)(\Delta S_i)_{xy}$ 的极限总存在且与分法、取法无关，则称之为 $R$ 在 $\Sigma$ 上\textbf{对坐标 $x,y$ 的曲面积分}；同理有 $\iint_\Sigma P\mathrm{d}y\mathrm{d}z$、$\iint_\Sigma Q\mathrm{d}z\mathrm{d}x$，合写为
+\keyformula{\iint_\Sigma P\,\mathrm{d}y\,\mathrm{d}z+Q\,\mathrm{d}z\,\mathrm{d}x+R\,\mathrm{d}x\,\mathrm{d}y}
+闭曲面记 $\oiint_\Sigma$。\textbf{性质}：线性；\textbf{有向性} $\iint_{-\Sigma}=-\iint_\Sigma$；对曲面可加（侧一致）。
+
+\subsection{计算法（一投、二代、三定号）}
+
+\keyformula{\iint_\Sigma R(x,y,z)\,\mathrm{d}x\,\mathrm{d}y=\pm\iint_{D_{xy}}R\bigl(x,y,z(x,y)\bigr)\mathrm{d}x\,\mathrm{d}y}
+$\Sigma$ 取\textbf{上侧}取"$+$"、取\textbf{下侧}取"$-$"。同理
+\[
+\iint_\Sigma P\,\mathrm{d}y\mathrm{d}z=\pm\iint_{D_{yz}}P(x(y,z),y,z)\,\mathrm{d}y\,\mathrm{d}z\quad(\text{前侧}+,\ \text{后侧}-),
+\]
+\[
+\iint_\Sigma Q\,\mathrm{d}z\mathrm{d}x=\pm\iint_{D_{zx}}Q(x,y(z,x),z)\,\mathrm{d}z\,\mathrm{d}x\quad(\text{右侧}+,\ \text{左侧}-).
+\]
+三项不能合成一个二重积分时，须分别投影到三个坐标面各算一次再相加。
+
+\corepoint{第二类\textbf{与侧有关}，符号由"法向量与坐标轴正向是否同向"决定（上/前/右取正，下/后/左取负）。被积函数里的变量必须用曲面方程消去一个；若 $\Sigma$ 在某坐标面上的投影是曲线（面积 $0$），对应项积分为 $0$，可先划掉。}
+
+\subsection{两类曲面积分之间的联系}
+
+设 $\cos\alpha,\cos\beta,\cos\gamma$ 是有向曲面 $\Sigma$ 在点 $(x,y,z)$ 处\textbf{法向量的方向余弦}，由 $\mathrm{d}y\mathrm{d}z=\cos\alpha\,\mathrm{d}S$ 等得
+\keyformula{\iint_\Sigma P\,\mathrm{d}y\mathrm{d}z+Q\,\mathrm{d}z\mathrm{d}x+R\,\mathrm{d}x\mathrm{d}y=\iint_\Sigma(P\cos\alpha+Q\cos\beta+R\cos\gamma)\,\mathrm{d}S}
+向量形式：$\iint_\Sigma\boldsymbol A\cdot\mathrm{d}\boldsymbol S=\iint_\Sigma\boldsymbol A\cdot\boldsymbol n\,\mathrm{d}S$。
+
+\section{高斯公式·通量与散度}
 \subsection{高斯公式}
 
-定理10.3\quad 则有高斯公式
-\[
-\oiint_\Sigma P\,dydz+Q\,dzdx+R\,dxdy
-=\iiint_V\left(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}\right)dV
-\]
-即
-\[
-\oiint_\Sigma \boldsymbol{F}\cdot d\boldsymbol{S}
-=\iiint_V \mathrm{div}\,\boldsymbol{F}\,dV
-\]
-其中
+\textbf{定理 1（高斯公式）}\quad 设空间闭区域 $\Omega$ 由分片光滑的闭曲面 $\Sigma$ 围成，$P,Q,R$ 在 $\Omega$ 上具有一阶连续偏导数，则
+\keyformula{\iiint_\Omega\left(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}\right)\mathrm{d}V=\oiint_\Sigma P\,\mathrm{d}y\mathrm{d}z+Q\,\mathrm{d}z\mathrm{d}x+R\,\mathrm{d}x\mathrm{d}y}
+其中 $\Sigma$ 是 $\Omega$ 的整个边界曲面的\textbf{外侧}；若用法向量的方向余弦表示，右端即 $\oiint_\Sigma(P\cos\alpha+Q\cos\beta+R\cos\gamma)\mathrm{d}S$。
 
-\subsection{向量场的通量与散度}
+\textbf{沿任意闭曲面的曲面积分为零的条件}\quad 若 $P,Q,R$ 在空间二维单连通区域 $G$ 内有一阶连续偏导，则 $\oiint_\Sigma P\mathrm{d}y\mathrm{d}z+Q\mathrm{d}z\mathrm{d}x+R\mathrm{d}x\mathrm{d}y$ 在 $G$ 内与所取闭曲面无关（$\Sigma\subset G$）的充要条件是 $\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}=0$ 在 $G$ 内恒成立。
 
-定义10.4\quad
+\corepoint{四条\textbf{必查}：$\Sigma$ \textbf{闭}；取\textbf{外侧}（内侧则整体变号）；$P,Q,R$ 在 $\Omega$ 上一阶偏导连续（有奇点须用小球面挖去，在复连通区域上用公式）；$\Sigma$ 不闭时先\textbf{补面}（补平面片、方向也取外侧），算完减去补面上的积分——补面是最常考的操作。}
 
-\section{斯托克斯公式、环量与旋度}
+\subsection{通量与散度}
+
+设 $\boldsymbol A=P\boldsymbol i+Q\boldsymbol j+R\boldsymbol k$，$\Sigma$ 为场内一片有向曲面，$\boldsymbol n$ 为单位法向量，则 $\Phi=\iint_\Sigma\boldsymbol A\cdot\boldsymbol n\,\mathrm{d}S=\iint_\Sigma\boldsymbol A\cdot\mathrm{d}\boldsymbol S$ 称为 $\boldsymbol A$ 通过 $\Sigma$ 向着指定侧的\textbf{通量}。
+
+\textbf{定义（散度）}\quad 设 $\boldsymbol A$ 在点 $M$ 的某邻域内有一阶连续偏导数，则称
+\keyformula{\mathrm{div}\,\boldsymbol A=\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}}
+为 $\boldsymbol A$ 在点 $M$ 处的\textbf{散度}，即 $\mathrm{div}\,\boldsymbol A=\nabla\cdot\boldsymbol A$（$\nabla=\boldsymbol i\partial_x+\boldsymbol j\partial_y+\boldsymbol k\partial_z$）。
+
+散度是\textbf{数量}，刻划场在该点是否有源：$\mathrm{div}\,\boldsymbol A>0$ 有正源，$<0$ 有负源（汇），$=0$ 无源；处处为零的场称\textbf{无源场}。用散度写高斯公式即 $\iiint_\Omega\mathrm{div}\,\boldsymbol A\,\mathrm{d}V=\oiint_\Sigma\boldsymbol A\cdot\mathrm{d}\boldsymbol S$。
+
+\corepoint{散度是\textbf{数}不是向量：$\mathrm{grad}$ 数量$\to$向量，$\mathrm{div}$ 向量$\to$数量，$\mathrm{rot}$ 向量$\to$向量，三者不可混。高斯公式中散度须配\textbf{外侧}法向量，题目给内侧时通量整体反号。}
+
+\section{斯托克斯公式·环流量与旋度}
 \subsection{斯托克斯公式}
 
-\subsection{向量场的环量与旋度}
+\textbf{定理 1（斯托克斯公式）}\quad 设 $\Gamma$ 为分段光滑的空间有向闭曲线，$\Sigma$ 是以 $\Gamma$ 为边界的分片光滑有向曲面，$\Gamma$ 的正向与 $\Sigma$ 的侧符合\textbf{右手规则}（四指依 $\Gamma$ 绕行方向时拇指指向与 $\Sigma$ 上法向量同向，此时称 $\Gamma$ 是 $\Sigma$ 的正向边界曲线）。若 $P,Q,R$ 在 $\Sigma$（连同 $\Gamma$）上有一阶连续偏导数，则
+\keyformula{\iint_\Sigma\left(\frac{\partial R}{\partial y}-\frac{\partial Q}{\partial z}\right)\mathrm{d}y\mathrm{d}z+\left(\frac{\partial P}{\partial z}-\frac{\partial R}{\partial x}\right)\mathrm{d}z\mathrm{d}x+\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\mathrm{d}x\mathrm{d}y=\oint_\Gamma P\,\mathrm{d}x+Q\,\mathrm{d}y+R\,\mathrm{d}z}
+行列式记法（按第一行展开，$\partial_y$ 与 $R$ 的"积"理解为 $\partial R/\partial y$）：
+\[
+\iint_\Sigma
+\begin{vmatrix}
+\mathrm{d}y\,\mathrm{d}z & \mathrm{d}z\,\mathrm{d}x & \mathrm{d}x\,\mathrm{d}y\\
+\partial_y & \partial_z & \partial_x\\
+P & Q & R
+\end{vmatrix}
+=\oint_\Gamma P\,\mathrm{d}x+Q\,\mathrm{d}y+R\,\mathrm{d}z .
+\]
+若 $\Sigma$ 是 $xOy$ 面上的平面闭区域，斯托克斯公式即退化为格林公式——\textbf{格林公式是其特例}。
+
+\subsection{空间曲线积分与路径无关的条件}
+
+设 $G$ 是空间二维单连通区域（$G$ 内任一闭曲面所围区域全属于 $G$），$P,Q,R$ 在 $G$ 内有一阶连续偏导数，则 $\int_\Gamma P\mathrm{d}x+Q\mathrm{d}y+R\mathrm{d}z$ 在 $G$ 内与路径无关的充要条件是
+\[
+\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x},\qquad
+\frac{\partial Q}{\partial z}=\frac{\partial R}{\partial y},\qquad
+\frac{\partial R}{\partial x}=\frac{\partial P}{\partial z}
+\]
+在 $G$ 内恒成立。此时 $P\mathrm{d}x+Q\mathrm{d}y+R\mathrm{d}z$ 是某 $u(x,y,z)$ 的全微分，且 $\int_\Gamma=u(B)-u(A)$。
+
+\subsection{环流量与旋度}
+
+设 $\boldsymbol A=P\boldsymbol i+Q\boldsymbol j+R\boldsymbol k$，$\Gamma$ 是场内一条有向闭曲线，$\boldsymbol\tau$ 是 $\Gamma$ 上与 $\Gamma$ 方向一致的单位切向量，则 $\oint_\Gamma\boldsymbol A\cdot\boldsymbol\tau\,\mathrm{d}s=\oint_\Gamma P\mathrm{d}x+Q\mathrm{d}y+R\mathrm{d}z$ 称为 $\boldsymbol A$ 沿 $\Gamma$ 的\textbf{环流量}。
+
+\textbf{定义（旋度）}\quad 设 $\boldsymbol A$ 在点 $M$ 的某邻域内有一阶连续偏导数，则称向量
+\keyformula{\mathrm{rot}\,\boldsymbol A=\left(\frac{\partial R}{\partial y}-\frac{\partial Q}{\partial z}\right)\boldsymbol i+\left(\frac{\partial P}{\partial z}-\frac{\partial R}{\partial x}\right)\boldsymbol j+\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\boldsymbol k}
+为 $\boldsymbol A$ 在 $M$ 处的\textbf{旋度}，即
+\[
+\mathrm{rot}\,\boldsymbol A=
+\begin{vmatrix}
+\boldsymbol i & \boldsymbol j & \boldsymbol k\\[6pt]
+\dfrac{\partial}{\partial x} & \dfrac{\partial}{\partial y} & \dfrac{\partial}{\partial z}\\[8pt]
+P & Q & R
+\end{vmatrix}
+=\nabla\times\boldsymbol A .
+\]
+若 $\mathrm{rot}\,\boldsymbol A=\boldsymbol 0$，称 $\boldsymbol A$ 为\textbf{无旋场}（此时它是保守场，存在势函数 $u$ 使 $\boldsymbol A=\nabla u$）。用旋度写斯托克斯公式：$\iint_\Sigma\mathrm{rot}\,\boldsymbol A\cdot\boldsymbol n\,\mathrm{d}S=\oint_\Gamma\boldsymbol A\cdot\mathrm{d}\boldsymbol r$，即"旋度通过 $\Sigma$ 的通量等于沿其边界 $\Gamma$ 的环流量"。
+
+\corepoint{斯托克斯公式三要素：$\Gamma$ 与 $\Sigma$ 的\textbf{方向匹配}（右手规则，绕行方向反了结果整体变号）；$P,Q,R$ 在 $\Sigma$ 上一阶偏导连续；$\Sigma$ 可任选（只要边界是 $\Gamma$），故常把空间闭曲线补成\textbf{平面片}使面积分最好算。$\mathrm{rot}\,\boldsymbol A$ 的三个分量与公式左端三项一一对应，记不住就记行列式。}

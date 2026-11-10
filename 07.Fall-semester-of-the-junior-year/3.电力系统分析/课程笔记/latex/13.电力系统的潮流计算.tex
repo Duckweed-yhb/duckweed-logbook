@@ -1,0 +1,316 @@
+﻿% ============================================================
+% 第 11 章  电力系统的潮流计算
+% （教材：何仰赞、温增银《电力系统分析》下册 第 11 章）
+% 结构对齐 11.1—11.5；例题、习题不录
+% ============================================================
+
+\chapter{电力系统的潮流计算}
+
+潮流计算要回答：\textbf{给定网络结构与部分节点的功率、电压，求全网各节点的电压和各支路的功率分布}。
+它是稳态分析的核心，也是短路、稳定、经济调度、调压计算的公共基础。
+手算路线（开式网、两端供电网）给出物理图像，计算机路线（牛顿—拉夫逊、PQ 分解）给出工程算法，
+两条线在本章并行展开。
+
+\section{开式网络的电压和功率分布计算}
+
+\subsection{已知供电点电压和负荷节点功率时的计算方法}
+
+开式网（放射式、干线式）中每个负荷只有唯一供电路径，故功率方向确定，
+可逐段推算。给定：首端（供电点）电压 $U_A$、各负荷节点功率 $S_i$；求各节点电压与各段功率。
+
+\textbf{计算步骤（三步一迭代）}：
+\begin{enumerate}
+  \item \textbf{设全网电压为额定值} $U_i=U_N$（第一次近似）。
+        因为功率损耗与电压平方成反比，而电压偏差通常不超过 $\pm10\%$，故这一步误差不大。
+  \item \textbf{由末端向首端}逐段计算功率损耗与功率分布：
+        \begin{equation}
+          \Delta S_i=\frac{P_i^{2}+Q_i^{2}}{U_i^{2}}\left(R_i+jX_i\right),
+          \qquad S_{i-1}=S_i+\Delta S_i+\Delta S_{Ti},
+        \end{equation}
+        其中 $\Delta S_{Ti}$ 为该段变压器绕组的功率损耗（若有）。
+  \item \textbf{由首端向末端}用已知的首端电压与上一步求得的功率，逐段计算电压降落，
+        得各节点电压：
+        \begin{equation}
+          \Delta U_i=\frac{P_iR_i+Q_iX_i}{U_i},\qquad
+          \delta U_i=\frac{P_iX_i-Q_iR_i}{U_i},
+        \end{equation}
+        $U_{i-1}=\sqrt{(U_i+\Delta U_i)^{2}+(\delta U_i)^{2}}$。
+  \item \textbf{校验}：若算得的节点电压与第 1 步假设值相差较大（一般 $>5\%$），
+        用新电压回到第 2 步重算。通常迭代 $1\sim2$ 次即满足工程精度。
+\end{enumerate}
+
+\begin{table}[htbp]
+  \centering
+  \caption{开式网手算的两个方向}
+  \small
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.28\linewidth}p{0.44\linewidth}@{}}
+    \toprule
+    方向 & 算什么 & 用什么电压 \\
+    \midrule
+    末端 $\to$ 首端 & 功率损耗、各段功率 & 假设（或上次迭代）的节点电压 \\
+    首端 $\to$ 末端 & 电压降落、各节点电压 & 已知首端电压与该段功率 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{“先算功率、后算电压”是手算开式网的基本次序，原因是\textbf{功率损耗只依赖电压的近似值，
+而电压降落依赖已求得的功率}。若颠倒次序，就要解非线性方程，失去手算的可能。
+这一“功率单向推算 $+$ 电压单向推算”的交替，正是牛顿法“解耦”思想的手算原型。}
+
+\subsection{两级电压的开式电力网计算}
+
+当网络含变压器、且首末两端处于不同电压等级时，有两种处理方式：
+\begin{enumerate}
+  \item \textbf{归算法}：把变压器二次侧各元件阻抗、电压、功率全部折算到一次侧
+        （乘 $k^{2}$、$k$），化成单一电压级网络，算出结果再折算回原侧。
+        折算后变压器只表现为串联阻抗 $R_T+jX_T$，处理最简单。
+  \item \textbf{分别计算法}：在各自电压级内计算，把变压器的电压降落单独处理。
+        此时须注意变压器的\textbf{实际变比}（含分接头）对两侧电压的约束：
+        \begin{equation}
+          U_2=\frac{U_1-\Delta U_T}{k},
+        \end{equation}
+        其中 $\Delta U_T=\left(P R_T+Q X_T\right)/U_1$ 为归算到一次侧的变压器电压降落。
+\end{enumerate}
+实用中多用归算法，因其把“变比”这一非线性环节消去了。
+若用标幺制并以平均额定电压为基准，变压器标幺变比为 $1$，归算自动完成（第 2 章）。
+
+\section{简单闭式网络的功率分布计算}
+
+\subsection{两端供电网络的功率分布}
+
+两端供电网（含环网）中功率方向不预先知道，不能像开式网那样逐段推算。
+基本结论是：\textbf{功率按各支路共轭阻抗的反比分配}，再加上由两端电压不等引起的\textbf{循环功率}。
+
+设两端电源 $A$、$B$，负荷 $S_i$ 接于节点 $i$，支路阻抗 $Z_{AB}$（$A$ 到 $B$ 的总阻抗），
+$Z_{iB}$ 为节点 $i$ 到 $B$ 的阻抗，则 $A$ 端送出的功率为
+\keyformula{\dot S_A=\frac{\sum_i\dot S_i\hat Z_{iB}}{\hat Z_{AB}}
+  +\frac{\left(\dot U_A-\dot U_B\right)U_N}{\sqrt{3}\,\hat Z_{AB}}}
+其中 $\hat Z$ 表示共轭；第二项即\textbf{循环功率}，当 $\dot U_A=\dot U_B$ 时为零。
+$B$ 端功率由功率平衡求出：$\dot S_B=\sum_i\dot S_i-\dot S_A$。
+
+\textbf{均一网}（各段 $X/R$ 相同，如全线同型号导线）时，共轭阻抗之比等于长度之比：
+\begin{equation}
+  \dot S_A=\frac{\sum_i\dot S_iL_{iB}}{L_{AB}}+S_{cir},
+\end{equation}
+即功率按\textbf{长度反比}分配，手算极为方便。
+
+\begin{table}[htbp]
+  \centering
+  \caption{闭式网功率分布的两部分}
+  \small
+  \begin{tabular}{@{}p{0.20\linewidth}p{0.34\linewidth}p{0.36\linewidth}@{}}
+    \toprule
+    分量 & 来源 & 特点 \\
+    \midrule
+    供载功率 & 各负荷功率按共轭阻抗反比分配 & 与负荷成正比，方向随负荷而变 \\
+    循环功率 & 两端电压不等（或变比不匹配） & 与负荷无关，环流不衰减，增大网损 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{闭式电力网中的电压损耗计算}
+
+闭式网算出功率分布后，须先确定\textbf{功率分点}：功率由两侧流入该节点的位置
+（有功分点与无功分点可能不同）。以功率分点为界，把环网\textbf{解开成两个开式网}，
+再按 11.1 节的方法分别计算电压损耗。全网最大电压损耗出现在电源到功率分点的路径上。
+
+\subsection{含变压器的简单环网的功率分布}
+
+环网中含变压器时，各段电压等级不同，必须归算到同一电压级。
+若各变压器的变比与基准变比不匹配，即使两端电压相等也会产生循环功率：
+\begin{equation}
+  S_{cir}=\frac{U_N\Delta U}{\sqrt{3}\,\hat Z_{\Sigma}},
+  \qquad \Delta U=\sum k_iU_{Ni}-U_N\ \text{（变比失配引起的等值电动势）}.
+\end{equation}
+因此，环网中并列运行的变压器要求\textbf{变比尽量一致}，否则会产生额外的无功环流与网损。
+
+\subsection{环网中的潮流控制}
+
+闭式网的功率自然分布由阻抗决定，未必等于经济分布。要改变潮流，须在环路中引入
+\textbf{附加电动势}或改变阻抗：
+\begin{itemize}
+  \item \textbf{串联电容补偿}：减小某段电抗，使该段分担更多有功（也提高稳定极限）；
+  \item \textbf{串联电抗}：增大某段阻抗，迫使功率走另一路径（用于限制短路电流或均衡负载）；
+  \item \textbf{移相变压器（相位调节器）}：在环路中引入可控相角差，直接调节有功分布，
+        是控制环流最直接的手段；
+  \item \textbf{开环运行}：把环网解开，牺牲可靠性换取潮流可控。
+\end{itemize}
+
+\corepoint{环网潮流的三个必考点：（1） 循环功率与负荷无关，两端电压差（或变比失配）一存在，
+环流就存在，且全部转化为网损；（2） 功率分点是“解开环网”的位置，找错了后续电压计算全错；
+（3） 均一网按长度反比分配，是唯一可以不算阻抗的情形。}
+
+\section{复杂电力系统潮流计算的数学模型}
+
+\subsection{潮流计算的定解条件}
+
+对 $n$ 个节点的网络，节点方程 $\boldsymbol Y\dot{\boldsymbol U}=\dot{\boldsymbol I}$ 含 $2n$ 个实数未知量
+（各节点电压幅值与相角）。每个节点可给定两个量，共 $2n$ 个条件，问题才可解。
+按给定量的不同，节点分为三类：
+
+\begin{table}[htbp]
+  \centering
+  \caption{潮流计算中的节点分类}
+  \small
+  \begin{tabular}{@{}p{0.14\linewidth}p{0.22\linewidth}p{0.20\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    节点类型 & 给定 & 待求 & 典型节点 \\
+    \midrule
+    PQ 节点 & $P$、$Q$ & $U$、$\delta$ & 负荷节点、给定有功出力的发电厂（无励磁调节） \\
+    PV 节点 & $P$、$U$ & $Q$、$\delta$ & 有自动励磁调节的发电厂、调相机 \\
+    平衡节点 & $U$、$\delta$ & $P$、$Q$ & 调频厂（全系统一般只设一个） \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+平衡节点的作用是“吸收”全网的功率不平衡量（网损与给定出力的偏差），
+其 $P$、$Q$ 由计算结果给出，不预先指定。设 PQ 节点 $m$ 个、PV 节点 $n-m-1$ 个，
+则待求量为 $2m+(n-m-1)=n+m-1$ 个，方程数亦相同。
+
+\subsection{潮流计算的约束条件}
+
+数学上的解未必是物理上可接受的运行状态，须满足：
+\begin{itemize}
+  \item \textbf{电压约束}：$U_{i\min}\le U_i\le U_{i\max}$（一般 $\pm5\%\sim\pm10\%$）；
+  \item \textbf{功率约束}：发电机有功、无功出力在其上下限内；
+        节点注入功率不超过设备容量；
+  \item \textbf{稳定约束}：功角 $\delta$ 须小于稳定极限对应的角度；
+  \item \textbf{线路载流约束}：支路功率不超过热稳定极限。
+\end{itemize}
+
+\section{牛顿—拉夫逊法潮流计算}
+
+\subsection{牛顿—拉夫逊法的基本原理}
+
+设非线性方程组 $\boldsymbol f(\boldsymbol x)=\boldsymbol 0$，在初值 $\boldsymbol x^{(k)}$ 处线性化：
+\begin{equation}
+  \boldsymbol f\left(\boldsymbol x^{(k)}\right)+\boldsymbol J^{(k)}\Delta\boldsymbol x^{(k)}=\boldsymbol 0,
+  \qquad \boldsymbol J=\frac{\partial\boldsymbol f}{\partial\boldsymbol x},
+\end{equation}
+\begin{equation}
+  \Delta\boldsymbol x^{(k)}=-\left[\boldsymbol J^{(k)}\right]^{-1}\boldsymbol f\left(\boldsymbol x^{(k)}\right),
+  \qquad \boldsymbol x^{(k+1)}=\boldsymbol x^{(k)}+\Delta\boldsymbol x^{(k)}.
+\end{equation}
+$\boldsymbol J$ 称\textbf{雅可比矩阵}。牛顿法的特点是\textbf{平方收敛}（误差按平方递减），
+一般 $3\sim5$ 次迭代即达 $10^{-6}$ 精度；缺点是对初值敏感，
+初值太差可能不收敛，且每次迭代都要重新形成并分解 $\boldsymbol J$。
+
+\subsection{节点电压用直角坐标表示时的牛顿—拉夫逊法潮流计算}
+
+设 $\dot U_i=e_i+jf_i$，则节点功率
+\begin{equation}
+  P_i+jQ_i=\dot U_i\sum_{j}\hat Y_{ij}\hat U_j ,
+\end{equation}
+实部、虚部各给出一个关于 $e$、$f$ 的二次方程。对 PQ 节点列 $\Delta P_i$、$\Delta Q_i$，
+对 PV 节点列 $\Delta P_i$ 与 $U_i^{2}=e_i^{2}+f_i^{2}$ 的偏差方程。修正方程为
+\begin{equation}
+  \begin{bmatrix}\Delta\boldsymbol P\\ \Delta\boldsymbol Q\\ \Delta\boldsymbol U^{2}\end{bmatrix}
+  =\begin{bmatrix}
+    \boldsymbol H & \boldsymbol N\\
+    \boldsymbol K & \boldsymbol L\\
+    \boldsymbol R & \boldsymbol S
+  \end{bmatrix}
+  \begin{bmatrix}\Delta\boldsymbol e\\ \Delta\boldsymbol f\end{bmatrix}.
+\end{equation}
+直角坐标的优点是功率表达式为二次多项式、雅可比元素计算简单；
+缺点是 PV 节点的电压约束要用 $e^{2}+f^{2}$ 的二次式表示，处理略繁。
+
+\subsection{节点电压用极坐标表示时的牛顿—拉夫逊法潮流计算}
+
+设 $\dot U_i=U_i\angle\delta_i$，则节点注入功率为
+\keyformula{P_i=U_i\sum_{j=1}^{n}U_j\left(G_{ij}\cos\delta_{ij}+B_{ij}\sin\delta_{ij}\right),
+  \qquad
+  Q_i=U_i\sum_{j=1}^{n}U_j\left(G_{ij}\sin\delta_{ij}-B_{ij}\cos\delta_{ij}\right)}
+其中 $\delta_{ij}=\delta_i-\delta_j$，$G_{ij}$、$B_{ij}$ 为节点导纳矩阵元素的实部、虚部。
+修正方程（对 PQ 与 PV 节点列有功、对 PQ 节点列无功）为
+\begin{equation}
+  \begin{bmatrix}\Delta\boldsymbol P\\ \Delta\boldsymbol Q\end{bmatrix}
+  =\begin{bmatrix}\boldsymbol H & \boldsymbol N\\ \boldsymbol M & \boldsymbol L\end{bmatrix}
+  \begin{bmatrix}\Delta\boldsymbol\delta\\ \Delta\boldsymbol U/U\end{bmatrix},
+\end{equation}
+\begin{equation}
+  H_{ij}=\frac{\partial P_i}{\partial\delta_j},\quad
+  N_{ij}=U_j\frac{\partial P_i}{\partial U_j},\quad
+  M_{ij}=\frac{\partial Q_i}{\partial\delta_j},\quad
+  L_{ij}=U_j\frac{\partial Q_i}{\partial U_j}.
+\end{equation}
+极坐标下 PV 节点的 $U$ 已知，故其 $\Delta U$ 与 $\Delta Q$ 不进入方程，方程阶数比直角坐标略低，
+是目前工程程序的主流形式。
+
+\begin{table}[htbp]
+  \centering
+  \caption{两种坐标的牛顿法比较}
+  \small
+  \begin{tabular}{@{}p{0.14\linewidth}p{0.30\linewidth}p{0.38\linewidth}@{}}
+    \toprule
+    比较项 & 直角坐标 & 极坐标 \\
+    \midrule
+    状态量 & $e_i$、$f_i$ & $U_i$、$\delta_i$ \\
+    功率表达式 & 二次多项式，无三角函数 & 含 $\sin$、$\cos$，计算量略大 \\
+    PV 节点处理 & 用 $U^{2}=e^{2}+f^{2}$ 约束 & 直接令 $U$ 已知，方程更少 \\
+    实用地位 & 早期程序 & 主流 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{P-Q 分解法潮流计算}
+
+\subsection{解耦的物理依据}
+
+高压电网中 $R\ll X$，由第 10 章的两个结论：
+\begin{itemize}
+  \item 有功功率的传输主要取决于\textbf{电压相角差}；
+  \item 无功功率的传输主要取决于\textbf{电压幅值差}。
+\end{itemize}
+故可近似认为 $\Delta P$ 只与 $\Delta\delta$ 有关、$\Delta Q$ 只与 $\Delta U$ 有关，
+即雅可比矩阵中的 $\boldsymbol N$、$\boldsymbol M$ 可以略去，方程解耦为两组低阶方程。
+
+\subsection{分解后的修正方程}
+
+\keyformula{\Delta\boldsymbol P=-\boldsymbol B'\Delta\boldsymbol\delta,\qquad
+  \Delta\boldsymbol Q=-\boldsymbol B''\frac{\Delta\boldsymbol U}{\boldsymbol U}}
+其中 $\boldsymbol B'$ 由导纳矩阵的虚部构成（略去电阻，考虑变压器变比），
+$\boldsymbol B''$ 由导纳矩阵的虚部构成（略去电阻与移相，计及并联支路）。
+两组方程的系数矩阵都是\textbf{常数矩阵}，只需在迭代前形成并三角分解一次，
+以后每次迭代只做前代、回代——这是 PQ 分解法比牛顿法快得多的原因。
+
+\subsection{特点与适用}
+
+\begin{table}[htbp]
+  \centering
+  \caption{牛顿法与 PQ 分解法的比较}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.26\linewidth}p{0.34\linewidth}@{}}
+    \toprule
+    比较项 & 牛顿—拉夫逊法 & PQ 分解法 \\
+    \midrule
+    收敛性 & 平方收敛，$3\sim5$ 次 & 线性收敛（等比），迭代次数多（$8\sim20$ 次） \\
+    每次迭代 & 重新形成、分解 $\boldsymbol J$ & 系数矩阵不变，只做前代回代 \\
+    总速度 & 中等 & 快（大规模系统优势明显） \\
+    适用 & 各类网络，含低压配网（$R$ 不可略） & 高压输电网（$R\ll X$） \\
+    精度 & 严格 & 与牛顿法同解（收敛后相同） \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{潮流计算的两条路线}
+  \small
+  \begin{tabular}{@{}p{0.14\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    路线 & 方法 & 特点 \\
+    \midrule
+    手算 & 开式网逐段推算、闭式网功率分点解开、均一网按长度分配 & 物理图像清晰，
+      只能算小系统；是理解潮流的入口 \\
+    计算机 & 牛顿法（直角/极坐标）、PQ 分解法、高斯—赛德尔法 & 通用、快速；
+      PQ 分解法适合高压大网，牛顿法适合含低压支路的网络 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{本章的答题骨架：（1） 判节点类型（PQ／PV／平衡）并数方程；
+（2） 写功率方程（极坐标两个和式）；（3） 写修正方程（牛顿法用 $\Delta P$、$\Delta Q$，
+PQ 分解法用 $\boldsymbol B'$、$\boldsymbol B''$）；（4） 说明收敛与约束校验。
+手算题则是“设额定电压 $\to$ 末端向首端算功率 $\to$ 首端向末端算电压 $\to$ 迭代校验”，
+或“两端供电网先算功率分布、找功率分点、再解成开式网”。}

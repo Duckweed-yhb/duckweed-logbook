@@ -1,90 +1,315 @@
 \chapter{留数}
 
-\section{孤立奇点与留数的定义}
-我们称复平面上的点 \( z_0 \) 是函数 \( f(z) \) 的**孤立奇点**，当且仅当 \( f(z) \) 在 \( z_0 \) 的一个去心邻域 \( B^\circ(z_0, \delta) \) 上解析。
+本章按讲义"定义—奇点分类—计算方法—无穷远点—实积分应用"五节展开，教材 \S5.4 的辐角原理与儒歇定理作为选学内容附在章末。
 
-设 \( z_0 \) 是 \( f(z) \) 的孤立奇点，其洛朗展开为
-\[
-f(z) = \sum_{n=-\infty}^{+\infty} a_n (z - z_0)^n,
-\]
-则 \( \frac{1}{z - z_0} \) 项的系数 \( a_{-1} \) 称为 \( f(z) \) 在 \( z_0 \) 处的**留数**，记为 \( \text{Res}[f(z), z_0] \)。
+\section{留数的定义和留数基本定理}
 
-对 \( \delta < R \)，有
+\subsection{孤立奇点与留数}
+
+\begin{itemize}
+    \item 复平面上的点 \(z_0\) 是 \(f(z)\) 的\textbf{孤立奇点}，当且仅当存在 \(\delta>0\)，使 \(f(z)\) 在去心邻域 \(B^\circ(z_0,\delta)=\{\,0<|z-z_0|<\delta\,\}\) 内解析。
+    \item "孤立"两字是关键：\(z=0\) 是 \(f(z)=\dfrac{1}{\sin(1/z)}\) 的奇点，但它是一串奇点 \(z_k=\dfrac{1}{k\pi}\) 的聚点，任何去心邻域里都有别的奇点，故 \textbf{不是}孤立奇点。
+\end{itemize}
+
+设 \(z_0\) 是 \(f(z)\) 的孤立奇点，则 \(f(z)\) 在 \(B^\circ(z_0,\delta)\) 内可展成洛朗级数
 \[
-\oint_{|z - z_0| = \delta} f(z) dz = 2\pi i \, \text{Res}[f(z), z_0].
+f(z)=\sum_{n=-\infty}^{+\infty}a_n(z-z_0)^n .
 \]
+其中 \(a_{-1}\)（即 \(\dfrac{1}{z-z_0}\) 项的系数）称为 \(f(z)\) 在 \(z_0\) 处的\textbf{留数}（residue），记作 \(\operatorname{Res}[f(z),z_0]\)。留数只由 \(a_{-1}\) 决定，与展开式的其余部分无关。
+
+\keyformula{\operatorname{Res}[f(z),z_0]=a_{-1}=\frac{1}{2\pi i}\oint_{|z-z_0|=\delta}f(z)\,dz\quad(0<\delta<R)}
+
+这个等式来自洛朗级数的逐项积分：对任意整数 \(n\)，\(\displaystyle\oint_{|z-z_0|=\delta}(z-z_0)^n dz\) 当 \(n=-1\) 时为 \(2\pi i\)、当 \(n\neq-1\) 时为 \(0\)，故只有 \(a_{-1}\) 项在积分中存活。
 
 \subsection{留数基本定理}
-设 \( C \) 是简单光滑闭曲线，\( f(z) \) 在 \( C \) 所围闭区域上除内部点 \( a_1, a_2, \dots, a_n \) 外解析，则
-\[
-\oint_C f(z) dz = 2\pi i \sum_{k=1}^n \text{Res}[f(z), a_k].
-\]
 
-对有界光滑连通闭区域 \( D \)，有
-\[
-\int_{\partial D} f(z) dz = 2\pi i \sum_{k=1}^n \text{Res}[f(z), a_k].
-\]
-
-\section{孤立奇点的分类}
-设 \( z_0 \) 是 \( f(z) \) 的孤立奇点，其洛朗展开为 \( \sum_{n=-\infty}^{+\infty} a_n (z - z_0)^n \)：
-\begin{itemize}[leftmargin=2em]
-    \item 负部分为零：\( z_0 \) 是**可去奇点**；
-    \item 负部分为有限项：\( z_0 \) 是**极点**；
-    \item 负部分为无限项：\( z_0 \) 是**本性奇点**。
+\begin{itemize}
+    \item \textbf{引理}：设 \(f(z)\) 在去心开圆盘 \(B^\circ(z_0,R)\) 上解析，则当 \(0<\delta<R\) 时 \(\displaystyle\oint_{|z-z_0|=\delta}f(z)dz=2\pi i\operatorname{Res}[f(z),z_0]\)。
+    \item \textbf{留数基本定理}：设 \(C\) 是一条简单光滑闭曲线（取正向），\(f(z)\) 在 \(C\) 所围闭区域上除内部有限个孤立奇点 \(a_1,a_2,\dots,a_n\) 外解析，则
 \end{itemize}
 
-\( z_0 \) 是可去奇点 \( \iff \lim_{z \to z_0} f(z) \) 存在有限；
-\( z_0 \) 是极点 \( \iff \lim_{z \to z_0} f(z) = \infty \)；
-\( z_0 \) 是本性奇点 \( \iff \lim_{z \to z_0} f(z) \)（广义意义下）不存在。
+\keyformula{\oint_C f(z)\,dz=2\pi i\sum_{k=1}^{n}\operatorname{Res}[f(z),a_k]}
 
-\subsection{零点与极点的关系}
-\( z_0 \) 是 \( f(z) \) 的 \( m \) 阶零点 \( \iff z_0 \) 是 \( \frac{1}{f(z)} \) 的 \( m \) 阶极点。
+证明思路：在 \(C\) 内作两两不交的小圆盘 \(B(a_k,\varepsilon_k)\)，在挖去这些小圆盘的闭区域上用柯西积分定理得 \(\oint_C=\sum_k\oint_{|z-a_k|=\varepsilon_k}\)，再用引理。
 
-设 \( f(z) = \frac{P(z)}{Q(z)} \)，\( z_0 \) 是 \( P(z) \) 的 \( m \) 阶零点、\( Q(z) \) 的 \( n \) 阶零点：
-\begin{itemize}[leftmargin=2em]
-    \item \( m > n \)：\( z_0 \) 是 \( f(z) \) 的 \( m-n \) 阶零点；
-    \item \( m = n \)：\( z_0 \) 是 \( f(z) \) 的可去奇点；
-    \item \( m < n \)：\( z_0 \) 是 \( f(z) \) 的 \( n-m \) 阶极点。
+对\textbf{有界光滑连通闭区域} \(D\)（可以带洞）有更一般的写法：设 \(f(z)\) 在 \(D\) 上除内部点 \(a_1,\dots,a_n\) 外解析，则
+\[
+\int_{\partial D}f(z)\,dz=2\pi i\sum_{k=1}^{n}\operatorname{Res}[f(z),a_k],
+\]
+其中 \(\partial D\) 的外边界取逆时针、各内边界取顺时针（正向即"区域始终在左侧"）。
+
+\corepoint{留数定理只统计 \textbf{闭曲线内部} 的奇点；边界上的奇点不能直接计入，也不能让积分路径穿过奇点。带洞区域的内边界要取 \textbf{顺时针}（反向），否则符号整体反号。}
+
+\section{孤立奇点的分类和性质}
+
+设 \(z_0\) 是 \(f(z)\) 的孤立奇点，洛朗展开中 \(n<0\) 的部分称为\textbf{负部}（主要部分），按负部形态分为三类：
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+类型 & 洛朗展开负部 & 极限刻画 \\
+\midrule
+可去奇点 & 无（恒为零） & \(\lim\limits_{z\to z_0}f(z)\) 存在且有限 \\
+极点 & 有限项（最高为 \((z-z_0)^{-m}\)） & \(\lim\limits_{z\to z_0}f(z)=\infty\) \\
+本性奇点 & 无限项 & \(\lim\limits_{z\to z_0}f(z)\)（广义）不存在 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{可去奇点}
+
+\textbf{命题}：\(z_0\) 是 \(f\) 的可去奇点 \(\iff \lim_{z\to z_0}f(z)\) 存在有限。
+
+由幂级数理论，负部为零时右端在 \(B(z_0,r)\) 内解析，故极限存在；反之极限有限则 \(f\) 在去心邻域有界，由积分估值不等式可证各 \(a_{-n}=0\)。补充定义 \(f(z_0)=\lim_{z\to z_0}f(z)\) 后 \(z_0\) 即为解析点，这正是"可去"的含义。
+
+\textbf{开映射定理}：设 \(f(z)\) 在 \(z_0\) 处解析且在 \(z_0\) 的某邻域内不是常值函数，则对任一充分小的 \(\varepsilon>0\)，存在 \(\rho>0\) 使 \(B(f(z_0),\rho)\subset f\big(B(z_0,\varepsilon)\big)\)，即非常值解析函数把开集映成开集。
+
+\subsection{零点、极点及其阶数}
+
+\begin{itemize}
+    \item \(z_0\) 是 \(f(z)\) 的 \(m\) 阶\textbf{零点}，当且仅当
+    \[
+    f(z_0)=f'(z_0)=\cdots=f^{(m-1)}(z_0)=0,\qquad f^{(m)}(z_0)\neq 0 .
+    \]
+    等价地，\(f(z)=(z-z_0)^m g(z)\)，其中 \(g(z)\) 在 \(z_0\) 处解析且 \(g(z_0)\neq 0\)；此时泰勒展开从 \(a_m(z-z_0)^m\) 项开始。
+    \item \(z_0\) 是 \(f(z)\) 的 \(m\) 阶\textbf{极点}，当且仅当洛朗展开的负部恰为
+    \[
+    a_{-m}(z-z_0)^{-m}+\cdots+a_{-1}(z-z_0)^{-1},\qquad a_{-m}\neq 0,
+    \]
+    即主部首项为 \((z-z_0)^{-m}\)。
 \end{itemize}
 
-\subsection{Picard 大定理}
-设 \( z_0 \) 是 \( f(z) \) 的本性奇点，\( f(z) \) 在去心邻域 \( B^\circ(z_0, \delta) \) 上解析，则 \( \mathbb{C} \setminus f(B^\circ(z_0, \delta)) \) 中至多有一个复数。
+\textbf{命题}：有限阶零点都是孤立的。设 \(z_0\) 是 \(f\) 的 \(m\) 阶零点，则在 \(z_0\) 的某去心邻域内 \(f(z)\neq 0\)。
 
+\textbf{零点与极点的对偶定理}：\(z_0\) 是 \(f(z)\) 的 \(m\) 阶零点 \(\iff\) \(z_0\) 是 \(\dfrac{1}{f(z)}\) 的 \(m\) 阶极点。
+
+\corepoint{这个对偶是把"判断极点阶数"转化为"判断零点阶数"的桥梁：遇到 \(f(z)\) 结构复杂（如 \(1/\sin^2 z\)），先看分母 \(\sin^2 z\) 的零点阶数更省力。}
+
+\textbf{极点判定定理}：\(z_0\) 是 \(f(z)\) 的极点 \(\iff\lim_{z\to z_0}f(z)=\infty\)。
+
+\textbf{分式函数的阶数推论}：设 \(f(z)=\dfrac{P(z)}{Q(z)}\)，\(P,Q\) 在区域 \(D\) 内解析，\(z_0\) 分别是 \(P,Q\) 的 \(m\) 阶和 \(n\) 阶零点，则
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+条件 & \(z_0\) 对 \(f\) 的类型 & 说明 \\
+\midrule
+\(m>n\) & \((m-n)\) 阶零点 & 分子"更强" \\
+\(m=n\) & 可去奇点 & 极限 \(\lim f=\dfrac{P^{(m)}(z_0)}{Q^{(n)}(z_0)}\neq 0\) 有限 \\
+\(m<n\) & \((n-m)\) 阶极点 & 分母"更强" \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{极点的局部取值}：设 \(z_0\) 是 \(f(z)\) 的极点，则在 \(z_0\) 的某去心邻域内 \(\{|f(z)|>\rho\}\) 包含一个 \(\{|z-z_0|<\delta\}\)，这就是 \(\lim f=\infty\) 的确切含义。
+
+\subsection{本性奇点}
+
+\textbf{定理}：\(z_0\) 是 \(f(z)\) 的本性奇点 \(\iff\) \(\lim_{z\to z_0}f(z)\) 在广义意义下不存在。
+
+典型例子是 \(f(z)=e^{1/z}\) 在 \(z=0\)：沿正实轴 \(z\to0^+\) 时 \(e^{1/z}\to+\infty\)，沿负实轴 \(z\to0^-\) 时 \(e^{1/z}\to0\)，沿虚轴 \(z=iy\to0\) 时 \(e^{-i/y}\) 不趋于定值。方向极限互不相同，故极限不存在。
+
+\textbf{Picard 大定理}：设 \(z_0\) 是 \(f(z)\) 的本性奇点，\(f\) 在 \(B^\circ(z_0,\delta)\) 上解析，则 \(\mathbb{C}\setminus f\big(B^\circ(z_0,\delta)\big)\) 中至多含一个复数。即本性奇点附近函数取遍几乎整个复平面（\(e^{1/z}\) 取不到 \(0\)，\(\sin(1/z)\) 取遍 \(\mathbb{C}\)）。
+
+\textbf{复合函数判定推论}：设 \(f(z)=\dfrac{g(z)}{h(z)}\)，\(z_0\) 是 \(f\) 的本性奇点（即 \(h\) 的行为"失控"），则
+\begin{enumerate}[label=(\arabic*)]
+    \item 若 \(z_0\) 是 \(g\) 的本性奇点，则 \(z_0\) 也是 \(f\) 的本性奇点；
+    \item 若 \(z_0\) 是 \(g\) 的解析点或可去奇点且 \(\lim\limits_{z\to z_0}g(z)\neq 0\)，则 \(z_0\) 是 \(f\) 的本性奇点；
+    \item 若 \(z_0\) 是 \(g\) 的 \(m\) 阶零点或 \(m\) 阶极点，则 \(z_0\) 是 \(f\) 的本性奇点。
+\end{enumerate}
+第 (3) 条常用于判定 \(e^{1/z}\tan z\)、\(\dfrac{1}{\tan z}\) 这类"零点与本性奇点相乘"的情形。
 \section{留数的计算}
-\begin{enumerate}[leftmargin=2em]
-    \item \textbf{线性性}：
+
+\subsection{基本规则}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{线性性}：设 \(z_0\) 是 \(f,g\) 的孤立奇点，则
     \[
-    \begin{split}
-    \text{Res}\left[f(z) \pm g(z), z_0\right] &= \text{Res}\left[f(z), z_0\right] \pm \text{Res}\left[g(z), z_0\right], \\
-    \text{Res}\left[a f(z), z_0\right] &= a \text{Res}\left[f(z), z_0\right], \quad a \in \mathbb{C}.
-    \end{split}
+    \operatorname{Res}[f\pm g,z_0]=\operatorname{Res}[f,z_0]\pm\operatorname{Res}[g,z_0],\qquad
+    \operatorname{Res}[af,z_0]=a\operatorname{Res}[f,z_0],\quad a\in\mathbb{C}.
     \]
-    \item 若 \( z_0 \) 是可去奇点，则 \( \text{Res}\left[f(z), z_0\right] = 0 \)。
-    \item 若 \( z_0 \) 是 \( m \) 阶极点，则
-    \[
-    \text{Res}\left[f(z), z_0\right] = \frac{1}{(m-1)!} \lim_{z \to z_0} \frac{d^{m-1}}{dz^{m-1}} \left[(z - z_0)^m f(z)\right].
-    \]
-    \item 若 \( f(z) = \frac{g(z)}{h(z)} \)，\( z_0 \) 是 \( h(z) \) 的一阶零点且不是 \( g(z) \) 的零点，则
-    \[
-    \text{Res}\left[f(z), z_0\right] = \frac{g(z_0)}{h'(z_0)}.
-    \]
+    \item \textbf{可去奇点}：若 \(z_0\) 是 \(f\) 的可去奇点，则 \(\operatorname{Res}[f(z),z_0]=0\)。
+    \item \textbf{\(m\) 阶极点}：
 \end{enumerate}
 
-\section{无穷远点的留数}
-无穷远点 \( \infty \) 是 \( f(z) \) 的孤立奇点，当且仅当存在 \( R>0 \)，使得 \( f(z) \) 在 \( |z|>R \) 上解析。
+\keyformula{\operatorname{Res}[f(z),z_0]=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{\,m-1}}{dz^{\,m-1}}\Big[(z-z_0)^m f(z)\Big]}
 
-\( \infty \) 是 \( f(z) \) 的可去奇点（\( m \) 阶极点、本性奇点）\( \iff 0 \) 是 \( g(\xi) = f\left( \frac{1}{\xi} \right) \) 的可去奇点（\( m \) 阶极点、本性奇点）。
+证明：\((z-z_0)^mf(z)=a_{-m}+a_{-m+1}(z-z_0)+\cdots+a_{-1}(z-z_0)^{m-1}+\cdots\)，求 \(m-1\) 阶导并令 \(z\to z_0\) 即得 \((m-1)!\,a_{-1}\)。
 
-留数定义：
+当 \(m=1\) 时公式退化为最常用的
 \[
-\text{Res}[f(z), \infty] := -\text{Res}\left[ f\left( \frac{1}{\xi} \right) \frac{1}{\xi^2}, 0 \right].
+\operatorname{Res}[f(z),z_0]=\lim_{z\to z_0}(z-z_0)f(z).
 \]
 
-若 \( f(z) \) 在扩充复平面上只有有限多个奇点 \( \{a_1, \dots, a_n, \infty\} \)，则
+\begin{enumerate}[label=(\arabic*),start=4]
+    \item \textbf{一阶极点（分子分母形式）}：设 \(f(z)=\dfrac{g(z)}{h(z)}\)，\(g,h\) 在 \(z_0\) 处解析，\(z_0\) 是 \(h\) 的一阶零点且 \(g(z_0)\neq 0\)，则
+\end{enumerate}
+
+\keyformula{\operatorname{Res}\!\left[\frac{g(z)}{h(z)},z_0\right]=\frac{g(z_0)}{h'(z_0)}}
+
+\subsection{计算步骤与选择}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+奇点类型 & 首选方法 & 备注 \\
+\midrule
+可去奇点 & 直接写 \(0\) & 不必展开 \\
+一阶极点 & \(\lim (z-z_0)f(z)\) 或 \(g(z_0)/h'(z_0)\) & 后者要求 \(h'(z_0)\neq 0\) \\
+\(m\) 阶极点（\(m\ge 2\)） & 求导公式 & 求导次数多时改用展开 \\
+本性奇点 & 洛朗展开取 \(a_{-1}\) & 唯一可行的方法 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{一般步骤}：先定位全部奇点并判断类型；可去奇点记 \(0\)，极点按阶数选公式，高阶级点与本性奇点回到洛朗展开；闭路内奇点太多时改算闭路外（含 \(\infty\)）的留数，见 \S\ref{sec:inf-residue}。
+
+\corepoint{三类常见错误：(1) \(m\) 阶极点漏掉因子 \(\dfrac{1}{(m-1)!}\)；(2) 用 \(\dfrac{g(z_0)}{h'(z_0)}\) 时忘记验证 \(h'(z_0)\neq 0\)（如 \(h(z)=\sin^2 z\) 在 \(z=0\) 处 \(h'(0)=0\)，是二阶极点，不能套）；(3) 对 \(e^{1/z}\)、\(\sin(1/z)\) 这类本性奇点硬套极点公式——必须展成级数找 \(a_{-1}\)。}
+
+\section{无穷远点处的留数}\label{sec:inf-residue}
+
+\subsection{无穷远点作为孤立奇点}
+
+\begin{itemize}
+    \item 无穷远点 \(\infty\) 是 \(f(z)\) 的\textbf{孤立奇点}，当且仅当存在 \(R>0\)，使 \(f(z)\) 在 \(\{|z|>R\}\) 上解析。
+    \item 用变换 \(\xi=\dfrac{1}{z}\) 把 \(\infty\) 搬到原点，令 \(g(\xi)=f\!\left(\dfrac{1}{\xi}\right)\)，则
+    \[
+    \begin{aligned}
+    &\infty\ \text{是}\ f\ \text{的可去奇点（}m\text{ 阶极点、本性奇点）}\\
+    \iff\ &0\ \text{是}\ g\ \text{的可去奇点（}m\text{ 阶极点、本性奇点）}.
+    \end{aligned}
+    \]
+\end{itemize}
+
+几个典型判定（把 \(\xi=1/z\) 代进去，看 \(g(\xi)\) 在 \(0\) 处的类型）：\(f(z)=az^n+\cdots+a_0\) 的 \(\infty\) 是 \(n\) 阶极点（\(g\) 在 \(0\) 有 \(n\) 阶极点）；\(1/z\) 的 \(\infty\) 是一阶零点（可去奇点）；\(\sin z\) 的 \(\infty\) 是本性奇点（\(g(\xi)=\sin(1/\xi)\)）；而 \(1/\sin(1/z)\) 的 \(\infty\) \emph{不是}孤立奇点，因为 \(g(\xi)=1/\sin\xi\) 的奇点 \(\xi=k\pi\) 以 \(0\) 为聚点。注意"\(\infty\) 是否孤立"与"\(\infty\) 属于哪一类"是两个独立问题。
+
+\subsection{无穷远点留数的定义}
+
+无穷远点的留数不能简单取成 \(g(\xi)=f(1/\xi)\) 在 \(0\) 处的留数（积分方向被反转了一次）。正确做法：把 \(f\) 在环域 \(\{|z|>R\}\) 上展开为 \(f(z)=\sum_{n=-\infty}^{+\infty}a_n z^n\)，再定义
+
+\keyformula{\operatorname{Res}[f(z),\infty]:=-\operatorname{Res}\!\left[\frac{1}{\xi^2}f\!\left(\frac{1}{\xi}\right),0\right]=-a_{-1}}
+
+这里 \(a_{-1}\) 是 \(f\) 在 \(\{|z|>R\}\) 内洛朗展开中 \(z^{-1}\) 的系数。等价地
 \[
-\sum_{k=1}^{n} \text{Res}\left[f(z), a_k\right] + \text{Res}\left[f(z), \infty\right] = 0.
+\operatorname{Res}[f(z),\infty]=-\frac{1}{2\pi i}\oint_{|z|=R}f(z)\,dz\quad(\text{顺时针取正向}),
+\]
+负号来自"绕无穷远点的正向是顺时针"。
+
+\begin{itemize}
+    \item \textbf{定理}：若 \(f(z)\) 在扩充复平面上只有有限多个奇点 \(\{a_1,a_2,\dots,a_n,\infty\}\)，则
+\end{itemize}
+
+\keyformula{\sum_{k=1}^{n}\operatorname{Res}[f(z),a_k]+\operatorname{Res}[f(z),\infty]=0}
+
+这条定理把"算 \(n\) 个有限奇点"换成"算 1 个无穷远点"，在大圆弧围道积分中尤其省事：只要求出 \(\infty\) 处的留数，围道内所有奇点留数之和立即得到（差一个负号）。
+
+\corepoint{三个易错点：(1) 定义里必须除以 \(\xi^2\)，只算 \(f(1/\xi)\) 在 \(0\) 的留数是错的方向；(2) \(a_{-1}\) 要取 \emph{环域} \(|z|>R\) 上的展开系数，不能拿 \(|z|<R\) 的展开混用；(3) 全平面留数和为零是对 \emph{扩充} 复平面说的，漏掉 \(\infty\) 就不成立。}
+
+\section{留数在实积分中的应用}
+
+课程要求掌握三类实积分，共同套路是：选一条闭围道，使待求实积分等于围道积分在极限情形下的主部，再用留数定理。
+
+\subsection{形如 \(\int_0^{2\pi}R(\cos\theta,\sin\theta)\,d\theta\) 的积分}
+
+设 \(R(u,v)\) 是二元有理函数，且在单位圆周上无极点。令 \(z=e^{i\theta}\)，则 \(\theta:0\to2\pi\) 对应 \(z\) 沿 \(|z|=1\) 正向绕一圈，且
+\[
+\cos\theta=\frac{z+z^{-1}}{2},\qquad
+\sin\theta=\frac{z-z^{-1}}{2i},
+\]
+\[
+d\theta=\frac{dz}{iz}.
 \]
 
-% ===== 以下内容原在 markdown 稿中、tex 里没有，2026-10-21 归并时以注释保留 =====
-% （片段按公式切分，断句不整；需要时手工整理进正文，整理完删掉这段注释）
-% 解析函数的孤立奇点及分类。
+\keyformula{\int_0^{2\pi}R(\cos\theta,\sin\theta)\,d\theta
+=2\pi i\sum_{|z_k|<1}\operatorname{Res}\!\left[\frac{1}{iz}R\!\left(\frac{z+z^{-1}}{2},\frac{z-z^{-1}}{2i}\right),z_k\right]}
+
+要点：只取 \textbf{单位圆内} 的极点；遇到 \(\cos2\theta,\sin2\theta\) 用 \(z^2=e^{2i\theta}\) 或先降幂，避免阶数算错。
+
+\subsection{形如 \(\int_{-\infty}^{+\infty}R(x)\,dx\) 的积分}
+
+设 \(R(z)=\dfrac{P(z)}{Q(z)}\) 为有理函数，满足
+\begin{enumerate}[label=(\arabic*)]
+    \item \(\deg Q\ge \deg P+2\)；
+    \item \(Q(z)\) 在实轴上无零点。
+\end{enumerate}
+取上半平面大围道（实轴段加上半大圆弧 \(C_R\)）。由 \(\deg\) 条件与积分估值不等式，大圆弧上的积分满足
+\[
+\lim_{R\to\infty}\int_{C_R}R(z)\,dz=0,
+\]
+于是
+
+\keyformula{\int_{-\infty}^{+\infty}R(x)\,dx=2\pi i\sum_{\operatorname{Im}z_k>0}\operatorname{Res}[R(z),z_k]}
+
+\subsection{形如 \(\int_{-\infty}^{+\infty}R(x)e^{iax}\,dx\)（\(a>0\)）的积分}
+
+设 \(R(z)=\dfrac{P(z)}{Q(z)}\)，\(\deg Q\ge \deg P+1\)，\(R\) 在实轴上的极点都是一阶的。此时大圆弧上的积分由 \textbf{Jordan 引理} 控制（\(e^{iaz}\) 在上半平面指数衰减），得到
+
+\keyformula{\int_{-\infty}^{+\infty}R(x)e^{iax}dx
+=2\pi i\!\!\sum_{\operatorname{Im}z_k>0}\!\!\operatorname{Res}[R(z)e^{iaz},z_k]
++\pi i\sum_{x_j\in\mathbb{R}}\operatorname{Res}[R(z)e^{iaz},x_j]}
+
+其中第二项的来历：实轴上的极点要用上半平面小半圆"绕过去"（顺时针），每个小半圆贡献 \(-i\pi\operatorname{Res}\)，移到等式右边即变号成 \(+\pi i\)。
+
+由此取实部、虚部得
+\[
+\int_{-\infty}^{+\infty}R(x)\cos(ax)\,dx=\operatorname{Re}\{\cdots\},\qquad
+\int_{-\infty}^{+\infty}R(x)\sin(ax)\,dx=\operatorname{Im}\{\cdots\}.
+\]
+
+\textbf{Dirichlet 积分}（后续傅里叶变换要用）：对 \(a\neq0\),
+\[
+\int_{-\infty}^{+\infty}\frac{\sin ax}{x}\,dx=\pi\operatorname{sgn}a,
+\qquad
+\int_0^{+\infty}\frac{\sin ax}{x}\,dx=\frac{\pi}{2}\operatorname{sgn}a .
+\]
+取 \(R(z)=1/z\)、实轴上一阶极点 \(x=0\)，代入上式即得。
+
+\subsection{计算步骤与易错点}
+
+\begin{enumerate}
+    \item 判断属于哪一型，检查条件（\(a>0\)？\(\deg\) 差够不够？有无实轴奇点？单位圆上是否解析？）；
+    \item 选出围道与辅助函数（三角有理式取 \(z=e^{i\theta}\)；其余取上半平面半圆，被积函数乘 \(e^{iaz}\)）；
+    \item 证明大（小）弧上积分极限为 \(0\) 或算出其贡献；
+    \item 求奇点留数，代公式，最后按需取实部/虚部。
+\end{enumerate}
+
+\corepoint{四个高频错误：(1) 忘记 \textbf{\(a>0\)} 的条件，对 \(a<0\) 直接套公式会得到相反符号的答案（此时应先令 \(x\mapsto -x\) 或取共轭）；(2) 实轴上的极点仍按"上半平面极点"计入 \(2\pi i\) 项——极性不同，系数应是 \(\pi i\)；(3) \(\deg Q\ge\deg P+2\) 与 \(\deg Q\ge\deg P+1\) 两套条件记混，后者只在乘了 \(e^{iaz}\) 时成立；(4) 三角有理式误取单位圆外的极点。}
+
+\section{辐角原理与儒歇定理}
+
+本节是教材 \S5.4（标 \(*\) 的选学内容），给出"数零点个数"的工具，它本身也是留数定理的直接应用。
+
+\subsection{对数留数与辐角原理}
+
+\textbf{定理}（对数留数定理）：设 \(f(z)\) 在光滑闭曲线 \(C\) 上解析且不为零，在 \(C\) 内除有限个极点 \(b_j\)（阶数 \(\beta_j\)）外处处解析；\(a_k\) 是 \(f\) 在 \(C\) 内的零点（阶数 \(\alpha_k\)）；\(\varphi(z)\) 在 \(C\) 上及 \(C\) 内解析，则
+\[
+\frac{1}{2\pi i}\oint_C\varphi(z)\frac{f'(z)}{f(z)}\,dz
+=\sum_{k=1}^{n}\alpha_k\varphi(a_k)-\sum_{j=1}^{m}\beta_j\varphi(b_j).
+\]
+
+\textbf{推论}（取 \(\varphi\equiv1\)）：
+\[
+\frac{1}{2\pi i}\oint_C\frac{f'(z)}{f(z)}\,dz=Z-P,
+\]
+其中 \(Z,P\) 分别是 \(f\) 在 \(C\) 内零点、极点的总个数（\(m\) 阶零点算 \(m\) 个）。左端称为 \(f(z)\) 关于 \(C\) 的\textbf{对数留数}。
+
+把左端写成 \(\dfrac{1}{2\pi i}\oint_C d\ln f(z)\)：当 \(z\) 沿 \(C\) 正向绕行一周，\(w=f(z)\) 画出不过原点的闭曲线 \(\Gamma\)，\(\ln|w|\) 复原而无改变量，辐角的改变量是 \(2\pi\) 的整数倍，恰为 \(\Gamma\) 绕原点的圈数。于是
+
+\textbf{辐角原理}：若 \(f(z)\) 在简单闭曲线 \(C\) 上及 \(C\) 内解析，且 \(C\) 上 \(f(z)\neq0\)，则 \(f\) 在 \(C\) 内零点的个数等于 \(z\) 沿 \(C\) 正向绕行一周时 \(f(z)\) 辐角的改变量除以 \(2\pi\)：
+\[
+Z=\frac{1}{2\pi}\Delta_C\arg f(z).
+\]
+
+\subsection{儒歇定理}
+
+\textbf{儒歇（Rouch\'e）定理}：设 \(f(z)\) 与 \(g(z)\) 在简单闭曲线 \(C\) 上及 \(C\) 内解析，且在 \(C\) 上满足
+\[
+|f(z)-g(z)|<|f(z)|,
+\]
+则 \(f(z)\) 与 \(g(z)\) 在 \(C\) 内有相同个数的零点。
+
+证明要点：条件即 \(C\) 上 \(\left|\dfrac{g}{f}-1\right|<1\)，故 \(F=g/f\) 把 \(C\) 映入不含原点的圆盘 \(|w-1|<1\)，\(\Gamma\) 绕原点圈数为 \(0\)，由辐角原理 \(g\) 与 \(f\) 的零点数相同。
+
+\textbf{判定方程根数的步骤}：把方程整理成 \(P(z)=0\)；在给定闭曲线（多为 \(|z|=r\)）上取 \(P\) 中"占优"的部分作 \(f\)（最高次项、常数项或系数最大的项），其余作 \(g\)；在边界上验证 \(|P-f|<|f|\)；则 \(P\) 在该区域内的零点数与 \(f\) 相同，换半径即可分出圆环内的根数。
+
+\corepoint{儒歇定理的条件必须 \emph{在闭曲线 \(C\) 上} 验证，而不是在区域内部；\(|f(z)-g(z)|<|f(z)|\) 与"\(|g|<|f|\) 且 \(P=f+g\)"是同一件事的两种写法。取 \(f\) 为最高次项时半径越大越容易占优，取 \(f\) 为常数项时只在小圆上占优——半径选得对不对，直接决定结论。}

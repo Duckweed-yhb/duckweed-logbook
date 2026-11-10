@@ -1,548 +1,565 @@
-% 恒定磁场 - 子文件（仅用于 \input 引入）
-% 电磁场课程笔记
-% 无额外依赖，可直接编译
+﻿% ==================== 第3章 恒定磁场 ====================
+% 子文件：仅正文，由 1.电磁场笔记.tex \input 引入
+% 教材：《工程电磁场导论》第3章 §3-1 ~ §3-9
+% 公式统一用 formulaBox（本目录 3.矢量分析.tex 中定义）
+% ==========================================================
 
-% -------------------------- 正文 --------------------------
-\section{恒定磁场}
+\chapter{恒定磁场}
 
-\subsection{本章内容概览}
-本章系统讲解恒定磁场的基础理论，核心知识点如下：
-\begin{itemize}
-    \item \textbf{磁感应强度}
-    \item \textbf{安培环路定律}
-    \item \textbf{恒定磁场基本方程组、分界面上的衔接条件}
-    \item \textbf{磁矢位、恒定磁场的边值问题}
-    \item \textbf{标量磁位}
-    \item \textbf{磁场能量与力}
-\end{itemize}
+\textbf{研究对象}：恒定电流（不随时间变化）所激发的磁场，场量满足 $\partial(\bullet)/\partial t=0$。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\textbf{结构对照}：静电场由 $\nabla\times\vec{E}=0$ 引入标量电位、由 $\nabla\cdot\vec{D}=\rho$ 得泊松方程；恒定磁场恰好相反——由 $\nabla\cdot\vec{B}=0$ 引入\emph{矢量}磁位 $\vec{A}$、由 $\nabla\times\vec{H}=\vec{J}$ 得泊松方程。这个"叉与点互换"是本章公式的总来源。
 
-\subsection{磁感应强度}
-\subsubsection{引言与研究思路}
-本节核心内容为\textbf{真空中恒定磁场的散度}，整体研究思路如下：
-\begin{enumerate}
-    \item \textbf{安培力定律}
-    \item \textbf{磁感应强度}（描述磁场的基本物理量，即\textbf{毕奥-萨伐尔定律}）
-    \item 线电流产生的磁感应强度表达式
-    \item 体、面电流分布的磁感应强度表达式
-    \item 以体电流为例，研究表达式的散度，引出\textbf{磁矢位}
-\end{enumerate}
+% ---------------------------------------------------------
+\section{磁感应强度}
 
-\subsubsection{安培力定律}
-安培力定律描述的是\textbf{两个载流线圈之间的作用力}，与静电场中的库仑定律地位相当。
-
-载流线圈 $I_1$ 对 $I_2$ 的作用力为：
+\subsection{安培力定律与毕奥—沙伐定律}
+真空中两细导线回路 $l$、$l'$（电流 $I$、$I'$）间的作用力为
 \begin{formulaBox}
 \[
-\vec{F} = \frac{\mu_0}{4\pi} \oint_{L_2} \oint_{L_1} \frac{I_2 d\vec{L}_2 \times \left( I_1 d\vec{L}_1 \times \vec{e}_R \right)}{R^2}
+\vec{F}=\frac{\mu_0}{4\pi}\oint_l\oint_{l'}\frac{I\,\mathrm{d}\vec{l}\times\big(I'\,\mathrm{d}\vec{l}'\times\vec{e}_R\big)}{R^2}
 \]
 \end{formulaBox}
-也可写为：
-\[
-\vec{F} = \oint_{L_2} I_2 d\vec{L}_2 \times \left( \frac{\mu_0}{4\pi} \oint_{L_1} \frac{I_1 d\vec{L}_1 \times \vec{e}_R}{R^2} \right)
-\]
+$\mu_0=4\pi\times10^{-7}\ \mathrm{H/m}$ 为真空磁导率，$\vec{e}_R$ 由 $I'\mathrm{d}\vec{l}'$ 指向 $I\mathrm{d}\vec{l}$。它与库仑定律地位相当，但含双重矢量积，方向关系复杂——根源是电流元的矢量性；且只适用于\emph{闭合}回路（恒定电流必须闭合）。
 
-其中：
-\begin{itemize}
-    \item $\mu_0$ 为\textbf{真空磁导率}，$\mu_0 = 4\pi \times 10^{-7} \, \text{H/m}$；
-    \item $R$ 为两个电流元之间的距离；
-    \item $\vec{e}_R$ 为从 $I_1 d\vec{L}_1$ 指向 $I_2 d\vec{L}_2$ 的单位矢量。
-\end{itemize}
-
-安培力定律与库仑定律相比，公式中存在复杂的方向关系，这种复杂性来源于电流元的矢量性。
-
-\subsubsection{电场与磁场的对比}
-磁场与电场的基本属性具有明确的对应关系：
-\begin{itemize}
-    \item 磁场的基本属性：对运动电荷/电流有力的作用，满足
-    \[
-    \vec{F} = \oint_{L_2} I_2 d\vec{L}_2 \times \vec{B}
-    \]
-    \item 电场的基本属性：对电荷有力的作用，满足
-    \[
-    \vec{F} = q\vec{E}
-    \]
-\end{itemize}
-
-\subsubsection{毕奥-萨伐尔定律（磁感应强度）}
-毕奥-萨伐尔定律给出了电流产生磁场的定量关系，细导线闭合回路激发的磁场为：
+把上式括号内的量理解为回路 $l'$ 在 $I\mathrm{d}\vec{l}$ 处产生的效应，定义\textbf{磁感应强度}（磁通密度）：
 \begin{formulaBox}
 \[
-\vec{B} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I' d\vec{L}' \times \vec{e}_R}{R^2} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I' d\vec{L}' \times (\vec{r} - \vec{r}')}{|\vec{r} - \vec{r}'|^3}
+\vec{B}=\frac{\mu_0}{4\pi}\oint_{l'}\frac{I'\,\mathrm{d}\vec{l}'\times\vec{e}_R}{R^2}
+=\frac{\mu_0}{4\pi}\int_{V'}\frac{\vec{J}\times\vec{e}_R}{R^2}\,\mathrm{d}V'
+=\frac{\mu_0}{4\pi}\int_{S'}\frac{\vec{K}\times\vec{e}_R}{R^2}\,\mathrm{d}S'
+\qquad(\mathrm{T})
+\]
+\end{formulaBox}
+（依次对应线、体、面电流，即\textbf{毕奥—沙伐定律}。）于是安培力定律写成一般形式
+\begin{formulaBox}
+\[
+\mathrm{d}\vec{f}=I\,\mathrm{d}\vec{l}\times\vec{B},
+\qquad
+\vec{F}=\oint_l I\,\mathrm{d}\vec{l}\times\vec{B}
+\qquad(\text{均匀场中 }\vec{F}=I\vec{l}\times\vec{B})
+\]
+\end{formulaBox}
+三个可直接引用的积分结论（$\rho$ 为场点到导线的垂距，$K$ 为面电流线密度）：
+\begin{formulaBox}
+\[
+B_{\text{无限长直导线}}=\frac{\mu_0 I}{2\pi\rho},
+\qquad
+B_{\text{长 }2L\text{ 直导线中点垂距}\rho}=\frac{\mu_0 I L}{2\pi\rho\sqrt{\rho^2+L^2}},
+\qquad
+B_{\text{无限大电流片}}=\frac{\mu_0 K}{2}
 \]
 \end{formulaBox}
 
-相关说明：
-\begin{itemize}
-    \item \textbf{磁感应强度}的单位为特斯拉（T），定义为：长1m、电流为1A的直导线在该点处所受到的最大磁场力；
-    \item 方向由\textbf{右手螺旋定则}判断：
-    \begin{enumerate}
-        \item 通电直导线：右手握住直导线，大拇指指向电流方向，弯曲四指方向为磁感应线环绕方向；
-        \item 通电螺线管：右手握住螺线管，四指指向电流方向，大拇指指向螺线管内部磁感应线方向；
-        \item 环形电流：右手握住环形电流，四指指向电流方向，大拇指指向环形电流内部磁感应线方向。
-    \end{enumerate}
-\end{itemize}
-
-\subsubsection{不同电流分布的磁感应强度}
-根据电流分布形式，毕奥-萨伐尔定律可推广为以下四种形式：
-\begin{itemize}
-    \item 单个运动点电荷的磁场：
-    \[
-    \vec{B} = \frac{\mu_0}{4\pi} \frac{q\vec{v} \times \vec{e}_R}{R^2}
-    \]
-    \item 线电流分布：
-    \[
-    \vec{B} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I' d\vec{L}' \times \vec{e}_R}{R^2}
-    \]
-    \item 面电流分布：
-    \[
-    \vec{B} = \frac{\mu_0}{4\pi} \int_{S'} \frac{\vec{K} dS' \times \vec{e}_R}{R^2}
-    \]
-    \item 体电流分布：
-    \[
-    \vec{B} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J} dV' \times \vec{e}_R}{R^2}
-    \]
-\end{itemize}
-
-\subsubsection{矢量磁位的引出}
-以体电流的磁场表达式为基础，可通过矢量恒等式引出矢量磁位：
-\[
-\vec{B} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J} \times \vec{e}_R}{R^2} dV' = \frac{\mu_0}{4\pi} \int_{V'} \vec{J} \times \left( -\nabla \frac{1}{R} \right) dV'
-\]
-利用矢量恒等式 $\vec{J} \times \nabla \frac{1}{R} = \nabla \times \left( \frac{\vec{J}}{R} \right)$，可推导得：
-\[
-\vec{B} = \nabla \times \left( \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}}{R} dV' + \nabla h + C \right)
-\]
-定义\textbf{矢量磁位} $\vec{A}$：
+\subsection{洛伦兹力与磁感应线}
 \begin{formulaBox}
 \[
-\vec{A} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}}{R} dV'
+\vec{F}=q\vec{v}\times\vec{B},
+\qquad
+\vec{B}\times\mathrm{d}\vec{l}=0
+\ \Big(\text{即}\ \frac{\mathrm{d}x}{B_x}=\frac{\mathrm{d}y}{B_y}=\frac{\mathrm{d}z}{B_z}\Big)
 \]
 \end{formulaBox}
-则磁感应强度与矢量磁位满足：
-\[
-\vec{B} = \nabla \times \vec{A}
-\]
+前者为运动电荷受的\textbf{洛伦兹力}（静止电荷不受磁场力；力恒垂直于速度，只改方向不改量值，故\textbf{洛伦兹力不做功}）；后者是\textbf{磁感应线}的微分方程。
 
-为解决矢量磁位不唯一的问题，引入\textbf{库仑规范}：
-\[
-\nabla \cdot \vec{A} = 0
-\]
-并选择无穷远为参考点。
-
-\subsubsection{不同分布电流的矢量磁位}
-与磁感应强度对应，不同电流分布的矢量磁位表达式为：
-\begin{itemize}
-    \item 体电流分布：
-    \[
-    \vec{A} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}}{R} dV'
-    \]
-    \item 面电流分布：
-    \[
-    \vec{A} = \frac{\mu_0}{4\pi} \int_{S'} \frac{\vec{K}}{R} dS'
-    \]
-    \item 线电流分布：
-    \[
-    \vec{A} = \frac{\mu_0}{4\pi} \oint_{L'} \frac{I}{R} d\vec{L}'
-    \]
-\end{itemize}
-
-\subsubsection{磁通连续性定理}
-由 $\vec{B} = \nabla \times \vec{A}$，利用矢量恒等式 $\nabla \cdot (\nabla \times \vec{A}) = 0$，可得：
+\subsection{磁通与磁通连续性原理}
 \begin{formulaBox}
 \[
-\nabla \cdot \vec{B} = 0
+\Phi=\iint_S \vec{B}\cdot\mathrm{d}\vec{S}\ (\mathrm{Wb}),
+\qquad
+\oint_S \vec{B}\cdot\mathrm{d}\vec{S}=0
+\qquad\Longleftrightarrow\qquad
+\nabla\cdot\vec{B}=0
 \]
 \end{formulaBox}
-积分形式为：
-\[
-\oint_{S} \vec{B} \cdot d\vec{S} = 0
-\]
+磁感应线闭合、无始无终，自然界不存在与电荷对应的磁荷，故穿出任意闭合面的净磁通为零——\textbf{磁通连续性原理}：恒定磁场是\emph{无散场}，穿出等于穿入，同一闭合曲线为周界的各曲面上磁通相同。
 
-相关结论：
-\begin{itemize}
-    \item 恒定磁场是\textbf{无散场}；
-    \item 恒定磁场的磁力线是闭合曲线，且与闭合的电流矢量链相链；
-    \item 由任一闭合面穿出的净磁通等于零，即穿出的磁通等于穿入的磁通；
-    \item 以任意闭合曲线 $L$ 为边界的所有曲面上，具有相同的磁通。
-\end{itemize}
+\corepoint{$\nabla\cdot\vec{B}=0$ 只说明"无磁荷源"，不说明磁场没有源——磁场的涡旋源是电流。另注意 $\Phi$ 是穿过某个\emph{面}的通量，$\oint_S\vec{B}\cdot\mathrm{d}\vec{S}=0$ 只对\emph{闭合}面成立。}
 
-\subsubsection{磁感应强度线}
-磁感应强度线（$\vec{B}$ 线）的定义：曲线上每一点的切线方向与该点磁感应强度方向一致。
+% ---------------------------------------------------------
+\section{安培环路定律}
 
-磁感线的微分方程为：
+\subsection{真空中的安培环路定律}
 \begin{formulaBox}
 \[
-\vec{B} \times d\vec{L} = 0 \quad \Rightarrow \quad \frac{B_x}{dx} = \frac{B_y}{dy} = \frac{B_z}{dz}
+\oint_l \vec{B}\cdot\mathrm{d}\vec{l}=\mu_0\sum I_i
+\qquad\Longleftrightarrow\qquad
+\nabla\times\vec{B}=\mu_0\vec{J}_c
 \]
 \end{formulaBox}
+电流方向与回路绕向符合\textbf{右手螺旋关系}时取正。磁场是\textbf{有旋场}，$\vec{B}$ 的环流一般不恒为零，故磁场非保守场、一般无"磁势"；磁感线与电流垂直并相互交链。
 
-\subsubsection{磁偶极子}
-磁偶极子是指所围成的面积趋近于零时的载流回路，是研究磁场特性时使用的磁场源模型。
+\textbf{用它求 $\vec{B}$ 的条件}：磁场具有某种对称性，且能选到这样的积分路径——路径上各点 $\vec{B}$ 与 $\mathrm{d}\vec{l}$ 夹角相同、$B$ 值相等，从而把 $\oint$ 化为代数式。典型应用如载流圆柱（$\rho<R$ 时 $B=\mu_0I\rho/(2\pi R^2)$，$\rho>R$ 时 $B=\mu_0I/(2\pi\rho)$）、同轴电缆、螺环等。
 
-\textbf{磁偶极矩}定义为：
+\subsection{媒质的磁化与磁化强度}
+分子（原子）中电子的轨道运动与自旋都等效于电流，其对外磁效应的总可用一个等效圆电流表示，称\textbf{分子电流}（束缚电流），它不引起电荷迁移，但能激发磁场。分子电流具有\textbf{分子磁矩} $\vec{m}=I\vec{S}$（$\vec{S}$ 方向与电流绕向服从右手螺旋）。无外场时分子磁矩因热运动随机排列、总磁矩为零；放入外场后受转矩 $\vec{T}=\vec{m}\times\vec{B}$ 而趋于与外场同向，物质显磁性——即\textbf{磁化}，其宏观后果是出现\textbf{磁化电流}，附加磁场改变原场分布。
+
+\textbf{磁化强度}（单位体积内分子磁矩的矢量和）与磁化电流的关系为
 \begin{formulaBox}
 \[
-\vec{m} = I\vec{S}
+\vec{M}=\lim_{\Delta V\to 0}\frac{\sum_i\vec{m}_i}{\Delta V}\ (\mathrm{A/m}),
+\qquad
+\vec{J}_m=\nabla\times\vec{M},
+\qquad
+\oint_l\vec{M}\cdot\mathrm{d}\vec{l}=I_m,
+\qquad
+\vec{K}_m=\vec{M}\times\vec{e}_n
 \]
 \end{formulaBox}
-其中 $I$ 为回路电流，$\vec{S}$ 为回路围成的有向面积，方向与电流环绕方向服从右手螺旋关系。
+于是"有磁介质时的磁场"可化为"把磁化电流与自由电流一起在真空中求场"。
 
-磁偶极子的矢量磁位为：
-\[
-\vec{A} = \frac{\mu_0}{4\pi} \frac{\vec{m} \times \vec{e}_r}{r^2}
-\]
-在球坐标系中，其形式为：
-\[
-\vec{A} = \frac{\mu_0}{4\pi} \frac{IS \sin\theta}{r^2} \vec{e}_\phi
-\]
-对应的磁感应强度为：
-\[
-\vec{B} = \nabla \times \vec{A} = \frac{\mu_0 m}{4\pi r^3} \left( 2\cos\theta \vec{e}_r + \sin\theta \vec{e}_\theta \right)
-\]
-
-电偶极子电场与磁偶极子磁场的对比：
-\begin{itemize}
-    \item 电偶极子：
-    \[
-    \varphi = \frac{1}{4\pi\varepsilon_0} \frac{\vec{p} \cdot \vec{e}_r}{r^2}, \quad \vec{E} = -\nabla\varphi = \frac{p}{4\pi\varepsilon_0 r^3} \left( 2\cos\theta \vec{e}_r + \sin\theta \vec{e}_\theta \right)
-    \]
-    \item 磁偶极子：
-    \[
-    \vec{A} = \frac{\mu_0}{4\pi} \frac{\vec{m} \times \vec{e}_r}{r^2}, \quad \vec{B} = \nabla \times \vec{A} = \frac{\mu_0 m}{4\pi r^3} \left( 2\cos\theta \vec{e}_r + \sin\theta \vec{e}_\theta \right)
-    \]
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{安培环路定律——恒定磁场的旋度方程}
-\subsubsection{本节内容概览}
-本节核心内容包括：
-\begin{enumerate}
-    \item \textbf{真空中的安培环路定律}
-    \item \textbf{媒质的磁化}
-    \item \textbf{磁化强度}
-    \item 磁媒质内磁偶极子产生的场
-    \item \textbf{磁场强度}
-    \item \textbf{媒质中的安培环路定律}
-    \item \textbf{磁媒质的物性方程}
-\end{enumerate}
-
-\subsubsection{真空中的安培环路定律}
-安培环路定律描述了磁场的旋度特性，分为微分形式和积分形式：
-
-\begin{formulaBox}
-微分形式：
-\[
-\nabla \times \vec{B} = \mu_0 \vec{J}_C
-\]
-积分形式：
-\[
-\oint_L \vec{B} \cdot d\vec{l} = \mu_0 \iint_S \vec{J}_C \cdot d\vec{S} = \mu_0 \sum I_i
-\]
-\end{formulaBox}
-
-相关说明：
-\begin{itemize}
-    \item 磁场是\textbf{有旋场（涡旋场）}，与磁场的散度方程 $\nabla \cdot \vec{B} = 0$ 一致；
-    \item 磁感线与电流垂直并相互交链；
-    \item 在真空稳恒磁场中，$\vec{B}$ 沿任一闭合路径的积分，等于 $\mu_0$ 乘以该闭合路径所包围面积的各电流的代数和；如果电流的方向和积分回路的绕行方向符合右手螺旋关系，式中的电流取正号；
-    \item $\vec{B}$ 对任意闭合曲线 $L$ 的环流不恒等于零，磁场是非保守场，没有磁势的概念；
-    \item \textbf{传导电流}：在导电媒质中（如导体、电解液等）电荷的运动形成的电流称为传导电流（自由电流）。
-\end{itemize}
-
-\subsubsection{媒质（磁介质）的磁化}
-自然界中的所有实体物质都是磁介质。物质由分子或原子组成，分子或原子中任何一个电子都不停地同时参与两种运动，即\textbf{环绕原子核的轨道运动}和\textbf{电子本身的自旋运动}。这两种运动都等效于一个电流分布，因而能产生磁效应。
-
-把分子或原子看成一个整体，分子或原子中各个电子对外界所产生磁效应的总和，可用一个等效的圆电流表示，统称为\textbf{分子电流}。
-
-分子电流具有一定的磁矩，称为\textbf{分子磁矩} $\vec{m}$，其表达式为：
+\subsection{磁场强度与一般形式的安培环路定律}
+由 $\nabla\times\vec{B}=\mu_0(\vec{J}_c+\vec{J}_m)$、$\vec{J}_m=\nabla\times\vec{M}$ 移项得
 \begin{formulaBox}
 \[
-\vec{m} = I\vec{S}
+\nabla\times\Big(\frac{\vec{B}}{\mu_0}-\vec{M}\Big)=\vec{J}_c
+\ \Longrightarrow\
+\vec{H}=\frac{\vec{B}}{\mu_0}-\vec{M},
+\qquad
+\nabla\times\vec{H}=\vec{J}_c
+\ \Longleftrightarrow\
+\oint_l\vec{H}\cdot\mathrm{d}\vec{l}=\sum I
 \]
 \end{formulaBox}
-其中：
-\begin{itemize}
-    \item $I$ 是分子电流强度；
-    \item $\vec{S}$ 是分子电流围成的有向曲面的面积，其方向与电流环绕方向服从右手螺旋关系。
-\end{itemize}
+$\vec{H}$ 称\textbf{磁场强度}（$\mathrm{A/m}$）。\textbf{物理意义}：$\vec{H}$ 的\emph{环流}只由自由电流决定、与磁化电流（即媒质分布）无关；但 $\vec{H}$ 的\emph{分布}仍与媒质有关，两者不可混同。
 
-在没有外磁场作用时，由于热运动，分子磁矩排列是随机的，因此总的磁矩等于零，整块物质对外不显磁性。若把物体放入外磁场中，外磁场将对分子磁矩有转矩作用，其方向与外磁场方向趋于一致，使得分子磁矩的排列比较有序化。此时总磁矩不为零，物质对外呈现磁性，这种现象称为\textbf{媒质（磁介质）的磁化}。
-
-磁媒质中的电流是束缚电流。磁媒质的磁化：磁媒质在外加磁场时，磁偶极矩有转矩作用，其方向与外磁场方向趋于一致，使得磁偶极矩的排列比较有序化的现象称为磁媒质的磁化。
-
-磁化的结果：在磁媒质中出现了宏观的附加电流，称为\textbf{磁化电流}。磁化电流形成附加磁场，从而影响原来磁场的分布。
-
-\subsubsection{磁化强度}
-磁化强度是反映媒质被磁化的程度，定义为单位体积内所有磁偶极矩的矢量和：
+\subsection{磁介质的物性方程}
 \begin{formulaBox}
 \[
-\vec{M} = \lim_{\Delta V \to 0} \frac{\sum_i \vec{m}_i}{\Delta V} \quad (\text{A/m})
-\]
-\end{formulaBox}
-其中 $\vec{m}_i = I\vec{S}$ 是媒质中第 $i$ 个分子的磁偶极矩。
-
-\subsubsection{磁媒质内磁偶极子产生的场}
-整个媒质中所有磁偶极矩在场点处产生的矢量磁位为：
-\[
-\vec{A} = \frac{\mu_0}{4\pi} \int_{V'} \frac{\vec{J}_M(\vec{r}')}{R} dV' + \frac{\mu_0}{4\pi} \oint_{S} \frac{\vec{K}_M(\vec{r}')}{R} dS'
-\]
-其中：
-\begin{itemize}
-    \item \textbf{磁化面电流密度}：$\vec{K}_M = \vec{M} \times \vec{e}_n$
-    \item \textbf{磁化体电流密度}：$\vec{J}_M = \nabla' \times \vec{M}$
-\end{itemize}
-
-磁介质对磁场的影响，可归结为磁化后磁化体电流和磁化面电流在真空所产生的作用。
-
-磁化电流与自由电流来源不同，但从激发磁场这一特性来讲，磁化电流和自由电流没有区别：
-\[
-\begin{cases}
-\nabla \times \vec{B}_C = \mu_0 \vec{J}_C \\
-\nabla \cdot \vec{B}_C = 0
-\end{cases}
+\vec{B}=\mu_0(\vec{H}+\vec{M}),
 \quad
-\begin{cases}
-\nabla \times \vec{B}_M = \mu_0 \vec{J}_M \\
-\nabla \cdot \vec{B}_M = 0
-\end{cases}
-\]
-
-\subsubsection{磁场强度}
-当有磁介质存在时，磁场可看成由自由电流和磁化电流共同在真空中引起的：
-\[
-\vec{B} = \vec{B}_C + \vec{B}_M
-\]
-对其取旋度：
-\[
-\nabla \times \vec{B} = \nabla \times (\vec{B}_C + \vec{B}_M) = \mu_0 (\vec{J}_C + \vec{J}_M)
-\]
-代入 $\vec{J}_M = \nabla \times \vec{M}$，整理得：
-\[
-\nabla \times \left( \frac{\vec{B}}{\mu_0} - \vec{M} \right) = \vec{J}_C
-\]
-
-定义\textbf{磁场强度} $\vec{H}$：
-\begin{formulaBox}
-\[
-\vec{H} = \frac{\vec{B}}{\mu_0} - \vec{M} \quad (\text{A/m})
+\vec{M}=\chi_m\vec{H},
+\quad
+\vec{B}=\mu_0(1+\chi_m)\vec{H}=\mu_0\mu_r\vec{H}=\mu\vec{H}
 \]
 \end{formulaBox}
-则上式可写为：
-\[
-\nabla \times \vec{H} = \vec{J}_C
-\]
-该式表明，在静磁场中任一点上磁场强度的旋度等于该点的传导电流面密度。
+$\chi_m$ 为磁化率，$\mu_r=1+\chi_m$ 为相对磁导率，$\mu=\mu_0\mu_r$ 为磁导率（$\mathrm{H/m}$）。顺磁质 $\chi_m>0$、抗磁质 $\chi_m<0$（均极小），铁磁质 $\mu_r$ 可达 $10^3\sim10^5$ 且非线性、有磁滞与饱和。注意 $\vec{B}=\mu\vec{H}$ \textbf{仅适用于各向同性线性}媒质，而 $\vec{B}=\mu_0(\vec{H}+\vec{M})$ 无此限制。
 
-利用斯托克斯定理，可得到积分形式：
-\[
-\oint_L \vec{H} \cdot d\vec{l} = I
-\]
-结论：在磁场中，磁场强度沿任一闭合路径的线积分等于穿过该回路所包围面积的自由电流（不包括磁化电流）的代数和。
+\textbf{推论}：若电流周围无限充满均匀导磁媒质，则各点 $\vec{B}$ 方向同真空、量值增大 $\mu_r$ 倍（把 $\mu_0$ 换成 $\mu$）。
 
-\subsubsection{磁介质的物性方程}
-磁介质的物性方程反映介质的磁化特性：
-\begin{formulaBox}
-\[
-\vec{B} = \mu_0 (\vec{H} + \vec{M})
-\]
-\end{formulaBox}
-
-在各向同性线性媒质中，磁化强度与磁场强度成正比：
-\[
-\vec{M} = \chi_M \vec{H}
-\]
-其中 $\chi_M$ 称为媒质的\textbf{磁化率}，无量纲。代入物性方程可得：
-\[
-\vec{B} = \mu_0 \vec{H} + \chi_M \mu_0 \vec{H} = \mu_0 (1 + \chi_M) \vec{H} = \mu_0 \mu_r \vec{H} = \mu \vec{H}
-\]
-其中：
-\begin{itemize}
-    \item $\mu = \mu_0 \mu_r$ 称为媒质的\textbf{磁导率}，单位 H/m；
-    \item $\mu_r = 1 + \chi_M = \mu / \mu_0$ 称为介质的\textbf{相对磁导率}，无量纲。
-\end{itemize}
-
-\subsubsection{极化和磁化的对比}
-为了方便对比，将介质的极化与磁化特性总结如下：
+\subsection{电介质极化与磁介质磁化的对照}
 \begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\textbf{介质的极化} & \textbf{介质的磁化} \\
-\hline
-极化强度 $\vec{P} = \lim_{\Delta V \to 0} \frac{\sum \vec{p}_i}{\Delta V}$ & 磁化强度 $\vec{M} = \lim_{\Delta V \to 0} \frac{\sum \vec{m}_i}{\Delta V}$ \\
-\hline
-电偶极矩 $\vec{p}_i = q\vec{d}$ & 磁矩 $\vec{m}_i = I\vec{S}$ \\
-\hline
-$\sigma_p = \vec{P} \cdot \vec{e}_n, \rho_p = -\nabla \cdot \vec{P}$ & $\vec{K}_m = \vec{M} \times \vec{e}_n, \vec{J}_m = \nabla \times \vec{M}$ \\
-\hline
-$\nabla \cdot \vec{E} = \frac{\rho_f + \rho_p}{\varepsilon_0}$ & $\nabla \times \vec{B} = \mu_0 (\vec{J}_c + \vec{J}_m)$ \\
-\hline
-$\vec{D} = \varepsilon_0 \vec{E} + \vec{P}$ & $\vec{B} = \mu_0 (\vec{H} + \vec{M})$ \\
-\hline
-$\vec{P} = \chi_e \varepsilon_0 \vec{E}$ & $\vec{M} = \chi_m \vec{H}$ \\
-\hline
-$\vec{D} = \varepsilon \vec{E} = \varepsilon_0 \varepsilon_r \vec{E}$ & $\vec{B} = \mu \vec{H} = \mu_0 \mu_r \vec{H}$ \\
-\hline
-\end{tabular}
+\small
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+ & \textbf{电介质极化} & \textbf{磁介质磁化} \\
+\midrule
+基本单元 & 电偶极矩 $\vec{p}=q\vec{d}$ & 分子磁矩 $\vec{m}=I\vec{S}$ \\
+强度量 & $\vec{P}=\lim\dfrac{\sum\vec{p}_i}{\Delta V}$ & $\vec{M}=\lim\dfrac{\sum\vec{m}_i}{\Delta V}$ \\
+附加源 & $\sigma_p=\vec{P}\cdot\vec{e}_n$，$\rho_p=-\nabla\cdot\vec{P}$ & $\vec{K}_m=\vec{M}\times\vec{e}_n$，$\vec{J}_m=\nabla\times\vec{M}$ \\
+辅助场量 & $\vec{D}=\varepsilon_0\vec{E}+\vec{P}$ & $\vec{H}=\vec{B}/\mu_0-\vec{M}$ \\
+媒质方程 & $\vec{D}=\varepsilon\vec{E}$ & $\vec{B}=\mu\vec{H}$ \\
+散/旋 & $\nabla\cdot\vec{D}=\rho$，$\nabla\times\vec{E}=0$ & $\nabla\cdot\vec{B}=0$，$\nabla\times\vec{H}=\vec{J}_c$ \\
+\bottomrule
+\end{tabularx}
 \end{center}
 
-\subsubsection{本节重点}
-本节核心重点：
-\begin{itemize}
-    \item \textbf{真空中和磁媒质中的安培环路定律}（微分、积分形式）——恒定磁场的旋度方程；
-    \item 如何应用安培环路定律求磁场。
-\end{itemize}
+\corepoint{最易写错的两组关系：\emph{电}——$\vec{D}$ 的散度由自由电荷决定、$\vec{E}$ 无旋；\emph{磁}——$\vec{B}$ 的散度恒为零、$\vec{H}$ 的旋度由自由电流决定。}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+% ---------------------------------------------------------
+\section{恒定磁场的基本方程与分界面上的衔接条件}
 
-\subsection{恒定磁场基本方程组与分界面衔接条件}
-\subsubsection{恒定磁场的基本方程}
-恒定磁场的基本方程分为微分形式和积分形式：
-
-\begin{formulaBox}
-微分形式：
-\[
-\begin{cases}
-\nabla \times \vec{H} = \vec{J}_C \\
-\nabla \cdot \vec{B} = 0
-\end{cases}
-\]
-积分形式：
-\[
-\begin{cases}
-\oint_L \vec{H} \cdot d\vec{l} = I \\
-\oint_S \vec{B} \cdot d\vec{S} = 0
-\end{cases}
-\]
-构成方程：
-\[
-\vec{B} = \mu \vec{H}
-\]
-\end{formulaBox}
-
-相关说明：
-\begin{itemize}
-    \item $\nabla \times \vec{H} = \vec{J}_C$：恒定磁场是\textbf{有旋场}，电流密度是磁场的涡旋源；
-    \item $\nabla \cdot \vec{B} = 0$：恒定磁场是\textbf{无源场}，磁感应线是无头无尾的闭合曲线，没有磁荷的存在；
-    \item $\oint_L \vec{H} \cdot d\vec{l} = I$：恒定磁场的环路线积分等于与积分路径相交链的所有自由电流代数和；
-    \item $\oint_S \vec{B} \cdot d\vec{S} = 0$：\textbf{磁通连续性定理}，由任一闭合面穿出的净磁通等于零；
-    \item $\vec{B} = \mu \vec{H}$：各向同性线性介质的构成方程。
-\end{itemize}
-
-\subsubsection{分界面上的衔接条件}
-分界面上的衔接条件描述了磁场在不同介质分界面处的变化规律：
-
-1.  \textbf{磁场强度的衔接条件}：
-    \[
-    \begin{cases}
-    H_{1t} - H_{2t} = K' \\
-    \vec{e}_n \times (\vec{H}_2 - \vec{H}_1) = \vec{K}
-    \end{cases}
-    \]
-    说明：由于分界面上电流的存在，分界面两侧磁场强度的切向分量不连续。理论上，在理想导体、超导体表面才可能有\textbf{面电流} $\vec{K}$ 的存在；工程上，唯当电流集肤效应十分显著时，才有可能近似将导体表面的电流分布看作等价的面电流分布。
-
-2.  \textbf{磁感应强度的衔接条件}：
-    \[
-    \begin{cases}
-    B_{2n} - B_{1n} = 0 \\
-    \vec{e}_n \cdot (\vec{B}_2 - \vec{B}_1) = 0
-    \end{cases}
-    \]
-    说明：分界面两侧磁感应强度的\textbf{法向分量连续}。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{磁矢位与恒定磁场的边值问题}
-\subsubsection{矢量磁位的微分方程}
-根据恒定磁场基本方程的微分形式和物性方程，可推导矢量磁位的微分方程：
-\[
-\nabla \times \vec{H} = \nabla \times \frac{\vec{B}}{\mu} = \frac{1}{\mu} \nabla \times \nabla \times \vec{A} = \vec{J}
-\]
-利用矢量恒等式 $\nabla \times \nabla \times \vec{A} = \nabla(\nabla \cdot \vec{A}) - \nabla^2 \vec{A}$，代入库仑规范 $\nabla \cdot \vec{A} = 0$，可得：
+\subsection{恒定磁场的基本方程组}
 \begin{formulaBox}
 \[
-\nabla^2 \vec{A} = -\mu \vec{J}
+\begin{cases}
+\displaystyle\oint_S\vec{B}\cdot\mathrm{d}\vec{S}=0\\[6pt]
+\displaystyle\oint_l\vec{H}\cdot\mathrm{d}\vec{l}=\sum I
+\end{cases}
+\qquad
+\begin{cases}
+\nabla\cdot\vec{B}=0\\[4pt]
+\nabla\times\vec{H}=\vec{J}_c
+\end{cases}
+\qquad
+\vec{B}=\mu\vec{H}
 \]
 \end{formulaBox}
-该式表明，矢量磁位满足\textbf{泊松方程}。在没有电流分布的场域中，$\vec{J} = 0$，则方程退化为\textbf{拉普拉斯方程}：
-\[
-\nabla^2 \vec{A} = 0
-\]
+$\nabla\cdot\vec{B}=0$：无源场，磁感应线无头无尾、无磁荷；$\nabla\times\vec{H}=\vec{J}_c$：有旋场，电流密度是涡旋源；$\vec{B}=\mu\vec{H}$：各向同性线性媒质的构成方程（铁磁质不成立）。
 
-\subsubsection{矢量磁位的衔接条件}
-根据 $\vec{B} = \nabla \times \vec{A}$，可得分界面上矢量磁位的衔接条件：
+\subsection{分界面上的衔接条件}
+设 $\vec{e}_n$ 由媒质 1 指向媒质 2：
+\begin{formulaBox}
 \[
 \begin{cases}
-\vec{A}_1 = \vec{A}_2 \\
-\vec{e}_n \times \left( \frac{1}{\mu_2} \nabla \times \vec{A}_2 - \frac{1}{\mu_1} \nabla \times \vec{A}_1 \right) = \vec{K}
+H_{1t}-H_{2t}=K\ \ \text{或}\ \ \vec{e}_n\times(\vec{H}_2-\vec{H}_1)=\vec{K} & \text{（切向：}H_t\text{跃变）}\\[4pt]
+B_{1n}=B_{2n}\ \ \text{或}\ \ \vec{e}_n\cdot(\vec{B}_2-\vec{B}_1)=0 & \text{（法向：}B_n\text{连续）}
 \end{cases}
 \]
+\end{formulaBox}
+$H_t$ 的跃变量等于界面上的\textbf{面电流线密度} $K$（由跨界面小矩形回路的 $\oint\vec{H}\cdot\mathrm{d}\vec{l}=\sum I$ 得到）；$B_n$ 连续由跨界面小扁盒的 $\oint\vec{B}\cdot\mathrm{d}\vec{S}=0$ 得到。当界面上无面电流（$K=0$）时 $H_t$ 也连续，但 $B_t$ 仍不连续（$B_t=\mu H_t$，两侧 $\mu$ 不同）。理论上只有理想导体、超导体表面才可能有面电流；工程上仅当集肤效应十分显著时才可近似视为面电流。
 
-对于平行平面磁场，分界面上的衔接条件可简化为：
+\subsection{磁场折射定律}
+分界面上无面电流、两侧均为各向同性线性媒质时
+\begin{formulaBox}
 \[
-\begin{cases}
-A_1 = A_2 \\
-\frac{1}{\mu_1} \frac{\partial A_1}{\partial n} - \frac{1}{\mu_2} \frac{\partial A_2}{\partial n} = K
-\end{cases}
+\frac{\tan\theta_1}{\tan\theta_2}=\frac{\mu_1}{\mu_2}
 \]
+\end{formulaBox}
+若媒质 2 为铁磁质（$\mu_2\gg\mu_1$），除 $\theta_1=90^\circ$ 外 $\theta_2\to90^\circ$：铁磁质内 $B$ 线几乎平行于界面，且 $B_2\gg B_1$，磁通高度集中。即"\textbf{$B$ 线沿铁走}"，这是磁路概念的物理基础。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+% ---------------------------------------------------------
+\section{磁矢位·恒定磁场的边值问题}
+
+\subsection{磁矢位的引出与库仑规范}
+因 $\nabla\cdot\vec{B}=0$，可引入矢量函数使
+\begin{formulaBox}
+\[
+\vec{B}=\nabla\times\vec{A}\qquad(\mathrm{Wb/m})
+\]
+\end{formulaBox}
+代入 $\nabla\times\vec{H}=\vec{J}$、$\vec{B}=\mu\vec{H}$，用 $\nabla\times\nabla\times\vec{A}=\nabla(\nabla\cdot\vec{A})-\nabla^2\vec{A}$：
+\begin{formulaBox}
+\[
+\nabla(\nabla\cdot\vec{A})-\nabla^2\vec{A}=-\mu\vec{J}
+\]
+\end{formulaBox}
+唯一确定矢量场须同时给定旋度与散度，故再规定
+\begin{formulaBox}
+\[
+\nabla\cdot\vec{A}=0\ \text{（库仑规范）}
+\qquad\Longrightarrow\qquad
+\nabla^2\vec{A}=-\mu\vec{J}\ \text{（矢量泊松方程）}
+\]
+\end{formulaBox}
+直角坐标下即三个形式相同的标量泊松方程 $\nabla^2A_x=-\mu J_x$ 等。当电流分布于有限空间、取无限远处 $\vec{A}=0$ 时
+\begin{formulaBox}
+\[
+\vec{A}=\frac{\mu_0}{4\pi}\int_{V'}\frac{\vec{J}}{R}\mathrm{d}V'
+=\frac{\mu_0}{4\pi}\int_{S'}\frac{\vec{K}}{R}\mathrm{d}S'
+=\frac{\mu_0}{4\pi}\oint_{l'}\frac{I\,\mathrm{d}\vec{l}'}{R}
+\]
+\end{formulaBox}
+每个元电流产生的 $\vec{A}$ 与该元电流\emph{同方向}（与标量电位的根本差别），故可分量计算；$\vec{A}$ 无物理意义，但便于求 $\vec{B}$、磁通与电感。
+
+\subsection{磁矢位与磁通}
+由斯托克斯定理
+\begin{formulaBox}
+\[
+\Phi=\iint_S\vec{B}\cdot\mathrm{d}\vec{S}=\iint_S(\nabla\times\vec{A})\cdot\mathrm{d}\vec{S}=\oint_l\vec{A}\cdot\mathrm{d}\vec{l}
+\]
+\end{formulaBox}
+即 $\vec{A}$ 沿闭合回路的环量等于穿过以该回路为周界的曲面的磁通。对\textbf{平行平面磁场}（$\vec{A}=A_z\vec{e}_z$），$B$ 线即等 $A$ 线，等 $A$ 线密处 $B$ 大。
+
+\subsection{磁矢位的衔接条件与边值问题}
+由跨界面小矩形回路的 $\Phi=\oint\vec{A}\cdot\mathrm{d}\vec{l}$（高度趋于零）得切向分量连续，由 $\nabla\cdot\vec{A}=0$（跨界面小扁圆柱）得法向分量连续，故
+\begin{formulaBox}
+\[
+\vec{A}_1=\vec{A}_2\ \text{（界面上 $\vec{A}$ 连续）}
+\]
+\end{formulaBox}
+另一条件由 $\vec{e}_n\times(\vec{H}_2-\vec{H}_1)=\vec{K}$ 换算。对平行平面磁场简化为
+\begin{formulaBox}
+\[
+A_1=A_2,
+\qquad
+\frac{1}{\mu_1}\frac{\partial A_1}{\partial n}-\frac{1}{\mu_2}\frac{\partial A_2}{\partial n}=K
+\]
+\end{formulaBox}
+"$\nabla^2\vec{A}=-\mu\vec{J}$（无电流处 $\nabla^2\vec{A}=0$）$+$ 衔接条件 $+$ 场域边界条件"即恒定磁场的\textbf{边值问题}（磁矢位表述）。
 
 \subsection{标量磁位}
-\subsubsection{标量磁位的引出}
-如果在所研究的区域内，传导电流处处为零时，$\nabla \times \vec{H} = 0$，此时可以有条件地引入\textbf{标量磁位}：
+在\textbf{传导电流处处为零}的区域（$\vec{J}_c=0$），$\nabla\times\vec{H}=0$，可有条件引入\textbf{标量磁位}：
 \begin{formulaBox}
 \[
-\vec{H} = -\nabla \varphi_m
+\vec{H}=-\nabla\varphi_m,
+\quad
+\varphi_{mP}=\int_P^Q\vec{H}\cdot\mathrm{d}\vec{l}\ (\mathrm{A}),
+\quad
+U_{mAB}=\int_A^B\vec{H}\cdot\mathrm{d}\vec{l}=\varphi_{mA}-\varphi_{mB}
 \]
 \end{formulaBox}
-其中标量磁位的定义为：
+均匀媒质中 $\nabla^2\varphi_m=0$（拉普拉斯方程）；衔接条件为
+\begin{formulaBox}
 \[
-\varphi_{mP} = \int_{P}^{Q} \vec{H} \cdot d\vec{l}
+\varphi_{m1}=\varphi_{m2},
+\qquad
+\mu_1\frac{\partial\varphi_{m1}}{\partial n}=\mu_2\frac{\partial\varphi_{m2}}{\partial n}
 \]
-标量磁位是\textbf{多值函数}，其多值性来源于参考点和积分路径的选择。
+\end{formulaBox}
+\textbf{多值性}：两点间磁压与积分路径有关，若回路绕电流 $k$ 次则差 $kI$，故即使选定参考点 $\varphi_m$ 仍是多值函数。消除办法是规定积分路径不穿过电流回路所限定的面（\textbf{磁屏障面}），使磁位单值。多值性不影响 $\vec{B}$、$\vec{H}$ 的计算。
 
-在均匀媒质中，标量磁位满足拉普拉斯方程：
+\textbf{与电位的三点区别}：(1) 存在条件不同——$\varphi_m$ 只在 $\vec{J}_c=0$ 区可引入；(2) 多值性来源不同——电位只由参考点决定，磁位还受路径影响；(3) 物理意义不同——$\varphi_m$ 纯为计算方便，无物理意义。另：因 $H_t\approx0$，磁导率很大的材料表面近似为\textbf{等磁位面}，此结论在磁路计算中反复使用。
+
+\corepoint{$\vec{A}$ 与 $\varphi_m$ 的分工：有电流的区域只能用 $\vec{A}$（矢量泊松方程），无电流区域才用 $\varphi_m$（标量拉普拉斯方程）。解题第一步先判断区域内有无电流，选错位函数则方程不成立。}
+
+% ---------------------------------------------------------
+\section{镜像法}
+
+\subsection{依据}
+由\textbf{唯一性定理}，若所求区域内方程相同、边界条件相同，解唯一。故可用镜像电流代替分界面上的（磁化）束缚电流，把分区问题化为均匀空间的场叠加——即\textbf{磁镜像法}。
+
+\subsection{线电流对无限大媒质分界面的镜像}
+媒质 1、2 的磁导率为 $\mu_1$、$\mu_2$，媒质 1 中有平行于界面的无限长直导线（电流 $I$）。求媒质 1 的场时，认为全空间充满 $\mu_1$，场由 $I$ 与对称位置的像电流 $I'$ 共同产生；求媒质 2 的场时，认为全空间充满 $\mu_2$，场由原位置的像电流 $I''$ 单独产生。由 $H_{2t}=H_{1t}$、$B_{1n}=B_{2n}$ 联立得
+\begin{formulaBox}
 \[
-\nabla^2 \varphi_m = 0
+I'=\frac{\mu_2-\mu_1}{\mu_2+\mu_1}I,
+\qquad
+I''=\frac{2\mu_1}{\mu_2+\mu_1}I
 \]
+\end{formulaBox}
+$I'$、$I''$ 的\textbf{参考方向均规定与 $I$ 相同}（正负由此体现）；$I''$ 恒为正，$I'$ 的正负取决于 $(\mu_2-\mu_1)$。用法记忆：\emph{媒质 1 场} $=I+I'$（全在 $\mu_1$ 中）；\emph{媒质 2 场} $=I''$（全在 $\mu_2$ 中），两者不可混用于同一区域。
 
-\subsubsection{标量磁位的衔接条件}
-\[
-\begin{cases}
-\varphi_{m1} = \varphi_{m2} \\
-\mu_1 \frac{\partial \varphi_{m1}}{\partial n} = \mu_2 \frac{\partial \varphi_{m2}}{\partial n}
-\end{cases}
-\]
-
-\subsubsection{电位与标量磁位的区别}
+\subsection{两种典型特例}
 \begin{enumerate}
-    \item 存在条件：$\varphi_m$ 的提出有条件（传导电流为0）；
-    \item 多值性：电位的多值性仅来源于参考点的选择，而磁位的多值性同时受参考点和积分路径的影响；
-    \item 物理意义：标量磁位没有直接的物理意义，只是为了方便计算引入的辅助量。
+  \item \textbf{导线在空气中，另一侧为铁磁质}（$\mu_1=\mu_0$，$\mu_2\to\infty$）：$I'\approx I$，$I''\approx0$。铁磁质内 $H_2\approx0$，但\emph{不能}认为 $B_2$ 也为零——由 $B_n$ 连续，磁通仍穿入铁磁质。
+  \item \textbf{导线在铁磁质中，另一侧为空气}（$\mu_1\to\infty$，$\mu_2=\mu_0$）：$I'\approx-I$，$I''\approx2I$。空气中的磁感应强度比全空间为空气时\textbf{增大一倍}（电流相同）。
 \end{enumerate}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{适用条件与易错点}
+\begin{enumerate}
+  \item 界面须为无限大平面，两媒质各自均匀、各向同性、线性；
+  \item 镜像电流位置由对称确定，符号约定须统一（都相对 $I$ 的参考方向）；
+  \item 只适用于线电流及可等效为线电流的情形，有限长导线与线圈需另行处理。
+\end{enumerate}
 
-\subsection{磁场能量与力}
-\subsubsection{磁场能量与能量密度}
-磁场能量来源于磁场建立过程中外力提供的能量。\textbf{磁场能量}的表达式为：
+\corepoint{磁镜像与电镜像"符号相反"：静电场中电荷靠近理想导体（$\varepsilon_2\to\infty$）时镜像电荷异号（$-q$）；磁场中电流靠近铁磁质（$\mu_2\to\infty$）时镜像电流同号（$+I$）。记不住就回到 $B_n$ 连续这一条件重推——铁磁质"导通磁通"，导体"终止电力线"，性质相反。}
+
+% ---------------------------------------------------------
+\section{电感}
+
+\subsection{自感}
+线性媒质中磁链与电流成正比：
 \begin{formulaBox}
 \[
-W_m = \frac{1}{2} \int_{V'} \vec{A} \cdot \vec{J} dV'
+\psi=LI,
+\qquad
+L=\frac{\psi}{I}\ (\mathrm{H}),
+\qquad
+L=L_i+L_o
 \]
 \end{formulaBox}
-利用 $\vec{J} = \nabla \times \vec{H}$ 可推导出更通用的形式：
+$L$ 只与回路尺寸、几何形状及媒质分布有关，与电流、磁链数值无关。
+\begin{itemize}
+  \item \textbf{内自感} $L_i=\psi_i/I$：内磁通在导线内部闭合，只与\emph{部分}电流交链，求元内磁链时交链电流按 $(I'/I)=(\rho/R)^2$ 折算，故 $\mathrm{d}\psi_i=(\rho^2/R^2)\mathrm{d}\Phi$；
+  \item \textbf{外自感} $L_o=\psi_o/I$：外磁通在导线外部闭合，与全部电流交链，$\mathrm{d}\psi_o=\mathrm{d}\Phi$。
+\end{itemize}
+圆截面导线的内自感为
+\begin{formulaBox}
 \[
-W_m = \frac{1}{2} \int_{V} \vec{B} \cdot \vec{H} dV
+L_i=\frac{\mu_0 l}{8\pi}
+\qquad\text{（只与长度 }l\text{ 有关，与半径无关）}
 \]
-该式表明，凡是恒定磁场不为零的空间都储存着磁场能量，场是能量的载体。
+\end{formulaBox}
 
-\textbf{磁场能量密度}定义为：
+\subsection{两个必须掌握的自感结果}
+\textbf{同轴电缆}（长 $l$，内导体半径 $R_1$，外导体内半径 $R_2$，外壳很薄，磁导率均为 $\mu_0$）：
+\begin{formulaBox}
 \[
-w_m = \frac{1}{2} \vec{B} \cdot \vec{H}
+L=\frac{\mu_0 l}{8\pi}+\frac{\mu_0 l}{2\pi}\ln\frac{R_2}{R_1}
 \]
+\end{formulaBox}
+\textbf{二线传输线}（半径 $R$ 的两长直导线，轴线间距 $D\gg R$）：
+\begin{formulaBox}
+\[
+L=\frac{\mu_0 l}{\pi}\Big[\ln\frac{D}{R}+\frac14\Big]
+\]
+\end{formulaBox}
+（$\ln(D/R)$ 为外自感，$1/4$ 为两根导线内自感之和。）
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\textbf{计算步骤}：设电流 $I\to$ 由安培环路定律求 $\vec{H}$、$\vec{B}=\mu\vec{H}\to$ 取面元求 $\mathrm{d}\Phi=B\mathrm{d}S\to$ 按交链电流比例得 $\mathrm{d}\psi$、积分得 $\psi=\psi_i+\psi_o\to L=\psi/I$。
+
+\subsection{互感}
+\begin{formulaBox}
+\[
+\psi_{21}=M_{21}I_1,
+\qquad
+M_{21}=\frac{\psi_{21}}{I_1},
+\qquad
+M_{12}=M_{21}=M\ (\mathrm{H})
+\]
+\end{formulaBox}
+互感不仅与两回路的形状、尺寸、磁导率有关，还与\textbf{相互位置}有关。对细导线回路的一般公式（\textbf{诺伊曼公式}）为
+\begin{formulaBox}
+\[
+M=\frac{\mu_0}{4\pi}\oint_{l_1}\oint_{l_2}\frac{\mathrm{d}\vec{l}_1\cdot\mathrm{d}\vec{l}_2}{R}
+\qquad
+\Big(\text{紧绕 }N_1,N_2\text{ 匝时乘 }N_1N_2\Big)
+\]
+\end{formulaBox}
+它说明互感只取决于两回路的几何，无需先求场；但双重线积分通常较繁，工程上多用磁链法直接算 $\psi_{21}$。
+
+\subsection{用磁场能量求电感}
+对单个载流回路 $W_m=\frac12 LI^2$，故
+\begin{formulaBox}
+\[
+L=\frac{2W_m}{I^2}
+\]
+\end{formulaBox}
+当 $\vec{B}$、$\vec{H}$ 已用数值方法求出时，能量法求电感比磁链法更方便，是工程数值计算的常用做法。
+
+% ---------------------------------------------------------
+\section{磁场能量与力}
+
+\subsection{磁场能量}
+设磁场建立过程缓慢、媒质线性、无辐射与其它损耗，则外源做功全部转为磁场能量：
+\begin{formulaBox}
+\[
+W_m=\frac12\sum_{k=1}^{n}I_k\psi_k,
+\qquad
+W_m=\frac12\int_V\vec{A}\cdot\vec{J}\,\mathrm{d}V
+=\frac12\int_V\vec{B}\cdot\vec{H}\,\mathrm{d}V
+\]
+\end{formulaBox}
+单回路为 $W_m=\frac12LI^2$；两回路为
+\begin{formulaBox}
+\[
+W_m=\frac12L_1I_1^2+\frac12L_2I_2^2+MI_1I_2
+\]
+\end{formulaBox}
+前两项为\textbf{自有能}（恒正，只与各自回路的电流、自感有关）；$MI_1I_2$ 为\textbf{互有能}（可正可负：两回路电流同时从同名端流入时取正）。可见磁场能量只与最终状态有关，与建立过程无关。
+
+\subsection{磁场能量密度}
+\begin{formulaBox}
+\[
+w_m=\frac12\vec{B}\cdot\vec{H}=\frac{B^2}{2\mu}=\frac12\mu H^2
+\qquad(\mathrm{J/m^3})
+\]
+\end{formulaBox}
+磁场能量并非只存在于电流回路内，而是\textbf{分布在整个磁场空间}——场是能量的载体，与静电场 $w_e=\frac12\vec{D}\cdot\vec{E}$ 完全对应。
+
+\subsection{虚位移法求磁场力}
+设 $n$ 个载流回路接于电压源，仅第 $p$ 号回路可沿广义坐标 $g$ 移动。能量守恒为
+\begin{formulaBox}
+\[
+\mathrm{d}W=\mathrm{d}W_m+f\,\mathrm{d}g,
+\qquad
+\mathrm{d}W=\sum_k I_k\,\mathrm{d}\psi_k
+\]
+\end{formulaBox}
+\begin{enumerate}
+  \item \textbf{电流不变}（各回路接恒流源）：$\mathrm{d}W=2\mathrm{d}W_m$，外源供能一半储能、一半作机械功，
+  \begin{formulaBox}
+  \[
+  f=\left.\frac{\partial W_m}{\partial g}\right|_{I=\text{常数}}
+  \]
+  \end{formulaBox}
+  \item \textbf{磁链不变}（回路开路、无感应电流）：$\mathrm{d}W=0$，机械功只能取自磁场能量的减少，
+  \begin{formulaBox}
+  \[
+  f=-\left.\frac{\partial W_m}{\partial g}\right|_{\psi=\text{常数}}
+  \]
+  \end{formulaBox}
+\end{enumerate}
+两式在当时状态下给出同一个力，可任选其一。求相互作用力时，写出相互能 $MI_1I_2$ 后对 $g$ 求偏导即可。
+
+\textbf{电磁铁起重力}：气隙磁场近似均匀、铁芯内储能可忽略，每个气隙储能 $W_m=\dfrac{B^2}{2\mu_0}Sl$，对气隙长度 $l$ 求偏导：
+\begin{formulaBox}
+\[
+F=\frac{B^2S}{2\mu_0}
+\qquad\text{（负号表示力使气隙缩短，表现为吸力）}
+\]
+\end{formulaBox}
+
+\subsection{磁场力面密度与法拉第观点}
+\begin{formulaBox}
+\[
+f_0=\frac12\frac{B^2}{\mu_0}=\frac12\mu_0H^2
+\qquad\text{（等于该处磁场能量体密度）}
+\]
+\end{formulaBox}
+\textbf{法拉第观点}：每束磁感应线形成的"磁感应管"沿轴向受\textbf{纵张力}、垂直方向受\textbf{侧压力}，二者数值相等：
+\begin{formulaBox}
+\[
+\frac12BH=\frac12\mu H^2=\frac{B^2}{2\mu}
+\]
+\end{formulaBox}
+据此可定性判断受力（气隙中 $B$ 管沿轴向有收缩趋势，故磁极间表现为吸力）。对两种媒质的分界面：
+\begin{formulaBox}
+\[
+f_0=\frac{\mu_2-\mu_1}{2\mu_1\mu_2}\big(B_{1n}^2+\mu_1\mu_2H_{1t}^2\big)
+\]
+\end{formulaBox}
+无论磁场方向如何，此力\textbf{总垂直于界面}，且\textbf{总是由磁导率较大的媒质指向较小的媒质}。
+
+\corepoint{虚位移法三处高频错误：(1) 恒流与恒磁链的符号用反（恒流取 $+\partial W_m/\partial g$，恒磁链取 $-\partial W_m/\partial g$）；(2) 忘记恒流时"外源供能是储能增量的两倍"；(3) 把 $f_0=B^2/(2\mu_0)$ 当总力——它只是单位面积上的力。}
+
+% ---------------------------------------------------------
+\section{磁路及其计算}
+
+\subsection{磁路的概念}
+铁磁材料 $\mu\gg\mu_0$，由折射定律知 $B$ 线几乎平行于铁磁质表面、并高度集中于内部（"$B$ 线沿铁走"）。把铁磁质做成闭合或基本闭合的形状，磁通便主要集中在铁心内，与电流集中在导体内相似。这种\textbf{能使磁通集中通过的路径}称为\textbf{磁路}。
+\begin{itemize}
+  \item \textbf{主磁通} $\Phi$：沿磁路（含气隙）闭合的磁通；
+  \item \textbf{漏磁通}：穿出铁心、经磁路周围非铁磁质闭合的磁通。
+\end{itemize}
+绕在铁心上的线圈通以较小的励磁电流即可获得较强磁场，且磁场差不多被约束在磁路内，周围非铁磁质中很弱。
+
+\subsection{磁路定律}
+对无分支闭合铁心，沿一条闭合磁力线应用安培环路定律，并由 $\Phi=BS$、$H=\Phi/(\mu S)$ 得
+\begin{formulaBox}
+\[
+\oint_l\vec{H}\cdot\mathrm{d}\vec{l}=NI
+\ \Longrightarrow\
+\Phi\int_l\frac{\mathrm{d}l}{\mu S}=NI
+\]
+\end{formulaBox}
+与电阻 $R=\int\mathrm{d}l/(\gamma S)$ 对比，定义\textbf{磁阻}与\textbf{磁动势}
+\begin{formulaBox}
+\[
+R_m=\int_l\frac{\mathrm{d}l}{\mu S}
+\ \ \Big(\text{均匀段 }R_m=\frac{l}{\mu S}\Big),
+\qquad
+F_m=NI\ (\mathrm{A})
+\]
+\end{formulaBox}
+得\textbf{无分支闭合磁路的欧姆定律}
+\begin{formulaBox}
+\[
+\Phi R_m=F_m
+\]
+\end{formulaBox}
+对有分支磁路，由磁通连续性与安培环路定律得\textbf{磁路定律}（对应电路的两个基尔霍夫定律）：
+\begin{formulaBox}
+\[
+\sum\Phi=0\ (\text{节点}),
+\qquad
+\sum\Phi R_m=\sum F_m\ (\text{回路})
+\]
+\end{formulaBox}
+磁阻的串并联与电阻同形：\textbf{串联}（各段 $\Phi$ 相同）$R_m=\sum_k R_{mk}$，铁心带气隙即两段磁阻串联；\textbf{并联}（各分支磁压相同）$\dfrac{1}{R_m}=\sum_k\dfrac{1}{R_{mk}}$。
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+ & \textbf{电路} & \textbf{磁路} \\
+\midrule
+"流量" & 电流 $I$（连续） & 磁通 $\Phi$（连续） \\
+"势" & 电动势 $\varepsilon$（电源） & 磁动势 $F_m=NI$（励磁线圈） \\
+"阻力" & 电阻 $R=\dfrac{l}{\gamma S}$ & 磁阻 $R_m=\dfrac{l}{\mu S}$ \\
+物性参数 & 电导率 $\gamma$ & 磁导率 $\mu$ \\
+定律 & $IR=\varepsilon$，$\sum I=0$，$\sum IR=\sum\varepsilon$ & $\Phi R_m=F_m$，$\sum\Phi=0$，$\sum\Phi R_m=\sum F_m$ \\
+"绝缘" & 理想绝缘体 $\gamma=0$，无漏电流 & \textbf{不存在磁绝缘体}，总有漏磁 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+磁路定律是在"不计漏磁、$B$ 线沿铁心走向、截面上 $B$ 均匀"等近似下得到的，本质是\textbf{估算}，但对电机、变压器、电磁铁与仪表设计十分必要（含永磁体的磁路更复杂，此处从略）。
+
+由 $\psi=N\Phi$ 还可得电感与磁阻的关系
+\begin{formulaBox}
+\[
+L=\frac{\psi}{I}=\frac{N\Phi}{I}=\frac{N^2}{R_m}
+\]
+\end{formulaBox}
+即\textbf{磁阻越小、电感越大}——这解释了铁心线圈为何电感远大于空心线圈，也解释了开气隙后电感为何急剧下降。
+
+\subsection{磁路计算}
+恒定磁通磁路（$\Phi$ 不随时间变化）的计算目的是找出 $\Phi$ 与 $F_m=NI$ 的关系，分两类问题：
+\begin{enumerate}
+  \item \textbf{已知 $\Phi$ 求 $NI$}（正面问题）：$\Phi$ 与各段截面 $\to$ 各段 $B$；查材料的 $B$—$H$ 曲线得各段 $H$（线性段可直接 $H=B/\mu$）；求各段磁压 $Hl$；相加得 $NI=\sum Hl$。
+  \item \textbf{已知 $NI$ 求 $\Phi$}（反面问题）：铁磁质非线性使 $\mu$ 随 $H$ 变化，不能一次算出，须用\textbf{试探法}——先假设 $\Phi$（例如粗略认为全部磁动势都降在气隙上），算出对应 $NI$ 与给定值比较后修正，反复数次直至吻合；实质是"已知 $\Phi$ 求 $NI$"的多次重复。
+\end{enumerate}
+\textbf{气隙的影响}：$R_\delta=\dfrac{\delta}{\mu_0 S}$，因 $\mu_0\ll\mu_{\text{铁}}$，即使 $\delta$ 很小，气隙磁压降也常占全部磁动势的绝大部分——\emph{气隙决定磁路工作状态}，这是磁路计算第一条经验。
+
+\textbf{边缘效应}：气隙处 $B$ 线向外扩散，实际有效面积略大于铁心截面，气隙磁阻比 $\delta/(\mu_0S)$ 略小。工程上用"有效面积"（如按 $(a+\delta)(b+\delta)$ 放大气隙截面）或大于 1 的卡氏系数修正，$\delta$ 越小越可忽略。
+
+\subsection{磁屏蔽}
+用高 $\mu$ 铁磁质做屏蔽罩，把需保护的空间罩起来。用磁阻并联解释：外界磁通遇到"铁壳壁"与"空腔"两条并联路径，空腔的 $\mu$ 远小于罩壁、磁阻远大于罩壁，故绝大部分 $B$ 线沿罩壁通过，进入空腔的很少。
+
+\begin{itemize}
+  \item 与静电屏蔽不同：闭合导体空腔内静电场为零，而外磁场中闭合铁磁空腔内的磁场\textbf{并不为零}，磁屏蔽效果远不如静电屏蔽；
+  \item 改善办法：加厚罩壁或多层铁壳，把漏入的残余磁通逐次屏蔽；
+  \item 不宜用于高频交变磁场，否则罩内产生很大的铁损（涡流、磁滞损耗）。
+\end{itemize}
+
+\corepoint{磁路计算三个易错点：(1) 把磁阻写成 $\mu S/l$（应为 $l/(\mu S)$，$\mu$ 对应 $\gamma$ 而非 $1/\gamma$）；(2) 漏算气隙——气隙磁阻常是铁心磁阻的几十上百倍，漏算会使 $NI$ 严重偏小；(3) 对铁磁段直接用 $H=B/\mu$ 而不查 $B$—$H$ 曲线（铁磁质 $\mu$ 不是常数）。}

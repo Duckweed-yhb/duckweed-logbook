@@ -1,0 +1,54 @@
+% 电机学课程笔记 —— 主文件（正文排版在 0.样式.tex，章节文件只放内容）
+% 编译：xelatex 1.main.tex 两遍；成品见 build.ps1
+\documentclass[11pt,a4paper,oneside,openany]{book}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
+\newcommand{\YHBbooktrue}{}
+\newcommand{\YHBcourse}{电机学}
+\newcommand{\YHBversion}{v0.1}
+\newcommand{\YHBquote}{以磁路为根，以旋转磁场为魂。}
+\newcommand{\YHBcoverSize}{40pt}
+\newcommand{\YHBcoverLead}{48pt}
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{8C3A2B}
+\definecolor{yhbAccent2}{HTML}{B0704F}
+\input{0.样式.tex}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF, "2160->"217F, "2190->"21FF, "2100->"214F}
+
+\begin{document}
+\input{2.cover.tex}
+\newpage
+\tableofcontents
+\newpage
+% ===== 章节目录：在此按教材章节顺序 \input =====
+\input{3.绪论.tex}
+\input{4.磁路和磁性材料.tex}
+\input{5.能量转换基本定律.tex}
+\input{6.变压器概述.tex}
+\input{7.变压器的基本理论.tex}
+\input{8.三相变压器.tex}
+\input{9.变压器的运行.tex}
+\input{10.其他常用变压器.tex}
+\input{11.交流绕组.tex}
+\input{12.交流绕组的感应电动势.tex}
+\input{13.交流绕组的磁动势.tex}
+\input{14.电机的发热与温升限值.tex}
+\input{15.三相感应电机概述.tex}
+\input{16.三相感应电动机的基本理论.tex}
+\input{17.三相感应电动机的运行特性.tex}
+\input{18.其他常用感应电机.tex}
+\input{19.同步电机概述.tex}
+\input{20.同步发电机的基本理论.tex}
+\input{21.同步发电机的并联运行.tex}
+\input{22.同步电动机和同步补偿机.tex}
+\input{23.直流电机概述.tex}
+\input{24.直流电机的电枢绕组.tex}
+\input{25.直流电机的磁场.tex}
+\input{26.直流发电机.tex}
+\input{27.直流电动机.tex}
+\input{28.直流电机的换向.tex}
+\end{document}

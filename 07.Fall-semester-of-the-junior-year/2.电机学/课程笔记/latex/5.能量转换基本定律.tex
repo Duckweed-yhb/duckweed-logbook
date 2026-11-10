@@ -1,0 +1,152 @@
+% ============================================================
+% 第 2 章 能量转换基本定律（教材第一篇，印刷页 21--23）
+% 节名：第一节 电磁感应定律；第二节 毕奥—萨伐尔电磁力定律；第三节 能量守恒原理
+% ============================================================
+\chapter{能量转换基本定律}
+
+各种机电能量转换装置的用途和结构虽有差别，其基本原理是相同的：\textbf{载流导体在磁场中要受到力的作用}是电动机工作的基本原理；\textbf{变化的磁场在导体中要感应电动势}是发电机工作的基本原理。本章阐述机电能量转换过程中的基本定律与能量关系。后续各章的分析，全部建立在这三条定律之上。
+
+\section{电磁感应定律}
+
+电磁感应定律描述"磁变生电"的电磁感应现象，1831 年由法拉第提出，又称法拉第电磁感应定律。它指出：交变的磁场会产生电场，并在导体中感应电动势。
+
+\subsection{变压器电动势（磁变生电）}
+当规定感应电动势正方向与磁通的正方向符合右手螺旋关系时，感应电动势与磁通对时间的变化率的负值成正比：
+\begin{equation}
+e=-N\frac{\mathrm{d}\Phi}{\mathrm{d}t}=-\frac{\mathrm{d}\Psi}{\mathrm{d}t},
+\end{equation}
+式中 $e$ 为回路中的感应电动势，$N$ 为绕组匝数，$\Phi$ 为通过该回路面积的磁通，$\Psi=N\Phi$ 为交链回路的\textbf{磁链}（$N$ 匝线圈所匝链的总磁链）。
+
+\keyformula{e=-N\frac{\mathrm{d}\Phi}{\mathrm{d}t}=-\frac{\mathrm{d}\Psi}{\mathrm{d}t}}
+
+\subsubsection{推导要点}
+\begin{enumerate}
+  \item 磁链 $\Psi=N\Phi$ 是"把 $N$ 个线匝的磁通串起来"的总量；对集中绕制的线圈，各匝磁通相同，故 $e=-N\mathrm{d}\Phi/\mathrm{d}t$。
+  \item 负号是\textbf{楞次定律}的数学表达：感应电动势产生的电流总是阻碍磁通的变化。工程计算中常先按右手螺旋规定正方向、写出大小，再由楞次定律判断实际方向。
+  \item 若磁通按正弦变化 $\Phi=\Phi_m\sin\omega t$，则
+  \begin{equation}
+  e=-N\Phi_m\omega\cos\omega t=E_m\sin\!\left(\omega t-90^\circ\right),
+  \end{equation}
+  即感应电动势\textbf{滞后磁通 $90^\circ$}，其有效值为 $E=E_m/\sqrt2=2\pi fN\Phi_m/\sqrt2=4.44fN\Phi_m$。这一"滞后 $90^\circ$ + $4.44$ 系数"是第 4 章变压器电动势公式的来源，务必在此处打牢。
+\end{enumerate}
+
+\subsection{切割电动势（动生生电）}
+磁场恒定而导体在磁场中运动时，导体中的感应电动势为
+\begin{equation}
+e=\int_{l}\left(\boldsymbol{v}\times\boldsymbol{B}\right)\cdot \mathrm{d}\boldsymbol{l},
+\end{equation}
+若磁场方向、导体长度方向和导体运动方向三者相互垂直，则简化为
+\begin{equation}
+e=Blv .
+\end{equation}
+
+\keyformula{e=Blv}
+
+式中 $B$ 为磁感应强度，$l$ 为导体长度，$v$ 为导体运动速度。感应电动势的方向可用\textbf{右手定则}确定（磁力线穿入手心，拇指指向导体运动方向，四指指向感应电动势方向）。
+
+\subsubsection{两种电动势的统一}
+切割电动势与变压器电动势不是两种不同的物理规律，而是同一法拉第定律在不同参考系下的表现：导体切割磁力线等价于导体所交链的磁通发生变化。因此在电机分析中，定子绕组看到的是"磁通交变"（变压器电动势），转子绕组看到的是"切割磁通"（速度电动势），两者形式不同、本质相同。
+
+\corepoint{三个高频混淆点：① 变压器电动势 $e=-N\mathrm{d}\Phi/\mathrm{d}t$ 与切割电动势 $e=Blv$ 的正方向规定不同（前者用右手螺旋，后者用右手定则），混用会得出"电动势反了"的错误结论；② $e=Blv$ 中 $v$ 是导体\textbf{相对磁场}的速度，不是绝对速度；③ 三相绕组中 $e$ 的相位差来自空间位置差，而不是时间差，这条在第 9 章导体电动势星形图里会用到。}
+
+\section{毕奥—萨伐尔电磁力定律}
+
+磁场最基本的特性是对场域中的载流导体有力的作用。电磁力定律是描述电与磁之间相互作用产生力的基本定律。
+
+取有效长度为 $l$ 的导体，其中流过电流 $i$，所处磁场为 $\boldsymbol{B}$，则导体所受的作用力为
+\begin{equation}
+\boldsymbol{f}=\int_{l}i\,\mathrm{d}\boldsymbol{l}\times\boldsymbol{B}.
+\end{equation}
+若磁场均匀且与导体相互垂直，则
+\begin{equation}
+f=Bli .
+\end{equation}
+
+\keyformula{f=Bli}
+
+电磁力的方向可用\textbf{左手定则}判定（磁力线穿入手心，四指指向电流方向，拇指指向电磁力方向）。
+
+\subsection{电磁力与电磁转矩}
+电机中导体沿圆周分布，电磁力对转轴形成转矩。设导体所在处的磁密为 $B$、导体电流为 $i$、导体有效长度为 $l$、转子半径为 $R$，则该导体产生的转矩为 $TR=BliR$；若共有 $N$ 根导体、每极磁通为 $\Phi$、极对数为 $p$，经归并可得电磁转矩与电磁功率的关系
+\begin{equation}
+T=\frac{P_{em}}{\Omega},
+\end{equation}
+其中 $\Omega=2\pi n/60$ 为机械角速度。这一关系在第 12、16、20 章分别以不同形式出现（$T=\dfrac{P_{em}}{\Omega_1}$、$T=\dfrac{P_{em}}{\Omega_s}$ 等），其本源就是本节。
+
+\subsection{电磁功率的恒等性}
+把两条定律放在一起看，会得到一个非常重要的结论：导体既感应电动势 $e=Blv$、又受电磁力 $f=Bli$，于是
+\begin{equation}
+ei=\left(Blv\right)i=\left(Bli\right)v=fv .
+\end{equation}
+左边是\textbf{电功率}，右边是\textbf{机械功率}。这说明：电机中通过磁场耦合的电功率与机械功率在数值上相等，磁场只起"媒介"作用，不消耗能量。这就是机电能量转换的物理基础，也是"电磁功率"这一概念的由来。
+
+\corepoint{$ei=fv$ 这条恒等式是全书最有价值的一句话：变压器只有 $ei$（没有 $v$），故只传递电能；旋转电机同时有 $ei$ 与 $fv$，故能实现机电能量转换。判断某台电机是发电机还是电动机，看的就是 $ei$ 与 $fv$ 谁输入、谁输出。}
+
+\section{能量守恒原理}
+
+能量守恒原理是物理学的基本原理，可表述为：在质量不变的物理系统内，能量是守恒的——能量不会凭空产生，亦不会凭空消灭，仅能变换其存在形式。
+
+\subsection{电机中的四种能量形式}
+电机中能量转换包括四种能量形式：\textbf{电能}、\textbf{机械能}、\textbf{磁场储能}和\textbf{热能}。
+
+\subsubsection{电动机的能量关系}
+\begin{equation}
+\text{电源输入的电能}=\text{磁场储能的增量}+\text{转换为热能的能量损耗}+\text{输出的机械能}.
+\end{equation}
+
+\subsubsection{发电机的能量关系}
+\begin{equation}
+\text{输入的机械能}=\text{磁场储能的增量}+\text{转换为热能的能量损耗}+\text{输出的电能}.
+\end{equation}
+
+稳态运行时磁场储能不变（增量项为零），上面两式就退化为熟悉的功率平衡方程；瞬态过程中磁场储能参与吞吐，这一项不可忽略（本书主要讨论稳态，故通常略去）。
+
+\subsection{能量损耗的三类}
+转换为热能的能量主要包括三部分：
+\begin{enumerate}
+  \item \textbf{电气损耗}（铜耗）：导体中的电流在电阻中引起的损耗，$P_{Cu}=I^2R$；
+  \item \textbf{机械损耗}：消耗于轴承摩擦及通风中的损耗；
+  \item \textbf{铁芯损耗}（铁耗）：电机内磁场在铁芯中产生的磁滞损耗和涡流损耗。
+\end{enumerate}
+这些能量均转换为热能，并且是\textbf{不可逆}的——这部分能量很难或根本不可能再转换为电能或机械能。
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+损耗类别 & 与什么有关 & 典型表达式 & 在等效电路中的位置 \\
+\midrule
+铜耗（电气损耗） & 电流平方 & $P_{Cu}=mI^2R$ & 串联电阻 $R_1$、$R_2'$ \\
+铁耗 & 磁密平方、频率 1.3 次方 & $P_{Fe}\approx C_{Fe}f^{1.3}B_m^2G$ & 励磁支路中的等效电阻 \\
+机械损耗 & 转速（摩擦、通风） & 由实验测定 & 一般不进入电路，从 $P_{em}$ 中扣除 \\
+杂散损耗 & 漏磁、齿槽、谐波 & 按额定功率的百分数估算 & 归入附加损耗 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{效率}
+由能量守恒，效率定义为
+\begin{equation}
+\eta=\frac{P_2}{P_1}=\frac{P_1-\sum p}{P_1}\times100\%,
+\end{equation}
+其中 $P_1$ 为输入功率，$P_2$ 为输出功率，$\sum p$ 为总损耗。电机效率在负载率为额定值的 70\%—80\% 附近最高，因为此时不变损耗（铁耗、机械损耗）与可变损耗（铜耗）大致相等——这一"最大效率条件"在第 6 章变压器效率分析中会严格证明。
+
+\subsection{能量转换的可逆性与条件}
+\begin{itemize}
+  \item \textbf{可逆性}：同一台电机既可作发电机、也可作电动机，取决于外部条件（原动机驱动还是电网供电）。
+  \item \textbf{必要条件}：必须存在\textbf{相对运动}（旋转电机）或\textbf{交变磁通}（变压器），并且磁场与绕组之间存在相对切割或磁链交变。静止不动的导体放在恒定磁场中，既不感应电动势、也不产生持续转矩。
+  \item \textbf{能量流向的判据}：$ei$ 与 $fv$ 同号为正（吸收电功率、输出机械功率 $\Rightarrow$ 电动机）；反之为发电机。
+\end{itemize}
+
+\corepoint{本章三条定律构成全书分析方法的骨架：写电压方程用 $e=-\mathrm{d}\Psi/\mathrm{d}t$（或 $e=Blv$），写转矩方程用 $f=Bli$（或 $T=P_{em}/\Omega$），检查结果用能量守恒（输入 $=$ 输出 $+$ 损耗）。任何一道电机计算题，最后都可以用"功率平衡表"验算：四大类电机的功率流程图虽然不同，但"输入 $=$ 输出 $+$ 各项损耗"永远成立。}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+定律 & 表达式 & 在电机分析中的用途 \\
+\midrule
+电磁感应定律 & $e=-N\dfrac{\mathrm{d}\Phi}{\mathrm{d}t}$，$e=Blv$ & 建立绕组电动势方程（变压器、定子、转子） \\
+电磁力定律 & $f=Bli$，$T=P_{em}/\Omega$ & 建立转矩方程、机械特性 \\
+能量守恒原理 & $P_1=P_2+\sum p$ & 功率平衡、效率计算、结果校验 \\
+\bottomrule
+\end{tabular}
+\end{center}

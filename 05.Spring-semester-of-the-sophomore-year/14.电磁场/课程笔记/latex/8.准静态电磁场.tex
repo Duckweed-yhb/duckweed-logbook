@@ -1,115 +1,384 @@
-% 第6章 准静态电磁场
-\section{准静态电磁场}
+% ============================================================
+% 准静态电磁场（子文件，只放内容：不重复 \usepackage、不改字号）
+% 对应教材：冯慈璋·马西奎《工程电磁场导论》第 5 章 §5-1 ～ §5-7
+% 本章课件无单独讲义，内容以教材为准
+% ============================================================
+
+% formulaBox 由 3.矢量分析.tex 定义；这里做一次“未定义才定义”的保护。
+\makeatletter
+\@ifundefined{formulaBox}{%
+  \newenvironment{formulaBox}{%
+    \par\begin{adjustbox}{max width=\linewidth}%
+    \begin{tcolorbox}[colback=blue!8!white,colframe=transparent,boxrule=0pt,halign=center,boxsep=2pt,left=4pt,right=4pt,top=3pt,bottom=3pt]%
+  }{%
+    \end{tcolorbox}\end{adjustbox}\par
+  }%
+}{}
+\makeatother
+
+\chapter{准静态电磁场}
+
+时变场中，若感应电场远小于库仑电场（可忽略 $\partial\vec{B}/\partial t$），称\textbf{电准静态
+场}（EQS）；若位移电流远小于传导电流（可忽略 $\partial\vec{D}/\partial t$），称\textbf{磁
+准静态场}（MQS）。两者统称\textbf{准静态电磁场}：\textbf{属时变场，却保留静态场与源“瞬时
+对应”的性质}（略去了波动性与推迟效应）。电气工程中的问题绝大部分属 MQS。
+
+\section{电准静态场与磁准静态场}
 
 \subsection{电准静态场（EQS）}
-当感应电场远小于库仑电场时，即 $\frac{\partial \vec{B}}{\partial t} \approx 0$，麦克斯韦方程组可简化为：
+
+忽略电磁感应项 $\partial\vec{B}/\partial t$，即 $\vec{E}_j\ll\vec{E}_C$ 时，电场无旋：
+$\nabla\times\vec{E}\approx\nabla\times\vec{E}_C=0$。其基本方程组为
+
 \begin{formulaBox}
 \[
-\begin{cases}
-\nabla \times \vec{E} \approx 0 \\
-\nabla \cdot \vec{D} = \rho_f \\
-\nabla \times \vec{H} = \vec{J}_c + \frac{\partial \vec{D}}{\partial t} \\
-\nabla \cdot \vec{B} = 0
-\end{cases}
+\nabla\times\vec{E}=0,
+\qquad
+\nabla\cdot\vec{D}=\rho_f,
+\qquad
+\nabla\times\vec{H}=\vec{J}_C+\frac{\partial\vec{D}}{\partial t},
+\qquad
+\nabla\cdot\vec{B}=0
 \]
 \end{formulaBox}
 
-与静态场相比，电准静态场具有与静电场类同的\textbf{有源无旋}特性，因此两种场的计算方法相同。
+与静态情形相比，\textbf{只有磁场方程变了}（计入位移电流产生的磁场），电场方程与静电场完全
+相同；只是 $\vec{E}$、$\vec{D}$ 随时间变化，但与源\textbf{瞬时对应}。故已知电荷分布即可用静电
+场公式求 $\vec{E}$、$\vec{D}$，再由全电流定律求 $\vec{H}$。典型对象：高压电场、电子器件附近
+电场、低频交流平板电容器内的电场。
 
-典型应用场景：
-\begin{itemize}
-    \item 电力传输系统和装置中的高压电场；
-    \item 常用电子器件、设备附近的电场；
-    \item 低频交流情况下，平板电容器中的电场。
-\end{itemize}
+放宽情形：若 $\vec{E}_j$ 不小但其\textbf{旋度}很小，式仍成立，也可按 EQS 处理（如低频电感
+线圈导线中的电场可按恒定电场处理）。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
 \subsection{磁准静态场（MQS）}
-当位移电流远小于传导电流时，即 $\frac{\partial \vec{D}}{\partial t} \approx 0$，麦克斯韦方程组可简化为：
+
+忽略位移电流项 $\partial\vec{D}/\partial t$，磁场按恒定磁场处理：
+
 \begin{formulaBox}
 \[
-\begin{cases}
-\nabla \times \vec{H} \approx \vec{J}_c \\
-\nabla \cdot \vec{B} = 0 \\
-\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \\
-\nabla \cdot \vec{D} = \rho_f
-\end{cases}
+\nabla\times\vec{H}=\vec{J}_C,
+\qquad
+\nabla\cdot\vec{B}=0,
+\qquad
+\nabla\times\vec{E}=-\frac{\partial\vec{B}}{\partial t},
+\qquad
+\nabla\cdot\vec{D}=\rho_f
 \]
 \end{formulaBox}
 
-与静态场相比，磁准静态场具有与静磁场类同的\textbf{有旋无源}特性，因此两种场的计算方法相同。
+与静态情形相比，\textbf{只有电场方程变了}（计入电磁感应），磁场方程与恒定磁场相同。与恒定
+磁场一样，$\vec{B}=\nabla\times\vec{A}$、$\vec{E}=-\partial\vec{A}/\partial t-\nabla\varphi$，
+且在库仑规范 $\nabla\cdot\vec{A}=0$ 下
 
-典型应用场景：
-\begin{itemize}
-    \item 低频电磁装置中的磁场问题（电机、变压器、感应加热、磁悬浮等）；
-    \item 电工技术中的涡流问题；
-    \item 电气工程中的大部分问题都属于磁准静态场问题。
-\end{itemize}
-
-磁准静态场中的位函数引出与一般时变电磁场相同：
-\[
-\begin{cases}
-\nabla \cdot \vec{B} = 0 \implies \vec{B} = \nabla \times \vec{A} \\
-\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \implies \vec{E} = -\frac{\partial \vec{A}}{\partial t} - \nabla \varphi
-\end{cases}
-\]
-在库仑规范 $\nabla \cdot \vec{A} = 0$ 下，位函数满足：
 \begin{formulaBox}
 \[
-\begin{cases}
-\nabla^2 \vec{A} = -\mu \vec{J}_c \\
-\nabla^2 \varphi = -\frac{\rho_f}{\varepsilon}
-\end{cases}
+\nabla^{2}\vec{A}=-\mu\vec{J}_C,
+\qquad
+\nabla^{2}\varphi=-\frac{\rho_f}{\varepsilon}
 \]
 \end{formulaBox}
 
-磁准静态场也称作\textbf{似稳场}，其核心近似是略去电磁场的波动性，认为场和源之间具有类似于静态场的“瞬时”对应关系。
+即 $\vec{A}$、$\varphi$ 随时间变却遵循静态场（泊松方程）的规律：已知电流、电荷分布即可用静态
+公式求位。即可略去场的波动性，认为场与源具有类似静态场的“瞬时”对应关系，故 MQS 又称
+\textbf{似稳场}。典型对象：电机、变压器、感应加热、磁悬浮的磁场，及电工中的涡流问题。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
 \subsection{似稳条件}
-准静态近似的适用条件可分为两类：
 
-\paragraph{1. 导体中的时变电磁场}
-当满足 $\omega\varepsilon \ll \gamma$ 时，导体中的时变电磁场可按磁准静态场处理，这类场也称为\textbf{涡流场}。
+\textbf{（1）导体中的时变场}：若 $\dfrac{\omega\varepsilon}{\gamma}\ll1$，位移电流可略，导体内
+时变场按 MQS 处理。满足此条件的导体称\textbf{良导体}，其中的 MQS 又称\textbf{涡流场}；对纯
+金属该条件一直到紫外波段都成立。
 
-\paragraph{2. 理想介质中的时变电磁场}
-当满足 $\beta r \ll 1$（或 $r \ll \lambda$）时，理想介质中的时变电磁场可按磁准静态场处理。
-物理含义：载流系统的尺寸必须远小于电磁波的波长，系统中各点的场可近似认为是同相位变化的。
+\textbf{（2）理想介质中的时变场}：与源相距 $R$ 处的相位因子为 $e^{-j\beta R}$，要使其近似为 1，
+须
+\[
+\beta R=\frac{2\pi R}{\lambda}\ll1
+\quad\Longleftrightarrow\quad
+R\ll\lambda
+\]
+满足该条件的区域称\textbf{近区}（似稳区），其中场与源同步变化、无相位移。两条件统称
+\textbf{MQS 近似条件}（似稳条件）。它给出重要判据：\textbf{能否用“路”的方法处理，取决于尺寸
+与波长之比，而非绝对尺寸或频率高低}——工频 $50\,\mathrm{Hz}$ 时 $\lambda\approx6000\,\mathrm{km}$，
+只有数百公里的输电才需计波动；$3\,\mathrm{GHz}$ 时 $\lambda=10\,\mathrm{cm}$，手掌大的系统
+就须计波动。似稳区是\textbf{相对}概念。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-\subsection{集肤效应}
-当交变电流流过导体时，电流密度分布呈现以下特点：
-\begin{itemize}
-    \item 靠近导体表面处电流密度大，深入导体内部电流密度小；
-    \item 频率很高时，电流几乎只在导体表面附近的薄层中存在；
-    \item 这种场量主要集中在导体表面附近的现象，称为\textbf{集肤效应}。
-\end{itemize}
+\corepoint{\textbf{EQS 丢掉的是“变化磁场激发电场”这条通路（$\partial\vec{B}/\partial t$），
+保留位移电流；MQS 丢掉的是“变化电场激发磁场”这条通路（$\partial\vec{D}/\partial t$），保留
+电磁感应。}两者\textbf{不能同时}用，否则退化为静态场、丢掉全部耦合与波动信息。}
 
-工程上常用\textbf{透入深度} $\delta$ 表示场量在良导体中的集肤程度，它等于场量振幅衰减到其表面值的 $1/e$ 时所经过的距离：
+\section{磁准静态场和电路}
+
+MQS 方程是交流电路的理论基础，基尔霍夫两条定律均可由它导出。
+
+\textbf{（1）基尔霍夫电流定律。}对 $\nabla\times\vec{H}=\vec{J}_C$ 取散度得
+$\oint_S\vec{J}_C\cdot \mathrm{d}\vec{S}=0$，即 MQS 中传导电流\textbf{连续}；用于包围节点的
+闭合面即得 $\sum i_k=0$。
+
+\textbf{（2）基尔霍夫电压定律。}由 $\vec{J}_C=\gamma(\vec{E}+\vec{E}_e)$ 得
+$\vec{E}=\vec{J}_C/\gamma-\vec{E}_e$，代入
+$\vec{E}=-\partial\vec{A}/\partial t-\nabla\varphi$ 沿导线由 $A$ 到 $B$ 积分，四项依次对应
+电动势、电阻压降、电感压降与电容电压：
+
 \begin{formulaBox}
 \[
-\delta = \frac{1}{\alpha} = \sqrt{\frac{2}{\omega\mu\gamma}}
+e(t)=\int_{A}^{B}\vec{E}_e\cdot \mathrm{d}\vec{l}
+=i\left(R+r+R_i\right)+L\frac{\mathrm{d}i}{\mathrm{d}t}+u_C
+\]
+\end{formulaBox}
+即“沿闭合回路的电动势等于各段电压降之和”。可见电路理论不过是 $R\ll\lambda$、
+$\omega\varepsilon\ll\gamma$ 条件下麦克斯韦理论的近似。
+
+\corepoint{时变场中“电压”只在\textbf{同一横截面上的两点间}才有意义：在纵剖面上取闭合路径，
+$\oint_l\vec{E}\cdot \mathrm{d}\vec{l}\neq0$（所围面上有磁通）；只有取在同一横截面内的闭合
+路径，才因所围面无磁通而等于零。}
+
+\section{电准静态场与电荷弛豫}
+
+在 $\gamma$、$\varepsilon$ 均匀的导体内，由电荷守恒定律、$\vec{J}_C=\gamma\vec{E}$ 与
+$\nabla\cdot\vec{E}=\rho/\varepsilon$ 得
+
+\begin{formulaBox}
+\[
+\frac{\partial\rho}{\partial t}+\frac{\gamma}{\varepsilon}\rho=0
+\quad\Longrightarrow\quad
+\rho(t)=\rho_0e^{-t/\tau},
+\qquad
+\tau=\frac{\varepsilon}{\gamma}
 \]
 \end{formulaBox}
 
-结论：\textbf{频率越高、导电性能越好的导体，集肤效应越显著}。
+自由电荷体密度按指数规律衰减，$\tau$ 称\textbf{弛豫时间}。良导体的 $\tau$ 极小，故可认为
+\textbf{良导体内部无自由电荷积累}（$\rho=0$），电荷只能分布在表面——与静电场结论一致，但这里
+是\textbf{动态}得到的。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-\subsection{交流内阻抗}
-在交流情况下，由于集肤效应，电流和电磁场集中在导体表面附近，导致有效载流截面积减小，因此导体的电阻和电感与直流时不同。
+EQS 下仍可定义 $\vec{E}=-\nabla\varphi$，代入高斯定律得
 
-设导体中通过总电流 $\dot{I}$，其等效交流阻抗为 $Z = R + jX$，可通过坡印廷矢量的复数形式计算：
 \begin{formulaBox}
 \[
-Z = \frac{-\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A}}{|\dot{I}|^2}
+\nabla^{2}\varphi=-\frac{\rho}{\varepsilon}
+=-\frac{\rho_0}{\varepsilon}e^{-t/\tau},
+\qquad
+\varphi(\vec{r},t)=\varphi(\vec{r},0)\,e^{-t/\tau}
 \]
-其中：
+\end{formulaBox}
+（后式为无限大均匀导电媒质中的解。）即电位分布按同一指数规律衰减，快慢同取决于 $\tau$；对点
+电荷 $\varphi=\dfrac{q_0}{4\pi\varepsilon R}e^{-t/\tau}$，而磁场处处为零。
+
+\textbf{分片均匀导体。}电荷趋于聚积在两导体分界面上，界面两侧须同时满足衔接条件与连续性条件：
 \[
-\begin{cases}
-R = \frac{1}{|\dot{I}|^2} \text{Re}\left[ -\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A} \right] \\
-X = \frac{1}{|\dot{I}|^2} \text{Im}\left[ -\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A} \right]
-\end{cases}
+E_{1t}=E_{2t},
+\qquad
+D_{2n}-D_{1n}=\sigma,
+\qquad
+J_{1n}=J_{2n}\ \Longrightarrow\ \gamma_1E_{1n}=\gamma_2E_{2n}
+\]
+以双层有损介质平板电容器接直流电压为例：$t=0^+$ 时界面电荷来不及建立，电场按\textbf{介电
+常数}分配（如两层理想介质）；$t\to\infty$ 稳态仅有传导电流，电场按\textbf{电导率}分配（如两层
+导电媒质）；其间按指数过渡。工程结论：低频（工频）交流下若位移电流远大于漏电流，电场按
+$\varepsilon$ 分布，属静电场问题；直流下按 $\gamma$ 分布，属恒定电场问题，两种稳态一般不同。
+
+\corepoint{判据两种写法等价：$\omega\varepsilon/\gamma\ll1$ 与 $\omega\tau\ll1$
+（$\tau=\varepsilon/\gamma$），前者从“位移电流/传导电流”比值得出，后者从“周期/弛豫时间”得出。
+$\gamma$ 是与 $\omega$、$\varepsilon$ \textbf{相对}比较的：同一材料低频是良导体，到光频可能
+变成良介质。}
+
+\section{集肤效应}
+
+MQS 下略去位移电流，对 $\nabla\times\vec{H}=\vec{J}_C$ 取旋度并利用矢量恒等式与物性方程，得
+
+\begin{formulaBox}
+\[
+\nabla^{2}\vec{H}=\mu\gamma\frac{\partial\vec{H}}{\partial t},
+\quad
+\nabla^{2}\vec{E}=\mu\gamma\frac{\partial\vec{E}}{\partial t},
+\quad
+\nabla^{2}\vec{J}_C=\mu\gamma\frac{\partial\vec{J}_C}{\partial t}
+\]
+\[
+\text{正弦稳态：}\quad
+\nabla^{2}\dot{\vec{H}}=j\omega\mu\gamma\dot{\vec{H}},
+\quad
+\nabla^{2}\dot{\vec{E}}=j\omega\mu\gamma\dot{\vec{E}},
+\quad
+\nabla^{2}\dot{\vec{J}}_C=j\omega\mu\gamma\dot{\vec{J}}_C
+\]
+\end{formulaBox}
+它们也称\textbf{涡流方程}或\textbf{磁扩散方程}（时域形式描述磁场扩散过程）。取 $x>0$ 为导体、
+正弦电流沿 $y$ 方向且只随 $x$ 变，则
+$\mathrm{d}^{2}\dot{J}_y/\mathrm{d}x^{2}=k^{2}\dot{J}_y$，舍去随 $x$ 增大的项，得
+
+\begin{formulaBox}
+\[
+k=\frac{1+j}{\delta},
+\qquad
+\dot{J}_y=\dot{J}_0e^{-kx}=\dot{J}_0e^{-x/\delta}e^{-jx/\delta},
+\qquad
+\dot{E}_y=\dot{E}_0e^{-kx},
+\qquad
+\dot{H}_z=-\frac{jk}{\omega\mu}\dot{E}_0e^{-kx}
+\]
+\[
+\delta=\frac{1}{\alpha}=\sqrt{\frac{2}{\omega\mu\gamma}}
+=\frac{1}{\sqrt{\pi f\mu\gamma}}
 \]
 \end{formulaBox}
 
-$R$ 为\textbf{交流电阻}（反映焦耳损耗），$X$ 为\textbf{内电抗}（反映导体内部磁场储能）。
+$\delta$ 为\textbf{透入深度}：场量振幅衰减到表面值的 $1/e$（约 36.8\%）所经距离。场量振幅沿纵深
+按 $e^{-x/\delta}$ 衰减且\textbf{相位随之改变}，愈深愈小——这种场量集中在导体表面附近的现象即
+\textbf{集肤效应}。由 $\dot{H}_z/\dot{E}_y$ 还可见：导体内磁场\textbf{落后}电场 $45^{\circ}$、
+幅值比为 $\sqrt{\omega\mu/\gamma}$（与理想介质中“同相、比值 $\sqrt{\mu/\varepsilon}$”不同）。
+
+要点：$f$、$\gamma$、$\mu$ 越大则 $\delta$ 越小、集肤越显著（铜在 $50\,\mathrm{Hz}$ 时
+$\delta\approx9.4\,\mathrm{mm}$）；经 $4.6\delta$ 振幅降为 $1\%$；深度大于数个 $\delta$ 后场量
+近似为零但\textbf{不等于零}；$\delta$ 由无限大平面导体导出，只要表面曲率半径远大于 $\delta$
+仍可近似使用。工程应用：高频表面淬火；高频线圈用空心铜管或镀银线。
+
+\section{涡流及其损耗}
+
+大块导体处在变化磁场中时，内部感应出\textbf{在大块导体内部自成闭合回路、呈旋涡状流动}的电流，
+称\textbf{涡旋电流}（涡流）。它有两个效应：\textbf{热效应}（损耗发热）与\textbf{去磁效应}
+（涡流磁场反抗外加场的变化）。工业上用热效应加热、冶炼金属，用去磁效应制电磁阻尼、电磁闸；
+变压器铁心中的涡流损耗则须设法减小。MQS 下涡流场同样遵守上节的涡流方程。
+
+把铁心叠片视为厚度 $d$ 的薄导电平板，外磁场沿板面法向、场量与 $y$、$z$ 无关，取板中心为
+$x=0$，则
+
+\begin{formulaBox}
+\[
+\dot{H}_z(x)=\dot{H}_0\frac{\operatorname{ch}(kx)}
+{\operatorname{ch}(kd/2)},
+\qquad
+\dot{J}_y(x)=-\dot{H}_0k\,
+\frac{\operatorname{sh}(kx)}{\operatorname{ch}(kd/2)},
+\qquad
+k=\frac{1+j}{\delta}
+\]
+\end{formulaBox}
+
+磁场在\textbf{板中心最小}（涡流去磁），涡流密度\textbf{反对称于中心}、中心为零、表面最大，
+愈深愈小，同样呈集肤效应。对电工钢片（$\mu_r\sim1000$、$d=0.5\,\mathrm{mm}$），$50\,\mathrm{Hz}$
+时 $B$ 可视为沿截面均匀；$2000\,\mathrm{Hz}$ 时板中 $B$ 已远小于表面，须改用更薄钢片，更高频
+则用粉状材料压制的铁心。体积 $V$ 中的平均损耗及低频近似为
+
+\begin{formulaBox}
+\[
+P=\int_{V}\frac{1}{\gamma}\left|\dot{J}_y\right|^{2}\mathrm{d}V,
+\qquad
+P=\frac{1}{12}\gamma\omega^{2}d^{2}B_{av}^{2}V
+\quad\left(\frac{d}{\delta}\ll1\right)
+\]
+\end{formulaBox}
+$B_{av}$ 为磁感应强度在板厚上的平均值。减损三途径：\textbf{减小厚度}（$P\propto d^{2}$，故用
+彼此绝缘的硅钢片叠装，片间绝缘切断涡流回路）、\textbf{减小电导率}（掺硅提高电阻率）、
+\textbf{降低频率或磁密}。
+
+\corepoint{低频下 $P\propto f^{2}B_{av}^{2}d^{2}\gamma$。三处反直觉：（1）$\gamma$ 越\textbf{大}
+损耗越\textbf{大}，故靠“掺硅降 $\gamma$”减损，而非提高导电性；（2）$P\propto d^{2}$ 只在
+$d\ll\delta$ 时成立，高频下须用 $P=\int|J|^{2}/\gamma\,\mathrm{d}V$ 精算；（3）硅钢片若片间
+不绝缘，涡流回路重新闭合，减损效果全部丧失。}
+
+\section{导体的交流内阻抗}
+
+交流下集肤效应使电流与场集中于表面附近，\textbf{实际载流截面减小}，故电阻与内电感不同于直流。
+设通有总电流 $\dot{I}$（有效值），等效参数 $Z=R+jX$：一方面 $\dot{I}\dot{I}^{*}Z=I^{2}(R+jX)$，
+另一方面由坡印亭定理流入导体的复功率为
+$-\oint_S(\dot{\vec{E}}\times\dot{\vec{H}}^{*})\cdot \mathrm{d}\vec{S}$，两者相等得
+
+\begin{formulaBox}
+\[
+Z=\frac{-\oint_{S}\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)
+\cdot \mathrm{d}\vec{S}}{I^{2}}=R+jX
+\]
+\[
+R=\frac{1}{I^{2}}\mathrm{Re}\left[-\oint_{S}
+\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)\cdot \mathrm{d}\vec{S}\right]
+\]
+\[
+X=\frac{1}{I^{2}}\mathrm{Im}\left[-\oint_{S}
+\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)\cdot \mathrm{d}\vec{S}\right]
+\]
+\end{formulaBox}
+$Z$ 只计及\textbf{导体内部}场引起的阻抗，故称\textbf{交流内阻抗}：$R$ 为交流电阻（焦耳损耗），
+$X=\omega L_i$ 为内电抗（体内磁场储能）。
+
+\textbf{（1）半无限大导体。}取底面积 $h\times a$ 的柱体，由 $\dot{I}=a\gamma\dot{E}_0/k$ 与坡印亭
+矢量只在 $x=0$ 面有通量，得
+
+\begin{formulaBox}
+\[
+Z=R+jX=\frac{h}{a\gamma\delta}(1+j),
+\qquad
+R=\frac{h}{a\gamma\delta},
+\qquad
+L_i=\frac{X}{\omega}=\frac{h}{a\gamma\delta\omega}
+\]
+\end{formulaBox}
+意义：有效值 $I$ 的交流电流给出的有功功率，等于同值直流电流\textbf{集中在厚度 $\delta$ 的层内}
+的功率——透入深度的另一物理含义；因 $\delta$ 很小，$Z$ 也称\textbf{表面阻抗}。
+
+\textbf{（2）圆导线。}半径 $a\gg\delta$ 时可视为厚度无限大、宽为周长 $2\pi a$ 的平面导体：
+
+\begin{formulaBox}
+\[
+R=\frac{1}{2\pi a\gamma\delta},
+\qquad
+R_{dc}=\frac{1}{\gamma\pi a^{2}},
+\qquad
+\frac{R}{R_{dc}}=\frac{a}{2\delta}
+\]
+\end{formulaBox}
+即交流电阻相当于厚度为 $\delta$ 的圆管的直流电阻。故同截面下减小交流电阻的唯一办法是\textbf{增大
+表面面积}——用相互绝缘的多股细线（绞线），高频时用空心铜管。
+
+\corepoint{三处易错：（1）$\dfrac{R}{R_{dc}}=\dfrac{a}{2\delta}$ 要求 $a\gg\delta$（强集肤）；
+低频时 $\delta\gg a$，有 $R\approx R_{dc}$，不可套用。（2）$L_i=X/\omega$ 随频率变化（$f$ 升高
+$\delta$ 减小、$L_i$ 减小），非常数。（3）式中 $I$ 是\textbf{有效值}。}
+
+\section{邻近效应和磁屏蔽}
+
+\textbf{（1）邻近效应。}相互靠近的导体通交变电流时，每一导体还处于其它导体电流的场中，电流
+分布因而改变，称\textbf{邻近效应}；\textbf{频率愈高、靠得愈近愈显著}，与集肤效应共存。二线
+传输线中电流集中于两导线\textbf{相对的内侧}：能量主要经两线之间的空间以电磁波形式传给负载，
+内侧能量密度大、传入导线的功率大；通以反向电流的平行汇流排，内侧面电流密度也最大。
+
+\textbf{（2）电磁屏蔽。}用来减弱某些源在空间某区域（不含这些源）产生的电磁场的结构，称
+\textbf{电磁屏蔽}，是抑制邻近效应的常用措施，屏蔽体多用铜、铝、钢。它利用\textbf{导体内涡流的
+去磁作用}抵制外加场，故又称\textbf{涡流屏蔽}；有效屏蔽要求屏蔽层厚度接近透入深度的 3～6 倍：
+
+\begin{formulaBox}
+\[
+h\ \geq\ (3\sim6)\,\delta,
+\qquad
+S=\frac{E_0}{E}\ \ \text{或}\ \ S=\frac{H_0}{H}
+\]
+\end{formulaBox}
+$S$ 称\textbf{屏蔽系数}（无屏蔽体时该区场强与有屏蔽体时之比）。$1\,\mathrm{MHz}$ 时铝的
+$\delta\approx82\,\mu\mathrm{m}$，薄铝罩即可屏蔽射频场；\textbf{高频不宜用铁磁材料}（损耗大、
+发热重），而低频恒定磁场恰要靠高 $\mu$ 铁磁材料“短路”磁通来屏蔽。
+
+\textbf{（3）磁扩散过程。}薄壁导体圆管（内半径 $a$、壁厚 $\Delta$）外突然建立轴向场 $H_0$ 时，
+感应电流的去磁作用使管内 $H_i$ 不能突变，随后感应电流衰减、磁场逐渐透入，最后均匀分布：
+
+\begin{formulaBox}
+\[
+\frac{\mathrm{d}H_i}{\mathrm{d}t}+\frac{1}{\tau_m}H_i=\frac{H_0}{\tau_m},
+\qquad
+H_i(t)=H_0\left(1-e^{-t/\tau_m}\right),
+\qquad
+\tau_m=\frac{\mu_0\gamma\Delta a}{2}
+\]
+\[
+\text{正弦稳态：}\quad
+\dot{H}_i=\frac{H_0}{1+j\omega\tau_m},
+\qquad
+\omega\gg\frac{1}{\tau_m}=\frac{2}{\mu_0\gamma\Delta a}
+\ \text{时}\ H_i\ll H_0
+\]
+\end{formulaBox}
+$\tau_m$ 称\textbf{磁扩散时间}。可见薄壁导体圆管中感应电流的作用是\textbf{去磁}的；若管内再套
+一管，则内管磁场极弱——这正是多层屏蔽更有效的原因。
+
+\corepoint{电磁屏蔽三处易错：（1）$h\gtrsim(3\sim6)\delta$ 而 $\delta\propto1/\sqrt{f}$，故
+\textbf{频率越高屏蔽层越薄}；对低频（尤其直流）磁场，薄金属罩几乎无效，必须用高 $\mu$ 铁磁
+材料。（2）屏蔽靠涡流去磁，屏蔽体必须\textbf{闭合、导电良好}，开缝开孔会显著降低效能。
+（3）须避开\textbf{谐振}：被屏蔽场频率接近屏蔽体固有频率时效能急剧下降，甚至使防护区场强
+反而增大。}

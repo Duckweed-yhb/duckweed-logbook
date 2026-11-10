@@ -1,0 +1,246 @@
+\chapter{直流—直流变流电路}
+
+直流—直流变流电路（DC-DC Converter）把一种直流电压变换成另一种固定或可调的直流电压，也称\textbf{直流斩波电路}（DC Chopper）。它的基本手段是“开关 + 储能元件”：用开关把直流“切”成脉冲，再用 $L$、$C$ 滤波或被控对象的惯性把脉冲“抹平”，通过改变开关的\textbf{占空比}（导通时间与周期的比）来调节输出平均电压。
+
+本章的分析套路固定为三步：\textbf{（1） 分阶段画等效电路（开关导通／关断）；（2） 对电感用伏秒平衡 $\int u_L\,\mathrm{d}t=0$（稳态时电感电压平均值为零）；（3） 由输入输出功率平衡或电容安秒平衡求电流关系}。
+
+% ============================================================
+\section{基本斩波电路}
+
+\subsection{降压斩波电路}
+
+降压斩波电路（Buck Chopper）是最基础的一种：输出电压平均值低于输入电压。
+
+\begin{center}
+\begin{circuitikz}[font=\footnotesize,scale=0.9]
+  \draw (0,0) to[battery1, l=$E$] (0,-2.6);
+  \draw (0,0) -- (1.0,0) to[switch, l=$S$] (2.8,0) -- (3.8,0) -- (5.6,0) to[L, l=$L$] (7.4,0) -- (8.8,0);
+  \draw (3.8,-2.6) to[D] (3.8,0);
+  \draw (6.6,0) to[C, l=$C$] (6.6,-2.6);
+  \draw (8.4,0) to[R, l=$R$] (8.4,-2.6);
+  \draw (0,-2.6) -- (8.8,-2.6);
+  \draw (5.6,0) -- (6.6,0);
+  \node[right] at (3.95,-1.9) {\scriptsize $VD$};
+  \node[below] at (7.5,-2.75) {\scriptsize $u_o$};
+\end{circuitikz}
+\end{center}
+
+\textbf{工作过程}（假设电感足够大、电流连续，$T$ 为开关周期，$t_{on}$ 为导通时间，占空比 $\alpha=t_{on}/T$）：
+
+\begin{itemize}
+  \item $S$ 导通（$0\sim t_{on}$）：电源 $E$ 经 $L$ 向负载供电，$u_o=E$，电感电流线性上升，$L$ 储能；二极管 $VD$ 反偏截止。
+  \item $S$ 关断（$t_{on}\sim T$）：$L$ 的感应电动势使 $VD$ 正偏导通，电感经 $VD$—负载续流，$u_o=0$，电流线性下降。
+\end{itemize}
+
+对电感用伏秒平衡：$E\,t_{on}=(E-u_o)\,t_{off}$ 即得
+
+\keyformula{U_o=\frac{t_{on}}{T}E=\alpha E}
+
+\textbf{电流连续}时输出电流 $I_o=U_o/R$（或对电动机负载 $I_o=(U_o-E_M)/R$），输入电流平均值 $I_i=\alpha I_o$，输入输出功率相等 $EI_i=U_oI_o$。
+
+\textbf{电流断续}时（负载很轻、$L$ 较小），$S$ 管再次导通前 $L$ 中电流已到零，$u_o$ 在断续期间等于反电动势 $E_M$（阻感反电动势负载），此时
+
+\keyformula{U_o=\frac{t_{on}}{t_{on}+t_{off}'}E}
+
+其中 $t_{off}'$ 为电流实际衰减到零的时间（$t_{off}'<t_{off}$），因此\textbf{断续时输出电压比连续时高}，且不再与 $\alpha$ 成线性关系——这是分析斩波电路时最容易出错的地方。
+
+\corepoint{判断电流是否连续的方法：先按连续公式算 $U_o=\alpha E$ 与 $I_o=U_o/R$，再算电流脉动峰值 $\Delta I=\dfrac{E(1-\alpha)\alpha T}{L}$（或按 $U_o(1-\alpha)T/L$），若 $\dfrac{\Delta I}{2}\ge I_o$ 则电流断续。临界电感为 $L_{cr}=\dfrac{(1-\alpha)U_oT}{2I_o}=\dfrac{(1-\alpha)RT}{2}$，所以\textbf{负载越轻（$R$ 越大）、$L$ 越小、频率越低，越容易断续}。}
+
+\subsection{升压斩波电路}
+
+升压斩波电路（Boost Chopper）的输出电压高于输入电压，拓扑上把电感放在输入端、把开关放在并联位置。
+
+\begin{center}
+\begin{circuitikz}[font=\footnotesize,scale=0.9]
+  \draw (0,0) to[battery1, l=$E$] (0,-2.6);
+  \draw (0,0) -- (2.2,0) to[L, l=$L$] (4.0,0) -- (5.0,0) to[D] (6.4,0) -- (7.8,0);
+  \draw (5.0,-2.6) to[switch, l=$S$] (5.0,0);
+  \draw (6.4,0) -- (8.8,0);
+  \draw (7.4,0) to[C, l=$C$] (7.4,-2.6);
+  \draw (8.6,0) to[R, l=$R$] (8.6,-2.6);
+  \draw (0,-2.6) -- (8.8,-2.6);
+\end{circuitikz}
+\end{center}
+
+\begin{itemize}
+  \item $S$ 导通（$t_{on}$）：电源经 $L$ 短路，$L$ 储能、电流上升，二极管截止，负载由电容 $C$ 供电。
+  \item $S$ 关断（$t_{off}$）：$L$ 的感应电动势与 $E$ 串联向负载和电容供电，$u_o=E+u_L>E$；$L$ 释能，电流下降。
+\end{itemize}
+
+电感伏秒平衡：$E\,t_{on}=(U_o-E)t_{off}$，解得
+
+\keyformula{U_o=\frac{T}{t_{off}}E=\frac{1}{1-\alpha}E}
+
+由于 $\dfrac{1}{1-\alpha}\ge1$，输出电压\textbf{总是高于输入电压}，$\alpha\to1$ 时 $U_o\to\infty$（实际受寄生参数限制）。由功率平衡 $EI_i=U_oI_o$ 得 $I_i=\dfrac{I_o}{1-\alpha}$，即\textbf{输入电流大于输出电流}。
+
+\textbf{电流断续}时 $U_o=\dfrac{t_{on}+t_{off}'}{t_{off}'}E$，输出电压比连续时更高。
+
+\corepoint{Buck 与 Boost 的对偶关系要一次记清：\textbf{Buck 的 $U_o=\alpha E$、输入电流断续（$I_i$ 为脉冲而 $I_o$ 连续）；Boost 的 $U_o=E/(1-\alpha)$、输出电流断续（$I_o$ 为脉冲而 $I_i$ 连续）}。Boost 电路\textbf{不能空载运行}（空载时电容电压会一直充到很高而损坏器件），这是它与 Buck 的重要区别。}
+
+\subsection{升降压斩波电路和 Cuk 斩波电路}
+
+\subsubsection*{1. 升降压斩波电路（Buck-Boost）}
+
+把 Buck 与 Boost 串接并共用一只开关和一只二极管，得到升降压斩波电路。设 $S$ 导通时电感从电源储能（此时负载由电容供电），$S$ 关断时电感经二极管向负载释能，则
+
+\keyformula{U_o=-\frac{t_{on}}{t_{off}}E=-\frac{\alpha}{1-\alpha}E}
+
+负号表示\textbf{输出极性与输入相反}（反极性）。$\alpha<0.5$ 时 $|U_o|<E$（降压），$\alpha>0.5$ 时 $|U_o|>E$（升压），故称升降压。由 $EI_i=|U_o|I_o$ 得 $I_i=\dfrac{\alpha}{1-\alpha}I_o$。
+
+该电路的优点是\textbf{电压调节范围宽}，缺点是\textbf{输入、输出电流都是脉动的}，滤波电容 $C$ 需承受较大的脉动电流。
+
+\subsubsection*{2. Cuk 斩波电路}
+
+Cuk 斩波电路同样输出反极性电压、电压比也是 $-\alpha/(1-\alpha)$，但它把电感放在\textbf{输入和输出两端}，中间用电容 $C_1$ 传递能量：
+
+\keyformula{U_o=-\frac{\alpha}{1-\alpha}E}
+
+\begin{itemize}
+  \item $S$ 导通时：$E$—$L_1$—$S$ 回路，$L_1$ 储能；同时 $C_1$ 经 $S$—$L_2$—负载放电（$L_2$ 储能）。
+  \item $S$ 关断时：$E$—$L_1$—$C_1$—$VD$ 回路，$L_1$ 向 $C_1$ 充电；$L_2$ 经 $VD$—负载续流。
+  \item 由于 $L_1$、$L_2$ 分列输入输出两侧，\textbf{输入电流和输出电流都是连续的}，脉动小，这是 Cuk 相对 Buck-Boost 的最大优点；代价是需一个承受高脉动电流的传递电容 $C_1$，且电路较复杂。
+\end{itemize}
+
+\subsection{Sepic 斩波电路和 Zeta 斩波电路}
+
+这两种电路可以看成 Cuk 电路的变形，其电压比与 Buck-Boost 相同但\textbf{输出极性与输入相同}（非反相）。
+
+\keyformula{U_o=\frac{\alpha}{1-\alpha}E\quad(\text{Sepic、Zeta})}
+
+\begin{itemize}
+  \item \textbf{Sepic 电路}：电感在输入端、二极管在输出端，中间经电容耦合；输入电流连续。
+  \item \textbf{Zeta 电路}：电感在输出端、二极管在输入端；输出电流连续。
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{基本斩波电路的电压比与特点}
+\label{tab:5-1}
+\begin{tabular}{p{2.6cm}p{3.4cm}p{1.6cm}p{2.4cm}p{3.6cm}}
+\toprule
+\textbf{电路} & \textbf{电压比 $U_o/E$} & \textbf{极性} & \textbf{连续量} & \textbf{主要特点} \\
+\midrule
+Buck（降压） & $\alpha$ & 同相 & 输出电流连续 & 结构最简单，输出电流脉动大，输入电流断续 \\
+Boost（升压） & $1/(1-\alpha)$ & 同相 & 输入电流连续 & 输出电流断续，不能空载 \\
+Buck-Boost（升降压） & $-\alpha/(1-\alpha)$ & 反相 & 均断续 & 调节范围宽，输入输出电流都脉动 \\
+Cuk & $-\alpha/(1-\alpha)$ & 反相 & 均连续 & 输入输出电流连续，需传递电容 \\
+Sepic & $\alpha/(1-\alpha)$ & 同相 & 输入电流连续 & 非反相的升降压 \\
+Zeta & $\alpha/(1-\alpha)$ & 同相 & 输出电流连续 & Sepic 的对偶 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{复合斩波电路和多相多重斩波电路}
+
+\subsection{电流可逆斩波电路}
+
+把降压斩波电路与升压斩波电路组合起来，就可构成\textbf{电流可逆斩波电路}：$V_1$、$VD_1$ 构成降压斩波（电动机工作状态，能量由电源流向电动机），$V_2$、$VD_2$ 构成升压斩波（再生制动状态，能量由电动机回馈到电源）。
+
+\begin{itemize}
+  \item 使 $V_1$ 工作、$V_2$ 不工作：电动机电动运行，$I_o>0$，$U_o=\alpha_1E$；
+  \item 使 $V_2$ 工作、$V_1$ 不工作：电动机反接制动或再生制动，电流反向，能量回馈电源；
+  \item $V_1$、$V_2$ 交替工作（两者不能同时导通，否则电源短路），可实现\textbf{电流的双向流动}——这是“单象限”变“两象限”的关键。
+\end{itemize}
+
+\subsection{桥式可逆斩波电路}
+
+把两个电流可逆斩波电路组合，构成\textbf{桥式可逆斩波电路}（四象限斩波器）：四个桥臂全由可控器件与反并联二极管组成，电动机接在桥的中点。
+
+\begin{itemize}
+  \item 通过控制四个桥臂的导通组合，可使电动机的\textbf{电压和电流都能正负双向}，从而运行在\textbf{四个象限}：正转电动、正转制动、反转电动、反转制动。
+  \item 必须保证\textbf{同一桥臂上下管不能同时导通}（否则电源直通短路），故驱动信号须留死区、并设互锁逻辑。
+\end{itemize}
+
+\subsection{多相多重斩波电路}
+
+把 $m$ 个结构相同的斩波电路并联（相），每个斩波电路在一个周期内导通 $n$ 次（重），即构成 $m$ 相 $n$ 重斩波电路。
+
+\begin{itemize}
+  \item 各相开关的驱动脉冲依次错开 $T/m$，使\textbf{输入电流和输出电流的脉动频率提高到 $m$ 倍}，脉动幅值大大减小，因而可减小滤波元件、提高功率密度；
+  \item 同时每个单元承担的电流减小，便于用较小容量的器件构成大电流装置；
+  \item 常用于低压大电流场合（如电解电源、电镀电源）。
+\end{itemize}
+
+% ============================================================
+\section{带隔离的直流—直流变流电路}
+
+前述电路的输入输出共地、不隔离；在需要\textbf{电气隔离}的场合（安全、抗干扰），必须通过高频变压器耦合，这就是带隔离的直流—直流变流电路。按变压器励磁方式分为两类：
+
+\begin{itemize}
+  \item \textbf{单端电路}：变压器磁通只沿磁滞回线的一个分支变化（单向励磁），如正激、反激；需专门设置磁复位电路，否则磁通会逐周期累积而饱和。
+  \item \textbf{双端电路}：变压器双向励磁，磁通在正负两个方向交替变化，利用率高，如半桥、全桥、推挽。
+\end{itemize}
+
+\subsection{正激电路}
+
+正激（Forward）电路：开关 $S$ 导通时，电源经变压器向二次侧传输能量，二次侧经整流二极管向负载供电并给电感储能；$S$ 关断时，电感经续流二极管续流，变压器需\textbf{复位绕组}把励磁能量送回电源（否则磁通累积饱和）。
+
+\begin{itemize}
+  \item 输出电压 $U_o=\alpha\dfrac{N_2}{N_1}E$（$N_1$、$N_2$ 为一、二次匝数）；
+  \item 因复位绕组的存在，\textbf{占空比必须小于 0.5}（复位时间需占一定比例），否则变压器饱和；
+  \item 优点：结构简单、二次侧电流脉动小；缺点：变压器单向励磁、利用率低、需复位电路。
+\end{itemize}
+
+\subsection{反激电路}
+
+反激（Flyback）电路：$S$ 导通时变压器一次绕组储能，二次侧二极管截止、负载由输出电容供电；$S$ 关断时一次绕组能量耦合到二次侧，经二极管向负载和电容释放。
+
+\begin{itemize}
+  \item 输出电压 $U_o=\dfrac{\alpha}{1-\alpha}\cdot\dfrac{N_2}{N_1}E$（连续模式）；
+  \item 反激电路的变压器实际起\textbf{储能电感}的作用，磁通单向变化，\textbf{不需要复位绕组}，占空比可大于 0.5；
+  \item 优点：结构最简单、成本最低，广泛用于小功率电源（手机充电器、适配器）；缺点：变压器利用率低、输出纹波较大。
+\end{itemize}
+
+\subsection{半桥电路}
+
+半桥电路用两只开关器件与两只电容串联，变压器一次绕组接在两中点之间。
+
+\begin{itemize}
+  \item 变压器一次电压幅值为 $E/2$，\textbf{双向励磁}，无磁通累积问题；
+  \item 同一桥臂上下管须留死区防直通；电容中点电压需均衡；
+  \item 输出功率中等，用于几百瓦到几千瓦的开关电源。
+\end{itemize}
+
+\subsection{全桥电路}
+
+全桥电路用四只开关器件组成两个桥臂，变压器一次绕组接在两桥臂中点之间。
+
+\begin{itemize}
+  \item 变压器一次电压幅值为 $E$（是半桥的两倍），同样双向励磁；
+  \item 优点：功率大、变压器利用率高；缺点：器件多、驱动复杂、有直通风险；
+  \item 是大功率开关电源、逆变焊机、电力操作电源的常用拓扑。
+\end{itemize}
+
+\subsection{推挽电路}
+
+推挽（Push-Pull）电路用两只开关器件与\textbf{带中心抽头}的变压器一次绕组构成。
+
+\begin{itemize}
+  \item 两只开关交替导通，变压器一次两个半绕组轮流工作，磁通双向变化；
+  \item 每个开关承受的电压为 $2E$（关断时另一半绕组的感应电动势叠加），故适合低压输入场合；
+  \item 缺点是变压器需中心抽头、开关耐压要求高、易出现“偏磁”（两半绕组不对称导致直流磁化）。
+\end{itemize}
+
+\subsection{全波整流和全桥整流}
+
+双端电路中常用的二次侧整流形式为\textbf{全波整流}（变压器二次带中心抽头，两只二极管）与\textbf{全桥整流}（四只二极管，无需中心抽头）。
+
+\begin{table}[htbp]
+\centering
+\caption{带隔离直流—直流变流电路比较}
+\label{tab:5-2}
+\begin{tabular}{p{2.4cm}p{2.4cm}p{2.6cm}p{2.0cm}p{4.0cm}}
+\toprule
+\textbf{电路} & \textbf{变压器励磁} & \textbf{一次电压幅值} & \textbf{占空比限制} & \textbf{特点} \\
+\midrule
+正激 & 单向 & $E$ & $<0.5$ & 需复位绕组，结构简单，中小功率 \\
+反激 & 单向（储能） & $E$ & 无 & 不需复位，最简单最便宜，小功率 \\
+半桥 & 双向 & $E/2$ & $<0.5$（防直通） & 器件少，中功率 \\
+全桥 & 双向 & $E$ & $<0.5$（防直通） & 功率大、利用率高，器件多 \\
+推挽 & 双向 & $E$ & $<0.5$（防偏磁） & 需中心抽头，开关耐压 $2E$，低压输入 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\corepoint{本章最容易失分的三点：\textbf{（1） 电压比记混}——Buck 是 $\alpha$、Boost 是 $1/(1-\alpha)$、Buck-Boost 与 Cuk 是 $-\alpha/(1-\alpha)$、Sepic 与 Zeta 是 $+\alpha/(1-\alpha)$；\textbf{（2） 忽略“电流断续”}——所有用 $\alpha$ 表示的线性关系只在电流连续时成立，断续时输出电压偏高，必须先判连续；\textbf{（3） 忘掉“极性”}——Buck-Boost 与 Cuk 输出反极性，Sepic 与 Zeta 输出同极性。另外记住隔离电路中正激需复位且 $D<0.5$、反激不需复位。}

@@ -1,0 +1,433 @@
+% ========== 第4章 滤波器（依据 26春_第4章_讲义） ==========
+% 讲义 4.1 滤波器概述 / 4.2 模拟滤波器 / 4.3 数字滤波器
+
+\chapter{滤波器}
+
+\section{滤波器概述}
+
+\subsection{滤波的概念及其基本原理}
+\begin{itemize}
+\item \textbf{传统意义}：消除或减弱干扰噪声、提取有用信号的过程（滤除噪声）。
+\item \textbf{现代意义}：从原始信号中获取目标信息的过程（信号波形检测、参数估计等）。
+\item \textbf{滤波的原理}：根据有用信号与噪声信号的不同特性，实现二者的有效分离，从而消除或减弱噪声、提取有用信号。
+\item \textbf{滤波器}：实现滤波功能的系统，是一种具有一定传输特性的信号处理装置。从系统的角度看，滤波器就是在时域具有冲激响应 $h(t)$ 或脉冲响应 $h(n)$ 的\textbf{可实现的线性时不变系统}。
+\end{itemize}
+
+滤波的实质是“频域选择”：输入频谱 $X(\omega)$ 与滤波器的频率特性 $H(\omega)$ 相乘，得到输出频谱 $Y(\omega)=X(\omega)H(\omega)$。设计具有不同频率特性的滤波器，就得到不同的滤波效果。理想低通滤波器的矩形幅频特性物理上不可实现（非因果），实际滤波器只要求在通带内近似无失真、在阻带内充分衰减。
+
+\subsection{滤波器的分类}
+
+\subsubsection{经典滤波器与现代滤波器}
+\begin{itemize}
+\item \textbf{经典滤波器}：假定有用信号与希望去掉的信号具有\textbf{不同的频带}，通过设计合适频率特性去掉无用信号；当二者频谱相互重叠时无能为力。
+\item \textbf{现代滤波器}：从含噪声的信号（数据序列）中估计出信号的某些特征或信号本身，估计结果具有更高信噪比；把信号与噪声都视为随机信号处理。
+\end{itemize}
+
+\subsubsection{按元件性质与通带范围分类}
+\begin{center}
+\small
+\begin{tabular}{p{2.6cm}p{11.4cm}}
+\toprule
+分类依据 & 类别 \\
+\midrule
+构成元件性质 & 无源滤波器（$R$、$C$、$L$ 等无源元件）；有源滤波器（运放等有源器件，需能量源） \\
+通带与阻带范围 & 低通（通低频阻高频）；高通（通高频阻低频）；带通（通过某频带、衰减其余）；带阻（抑制某频带、通过其余）；全通（某频带内各频率分量无衰减通过） \\
+所处理信号性质 & 模拟滤波器（连续时间信号）；数字滤波器（离散时间信号） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{模拟滤波器与数字滤波器的输入输出关系}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+类型 & 时域关系 & 频域关系 \\
+\midrule
+模拟滤波器 & $y(t)=h(t)*x(t)$ & $Y(\omega)=H(\omega)X(\omega)$ \\
+数字滤波器 & $y(n)=h(n)*x(n)$ & $Y(\Omega)=H(\Omega)X(\Omega)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{滤波器的技术指标}
+
+\subsubsection{通带、阻带与过渡带}
+理想的矩形幅频特性要求从一个频带到另一个频带突变，物理上不可实现。因此实际滤波器允许：幅频特性在通带和阻带内有一定的衰减范围并允许有起伏，且在通带与阻带之间留出\textbf{过渡带}。
+\begin{itemize}
+\item \textbf{通带}（通频带）：信号以很小的衰减通过的频率范围；
+\item \textbf{阻带}（阻频带）：阻止信号通过的频率范围；
+\item \textbf{过渡带}：通带与阻带之间的频率范围。
+\end{itemize}
+
+\subsubsection{五项主要技术指标}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{p{2.4cm}p{11.4cm}}
+\toprule
+指标 & 定义 \\
+\midrule
+中心频率 $\omega_0$ & 通带、阻带截止频率的几何平均值：$\omega_0=\sqrt{\omega_p\,\omega_s}$ \\
+通带波动 $\Delta\alpha$ & 通带内频率特性曲线的最大峰值与谷值之差 \\
+相移 $\varphi$ & 特定频率信号通过滤波器时，输入与输出端的相位之差 \\
+群延迟 $\tau_g$ & 又称包络延迟，用相移对频率的变化率衡量：$\tau_g=-\dfrac{d\varphi(\omega)}{d\omega}$；实际滤波器该导数为负，故 $\tau_g$ 通常为正 \\
+衰减函数 $\alpha$ & 又称衰耗特性或工作损耗，单位 dB（设 $|H(0)|$ 归一化为 1）：$\alpha=20\lg\dfrac{|H(0)|}{|H(\omega)|}=-20\lg|H(\omega)|$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+工程上用两个边界点描述衰减要求：
+\begin{equation}
+\alpha_p=20\lg\frac{|H(0)|}{|H(\omega_p)|}=-20\lg|H(\omega_p)|\ \ (\text{通带最大衰减}),\qquad
+\alpha_s=-20\lg|H(\omega_s)|\ \ (\text{阻带最小衰减}),
+\end{equation}
+其中 $\omega_p$ 为通带截止频率、$\omega_s$ 为阻带截止频率。设计低通滤波器时通常取幅值下降 \textbf{3 dB} 所对应的频率 $\omega_{3\text{dB}}$ 作为通带截止频率，即 $\omega_p=\omega_{3\text{dB}}$，此时 $\alpha_p=3$ dB。
+
+\subsubsection{3 dB 与半功率点}
+通常认为，当信号的功率谱密度 $|H(\omega)|^2$ 降到峰值的一半时，该频率谐波对整体的影响就可以忽略。对于 $|H(\omega)|$ 峰值为 1 的因果滤波器，半功率点对应 $|H(\omega)|^2=\dfrac{1}{2}$，即
+\begin{equation}
+20\lg|H(\omega)|=10\lg|H(\omega)|^2=10\lg\frac{1}{2}\approx-3\ \text{dB}.
+\end{equation}
+此时通带就是 $|H(\omega)|$ 从 0 dB 的峰值点下降到不小于 $-3$ dB 的频率 $\omega$ 的集合。\textbf{注意：“一半”是以功率（而非幅值）定义的}——幅值下降到 $1/\sqrt{2}\approx0.707$。
+
+\section{模拟滤波器}
+
+\subsection{模拟滤波器概述}
+模拟滤波器是用模拟系统处理模拟信号（连续时间信号）的滤波器，是一种选择频率的装置，故又称频率选择滤波器。
+
+\subsubsection{系统综合与设计方法}
+\textbf{系统（网络）分析}是给定系统结构及其参数求响应；\textbf{系统（网络）综合}是给出激励与响应要求，求满足要求的系统结构与参数。模拟滤波器综合设计法（“插入衰减法”或“工作参数法”）分两步：
+\begin{enumerate}
+\item \textbf{逼近（approximation）}：根据给定频率响应特性（通带衰减 $\alpha_p$、阻带衰减 $\alpha_s$ 等指标），寻求可实现的有理函数 $H(s)$；可选若干典型 $H(s)$ 逼近理想滤波器（巴特沃思、切比雪夫等）。
+\item \textbf{实现}：由选定的 $H(s)$ 实现二端口网络（滤波器）的电路结构和参数值。
+\end{enumerate}
+整体思路是：\textbf{频率特性的模平方 $|H(\omega)|^2$ $\to$ 系统函数 $H(s)$}。
+
+\subsubsection{$H(s)$ 的可实现条件}
+不考虑有源器件时，待求的模拟滤波器系统函数 $H(s)$ 应满足：
+\begin{itemize}
+\item \textbf{稳定性}：模拟滤波器应是稳定的时不变系统（存在传递函数），即 $H(s)$ 的极点分布在 $s$ \textbf{左半平面}；
+\item $H(s)$ 是具有\textbf{实系数}的 $s$ 有理函数；
+\item \textbf{分子多项式的阶次不大于分母多项式的阶次}，符合实际系统的因果性；
+\item $h(t)=\mathcal{L}^{-1}[H(s)]$ 是 $t$ 的实函数。
+\end{itemize}
+
+\subsubsection{由模平方函数求系统函数}
+由 $H(j\omega)$ 的共轭对称性 $H(j\omega)=H^*(-j\omega)$，
+\begin{equation}
+\big|H(j\omega)\big|^2=H(j\omega)H(-j\omega)\Big|_{j\omega\to s}=H(s)H(-s).
+\end{equation}
+因此 $|H(j\omega)|^2$ 的零、极点关于虚轴\textbf{成对对称分布}：一半属于 $H(s)$，另一半属于 $H(-s)$。求法为：把 $\omega^2$ 换成 $-s^2$，解出 $H(s)H(-s)$ 的全部零极点，再按可实现条件选取。
+\begin{itemize}
+\item \textbf{极点}：$H(s)$ 的极点必须位于 $s$ 左半平面，$H(-s)$ 的极点必须位于右半平面；
+\item \textbf{零点}：取决于是否为\textbf{最小相位系统}。若为最小相位系统，$H(s)$ 的所有零点也应分布在左半平面或 $j\omega$ 轴上（这是“一定幅频特性下相移最小”的充要条件）；若非最小相位系统，零点位置与稳定性无关，可任意选取；
+\item 若有零点在 $j\omega$ 轴上：由于 $H(s)$ 系数为实数，$j\omega$ 轴上的零点必须是\textbf{偶阶重零点}，此时要把轴上的零点\textbf{平分}给 $H(s)$ 与 $H(-s)$；
+\item 幅度平方函数中的常数因子 $k^2$ 也要\textbf{平分}，即 $H(s)$ 的分子系数取 $k$。
+\end{itemize}
+
+\subsection{巴特沃思低通滤波器}
+以巴特沃思函数作为滤波器的传递函数，它用最高阶 Taylor 级数的形式逼近理想矩形特性，是最基本的逼近函数形式之一。
+
+\subsubsection{幅频特性（模平方函数）}
+\begin{equation}
+\big|H(\omega)\big|^2=\frac{1}{1+\left(\dfrac{\omega}{\omega_c}\right)^{2n}},
+\end{equation}
+其中 $n$ 为滤波器阶数，$\omega_c$ 为截止频率：当 $\omega=\omega_c$ 时 $|H(\omega)|^2=\dfrac{1}{2}$，即 $\omega_c$ 对应 $-3$ dB 点。
+
+\subsubsection{主要特性}
+\begin{itemize}
+\item \textbf{最大平坦性}：阶数为 $n$ 时，$\omega=0$ 处前 $(2n-1)$ 阶导数均为零，原点附近非常平直，故又称“最大平坦幅值滤波器”。
+\item \textbf{单调下降}：幅值在通带、阻带（含过渡带）内单调递减；$|H(0)|=1$，$|H(\infty)|=0$；无论 $n$ 取何值，$|H(\omega_c)|=0.707$，3 dB 带宽恒在 $\omega=\omega_c$。
+\item 阶数 $n$ 增加：通带更平坦、阻带衰减更快、过渡带变窄，趋于理想低通；$\omega>\omega_c$ 后近似以 \textbf{$20n$ dB/倍频程}下降（代价是元件增多）。相频特性较好，通带内无起伏，接近直线。
+\end{itemize}
+
+\subsubsection{极点分布与系统函数}
+由 $|H(\omega)|^2$ 令 $\omega=\dfrac{s}{j}$，得
+\begin{equation}
+H(s)H(-s)=\frac{1}{1+(-1)^n\left(\dfrac{s}{\omega_c}\right)^{2n}},
+\end{equation}
+其分母为零时
+\begin{equation}
+\left(\frac{s}{j\omega_c}\right)^{2n}=1\quad\Longrightarrow\quad
+s_k=\omega_c\exp\!\left[\,j\!\left(\frac{2k-1}{2n}\pi+\frac{\pi}{2}\right)\right],\quad k=1,2,\dots,2n .
+\end{equation}
+$s_k$ 即 $H(s)$ 与 $H(-s)$ 的全部极点，其分布规律为
+\begin{itemize}
+\item 共 $2n$ 个极点以 $\dfrac{\pi}{n}$ 为间隔均匀分布在半径为 $\omega_c$ 的圆上，该圆称为\textbf{巴特沃思圆}；
+\item 所有极点以 $j\omega$ 轴为对称轴呈对称分布，$j\omega$ 轴上没有极点；
+\item $n$ 为奇数时有两个极点在实轴 $s=\pm\omega_c$ 上；$n$ 为偶数时实轴上没有极点；复数极点两两共轭对称。
+\end{itemize}
+取全部\textbf{左半平面}极点为 $H(s)$ 的极点（右半平面对应 $H(-s)$），分子取 $\omega_c^n$ 以保证 $|H(s)|_{s=0}=1$：
+\begin{equation}
+H(s)=\frac{\omega_c^n}{\displaystyle\prod_{k=1}^{n}(s-s_k)} .
+\end{equation}
+
+\subsubsection{归一化与巴特沃思多项式}
+为使设计具有通用性，以 $\omega_c$ 为参考频率作归一化：分子、分母各除以 $\omega_c^n$，并令
+\begin{equation}
+\bar{s}=\frac{s}{\omega_c}\quad(\text{归一化复频率}).
+\end{equation}
+归一化后，当阶数 $n$ 为偶数时
+\begin{equation}
+H(\bar{s})=\frac{1}{\displaystyle\prod_{k=1}^{n/2}\left(\bar{s}^2-2\cos\!\left(\frac{2k-1}{2n}\pi+\frac{\pi}{2}\right)\bar{s}+1\right)},
+\end{equation}
+当阶数 $n$ 为奇数时
+\begin{equation}
+H(\bar{s})=\frac{1}{(\bar{s}+1)\displaystyle\prod_{k=1}^{(n-1)/2}\left(\bar{s}^2-2\cos\!\left(\frac{2k-1}{2n}\pi+\frac{\pi}{2}\right)\bar{s}+1\right)} .
+\end{equation}
+工程上直接查“归一化频率的各阶巴特沃思多项式”表：
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\small
+\begin{tabular}{cl}
+\toprule
+$n$ & 巴特沃思多项式（分母，按 $\bar{s}$ 降幂） \\
+\midrule
+1 & $\bar{s}+1$ \\
+2 & $\bar{s}^2+\sqrt{2}\,\bar{s}+1$ \\
+3 & $\bar{s}^3+2\bar{s}^2+2\bar{s}+1$ \\
+4 & $\bar{s}^4+2.613\bar{s}^3+3.414\bar{s}^2+2.613\bar{s}+1$ \\
+5 & $\bar{s}^5+3.236\bar{s}^4+5.236\bar{s}^3+5.236\bar{s}^2+3.236\bar{s}+1$ \\
+6 & $\bar{s}^6+3.864\bar{s}^5+7.464\bar{s}^4+9.142\bar{s}^3+7.464\bar{s}^2+3.864\bar{s}+1$ \\
+7 & $\bar{s}^7+4.494\bar{s}^6+10.098\bar{s}^5+14.592\bar{s}^4+14.592\bar{s}^3+10.098\bar{s}^2+4.494\bar{s}+1$ \\
+8 & $\bar{s}^8+5.153\bar{s}^7+13.137\bar{s}^6+21.846\bar{s}^5+25.688\bar{s}^4+21.846\bar{s}^3+13.137\bar{s}^2+5.153\bar{s}+1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+由 $\bar{s}$ 回到实际频率用\textbf{反归一化}：$\bar{s}=\dfrac{s}{\omega_c}$，即把表中每个 $\bar{s}$ 换成 $\dfrac{s}{\omega_c}$，或等价地把分子乘以 $\omega_c^n$、分母各系数按 $\omega_c$ 的幂次缩放。
+
+\subsubsection{阶次的确定}
+巴特沃思低通滤波器的衰减函数为
+\begin{equation}
+\alpha=-20\lg|H(\omega)|=10\lg\left[1+\left(\frac{\omega}{\omega_c}\right)^{2n}\right].
+\end{equation}
+在 $\omega=\omega_p$、$\omega=\omega_s$ 处分别为
+\begin{equation}
+\alpha_p=10\lg\left[1+\left(\frac{\omega_p}{\omega_c}\right)^{2n}\right],\qquad
+\alpha_s=10\lg\left[1+\left(\frac{\omega_s}{\omega_c}\right)^{2n}\right].
+\end{equation}
+联立消去 $\omega_c$ 得阶次公式
+\begin{equation}
+n\ \ge\ \frac{\lg\sqrt{10^{0.1\alpha_s}-1}}{\lg\dfrac{\omega_s}{\omega_c}}\qquad(\text{取满足不等式的整数}).
+\end{equation}
+设计低通时通常令 $\omega_c=\omega_p=\omega_{3\text{dB}}$（此时 $\alpha_p=3$ dB），于是只需由阻带指标 $\alpha_s$、$\omega_s$ 求 $n$。
+
+\textbf{设计步骤}（巴特沃思低通）：
+\begin{enumerate}
+\item 由指标确定 $\omega_c$（常取 $\omega_c=\omega_p$）并算出归一化阻带频率 $\bar{\omega}_s=\omega_s/\omega_c$；
+\item 用阶次公式算出 $n$，向上取整；
+\item 查表得 $n$ 阶归一化传递函数 $H(\bar{s})$；
+\item 反归一化（$\bar{s}=s/\omega_c$），得实际 $H(s)$。
+\end{enumerate}
+
+\subsection{切比雪夫低通滤波器}
+巴特沃思滤波器的幅频特性在通带与阻带内都随频率单调变化，滤波特性简单；但它在通带内\textbf{误差分布不均匀}，靠近频带边缘误差最大，阶数较小时阻带衰减慢、与理想特性相差较远；若要求阻带迅速下降就需提高阶数，元件增多、线路复杂。若把误差\textbf{均匀分布}在通带内，就可用较低阶数达到同样指标——这通过选择具有\textbf{等波纹}特性的逼近函数来实现。
+
+切比雪夫滤波器由切比雪夫多项式的正交函数推导而来，采用“通带内等波动、通带外衰耗单调递增”的准则逼近理想特性：
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+类型 & 通带 & 阻带 \\
+\midrule
+切比雪夫 \textrm{I} 型 & 等波纹 & 单调下降 \\
+切比雪夫 \textrm{II} 型 & 单调 & 等波纹 \\
+\bottomrule
+\end{tabular}
+\end{center}
+与巴特沃思相比：相同阶数下切比雪夫过渡带更窄、阻带衰减更快，代价是通带内有起伏且相频特性较差（群延迟波动大）；其系统函数的计算比巴特沃思复杂得多。
+
+\subsection{模拟滤波器的频率变换}
+以归一化低通滤波器为原型，通过频率变换可得到其他类型的滤波器，讲义给出的变换有两类：
+\begin{itemize}
+\item \textbf{低通到高通的变换}；
+\item \textbf{低通到带通的变换}。
+\end{itemize}
+即“先设计低通原型，再作频率变换”是模拟滤波器设计的通用套路（具体变换式由对应章节给出，此处只记思路）。
+
+\section{数字滤波器}
+
+\subsection{数字滤波器概述}
+数字滤波器是具有一定传输特性的数字信号处理装置：输入和输出都是数字信号，借助数字器件和一定的数值计算方法，对输入信号的波形或频谱进行加工处理，去掉无用成分、保留有用成分。它既可用硬件实现，也可在计算机上用软件完成。
+
+为便于研究由模拟到数字的映射，本节起记：模拟滤波器单位冲激响应为 $h_a(t)$、系统函数为 $H_a(s)$；数字滤波器单位脉冲响应为 $h(n)$、系统函数为 $H(z)$。
+
+\subsubsection{数字滤波器相比模拟滤波器的优点}
+\begin{itemize}
+\item \textbf{精度高}：模拟器件（$R$、$L$、$C$）精度难做高，数字滤波器精度由字长决定，增加字长即可提高。
+\item \textbf{可靠性高}：不受温度、湿度等环境影响，没有元器件老化、感应与杂散振荡问题。
+\item \textbf{灵活性高}：通过编程可随时修改滤波特性。
+\item \textbf{便于大规模集成}：设计规范、便于集成；可工作于极低频率，并容易实现模拟滤波器难以实现的\textbf{线性相位}。
+\end{itemize}
+
+\subsubsection{分类与系统函数}
+按频率响应的通带特性分低通、高通、带通、带阻；按冲激响应的时间特性分无限冲激响应（IIR）与有限冲激响应（FIR）；按构成方式分递归型（如 IIR）、非递归型（如 FIR）和用 FFT 实现的。
+
+设输入序列 $x(n)$、输出序列 $y(n)$，数字滤波器用 LTI 离散系统表示：
+\begin{equation}
+y(n)+\sum_{k=1}^{N}a_k y(n-k)=\sum_{k=0}^{M}b_k x(n-k),
+\end{equation}
+其传递函数为
+\begin{equation}
+H(z)=\frac{Y(z)}{X(z)}=\frac{\sum\limits_{i=0}^{M}b_i z^{-i}}{1+\sum\limits_{i=1}^{N}a_i z^{-i}}
+=\frac{b_0+b_1z^{-1}+\cdots+b_Mz^{-M}}{1+a_1z^{-1}+\cdots+a_Nz^{-N}} .
+\end{equation}
+分子决定系统的\textbf{零点}，分母决定系统的\textbf{极点}。
+
+\subsubsection{FIR 与 IIR 的判据}
+\begin{itemize}
+\item 若分母系数 $a_i=0$，则 $H(z)=\sum\limits_{i=0}^{M}b_iz^{-i}$，对应
+\begin{equation}
+h(n)=b_0\delta(n)+b_1\delta(n-1)+\cdots+b_M\delta(n-M),
+\end{equation}
+单位脉冲响应时间长度有限，最多 $(M+1)$ 项，称为\textbf{有限冲激响应（FIR）滤波器}。$H(z)$ 只有单极点 $z=0$，位于单位圆内，故 \textbf{FIR 滤波器总是稳定的}。
+\item 若至少有一个 $a_i\ne0$，且分母至少存在一个根不为分子所抵消，则单位脉冲响应有无限多项，称为\textbf{无限冲激响应（IIR）滤波器}。例如 $H(z)=\dfrac{b_0}{1-z^{-1}}=b_0(1+z^{-1}+z^{-2}+\cdots)$，$|z|>1$，对应 $h(n)=b_0u(n)$。
+\end{itemize}
+
+\subsection{无限冲激响应数字滤波器}
+
+\subsubsection{设计思路（间接法）}
+\begin{itemize}
+\item \textbf{直接法}：计算机辅助设计方法（不作详细讨论）。
+\item \textbf{间接法}：借助模拟滤波器传递函数 $H_a(s)$ 求数字滤波器 $H(z)$。步骤为：(1) 根据技术指标确定满足要求的模拟滤波器 $H_a(s)$；(2) 寻找一种把 $s$ 平面映射到 $z$ 平面的变换关系，使 $H_a(s)$ 变为所需的 $H(z)$。
+\end{itemize}
+为保证数字滤波器保持模拟滤波器的特性，$s\to z$ 的映射必须满足\textbf{两个基本条件}：
+\begin{enumerate}
+\item $s$ 平面的复频率轴（虚轴）必须映射到 $z$ 平面的\textbf{单位圆}上，以保证频率特性相互对应；
+\item $s$ 平面的\textbf{左半平面}必须映射到 $z$ 平面的\textbf{单位圆以内}，以保持稳定性。
+\end{enumerate}
+
+\subsubsection{冲激响应不变法}
+\textbf{遵循准则}：使数字滤波器的单位脉冲响应等于所参照模拟滤波器单位冲激响应的采样值，
+\begin{equation}
+h(n)=h_a(t)\Big|_{t=nT}.
+\end{equation}
+\textbf{设计步骤}：
+\begin{enumerate}
+\item 根据技术指标确定模拟滤波器 $H_a(s)$；
+\item 对 $H_a(s)$ 取拉普拉斯反变换求 $h_a(t)$；
+\item 以 $T$ 为采样周期对 $h_a(t)$ 采样得 $h(n)$；
+\item 求 $h(n)$ 的 Z 变换，得数字滤波器 $H(z)$。
+\end{enumerate}
+设 $H_a(s)$ 有 $N$ 个单极点 $p_i$，作部分分式展开
+\begin{equation}
+H_a(s)=\sum_{i=1}^{N}\frac{K_i}{s-p_i},\qquad K_i=(s-p_i)H_a(s)\Big|_{s=p_i},
+\end{equation}
+则
+\begin{equation}
+h_a(t)=\sum_{i=1}^{N}K_i e^{p_it}u(t)\ \xrightarrow{\ \text{采样}\ }\
+h(n)=\sum_{i=1}^{N}K_i e^{p_inT}u(n)\ \xrightarrow{\ \text{Z 变换}\ }\
+H(z)=\sum_{i=1}^{N}\frac{K_i}{1-e^{p_iT}z^{-1}} .
+\end{equation}
+即\textbf{$s$ 平面的极点 $p_i$ 映射为 $z=e^{p_iT}$ 的极点}。
+
+\subsubsection{映射关系与频谱混叠}
+由 $z=e^{sT}=e^{(\sigma+j\omega)T}=e^{\sigma T}e^{j\omega T}$ 可见：
+\begin{itemize}
+\item $\sigma=0$（虚轴）$\Rightarrow |z|=1$（单位圆）；$\sigma<0$（左半平面）$\Rightarrow |z|<1$（圆内）；$\sigma>0$（右半平面）$\Rightarrow |z|>1$（圆外）；
+\item 当 $\sigma$ 不变、$\omega$ 改变 $\dfrac{2\pi}{T}$ 的整数倍时映射值不变，故该映射\textbf{不是单值的}：$s$ 平面沿 $j\omega$ 轴被分成一条条宽 $\dfrac{2\pi}{T}$ 的水平带，每条带都重叠映射成整个 $z$ 平面。
+\end{itemize}
+因此 $H_a(s)$ 与 $H(z)$ 的对应关系为
+\begin{equation}
+H(z)\Big|_{z=e^{sT}}=\frac{1}{T}\sum_{k=-\infty}^{\infty}H_a\!\left(s+j\frac{2\pi}{T}k\right),
+\qquad
+H(e^{j\Omega})=\frac{1}{T}\sum_{k=-\infty}^{\infty}H_a\!\left(j\frac{\Omega+2\pi k}{T}\right).
+\end{equation}
+可见冲激响应不变法存在\textbf{频谱混叠}：数字滤波器的增益与采样周期 $T$ 成反比；减小采样间隔可减小混叠，但会使数字滤波器增益过高；有时取 $h(n)=T\,h_a(nT)$ 以保证转换后增益不变。
+
+\textbf{冲激响应不变法的特点}：模拟频率与数字频率成\textbf{线性}关系 $\Omega=\omega T$；\textbf{时域逼近}好，能很好地逼近 $h_a(t)$；但 $s\to z$ 的\textbf{多值映射}易造成频谱混叠，故只适用于低通或限带的高通、带通情况。
+
+\subsubsection{双线性变换法}
+冲激响应不变法易混叠，必须寻找一种频率特性\textbf{一一对应}的变换。双线性变换利用“微分方程表示为差分方程”的原理，把 $s$ 域 $\omega$ 从 $0$ 到 $\pm\infty$ 的分布\textbf{压缩}到 $0$ 到 $\pm\pi$ 之间，从而在 $z$ 域不出现周期重复，构成单值映射：
+\begin{equation}
+s=\frac{2}{T}\cdot\frac{1-z^{-1}}{1+z^{-1}},\qquad
+H(z)=H_a(s)\Big|_{s=\frac{2}{T}\frac{1-z^{-1}}{1+z^{-1}}},
+\end{equation}
+反解得
+\begin{equation}
+z=\frac{1+\dfrac{T}{2}s}{1-\dfrac{T}{2}s}.
+\end{equation}
+\textbf{映射特性}：它是 $s$ 平面到 $z$ 平面\textbf{一一对应}（单值）的映射；把 $s$ 平面虚轴\textbf{唯一}地映射到单位圆，使 $H(z)$ 的频率响应能模仿 $H_a(s)$、\textbf{避免混叠}；把左半平面映射到单位圆内、右半平面映射到圆外，使\textbf{稳定性不变}。
+
+\subsubsection{频率预畸变}
+在单位圆上 $z=e^{j\Omega}$（对应 $s=j\omega$），代入映射式得
+\begin{equation}
+e^{j\Omega}=\frac{1+j\dfrac{\omega T}{2}}{1-j\dfrac{\omega T}{2}}
+\quad\Longrightarrow\quad
+\Omega=2\arctan\frac{\omega T}{2},\qquad
+\omega=\frac{2}{T}\tan\frac{\Omega}{2}.
+\end{equation}
+模拟频率与数字频率之间是\textbf{非线性}关系，这会使数字滤波器与模拟滤波器在频率响应的对应关系上发生畸变（频率越高压缩越严重）。校正办法是\textbf{频率预畸变}：先对模拟滤波器的临界频率加以畸变，使其经双线性变换后正好映射为所需频率。设数字滤波器的通带、阻带截止频率为 $\Omega_p$、$\Omega_s$，则先求
+\begin{equation}
+\omega_p=\frac{2}{T}\tan\frac{\Omega_p}{2},\qquad
+\omega_s=\frac{2}{T}\tan\frac{\Omega_s}{2},
+\end{equation}
+再按预畸变后的 $\omega_p$、$\omega_s$ 设计模拟滤波器，最后作双线性变换。
+
+\textbf{双线性变换法设计步骤}：
+\begin{enumerate}
+\item 由数字指标 $\Omega_p$、$\Omega_s$、$\alpha_p$、$\alpha_s$ 作预畸变，得 $\omega_p$、$\omega_s$；
+\item 按 $\omega_p$、$\omega_s$、$\alpha_p$、$\alpha_s$ 设计模拟低通（如巴特沃思：定阶次、查表、反归一化）；
+\item 用 $s=\dfrac{2}{T}\dfrac{1-z^{-1}}{1+z^{-1}}$ 代入 $H_a(s)$，整理成 $z^{-1}$ 的有理式得 $H(z)$。
+\end{enumerate}
+
+\subsubsection{两种方法的比较}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{p{2.6cm}p{5.4cm}p{5.8cm}}
+\toprule
+比较项 & 冲激响应不变法 & 双线性变换法 \\
+\midrule
+映射关系 & 多值映射，$z=e^{sT}$ & 单值（一一对应）映射 \\
+频率关系 & 线性：$\Omega=\omega T$ & 非线性：$\Omega=2\arctan\dfrac{\omega T}{2}$ \\
+混叠 & 存在频谱混叠 & 无混叠 \\
+时域逼近 & 好，$h(n)=h_a(nT)$ & 差，时域波形不保持 \\
+稳定性 & 左半平面 $\to$ 圆内，稳定 & 左半平面 $\to$ 圆内，稳定 \\
+适用场合 & 低通、限带的高通/带通 & 各类滤波器，需作频率预畸变 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{有限冲激响应数字滤波器}
+
+\subsubsection{IIR 与 FIR 的优缺点}
+\begin{center}
+\begin{tabular}{p{2.2cm}p{6.2cm}p{5.2cm}}
+\toprule
+类型 & 优点 & 缺点 \\
+\midrule
+IIR & 含零极点，可利用模拟滤波器的设计成果，计算量小、设计简单 & 零极点的存在带来稳定性问题；相位非线性 \\
+FIR & 严格线性相位；滤波器总是稳定的；可利用 FFT 快速处理 & 所需阶次比 IIR 高，运算量较大 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{设计目标}
+根据要求的频率响应 $H_d(\Omega)$，找出单位脉冲响应 $h(n)$ 为\textbf{有限长}的离散时间系统，使其频率响应 $H(\Omega)$ 尽可能逼近 $H_d(\Omega)$：
+\begin{equation}
+h(n)\ \text{仅在}\ 0\le n\le N-1\ \text{内非零},\qquad
+H(z)=\sum_{n=0}^{N-1}h(n)z^{-n},\qquad
+H(\Omega)=\sum_{n=0}^{N-1}h(n)e^{-j\Omega n}.
+\end{equation}
+$H(z)$ 是 $z^{-1}$ 的 $N-1$ 阶多项式，其 $N-1$ 个极点全部位于 $z$ 平面原点 $z=0$ 处。
+
+\subsubsection{窗函数法}
+\begin{enumerate}
+\item 由理想滤波器的频率特性 $H_d(\Omega)$ 求出理想滤波器的脉冲响应序列 $h_d(n)$（一般为无限长、非因果）；
+\item 设计窗函数 $w(n)$，用它对 $h_d(n)$ 进行\textbf{截断}（加窗）得到有限长的 $h(n)$：
+\begin{equation}
+h(n)=h_d(n)\,w(n);
+\end{equation}
+\item 分析所得数字滤波器的频率特性，检验是否满足性能指标要求。
+\end{enumerate}
+加窗在频域相当于与窗函数频谱作卷积，故会带来过渡带加宽与通带、阻带内的起伏（吉布斯现象）：窗函数\textbf{主瓣宽度}决定过渡带宽度，\textbf{旁瓣电平}决定阻带最小衰减，需按指标折中选取。
+
+\subsection{本章易错点}
+\begin{itemize}
+\item \textbf{3 dB 是半功率点}：$|H|^2$ 降为一半，即 $|H|$ 降为 $1/\sqrt{2}\approx0.707$，不是幅值降一半。
+\item 巴特沃思的 3 dB 点恒在 $\omega=\omega_c$，与阶数 $n$ 无关；$n$ 只改变过渡带陡度（$20n$ dB/倍频程）。
+\item 由 $|H(j\omega)|^2$ 求 $H(s)$：极点只取左半平面；零点按最小相位条件取；$j\omega$ 轴上的零点与常数因子都要\textbf{平分}给 $H(s)$ 与 $H(-s)$。
+\item 阶次公式分子为 $\lg\sqrt{10^{0.1\alpha_s}-1}$（带根号），$n$ 需\textbf{向上取整}；反归一化用 $s=\bar{s}\,\omega_c$ 代入。
+\item 冲激响应不变法 $\Omega=\omega T$ 为线性关系，双线性变换为\textbf{非线性}关系、必须作频率预畸变；二者都保持稳定性，但只有双线性变换无混叠。
+\item FIR 的 $H(z)$ 极点在原点，故\textbf{总是稳定}的；窗函数法截断的是\textbf{理想脉冲响应} $h_d(n)$，窗的形状与长度决定过渡带与阻带衰减。
+\end{itemize}

@@ -1,0 +1,343 @@
+% 第2章 基本放大电路
+\chapter{基本放大电路}
+
+本章解决三个问题：放大电路为什么能放大（组成原则）、放大到什么程度（性能指标）、怎样算出这些指标（图解法与等效电路法）。分析方法的主线是\textbf{先直流、后交流}：直流通路定 $Q$ 点，交流通路与 $h$ 参数模型算动态参数。
+
+\section{放大的概念与放大电路的性能指标}
+
+\subsection{放大的基本概念}
+
+放大电路的本质是\textbf{能量的控制和转换}：在输入信号作用下，把直流电源的能量转换成负载所需的能量，使负载从电源获得的能量大于信号源提供的能量。
+
+要点：
+\begin{itemize}
+    \item 电子电路放大的基本特征是\textbf{功率放大}；
+    \item 基本前提是\textbf{不失真}，只有不失真放大才有意义；
+    \item 能控制能量的元件称为\textbf{有源元件}，放大电路必须含有源元件（晶体管或场效应管）；
+    \item 任何稳态信号都可展开为傅里叶级数（正弦信号叠加），故常以\textbf{正弦波}作为测试信号。
+\end{itemize}
+
+\subsection{放大电路的性能指标}
+
+\paragraph{放大倍数} 输出量与输入量之比，共有四种形式：电压放大倍数 $\dot A_{uu}=\dot U_o/\dot U_i$、电流放大倍数 $\dot A_{ii}=\dot I_o/\dot I_i$、互阻放大倍数 $\dot A_{ui}=\dot U_o/\dot I_i$（单位 $\Omega$）、互导放大倍数 $\dot A_{iu}=\dot I_o/\dot U_i$（单位 S）。放大倍数用复数表示，其模反映幅值放大能力，相角反映相移；工程上常以分贝表示，即 $20\lg|\dot A_u|$。
+
+\paragraph{输入电阻} 从输入端看进去的等效电阻，表明放大电路对信号源的影响程度：
+\begin{equation}
+R_i=\frac{U_i}{I_i}
+\formulaNote{越大则对信号源影响越小}
+\end{equation}
+
+\paragraph{输出电阻} 从输出端看进去的戴维宁等效内阻，表明带负载能力的强弱：
+\begin{equation}
+R_o=\left.\frac{U_o}{I_o}\right|_{U_S=0,\ R_L=\infty}
+\formulaNote{越小则带负载能力越强}
+\end{equation}
+求 $R_o$ 时必须把信号源置零（保留其内阻）并断开负载，这是最易错的一步。
+
+\paragraph{通频带}
+\begin{equation}
+f_{bw}=f_H-f_L
+\formulaNote{$f_H$、$f_L$ 为放大倍数下降到中频值 $0.707$ 倍时的频率}
+\end{equation}
+
+\paragraph{非线性失真系数} 输入单一正弦波时输出中含谐波，定义
+\begin{equation}
+D=\sqrt{\sum_{k=2}^{\infty}\left(\frac{A_k}{A_1}\right)^2}
+\formulaNote{$A_1$ 为基波幅值，$A_k$ 为谐波幅值}
+\end{equation}
+
+\paragraph{最大不失真输出电压} 输出电压再增大就要产生非线性失真时的输出电压，可用有效值 $U_{om}$ 或峰峰值 $U_{opp}=2\sqrt{2}\,U_{om}$ 表示。
+
+\paragraph{最大输出功率与效率} 信号不失真时负载能获得的最大功率为 $P_{om}$，此时效率 $\eta=P_{om}/P_S$，$P_S$ 为直流电源提供的功率。
+
+\section{基本共射放大电路的工作原理}
+
+\paragraph{电路的组成} 输入回路含基极电源 $V_{BB}$ 与基极电阻 $R_b$，输出回路含集电极电源 $V_{CC}$ 与集电极电阻 $R_c$，发射极为输入、输出的公共端（接地）。
+
+\subsection{静态工作点}
+
+$u_i=0$、直流电源单独作用时，晶体管的 $I_B$、$I_C$、$U_{BE}$、$U_{CE}$ 称为放大电路的\textbf{静态工作点} $Q$，记作 $I_{BQ}$、$I_{CQ}$、$U_{BEQ}$、$U_{CEQ}$。$U_{BEQ}$ 一般取发射结导通压降（硅管 $0.7\,\text{V}$），其余三个量由回路方程求得：
+\begin{equation}
+I_{BQ} = \frac{V_{BB}-U_{BEQ}}{R_b}
+\end{equation}
+\begin{equation}
+I_{CQ} = \beta I_{BQ},
+\qquad
+U_{CEQ} = V_{CC}-I_{CQ}R_c
+\end{equation}
+
+\textbf{设置 $Q$ 点的必要性}：若不设 $Q$ 点，动态信号会使管子进入截止区而无法正常放大，输出必然严重失真。设置合适 $Q$ 点的目的是保证放大电路不产生失真，并为输出提供能量。
+
+\subsection{输出波形分析}
+
+有输入电压时，基极电流在直流分量 $I_{BQ}$ 上叠加交流分量 $i_b$，即 $i_B=I_{BQ}+i_b$；集电极电流为 $i_C=I_{CQ}+i_c$。动态电流在 $R_c$ 上产生动态电压，而
+\begin{equation}
+u_{CE}=V_{CC}-i_C R_c
+\formulaNote{$i_C$ 增大时 $u_{CE}$ 减小，故输出与输入反相}
+\end{equation}
+所以共射电路实现电压放大的同时输出反相，这是共射组态最显著的标志。
+
+\subsection{放大电路的组成原则}
+
+\begin{enumerate}
+    \item 根据所用放大管类型提供直流电源，设置合适的静态工作点，作为输出的能量来源；
+    \item 电阻取值与电源配合得当，使放大管有合适的静态工作点；
+    \item 输入信号能作用于输入回路（信号通路不被直流电源短路）；
+    \item 负载接入时，放大管输出回路的动态电流能作用于负载，使负载获得放大的电流或电压。
+\end{enumerate}
+
+\subsection{两种常用的共射放大电路}
+
+\begin{itemize}
+    \item \textbf{直接耦合电路}：为防干扰，要求输入信号、直流电源、输出信号各有一端接公共端（共地）。把基极电源与集电极电源合二为一，用偏置电阻 $R_{b2}$ 与限流电阻 $R_{b1}$ 设置 $Q$ 点，信号源与负载均与放大电路直接相连。低频特性好、易集成，但 $Q$ 点相互影响、有零点漂移。
+    \item \textbf{阻容耦合电路}：电容 $C_1$ 连接信号源与放大电路，$C_2$ 连接负载与放大电路。利用电容\textbf{隔直通交}，去掉输入回路的直流分量、保证输入信号几乎无损耗地加到放大电路，负载也不流过直流。耦合电容容量必须足够大，否则交流分量也会产生损失。
+\end{itemize}
+
+\section{放大电路的分析方法}
+
+\subsection{直流通路与交流通路}
+
+\begin{itemize}
+    \item \textbf{直流通路}：直流电源作用下直流电流流经的通路，用于求 $Q$ 点。原则是电容视为开路、电感视为短路、信号源置零（保留内阻）；
+    \item \textbf{交流通路}：输入信号作用下交流信号流经的通路，用于求动态参数。原则是大容量电容视为短路、无内阻的直流电源置零（视为地）。
+\end{itemize}
+画通路是全部动态分析的起点，"电容开路/短路、电源置零"两条原则必须与直流/交流的用途对应，不能混用。
+
+\subsection{图解法}
+
+\paragraph{求 $Q$ 点}
+在输入特性上画输入回路负载线 $u_{BE}=V_{BB}-i_B R_b$，与输入特性曲线的交点即 $Q$ 点，横纵坐标为 $U_{BEQ}$、$I_{BQ}$；在输出特性上画输出回路负载线 $u_{CE}=V_{CC}-i_C R_c$（直流负载线），与 $i_B=I_{BQ}$ 那条输出特性曲线的交点即 $Q$ 点，横纵坐标为 $U_{CEQ}$、$I_{CQ}$。
+
+\paragraph{求放大倍数}
+由输入回路负载线定出 $\Delta u_I$ 对应的 $\Delta i_B$，在输出特性上找到 $i_B=I_{BQ}+\Delta i_B$ 的曲线，由交点横坐标变化量得 $\Delta u_{CE}$，则 $A_u=\Delta u_{CE}/\Delta u_I$。
+
+\paragraph{直流负载线与交流负载线}
+对阻容耦合电路，两条负载线斜率不同但\textbf{都过 $Q$ 点}：
+\begin{equation}
+\text{直流负载线斜率}=-\frac{1}{R_c}
+\end{equation}
+\begin{equation}
+\text{交流负载线斜率}=-\frac{1}{R_c\parallel R_L}
+\formulaNote{因 $R_c\parallel R_L<R_c$，交流负载线更陡}
+\end{equation}
+
+\paragraph{波形非线性失真}
+\begin{itemize}
+    \item \textbf{截止失真}：$Q$ 点过低时，输入信号负半周靠近峰值处 $u_{BE}<U_{on}$，管子截止，集电极电流出现底部失真，电压因反相出现顶部失真。消除办法是减小 $R_b$ 以增大 $I_B$（提高 $Q$ 点）；
+    \item \textbf{饱和失真}：$Q$ 点过高时，输入信号正半周靠近峰值处管子进入饱和区，$i_C<\beta i_B$，集电极电流出现顶部失真，电压出现底部失真。消除办法是增大 $R_b$ 或减小 $R_c$（降低 $Q$ 点）。
+\end{itemize}
+
+\paragraph{适用范围}
+图解法多用于输出幅值较大、工作频率不太高的情况，实际中主要用于分析 $Q$ 点位置、最大不失真输出电压和失真情况；小信号、多级电路则以等效电路法为主。
+
+\subsection{等效电路法}
+
+\paragraph{直流模型}
+把发射结压降取固定值 $U_{BEQ}$，输入特性折线化，输入侧等效为直流恒压源；由 $I_{CQ}=\beta I_{BQ}$，把输出特性视为平行于横轴的直线，输出侧等效为受控电流源。用该模型可直接列回路方程求 $Q$ 点。
+
+\paragraph{$h$ 参数交流模型}
+对输入、输出特性取全微分并整理，其中四个混合参数为 $h_{11}=\partial u_{BE}/\partial i_B$（$U_{CE}$ 一定）、$h_{12}=\partial u_{BE}/\partial u_{CE}$（$I_B$ 一定）、$h_{21}=\partial i_C/\partial i_B$（$U_{CE}$ 一定）、$h_{22}=\partial i_C/\partial u_{CE}$（$I_B$ 一定）。它们的物理意义与常用近似为：
+\begin{itemize}
+    \item $h_{11}=r_{be}$：发射结的动态电阻；
+    \item $h_{12}$：内反馈系数，反映输出电压对输入电压的影响，$U_{CE}\ge1\,\text{V}$ 时很小，常忽略；
+    \item $h_{21}=\beta$：电流放大系数；
+    \item $h_{22}=1/r_{ce}$：输出特性在 $i_B=I_{BQ}$ 时放大区直线的斜率，数值很小，常忽略。
+\end{itemize}
+忽略 $h_{12}$、$h_{22}$ 得\textbf{简化 $h$ 参数模型}：$b$--$e$ 间接 $r_{be}$，$c$--$e$ 间接受控电流源 $\dot I_c=\beta\dot I_b$。
+
+\paragraph{$r_{be}$ 的表达式}
+输入回路有 $u_{be}\approx i_b r_{bb'}+i_e r_{b'e}$，由 PN 结电流方程 $1/r_{b'e}\approx I_{EQ}/U_T$，得
+\begin{equation}
+r_{be}=r_{bb'}+(1+\beta)\frac{U_T}{I_{EQ}}
+\formulaNote{$r_{bb'}$ 为基区体电阻，常取 $200\sim300\,\Omega$}
+\end{equation}
+$r_{be}$ 与 $Q$ 点有关：$I_{EQ}$ 越大，$r_{be}$ 越小。注意 $r_{be}$ 是动态电阻，不是直流电阻，不能用来求 $Q$ 点。
+
+\paragraph{动态参数分析（基本共射电路）}
+\begin{equation}
+\dot A_u=\frac{-\beta\dot I_b R_c}{\dot I_b(R_b+r_{be})}
+=-\frac{\beta R_c}{R_b+r_{be}}
+\formulaNote{$R_b$ 此处作为信号源内阻}
+\end{equation}
+\begin{equation}
+R_i=R_b+r_{be},
+\qquad
+R_o=R_c
+\end{equation}
+若为阻容耦合电路，则把 $R_c$ 换成 $R_c\parallel R_L$、把 $R_b$ 与 $r_{be}$ 改为并联关系计算 $R_i$，其余步骤相同：先画交流通路，再把管子换成简化 $h$ 参数模型，最后列回路方程。
+
+\subsection{稳定静态工作点的措施}
+
+温度升高时 $I_{CBO}$、$I_{CEO}$、$\beta$ 增大而 $U_{BE}$ 减小，$Q$ 点随之上移，可能进入饱和区。稳定措施有两类：
+\begin{itemize}
+    \item \textbf{引入直流负反馈}：在发射极串入电阻 $R_e$，$I_E$ 增大时 $U_E=I_E R_e$ 升高，使 $U_{BE}=U_B-U_E$ 减小，$I_B$ 减小，从而把 $I_E$ 拉回。这是最常用的方法，$R_e$ 越大稳定性越好，但会减小动态范围并降低电压放大倍数（可并联旁路电容解决）；
+    \item \textbf{引入温度补偿}：利用二极管或热敏电阻的温度特性，产生与晶体管漂移方向相反的补偿电压。
+\end{itemize}
+
+\section{晶体管单管放大电路的三种组态}
+
+\subsection{共集放大电路}
+
+输入信号加于基极、输出取自发射极，故又称\textbf{射极输出器}。交流信号 $u_i$ 产生的动态基极电流经管子放大为发射极电流，其交流分量在 $R_e$ 上的电压即输出电压。
+
+\paragraph{静态工作点}
+输入回路方程 $V_{BB}=I_{BQ}R_b+U_{BEQ}+(1+\beta)I_{BQ}R_e$，故
+\begin{equation}
+I_{BQ}=\frac{V_{BB}-U_{BEQ}}{R_b+(1+\beta)R_e}
+\formulaNote{$R_e$ 折算到基极放大 $(1+\beta)$ 倍}
+\end{equation}
+\begin{equation}
+I_{EQ}=(1+\beta)I_{BQ},
+\qquad
+U_{CEQ}=V_{CC}-I_{EQ}R_e
+\end{equation}
+
+\paragraph{动态参数}
+\begin{equation}
+\dot A_u=\frac{(1+\beta)R_e}{R_b+r_{be}+(1+\beta)R_e}\ (<1)
+\end{equation}
+\begin{equation}
+R_i=R_b+r_{be}+(1+\beta)R_e,
+\qquad
+R_o=R_e\parallel\frac{R_b+r_{be}}{1+\beta}
+\end{equation}
+特点：输出与输入\textbf{同相}且 $U_o<U_i$，无电压放大能力，但输出电流远大于输入电流，仍有功率放大能力；输入电阻大、输出电阻小，适合作输入级（提高输入电阻）与输出级（带负载）。
+
+\subsection{共基放大电路}
+
+输入信号加于发射极、基极接地、输出取自集电极。
+
+\paragraph{静态工作点}
+令 $U_i=0$，则 $U_{EQ}=-U_{BEQ}$，$U_{CQ}=V_{CC}-I_{CQ}R_c$，故
+\begin{equation}
+I_{EQ}=\frac{V_{BB}-U_{BEQ}}{R_e},
+\qquad
+I_{BQ}=\frac{I_{EQ}}{1+\beta}
+\end{equation}
+\begin{equation}
+U_{CEQ}=V_{CC}-I_{CQ}R_c+U_{BEQ}
+\end{equation}
+
+\paragraph{动态参数}
+\begin{equation}
+\dot A_u=\frac{\beta R_c}{r_{be}+(1+\beta)R_e}
+\end{equation}
+\begin{equation}
+R_i=R_e+\frac{r_{be}}{1+\beta},
+\qquad
+R_o=R_c
+\formulaNote{$r_{be}$ 折算到发射极缩小 $(1+\beta)$ 倍}
+\end{equation}
+特点：输出与输入\textbf{同相}；输出电流为 $i_c$、输入电流为 $i_e$，故无电流放大能力（$\alpha<1$）；$R_i$ 很小，$R_o$ 与共射相同；电压放大能力足够，\textbf{频带最宽}，适用于宽频带放大与高频电路。
+
+\subsection{三种组态的比较}
+
+\begin{table}[htbp]
+\centering
+\caption{三种基本组态放大电路的性能比较}
+\begin{tabular}{@{}llll@{}}
+\hline
+项目 & 共射 & 共集 & 共基 \\
+\hline
+电压放大倍数 & 大、反相 & 略小于 1、同相 & 大、同相 \\
+输入电阻 & 中 & 大 & 小 \\
+输出电阻 & 中 & 小 & 中 \\
+通频带 & 窄 & 中等 & 宽 \\
+典型用途 & 低频放大的单元电路 & 输入级、输出级 & 宽频带放大 \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{易错点}
+\begin{itemize}
+    \item 共集电路"无电压放大"不等于"无放大"：它的电流放大倍数最大（$1+\beta$），功率放大能力最强；
+    \item 共基电路输入电阻小是缺点，但其频率特性最好，三者中只有它常用于高频；
+    \item 求 $R_o$ 时若信号源有内阻，须把该内阻计入（共集的 $R_o$ 中会出现 $R_b+r_{be}$）。
+\end{itemize}
+
+\section{场效应管放大电路}
+
+\subsection{静态工作点的设置}
+
+场效应管是电压控制器件，栅极电流为零，故 $Q$ 点只需确定 $U_{GSQ}$、$I_{DQ}$、$U_{DSQ}$，方法是\textbf{输入回路方程与电流方程联立}，再用输出回路方程求 $U_{DSQ}$。两种偏置方式：
+
+\paragraph{自给偏压电路}
+静态时栅极电流为零，$R_g$ 上无压降，$U_{GQ}=0$；而漏极电流流过源极电阻产生 $U_{SQ}=I_{DQ}R_s$，故
+\begin{equation}
+U_{GSQ}=-I_{DQ}R_s
+\formulaNote{自动提供负偏压}
+\end{equation}
+它适用于结型管与耗尽型 MOS 管，不适用于增强型管（增强型需要正偏压）。
+
+\paragraph{分压式偏置电路}
+依靠 $R_{g1}$、$R_{g2}$ 对 $V_{DD}$ 分压设置栅极电位。由于栅极电流为零，$R_{g3}$ 上无压降，$U_{GQ}=U_A$：
+\begin{equation}
+U_{GSQ}=\frac{R_{g1}}{R_{g1}+R_{g2}}V_{DD}-I_{DQ}R_s
+\formulaNote{可提供正、负两种偏压}
+\end{equation}
+求出 $I_{DQ}$ 后由输出回路方程 $U_{DSQ}=V_{DD}-I_{DQ}(R_d+R_s)$ 得管压降。注意联立的是\textbf{二次方程}（电流方程含 $u_{GS}$ 的平方），一般取有物理意义的根（$I_{DQ}$ 应使管子工作在恒流区）。
+
+\subsection{场效应管的 $h$ 参数等效模型}
+
+栅极电流为零，栅源之间只有电压；对输出特性取全微分：
+\begin{equation}
+\mathrm{d}i_D=\left.\frac{\partial i_D}{\partial u_{GS}}\right|_{U_{DS}}\mathrm{d}u_{GS}
++\left.\frac{\partial i_D}{\partial u_{DS}}\right|_{U_{GS}}\mathrm{d}u_{DS}
+\end{equation}
+令 $g_m=\partial i_D/\partial u_{GS}|_{U_{DS}}$、$1/r_{ds}=\partial i_D/\partial u_{DS}|_{U_{GS}}$，得小信号线性等效关系
+\begin{equation}
+\dot I_d=g_m\dot U_{gs}+\frac{\dot U_{ds}}{r_{ds}}
+\formulaNote{$r_{ds}$ 很大，常忽略该项}
+\end{equation}
+$r_{ds}$ 是 $U_{GS}=U_{GSQ}$ 那条输出特性在 $Q$ 点斜率的倒数，描述曲线上翘程度。跨导可对电流方程求导得到，以增强型 MOS 管为例：
+\begin{equation}
+g_m=\frac{2I_{DO}}{U_{GS(th)}}\left(\frac{u_{GS}}{U_{GS(th)}}-1\right)
+=\frac{2}{U_{GS(th)}}\sqrt{I_{DO}\,i_D}
+\formulaNote{两种写法等价}
+\end{equation}
+
+\subsection{共源与共漏放大电路}
+
+\paragraph{共源放大电路}
+输入加于栅极、输出取自漏极。交流通路中 $R_d$ 与 $R_L$ 并联接在漏极：
+\begin{equation}
+\dot A_u=\frac{-\dot I_d R_d}{\dot U_{gs}}=-g_m R_d
+\formulaNote{输出与输入反相}
+\end{equation}
+\begin{equation}
+R_i=\infty,
+\qquad
+R_o=R_d
+\end{equation}
+计入 $R_L$ 时把 $R_d$ 换成 $R_d\parallel R_L$。
+
+\paragraph{共漏放大电路（源极输出器）}
+输出取自源极，与共集电路对应：
+\begin{equation}
+\dot A_u=\frac{g_mR_s}{1+g_mR_s}\ (<1)
+\end{equation}
+\begin{equation}
+R_i=\infty,
+\qquad
+R_o=R_s\parallel\frac{1}{g_m}
+\formulaNote{电压跟随、输出电阻小}
+\end{equation}
+
+\paragraph{与晶体管电路的对照}
+场效应管放大电路的动态分析与晶体管电路完全同构，只需替换三处：输入侧 $r_{be}$ 换成栅极开路（$R_i=\infty$）、受控源由 $\beta\dot I_b$ 换成 $g_m\dot U_{gs}$、输出侧 $R_c$ 换成 $R_d$。因此"共源对共射、共漏对共集、共栅对共基"的分析结论可以整体照搬。
+
+\section{复合管放大电路}
+
+把两个晶体管级联、把前管的发射极接后管的基极，即构成复合管（达林顿管）。复合管的\textbf{类型与第一只管子相同}，等效为一个 $\beta$ 很大的晶体管：
+\begin{equation}
+\beta=\beta_1+\beta_2+\beta_1\beta_2\approx\beta_1\beta_2
+\end{equation}
+
+复合管的作用：提高电流放大系数、减小前级驱动电流、便于用同类型管子构成互补对称电路。若把 MOS 管与晶体管级联，则等效为 MOS 管，其等效跨导为
+\begin{equation}
+g_m=\frac{(1+\beta_2)g_{m1}}{1+g_{m1}r_{be}}\approx\frac{\beta_2 g_{m1}}{1+g_{m1}r_{be}}
+\formulaNote{兼有高输入电阻与大电流放大能力}
+\end{equation}
+
+\paragraph{易错点}
+复合管的类型只看\textbf{第一只管子}；两管连接必须保证前管的发射极（或源极）电流方向与后管基极电流方向一致，否则不能构成复合管。

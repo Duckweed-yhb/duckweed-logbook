@@ -1,133 +1,280 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第七章 频率特性和谐振现象}
+% 电路与电子学III 课程笔记 —— 第7章（教材：孙立山《电路理论基础》第四版 第7章）
+\chapter{频率特性和谐振现象}
+
+\noindent
+通过正弦电流电路与非正弦周期电流电路的学习已经知道：同一电路对不同频率的激励会有不同的响应。本章用\textbf{网络函数}描述这种频率依赖性，讨论\textbf{频率特性}的一般概念，重点分析\textbf{串联谐振}与\textbf{并联谐振}现象及其频率特性，最后简介\textbf{滤波器}。
 
 \section{网络函数和频率特性}
-若将所关心的网络某一电压或电流作为响应，比例系数记作
-\[
-\]
-称为网络函数。
+在集中参数正弦电流电路中，以相量表示激励与响应，二者的比值称为\textbf{网络函数}
+\keyformula{H(\mathrm{j}\omega)=\frac{\dot{Y}(\mathrm{j}\omega)}{\dot{X}(\mathrm{j}\omega)}
+=\frac{\text{响应相量}}{\text{激励相量}}}
+按激励与响应的类型不同，网络函数分为六种：
 
-如果激励和响应属于。
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+激励 & 响应 & 网络函数名称 \\
+\midrule
+电流 & 电压（同一端口） & 驱动点阻抗（输入阻抗） \\
+电压 & 电流（同一端口） & 驱动点导纳（输入导纳） \\
+电压 & 电压（不同端口） & 转移电压比（电压传输比）\\
+电流 & 电流（不同端口） & 转移电流比 \\
+电压 & 电流（不同端口） & 转移导纳 \\
+电流 & 电压（不同端口） & 转移阻抗 \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-集中参数正弦，其网络函数为
-\[
-\]
+网络函数一般为含有角频率 $\omega$ 的\textbf{复数有理分式}，其值取决于电路结构、元件参数和电源频率。例如 RC 串联电路以电容电压为响应、输入电压为激励时
+\begin{equation}
+H(\mathrm{j}\omega)=\frac{\dot{U}_C}{\dot{U}}
+=\frac{1/\left(\mathrm{j}\omega C\right)}{R+1/\left(\mathrm{j}\omega C\right)}
+=\frac{1}{1+\mathrm{j}\omega CR}
+\end{equation}
+当激励有效值保持不变而频率改变时，响应的变动规律与网络函数的变动规律一致——即响应对频率的关系完全由网络函数对频率的关系决定。
 
-可见。
+把 $H(\mathrm{j}\omega)$ 写成极坐标式
+\keyformula{H(\mathrm{j}\omega)=\left|H(\mathrm{j}\omega)\right|\angle\theta(\omega)}
+\begin{itemize}
+  \item $\left|H(\mathrm{j}\omega)\right|=\dfrac{Y}{X}$ 称为\textbf{幅频特性}，反映响应与激励有效值之比随频率的变化；
+  \item $\theta(\omega)$ 称为\textbf{相频特性}，反映响应超前于激励的相位差随频率的变化。
+\end{itemize}
+二者总称为电路的\textbf{频率特性}（频率响应）。
 
-仍，即
-\[
-\]
-由此可得
-\[
-\]
-式中。
+以 RC 电路为例。$RC$ 之积具有时间的量纲，其倒数具有频率的量纲，设
+\begin{equation}
+\omega_0=\frac{1}{RC}
+\end{equation}
+称为该 RC 电路的\textbf{固有频率}（自然频率）。代入网络函数得
+\begin{equation}
+H(\mathrm{j}\omega)=\frac{1}{1+\mathrm{j}\dfrac{\omega}{\omega_0}}
+=\frac{1}{\sqrt{1+\left(\omega/\omega_0\right)^2}}\angle\left(-\arctan\frac{\omega}{\omega_0}\right)
+\end{equation}
+几个特征值：$\omega=0$ 时 $|H|=1$、$\theta=0$；$\omega=\omega_0$ 时 $|H|=1/\sqrt{2}\approx0.707$、$\theta=-45^\circ$；$\omega\to\infty$ 时 $|H|\to0$、$\theta\to-90^\circ$。
+
+幅频特性表明：输入电压有效值不变时，频率较低时输出电压较大，频率升高时输出电压减小。从“输入信号经网络变换为输出信号”的观点看，此网络允许低频信号顺利通过而使高频信号产生较大衰减，这种网络称为\textbf{低通网络}。通过选用不同的网络结构和元件类型，还可实现\textbf{高通网络}、\textbf{带通网络}和\textbf{带阻网络}。
+
+\textbf{截止频率}：将网络函数的模下降到最大值的 $1/\sqrt{2}$ 时所对应的频率称为截止频率，记为 $\omega_c$。上述低通网络的截止频率为 $\omega_c=\omega_0=1/(RC)$。对低通网络，$0\sim\omega_c$ 这一频率范围称为\textbf{通带}，$\omega_c\sim\infty$ 称为\textbf{阻带}。相频特性表明：在通带内频率越高，输出电压滞后于输入电压的相位差越大，$\omega=\omega_c$ 时滞后 $45^\circ$。
+
+若在同一 RC 电路中以\textbf{电阻电压}为响应，则成为\textbf{RC 高通网络}——因为频率越高容抗越小，$\omega\to\infty$ 时作为响应的电阻电压趋于输入电压；反之频率越低容抗越大，$\omega\to0$ 时电流及电阻电压趋于零。
+
+\corepoint{网络函数是“响应相量 ÷ 激励相量”，与激励大小无关，只由电路结构和参数决定。幅频特性的 $1/\sqrt{2}$ 点就是截止频率，这是“半功率点”（功率降到一半），也是工程上定义通带的通用标准。}
 
 \section{串联谐振电路}
-根据谐振的定义
-\[
-\]
+对 RLC 串联电路，端口阻抗为
+\begin{equation}
+Z=R+\mathrm{j}\left(\omega L-\frac{1}{\omega C}\right)
+\end{equation}
+通常情况下 $Z$ 为复数，端口电压与电流不同相位。但在一定条件下，感抗与容抗能完全抵消，阻抗为实数、呈电阻性，端口电压与电流同相位。
+
+一般地：对于任何含有电感和电容的一端口电路，在一定条件下呈现电阻性、其端口电压与电流同相位，则称此一端口电路发生\textbf{谐振}。RLC 串联电路中发生的谐振称为\textbf{串联谐振}。
+
+\subsection{谐振条件与谐振频率}
+根据谐振的定义，RLC 串联电路发生谐振的条件是
+\keyformula{\mathrm{Im}[Z]=0\quad\Longleftrightarrow\quad \omega L=\frac{1}{\omega C}}
+由此得谐振角频率与谐振频率
+\keyformula{\omega_0=\frac{1}{\sqrt{LC}},\qquad f_0=\frac{1}{2\pi\sqrt{LC}}}
+可见通过改变电源频率、或改变电感、电容系数，均可实现串联谐振。
+
+谐振时感抗与容抗的作用相互抵消，令
+\begin{equation}
+\rho=\omega_0L=\frac{1}{\omega_0C}=\sqrt{\frac{L}{C}}
+\end{equation}
+称为 RLC 串联电路的\textbf{特性阻抗}。再令
+\keyformula{Q=\frac{\rho}{R}=\frac{\omega_0L}{R}=\frac{1}{\omega_0CR}=\frac{1}{R}\sqrt{\frac{L}{C}}}
+称为 RLC 串联电路的\textbf{品质因数}。由定义可见 $Q$ 无量纲，它是谐振电路最重要的参数。
+
+\subsection{谐振时的电路行为}
+设外加电压有效值 $U$ 不变，各量随频率变化的关系为
+\keyformula{I(\omega)=\frac{U}{\sqrt{R^2+\left(\omega L-\dfrac{1}{\omega C}\right)^2}},
+\quad U_L(\omega)=\omega L\,I(\omega),
+\quad U_C(\omega)=\frac{1}{\omega C}I(\omega)}
+据此画出的曲线称为\textbf{谐振曲线}，主要表示电流、电压在谐振点附近的变动情况。其要点：
+\begin{itemize}
+  \item $\omega\to0$：容抗 $1/(\omega C)\to\infty$，电流和电感电压均为零，电源电压全部加在电容上；
+  \item $\omega\to\infty$：感抗 $\omega L\to\infty$，电流和电容电压趋于零，电源电压全部加在电感上；
+  \item $\omega=\omega_0$：感抗与容抗抵消，\textbf{阻抗达到最小值等于 $R$}，在电源电压有效值一定的条件下\textbf{电流达到最大值}
+  \begin{equation}
+  I_0=\frac{U}{R}
+  \end{equation}
+\end{itemize}
+
+谐振时电感电压与电容电压分别为
+\keyformula{U_L=U_C=\frac{\omega_0L}{R}U=QU}
 即
-\[
-\]
+\begin{equation}
+Q=\frac{U_L}{U}=\frac{U_C}{U}
+\end{equation}
+\textbf{RLC 串联电路的品质因数等于谐振时的电感电压（或电容电压）与电源电压之比}。
 
-由电感或电容分别为
-\[
-\]
-式中$\omega_0$称为$RLC$串联电路的谐振角频率。
+若 $Q\gg1$，谐振时电感电压和电容电压就比电源电压大得多。然而从电路端口看，由于 $\dot{U}_L$ 与 $\dot{U}_C$ 相位相反而完全抵消，端口电压中没有电抗电压分量，端口电压就等于电阻电压，即 $\dot{U}=\dot{U}_R$。因此这种串联谐振又称为\textbf{电压谐振}。
 
-发生串联谐振时，令
-\[
-\]
-$\rho$称为$RLC$串联电路的特性阻抗。将谐振角频率，得
-\[
-\]
-又令
-\[
-\]
-称为$RLC$串联电路的品质因数。可得品质因数的另外计算公式
-\[
-\]
-当外加电压$U$不变时，电路中$I、U_L、U_C$与$\omega$的关系是
-\[
-\]
-根据。
+若电阻趋于零，谐振时阻抗趋于零，相当于短路，这就是理想的串联谐振电路。
 
-从。
+\subsection{工程意义}
+\begin{itemize}
+  \item \textbf{电力工程}中一般应\textbf{避免}发生串联谐振——谐振时电容上和电感上可能出现比正常电压大得多的\textbf{过电压}，可能击穿电气设备的绝缘；
+  \item \textbf{电讯工程}中则相反：某些信号源输出的信号十分微弱，可利用电压谐振获得较高的电压。例如收音机的\textbf{调谐电路}就是利用串联谐振从不同频段的信号源中选择所要收听的电台信号。
+\end{itemize}
 
-当，记为
-\[
-\]
-电流
-\[
-\]
-\[
-\]
-引用$RLC$串联有效值
-\[
-\]
-可见。
+$Q$ 值越高，在一定的电源电压作用下谐振时获得的电感电压、电容电压越大；而且 $Q$ 越高，谐振曲线在 $\omega_0$ 附近的变化率越大，因此偏离谐振频率的信号所引起的响应显著减小——从这个意义上说，\textbf{谐振电路的 $Q$ 值越高，其选择性越好}。但 $Q$ 值过高会使\textbf{通频带变窄}，传输语音和图像时应具有必要的通频带宽度，通带过窄会影响传输信号的质量。在 RLC 串联谐振电路中，选择性与通频带宽度这对矛盾只能兼顾，不能同时最优。
 
-如果$RLC$串联电路中电阻$R$趋于零。
+\corepoint{串联谐振三条结论：（1）$\omega_0=1/\sqrt{LC}$ 只由 $L$、$C$ 决定；（2）谐振时 $Z=R$ 最小、电流最大；（3）$U_L=U_C=QU$，可能远大于电源电压（电压谐振），所以电力系统要躲、电讯系统要用。}
 
-\section{RLC串联电路的频率特性}
-当以电阻电压为响应时，
-\[
-\]
-将谐振
-\[
-\]
-\[
-\]
-由上式。
+\section{RLC 串联电路的频率特性}
+以端口电压为激励，分别以不同元件电压为响应，就得到三种不同的频率特性：
 
-由幅频特性，需满足
-\[
-\]
-由此解得
-\[
-\]
-\[
-\]
-截止频率，的关系是
-\[
-\]
-可见，$RLC$带通电路的通带宽度与品质因数成反比。
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+响应 & 网络函数 & 频率特性类型 & 极限行为 \\
+\midrule
+电容电压 $\dot{U}_C$ & $\dfrac{1/\left(\mathrm{j}\omega C\right)}{Z}$ & 低通 & $\omega\to0$ 时 $\dot{U}_C\to\dot{U}$；$\omega\to\infty$ 时 $\to0$ \\
+电感电压 $\dot{U}_L$ & $\dfrac{\mathrm{j}\omega L}{Z}$ & 高通 & $\omega\to\infty$ 时 $\dot{U}_L\to\dot{U}$；$\omega\to0$ 时 $\to0$ \\
+电阻电压 $\dot{U}_R$ & $\dfrac{R}{Z}$ & 带通 & 仅在 $\omega_0$ 附近较大，两端趋于零 \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-如果，其转移电压比为
-\[
-\]
-\[
-\]
-幅频特性和相频特性分别为
-\[
-\]
-当。
+这说明同一 RLC 串联电路，取不同的响应就构成不同的滤波器——这一结论是 §7.5 的基础。
 
-从幅频特性。
+\subsection{归一化谐振曲线与通频带}
+为便于比较不同参数电路的谐振特性，把电流对谐振电流之比作为纵坐标、把频率对谐振频率之比作为横坐标，得\textbf{归一化谐振曲线}
+\keyformula{\frac{I}{I_0}=\frac{1}{\sqrt{1+Q^2\left(\eta-\dfrac{1}{\eta}\right)^2}},\qquad \eta=\frac{\omega}{\omega_0}}
+其特点：
+\begin{itemize}
+  \item 所有曲线在 $\eta=1$ 处均过 $(1,1)$ 点（谐振点），与 $Q$ 无关；
+  \item $Q$ 越大曲线越尖锐，选择性越好；$Q$ 越小曲线越平坦；
+  \item 当 $\eta\to0$ 或 $\eta\to\infty$ 时 $I/I_0\to0$。
+\end{itemize}
 
-图。
+定义 $I/I_0=1/\sqrt{2}$ 时对应的两个频率为\textbf{截止频率}（上、下限频率）$\omega_2$、$\omega_1$，二者之间的频率范围称为\textbf{通频带}（带宽）
+\keyformula{BW=\omega_2-\omega_1=\frac{\omega_0}{Q}
+\qquad\text{或}\qquad \Delta f=f_2-f_1=\frac{f_0}{Q}}
+由 $Q\left(\eta-1/\eta\right)=\pm1$ 可解得上、下限频率（当 $Q\gg1$ 时近似为 $\omega_0\pm\dfrac{\omega_0}{2Q}$）。
 
-最后。其转移电压比为
-\[
-\]
-\[
-\]
-幅频特性和相频特性分别为
-\[
-\]
-\[
-\]
-当。
+由此可见：\textbf{通频带与品质因数成反比}——$Q$ 越高选择性越好，但通带越窄。这就是选择性与通频带之间的矛盾，工程上只能根据信号特点折中选取 $Q$。
 
-图。
+\corepoint{归一化曲线的自变量是 $\eta=\omega/\omega_0$，不是 $\omega$；这条曲线只与 $Q$ 有关，与具体的 $L$、$C$、$R$ 数值无关，因此可以用来比较任意两个 RLC 串联电路的选择性。}
 
 \section{并联谐振电路}
-由电流源。
+\subsection{GCL 并联电路的谐振}
+对 GCL 并联电路，端口导纳为
+\begin{equation}
+Y=G+\mathrm{j}\left(\omega C-\frac{1}{\omega L}\right)
+\end{equation}
+谐振条件是 $\mathrm{Im}[Y]=0$，即 $\omega C=1/(\omega L)$，故谐振角频率仍为
+\keyformula{\omega_0=\frac{1}{\sqrt{LC}}}
+谐振时导纳最小、等于 $G$，因而\textbf{阻抗最大}、等于 $R=1/G$。若用一定的电流源激励，谐振时端电压达到最大，而电感电流与电容电流有效值相等、相位相反，可能比电源电流大得多，故并联谐振又称\textbf{电流谐振}。
 
-GCL并联
-\[
-\]
-实现谐振的条件是。
+并联谐振电路的品质因数定义为谐振时容纳（或感纳）与电导之比
+\keyformula{Q=\frac{\omega_0C}{G}=\frac{1}{\omega_0LG}=R\sqrt{\frac{C}{L}}}
+谐振时 $I_C=I_L=QI$。
+
+\subsection{实际线圈与电容器的并联谐振}
+实际线圈含有电阻，其模型是 $R$ 与 $L$ 串联后再与 $C$ 并联。其导纳为
+\begin{equation}
+Y=\frac{1}{R+\mathrm{j}\omega L}+\mathrm{j}\omega C
+=\frac{R}{R^2+\omega^2L^2}+\mathrm{j}\left(\omega C-\frac{\omega L}{R^2+\omega^2L^2}\right)
+\end{equation}
+令虚部为零，解得谐振角频率
+\keyformula{\omega_0=\sqrt{\frac{1}{LC}-\frac{R^2}{L^2}}}
+在电路参数一定的条件下，改变电源频率能否使电路谐振，要看求出的 $\omega_0$ 是否有实际意义：
+\begin{itemize}
+  \item 当 $R<\sqrt{L/C}$ 时，根号下为正值，存在实数谐振角频率 $\omega_0$；
+  \item 若 $R>\sqrt{L/C}$，$\omega_0$ 为虚数，意味着改变频率无法使电路发生谐振——此时导纳的虚部恒为正，电路始终呈容性，不存在谐振频率。
+\end{itemize}
+
+谐振时导纳的虚部为零，等效阻抗为一个电阻
+\keyformula{Z_0=\frac{L}{RC}}
+可见线圈电阻 $R$ 越小，并联谐振时的等效阻抗越大；理想情况下 $R\to0$，$Z_0\to\infty$，相当于开路（理想电感与电容并联谐振时等效阻抗无穷大，电感与电容中分别存在电流 $I_L$、$I_C$，只因有效值相等、相位相反而抵消，才使总电流为零）。
+
+但要注意：\textbf{调节频率达到谐振时，$Z_0$ 并不是阻抗的最大值}。由导纳表达式可见，导纳的实部随角频率升高而减小，当频率略高于 $\omega_0$ 时导纳达最小、阻抗达最大。因此“谐振点”与“阻抗最大点”在含耗线圈的并联电路中并不重合。
+
+激励方式对结论也有影响：若用一定的\textbf{电流源}激励，谐振时因阻抗接近最大值，端电压 $U$ 也接近最大值，线圈与电容中的电流可能比电源电流大得多；若用一定的\textbf{电压源}激励，谐振时的端口电流将接近最小值。
+
+\subsection{元件品质因数}
+分析结构较复杂的电路时，有时引用\textbf{元件品质因数}的概念。线圈的品质因数定义为谐振频率下的感抗与串联电阻之比
+\begin{equation}
+Q_L=\frac{\omega_0L}{R}
+\end{equation}
+若电容器的损耗不容忽略，用并联的漏电导 $G$ 表示，则电容器的品质因数定义为谐振时的容纳与并联电导之比
+\begin{equation}
+Q_C=\frac{\omega_0C}{G}
+\end{equation}
+
+\corepoint{串联谐振看“阻抗最小、电流最大”，并联谐振看“导纳最小、端电压最大”。实际线圈与电容并联时，$\omega_0=\sqrt{1/(LC)-R^2/L^2}$ 存在的前提是 $R<\sqrt{L/C}$；谐振阻抗 $Z_0=L/(RC)$，不是阻抗最大值。}
+
+\section{滤波器简介}
+工程上利用电路的频率特性可以实现对信号中不同频率成分的选择——允许需要频率的信号顺利通过而抑制不需要频率的信号，实现这一功能的电路称为\textbf{滤波器}，它实质上是一个\textbf{选频电路}。
+
+\subsection{按通带分类}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+类型 & 功能 & RLC 串联电路中的实现 \\
+\midrule
+低通滤波器 & 允许低频或直流分量通过，抑制高频分量与噪声 & 以 $U_C$ 为响应 \\
+高通滤波器 & 允许高频分量通过，抑制低频或直流分量 & 以 $U_L$ 为响应 \\
+带通滤波器 & 允许一定频段信号通过，抑制该频段以外的成分 & 以 $U_R$ 为响应 \\
+带阻滤波器 & 抑制一定频段内的信号，允许该频段以外的信号通过 & 以 $U_L+U_C$ 为响应 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+对 RLC 串联电路，当以电感和电容的\textbf{总电压}为响应时，网络函数为
+\begin{equation}
+H(\mathrm{j}\omega)=\frac{\mathrm{j}\left[\omega L-1/(\omega C)\right]}{R+\mathrm{j}\left[\omega L-1/(\omega C)\right]}
+\end{equation}
+其幅频特性具有\textbf{带阻}特性：谐振时分子为零、响应为零，偏离谐振点则响应趋于 $1$；两个截止频率与带通滤波器相同。同样，仅由电感和电容也可以构成低通、高通、带通、带阻滤波器。
+
+\subsection{按元件分类}
+\textbf{无源滤波器}：仅由无源元件（$R$、$L$、$C$）组成。电路简单、可靠性高，但电感元件容易引起电磁感应，电感系数较大时体积和重量都比较大。
+
+\textbf{有源滤波器}：由无源元件（一般用 $R$、$C$）和有源器件（如集成运算放大器）组成。优点：通带内信号没有能量损耗，体积小、重量轻，可以实现对输入信号的放大作用，且不使用电感因而无需磁屏蔽；缺点：通带范围受有源器件带宽的限制，可靠性不如无源滤波器高，在高压、高频、大功率场合不适用。
+
+按所处理的信号不同，滤波器又分为\textbf{模拟滤波器}（处理量值连续的模拟信号，依靠 $R$、$C$、集成运放组成的物理网络实现）和\textbf{数字滤波器}（处理离散的数字信号，由数字乘法器、加法器和延时单元组成的算法或装置，通过对输入离散信号数字代码的运算处理改变信号频谱）。
+
+\subsection{一阶有源滤波器}
+\textbf{一阶有源低通滤波器}只含一个电容，接在运放反馈支路上。其网络函数为
+\keyformula{H(\mathrm{j}\omega)=-\frac{R_f}{R}\cdot\frac{1}{1+\mathrm{j}\omega C_fR_f}}
+当频率 $\omega=0$ 时放大倍数为 $-R_f/R$（直流增益），截止频率为
+\keyformula{\omega_c=\frac{1}{R_fC_f}}
+可见截止频率与输入阻抗 $R$ 无关——存在多路输入时，对每路输入来说其截止频率相同。
+
+\textbf{一阶有源高通滤波器}的网络函数为
+\begin{equation}
+H(\mathrm{j}\omega)=-\frac{\mathrm{j}\omega C_1R_f}{1+\mathrm{j}\omega C_1R}
+\end{equation}
+当频率很高时放大倍数约为 $-R_f/R$，截止频率为
+\begin{equation}
+\omega_c=\frac{1}{C_1R}
+\end{equation}
+
+\textbf{带通滤波器}可由单位增益的低通滤波器与单位增益的高通滤波器\textbf{级联}（首尾相连）得到；若要使整体具有一定放大倍数，可在滤波器后加一级反相放大器。其中低通部分决定带通网络\textbf{高频侧}的截止频率（$1/(R C_f)$ 形式），高通部分决定\textbf{低频侧}的截止频率（$1/(C_1R)$ 形式）。
+
+\subsection{波特图}
+研究放大电路的频率响应时，信号频率范围很宽（从几赫到几百兆赫）、放大倍数也很大，为压缩坐标、扩大视野，画频率特性曲线时频率坐标采用\textbf{对数刻度}。在这种半对数坐标中画出的幅频、相频曲线称为\textbf{对数频率特性}或\textbf{波特图}：幅频波特图的纵坐标用分贝（$\mathrm{dB}$）表示对数模
+\keyformula{H_{\mathrm{dB}}=20\lg\left|H(\mathrm{j}\omega)\right|}
+相频波特图的纵坐标仍用度表示。采用波特图后，一阶低通、高通特性分别表现为一条水平段加一条斜率为 $-20\,\mathrm{dB/dec}$（或 $+20\,\mathrm{dB/dec}$）的直线段，转折点即截止频率。
+
+\corepoint{滤波器三问：通带是哪一段（低/高/带通/带阻）？截止频率怎么算（$1/(RC)$ 或 $1/(R_fC_f)$）？有源还是无源（能否放大、带宽限制）？RLC 串联电路选不同响应就能得到三种滤波器，这是最省事的记法。}
+
+\section*{本章小结}
+\addcontentsline{toc}{section}{本章小结}
+\begin{center}
+\begin{tabular}{@{}p{0.20\textwidth}p{0.30\textwidth}p{0.38\textwidth}@{}}
+\toprule
+项目 & 串联谐振 & 并联谐振 \\
+\midrule
+谐振条件 & $\mathrm{Im}[Z]=0$，$\omega L=1/(\omega C)$ & $\mathrm{Im}[Y]=0$，$\omega C=1/(\omega L)$ \\
+谐振频率 & $\omega_0=1/\sqrt{LC}$ & $\omega_0=1/\sqrt{LC}$（理想 $LC$）\\
+谐振时 & $Z=R$ 最小，$I$ 最大 & $Y=G$ 最小，$U$ 最大 \\
+品质因数 & $Q=\dfrac{\omega_0L}{R}=\dfrac{1}{R}\sqrt{\dfrac{L}{C}}$ & $Q=\dfrac{\omega_0C}{G}=R\sqrt{\dfrac{C}{L}}$ \\
+特征电压/电流 & $U_L=U_C=QU$（电压谐振）& $I_L=I_C=QI$（电流谐振）\\
+通频带 & $BW=\omega_0/Q$ & $BW=\omega_0/Q$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \endinput

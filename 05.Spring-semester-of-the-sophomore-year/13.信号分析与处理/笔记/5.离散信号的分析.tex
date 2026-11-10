@@ -1,0 +1,786 @@
+\chapter{离散信号的分析}
+\providecommand{\Saa}{\operatorname{Sa}}
+
+\section{信号的采样和恢复}
+
+\subsection{离散信号与采样信号}
+
+\begin{itemize}
+\item \textbf{离散信号}：只在某些不连续的规定时刻给出瞬时值；可由连续信号采样得到，也可能本身就是离散的（如逐年人口）。
+\item \textbf{采样信号}：用采样脉冲 $p(t)$ 从连续信号中“抽取”一系列离散样值，记 $f_s(t)$（$s$ 对应 sampling）。
+\item 采样信号\textbf{时间离散、幅值连续}；再经量化、编码才成为数字信号。
+\end{itemize}
+采样要回答两点：$f_s(t)$ 的频谱与 $f(t)$ 频谱的关系；$f_s(t)$ 能否无失真地恢复 $f(t)$。
+
+\subsection{采样信号的频谱}
+
+由频域卷积定理（时域相乘对应频域卷积），$f_s(t)=f(t)p(t)$ 的频谱为
+\begin{equation}
+F_s(\omega)=\frac{1}{2\pi}F(\omega)*P(\omega).
+\end{equation}
+周期 $T_s$ 的采样脉冲可展成 $p(t)=\sum_n P_n e^{jn\omega_s t}$，
+故 $P(\omega)=2\pi\sum_n P_n\delta(\omega-n\omega_s)$，其中
+\begin{equation}
+P_n=\frac{1}{T_s}\int_{-T_s/2}^{T_s/2}p(t)e^{-jn\omega_s t}\,\mathrm{d}t,
+\qquad \omega_s=\frac{2\pi}{T_s}.
+\end{equation}
+利用 $F(\omega)*\delta(\omega-n\omega_s)=F(\omega-n\omega_s)$ 得\textbf{一般式}
+\begin{equation}
+F_s(\omega)=\sum_{n=-\infty}^{\infty}P_n F(\omega-n\omega_s),
+\end{equation}
+即采样使原频谱\textbf{以 $\omega_s$ 为周期搬移并叠加}，权重为各次谐波系数 $P_n$。
+
+\subsubsection{矩形脉冲采样}
+$p(t)$ 为周期 $T_s$、幅度 $E$、脉宽 $\tau\ll T_s$ 的矩形脉冲时
+\begin{equation}
+P_n=\frac{1}{T_s}\int_{-\tau/2}^{\tau/2}E e^{-jn\omega_s t}\,\mathrm{d}t
+=\frac{E\tau}{T_s}\,\Saa\!\left(\frac{n\omega_s\tau}{2}\right),
+\end{equation}
+\begin{equation}
+F_s(\omega)=\frac{E\tau}{T_s}\sum_{n=-\infty}^{\infty}
+\Saa\!\left(\frac{n\omega_s\tau}{2}\right)F(\omega-n\omega_s),
+\end{equation}
+各次搬移的幅度按包络 $\Saa(n\omega_s\tau/2)$ 衰减，包络在 $\omega=2k\pi/\tau$ 处过零。
+$\tau\to0$、$E\tau\to1$ 时退化为冲激序列，包络趋于常数。
+
+\subsubsection{冲激采样（理想采样）}
+取 $p(t)=\delta_{T_s}(t)=\sum_n\delta(t-nT_s)$，则
+\begin{equation}
+f_s(t)=f(t)\sum_{n=-\infty}^{\infty}\delta(t-nT_s)
+=\sum_{n=-\infty}^{\infty}f(nT_s)\,\delta(t-nT_s),
+\end{equation}
+由 $P_n=1/T_s$ 得
+\begin{equation}
+F_s(\omega)=\frac{1}{T_s}\sum_{n=-\infty}^{\infty}F(\omega-n\omega_s).
+\end{equation}
+即冲激采样后原频谱\textbf{等幅}地以 $\omega_s$ 为周期重复，幅度乘以常数 $1/T_s$。
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+项目 & 矩形脉冲采样 & 冲激（理想）采样 \\
+\midrule
+$p(t)$ & 周期矩形，幅度 $E$、脉宽 $\tau$ & $\delta_{T_s}(t)=\sum_n\delta(t-nT_s)$ \\
+$P_n$ & $\dfrac{E\tau}{T_s}\Saa\!\left(\dfrac{n\omega_s\tau}{2}\right)$ & $\dfrac{1}{T_s}$ \\
+$F_s(\omega)$ & 按 $\Saa$ 包络衰减的搬移叠加 & 等幅搬移叠加 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{时域采样定理与频谱混叠}
+
+\textbf{时域采样定理（香农定理）}：若 $f(t)$ 频谱受限，只占据 $-\omega_m\sim+\omega_m$
+（最高频率 $f_m=\omega_m/2\pi$），则 $f(t)$ 可由等间隔采样值唯一确定，只要
+\begin{equation}
+T_s\le\frac{\pi}{\omega_m}=\frac{1}{2f_m},
+\qquad\text{即}\qquad \omega_s\ge2\omega_m\ (f_s\ge2f_m).
+\end{equation}
+$\omega_s=2\omega_m$ 称\textbf{奈奎斯特频率}，$T_s=\pi/\omega_m=1/(2f_m)$ 称\textbf{奈奎斯特间隔}。
+定理要求三点：信号带限、等间隔采样、采样率不低于 $2f_m$。
+
+\textbf{频谱混叠}：$\omega_s<2\omega_m$ 时相邻副本 $F(\omega-n\omega_s)$ 重叠，高频被折叠到低频段。
+混叠后各分量已叠加在一起，\textbf{无法再用滤波器分开}，属不可逆失真。
+
+\textbf{易错点}
+\begin{itemize}
+\item $2f_m$ 是临界值，工程上须留裕量 $\omega_s>2\omega_m$。
+\item $f_m$（频率）与 $\omega_m$（角频率）相差 $2\pi$，条件不能混写。
+\item 采样后频谱幅度多出 $1/T_s$，比较幅度时不能漏。
+\end{itemize}
+
+\subsection{频域采样定理}
+
+对连续频谱以间隔 $\omega_0$ 采样，得 $F_p(\omega)=F(\omega)\sum_k\delta(\omega-k\omega_0)$。
+由时域卷积定理
+\begin{equation}
+f_p(t)=f(t)*\frac{1}{\omega_0}\sum_{k=-\infty}^{\infty}\delta(t-kT_0)
+=\frac{1}{\omega_0}\sum_{k=-\infty}^{\infty}f(t-kT_0),\qquad T_0=\frac{2\pi}{\omega_0},
+\end{equation}
+即频域采样对应\textbf{时域以 $T_0$ 为周期的重复}，幅度乘 $1/\omega_0$。
+
+\textbf{频域采样定理}：若 $f(t)$ 时间受限，集中在 $-t_m\sim+t_m$，则以不大于 $1/(2t_m)$ 的频率间隔
+对 $F(\omega)$ 采样，可由 $F_p(\omega)$ 唯一恢复 $F(\omega)$（要求 $T_0\ge2t_m$，时域副本不重叠）。
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & 时域采样 & 频域采样 \\
+\midrule
+条件 & 频谱受限（带限） & 时间受限（时限） \\
+间隔要求 & $T_s\le1/(2f_m)$ & $\omega_0\le1/(2t_m)$ \\
+另一域变化 & 频谱以 $\omega_s$ 周期重复 & 时域以 $T_0$ 周期重复 \\
+恢复手段 & 频域加理想低通 & 时域乘矩形窗 \\
+\bottomrule
+\end{tabular}
+\end{center}
+一般规律：\textbf{时域离散化 $\Leftrightarrow$ 频域周期化；时域周期化 $\Leftrightarrow$ 频域离散化}。
+
+\subsection{采样信号的恢复与内插公式}
+
+在频域取主频带，令
+\begin{equation}
+H(\omega)=\begin{cases}T_s, & |\omega|\le\omega_c,\\ 0, & |\omega|>\omega_c,\end{cases}
+\qquad \omega_c=\omega_m,\ \omega_s=2\omega_m,
+\end{equation}
+则其冲激响应为
+\begin{equation}
+h(t)=\Saa\!\left(\frac{\omega_s t}{2}\right),
+\end{equation}
+由时域卷积定理得\textbf{内插公式}
+\begin{equation}
+f(t)=f_s(t)*h(t)=\sum_{n=-\infty}^{\infty}f(nT_s)\,\Saa\!\left[\frac{\omega_s}{2}(t-nT_s)\right],
+\end{equation}
+即带限信号任一时刻的值由全部采样值经取样函数加权叠加确定；内插函数在各采样点为 $1$、其余采样点为 $0$（无码间串扰）。
+对偶的频域内插公式为
+\begin{equation}
+F(\omega)=\frac{1}{2\pi}F_p(\omega)*G(\omega)
+=\sum_{k=-\infty}^{\infty}F(k\omega_0)\,\Saa\!\left[\frac{T_0}{2}(\omega-k\omega_0)\right].
+\end{equation}
+理想低通非因果、无限长，不可实现，故实际只能近似恢复。
+
+\textbf{采样频率的选择}：一个周期至少采样两点才能保留该频率分量信息；快变信号要提高采样率，
+过高则增大存储量并使采样不稳；非带限信号采样前须加\textbf{抗混叠滤波器}滤除次要高频；
+工程上常取 $f_s>10f_m$。实际采样与滤波均非理想，抗混叠滤波、A/D、D/A 各环节都会引入误差。
+
+\section{离散信号的时域描述和运算}
+
+\subsection{序列及其表示}
+
+等间隔时刻取值即可用序列 $x(n)$ 表示：$n$ 为整数序号，$x(n)$ 为第 $n$ 点的\textbf{样值}。表示方法有
+\textbf{列举法}（$\{x(n)\}=\{\cdots,0,1,2,3,4,3,2,1,0,\cdots\}$，标出 $n=0$ 位置）、
+\textbf{闭式法}（如 $x(n)=4-n\ (n\le3)$）、\textbf{图形法}（$n$ 为横轴的谱线图，可画包络线）。
+离散信号能量定义为
+\begin{equation}
+W=\sum_{n=-\infty}^{\infty}\big|x(n)\big|^2 .
+\end{equation}
+
+\subsection{典型离散信号（序列）}
+
+\begin{enumerate}
+\item \textbf{单位脉冲序列}
+\begin{equation}
+\delta(n)=\begin{cases}1, & n=0,\\ 0, & n\ne0,\end{cases}
+\qquad \sum_{n=-\infty}^{\infty}\delta(n)=1 .
+\end{equation}
+取样特性：$x(n)\delta(n)=x(0)\delta(n)$，
+$\sum\limits_{n=-\infty}^{\infty}x(n)\delta(n-n_0)=x(n_0)$。
+
+\item \textbf{单位阶跃序列}
+\begin{equation}
+u(n)=\begin{cases}1, & n\ge0,\\ 0, & n<0,\end{cases}
+\qquad \delta(n)=u(n)-u(n-1),\quad u(n)=\sum_{k=0}^{\infty}\delta(n-k).
+\end{equation}
+注意 $u(0)=1$，与 $u(t)$ 在 $t=0$ 处跳变、取值不确定不同。
+
+\item \textbf{矩形序列}
+\begin{equation}
+R_N(n)=\begin{cases}1, & 0\le n\le N-1,\\ 0, & \text{其他},\end{cases}
+\qquad R_N(n)=u(n)-u(n-N)=\sum_{k=0}^{N-1}\delta(n-k).
+\end{equation}
+
+\item \textbf{斜变序列}：$x(n)=n\,u(n)$。
+
+\item \textbf{实指数序列}：$x(n)=a^n u(n)$。$|a|<1$ 收敛，$|a|>1$ 发散；$a>0$ 同号，$a<0$ 正负摆动。
+
+\item \textbf{正弦型序列}：
+\begin{equation}
+x(n)=A\sin(\Omega_0 n+\phi),
+\end{equation}
+$\Omega_0$ 为\textbf{数字角频率}（rad），$\phi$ 为初相。若由 $A\sin(\omega_0t+\phi)$ 以 $T_s$ 采样得到，
+则 $\Omega_0=\omega_0T_s=\omega_0/f_s$。
+
+\item \textbf{复指数序列}：
+\begin{equation}
+x(n)=e^{(\sigma+j\Omega_0)n}=e^{\sigma n}\big(\cos\Omega_0 n+j\sin\Omega_0 n\big),
+\end{equation}
+可统一表示实指数、正弦、直流序列。
+
+\item \textbf{任意序列}：
+\begin{equation}
+x(n)=\sum_{m=-\infty}^{\infty}x(m)\,\delta(n-m).
+\end{equation}
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+对比项 & 连续 $\delta(t)$ & 离散 $\delta(n)$ \\
+\midrule
+非零处取值 & $t=0$ 处为 $\infty$（奇异函数） & $n=0$ 处为有限值 $1$ \\
+积分/求和 & $\int_{-\infty}^{\infty}\delta(t)\mathrm{d}t=1$ & $\sum_{n=-\infty}^{\infty}\delta(n)=1$ \\
+与阶跃关系 & $\delta(t)=\mathrm{d}u(t)/\mathrm{d}t$ & $\delta(n)=u(n)-u(n-1)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{正弦型序列与复指数序列的特性}
+
+\textbf{（1）离散正弦序列不一定是周期序列。}要求 $x(n+N)=x(n)$，即 $N\Omega_0=2k\pi$，故
+\begin{equation}
+N=\frac{2k\pi}{\Omega_0},\qquad k=\pm1,\pm2,\cdots
+\end{equation}
+只有 $\dfrac{2\pi}{\Omega_0}$ 为\textbf{有理数}时，取使 $N$ 为最小正整数的 $k$ 才周期；
+若为无理数则\textbf{非周期}（包络仍是周期正弦）。
+连续正弦恒周期（$T=2\pi/\omega_0$）；采样后若一个连续周期内样点数非整数，序列周期会变长甚至不存在。
+
+\textbf{（2）时移与相移不一定对应。}连续 $A\sin(\omega_0t+\varphi)$ 中时移与相移一一对应；
+离散 $A\sin(\Omega_0n+\phi)$ 中时移 $n\pm n_0$ 必对应相移 $\mp\Omega_0n_0$，但给定相移 $\phi_0$，
+只有它能写成 $\Omega_0n_0$（$n_0$ 为整数，即 $\phi_0$ 是 $\Omega_0$ 的整数倍）时才对应整数位移。
+
+\textbf{（3）数字频率的模糊性。}因 $e^{j(\Omega\pm2k\pi)n}=e^{j\Omega n}$，故
+\begin{equation}
+\Omega_1=\Omega_2+2k\pi\ \Longrightarrow\ x_1(n)=x_2(n),
+\end{equation}
+不同的数字频率可对应完全相同的序列。故 $\Omega$ 只需在长 $2\pi$ 的区间内取值，通常取
+\begin{equation}
+\Omega\in[0,2\pi)\quad\text{或}\quad \Omega\in[-\pi,\pi).
+\end{equation}
+
+\subsection{序列的时域运算}
+
+\begin{itemize}
+\item \textbf{平移} $x(n-m)$：$m>0$ 右移（延时），$m<0$ 左移；$n,m$ 均整数。\textbf{翻转} $x(-n)$：以 $n=0$ 纵轴为对称轴。
+\item \textbf{和、积}：$z(n)=x(n)\pm y(n)$、$z(n)=x(n)y(n)$，同序号逐项运算。
+\item \textbf{累加}：
+\begin{equation}
+y(n)=\sum_{k=-\infty}^{n}x(k),
+\end{equation}
+即 $n$ 及 $n$ 以前全部样值之和（对应连续积分）。
+\item \textbf{差分}：
+\begin{equation}
+\Delta x(n)=x(n+1)-x(n),\qquad
+\nabla x(n)=x(n)-x(n-1)=\Delta x(n-1).
+\end{equation}
+\item \textbf{时间尺度变换} $x(mn)$、$x(n/m)$：$x(2n)$ 是每隔 2 点取 1 点（抽取，采样率降为 $1/m$），
+并非波形压缩一半；$x(n/2)$ 在相邻样点间插入新样点（插值，间隔变为 $T_s/2$），插入后序号需重排。
+\end{itemize}
+
+\subsection{离散系统的单位脉冲响应与卷积和}
+
+设离散线性系统对 $\delta(n-m)$ 的响应为 $h_m(n)$，由线性叠加，输入 $x(n)=\sum_m x(m)\delta(n-m)$ 的响应为
+\begin{equation}
+y(n)=\sum_{m=-\infty}^{\infty}x(m)h_m(n).
+\end{equation}
+若系统又时不变，则 $h_m(n)=h_0(n-m)$，记 $h(n)=h_0(n)$ 为\textbf{单位脉冲响应（单位样值响应）}，于是
+\begin{equation}
+y(n)=\sum_{m=-\infty}^{\infty}x(m)h(n-m)=x(n)*h(n),
+\end{equation}
+称为\textbf{卷积和（叠加和）}。它表明 \textbf{LTI 系统的 $h(n)$ 完全刻画了系统特性}。
+
+\subsection{卷积和的计算与性质}
+
+\textbf{计算步骤（图解法）}
+\begin{enumerate}
+\item \textbf{换坐标}：$n\to m$，把 $n$ 视为参变量；
+\item \textbf{翻转}：将 $h(m)$ 关于 $m=0$ 翻转为 $h(-m)$；
+\item \textbf{平移}：对某定值 $n$，把 $h(-m)$ 平移 $n$ 得 $h(n-m)$；
+\item \textbf{相乘}：$h(n-m)$ 与 $x(m)$ 在相同 $m$ 处逐点相乘；
+\item \textbf{累加}：乘积相加得该 $n$ 处的 $y(n)$，对各 $n$ 重复。
+\end{enumerate}
+$h(n-m)$ 是“先翻转、后移位”，$n$ 增大时向右移；非零区间不重合时 $y(n)=0$。
+
+\textbf{主要性质}
+\begin{align}
+&\text{交换律：} && x(n)*h(n)=h(n)*x(n),\\
+&\text{分配律：} && x(n)*\big[h_1(n)+h_2(n)\big]=x(n)*h_1(n)+x(n)*h_2(n),\\
+&\text{结合律：} && \big[x(n)*h_1(n)\big]*h_2(n)=x(n)*\big[h_1(n)*h_2(n)\big],\\
+&\text{与脉冲卷积：} && x(n-m)*\delta(n-k)=x(n-m-k).
+\end{align}
+最后一条是化简关键：把 $x(n)$、$h(n)$ 写成 $\sum a_k\delta(n-k)$，卷积和即两组系数的“多项式乘法”。
+若 $x(n)$ 长 $N_1$、$h(n)$ 长 $N_2$，则 $y(n)$ 长度为
+\begin{equation}
+N_1+N_2-1 .
+\end{equation}
+
+\section{离散信号的频域分析}
+
+离散信号频域分析要解决两件事：信号离散化后频谱发生了什么变化（由 DFS 推出）；
+如何用计算机快速计算（DFT 与 FFT）。各变换对应关系：
+连续周期—CFS，连续非周期—CTFT 与拉普拉斯变换；离散周期—DFS，
+离散非周期—DTFT、DFT、FFT 与 Z 变换。
+
+\subsection{离散傅里叶级数（DFS）}
+
+连续复指数 $e^{j\omega t}$ 的频率 $\omega\in(-\infty,\infty)$；而离散复指数满足
+\begin{equation}
+e^{j(\Omega\pm2k\pi)n}=e^{j\Omega n},
+\end{equation}
+故它作为 $\Omega$ 的函数以 $2\pi$ 为周期，无限频率范围被映射到长度 $2\pi$ 的区间内——
+这是“时域离散化 $\Rightarrow$ 频域周期化”的根源。
+
+\textbf{推导}：对周期 $T_0$ 的连续信号作 $N$ 点采样，$T_0=NT_s$，则
+\begin{equation}
+\omega_0=\frac{2\pi}{T_0}=\frac{2\pi}{NT_s},\qquad
+\Omega_0=\omega_0T_s=\frac{2\pi}{N},
+\end{equation}
+$\Omega_0$ 为基本数字频率，$k\Omega_0$ 为 $k$ 次谐波数字频率。把连续傅里叶系数中的积分换成一个周期内的累加
+（$\mathrm{d}t\to T_s$），得 $X(k\Omega_0)=\frac{1}{N}\sum_{n=0}^{N-1}x(n)e^{-jk\Omega_0n}$。
+由于 $e^{jk\Omega_0n}$ 只在 $k$ 的 $N$ 个相继取值上互异，$x(n)$ 只需 $N$ 项即可展开：
+\begin{align}
+x(n)&=\sum_{k=\langle N\rangle}X(k\Omega_0)\,e^{jk\Omega_0 n},\\
+X(k\Omega_0)&=\frac{1}{N}\sum_{n=\langle N\rangle}x(n)\,e^{-jk\Omega_0 n},
+\end{align}
+$\sum\limits_{n=\langle N\rangle}$ 表示在任一个周期（$N$ 点）内求和。
+
+\textbf{要点}
+\begin{itemize}
+\item $X(k\Omega_0)$ 为\textbf{频谱系数}（复振幅），周期序列被分解为 $N$ 个谐波关系的复指数之和。
+\item $X\big((k+N)\Omega_0\big)=X(k\Omega_0)$，频谱是以 $N$ 为周期的离散序列，取任一周期即可。
+\item 离散周期序列 $\leftrightarrow$ 周期离散频谱，一一对应。
+\end{itemize}
+
+\textbf{与连续周期信号频谱的关系}：若 $x(n)$ 由连续周期信号采样得到（每周期 $N$ 点），
+则 $X(k\Omega_0)$ 可看作 $X(k\omega_0)$ 的周期延拓（周期 $\omega_s$ 或数字频率 $2\pi$）并在频率轴乘 $T_s$；
+一个周期内两者幅频数值相等、频率标度不同。满足采样定理时可由一个周期恢复 $X(k\omega_0)$，否则出现混叠、只能近似。
+
+\subsection{DFS 的主要性质}
+
+设 $x(n)\xleftrightarrow{\ \mathrm{DFS}\ }X(k\Omega_0)$，$h(n)\xleftrightarrow{\ \mathrm{DFS}\ }H(k\Omega_0)$，周期均 $N$。
+
+\begin{enumerate}
+\item \textbf{线性}：$ax(n)+by(n)\xleftrightarrow{\ \mathrm{DFS}\ }aX(k\Omega_0)+bY(k\Omega_0)$。
+\item \textbf{周期卷积定理}：
+\begin{equation}
+x(n)\circledast h(n)\ \xleftrightarrow{\ \mathrm{DFS}\ }\ N\,X(k\Omega_0)H(k\Omega_0),
+\qquad
+x(n)h(n)\ \xleftrightarrow{\ \mathrm{DFS}\ }\ X(k\Omega_0)\circledast H(k\Omega_0),
+\end{equation}
+其中周期卷积只在\textbf{一个周期内}求和：
+\begin{equation}
+x(n)\circledast h(n)=\sum_{m=0}^{N-1}x(m)h(n-m)=h(n)\circledast x(n).
+\end{equation}
+\item \textbf{复共轭}：$x^*(-n)\xleftrightarrow{\ \mathrm{DFS}\ }X^*(k\Omega_0)$。
+\item \textbf{位移}：
+\begin{equation}
+x(n-m)\ \xleftrightarrow{\ \mathrm{DFS}\ }\ e^{-jk\Omega_0 m}X(k\Omega_0).
+\end{equation}
+\item \textbf{帕斯瓦尔定理}：
+\begin{equation}
+\frac{1}{N}\sum_{n=0}^{N-1}\big|x(n)\big|^2=\sum_{k=0}^{N-1}\big|X(k\Omega_0)\big|^2 .
+\end{equation}
+\end{enumerate}
+\textbf{易错点}：DFS 的 $1/N$ 在\textbf{正变换}，故周期卷积定理带因子 $N$；DFT 的 $1/N$ 在反变换，
+同一性质写成 $X(k)H(k)$ 不带 $N$。各教材约定不同，\textbf{必须与所用定义配套}。
+
+\subsection{离散时间傅里叶变换（DTFT）}
+
+把长 $N_1+N_2$ 的有限长序列以 $N>N_1+N_2$ 为周期延拓成 $x_N(n)=\sum_m x(n-mN)$，再令 $N\to\infty$：
+周期序列回到非周期序列，DFS 求和变为无穷级数，而 $X(k\Omega_0)=\frac{1}{N}X(e^{jk\Omega_0})$ 趋于无穷小。
+于是定义\textbf{频谱密度函数}
+\begin{align}
+X(\Omega)=X(e^{j\Omega})&=\sum_{n=-\infty}^{\infty}x(n)e^{-j\Omega n},\\
+x(n)&=\frac{1}{2\pi}\int_{-\pi}^{\pi}X(\Omega)e^{j\Omega n}\,\mathrm{d}\Omega ,
+\end{align}
+称\textbf{离散时间傅里叶变换（DTFT）}。$X(\Omega)$ 以 $2\pi$ 为周期（$e^{-j2\pi n}=1$），
+是 $\Omega$ 的\textbf{连续周期}函数，表示频谱密度而非离散谱线。
+
+\textbf{存在条件}：无限长序列要求绝对可和
+\begin{equation}
+\sum_{n=-\infty}^{\infty}\big|x(n)\big|<\infty,
+\end{equation}
+或能量有限 $\sum_n|x(n)|^2<\infty$，则级数一致收敛。
+
+\textbf{两个基本变换对}（几何级数求和）
+\begin{align}
+x(n)&=a^n u(n),\ |a|<1: & X(\Omega)&=\frac{1}{1-ae^{-j\Omega}},\\
+x(n)&=-a^n u(-n-1),\ |a|>1: & X(\Omega)&=\frac{1}{1-ae^{-j\Omega}}.
+\end{align}
+两式形式相同但收敛域不同（$|a|<1$ 与 $|a|>1$），说明
+\textbf{只看 $X(\Omega)$ 的表达式不能唯一确定序列}。
+
+\textbf{有限长矩形序列}：$x(n)=1$（$-N_1\le n\le N_1$）时
+\begin{equation}
+X(\Omega)=\frac{\sin\!\big[(N_1+\tfrac12)\Omega\big]}{\sin(\Omega/2)},
+\end{equation}
+频谱连续、以 $2\pi$ 为周期，起伏由截断引起（对应连续矩形脉冲的 $\Saa$ 谱，但这里周期化）。
+
+\subsection{DTFT 的性质}
+
+设 $x(n)\xleftrightarrow{\ \mathrm{DTFT}\ }X(\Omega)$，$y(n)\xleftrightarrow{\ \mathrm{DTFT}\ }Y(\Omega)$。
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+性质 & 时域 & 频域 \\
+\midrule
+线性 & $ax(n)+by(n)$ & $aX(\Omega)+bY(\Omega)$ \\
+时域平移 & $x(n-n_0)$ & $e^{-j\Omega n_0}X(\Omega)$ \\
+时间翻转 & $x(-n)$ & $X(-\Omega)$ \\
+频域平移 & $e^{j\Omega_0 n}x(n)$ & $X(\Omega-\Omega_0)$ \\
+时域卷积 & $x(n)*y(n)$ & $X(\Omega)Y(\Omega)$ \\
+共轭对称 & $x^*(n)$ & $X^*(-\Omega)$ \\
+频域微分 & $n\,x(n)$ & $j\dfrac{\mathrm{d}X(\Omega)}{\mathrm{d}\Omega}$ \\
+频域卷积（相乘） & $x(n)y(n)$ & $\dfrac{1}{2\pi}\displaystyle\int_{-\pi}^{\pi}X(\lambda)Y(\Omega-\lambda)\mathrm{d}\lambda$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{用 DTFT 解差分方程（零初始条件）}
+\begin{enumerate}
+\item 两边取 DTFT，用时移性质把 $y(n-k)$ 化为 $e^{-j\Omega k}Y(\Omega)$；
+\item 解出 $Y(\Omega)=H(\Omega)X(\Omega)$，
+\begin{equation}
+H(\Omega)=\frac{Y(\Omega)}{X(\Omega)}=\frac{\sum\limits_{k=0}^{M}b_k e^{-j\Omega k}}{1+\sum\limits_{k=1}^{N}a_k e^{-j\Omega k}};
+\end{equation}
+\item 把 $H(\Omega)$ 拆成基本变换对可表示的部分分式，逐项反变换得 $y(n)$。
+\end{enumerate}
+
+\textbf{与 DFS、CTFT 的关系}
+\begin{itemize}
+\item DTFT 是 DFS 当 $N\to\infty$ 的极限：两者时域离散、频域周期；但 DFS 谱离散、有谐波性、
+  $X(k\Omega_0)$ 为谐波复振幅、便于计算，DTFT 谱连续、$X(\Omega)$ 为频谱密度、不便于直接计算。
+\item 与 CTFT：两者时域非周期、频域为频谱密度；但 $X(\Omega)$ \textbf{周期}，$X(\omega)$ 非周期。
+\end{itemize}
+
+\subsection{傅里叶变换的离散性与周期性}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+时域信号 & 变换 & 频谱特征 \\
+\midrule
+连续、周期 & CFS（离散谱线） & 非周期、离散 \\
+连续、非周期 & CTFT & 非周期、连续（密度函数） \\
+离散、周期 & DFS & 周期、离散 \\
+离散、非周期 & DTFT & 周期、连续（密度函数） \\
+\bottomrule
+\end{tabular}
+\end{center}
+四条对应规律：时域\textbf{周期}性 $\Leftrightarrow$ 频域\textbf{离散}性；时域\textbf{非周期} $\Leftrightarrow$ 频域\textbf{连续}性；
+时域\textbf{离散}性 $\Leftrightarrow$ 频域\textbf{周期}性；时域\textbf{连续}性 $\Leftrightarrow$ 频域\textbf{非周期}性。
+
+\subsection{离散傅里叶变换（DFT）}
+
+\textbf{思路一：由 DFS 截取主值。}设 $x(n)$ 为长 $N$ 的有限长序列（$0\le n\le N-1$，称\textbf{主值序列}），
+按周期 $N$ 延拓得 $x_p(n)=\sum_r x(n+rN)$，作 DFS 得 $X_p(k\Omega_0)$；只取主值区间并令
+$X(k)\triangleq N X_p(k\Omega_0)$，即得\textbf{离散傅里叶变换对}
+\begin{align}
+X(k)&=\sum_{n=0}^{N-1}x(n)e^{-j\frac{2\pi}{N}nk},
+\qquad k=0,1,\cdots,N-1,\\
+x(n)&=\frac{1}{N}\sum_{k=0}^{N-1}X(k)e^{j\frac{2\pi}{N}nk},
+\qquad n=0,1,\cdots,N-1.
+\end{align}
+
+\textbf{思路二：由 DTFT 频域采样。}有限长序列的 DTFT 是 $\Omega$ 的连续函数，计算机无法直接算；
+在主值区间 $(0,2\pi)$ 内取 $N$ 个等间隔点 $\Omega=2\pi k/N$。若时域长 $L$、频域取 $N$ 点，
+必须 $L\le N$（频域采样定理），为算法统一通常取 $L=N$，则
+\begin{equation}
+X(k)=X(\Omega)\Big|_{\Omega=\frac{2\pi}{N}k}
+=\sum_{n=0}^{N-1}x(n)e^{-j\frac{2\pi}{N}nk}.
+\end{equation}
+
+\textbf{DFT 的本质}：有限长非周期序列原本连续的、周期的频谱密度 $X(\Omega)$，
+在其数字频域主值区间（长 $2\pi$）上的\textbf{取样}，
+\begin{equation}
+X(k)=X(\Omega)\Big|_{\Omega=\frac{2\pi}{N}k},\qquad \Omega_0=\frac{2\pi}{N}.
+\end{equation}
+DFS 按傅里叶分析严格定义，DFT 则是“借用”DFS 截取主值得到的变换。
+
+\textbf{矩阵形式}：令旋转因子 $W_N=e^{-j2\pi/N}$，则
+\begin{equation}
+X(k)=\sum_{n=0}^{N-1}x(n)W_N^{nk},\qquad
+x(n)=\frac{1}{N}\sum_{k=0}^{N-1}X(k)W_N^{-nk},
+\end{equation}
+\begin{equation}
+\mathbf{X}=\mathbf{W}_N^{\,nk}\mathbf{x},\qquad
+\mathbf{x}=\frac{1}{N}\mathbf{W}_N^{-nk}\mathbf{X},
+\end{equation}
+两矩阵均 $N\times N$，且 $\mathbf{W}_N^{nk}=\big(\mathbf{W}_N^{nk}\big)^{\mathrm{T}}$（对称阵）。
+
+\textbf{注意事项}：序列来自连续信号采样时，采样频率须大于最高截止频率的 2 倍；
+对周期信号要截取\textbf{整周期}，否则产生泄漏；
+矩形序列 $R_N(n)$ 的 DFT 为 $X(k)=N\delta(k)$（仅 $k=0$ 处为 $N$）。
+
+\subsection{DFT 的性质}
+
+设 $x(n)\xleftrightarrow{\ \mathrm{DFT}\ }X(k)$，$h(n)\xleftrightarrow{\ \mathrm{DFT}\ }H(k)$，长度均 $N$。
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+性质 & 时域 & 频域 \\
+\midrule
+线性 & $ax_1(n)+bx_2(n)$ & $aX_1(k)+bX_2(k)$（长度须相同，短者补零） \\
+圆周移位 & $\tilde{x}(n-m)_N R_N(n)$ & $W_N^{mk}X(k)$ \\
+频域圆周移位 & $W_N^{-nl}x(n)$ & $X\big((k-l)\big)_N R_N(k)$ \\
+时域圆周卷积 & $x(n)\circledast h(n)$ & $X(k)H(k)$ \\
+频域圆周卷积（相乘） & $x(n)h(n)$ & $\dfrac{1}{N}X(k)\circledast H(k)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{（1）圆周移位。}用取余表示周期延拓：若 $n=n_1+mN\ (0\le n_1\le N-1)$，则 $(n)_N=n_1$。
+圆周移位为 $\tilde{x}(n-m)_N R_N(n)$，构造过程是“有限长序列 $\to$ 周期延拓 $\to$ 线性移位 $\to$
+加矩形窗取主值”，直观上相当于把 $N$ 个样点排在圆周上旋转 $m$ 位（移出的样点从另一端转回）。
+
+\textbf{（2）圆周卷积（圆卷积）。}
+\begin{equation}
+x(n)\circledast h(n)=\left[\sum_{m=0}^{N-1}x(m)h\big((n-m)\big)_N\right]R_N(n)
+=\left[\sum_{m=0}^{N-1}h(m)x\big((n-m)\big)_N\right]R_N(n).
+\end{equation}
+
+\textbf{（3）与线性卷积的关系}：线性卷积右移时左端留零位，圆周卷积把移出值循环回左端，故结果一般不同。
+若 $x(n)$ 长 $N$、$h(n)$ 长 $M$，线性卷积长 $N+M-1$；两者补零到长度 $L$，只要
+\begin{equation}
+L\ge N+M-1,
+\end{equation}
+则 $L$ 点圆周卷积与线性卷积\textbf{结果完全相同}。这是用 DFT/FFT 算线性卷积的依据。
+
+\textbf{（4）奇偶虚实性}（$x(n)$ 为实序列）。由
+\begin{equation}
+X(k)=\sum_{n=0}^{N-1}x(n)\cos\!\left(\tfrac{2\pi}{N}nk\right)
+-j\sum_{n=0}^{N-1}x(n)\sin\!\left(\tfrac{2\pi}{N}nk\right)
+=X_r(k)+jX_i(k),
+\end{equation}
+$X_r(k)$ 为 $k$ 的偶函数、$X_i(k)$ 为奇函数，故实偶序列的 DFT 为实偶、实奇为虚奇、虚偶为虚偶、虚奇为实奇。
+这里的“奇偶”是\textbf{圆周意义}下的对称（以 $N/2$ 为中心并视 $X(k)$ 为周期延拓），不是普通偶对称。
+
+\section{快速傅里叶变换及应用}
+
+\subsection{DFT 的计算量与 FFT 的基本思想}
+
+$N$ 点 DFT 中每个 $X(k)$ 需 $N$ 次复乘、$N-1$ 次复加；$N$ 个 $X(k)$ 共需
+\begin{equation}
+N^2\ \text{次复数乘法},\qquad N(N-1)\ \text{次复数加法},
+\end{equation}
+复杂度 $O(N^2)$（$N=1024$ 时约 $10^6$ 次乘法），难以实时实现。
+FFT 的思路：利用 $W_N$ 的周期性与对称性，把长序列 DFT 分解为短序列 DFT 再组合，
+乘法次数降为 $O(N\log_2N)$。
+
+\subsection{旋转因子 $W_N$ 的特性}
+
+\begin{enumerate}
+\item \textbf{特殊值}：$W_N^0=1$，$W_N^N=1$，$W_N^{N/2}=-1$，$W_N^{N/4}=-j$。
+\item \textbf{正交性}：
+\begin{equation}
+\frac{1}{N}\sum_{k=0}^{N-1}W_N^{nk}\big(W_N^{mk}\big)^*
+=\frac{1}{N}\sum_{k=0}^{N-1}W_N^{(n-m)k}
+=\begin{cases}1, & n-m=\ell N,\\ 0, & n-m\ne\ell N.\end{cases}
+\end{equation}
+\item \textbf{周期性}：
+\begin{equation}
+W_N^{r+mN}=W_N^{r},\qquad\text{即 } W_N^{nk}=W_N^{(nk)_N},
+\end{equation}
+故 $W_N^{-nk}=W_N^{n(N-k)}=W_N^{k(N-n)}$；如 $N=4$ 时 $W^4=W^0$，$W^6=W^2$，$W^9=W^1$。
+\item \textbf{对称性}：
+\begin{equation}
+W_N^{r+N/2}=-W_N^{r},\qquad\text{即 } W_N^{nk+N/2}=-W_N^{nk},
+\end{equation}
+如 $N=4$ 时 $W^3=-W^1$，$W^2=-W^0$。周期性加对称性使 $N=4$ 的 $W$ 矩阵只需两个独立值。
+\item \textbf{可约性}：
+\begin{equation}
+W_N^{rn}=W_{N/r}^{n},\qquad W_{rN}^{rn}=W_N^{n}.
+\end{equation}
+\end{enumerate}
+
+\subsection{基 2 按时间抽取（DIT）FFT 算法}
+
+设 $N=2^M$，把 $x(n)$ 按序号奇偶抽取为偶序列 $x(2\ell)$ 与奇序列 $x(2\ell+1)$，$\ell=0,\cdots,N/2-1$：
+\begin{align}
+X(k)&=\sum_{n=0}^{N-1}x(n)W_N^{nk}
+=\sum_{\ell=0}^{N/2-1}x(2\ell)W_N^{2\ell k}
++W_N^{k}\sum_{\ell=0}^{N/2-1}x(2\ell+1)W_N^{2\ell k}\nonumber\\
+&=G(k)+W_N^{k}H(k),
+\end{align}
+其中（用可约性 $W_N^2=W_{N/2}$）
+\begin{equation}
+G(k)=\sum_{\ell=0}^{N/2-1}x(2\ell)W_{N/2}^{\ell k},\qquad
+H(k)=\sum_{\ell=0}^{N/2-1}x(2\ell+1)W_{N/2}^{\ell k}
+\end{equation}
+分别是偶、奇子序列的 $N/2$ 点 DFT。因 $G$、$H$ 以 $N/2$ 为周期且 $W_N^{k+N/2}=-W_N^{k}$，得\textbf{蝶形递推}
+\begin{align}
+X(k)&=G(k)+W_N^{k}H(k),\\
+X\!\left(k+\frac{N}{2}\right)&=G(k)-W_N^{k}H(k),
+\end{align}
+$k=0,1,\cdots,\frac{N}{2}-1$，前一半对应 $X(k)$ 的前 $N/2$ 点，后一半对应后 $N/2$ 点。
+
+\textbf{继续分解}：$N/2$ 仍为偶数时，$G$、$H$ 各再分为两个 $N/4$ 点 DFT。以 $N=8$ 为例
+\begin{equation}
+G(k)=A(k)+W_N^{2k}B(k),\qquad
+G\!\left(k+\frac{N}{4}\right)=A(k)-W_N^{2k}B(k),
+\end{equation}
+其中 $A,B,C,D$ 分别为 $x(4r)$、$x(4r+2)$、$x(4r+1)$、$x(4r+3)$ 的 $N/4$ 点 DFT，$H$ 同理。
+$N=8$ 共三级：$1$ 个 8 点 DFT $\to$ $2$ 个 4 点 DFT $\to$ $4$ 个 2 点 DFT，级数为 $\log_2N=3$。
+
+\textbf{蝶形运算单元}：输入两数、输出两数
+\begin{equation}
+\begin{aligned}
+X_1&=G+W_N^{k}H,\\
+X_2&=G-W_N^{k}H,
+\end{aligned}
+\end{equation}
+每个蝶形需 1 次复乘、2 次复加；每级有 $N/2$ 个蝶形，故每级需 $N/2$ 次乘法、$N$ 次加减法，
+各蝶形相互独立可并行。
+
+\textbf{码位倒置}：按时间抽取相当于不断按奇偶分组，最终输入序列的次序是原下标的二进制码位倒置
+（$N=8$ 时 $1\to4$，$2\to2$，$3\to6$……），输出 $X(k)$ 为自然顺序。
+
+\subsection{FFT 的计算量与特点}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+算法 & 复数乘法次数 & 复数加法次数 \\
+\midrule
+DFT（$N$ 点） & $N^2$ & $N(N-1)$ \\
+基 2 FFT（$N=2^M$） & $\dfrac{N}{2}\log_2N$ & $N\log_2N$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+复杂度由 $O(N^2)$ 降为 $O(N\log_2N)$：$N=1024$ 时乘法由约 $10^6$ 降到约 $5\times10^3$，快两个数量级以上，
+$N$ 越大收益越显著。
+
+\subsection{FFT 的应用与频谱分析中的问题}
+
+\textbf{（1）用 FFT 求线性卷积（快速卷积）}
+\begin{enumerate}
+\item $x(n)$ 长 $N_1$、$h(n)$ 长 $N_2$，补零到 $L\ge N_1+N_2-1$；
+\item 分别作 $L$ 点 FFT 得 $X(k)$、$H(k)$，相乘得 $Y(k)=X(k)H(k)$；
+\item 对 $Y(k)$ 作 $L$ 点 IFFT，得线性卷积（长 $N_1+N_2-1$）。
+\end{enumerate}
+数字滤波器中 $H(k)$ 可预先算好存储，实际只需两次 FFT；两序列长度相近且 $N$ 较大时，
+圆周（快速）卷积比直接线性卷积省得越多；一短一长时可用分段卷积。
+
+\textbf{（2）频率分辨率}：DFT 谱线间最小间隔，等于基波频率
+\begin{equation}
+f_0=\frac{1}{NT_s}=\frac{f_s}{N}\quad\left(\text{或 }\Omega_0=\frac{2\pi}{N}\right),
+\end{equation}
+$f_0$ 越小分辨率越高。可见\textbf{分辨率由数据长度 $NT_s$ 决定}：提高 $f_s$ 只扩大可分析频带，
+要提高分辨率必须加长观测时间。
+
+\textbf{（3）连续信号的频谱分析}
+\begin{itemize}
+\item \textbf{时限信号}：频带无限，$T_s$ 再小也有混叠，而过分减小 $T_s$ 又使计算量、存储量激增；
+  做法是先经抗混叠滤波器滤除次要高频再采样，并选合适 $T_s$ 把混叠误差限制在允许范围内。
+\item \textbf{带限信号}：时宽无限，须\textbf{加窗截断}；截断不当产生\textbf{频谱泄漏}（频谱由受限图形向外扩展）。
+  矩形窗时域突变、高频衰减慢，泄漏最重；三角形窗、升余弦窗（Hanning）、改进升余弦窗（Hamming）等低旁瓣窗可减弱泄漏。
+\item \textbf{连续周期信号}：也应\textbf{整周期截断}，否则产生泄漏。
+\end{itemize}
+
+\textbf{（4）幅值的标定}（易漏项）
+\begin{itemize}
+\item $X_s(\omega)=\frac{1}{T_s}\sum_nX(\omega-n\omega_s)$，故由 DFT 结果近似连续频谱时须\textbf{乘 $T_s$}；
+  由频谱合成波形时 IDFT 结果须\textbf{乘 $f_s$}。
+\item 用 DFT 求周期函数的傅里叶级数近似时，把因子 $1/N$ 放在\textbf{正变换}中更方便（正、逆变换都直接给出结果）。
+\item 基 2 FFT 要求 $N$ 为 2 的整数次幂，否则补零凑成 $2^M$。
+\end{itemize}
+
+\section{离散信号的 Z 域分析}
+
+\subsection{从 DTFT 到 Z 变换}
+
+增长型序列（如 $a^nu(n)$，$a>1$）的 DTFT 不收敛。仿照拉普拉斯变换，把 $x(n)$ 乘衰减实指数 $r^{-n}\ (r>1)$ 后再作 DTFT：
+\begin{equation}
+\mathrm{DTFT}\big[x(n)r^{-n}\big]
+=\sum_{n=-\infty}^{\infty}x(n)r^{-n}e^{-j\Omega n}
+=\sum_{n=-\infty}^{\infty}x(n)\big(re^{j\Omega}\big)^{-n}.
+\end{equation}
+令 $z=re^{j\Omega}$，即得\textbf{（双边）Z 变换}
+\begin{align}
+X(z)&=\sum_{n=-\infty}^{\infty}x(n)z^{-n},\\
+x(n)&=\frac{1}{2\pi j}\oint_{C}X(z)z^{n-1}\,\mathrm{d}z ,
+\end{align}
+$z^{-n}$ 的系数即 $x(n)$，幂次表示序号；围线 $C$ 是以原点为心、半径 $r$ 的逆时针闭合圆周，须位于收敛域内。
+记 $\mathcal{Z}[x(n)]=X(z)$，$x(n)\xleftrightarrow{\ \mathcal{Z}\ }X(z)$。
+
+\textbf{两个基本变换对}
+\begin{align}
+x(n)&=a^n u(n): & X(z)&=\frac{1}{1-az^{-1}}=\frac{z}{z-a},\quad |z|>|a|;\\
+x(n)&=-a^n u(-n-1): & X(z)&=\frac{1}{1-az^{-1}}=\frac{z}{z-a},\quad |z|<|a|.
+\end{align}
+两式\textbf{代数表达式完全相同、收敛域不同}，故
+\begin{equation}
+\text{Z 变换式}+\text{收敛域}\ \Longleftrightarrow\ \text{序列}.
+\end{equation}
+单写 $X(z)$ 而不写收敛域无法确定对应序列——这是 Z 变换部分最重要的观念。
+
+\subsection{收敛域与 Z 变换的几何表示}
+
+\textbf{收敛域（ROC）}：使 $\sum x(n)z^{-n}$ 收敛的全部 $z$。常用判别法（$a_n$ 为级数第 $n$ 项）：
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+判别法 & 判据 & 结论 \\
+\midrule
+比值判别法 & $\lim\limits_{n\to\infty}\left|\dfrac{a_{n+1}}{a_n}\right|=\rho$ & $\rho<1$ 收敛，$\rho>1$ 发散，$\rho=1$ 待定 \\
+根值判别法 & $\lim\limits_{n\to\infty}\sqrt[n]{|a_n|}=\rho$ & 同上 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{几何表示}：在 $z$ 平面标出零点（$\bigcirc$）与极点（$\times$）并画出收敛域。要点：
+收敛域内\textbf{不含极点}；收敛域边界总以极点为界；右边序列 ROC 为某圆外部 $|z|>r_1$，
+左边序列为某圆内部 $|z|<r_2$，双边序列为环域 $r_1<|z|<r_2$（此时才可能存在）。
+
+\subsection{单边 Z 变换}
+
+\begin{equation}
+X(z)=\sum_{n=0}^{\infty}x(n)z^{-n}.
+\end{equation}
+单边 Z 变换可看作 $x(n)u(n)$ 的双边 Z 变换——求和只在 $n\ge0$ 上进行，不管 $n<0$ 时 $x(n)$ 是否为零；
+对\textbf{因果序列}（$n<0$ 时 $x(n)=0$）二者一致；单边 Z 变换通常不特别强调收敛域（其 ROC 总为某圆外部）。
+
+\subsection{Z 变换与其他变换的关系}
+
+\textbf{（1）与拉普拉斯变换。}对冲激采样信号 $x_s(t)=\sum_n x(nT)\delta(t-nT)$ 取拉普拉斯变换得
+$X_s(s)=\sum_n x(nT)e^{-snT}$，令 $z=e^{sT}$（即 $s=\frac{1}{T}\ln z$），得
+\begin{equation}
+X_s(s)\Big|_{s=\frac{1}{T}\ln z}=\sum_{n=-\infty}^{\infty}x(n)z^{-n}=X(z),
+\qquad\text{即}\quad
+\mathcal{L}[x_s(t)]\Big|_{s=\frac{1}{T}\ln z}=\mathcal{Z}[x(n)].
+\end{equation}
+即：序列的 Z 变换 = 产生该序列的理想冲激采样信号的拉普拉斯变换经 $z=e^{sT}$ 映射的结果。
+
+\textbf{（2）$s$ 平面到 $z$ 平面的映射}。设 $s=\sigma+j\omega$、$z=re^{j\Omega}$，则
+\begin{equation}
+z=e^{sT}=e^{\sigma T}e^{j\omega T}
+\ \Longrightarrow\
+r=e^{\sigma T}=e^{\frac{2\pi}{\omega_s}\sigma},\qquad
+\Omega=\omega T=\frac{2\pi\omega}{\omega_s}.
+\end{equation}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+$s$ 平面 & $z$ 平面 \\
+\midrule
+左半平面 $\sigma<0$ & 单位圆内部 $r<1$ \\
+右半平面 $\sigma>0$ & 单位圆外部 $r>1$ \\
+虚轴 $\sigma=0$ & 单位圆上 $r=1$ \\
+$\omega$ 每增加 $\omega_s$ & 沿单位圆逆时针转一圈 \\
+\bottomrule
+\end{tabular}
+\end{center}
+映射\textbf{不是单值的}：$s$ 平面上宽 $\omega_s$ 的每条带都映射到整个 $z$ 平面，
+故虚轴上沿 $\omega$ 平移 $\omega_s$ 对应 $z$ 沿单位圆转一整圈——这正是 DTFT 频谱以 $2\pi$ 为周期的几何解释。
+
+\textbf{（3）与 DTFT}：Z 变换是 $x(n)$ 乘 $r^{-n}$ 后的 DTFT；单位圆上的 Z 变换就是 DTFT（前提：单位圆在 ROC 内）
+\begin{equation}
+X(z)\Big|_{z=e^{j\Omega}}=\sum_{n=-\infty}^{\infty}x(n)e^{-j\Omega n}=X(\Omega).
+\end{equation}
+
+\textbf{（4）与 DFT}：DFT 是 Z 变换在单位圆上的 $N$ 点等间隔采样
+\begin{equation}
+X(z)\Big|_{z=e^{j\frac{2\pi}{N}k}}
+=\sum_{n=0}^{N-1}x(n)e^{-j\frac{2\pi}{N}kn}=X(k).
+\end{equation}
+
+\section{本章小结}
+
+\textbf{全章变换对照}：CFS（连续周期，离散非周期谱）、CTFT（连续非周期，连续非周期谱）、
+DFS（离散周期，离散周期谱）、DTFT（离散非周期，连续周期谱）、DFT（时频均离散）、
+Z 变换（$z$ 平面极点与收敛域）。
+
+\textbf{主线与关键结论}
+\begin{itemize}
+\item \textbf{采样}：$F_s(\omega)=\sum_nP_nF(\omega-n\omega_s)$，冲激采样时 $F_s=\frac{1}{T_s}\sum_nF(\omega-n\omega_s)$；
+  采样定理 $\omega_s\ge2\omega_m$；混叠不可逆，工程取 $\omega_s>10\omega_m$ 并加抗混叠滤波。
+\item \textbf{时域}：$y(n)=x(n)*h(n)=\sum_mx(m)h(n-m)$，$h(n)$ 完全刻画 LTI 系统；卷积和长 $N_1+N_2-1$。
+\item \textbf{频域}：DFS $\to$（$N\to\infty$）DTFT $\to$（频域采样）DFT；对偶规律“时域周期$\leftrightarrow$频域离散、
+  时域离散$\leftrightarrow$频域周期”。
+\item \textbf{DFT 与 FFT}：$N$ 点 DFT 为 $O(N^2)$，基 2 FFT 降为 $O(N\log_2N)$，核心是 $W_N$ 的周期性与对称性；
+  用 FFT 算线性卷积须补零到 $L\ge N_1+N_2-1$。
+\item \textbf{Z 域}：$X(z)=\sum_nx(n)z^{-n}$，$z=e^{sT}$；左半平面$\to$单位圆内；单位圆上为 DTFT，
+  单位圆上 $N$ 点采样为 DFT；\textbf{Z 变换式必须与收敛域一起才对应唯一序列}。
+\end{itemize}

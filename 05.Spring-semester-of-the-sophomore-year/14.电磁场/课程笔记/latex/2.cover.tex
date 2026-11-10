@@ -1,59 +1,47 @@
+% ============================================================
+% 2.cover.tex —— 统一封面（信息全部来自主文件定义）
+% 需要的宏：\YHBcourse、\YHBversion、\YHBquote、yhbAccent、yhbAccent2
+% 可选：\YHBcoverSize / \YHBcoverLead（课程名字号与行距）、\YHBcoversub（副标题）
+% ============================================================
+\providecommand{\YHBcoverSize}{38pt}
+\providecommand{\YHBcoverLead}{46pt}
+\providecommand{\YHBcoversub}{课程笔记}
 \begin{titlepage}
-    \centering
-    \vspace*{2cm}
-    
-    % 主标题
-    {\Huge \bfseries 电磁场作业集 \par}
-    \vspace{0.8cm}
-    
-    % 副标题+课程信息
-    {\Large \bfseries 考前复习 \par}
-    \vspace{0.4cm}
-    {\Large 课程代码：\textbf{EE2003} \quad 课程名称：\textbf{电磁场} \par}
-    \vspace{0.6cm}
-    
-    \rule{\linewidth}{0.2mm}
-    \vspace{1cm}
-    
-    % 麦克斯韦名言
-    {\itshape \large 电和磁的实验中最明显的现象是，物体之间的相互作用。\par}
-    \vspace{0.4cm}
-    {\large —— 麦克斯韦 \par}
-    \vspace{1.2cm}
-    
-    % 作者信息
-    {\Large 作者：\textbf{浮萍} \par}
-    \vspace{0.3cm}
-    {\Large 版本：\textbf{1.0} \par}
-    \vspace{0.3cm}
-    {\Large 邮箱：\textbf{3071974740@qq.com} \par}
-    \vspace{0.3cm}
-    {\Large GitHub：\textbf{github.com/Duckweed-yhb} \par}
-    \vspace{1cm}
-    
-    % 版权信息
-    {\large \copyright\ 2026 \textbf{浮萍} 版权所有 \par}
-    {\large \textbf{未经授权，不得复制、传播或修改} \par}
-    \vspace{0.5cm}
-    
-    \vfill
-    {\large 生成日期：\textbf{\today} \par}
-\end{titlepage}
+\thispagestyle{empty}
+\pdfbookmark[0]{封面}{cover}
 
-\section*{版本说明}
-\noindent\textbf{版本：V1.0}
-\begin{itemize}
-    \item \textbf{配套课程：}课程代码\textbf{EE2003}，课程名称\textbf{电磁场}；
-    \item \textbf{参考教材：}\textbf{《工程电磁场导论》}，冯慈璋、马西奎主编，西安交通大学出版社2000版，全书内容严格对标教材目录与期末考点；
-    \item \textbf{覆盖范围：}全书六大模块：\textbf{第0章矢量分析、第1章静电场、第2章恒定电场、第3章恒定磁场、第4章时变电磁场、第5章准静态电磁场}，对应教材$\S0\sim\S5$全部课内知识点；
-    \item \textbf{内容编排：}
-    \begin{itemize}
-        \item 0.矢量分析：梯度、散度、旋度、高斯公式、斯托克斯公式、正交坐标系算子；
-        \item 1.静电场：电场/电位、高斯定理、边值问题、有限差分法(实验内容)、镜像法、电容、静电能量与力（采用库仑定律+虚位移法求电场力）；
-        \item 2.恒定电场：导电媒质电流、局外场强、基本方程、分界面衔接条件、恒定电场与静电场类比、电导；
-        \item 3.恒定磁场：磁感应强度、安培环路定律、基本方程、磁矢位、标量磁位、磁场能量与力（洛伦兹公式+虚位移法求磁场力）；
-        \item 4.时变电磁场：法拉第电磁感应+全电流定律、麦克斯韦方程组、动态位及其积分解、坡印廷矢量、正弦电磁场、电磁辐射；
-        \item 5.准静态场：EQS电准静态/MQS磁准静态场、似稳条件、集肤效应、导体交流内阻抗；
-    \end{itemize}
-    \item \textbf{现存缺点：全篇仅文字与公式，无配套几何示意图、原理插图。}
-\end{itemize}
+\begin{tikzpicture}[remember picture,overlay]
+  % 顶部深色块
+  \fill[yhbAccent] (current page.north west) rectangle ([yshift=-132mm]current page.north east);
+  % 分隔细条（辅色）
+  \fill[yhbAccent2] ([yshift=-132mm]current page.north west) rectangle ([yshift=-135mm]current page.north east);
+  % 极细横线，弱装饰，不压字
+  \foreach \y in {20,34,48,62,76,90,104,118}{%
+    \draw[white,opacity=0.08,line width=0.5pt]
+      ([xshift=16mm,yshift=-\y mm]current page.north west) --
+      ([xshift=-16mm,yshift=-\y mm]current page.north east);}
+\end{tikzpicture}
+
+\vspace*{32mm}
+\noindent
+{\xeCJKsetup{CJKecglue={}}\color{white}\sffamily\bfseries\fontsize{\YHBcoverSize}{\YHBcoverLead}\selectfont \YHBcourse\par}
+\vspace{6mm}
+{\color{white}\sffamily\fontsize{25}{32}\selectfont \YHBcoversub\par}
+\vspace{9mm}
+{\color{white}\fontsize{12.5}{18}\selectfont 作者\quad 浮萍\qquad 版本\quad \YHBversion\par}
+
+\vspace{20mm}
+{\sffamily\bfseries\fontsize{13}{20}\selectfont\color{yhbAccent}\YHBquote\par}
+
+\vfill
+{\color{yhbAccent}\rule{\textwidth}{1.4pt}}\par
+\vspace{7mm}
+{\fontsize{11.5}{17}\selectfont\sffamily
+\textbf{QQ 邮箱}\quad\href{mailto:3071974740@qq.com}{3071974740@qq.com}\par
+\vspace{2mm}
+\textbf{GitHub}\quad\href{https://github.com/Duckweed-yhb}{github.com/Duckweed-yhb}\par}
+\vspace{7mm}
+{\fontsize{10.5}{16}\selectfont\color{black!78}
+本笔记为个人学习整理，内容仍在持续完善。如发现内容、公式、文字或排版问题，欢迎通过上述 QQ 邮箱反馈；请尽量注明版本、页码与问题描述，便于核对和修订。\par}
+\vspace*{12mm}
+\end{titlepage}

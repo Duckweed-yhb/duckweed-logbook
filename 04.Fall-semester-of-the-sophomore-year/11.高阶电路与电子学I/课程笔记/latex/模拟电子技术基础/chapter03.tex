@@ -1,0 +1,235 @@
+% 第3章 集成运算放大电路
+\chapter{集成运算放大电路}
+
+集成运放是"多级直接耦合放大电路"的集成实现。本章按"多级电路的一般问题 $\to$ 三个单元电路（差分输入级、电流源、互补输出级）$\to$ 整体性能与等效电路"展开。理解的关键是：直接耦合带来零点漂移，差分电路解决漂移，电流源解决"既要大电阻又不能用大电阻"的矛盾。
+
+\section{多级放大电路的一般问题}
+
+\subsection{耦合方式}
+
+\begin{table}[htbp]
+\centering
+\caption{四种耦合方式的比较}
+\begin{tabular}{@{}llll@{}}
+\hline
+耦合方式 & 优点 & 缺点 \\
+\hline
+直接耦合 & 低频特性好，易集成 & $Q$ 点互相影响，有零漂 \\
+阻容耦合 & 各级 $Q$ 点独立，易设计 & 低频特性差，不利集成 \\
+变压器耦合 & $Q$ 点独立，可阻抗变换 & 低频特性更差 \\
+光电耦合 & 抗干扰能力强，隔离好 & 速度与线性受器件限制 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{直接耦合的两个特殊问题}：一是各级 $Q$ 点相互影响（后级偏置会改变前级的工作状态），二是\textbf{零点漂移}——输入为零时输出随时间缓慢变化，且会被逐级放大，成为集成运放必须首先解决的问题。
+
+\subsection{性能指标}
+
+多级放大电路的指标由各级指标按"串接"关系合成：
+\begin{equation}
+\dot A_u=\prod_{k=1}^{N}\dot A_{uk}
+\formulaNote{总增益为各级增益之积}
+\end{equation}
+输入电阻取第一级的输入电阻 $R_i=R_{i1}$，输出电阻取最后一级的输出电阻 $R_o=R_{oN}$。注意 $R_i$ 不是各级输入电阻的串并联，而是\textbf{从第一级输入端看进去}的等效电阻；计算某一级的增益时必须把它后面的输入电阻当作该级的负载。
+
+\section{集成运算放大电路的单元电路}
+
+\paragraph{集成运放的电路组成及各部分作用}
+\begin{itemize}
+    \item \textbf{输入级}：双端输入的高性能差分放大电路，抑制零点漂移、提高输入电阻、扩大共模输入范围；
+    \item \textbf{中间级}：直接耦合的共射（或共源）放大电路，用复合管作放大管、以恒流源作集电极负载，提供足够大的电压增益；
+    \item \textbf{输出级}：互补输出级，输出电压线性范围宽、输出电阻小、带负载能力强；
+    \item \textbf{偏置电路}：由电流源电路构成，为各级设置稳定的静态工作点。
+\end{itemize}
+
+\paragraph{电压传输特性}
+正、负双电源供电的集成运放有两个工作区域：
+\begin{itemize}
+    \item \textbf{线性区}：曲线斜率为差模开环放大倍数 $A_{od}$，即 $u_O=A_{od}(u_P-u_N)$，输入差模电压范围很小（微伏至毫伏级）；
+    \item \textbf{非线性区（饱和区）}：$u_O=\pm U_{OM}$，$U_{OM}$ 比电源电压略低。用于比较器电路。
+\end{itemize}
+
+\subsection{差分放大电路}
+
+\paragraph{零点漂移的抑制思路}
+由 $Q$ 点稳定电路可知，温度变化在 $R_e$ 上产生变化的电压，靠负反馈减小温漂；但直接耦合时这种误差会被逐级放大。若能找到一个串在输出端的、随温度变化的直流源恰好抵消 $U_{CQ}$ 的漂移，输出就只剩动态部分。更实用的办法是：用\textbf{两只特性与电路参数完全对称}的管子，温度变化时两管集电极静态电位\textbf{始终相等}，以两集电极电位之差作输出即可抵消温漂。这就是差分放大电路。
+
+\paragraph{差模与共模信号}
+大小相等、极性相反的信号为\textbf{差模信号}；大小相等、极性相同的信号为\textbf{共模信号}。温度漂移、电源波动对两管的作用相同，等效为共模信号；有用信号加在两输入端之间，等效为差模信号。差分电路的任务是\textbf{放大差模、抑制共模}。
+
+\paragraph{长尾式差分电路的静态分析}
+电路完全对称，$I_{EQ1}=I_{EQ2}=I_{EQ}$，流过公共发射极电阻的电流为 $2I_{EQ}$。基极回路方程为 $I_{BQ}R_b+U_{BEQ}+2I_{EQ}R_e=V_{EE}$，故
+\begin{equation}
+I_{EQ}\approx\frac{V_{EE}-U_{BEQ}}{2R_e}
+\formulaNote{$R_b$ 上压降很小，常忽略}
+\end{equation}
+\begin{equation}
+U_{CEQ}=V_{CC}-I_{CQ}R_c+U_{BEQ}
+\end{equation}
+
+\paragraph{共模分析}
+共模信号使两管电流同向变化，$\Delta u_E=\Delta i_E(2R_e)$，故对共模信号而言发射极等效电阻为 $2R_e$，产生很强的负反馈，共模信号被抑制。共模放大倍数
+\begin{equation}
+A_c=\frac{\Delta u_{Oc}}{\Delta u_{Ic}}
+\formulaNote{理想对称、双端输出时 $A_c=0$}
+\end{equation}
+
+\paragraph{差模分析}
+差模信号使两管电流反向变化，$E$ 点电位不变，相当于\textbf{交流接地}；负载电阻中点电位也不变，同样相当于接地，故 $R_L$ 被分成两半，分别接在两管 $c$--$e$ 之间。于是
+\begin{equation}
+\dot A_d=\frac{\Delta u_{Od}}{\Delta u_{Id}}
+=-\frac{\beta\left(R_c\parallel\dfrac{R_L}{2}\right)}{R_b+r_{be}}
+\end{equation}
+\begin{equation}
+R_i=2(R_b+r_{be}),
+\qquad
+R_o=2R_c
+\formulaNote{均为单管电路的两倍}
+\end{equation}
+
+\paragraph{电压传输特性}
+双端输出时输出电压与输入差模电压的关系为
+\begin{equation}
+u_{Od}=-i_C R_c\,\mathrm{th}\!\left(\frac{u_{Id}}{2U_T}\right)
+\formulaNote{中间一段近似线性}
+\end{equation}
+线性区很窄（约 $\pm U_T$ 量级），这正是运放必须引入负反馈才能线性工作的原因。
+
+\paragraph{四种接法}
+实际应用中信号源或负载常有一端接地，于是有双端输入双端输出、双端输入单端输出、单端输入双端输出、单端输入单端输出四种接法。分析要点是\textbf{先分清哪一端接地，再看等效电阻如何变化}。
+
+\begin{table}[htbp]
+\centering
+\caption{差分放大电路四种接法的比较}
+\begin{tabular}{@{}llll@{}}
+\hline
+接法 & 差模增益 & 共模增益 & 输出电阻 \\
+\hline
+双端输入双端输出 & 单管值 & $0$（理想对称） & $2R_c$ \\
+双端输入单端输出 & 单管值之半 & 不为零、很小 & $R_c$ \\
+单端输入双端输出 & 同上 & $0$ & $2R_c$ \\
+单端输入单端输出 & 单管值之半 & 不为零、很小 & $R_c$ \\
+\hline
+\end{tabular}
+\end{table}
+
+四种接法的共同结论：
+\begin{enumerate}
+    \item 输入电阻均为 $2(R_b+r_{be})$，与接法无关；
+    \item 双端输出时 $R_o=2R_c$，单端输出时 $R_o=R_c$；单端输出的 $A_d$ 为双端输出的一半；
+    \item 单端输入时，输入信号可等效为"差模 $\Delta u_{Id}=\Delta u_I$ 与共模 $\Delta u_{Ic}=\Delta u_I/2$ 的叠加"，故输出为
+    \begin{equation}
+    \Delta u_o=A_d\Delta u_I+A_c\frac{\Delta u_I}{2}
+    \formulaNote{单端输入必伴随共模输入}
+    \end{equation}
+    \item 单端输出时若改从另一管集电极取出，输出与输入的相位关系相反。
+\end{enumerate}
+
+\paragraph{改进型差分放大电路（带恒流源）}
+若 $R_e=\infty$，则 $A_c\equiv0$；但 $R_e$ 太大时故障状态下电源电压会全部加在放大管上，对管子耐压要求过高。因此实际用\textbf{电流源}（直流电阻小、交流等效电阻极大）代替 $R_e$。电路用 $Q$ 点稳定电路作基准：
+\begin{equation}
+I_{C3}\approx I_{E3}=\frac{U_{R2}-U_{BE3}}{R_3}
+\formulaNote{条件 $I_2\gg I_{B3}$，使 $I_1\approx I_2$}
+\end{equation}
+其中 $U_{R2}\approx R_2V_{EE}/(R_1+R_2)$ 由分压得到。差放管的发射极静态电流为 $I_{EQ1}=I_{EQ2}=I_{C3}/2$。
+
+\subsection{电流源电路}
+
+电流源的两个用途：为各级提供合适的静态电流；作为\textbf{有源负载}取代高阻值电阻以提高电压放大倍数。
+
+\paragraph{镜像电流源}
+两管特性相同、$U_{CE0}=U_{BE0}$，均工作在放大区，故 $I_{B0}=I_{B1}=I_B$、$I_{C0}=I_{C1}=\beta I_B$。基准电流 $I_R=I_{C0}+2I_B$，故
+\begin{equation}
+I_{C1}=I_{C0}=\frac{\beta}{\beta+2}I_R\approx I_R=\frac{V_{CC}-U_{BE}}{R}
+\formulaNote{$\beta\gg2$ 时近似镜像}
+\end{equation}
+缺点：$I_{C1}$ 与 $I_R$ 相差 $2I_B$，$\beta$ 较小时误差明显；且输出电流不能很小（受 $R$ 限制）。
+
+\paragraph{比例电流源}
+在两管发射极分别串 $R_{e0}$、$R_{e1}$，由 $U_{BE0}+I_{E0}R_{e0}=U_{BE1}+I_{E1}R_{e1}$ 及 $U_{BE0}-U_{BE1}\approx U_T\ln(I_{E0}/I_{E1})$ 得
+\begin{equation}
+I_{E0}R_{e0}=I_{E1}R_{e1}+U_T\ln\frac{I_{E0}}{I_{E1}}
+\end{equation}
+忽略对数项，得输出电流与基准电流成电阻比：
+\begin{equation}
+I_{C1}\approx\frac{R_{e0}}{R_{e1}}I_R
+\approx\frac{R_{e0}}{R_{e1}}\cdot\frac{V_{CC}-U_{BE0}}{R+R_{e0}}
+\end{equation}
+
+\paragraph{微电流源}
+令 $R_{e0}=0$（或很小），则上式退化为只由对数项决定：
+\begin{equation}
+I_{C1}\approx\frac{U_T}{R_e}\ln\frac{I_R}{I_{C1}}
+\formulaNote{$I_R\approx(V_{CC}-U_{BE0})/R$}
+\end{equation}
+可见用很小的 $R_e$ 就能得到微安级电流，且 $I_{C1}$ 对 $V_{CC}$ 不敏感、温度稳定性好。
+
+\paragraph{多路电流源}
+以一路基准电流为参考，用多个比例电流源（或多集电极晶体管）同时输出多路恒定电流，为运放各级供电。
+
+\paragraph{改进型电流源}
+\textbf{加射极输出器的电流源}：在镜像电流源的 $T_0$ 集电极与基极之间加一只射极输出管 $T_2$，利用 $T_2$ 的电流放大作用减小 $I_{B0}$、$I_{B1}$ 对 $I_R$ 的分流。输出电流
+\begin{equation}
+I_{C1}=\frac{I_R}{1+\dfrac{2}{\beta(1+\beta)}}\approx I_R
+\formulaNote{误差由 $2/\beta$ 量级降到更低}
+\end{equation}
+\textbf{威尔逊电流源}：$T_1$ 的 $c$--$e$ 串在 $T_2$ 的发射极，等效于引入电流负反馈（$c$--$e$ 间等效电阻大），使输出电流更稳定、输出电阻更大。由节点电流方程可得
+\begin{equation}
+I_{C2}=\left(1-\frac{2}{\beta^2+2\beta+2}\right)I_R\approx I_R
+\formulaNote{精度更高，输出电阻大}
+\end{equation}
+
+\paragraph{以电流源为有源负载的放大电路}
+共射（共源）电路的电压增益正比于集电极电阻，要提高增益就得增大 $R_c$，而为维持静态电流不变必须同时提高电源电压，这在集成工艺中不合理。用电流源取代 $R_c$：直流电阻小（保证 $Q$ 点），交流等效电阻极大（保证增益）。此时
+\begin{equation}
+\dot A_u=-\frac{\beta_1(r_{ce1}\parallel r_{ce2}\parallel R_L)}{R_b+r_{be1}}
+\formulaNote{负载很大时两个 $r_{ce}$ 都要计入}
+\end{equation}
+
+\subsection{直接耦合互补输出级}
+
+\paragraph{电路与交越失真}
+用特性对称、参数相同的 NPN 管 $T_1$ 与 PNP 管 $T_2$ 构成互补输出级，实现双向跟随。但当 $|u_i|<U_{on}$ 时两管都截止，输出波形在过零附近出现台阶，称为\textbf{交越失真}。
+
+\paragraph{消除交越失真}
+\begin{itemize}
+    \item \textbf{二极管偏置}：静态时从正电源经 $R_1$、$D_1$、$D_2$、$R_2$ 到负电源形成直流电流，使两管基极间产生 $U_{B1B2}=U_{D1}+U_{D2}$ 的直流电压，两管恰好处于微导通；二极管动态电阻小，故交流上 $u_{b1}=u_{b2}=u_i$，不损失信号；
+    \item \textbf{$U_{BE}$ 倍增电路}：用 $R_3$、$R_4$ 分压，则 $U_{B1B2}=U_{CE}=(1+R_3/R_4)U_{BE}$，可得到任意倍数的直流偏压，便于精确控制静态电流。
+\end{itemize}
+
+\paragraph{准互补输出级}
+实际电路中 NPN 与 PNP 管特性完全对称很难，故用复合管构成"等效 NPN"与"等效 PNP"，既增大电流放大系数、减小前级驱动电流，又得到对称特性，这种电路称为\textbf{准互补电路}。CMOS 工艺下可直接用互补 MOS 管构成互补输出级。
+
+\section{集成运放电路及性能}
+
+\subsection{集成运放原理图分析}
+
+分析方法是\textbf{分块法}：把原理图分为输入级、偏置电路、中间级、输出级四部分，逐块分析原理与静态工作点，再根据各级之间的耦合关系求出整体性能指标。判读顺序通常是：先由偏置电路算出基准电流与各级静态电流，再由输入级算差模增益与共模抑制，最后由中间级、输出级算总增益与输出范围。
+
+\subsection{集成运放的性能指标}
+
+\begin{enumerate}
+    \item \textbf{开环差模增益} $A_{od}$：无外加反馈时的差模放大倍数，常用分贝表示（$20\lg|A_{od}|$）；
+    \item \textbf{共模抑制比} $K_{CMR}=|A_{od}/A_{oc}|$：越大抑制温漂能力越强，常用分贝表示；
+    \item \textbf{差模输入电阻} $r_{id}$：越大则从信号源索取的电流越小；
+    \item \textbf{输入失调电压} $U_{IO}$ 及其温漂 $\mathrm{d}U_{IO}/\mathrm{d}T$：使输入电压为零时输出为零而需在输入端所加的补偿电压；
+    \item \textbf{输入失调电流} $I_{IO}$ 及其温漂：反映两输入端电流的不对称程度；
+    \item \textbf{输入偏置电流} $I_{IB}=(I_{B1}+I_{B2})/2$：输入级差放管基极（栅极）偏置电流的平均值；
+    \item \textbf{最大共模输入电压} $U_{Icmax}$：能正常放大差模信号时允许输入的最大共模电压；
+    \item \textbf{最大差模输入电压} $U_{Idmax}$：不致使输入级某个 PN 结反向击穿的最大差模电压；
+    \item \textbf{$-3\,\text{dB}$ 带宽} $f_H$：使 $A_{od}$ 下降 $3\,\text{dB}$（降为 $0.707$ 倍）时的频率，由极间电容决定；
+    \item \textbf{单位增益带宽} $f_c$：使 $A_{od}$ 下降到 $0\,\text{dB}$（$A_{od}=1$）时的频率；
+    \item \textbf{转换速率} $SR=\left.\mathrm{d}u_O/\mathrm{d}t\right|_{\max}$：大信号作用下输出电压单位时间内变化量的最大值（压摆率），表示运放对信号变化速度的适应能力。
+\end{enumerate}
+
+\paragraph{易错点}
+$f_H$ 与 $f_c$ 都是频率指标但含义不同：$f_H$ 是 $-3\,\text{dB}$ 点，$f_c$ 是增益为 1 的点；二者之比约等于 $A_{od}$。$SR$ 限制的是\textbf{大信号}的高频能力，与 $f_H$ 限制的小信号带宽是两回事。
+
+\subsection{集成运放的等效电路}
+
+\paragraph{低频等效模型}
+输入端考虑差模输入电阻、偏置电流、失调电压、失调电流四个参数；输出端考虑差模输出电压、共模输出电压和输出电阻三个参数。模型中\textbf{没有计入管子的电容效应}，故只适用于频率不高的情况。
+
+\paragraph{简化等效模型}
+若只研究对输入信号的放大、不考虑失调因素的影响，则输入端等效为一个输入电阻，输出端等效为一个压控电压源 $A_{od}\dot U_{id}$ 串联输出电阻 $r_o$。后续章节分析运算电路时用的就是这一模型（配合"虚短、虚断"）。

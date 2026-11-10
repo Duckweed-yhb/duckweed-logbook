@@ -1,0 +1,254 @@
+% ============================================================
+% 第 13 章 三相感应电动机的基本理论（教材第四篇，印刷页 131--149）
+% 节名：第一节 三相感应电动机的空载运行；第二节 三相感应电动机负载运行；
+%       第三节 三相感应电动机的基本方程和等效电路；第四节 感应电动机的功率方程和转矩方程；
+%       第五节 笼型转子参数；第六节 三相感应电动机参数测定
+% ============================================================
+\chapter{三相感应电动机的基本理论}
+
+第 8—10 章说明了三相绕组如何产生旋转磁动势、如何在旋转磁场中感应电动势。本章把这些结论用到感应电动机上：定子产生旋转磁场，旋转磁场在转子中感应电动势与电流，转子电流产生转子磁动势，定、转子磁动势合成建立气隙磁场——如此循环，最终达到稳态。分析套路与变压器几乎完全相同：\textbf{写方程 $\rightarrow$ 归算 $\rightarrow$ 等效电路 $\rightarrow$ 求参数 $\rightarrow$ 算性能}。区别只有一处：感应电机的转子在转，转子量的频率随转差率变化。
+
+\section{三相感应电动机的空载运行}
+
+\subsection{空载磁场与空载电流}
+定子接三相电源、轴上不带负载（$T_L=0$）时，电动机以接近同步转速 $n\approx n_1$ 空转，转差率 $s\approx0$。
+
+定子三相电流产生的合成磁动势 $F_1$ 以同步转速 $n_1$ 旋转，建立气隙磁场。与变压器一样，磁通分为两部分：
+\begin{itemize}
+  \item \textbf{主磁通} $\Phi_m$：同时交链定子绕组与转子绕组，通过气隙与铁芯闭合，是机电能量转换的媒介；其路径受铁芯饱和影响。
+  \item \textbf{漏磁通}：只交链定子（或只交链转子）绕组，主要经空气闭合，基本不受饱和影响，用常数漏抗 $X_{1\sigma}$、$X_{2\sigma}$ 表征。
+\end{itemize}
+
+空载时转子转速接近同步转速，转子导体与旋转磁场的相对速度极小，转子感应电动势、电流近似为零。因此\textbf{空载电流几乎全部是励磁电流}：
+\begin{equation}
+\dot I_0=\dot I_m ,
+\end{equation}
+它由磁化分量 $I_\mu$（建立主磁通，无功）和铁耗分量 $I_{Fe}$（供给铁耗，有功）组成。感应电机气隙小、磁路磁阻小，但励磁电流仍占额定电流的 20\%～50\%（远大于变压器的百分之几），这是感应电机功率因数偏低（空载时 $\cos\varphi_0$ 仅 0.1～0.2）的根本原因。
+
+\subsection{空载时的电动势平衡}
+主磁通在定子绕组中感应电动势，有效值为
+\begin{equation}
+E_1=4.44f_1N_1k_{w1}\Phi_m ,
+\end{equation}
+其中 $N_1$ 为定子每相串联匝数，$k_{w1}$ 为定子基波绕组因数。定子电压方程为
+\begin{equation}
+\dot U_1=-\dot E_1+\dot I_0\left(R_1+\mathrm{j}X_{1\sigma}\right)=-\dot E_1+\dot I_0Z_{1\sigma},
+\end{equation}
+且 $\dot E_1=-\dot I_mZ_m$，$Z_m=R_m+\mathrm{j}X_m$ 为励磁阻抗（$R_m$ 表征铁耗、$X_m$ 表征磁化性能）。
+
+\section{三相感应电动机负载运行}
+
+\subsection{转子频率、电动势与电流}
+负载后转速下降为 $n<n_1$，转差率 $s>0$。旋转磁场以相对转速 $n_1-n=sn_1$ 切割转子导体，故转子感应电动势的频率为
+\begin{equation}
+f_2=\frac{p\left(n_1-n\right)}{60}=\frac{pn_1}{60}\cdot\frac{n_1-n}{n_1}=sf_1 .
+\end{equation}
+
+\keyformula{f_2=sf_1}
+
+设转子静止（$s=1$）时转子每相感应电动势为 $E_2$、漏抗为 $X_{2\sigma}$，则转速为 $n$ 时
+\begin{equation}
+E_{2s}=sE_2,\qquad X_{2\sigma s}=sX_{2\sigma}.
+\end{equation}
+转子每相电流为
+\begin{equation}
+I_{2s}=\frac{sE_2}{\sqrt{R_2^{2}+\left(sX_{2\sigma}\right)^{2}}},
+\end{equation}
+其功率因数角为
+\begin{equation}
+\varphi_2=\arctan\frac{sX_{2\sigma}}{R_2},
+\end{equation}
+即\textbf{转子电流与功率因数都随转差率变化}——这一点与变压器完全不同（变压器二次频率恒等于一次频率）。
+
+\subsection{转子磁动势}
+转子绕组为三相对称（笼型可等效为多相），转子电流产生的磁动势 $F_2$ 也是一个旋转磁动势，其相对转子的转速为
+\begin{equation}
+n_{2}=\frac{60f_2}{p}=\frac{60sf_1}{p}=sn_1 .
+\end{equation}
+而转子本身以转速 $n=(1-s)n_1$ 旋转，转向与旋转磁场相同，故 $F_2$ 在\textbf{空间}的转速为
+\begin{equation}
+n_{2}+n=sn_1+(1-s)n_1=n_1 .
+\end{equation}
+即\textbf{转子磁动势与定子磁动势同速、同向旋转，二者相对静止}——这是感应电机能够产生恒定平均转矩的前提。正因如此，才能像变压器一样把定、转子磁动势合成为一个合成磁动势，建立共同的气隙磁场。
+
+\subsection{磁动势平衡}
+与变压器同理，负载时定子磁动势与转子磁动势合成，建立与空载时基本相同的主磁通（因为 $U_1$ 不变、$E_1\approx U_1$ 不变），故
+\begin{equation}
+\dot F_1+\dot F_2=\dot F_0
+\quad\Longrightarrow\quad
+\dot I_1=\dot I_m+\left(-\dot I_2'\right),
+\end{equation}
+其中 $\dot I_2'$ 为归算后的转子电流。物理意义：定子电流的负载分量恰好抵消转子磁动势的去磁作用，维持主磁通不变。
+
+\corepoint{这一节最重要的一句话是"\textbf{转子磁动势在空间也是以同步转速旋转}"。它一举解决三个疑问：① 为什么定、转子磁场能相对静止、产生恒定转矩；② 为什么转子频率随 $s$ 变，而气隙磁场转速恒为 $n_1$；③ 为什么可以用变压器的方法做归算。凡是"转速变了磁场还同步吗"的疑问，都用 $n_2+n=n_1$ 回答。}
+
+\section{三相感应电动机的基本方程和等效电路}
+
+\subsection{电压方程}
+定子（与变压器一次侧完全相同）：
+\begin{equation}
+\dot U_1=-\dot E_1+\dot I_1\left(R_1+\mathrm{j}X_{1\sigma}\right).
+\end{equation}
+转子（注意频率为 $f_2=sf_1$，电动势为 $sE_2$、漏抗为 $sX_{2\sigma}$）：
+\begin{equation}
+\dot E_{2s}=\dot I_{2s}\left(R_2+\mathrm{j}sX_{2\sigma}\right),
+\end{equation}
+其中 $\dot E_{2s}=s\dot E_2$。两边同除以 $s$，得
+\begin{equation}
+\dot E_2=\dot I_{2s}\left(\frac{R_2}{s}+\mathrm{j}X_{2\sigma}\right).
+\end{equation}
+这一步非常关键：\textbf{把"转子在转"的问题转化成了"转子静止"的问题}，代价是转子电阻由 $R_2$ 变为 $R_2/s$。
+
+\subsection{归算}
+与变压器相同，把转子各量归算到定子侧。由于感应电机定、转子相数可能不同（$m_1$、$m_2$）、绕组因数不同，归算系数为
+\begin{equation}
+k_e=\frac{N_1k_{w1}}{N_2k_{w2}},\qquad
+k_i=\frac{m_1N_1k_{w1}}{m_2N_2k_{w2}},\qquad
+k_z=k_ek_i .
+\end{equation}
+归算规律与变压器一致：电动势、电压乘 $k_e$；电流除 $k_i$；阻抗乘 $k_ek_i$。
+
+笼型转子的处理见第 13.5 节。
+
+\subsection{T 型等效电路}
+归算后可得与变压器结构完全相同的 T 型等效电路：定子漏阻抗 $Z_{1\sigma}=R_1+\mathrm{j}X_{1\sigma}$ 串联，励磁支路 $Z_m=R_m+\mathrm{j}X_m$ 并在中间，转子支路为
+\begin{equation}
+Z_2'=\frac{R_2'}{s}+\mathrm{j}X_{2\sigma}' .
+\end{equation}
+
+\keyformula{Z_2'=\frac{R_2'}{s}+\mathrm{j}X_{2\sigma}'=\underbrace{R_2'}_{\text{转子铜耗}}+\underbrace{\frac{1-s}{s}R_2'}_{\text{附加电阻（代表机械功率）}}+\mathrm{j}X_{2\sigma}'}
+
+把 $R_2'/s$ 拆成两项，是感应电机等效电路最有物理意义的一步：
+\begin{itemize}
+  \item $R_2'$ 上的损耗对应\textbf{转子铜耗} $p_{Cu2}$（真实存在的热损耗）；
+  \item 附加电阻 $\dfrac{1-s}{s}R_2'$ 上的"损耗"并不发热，它代表\textbf{转换成机械功率的那部分电磁功率}（等效静止转子的机械负载）。
+\end{itemize}
+
+\subsection{基本方程组}
+\begin{equation}
+\left\{
+\begin{aligned}
+\dot U_1&=-\dot E_1+\dot I_1\left(R_1+\mathrm{j}X_{1\sigma}\right),\\
+\dot E_1&=-\dot I_mZ_m,\\
+\dot I_1&=\dot I_m+\left(-\dot I_2'\right),\\
+\dot E_1&=\dot E_2'=\dot I_2'\left(\frac{R_2'}{s}+\mathrm{j}X_{2\sigma}'\right).
+\end{aligned}
+\right.
+\end{equation}
+
+\section{感应电动机的功率方程和转矩方程}
+
+\subsection{功率流程}
+输入电功率
+\begin{equation}
+P_1=m_1U_1I_1\cos\varphi_1 .
+\end{equation}
+扣除定子铜耗 $p_{Cu1}=m_1I_1^2R_1$ 与铁耗 $p_{Fe}=m_1I_m^2R_m$ 后，余下的是通过气隙传递到转子的\textbf{电磁功率}
+\begin{equation}
+P_{em}=P_1-p_{Cu1}-p_{Fe}=m_1I_2'^{2}\frac{R_2'}{s} .
+\end{equation}
+电磁功率中，一部分是转子铜耗
+\begin{equation}
+p_{Cu2}=m_1I_2'^{2}R_2'=sP_{em},
+\end{equation}
+余下的是\textbf{总机械功率}
+\begin{equation}
+P_{mec}=P_{em}-p_{Cu2}=\left(1-s\right)P_{em} .
+\end{equation}
+再扣除机械损耗 $p_{mec}$ 与杂散损耗 $p_{ad}$，即得轴上输出功率
+\begin{equation}
+P_2=P_{mec}-p_{mec}-p_{ad} .
+\end{equation}
+
+\keyformula{P_{em}:p_{Cu2}:P_{mec}=1:s:(1-s)}
+
+这个比例关系是感应电机最漂亮的结论之一：\textbf{转差率 $s$ 就是"转子铜耗占电磁功率的比例"}。$s$ 越大，损耗比例越大、效率越低，所以感应电机额定转差率只有 1\%～5\%。
+
+\subsection{转矩方程}
+由 $P_{em}=T\Omega_1$（$\Omega_1=2\pi n_1/60$ 为同步机械角速度）与 $P_{mec}=T\Omega$（$\Omega=2\pi n/60$），得
+\begin{equation}
+T=\frac{P_{em}}{\Omega_1}=\frac{P_{mec}}{\Omega}.
+\end{equation}
+稳态时 $T=T_2+T_0$（输出转矩 $T_2=P_2/\Omega$ 加空载制动转矩 $T_0$）。
+
+\subsection{电磁转矩的实用表达式}
+由 $P_{em}=m_1I_2'^2R_2'/s$ 与等效电路解得 $I_2'$，代入 $T=P_{em}/\Omega_1$，得
+\begin{equation}
+T=\frac{m_1pU_1^{2}\dfrac{R_2'}{s}}{\Omega_1\left[\left(R_1+\dfrac{R_2'}{s}\right)^{2}+\left(X_{1\sigma}+X_{2\sigma}'\right)^{2}\right]},
+\qquad \Omega_1=\frac{2\pi f_1}{p}.
+\end{equation}
+
+\keyformula{T=\frac{m_1pU_1^{2}R_2'/s}{\Omega_1\left[\left(R_1+R_2'/s\right)^{2}+\left(X_{1\sigma}+X_{2\sigma}'\right)^{2}\right]}}
+
+其中 $U_1$ 为定子\textbf{相电压}，$m_1$ 为定子相数。这个式子是第 14 章分析转矩—转差率曲线、最大转矩、起动转矩的出发点，必须会推导也要会背。
+
+\section{笼型转子参数}
+
+笼型转子没有明显的"相"，需等效为多相绕组：
+\begin{itemize}
+  \item 导条数 $Q_2$ 就是等效相数，即 $m_2=Q_2$；
+  \item 每相只有一根导条，故每相串联匝数 $N_2=\tfrac12$（一根导条构成"一去一回"的半匝）；
+  \item 绕组因数 $k_{w2}=1$。
+\end{itemize}
+代入归算系数，得笼型转子的电压比、电流比与阻抗归算系数：
+\begin{equation}
+k_e=\frac{N_1k_{w1}}{N_2k_{w2}}=2N_1k_{w1},\qquad
+k_i=\frac{m_1N_1k_{w1}}{Q_2\cdot\frac12\cdot1}=\frac{2m_1N_1k_{w1}}{Q_2},\qquad
+k_z=k_ek_i .
+\end{equation}
+这表明：\textbf{笼型转子不需要"制造"相数和匝数，它们由导条数自然确定}——这是笼型电机设计上的便利之处，也使笼型转子可以用铸铝一次浇成。
+
+\section{三相感应电动机参数测定}
+
+与三相变压器相似，用\textbf{空载试验}和\textbf{堵转试验}测定参数。
+
+\subsection{空载试验}
+\textbf{目的}：求励磁参数 $Z_m$、$R_m$、$X_m$，并分离铁耗与机械损耗。
+
+\textbf{方法}：电动机轴上不带负载，定子加对称三相电压，从（1.1～1.3）$U_N$ 逐步降压到电机转速明显下降为止，测量 $U_1$、$I_0$、$p_0$。
+
+\textbf{数据处理}：
+\begin{enumerate}
+  \item 空载时 $s\approx0$，转子支路近似开路，故测得的是励磁支路参数：
+  \begin{equation}
+  Z_0=\frac{U_{1\phi}}{I_{0\phi}},\qquad R_0=\frac{p_0'}{3I_{0\phi}^{2}},\qquad X_0=\sqrt{Z_0^{2}-R_0^{2}},
+  \end{equation}
+  再扣除定子漏阻抗得 $X_m\approx X_0-X_{1\sigma}$、$R_m\approx R_0-R_1$。
+  \item \textbf{分离铁耗与机械损耗}：空载输入功率 $p_0$ 包含定子铜耗 $3I_0^2R_1$、铁耗 $p_{Fe}$ 和机械损耗 $p_{mec}$。令
+  \begin{equation}
+  p_0'=p_0-3I_0^{2}R_1=p_{Fe}+p_{mec} .
+  \end{equation}
+  铁耗 $\propto U_1^2$，机械损耗与电压无关（转速基本不变）。作 $p_0'=f(U_1^2)$ 曲线，其\textbf{延长线与纵轴的交点}即机械损耗 $p_{mec}$，从而分离出额定电压下的 $p_{Fe}$。
+\end{enumerate}
+
+\subsection{堵转试验}
+\textbf{目的}：求短路参数 $R_k=R_1+R_2'$、$X_k=X_{1\sigma}+X_{2\sigma}'$。
+
+\textbf{方法}：卡住转子（$n=0$，$s=1$），定子加降低的对称三相电压，使电流约为额定值，测量 $U_k$、$I_k$、$p_k$。
+
+\textbf{数据处理}：
+\begin{equation}
+Z_k=\frac{U_{k\phi}}{I_{k\phi}},\qquad
+R_k=\frac{p_k}{3I_{k\phi}^{2}},\qquad
+X_k=\sqrt{Z_k^{2}-R_k^{2}} .
+\end{equation}
+因 $R_1$ 可由直流电阻测得，故 $R_2'=R_k-R_1$；而 $X_{1\sigma}$ 与 $X_{2\sigma}'$ 难以分离，工程上按
+\begin{equation}
+X_{1\sigma}\approx X_{2\sigma}'\approx\frac{X_k}{2}
+\end{equation}
+处理（对大型电机可取 $X_{1\sigma}=0.4X_k$、$X_{2\sigma}'=0.6X_k$ 之类的经验分配）。
+
+堵转时电流大、磁路饱和，漏抗比正常运行值小，故测得的 $X_k$ 需按额定电流下的饱和程度修正；此外堵转试验应在尽可能低的电压、短时间内完成，以免绕组过热。
+
+\begin{center}
+\begin{tabular}{@{}p{2.0cm}p{3.6cm}p{3.8cm}p{3.6cm}@{}}
+\toprule
+试验 & 条件 & 主要求得 & 关键判据 \\
+\midrule
+空载试验 & 轴上无负载，$s\approx0$ & $Z_m$、$R_m$、$X_m$；分离 $p_{Fe}$ 与 $p_{mec}$ & 转子支路近似开路 \\
+堵转试验 & 转子卡住，$n=0$、$s=1$ & $R_k$、$X_k$，进而 $R_2'$ & 转子支路阻抗最小 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{三个易错点：① 空载试验得到的 $p_0$ 不能全算作铁耗，必须扣除定子铜耗 $3I_0^2R_1$ 并分离机械损耗——这是与变压器空载试验最大的区别（变压器没有机械损耗）；② 堵转试验对应 $s=1$，不是"短路"，切勿与变压器短路试验的"二次短路"混淆，物理上是同一个意思但要清楚 $R_2'/s=R_2'$；③ 所有公式里的 $U_1$、$I_1$ 若用铭牌数据必须\textbf{先换算成相值}（Y 接 $U_\phi=U_N/\sqrt3$，$\Delta$ 接 $U_\phi=U_N$、$I_\phi=I_N/\sqrt3$），这一步每年都有人栽跟头。}

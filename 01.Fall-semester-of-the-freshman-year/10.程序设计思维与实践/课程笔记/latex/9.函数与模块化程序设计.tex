@@ -1,0 +1,406 @@
+﻿% 第7章 函数与模块化程序设计（教材第7章 7.1--7.9）
+\lstset{language=C}
+
+\section{分而治之与信息隐藏}
+
+当程序规模变大时，把所有代码都堆在 \texttt{main} 里会带来两个致命问题：一是人脑一次只能处理有限的信息量，逻辑一复杂就看不懂；二是同一段代码在多处重复，改一处要改很多处。
+
+解决思路有两条，它们共同构成函数式设计的出发点：
+
+\begin{itemize}
+  \item \textbf{分而治之}（Divide and Conquer）：把一个大问题分解成若干个相对独立、规模更小的子问题，每个子问题用一个\textbf{函数}实现；只要子问题都解决了，大问题就解决了。
+  \item \textbf{信息隐藏}（Information Hiding）：函数的调用者只需要知道它“做什么”（接口），不必知道它“怎么做”（实现）。函数内部用什么变量、走什么流程，对外部不可见，也不会被外部干扰。
+\end{itemize}
+
+信息隐藏带来的直接好处是：函数内部改了实现，只要接口不变，调用它的代码一行都不用改。这正是“可维护性”的含义。
+
+\section{函数的定义}
+
+\subsection{函数的分类}
+
+\begin{table}[htbp]
+\centering
+\caption{函数的分类}
+\small
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+分类依据 & 类型 & 说明与实例 \\
+\midrule
+来源 & 库函数 & 由 C 标准库提供，已编译好，包含头文件即可用，如 \texttt{printf}、\texttt{sqrt} \\
+ & 用户自定义函数 & 为解决具体问题自己编写 \\
+\cmidrule(l){2-3}
+有无返回值 & 有返回值 & 返回类型为具体类型，如 \texttt{int}、\texttt{double}，用 \texttt{return} 返回结果 \\
+ & 无返回值 & 返回类型写 \texttt{void}，只完成某种操作（如输出、修改数组） \\
+\cmidrule(l){2-3}
+有无参数 & 有参函数 & 通过形参接收外部数据 \\
+ & 无参函数 & 形参表写 \texttt{void} 或留空，如 \texttt{int main(void)} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{函数的定义}
+
+函数定义的一般形式为
+
+\begin{lstlisting}
+返回类型  函数名(形式参数表)
+{
+    函数体
+}
+\end{lstlisting}
+
+各部分的规定：
+
+\begin{enumerate}
+  \item \textbf{返回类型}指明函数返回值的类型，可以是 \texttt{int}、\texttt{double}、\texttt{char}、指针等；不返回值的写 \texttt{void}；
+  \item \textbf{函数名}是合法标识符，应能表达函数的功能（如 \texttt{Max}、\texttt{IsPrime}）；
+  \item \textbf{形式参数表}中每个形参必须\textbf{逐个指明类型}，写成 \texttt{(int a, int b)} 或 \texttt{(int a, b)} 都可，但 \texttt{(a, b)} 不行。无形参时写 \texttt{(void)} 或 \texttt{()}；
+  \item \textbf{函数体}包含声明部分与语句部分，声明必须写在可执行语句之前。
+\end{enumerate}
+
+\begin{lstlisting}
+int Max(int a, int b)        /* 返回值类型 + 函数名 + 形参表 */
+{
+    int m;                   /* 声明部分 */
+    m = a > b ? a : b;       /* 语句部分 */
+    return m;                /* 返回结果 */
+}
+\end{lstlisting}
+
+一条常被忽略的限制：\textbf{C 语言不允许在函数内部再定义函数}（不能嵌套定义），所有函数都是平行的、独立的。因此“把函数写在 \texttt{main} 里面”是非法的。
+
+\section{向函数传递值和从函数返回值}
+
+\subsection{函数调用}
+
+调用形式为
+\[
+\text{函数名(实际参数表);}
+\]
+实参可以是常量、变量或表达式，其个数与类型应与形参一一对应。
+
+\textbf{（1）参数传递是“值传递”。}调用时，实参的值\textbf{单向}复制给形参，形参在函数内部得到了一个\textbf{副本}。因此在函数里修改形参，不会影响调用者的实参：
+
+\begin{lstlisting}
+void TryChange(int x) { x = 100; }     /* 改的只是副本 */
+
+int main(void)
+{
+    int a = 5;
+    TryChange(a);
+    printf("%d\n", a);                  /* 仍然是 5 */
+    return 0;
+}
+\end{lstlisting}
+
+这是“按值调用”（Call by Value）的语义。第 9 章会讲用指针作参数实现“模拟按引用调用”，第 8 章会讲用数组作参数（数组名退化为地址，因此函数内修改数组元素会影响调用者）——这两者是值传递规则下的特例，不是例外。
+
+\textbf{（2）调用过程。}执行到函数调用时，系统会：为被调函数分配存储空间（栈帧），把实参值复制给形参，把控制权交给被调函数；函数执行到 \texttt{return} 或函数体结束时，把返回值带回调用处，释放栈帧，控制权交回。理解这个顺序，才能解释 7.5 节的生存期问题。
+
+\textbf{（3）返回值。}\texttt{return} 语句有两种用法：\texttt{return 表达式;} 返回一个值；\texttt{return;} 用于 \texttt{void} 函数，表示提前结束。函数遇到 \texttt{return} 立即返回，其后的语句不再执行。返回值的类型若与函数声明的返回类型不一致，会按赋值规则自动转换。
+
+\subsection{函数原型}
+
+函数原型（Function Prototype）即函数声明，只给出函数的“外貌”，不含函数体：
+
+\begin{lstlisting}
+int Max(int a, int b);       /* 原型：有参数名 */
+double Sqrt(double);         /* 原型：可只写类型，参数名可省 */
+void PrintMenu(void);
+\end{lstlisting}
+
+为什么需要原型？因为 C 编译器\textbf{自上而下}编译源程序，遇到函数调用时：
+
+\begin{itemize}
+  \item 若已经见过该函数的定义或原型，就能检查实参的个数、类型是否匹配，并按正确的方式传递参数、处理返回值；
+  \item 若没见过，编译器只能\textbf{猜测}（旧标准按默认规则处理），可能导致参数传递方式错误、返回值解释错误，产生难以定位的运行时错误。
+\end{itemize}
+
+因此\textbf{先声明、后使用}是基本要求。一般把所有函数原型集中写在源文件开头，或写进自己的头文件，供多个源文件共享。
+
+\subsection{函数封装与防御性程序设计}
+
+\textbf{封装}是指把实现细节藏在函数内部，只通过参数和返回值与外界交互。\textbf{防御性程序设计}是指在函数入口对参数做合法性检查，不假定调用者一定传对：
+
+\begin{lstlisting}
+double SafeDivide(double a, double b, int *ok)
+{
+    if (fabs(b) < 1e-12) {       /* 检查参数：除数为 0 */
+        *ok = 0;
+        return 0.0;              /* 用返回码告知调用者失败 */
+    }
+    *ok = 1;
+    return a / b;
+}
+\end{lstlisting}
+
+常见的防御手段有三种：
+
+\begin{enumerate}
+  \item \textbf{参数检查}：检查范围（数组下标、分母是否为 0、指针是否为空）、检查类型转换是否会溢出；
+  \item \textbf{用返回值表示错误}：返回 0 / $-1$ / \texttt{NULL} 等特殊值，或额外用一个参数带回状态；
+  \item \textbf{及早返回}：发现非法输入立即 \texttt{return}，避免错误值继续向下传播——错误越晚暴露，越难定位。
+\end{enumerate}
+
+\subsection{函数设计的基本原则}
+
+\begin{table}[htbp]
+\centering
+\caption{函数设计的基本原则}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+原则 & 具体要求 \\
+\midrule
+单一职责 & 一个函数只做一件事。若函数名里出现“和”“并且”，通常该拆开 \\
+接口清晰 & 参数不要过多（一般不超过 4--5 个）；名字与参数含义明确，不靠注释解释 \\
+高内聚低耦合 & 函数内部各部分紧密相关；函数之间尽量少互相依赖 \\
+少用全局变量 & 通过参数传入、通过返回值传出，避免隐式的数据通路 \\
+副作用明确 & 函数要么返回结果，要么完成明确的操作，不要在“求值”的函数里偷偷输出 \\
+长度适中 & 一个函数以能在一屏内读完为宜，过长则拆分 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{函数的递归调用和递归函数}
+
+函数直接或间接地调用自身，称为\textbf{递归调用}；含递归调用的函数称为\textbf{递归函数}。
+
+写递归函数必须同时具备两个要素，缺一不可：
+
+\begin{enumerate}
+  \item \textbf{递归关系}：把原问题化为规模更小的同类问题，即“$n$ 的解用 $n-1$ 的解表示”；
+  \item \textbf{终止条件}（base case）：规模小到可以直接求解时的出口，否则递归永不停止。
+\end{enumerate}
+
+\begin{lstlisting}
+long Fact(int n)                 /* 求 n! */
+{
+    if (n == 0 || n == 1)        /* 终止条件 */
+        return 1;
+    return n * Fact(n - 1);      /* 递归关系 */
+}
+\end{lstlisting}
+
+执行过程可以这样看：\texttt{Fact(4)} 展开成 $4\times\texttt{Fact(3)}$，再展开成 $4\times3\times\texttt{Fact(2)}$……直到 \texttt{Fact(1)} 返回 1，然后逐层“回归”把结果乘回去。每一层的形参 \texttt{n} 和返回地址都保存在\textbf{栈}上，因此递归深度越大，占用的栈空间越多；深度过大时会栈溢出。
+
+递归与迭代（循环）的关系是：
+
+\begin{itemize}
+  \item 理论上任何递归都可用循环加栈改写，任何循环也可用递归实现；
+  \item 递归的\textbf{优点是表达简洁}，代码与数学定义几乎一一对应（如阶乘、斐波那契数列、汉诺塔）；
+  \item 递归的\textbf{缺点是有函数调用开销、占栈空间}，且朴素递归可能重复计算（如 \texttt{Fib(n)} 直接递归的时间复杂度是指数级）。
+\end{itemize}
+
+因此：能用循环简单实现的（如累加、累乘）就用循环；问题本身具有递归结构、用循环写起来很别扭的，才用递归。
+
+\corepoint{写递归先写终止条件，再写递归式，最后才考虑效率。忘记终止条件（或终止条件写错）会导致无限递归，典型症状是程序崩溃并提示栈溢出（stack overflow）。}
+
+\section{变量的作用域和生存期}
+
+作用域回答“这个变量在程序\textbf{哪些地方}可以被使用”，生存期回答“这个变量的存储空间\textbf{什么时候}存在”。两者是不同的概念。
+
+\subsection{变量的作用域}
+
+\begin{table}[htbp]
+\centering
+\caption{按作用域划分的变量}
+\small
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+种类 & 定义位置 & 可见范围 \\
+\midrule
+局部变量 & 函数内部（或复合语句内部） & 从定义处到所在函数（或块）结束；块内定义的只在块内可见 \\
+全局变量 & 所有函数之外 & 从定义处到本源文件结束；其他文件需用 \texttt{extern} 声明 \\
+函数原型中的参数名 & 函数声明中 & 仅在该声明中有效，可与定义中的名字不同 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+两条规则要记牢：
+
+\begin{itemize}
+  \item \textbf{就近遮蔽}：若局部变量与全局变量同名，在局部变量的作用域内，全局变量被“遮蔽”，访问到的是局部变量。这极易造成“明明改了全局变量却没生效”的困惑，应通过命名区分（如全局加前缀 \texttt{g\_}）来避免；
+  \item 形参也是局部变量，其作用域就是整个函数体。
+\end{itemize}
+
+\subsection{变量的生存期}
+
+按存储类别，变量的生存期分为四种：
+
+\begin{table}[htbp]
+\centering
+\caption{变量的存储类别与生存期}
+\small
+\begin{tabularx}{\textwidth}{@{}llX@{}}
+\toprule
+存储类别 & 关键字 & 生存期与特点 \\
+\midrule
+自动变量 & \texttt{auto}（默认，可省略） & 进入作用域时分配（栈上），离开时释放；未初始化则为垃圾值 \\
+静态变量 & \texttt{static} & 程序整个运行期间都存在；\textbf{只初始化一次}，函数返回后值保留 \\
+寄存器变量 & \texttt{register} & 建议编译器放入寄存器以提高访问速度（现代编译器一般自动优化） \\
+外部变量 & \texttt{extern} & 声明“该变量在别处定义”，用于跨文件共享全局变量 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{静态局部变量}是最容易考也最容易用错的一种，它兼具两种性质：
+
+\begin{lstlisting}
+void Counter(void)
+{
+    static int count = 0;      /* 只初始化一次 */
+    count++;
+    printf("%d\n", count);
+}
+/* 连续调用三次，输出 1、2、3 —— 而不是 1、1、1 */
+\end{lstlisting}
+
+它与全局变量的区别只在\textbf{作用域}：静态局部变量仍只在函数内可见（外部无法访问），但生存期与全局变量相同。它适合保存“跨调用需要记住”的状态，但会让函数的行为依赖于调用历史，破坏可测试性，应谨慎使用。
+
+\section{模块化程序设计}
+
+\subsection{模块分解的基本原则}
+
+模块是功能相对独立、接口清晰的一段程序（通常是一个或一组函数）。分解时遵循：
+
+\begin{itemize}
+  \item \textbf{高内聚}：一个模块内部各部分的联系要紧密，共同完成一件明确的事；
+  \item \textbf{低耦合}：模块之间尽量少依赖，接口参数尽量少，避免共享全局变量；
+  \item \textbf{信息隐藏}：模块内部的实现细节不对外暴露，只暴露必要的接口；
+  \item \textbf{规模适中}：模块过大难以理解，过小则接口开销与调用层次过多。
+\end{itemize}
+
+\subsection{自顶向下、逐步求精}
+
+\textbf{自顶向下}（Top-down）是指从问题的总体目标出发，先写出主程序的框架（每一步对应一个函数调用），再逐层细化每个函数；\textbf{逐步求精}（Stepwise Refinement）是指每一层都只处理当前层次的细节，把更细的工作留给下一层。
+
+\begin{lstlisting}
+int main(void)
+{
+    ReadData();      /* 第 1 层：只写“做什么”，不写“怎么做” */
+    Sort();
+    Output();
+    return 0;
+}
+\end{lstlisting}
+
+这样写出来的 \texttt{main} 本身就是一份“程序说明书”，读者不必钻进细节就能看懂整体流程。
+
+\subsection{模块化程序设计与多文件编程}
+
+当程序由多个源文件组成时，约定的分工是：
+
+\begin{table}[htbp]
+\centering
+\caption{多文件编程的文件分工}
+\small
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+文件 & 放什么 & 说明 \\
+\midrule
+头文件 \texttt{.h} & 函数原型、宏定义、类型定义、\texttt{extern} 声明 & 供其他文件 \texttt{\#include}，只放“声明”不放“定义” \\
+源文件 \texttt{.c} & 函数定义、内部使用的静态变量 & 编译成目标文件后由链接器连接 \\
+主文件 & \texttt{main} 函数 & 调用各模块 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}
+/* mymath.h —— 只放声明 */
+#ifndef MYMATH_H
+#define MYMATH_H
+int    Max(int a, int b);
+double CircleArea(double r);
+#endif
+
+/* mymath.c —— 放定义 */
+#include "mymath.h"
+int Max(int a, int b) { return a > b ? a : b; }
+\end{lstlisting}
+
+几个关键点：
+
+\begin{itemize}
+  \item \texttt{\#include <stdio.h>} 用尖括号，编译器到系统头文件目录查找；\texttt{\#include "mymath.h"} 用双引号，先在当前目录查找——自定义头文件必须用双引号；
+  \item 头文件只放\textbf{声明}。在头文件里定义变量或函数体，被多个源文件包含时会产生“重复定义”的链接错误；
+  \item 若某函数或全局变量只在本文件内使用，加 \texttt{static} 修饰，可限制其可见性，避免命名冲突；
+  \item 头文件保护（\texttt{\#ifndef}/\texttt{\#define}/\texttt{\#endif}）防止同一头文件被重复包含。
+\end{itemize}
+
+\subsection{条件编译}
+
+条件编译让编译器\textbf{按条件选择}参与编译的代码段，常用形式有三种：
+
+\begin{lstlisting}
+/* 形式 1：常量表达式为真才编译 */
+#if 表达式
+    程序段 1
+#elif 表达式
+    程序段 2
+#else
+    程序段 3
+#endif
+
+/* 形式 2：是否定义过某宏 */
+#ifdef DEBUG
+    printf("debug: x = %d\n", x);
+#endif
+
+/* 形式 3：头文件保护（最常用） */
+#ifndef MYMATH_H
+#define MYMATH_H
+/* 声明 */
+#endif
+\end{lstlisting}
+
+典型用途：调试信息的开关（定义 \texttt{DEBUG} 才编译打印语句，发布时去掉即可）、不同平台的适配、头文件防重复包含。与 \texttt{if} 语句的本质区别是：条件编译在\textbf{预处理阶段}决定代码是否进入编译，不满足条件的代码根本不会生成目标代码；而 \texttt{if} 语句在运行时判断。
+
+\section{本章扩充内容——代码风格}
+
+代码风格不影响程序能否运行，却直接决定别人（和三个月后的自己）能否看懂。基本要求：
+
+\begin{enumerate}
+  \item \textbf{缩进一致}：每层缩进统一用 4 个空格或一个制表符，不要混用；同一层的语句左边界对齐；
+  \item \textbf{一行一句}：不要在一行里塞多条语句，也不要把一条语句拆得七零八落；
+  \item \textbf{命名有意义}：\texttt{sum}、\texttt{count}、\texttt{maxValue} 比 \texttt{a}、\texttt{b}、\texttt{x1} 好得多；常量全大写，全局变量加前缀；
+  \item \textbf{注释解释“为什么”而不是“是什么”}：\texttt{i++;  /* i 加 1 */} 是废话；\texttt{/* 跳过行尾的换行符 */} 才有价值；
+  \item \textbf{避免深层嵌套}：嵌套超过三层就该考虑拆函数或提前返回；
+  \item \textbf{花括号成对且不省略}：即使分支或循环体只有一条语句，也写上花括号。
+\end{enumerate}
+
+\section{本章知识点小结}
+
+\begin{itemize}
+  \item 函数是分而治之与信息隐藏的载体：调用者只需知道接口，不必知道实现；
+  \item 函数定义由返回类型、函数名、形参表和函数体组成；C 不允许函数嵌套定义；
+  \item 参数传递是\textbf{值传递}，形参是实参的副本，函数内改形参不影响实参；
+  \item 函数原型让编译器在调用处就能检查参数类型与个数，应先声明后使用；
+  \item 递归函数必须同时有递归关系与终止条件；递归简洁但占栈、可能有重复计算；
+  \item 作用域决定“哪里能用”，生存期决定“何时存在”；\texttt{static} 局部变量只初始化一次且值保留；
+  \item 多文件编程：\texttt{.h} 放声明、\texttt{.c} 放定义；头文件要加保护；文件内私有函数用 \texttt{static}；
+  \item 条件编译在预处理阶段选择代码，与运行时的 \texttt{if} 语句本质不同。
+\end{itemize}
+
+\section{本章常见错误小结}
+
+\begin{table}[htbp]
+\centering
+\caption{第 7 章常见错误与纠正}
+\small
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+易错写法 & 错在哪里 & 纠正 \\
+\midrule
+在 \texttt{main} 内定义函数 & C 不允许函数嵌套定义 & 函数定义写在所有函数之外 \\
+调用在前、定义在后且无原型 & 编译器不知道参数类型，按猜测处理 & 在文件开头写函数原型 \\
+\texttt{void f(int a) \{ return a; \}} & \texttt{void} 函数不能返回值 & 改返回类型或去掉 \texttt{return} 值 \\
+\texttt{int f(int a, b)} & 形参必须逐个指明类型 & \texttt{int f(int a, int b)} \\
+期望函数内改形参影响实参 & 值传递，形参只是副本 & 用指针或数组作参数 \\
+递归缺终止条件 & 无限递归，栈溢出 & 先写 base case \\
+\texttt{static int n = 0;} 以为每次都重新置 0 & 静态局部变量只初始化一次 & 需要每次重置就用普通局部变量 \\
+头文件中定义函数体或变量 & 被多个文件包含时重复定义 & 头文件只放声明 \\
+\texttt{\#include <mymath.h>} & 尖括号只在系统目录查找 & 自定义头文件用双引号 \\
+\bottomrule
+\end{tabularx}
+\end{table}

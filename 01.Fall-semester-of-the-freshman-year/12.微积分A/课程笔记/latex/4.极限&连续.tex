@@ -1,57 +1,290 @@
-% 子文件：2.极限与连续.tex
-% 在主文档使用 \input{2.极限与连续} 引入，不要写documentclass与document环境
+% 子文件：4.极限&连续.tex
+% 对应教材（同济《高等数学》第七版·上册）第一章第二节至第十节
+%   数列的极限 / 函数的极限 / 无穷小与无穷大 / 极限运算法则 / 极限存在准则·两个重要极限
+%   无穷小的比较 / 函数的连续性与间断点 / 连续函数的运算与初等函数的连续性 / 闭区间上连续函数的性质
+% 主文档使用 \input{4.极限&连续.tex} 引入，不含 \documentclass / \begin{document}
 
 \section{数列的极限}
 
-\section{函数的极限}
-
-\section{极限的性质，无穷小与无穷大}
-\subsection{极限的性质}
-定理2.3\quad 如果极限，必唯一
-
-\subsection{无穷小与无穷大}
-定理2.6\quad 有限个无穷小之和仍为无穷小
-
-定理2.7\quad 无穷小与
-
-\section{极限的运算法则}
-
-\section{极限存在准则，两个重要极限}
-
-\section{无穷小的比较}
-等价无穷小\quad 牢记，当$x\to0$时，下列各对无穷小是等价的
+\subsection{数列极限的定义}
+\textbf{定义（数列极限的 $\varepsilon$-$N$ 定义）}\quad 设 $\{x_n\}$ 为一数列，如果存在常数 $a$，对于任意给定的正数 $\varepsilon$（不论它多么小），总存在正整数 $N$，使得当 $n>N$ 时，不等式
 \[
-\begin{aligned}
-\sin x &\sim x, & \tan x &\sim x, & \sqrt{1+x}-1 &\sim \frac12 x, & 1-\cos x &\sim \frac12 x^2,\\
-\arctan x &\sim x, & \ln(1+x) &\sim x, & e^x-1 &\sim x, & \tan x-\sin x &\sim \frac12 x^3
-\end{aligned}
+|x_n-a|<\varepsilon
 \]
+都成立，那么就称常数 $a$ 是数列 $\{x_n\}$ 的极限，或称数列 $\{x_n\}$ 收敛于 $a$，记作
+\[
+\lim_{n\to\infty}x_n=a\quad\text{或}\quad x_n\to a\ (n\to\infty).
+\]
+若这样的常数 $a$ 不存在，就说数列 $\{x_n\}$ 没有极限（或发散）。
 
-\section{函数的连续性}
-\subsection{连续与间断}
-定义 2.10\quad 设
+\keyformula{\forall\,\varepsilon>0,\ \exists\,N\in\mathbb{N}_+,\ \forall\,n>N:\quad |x_n-a|<\varepsilon}
 
-\paragraph{第一类间断点}
-左、右极限$f(x_0^-)$和$f(x_0^+)$都存在的间断点$x_0$，称为第一类间断点。
+\noindent 几何意义：对 $a$ 的任一 $\varepsilon$ 邻域 $(a-\varepsilon,a+\varepsilon)$，数列中除有限项外，其余所有项都落在该邻域内。
+
+\corepoint{$\varepsilon$ 是任意给定的（可任意小），$N$ 是随后找到的（可以很大），$N$ 依赖于 $\varepsilon$ 但不依赖于 $n$；“$n>N$”换成“$n\ge N$”不影响定义。用定义证明 $\lim x_n=a$ 的套路固定：任给 $\varepsilon>0$，从 $|x_n-a|<\varepsilon$ 出发解出 $n>\varphi(\varepsilon)$，取 $N=[\varphi(\varepsilon)]$（取整，必要时 $+1$）即可。}
+
+\subsection{收敛数列的性质}
 \begin{enumerate}
-    \item $f(x_0^-)\neq f(x_0^+)$，即左、右极限都存在，但不相等，不管在$x_0$处函数是否有定义，这种第一类间断点叫做跳跃间断点。
-    \item $f(x_0^-)＝f(x_0^+)$，但不等于$f(x_0)$或$f(x_0)$不存在，即有极限而不连续。这种第一类间断点叫做可去间断点。（只要补充或修改函数在$x_0$处的定义，令，就可以得到在$x_0$处连续的函数。）
+    \item \textbf{唯一性}：收敛数列的极限唯一。
+    \item \textbf{有界性}：收敛数列必有界，即存在 $M>0$，使 $|x_n|\le M$ 对一切 $n$ 成立。
+    \item \textbf{保号性}：若 $\lim\limits_{n\to\infty}x_n=a>0$（或 $<0$），则存在 $N$，当 $n>N$ 时 $x_n>0$（或 $<0$）；若从某项起 $x_n\ge0$ 且 $\lim\limits_{n\to\infty}x_n=a$，则 $a\ge0$。
+    \item \textbf{子列关系}：若 $\{x_n\}$ 收敛于 $a$，则其任一子列 $\{x_{n_k}\}$ 也收敛于 $a$。
 \end{enumerate}
 
-\paragraph{第二类间断点}
-左、右极限至少有一个不存在的间断点，叫做第二类间断点。
+\corepoint{有界只是收敛的\textbf{必要}条件：有界数列未必收敛（如 $x_n=(-1)^n$）。由性质 1、4 得到两个常用的\textbf{发散}判别法：(1) 无界数列必发散；(2) 若能找到两个子列收敛于不同的极限（如奇子列与偶子列极限不等），则原数列发散。}
+
+\section{函数的极限}
+
+\subsection{自变量趋于无穷大时函数的极限}
+\textbf{定义}\quad 设函数 $f(x)$ 当 $|x|$ 大于某一正数时有定义。若存在常数 $A$，对任意给定的正数 $\varepsilon$，总存在正数 $X$，使得当 $|x|>X$ 时恒有
+\[
+|f(x)-A|<\varepsilon,
+\]
+则称 $A$ 为 $f(x)$ 当 $x\to\infty$ 时的极限，记作 $\lim\limits_{x\to\infty}f(x)=A$。
+
+把 $|x|>X$ 换成 $x>X$ 或 $x<-X$，分别得到 $x\to+\infty$、$x\to-\infty$ 时的极限。三者关系：
+
+\keyformula{\lim_{x\to\infty}f(x)=A\iff \lim_{x\to+\infty}f(x)=\lim_{x\to-\infty}f(x)=A}
+
+\subsection{自变量趋于有限值时函数的极限}
+\textbf{定义（$\varepsilon$-$\delta$ 定义）}\quad 设函数 $f(x)$ 在点 $x_0$ 的某个去心邻域内有定义。若存在常数 $A$，对任意给定的正数 $\varepsilon$，总存在正数 $\delta$，使得当 $0<|x-x_0|<\delta$ 时恒有
+\[
+|f(x)-A|<\varepsilon,
+\]
+则称 $A$ 为 $f(x)$ 当 $x\to x_0$ 时的极限，记作 $\lim\limits_{x\to x_0}f(x)=A$。
+
+\keyformula{\forall\,\varepsilon>0,\ \exists\,\delta>0,\ \forall\,x:\ 0<|x-x_0|<\delta\ \Rightarrow\ |f(x)-A|<\varepsilon}
+
+\noindent 注意 $0<|x-x_0|$ 表示 $x\neq x_0$：极限与 $f$ 在 $x_0$ 处\textbf{有无定义、取何值}无关。
+
+\subsubsection{左极限与右极限}
 \begin{itemize}
-    \item 无穷间断点
-    \item 振荡间断点
+    \item 左极限：$x$ 从 $x_0$ 左侧趋于 $x_0$（$x_0-\delta<x<x_0$），记 $\lim\limits_{x\to x_0^-}f(x)=f(x_0^-)$；
+    \item 右极限：$x$ 从 $x_0$ 右侧趋于 $x_0$（$x_0<x<x_0+\delta$），记 $\lim\limits_{x\to x_0^+}f(x)=f(x_0^+)$。
 \end{itemize}
+\keyformula{\lim_{x\to x_0}f(x)=A\iff f(x_0^-)=f(x_0^+)=A}
 
-\subsection{函数连续性的判定定理}
+\corepoint{分段函数在分界点、含绝对值或根式的函数在特殊点求极限，必须分左右讨论：只有左右极限都存在且相等，极限才存在。$e^{1/x}$、$\arctan\frac1x$、$\dfrac{|x|}{x}$ 在 $x=0$ 处都是左右极限不等的典型例子。}
 
-\subsection{连续在极限运算中的应用}
+\subsection{函数极限的性质}
+（以下均设极限过程为 $x\to x_0$，其他过程类似。）
+\begin{enumerate}
+    \item \textbf{唯一性}：若 $\lim f(x)$ 存在，则极限唯一。
+    \item \textbf{局部有界性}：若 $\lim\limits_{x\to x_0}f(x)=A$，则存在 $M>0$ 与 $\delta>0$，当 $0<|x-x_0|<\delta$ 时 $|f(x)|\le M$。
+    \item \textbf{局部保号性}：若 $\lim\limits_{x\to x_0}f(x)=A>0$（或 $<0$），则存在去心邻域，在其中 $f(x)>0$（或 $<0$）；若在去心邻域内 $f(x)\ge0$ 且极限为 $A$，则 $A\ge0$。
+    \item \textbf{不等式性质}：若在去心邻域内 $f(x)\le g(x)$，且两极限都存在，则 $\lim f(x)\le\lim g(x)$。
+\end{enumerate}
 
-\subsection{闭区间上连续函数的性质}
-定理2.23
+\corepoint{“局部”二字不能丢：有界性、保号性都只在 $x_0$ 的某个去心邻域内成立，不是在整个定义域上成立。第 4 条中若把 $\le$ 写成 $<$，结论仍只能是 $\le$（严格不等式在取极限后可能取等号）。}
 
-定义2.11
+\section{无穷小与无穷大}
 
-定理2.25
+\subsection{无穷小}
+\textbf{定义}\quad 如果函数 $f(x)$ 当 $x\to x_0$（或 $x\to\infty$）时的极限为零，那么称 $f(x)$ 为当 $x\to x_0$（或 $x\to\infty$）时的\textbf{无穷小}。
+
+\keyformula{\lim_{x\to x_0}f(x)=A\iff f(x)=A+\alpha(x),\ \text{其中}\ \alpha(x)\ \text{是当}\ x\to x_0\ \text{时的无穷小}}
+
+\noindent 这条定理是“极限问题 $\leftrightarrow$ 无穷小问题”互化的桥梁，也是极限运算法则证明的工具。
+
+\corepoint{无穷小是\textbf{变量}（极限为 0 的函数），不是一个很小的常数；但常数 0 可以看作无穷小（0 是唯一的常数无穷小）。“某过程下的无穷小”必须指明极限过程：$\frac1x$ 是 $x\to\infty$ 时的无穷小，却是 $x\to0^+$ 时的无穷大。}
+
+\subsection{无穷大}
+\textbf{定义}\quad 设函数 $f(x)$ 在 $x_0$ 的某一去心邻域内有定义（或 $|x|$ 大于某一正数时有定义）。如果对任意给定的正数 $M$（不论它多么大），总存在正数 $\delta$（或正数 $X$），使得当 $0<|x-x_0|<\delta$（或 $|x|>X$）时恒有
+\[
+|f(x)|>M,
+\]
+则称 $f(x)$ 为当 $x\to x_0$（或 $x\to\infty$）时的\textbf{无穷大}，记作 $\lim\limits_{x\to x_0}f(x)=\infty$。
+
+同一极限过程中，无穷小与无穷大互为倒数：
+\keyformula{\lim f(x)=\infty\ \Longrightarrow\ \lim\frac{1}{f(x)}=0;\qquad \lim f(x)=0\ (f(x)\neq0)\ \Longrightarrow\ \lim\frac{1}{f(x)}=\infty}
+
+\corepoint{无穷大一定是无界函数，但无界函数不一定是无穷大：$f(x)=x\sin x$ 在 $x\to\infty$ 时无界，却因 $x=n\pi$ 时 $f=0$ 而不是无穷大。因此“$\lim f(x)=\infty$”比“$f$ 无界”强。注意 $\infty$ 不是数，$\lim f(x)=\infty$ 只是记法，表示极限不存在的一种特殊情形。}
+
+\section{极限运算法则}
+
+\subsection{无穷小的运算性质}
+\begin{enumerate}
+    \item 有限个无穷小的和仍是无穷小；
+    \item 有界函数与无穷小的乘积是无穷小（由此：常数与无穷小之积、有限个无穷小之积均为无穷小）。
+\end{enumerate}
+
+\corepoint{“有限个”不能推广到无穷多个：$n$ 个 $\frac1n$ 相加得 1，不再是无穷小。有界函数与无穷小之积为无穷小这条性质，是求 $\lim\limits_{x\to0}x\sin\frac1x=0$、$\lim\limits_{x\to0}x\arctan\frac1x=0$ 一类题的唯一依据（此时不能用四则运算法则，因为 $\sin\frac1x$ 的极限不存在）。}
+
+\subsection{极限的四则运算法则}
+设在同一极限过程中 $\lim f(x)=A$，$\lim g(x)=B$（两极限都存在），则
+\keyformula{\lim\bigl[f(x)\pm g(x)\bigr]=A\pm B,\qquad \lim\bigl[f(x)g(x)\bigr]=AB,\qquad \lim\frac{f(x)}{g(x)}=\frac{A}{B}\ (B\neq0)}
+\noindent 推论：$\lim[cf(x)]=c\lim f(x)$，$\lim[f(x)]^n=[\lim f(x)]^n$（$n$ 为正整数）。
+
+\corepoint{法则成立的前提是“两个极限都存在”且“分母极限不为零”。$\lim\frac{f}{g}$ 中若 $\lim g=0$、$\lim f\neq0$，则商为无穷大（极限不存在），不能写成 $\frac{A}{0}$；若 $\lim f=\lim g=0$，则是 $\frac00$ 型未定式，须先变形（约去零因子、有理化、等价无穷小替换等）再用法则。}
+
+\subsection{复合函数的极限运算法则}
+设 $\lim\limits_{x\to x_0}g(x)=u_0$，且在 $x_0$ 的某去心邻域内 $g(x)\neq u_0$；又 $\lim\limits_{u\to u_0}f(u)=A$，则
+\[
+\lim_{x\to x_0}f\bigl[g(x)\bigr]=\lim_{u\to u_0}f(u)=A .
+\]
+
+\subsection{常用计算套路}
+\begin{enumerate}
+    \item \textbf{有理分式 $x\to\infty$}：分子分母同除以分母（或分子分母中）的最高次幂，或直接用结论
+\[
+\lim_{x\to\infty}\frac{a_0x^n+a_1x^{n-1}+\cdots+a_n}{b_0x^m+b_1x^{m-1}+\cdots+b_m}=
+\begin{cases}
+\dfrac{a_0}{b_0}, & n=m,\\[2mm]
+0, & n<m,\\[2mm]
+\infty, & n>m .
+\end{cases}
+\]
+    \item \textbf{有理分式 $x\to x_0$ 且为 $\frac00$ 型}：分解因式约去零因子 $(x-x_0)$，或对根式有理化。
+    \item \textbf{初等函数在定义区间内}：$\lim\limits_{x\to x_0}f(x)=f(x_0)$（代入法），这一条见 \ref{sec:chudeng} 小节。
+\end{enumerate}
+
+\section{\texorpdfstring{极限存在准则·两个重要极限}{极限存在准则 两个重要极限}}
+
+\subsection{准则 I（夹逼准则）}
+若数列 $\{x_n\},\{y_n\},\{z_n\}$ 满足
+\begin{enumerate}
+    \item $y_n\le x_n\le z_n$\quad（$n>N_0$）；
+    \item $\lim\limits_{n\to\infty}y_n=\lim\limits_{n\to\infty}z_n=a$，
+\end{enumerate}
+则 $\lim\limits_{n\to\infty}x_n=a$。对函数极限有完全类似的结论（把 $n>N_0$ 换成去心邻域内）。
+
+\subsection{准则 II（单调有界准则）}
+单调有界数列必有极限。更具体地：单调增加且有上界的数列必收敛于其最小上界；单调减少且有下界的数列必收敛于其最大下界。
+
+\corepoint{用夹逼准则的关键是“找两头的界”，常用放缩：$\frac{1}{n^2+1}+\cdots+\frac{1}{n^2+n}$ 型把分母统一放大或缩小；含 $n$ 项和而无法直接求和的，一般用夹逼。用单调有界准则证收敛，必须\textbf{两件事都做}：证单调（作差 $x_{n+1}-x_n$ 或作商）＋证有界，缺一不可；再用递推式两边取极限求出极限值。}
+
+\subsection{两个重要极限}
+\keyformula{\lim_{x\to0}\frac{\sin x}{x}=1}
+\noindent 形式要点：分子 $\sin$ 后面的“角度”与分母完全一致，且该量趋于 0，如 $\lim\limits_{x\to0}\frac{\sin3x}{x}=3$、$\lim\limits_{x\to0}\frac{\sin 3x}{\sin 5x}=\frac35$。
+
+\keyformula{\lim_{x\to\infty}\Bigl(1+\frac1x\Bigr)^{x}=e,\qquad \lim_{x\to0}(1+x)^{\frac1x}=e}
+\noindent 一般形式（$1^{\infty}$ 型）：若 $\lim u(x)=0$，则 $\lim\bigl[1+u(x)\bigr]^{\frac{1}{u(x)}}=e$。
+
+\corepoint{$\lim\frac{\sin x}{x}=1$ 中 $x$ 必须是\textbf{弧度}，这是弧度制的本质作用。$1^\infty$ 型极限的标准处理：凑成 $\bigl[1+u\bigr]^{1/u}$，或直接化为指数式 $\lim e^{v\ln u}=e^{\lim v(u-1)}$。$e$ 的定义式还可写成 $e=\sum\limits_{n=0}^{\infty}\frac{1}{n!}=2.718281828\cdots$。}
+
+\section{无穷小的比较}
+
+\subsection{定义}
+设 $\alpha,\beta$ 是同一极限过程中的两个无穷小，且 $\alpha\neq0$。
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+条件 & 结论 & 记法 \\
+\midrule
+$\lim\dfrac{\beta}{\alpha}=0$ & $\beta$ 是比 $\alpha$ 高阶的无穷小 & $\beta=o(\alpha)$ \\
+$\lim\dfrac{\beta}{\alpha}=\infty$ & $\beta$ 是比 $\alpha$ 低阶的无穷小 & —— \\
+$\lim\dfrac{\beta}{\alpha}=c\neq0$ & $\beta$ 与 $\alpha$ 是同阶无穷小 & $\beta=O(\alpha)$ \\
+$\lim\dfrac{\beta}{\alpha}=1$ & $\beta$ 与 $\alpha$ 是等价无穷小 & $\beta\sim\alpha$ \\
+$\lim\dfrac{\beta}{\alpha^k}=c\neq0$ & $\beta$ 是关于 $\alpha$ 的 $k$ 阶无穷小 & —— \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{等价无穷小替换定理}
+设 $\alpha\sim\alpha'$，$\beta\sim\beta'$，且 $\lim\dfrac{\beta'}{\alpha'}$ 存在，则
+\[
+\lim\frac{\beta}{\alpha}=\lim\frac{\beta'}{\alpha'} .
+\]
+即：求两个无穷小之比的极限时，分子、分母都可用等价无穷小代替。
+
+\subsection{常用的等价无穷小（$x\to0$）}
+\keyformula{\begin{aligned}
+&\sin x\sim x,\quad \tan x\sim x,\quad \arcsin x\sim x,\quad \arctan x\sim x,\quad \ln(1+x)\sim x,\\
+&e^{x}-1\sim x,\quad a^{x}-1\sim x\ln a,\quad 1-\cos x\sim\tfrac12x^{2},\quad (1+x)^{\mu}-1\sim\mu x,\\
+&\sqrt{1+x}-1\sim\tfrac12x,\quad \tan x-\sin x\sim\tfrac12x^{3},\quad x-\sin x\sim\tfrac16x^{3},\quad x-\ln(1+x)\sim\tfrac12x^{2}.
+\end{aligned}}
+
+\corepoint{等价替换只能用于\textbf{乘除因子}，$\lim\dfrac{\beta}{\alpha}$ 中的 $\alpha,\beta$ 整体可换；在\textbf{加减}中不能随意替换：$\lim\limits_{x\to0}\dfrac{\tan x-\sin x}{x^{3}}\neq\lim\dfrac{x-x}{x^{3}}=0$（正确结果是 $\frac12$）。原因：加减时低阶项相消，被丢掉的高阶项恰是主部。若加减的两项不等价（如 $\sin x+x$），替换才安全。}
+
+\section{函数的连续性与间断点}
+
+\subsection{函数的连续性}
+\textbf{定义（增量式）}\quad 设函数 $y=f(x)$ 在点 $x_0$ 的某一邻域内有定义，如果
+\[
+\lim_{\Delta x\to0}\Delta y=\lim_{\Delta x\to0}\bigl[f(x_0+\Delta x)-f(x_0)\bigr]=0,
+\]
+则称 $f(x)$ 在点 $x_0$ 处\textbf{连续}。等价地：
+
+\keyformula{\lim_{x\to x_0}f(x)=f(x_0)\iff \lim_{x\to x_0^-}f(x)=\lim_{x\to x_0^+}f(x)=f(x_0)}
+
+\noindent 即“极限存在、且等于函数值”，因此连续要满足三条：$f(x_0)$ 有定义；$\lim\limits_{x\to x_0}f(x)$ 存在；两者相等。
+
+用 $\varepsilon$-$\delta$ 语言：$\forall\varepsilon>0,\ \exists\delta>0$，当 $|x-x_0|<\delta$ 时 $|f(x)-f(x_0)|<\varepsilon$（注意这里没有 $0<|x-x_0|$）。
+
+若 $\lim\limits_{x\to x_0^-}f(x)=f(x_0)$，称 $f$ 在 $x_0$ 处左连续；右连续类似。$f$ 在 $x_0$ 连续 $\iff$ 在 $x_0$ 既左连续又右连续。
+
+\noindent 若 $f$ 在开区间 $(a,b)$ 内每一点连续，则称 $f$ 在 $(a,b)$ 内连续；若还在 $a$ 点右连续、在 $b$ 点左连续，则称 $f$ 在闭区间 $[a,b]$ 上连续，记作 $f\in C[a,b]$。
+
+\subsection{函数的间断点}
+若 $f$ 在 $x_0$ 处不连续，则称 $x_0$ 为 $f$ 的\textbf{间断点}（不连续点）。分类如下：
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+类型 & 特征 & 常见来源 \\
+\midrule
+第一类·可去 & $f(x_0^-)=f(x_0^+)\neq f(x_0)$ 或 $f(x_0)$ 无定义 & $\dfrac{\sin x}{x}$、$\dfrac{x^2-1}{x-1}$ 在 $x=0,1$ \\
+第一类·跳跃 & $f(x_0^-)\neq f(x_0^+)$，两者都存在 & $\operatorname{sgn}x$、$[x]$ 在整点 \\
+第二类·无穷 & 左、右极限至少有一个为 $\infty$ & $\dfrac1x$、$\dfrac{1}{x^2}$ 在 $x=0$ \\
+第二类·振荡 & 左、右极限至少有一个不存在且振荡 & $\sin\dfrac1x$ 在 $x=0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{判断间断点类型的固定流程：先找“可疑点”（无定义的点、分段函数的分界点）→ 求 $f(x_0^-)$ 与 $f(x_0^+)$ → 两个都存在为第一类，再比较是否相等（相等为可去，不等为跳跃）→ 至少一个不存在为第二类，再看是无穷还是振荡。可去间断点只要补充或修改 $x_0$ 处的定义（令 $f(x_0)=\lim\limits_{x\to x_0}f(x)$）即可变为连续点。含 $e^{1/x}$、$\arctan\frac1x$、$\frac{1}{1-e^{x/(x-1)}}$ 的题必须算左右极限。}
+
+\section{连续函数的运算与初等函数的连续性}\label{sec:chudeng}
+
+\subsection{连续函数的和、差、积、商的连续性}
+设 $f,g$ 在点 $x_0$ 处连续，则 $f\pm g$、$f\cdot g$、$\dfrac fg$（当 $g(x_0)\neq0$）在 $x_0$ 处也连续。
+
+\subsection{反函数与复合函数的连续性}
+\begin{enumerate}
+    \item 若 $y=f(x)$ 在区间 $I_x$ 上单调增加（减少）且连续，则其反函数 $x=f^{-1}(y)$ 在对应区间 $I_y=\{y\mid y=f(x),x\in I_x\}$ 上也单调增加（减少）且连续。
+    \item 设函数 $u=g(x)$ 在 $x_0$ 处连续且 $g(x_0)=u_0$，函数 $y=f(u)$ 在 $u_0$ 处连续，则复合函数 $y=f[g(x)]$ 在 $x_0$ 处连续，且
+\[
+\lim_{x\to x_0}f\bigl[g(x)\bigr]=f\Bigl[\lim_{x\to x_0}g(x)\Bigr]=f(u_0).
+\]
+\end{enumerate}
+
+\subsection{初等函数的连续性}
+一切初等函数在其\textbf{定义区间内}都是连续的。因此，若 $f$ 是初等函数且 $x_0$ 属于其定义区间，则
+\[
+\lim_{x\to x_0}f(x)=f(x_0),
+\]
+即求极限可直接“代入”。这是求极限最常用的一招。
+
+\corepoint{“定义区间”指含于定义域内的区间，孤立点谈不上连续。分段函数在分界点处不能用代入法，必须按定义验算左右极限是否等于函数值；幂指函数 $u(x)^{v(x)}$ 先写成 $e^{v(x)\ln u(x)}$ 再用复合函数连续性。若代入后出现 $\frac00$、$\frac{\infty}{\infty}$、$1^{\infty}$ 等未定式，说明“直接代入”失效，必须变形。}
+
+\section{闭区间上连续函数的性质}
+
+\subsection{有界性与最大值最小值定理}
+\textbf{定理}\quad 若函数 $f(x)$ 在闭区间 $[a,b]$ 上连续，则 $f(x)$ 在 $[a,b]$ 上有界，且必能取得最大值 $M$ 与最小值 $m$，即存在 $\xi_1,\xi_2\in[a,b]$，使
+\[
+f(\xi_1)=M=\max_{a\le x\le b}f(x),\qquad f(\xi_2)=m=\min_{a\le x\le b}f(x).
+\]
+
+\corepoint{两个条件都不可少：\textbf{闭区间}与\textbf{连续}。$f(x)=\frac1x$ 在 $(0,1]$ 上连续但无界；$f(x)=x$ 在 $(0,1)$ 上连续但取不到最值。开区间或半开区间上只能用“确界”而不能保证取到。}
+
+\subsection{零点定理与介值定理}
+\textbf{零点定理}\quad 设 $f\in C[a,b]$，且 $f(a)\cdot f(b)<0$，则至少存在一点 $\xi\in(a,b)$，使 $f(\xi)=0$。
+
+\textbf{介值定理}\quad 设 $f\in C[a,b]$，且 $f(a)=A$，$f(b)=B$，$A\neq B$，则对 $A$ 与 $B$ 之间的任一数 $C$，至少存在一点 $\xi\in(a,b)$，使 $f(\xi)=C$。
+
+\textbf{推论}\quad 闭区间上连续函数的值域是闭区间 $[m,M]$，即 $f$ 能取到最小值与最大值之间的一切值。
+
+\corepoint{零点定理只保证“存在”，不给出位置与个数；要证“方程在 $(a,b)$ 内至少有一个根”，标准写法是构造 $F(x)$（把方程移项成 $F(x)=0$）、验证 $F$ 连续、再算 $F(a)F(b)<0$。若还要证“唯一”，再补一步单调性（$F'$ 定号）。介值定理中 $C$ 必须在 $f(a)$ 与 $f(b)$ 之间，端点值不能反。}
+
+\subsection{一致连续性}
+\textbf{定义}\quad 设函数 $f(x)$ 在区间 $I$ 上有定义。如果对于任意给定的正数 $\varepsilon$，总存在正数 $\delta$，使得对于区间 $I$ 上的任意两点 $x_1,x_2$，当 $|x_1-x_2|<\delta$ 时，都有
+\[
+|f(x_1)-f(x_2)|<\varepsilon,
+\]
+则称 $f(x)$ 在区间 $I$ 上\textbf{一致连续}。
+
+\keyformula{\forall\,\varepsilon>0,\ \exists\,\delta>0,\ \forall\,x_1,x_2\in I:\ |x_1-x_2|<\delta\ \Rightarrow\ |f(x_1)-f(x_2)|<\varepsilon}
+
+\noindent 与“逐点连续”的区别在于：一致连续的 $\delta$ 只依赖于 $\varepsilon$，\textbf{对区间上所有点通用}；逐点连续的 $\delta$ 还依赖于 $x_0$。
+
+\textbf{定理（一致连续性定理）}\quad 若 $f(x)$ 在闭区间 $[a,b]$ 上连续，则 $f(x)$ 在 $[a,b]$ 上一致连续。
+
+\corepoint{一致连续 $\Rightarrow$ 连续，反之不成立：$f(x)=\frac1x$ 在 $(0,1]$ 上连续但非一致连续（$x$ 越靠近 0，同样的 $\Delta x$ 引起的 $\Delta y$ 越大）。可用“$x_n-y_n\to0$ 但 $f(x_n)-f(y_n)\not\to0$”否定一致连续性；用“$f'$ 在区间上有界”肯定一致连续性（拉格朗日中值定理，见第 3 章）。}

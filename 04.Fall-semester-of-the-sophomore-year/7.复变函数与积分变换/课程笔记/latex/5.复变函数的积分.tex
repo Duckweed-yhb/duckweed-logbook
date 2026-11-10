@@ -1,54 +1,192 @@
+% 子文件：5.复变函数的积分.tex
+% 对应教材：《复变函数与积分变换》(哈工大, 第三版) 第 3 章
+% 对应讲义：包益欣《复变函数》第 3 章（复积分的定义 / 柯西积分定理及应用 / 柯西积分公式及证明 / 其应用）
+% 节次：§3.1 复变函数积分的概念（定义 / 性质 / 存在条件与计算）
+%       §3.2 柯西积分定理（3.2.1 定理 / 3.2.2 不定积分 / 3.2.3 复合闭路定理）
+%       §3.3 柯西积分公式（3.3.1 公式 / 3.3.2 高阶导数公式 / 3.3.3 几个重要的推论）
+%       附加：§3.4 解析函数模的性质（最大模、最小模原理，据讲义 §1.4）
+% 由 1.main.tex 用 \input 引入
+
 \chapter{复变函数的积分}
 
-\section{复积分的定义与计算}
-对于逐段光滑有向曲线 \( C: z(t),\ a \leqslant t \leqslant b \) 和连续复函数 \( f(z) \)，复积分 \( \int_C f(z)dz \) 存在有限。
-若 \( C \) 光滑，则
+\section{复变函数积分的概念}
+
+\subsection{积分的定义}
+先约定曲线。闭区间 \([a,b]\) 上的连续映射
 \[
-\int_C f(z) dz = \int_a^b f(z(t)) z'(t) dt.
+C:\ z=z(t)=x(t)+\mathrm{i}y(t),\qquad a\leqslant t\leqslant b
 \]
+称为复平面上由 \(z(a)\) 到 \(z(b)\) 的\textbf{有向曲线}，\(z(a)\)、\(z(b)\) 为起点与终点。称 \(z=z(a+b-t)\ (a\leqslant t\leqslant b)\) 为 \(C\) 的\textbf{反向曲线}，记 \(C^{-}\)。若 \(z'(t)\) 连续且处处不为零，称 \(C\) \textbf{光滑}；有限条光滑曲线首尾相接称为\textbf{逐段光滑}。若 \(z(a)=z(b)\) 且 \(t\in(a,b)\) 时曲线无重点，称 \(C\) 为\textbf{简单闭曲线}；不作说明时规定其\textbf{逆时针}方向为正向。
+
+设 \(C\) 是逐段光滑有向曲线，\(f(z)\) 在 \(C\) 上有定义。在 \([a,b]\) 上插入分点
+\[
+a=t_{0}<t_{1}<\cdots<t_{n}=b,
+\]
+记 \(z_{k}=z(t_{k})\)，\(\Delta z_{k}=z_{k}-z_{k-1}\)，在每个小弧 \(z_{k-1}z_{k}\) 上任取一点 \(\zeta_{k}\)，作\textbf{黎曼和}
+\[
+\sum_{k=1}^{n}f(\zeta_{k})\,\Delta z_{k}.
+\]
+令 \(\lambda=\max\limits_{1\leqslant k\leqslant n}|\Delta z_{k}|\)，若 \(\lambda\to 0\) 时该和式的极限存在且与分法与 \(\zeta_{k}\) 的取法无关，则称此极限为 \(f(z)\) 沿 \(C\) 的\textbf{复积分}，记
+\[
+\int_{C}f(z)\,\mathrm{d}z=\lim_{\lambda\to 0}\sum_{k=1}^{n}f(\zeta_{k})\,\Delta z_{k},
+\]
+\(C\) 为积分路径，\(f\) 为被积函数。沿闭曲线的积分记作 \(\oint_{C}f(z)\,\mathrm{d}z\)。
+
+\subsection{积分的性质}
+设所涉积分都存在，则
+\begin{enumerate}[leftmargin=2em]
+  \item \textbf{线性性}：\(\displaystyle\int_{C}\bigl[\alpha f(z)+\beta g(z)\bigr]\mathrm{d}z=\alpha\int_{C}f\,\mathrm{d}z+\beta\int_{C}g\,\mathrm{d}z\)（\(\alpha,\beta\) 为复常数）。
+  \item \textbf{反向性}：\(\displaystyle\int_{C^{-}}f(z)\,\mathrm{d}z=-\int_{C}f(z)\,\mathrm{d}z\)。
+  \item \textbf{路径可加性}：若 \(C\) 由 \(C_{1}\) 与 \(C_{2}\) 首尾相接而成，则 \(\displaystyle\int_{C}f\,\mathrm{d}z=\int_{C_{1}}f\,\mathrm{d}z+\int_{C_{2}}f\,\mathrm{d}z\)。
+  \item \textbf{估值不等式}：设 \(|f(z)|\leqslant M\ (z\in C)\)，\(L\) 为 \(C\) 的长度，则
+  \[
+  \left|\int_{C}f(z)\,\mathrm{d}z\right|\leqslant\int_{C}|f(z)|\,|\mathrm{d}z|=\int_{C}|f(z)|\,\mathrm{d}s\leqslant ML .
+  \]
+\end{enumerate}
+
+\corepoint{估值不等式是复积分里\emph{唯一}的“放缩工具”，凡证极限为零、证积分有界、证刘维尔定理都靠它。使用时两个量都要算准：\(M\) 必须是 \(|f|\) 在 \(C\) 上的\textbf{上界}（常取最大值），\(L\) 是路径长度（圆周为 \(2\pi R\)）。注意被积函数在路径上含参数时 \(M\) 也随参数变，要一并估计。}
+
+\subsection{积分的存在条件与计算}
+\textbf{定理}\quad 若 \(f(z)\) 在逐段光滑曲线 \(C\) 上连续，则 \(\displaystyle\int_{C}f(z)\,\mathrm{d}z\) 存在。
+
+\textbf{计算方法一（参数化，最基本）}\quad 设 \(C:z=z(t)\ (a\leqslant t\leqslant b)\) 光滑，则
+\keyformula{\int_{C}f(z)\,\mathrm{d}z=\int_{a}^{b}f\bigl[z(t)\bigr]\,z'(t)\,\mathrm{d}t}
+逐段光滑时按段积分再相加。这一步把复积分化为定积分（被积函数为复值函数，实部虚部分别积分）。
+
+\textbf{计算方法二（化为两个第二类线积分）}\quad 设 \(f=u+\mathrm{i}v\)，\(z=x+\mathrm{i}y\)，则
+\keyformula{\int_{C}f(z)\,\mathrm{d}z=\int_{C}(u\,\mathrm{d}x-v\,\mathrm{d}y)+\mathrm{i}\int_{C}(v\,\mathrm{d}x+u\,\mathrm{d}y)}
+它说明复积分存在 \(\iff\) 右端两个线积分都存在；也说明复积分与路径方向有关。
+
+\textbf{两个基本结果}（后面反复使用）
+\keyformula{\int_{C}\mathrm{d}z=z(b)-z(a);\qquad
+\oint_{|z-z_{0}|=r}(z-z_{0})^{n}\,\mathrm{d}z=
+\begin{cases}2\pi\mathrm{i}, & n=-1,\\ 0, & n\neq -1,\ n\in\mathbb{Z}\end{cases}}
+前者由参数化直接得到（\(\int_{a}^{b}z'(t)\mathrm{d}t=z(b)-z(a)\)），后者把 \(z=z_{0}+r\mathrm{e}^{\mathrm{i}\theta}\) 代入即可验证。它是“绕奇点积分不为零”的根源。
 
 \section{柯西积分定理}
-\subsection{单连通区域}
-设 \( C \) 是简单光滑闭曲线，函数 \( f(z) \) 在 \( C \) 上及其内部解析，则
-\[
-\int_C f(z) dz = 0.
-\]
 
-\subsection{多连通区域}
-设 \( D \) 是有界光滑闭区域，函数 \( f(z) \) 在 \( D \) 上解析，则
+\subsection{柯西积分定理}
+\textbf{定理（柯西积分定理）}\quad 设 \(f(z)\) 在\textbf{单连通区域} \(D\) 内解析，\(C\) 为 \(D\) 内任一条逐段光滑闭曲线，则
+\keyformula{\oint_{C}f(z)\,\mathrm{d}z=0}
+常用的等价叙述：若 \(f\) 在简单闭曲线 \(C\) 上及其内部解析，则沿 \(C\) 的积分为零。
+
+\textbf{条件不能削弱}：只要求 \(f\) 连续不够，必须解析；区域必须是单连通的，否则绕“洞”的积分一般不为零——在去心圆盘 \(0<|z|<1\) 内 \(f(z)=1/z\) 解析，但 \(\oint_{|z|=1}\mathrm{d}z/z=2\pi\mathrm{i}\neq 0\)。
+
+\textbf{推论（积分与路径无关）}\quad 若 \(f\) 在单连通区域 \(D\) 内解析，则 \(\int_{C}f\,\mathrm{d}z\) 只与起点、终点有关，与路径无关。
+
+\textbf{闭路变形原理}\quad 在积分值不变的条件下，闭曲线可以在区域内部连续变形，只要变形过程中\textbf{不越过奇点}。它是复合闭路定理的几何表述，也是“挖小圆”技巧的依据。
+
+\subsection{不定积分}
+\textbf{定理（原函数存在定理）}\quad 设 \(f(z)\) 在单连通区域 \(D\) 内解析，固定 \(z_{0}\in D\)，令
 \[
-\int_{\partial D} f(z) dz = 0.
+F(z)=\int_{z_{0}}^{z}f(\xi)\,\mathrm{d}\xi
 \]
+（积分沿 \(D\) 内任一路径），则 \(F(z)\) 在 \(D\) 内解析，且 \(F'(z)=f(z)\)。称 \(F\) 为 \(f\) 的\textbf{原函数}，\(F(z)+C\)（\(C\) 为复常数）为 \(f\) 的\textbf{不定积分}，记 \(\int f(z)\mathrm{d}z=F(z)+C\)。同一函数的两个原函数相差常数。
+
+\textbf{牛顿—莱布尼茨公式}\quad 若 \(f\) 在单连通区域 \(D\) 内解析，\(F\) 是 \(f\) 的任一原函数，则对 \(z_{0},z_{1}\in D\)
+\keyformula{\int_{z_{0}}^{z_{1}}f(z)\,\mathrm{d}z=F(z_{1})-F(z_{0})}
+于是实积分的换元、分部积分等技巧在复积分中照旧可用（只要原函数在区域内单值解析）。
+
+\textbf{推论}\quad 若 \(D\) 是不含零点的单连通区域，则 \(\operatorname{Ln}z\) 在 \(D\) 上存在单值解析分支，且
+\[
+F(z)=\ln z_{0}+\int_{z_{0}}^{z}\frac{\mathrm{d}\xi}{\xi}
+\]
+就是其中一个分支。更一般地，若 \(f\) 在单连通区域 \(D\) 内解析且处处不为零，则 \(\operatorname{Ln}f(z)\) 在 \(D\) 内存在单值解析分支（取 \(F'=f'/f\)）。
+
+\subsection{复合闭路定理}
+设多连通区域 \(D\) 的边界由外边界 \(C_{0}\) 与内边界 \(C_{1},C_{2},\cdots,C_{n}\) 组成，均取\textbf{正向}（沿边界前进时区域在左侧，故外边界逆时针、内边界顺时针），记复合闭路 \(C=C_{0}+C_{1}^{-}+\cdots+C_{n}^{-}\)。若 \(f\) 在 \(D\) 上解析，则
+\keyformula{\oint_{C}f(z)\,\mathrm{d}z=0,\qquad\text{即}\qquad
+\oint_{C_{0}}f\,\mathrm{d}z=\sum_{k=1}^{n}\oint_{C_{k}}f\,\mathrm{d}z}
+（右端各内边界均取逆时针方向。）直观地说：绕外边界一周的积分等于绕各个“洞”一周的积分之和。
+
+\corepoint{用复合闭路定理解题时\textbf{三个位置必须交代清楚}：(1) 被积函数的奇点在哪；(2) 积分曲线围住了哪些奇点；(3) 挖出的小圆周方向是逆时针还是顺时针。教材写法是“在 \(C\) 内作互不相交的小圆周 \(C_{1},\dots,C_{n}\) 分别包围各奇点”，此时 \(\oint_{C}=\sum\oint_{C_{k}}\)（都取逆时针）；若把小圆当作区域边界，则内边界是\textbf{顺时针}，符号要反过来。方向弄反是这一章最常见的错误。}
 
 \section{柯西积分公式}
-柯西积分公式的核心是：若 \(f(z)\) 在闭曲线 \(C\) 内部解析，则
+
+\subsection{柯西积分公式}
+\textbf{定理（柯西积分公式）}\quad 设 \(f(z)\) 在简单闭曲线 \(C\) 上及其内部 \(D\) 内解析，\(z_{0}\) 为 \(D\) 内任一点，则
+\keyformula{f(z_{0})=\frac{1}{2\pi\mathrm{i}}\oint_{C}\frac{f(z)}{z-z_{0}}\,\mathrm{d}z}
+等价写法：\(\displaystyle\oint_{C}\frac{f(z)}{z-z_{0}}\mathrm{d}z=2\pi\mathrm{i}f(z_{0})\)。
+
+证明要点：以 \(z_{0}\) 为心作充分小的圆 \(K:|z-z_{0}|=\rho\) 含于 \(D\)，由复合闭路定理把沿 \(C\) 的积分化为沿 \(K\) 的积分，再用 \(f\) 的连续性与估值不等式证明
+\(\oint_{K}\dfrac{f(z)}{z-z_{0}}\mathrm{d}z\to 2\pi\mathrm{i}f(z_{0})\)（\(\rho\to 0\)）。
+
+\textbf{意义}\quad 解析函数在区域\textbf{内部}的值完全由它在\textbf{边界}上的值决定。由此立得：若两个解析函数在区域边界上处处相等，则它们在整个区域上恒等（解析函数的“刚性”，实函数没有此性质）。
+
+公式对复合闭路（多连通区域）同样成立：只要 \(z_{0}\) 在 \(C\) 所围区域内部，而 \(f\) 在 \(C\) 上及其所围区域内解析即可。
+
+\subsection{高阶导数公式}
+\textbf{定理}\quad 若 \(f(z)\) 在简单闭曲线 \(C\) 上及其内部 \(D\) 内解析，则 \(f\) 在 \(D\) 内有\textbf{任意阶导数}，且对 \(D\) 内任一点 \(z_{0}\)
+\keyformula{f^{(n)}(z_{0})=\frac{n!}{2\pi\mathrm{i}}\oint_{C}\frac{f(z)}{(z-z_{0})^{n+1}}\,\mathrm{d}z,
+\qquad n=1,2,\cdots}
+证明思路：对 \(f(z_{0})=\frac{1}{2\pi\mathrm{i}}\oint_{C}\frac{f(z)}{z-z_{0}}\mathrm{d}z\) 关于 \(z_{0}\) 求导，用估值不等式证明“积分号下可以求导”（差商与导数的差为 \(O(|\Delta z|)\)），再对 \(n\) 归纳。
+
+反用此式是计算积分的常用手段：
 \[
-\oint_C \frac{f(z)}{z - z_0} dz = 2\pi i \cdot f(z_0).
+\oint_{C}\frac{f(z)}{(z-z_{0})^{n+1}}\,\mathrm{d}z=\frac{2\pi\mathrm{i}}{n!}f^{(n)}(z_{0}).
 \]
 
-特别地，当 \(f(z) = 1\)（常函数，在复平面内处处解析）时，公式简化为：
-\[
-\oint_C \frac{1}{z - z_0} dz = 2\pi i \quad (\text{若 } z_0 \text{ 在 } C \text{ 内部}),
-\]
-\[
-\oint_C \frac{1}{z - z_0} dz = 0 \quad (\text{若 } z_0 \text{ 在 } C \text{ 外部}).
-\]
+\corepoint{这一公式带来复分析与实分析最本质的差别：\textbf{解析 \(\Rightarrow\) 无穷次可导}（而实函数一次可导推不出二次可导）。使用时注意三点：(1) 分子 \(f\) 必须在 \(C\) 及内部\textbf{解析}——奇点要留在分母外面；(2) 分母的幂次是 \(n+1\)，对应 \(n!\)；(3) 若 \(C\) 内有多个奇点，先挖洞拆分，使每个积分只含一个奇点再套公式。}
 
-高阶柯西积分公式：
-设 \( D \) 是有界光滑闭区域，\( C \) 为其边界，\( f(z) \) 在 \( D \) 上解析，则 \( f(z) \) 在 \( D \) 内无穷阶可导，且对 \( D \) 内任意一点 \( z_0 \)，有
-\[
-f^{(n)}(z_0) = \frac{n!}{2\pi i} \int_C \frac{f(\xi)}{(\xi - z_0)^{n+1}} d\xi.
-\]
+\subsection{几个重要的推论}
+\subsubsection*{（1）平均值公式}
+设 \(f\) 在以 \(z_{0}\) 为心、\(R\) 为半径的圆周 \(C\) 上及其内部解析，则
+\keyformula{f(z_{0})=\frac{1}{2\pi}\int_{0}^{2\pi}f\bigl(z_{0}+R\mathrm{e}^{\mathrm{i}\theta}\bigr)\,\mathrm{d}\theta
+=\frac{1}{2\pi R}\oint_{C}f(z)\,\mathrm{d}s}
+即解析函数在圆心的值等于它在圆周上值的平均。
 
-\section{最大模原理}
-设 \( D \) 是连通有界光滑闭区域，\( f(z) \) 在 \( D \) 上解析，则
-\[
-\max_{z \in D} |f(z)| = \max_{z \in \partial D} |f(z)| = M,
-\]
-且存在内点 \( z_0 \) 使得 \( |f(z_0)| = M \) 的充要条件是 \( f(z) \) 在 \( D \) 上为常数函数。
+\subsubsection*{（2）柯西不等式}
+设 \(M=\max\limits_{z\in C}|f(z)|\)，则
+\keyformula{\left|f^{(n)}(z_{0})\right|\leqslant\frac{n!\,M}{R^{n}};\qquad
+\text{特别地}\ \left|f'(z_{0})\right|\leqslant\frac{M}{R}}
+它把函数在一点处的各阶导数用它在圆周上的最大模控制住，是估计导数、证明刘维尔定理的工具。
 
-% ===== 以下内容原在 markdown 稿中、tex 里没有，2026-10-21 归并时以注释保留 =====
-% （片段按公式切分，断句不整；需要时手工整理进正文，整理完删掉这段注释）
-% 我们知道由柯西积分公式有。
-% 积分的存在条件与计算。
-% 现在假设是以点为圆心。
+\subsubsection*{（3）刘维尔（Liouville）定理}
+\textbf{整函数}指在复平面上处处解析的函数（多项式、\(\mathrm{e}^{z}\)、\(\sin z\) 等）。若整函数 \(f(z)\) 在复平面上\textbf{有界}（\(|f(z)|\leqslant M\)），则 \(f\) 必为常数。
+
+证明：对任意 \(z\) 与任意 \(R>0\)，由柯西不等式 \(|f'(z)|\leqslant M/R\)；令 \(R\to+\infty\) 得 \(f'(z)=0\)，故 \(f\) 为常数。
+
+\subsubsection*{（4）代数基本定理}
+任意 \(n\) 次（\(n\geqslant 1\)）复系数多项式
+\[
+f(z)=a_{0}z^{n}+a_{1}z^{n-1}+\cdots+a_{n-1}z+a_{n}\qquad (a_{0}\neq 0)
+\]
+在复平面上\textbf{至少有一个零点}，从而恰有 \(n\) 个零点（计重数）。
+
+证明：若 \(f\) 无零点，则 \(F=1/f\) 是整函数，且由 \(|f(z)|\to+\infty\ (z\to\infty)\) 知 \(F\) 有界，由刘维尔定理 \(F\) 为常数，矛盾。
+
+\subsubsection*{（5）莫累拉（Morera）定理}
+设 \(f(z)\) 在区域 \(D\) 内连续，且对 \(D\) 内任一条其内部含于 \(D\) 的简单闭曲线 \(C\) 都有 \(\oint_{C}f\,\mathrm{d}z=0\)，则 \(f\) 在 \(D\) 内解析。
+
+它是柯西积分定理的\textbf{逆定理}：柯西定理用“解析”推出“积分为零”，莫累拉定理用“积分为零”反推“解析”，常用于证明由积分或级数定义的函数是解析的。
+
+\subsubsection*{（6）泊松（Poisson）积分公式}
+设 \(f\) 在圆 \(C:|z-z_{0}|=R\) 内及 \(C\) 上解析，\(z=z_{0}+r\mathrm{e}^{\mathrm{i}\theta}\ (r<R)\) 为圆内一点，则
+\[
+f(z)=\frac{1}{2\pi}\int_{0}^{2\pi}
+\frac{R^{2}-r^{2}}{R^{2}-2Rr\cos(\varphi-\theta)+r^{2}}\,
+f\bigl(z_{0}+R\mathrm{e}^{\mathrm{i}\varphi}\bigr)\,\mathrm{d}\varphi .
+\]
+比较两端的实部即得\textbf{泊松积分公式}：圆内调和函数的值可由它在圆周上的值通过上述积分表示。特别取 \(r=0\) 即回到调和函数的平均值公式。
+
+\section{解析函数模的性质}
+
+下面的结论由平均值公式与柯西不等式得到（讲义 §1.4），它刻画了解析函数模的“边界控制”性质。
+
+\textbf{最大模原理}\quad 设 \(D\) 是有界连通区域，\(f(z)\) 在 \(\overline{D}\) 上连续、在 \(D\) 内解析，则
+\keyformula{\max_{z\in\overline{D}}|f(z)|=\max_{z\in\partial D}|f(z)|=M}
+并且：若存在 \(D\) 的\textbf{内点} \(z_{0}\) 使 \(|f(z_{0})|=M\)，则 \(f\) 在 \(D\) 内为常数。
+
+证明要点：设内点取到最大值 \(M\)，由平均值公式
+\(M=|f(z_{0})|\leqslant\frac{1}{2\pi}\int_{0}^{2\pi}|f(z_{0}+r\mathrm{e}^{\mathrm{i}\theta})|\mathrm{d}\theta\leqslant M\)，
+故等号处处成立、\(|f|\) 在圆内恒为 \(M\)；沿折线逐点推过去，得 \(|f|\) 在 \(D\) 内恒为 \(M\)，再由 §2.2 的推论知 \(f\) 为常数。
+
+\textbf{最小模原理}\quad 设 \(D\) 有界连通，\(f\) 在 \(\overline{D}\) 上连续、在 \(D\) 内解析且\textbf{处处不为零}，则
+\[
+\min_{z\in\overline{D}}|f(z)|=\min_{z\in\partial D}|f(z)|;
+\]
+若在内点取到最小值，则 \(f\) 为常数。（对 \(1/f\) 用最大模原理。）
+
+\textbf{调和函数的极值原理}\quad 若 \(u(x,y)\) 是有界闭区域 \(\overline{D}\) 上的调和函数（在 \(D\) 内调和、在 \(\overline{D}\) 上连续），则 \(u\) 的最大值与最小值都在边界 \(\partial D\) 上取到；若在内点取到，则 \(u\) 为常数。
+
+\corepoint{最大模原理管的是 \(|f|\) 而\textbf{不是} \(f\)：\(f\) 本身（复值）谈不上大小。三个使用前提别漏：区域\textbf{有界}、\(f\) 在闭区域上\textbf{连续}、在内部\textbf{解析}。典型应用：证明“模为常数的解析函数是常数”（\(|f|\equiv c\) 时内部也取到最大值）。对照两个二元实函数能看清“调和”的关键：\(u=x^{2}+y^{2}\) 在圆盘上的最大值在圆心取到（\(\Delta u=4\neq0\)，不调和，不受定理约束）；而调和的 \(u=x^{2}-y^{2}=\operatorname{Re}(z^{2})\) 的最大值必在边界上取到。}

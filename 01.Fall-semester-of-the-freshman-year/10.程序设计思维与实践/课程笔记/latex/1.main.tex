@@ -1,31 +1,72 @@
-% 程序设计思维与实践 —— 主文档（2026-10-20 新建；原先 main.tex 是 0 字节，工程根本无法编译）
-% 编译：xelatex 1.main.tex （建议编译两次生成目录）
-\documentclass[12pt,a4paper,oneside]{article}
+% 程序设计思维与实践课程笔记 —— 主文档
+% 正文排版集中在 0.样式.tex，章节文件只放内容（从 \section 起）
+% 编译：powershell -NoProfile -ExecutionPolicy Bypass -File "..\build.ps1"
+\documentclass[11pt,a4paper,oneside,openany]{book}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
 
-\usepackage{geometry}
-\usepackage[UTF8, fontset=windows]{ctex}
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{graphicx}
+% 本书有 \chapter，启用 0.样式.tex 的 book 分支（章节标题、目录、页眉）
+\newcommand{\YHBbooktrue}{}
+\newcommand{\YHBcourse}{程序设计思维与实践}
+\newcommand{\YHBversion}{v1.2}
+\newcommand{\YHBquote}{把类型、运算与结构想清楚，代码才会替你说话。}
+\newcommand{\YHBcoverSize}{34pt}
+\newcommand{\YHBcoverLead}{42pt}
 \usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
-\usepackage{array}
-\usepackage{tabularx}
-\usepackage{multirow}
-\usepackage{tikz}
+\definecolor{yhbAccent}{HTML}{1F3D36}
+\definecolor{yhbAccent2}{HTML}{4C7A63}
+\input{0.样式.tex}
 \usepackage{listings}
-\usepackage{hyperref}
-
-\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.6ex}
-
+\lstset{basicstyle=\ttfamily\small,keywordstyle=\color{yhbAccent}\bfseries,commentstyle=\color{textgray},stringstyle=\color{yhbAccent2},frame=single,rulecolor=\color{yhbAccent!35},backgroundcolor=\color{yhbAccent!3},numbers=left,numberstyle=\tiny\color{textgray},breaklines=true,showstringspaces=false,tabsize=4,aboveskip=10pt,belowskip=10pt}
+\usepackage{tikz}
 \begin{document}
+
 \input{2.cover.tex}
 \tableofcontents
 \clearpage
 
-\input{3.基本数据类型.tex}
-\input{4.基本算术运算.tex}
+\chapter{为什么要学习编程}
+\input{3.为什么要学习编程.tex}
+
+\chapter{基本数据类型}
+\input{4.基本数据类型.tex}
+
+\chapter{基本算术运算}
+\input{5.基本算术运算.tex}
+
+\chapter{键盘输入和屏幕输出}
+\input{6.键盘输入和屏幕输出.tex}
+
+\chapter{选择控制结构}
+\input{7.选择控制结构.tex}
+
+\chapter{循环控制结构}
+\input{8.循环控制结构.tex}
+
+\chapter{函数与模块化程序设计}
+\input{9.函数与模块化程序设计.tex}
+
+\chapter{数组和算法基础}
+\input{10.数组和算法基础.tex}
+
+\chapter{指针}
+\input{11.指针.tex}
+
+\chapter{字符串}
+\input{12.字符串.tex}
+
+\chapter{指针和数组}
+\input{13.指针和数组.tex}
+
+\chapter{结构体和数据结构基础}
+\input{14.结构体和数据结构基础.tex}
+
+\chapter{文件操作}
+\input{15.文件操作.tex}
+
+\chapter{简单的游戏设计}
+\input{16.简单的游戏设计.tex}
 
 \end{document}

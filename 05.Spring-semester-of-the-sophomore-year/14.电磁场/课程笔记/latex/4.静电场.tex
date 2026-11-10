@@ -1,548 +1,770 @@
-% 静电场核心知识点 - 子文件（仅用于 \input 引入）
-% 电磁场课程笔记
-% 注意：本文件为子文件，无 document 环境，由主文档统一管理
-% 依赖宏包（主文档导言区已配置）：
-% \usepackage{tcolorbox}
-% \tcbuselibrary{skins}
-% 彩色公式框定义（同矢量分析，主文档统一定义，此处不再重复）
+% 静电场（教材 第1章 §1-1～§1-9）- 子文件（仅用于 \input 引入）
+% 依赖：formulaBox 环境在 3.矢量分析.tex 中定义，本文件不再重复定义
+% 编号：章号由主文件 \chapter 自动给出，节内不再手写 §1-x
 
 % -------------------------- 正文 --------------------------
-\section{静电场}
+\chapter{静电场}
 
-\subsection{本章内容概览}
-本章系统讲解静电场基础理论与经典求解方法，核心知识点如下：
-\begin{itemize}
-    \item \textbf{电场强度}、\textbf{标量电位}的定义与相互关系
-    \item \textbf{高斯定理}微分形式与积分形式及工程应用
-    \item \textbf{静电场基本方程组}、媒质分界面衔接条件
-    \item \textbf{泊松/拉普拉斯方程}、边值问题与唯一性定理
-    \item \textbf{镜像法}、\textbf{电轴法}的解题思路与典型模型
-    \item \textbf{电容}、多导体系统\textbf{部分电容}的分析与计算
-    \item \textbf{静电场能量}、\textbf{能量密度}及电场力求解
-\end{itemize}
+相对于观察者静止、电荷量不随时间变化的电荷所产生的电场称为静电场。本章由库仑定律引入电场强度
+$\vec{E}$ 与标量电位 $\varphi$，讨论导体与电介质的影响，导出衔接条件与泊松、拉普拉斯方程，把问题
+归结为边值问题，再介绍直接积分、分离变量、有限差分、镜像法与电轴法，最后讨论电容、静电能量与力。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\section{电场强度、电位}
 
-\subsection{电场强度与电位的基本概念}
-\subsubsection{研究思路梳理}
-以库仑定律为起点，逐层推导静电场基本物理量，逻辑脉络如下：
-\begin{enumerate}
-    \item \textbf{库仑定律}：描述两点电荷间的相互作用力
-    \item \textbf{电场强度}：定义单位正电荷所受电场力
-    \item 点电荷、连续分布电荷的电场强度表达式
-    \item 由电场无旋性引入\textbf{标量电位}函数
-\end{enumerate}
-核心结论：\textbf{真空中静电场为无旋场}，满足 $\nabla \times \vec{E} = 0$，因此可引入标量电位简化求解。
+\subsection{库仑定律与电场强度}
 
-\subsubsection{库仑定律}
-真空中两点电荷 $q'$、$q$ 间的相互作用力：
+无限大真空中，两个静止小带电体间距离远大于其几何尺寸时，作用力为
 \begin{formulaBox}
 \[
-\vec{F} = \frac{1}{4\pi\varepsilon_0} \frac{q'q}{R^2} \vec{e}_R
-= \frac{1}{4\pi\varepsilon_0} \frac{q'q}{|\vec{r}-\vec{r}'|^3} \big(\vec{r}-\vec{r}'\big)
-\]
-\end{formulaBox}
-式中参数说明：
-\begin{itemize}
-    \item 真空介电常数：$\varepsilon_0 = \dfrac{10^{-9}}{36\pi} \ \mathrm{F/m}$
-    \item $\varepsilon$ 为介质绝对介电常数
-    \item 适用前提：线性、各向同性、均匀无限大介质
-\end{itemize}
-
-\subsubsection{电场强度的定义}
-电场的基本作用是对场内电荷施加电场力，电场强度定义为：
-\begin{formulaBox}
-\[
-\vec{E} = \lim_{q_0 \to 0} \frac{\vec{F}}{q_0}
+\vec{F}_{12}=\frac{1}{4\pi\varepsilon_0}\frac{q_1q_2}{R^2}\vec{e}_R,
+\qquad
+\varepsilon_0=\frac{10^{-9}}{36\pi}\ \mathrm{F/m}\approx 8.85\times10^{-12}\ \mathrm{F/m}
 \]
 \end{formulaBox}
 
-\paragraph{点电荷的电场强度}
+适用条件：带电体几何尺寸远小于其间距离，即视为\textbf{点电荷}（“点”只是相对意义）。电场强度定义
+为试验电荷所受的力与其电荷量之比的极限
 \begin{formulaBox}
 \[
-\vec{E} = \frac{1}{4\pi\varepsilon_0} \frac{q}{|\vec{r}-\vec{r}'|^3} \big(\vec{r}-\vec{r}'\big)
-\]
-\end{formulaBox}
-物理意义：表征场内某点单位正电荷所受电场力的大小与方向，单位 $\mathrm{V/m}$。
-
-\paragraph{点电荷系电场（场强叠加原理）}
-多个点电荷的总电场为各点电荷电场的矢量叠加：
-\begin{formulaBox}
-\[
-\vec{E} = \frac{1}{4\pi\varepsilon_0} \sum_i \frac{q_i}{|\vec{r}-\vec{r}_i'|^3} \big(\vec{r}-\vec{r}_i'\big)
+\vec{E}=\lim_{q_0\to0}\frac{\vec{F}}{q_0}\ (\mathrm{V/m}),
+\qquad
+\vec{E}(\vec{r})=\frac{1}{4\pi\varepsilon_0}\frac{q}{|\vec{r}-\vec{r}'|^3}\left(\vec{r}-\vec{r}'\right)
 \]
 \end{formulaBox}
 
-\subsubsection{连续分布电荷的电场强度}
-实际场景中电荷多为连续分布，场强通过体积分/面积分/线积分求解：
-
-\paragraph{体电荷分布 $\rho(\vec{r}')$，单位：$\mathrm{C/m^3}$}
+$\vec{E}$ 仅由该点电场决定，\textbf{与试验电荷无关}。场与源成线性关系，故连续分布电荷的场强按
+叠加原理写成矢量积分：
 \begin{formulaBox}
 \[
-\vec{E}(\vec{r}) = \frac{1}{4\pi\varepsilon_0} \int_{V'} \frac{\rho(\vec{r}')}{|\vec{r}-\vec{r}'|^3} \big(\vec{r}-\vec{r}'\big) \mathrm{d} V'
+\vec{E}=\frac{1}{4\pi\varepsilon_0}\int\frac{\vec{R}}{R^3}\,\mathrm{d}q,
+\qquad
+\mathrm{d}q=\rho\,\mathrm{d}V'\ \text{或}\ \sigma\,\mathrm{d}S'\ \text{或}\ \tau\,\mathrm{d}l'
 \]
 \end{formulaBox}
 
-\paragraph{面电荷分布 $\sigma(\vec{r}')$，单位：$\mathrm{C/m^2}$}
+面电荷、线电荷是体电荷的极限形式，体电荷公式通用。电荷分布具有平面对称、柱对称、球对称时，
+应改用电场的高斯定律而不做硬性矢量积分；积分的实用技巧是“配对消去”——利用对称性成对取元电荷，
+使垂直合成方向的分量相消。
+
+\subsection{电位与电压}
+
+单位正电荷由 $A$ 移至 $B$，电场力作功与路径无关；沿闭合路径作功恒为零：
 \begin{formulaBox}
 \[
-\vec{E}(\vec{r}) = \frac{1}{4\pi\varepsilon_0} \int_{S'} \frac{\sigma(\vec{r}')}{|\vec{r}-\vec{r}'|^3} \big(\vec{r}-\vec{r}'\big) \mathrm{d} S'
+\oint_L\vec{E}\cdot\mathrm{d}\vec{l}=0
+\quad\Longleftrightarrow\quad
+\nabla\times\vec{E}=0
 \]
 \end{formulaBox}
 
-\paragraph{线电荷分布 $\tau(\vec{r}')$，单位：$\mathrm{C/m}$}
+前者为\textbf{环路定律}，后者为其微分形式（由斯托克斯定理得到），二者等价，说明静电场是
+\textbf{无旋场}、即\textbf{保守场}。由“梯度的旋度恒为零”，无旋的 $\vec{E}$ 可表为标量电位的负梯度：
 \begin{formulaBox}
 \[
-\vec{E}(\vec{r}) = \frac{1}{4\pi\varepsilon_0} \int_{L'} \frac{\tau(\vec{r}')}{|\vec{r}-\vec{r}'|^3} \big(\vec{r}-\vec{r}'\big) \mathrm{d} l'
+\vec{E}=-\nabla\varphi,
+\qquad
+\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}=\varphi_A-\varphi_B=U_{AB}
 \]
 \end{formulaBox}
 
-\noindent \textbf{补充说明}：面电荷、线电荷可看作体电荷的极限形式，体电荷场强公式具有通用性。
-
-\subsubsection{电位的引出}
-直接积分求解电场强度计算繁琐。利用静电场无旋特性，结合矢量微分关系 $\nabla \dfrac{1}{R} = -\dfrac{\vec{e}_R}{R^2}$，可得：
-\[
-\vec{E} = -\nabla\left( \frac{1}{4\pi\varepsilon_0} \int_{V'} \frac{\rho}{R} \mathrm{d} V' + C \right)
-\]
-
-定义\textbf{标量电位函数}：
-\[
-\varphi = \frac{1}{4\pi\varepsilon_0} \int_{V'} \frac{\rho}{R} \mathrm{d} V' + C
-\]
-则场强与电位满足核心关系：
+负号表示 $\vec{E}$ 指向电位\textbf{最大减小率}方向。$\varphi$ 与 $\varphi+C$ 代表同一 $\vec{E}$，
+故电位是相对的，须选参考点 $Q$（$\varphi_Q=0$）：
 \begin{formulaBox}
 \[
-\vec{E} = -\nabla\varphi
+\varphi_P=\int_P^{Q}\vec{E}\cdot\mathrm{d}\vec{l}
 \]
 \end{formulaBox}
 
-\paragraph{不同电荷分布的电位公式}
-\begin{itemize}
-    \item 体电荷：
-    \begin{formulaBox}
-    \[
-    \varphi = \frac{1}{4\pi\varepsilon_0} \int_{V'} \frac{\rho}{R} \mathrm{d} V' + C
-    \]
-    \end{formulaBox}
-    \item 面电荷：
-    \begin{formulaBox}
-    \[
-    \varphi = \frac{1}{4\pi\varepsilon_0} \int_{S'} \frac{\sigma}{R} \mathrm{d} S' + C
-    \]
-    \end{formulaBox}
-    \item 线电荷：
-    \begin{formulaBox}
-    \[
-    \varphi = \frac{1}{4\pi\varepsilon_0} \int_{L'} \frac{\tau}{R} \mathrm{d} l' + C
-    \]
-    \end{formulaBox}
-    \item 点电荷系：
-    \begin{formulaBox}
-    \[
-    \varphi = \frac{1}{4\pi\varepsilon_0} \sum_{k=1}^n \frac{q_k}{R_k} + C
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\paragraph{电位参考点}
-电位包含不定常数 $C$，需人为选取\textbf{电位参考点}（零电位点）确定电位的唯一数值。
-
-\subsubsection{电位与电场强度的积分关系}
-单位正电荷沿路径从 $P$ 移动至 $Q$，电场力做功：
-\[
-W = \int_{P}^{Q} \vec{E} \cdot \mathrm{d}\vec{l}
-\]
-将 $\vec{E}=-\nabla\varphi$ 代入，得电位差公式：
+工程上常取大地为参考点；电荷全在有限空间内时取无穷远为零电位最方便。\textbf{电荷分布延拓到无限远}
+时（无限长线电荷、无限大带电平面）无穷远处电位为无限大，必须改在有限空间内选参考点。取无穷远为
+零电位时
 \begin{formulaBox}
 \[
-\int_{P}^{Q} \vec{E} \cdot \mathrm{d}\vec{l} = \varphi_P - \varphi_Q
+\varphi(\vec{r})=\frac{1}{4\pi\varepsilon_0}\frac{q}{R},
+\qquad
+\varphi(\vec{r})=\frac{1}{4\pi\varepsilon_0}\int\frac{\mathrm{d}q}{R}
 \]
 \end{formulaBox}
 
-若取 $Q$ 为电位参考点（$\varphi_Q=0$），则 $P$ 点电位：
+一对相距很近的等量异号电荷构成\textbf{电偶极子}，电偶极矩 $\vec{p}=q\vec{l}$（由负指向正，
+$\mathrm{C\cdot m}$）。$r\gg l$ 处
 \begin{formulaBox}
 \[
-\varphi_P = \int_{P}^{Q_{\text{ref}}} \vec{E} \cdot \mathrm{d}\vec{l}
-\]
-\end{formulaBox}
-物理意义：将单位正电荷由 $P$ 点移至参考点，电场力所做的功。
-
-\subsubsection{电力线与等位面}
-由 $\vec{E} = -\nabla\varphi$ 可推出几何性质：
-\begin{itemize}
-    \item 电力线与等位面\textbf{处处正交}
-    \item 电力线始终指向\textbf{电位降低}的方向
-\end{itemize}
-
-\subsubsection{电偶极子}
-电偶极子由一对间距极小的等量异号点电荷构成，是分析电介质极化、电磁辐射与干扰的基础模型。
-
-\paragraph{电偶极子电位}
-\begin{formulaBox}
-\[
-\varphi = \frac{ql\cos\theta}{4\pi\varepsilon_0 r^2}
-= \frac{1}{4\pi\varepsilon_0} \frac{\vec{p} \cdot \vec{e}_r}{r^2}
-\]
-\end{formulaBox}
-式中 $\vec{p}=q\vec{l}$ 为\textbf{电偶极矩}，方向由负电荷指向正电荷。
-
-\paragraph{电偶极子电场（球坐标系）}
-对电位求负梯度，得到电场强度：
-\begin{formulaBox}
-\[
-\vec{E} = \frac{p}{4\pi\varepsilon_0 r^3} \left( 2\cos\theta \, \vec{e}_r + \sin\theta \, \vec{e}_\theta \right)
+\varphi=\frac{1}{4\pi\varepsilon_0}\frac{\vec{p}\cdot\vec{e}_r}{r^2},
+\qquad
+\vec{E}=\frac{p}{4\pi\varepsilon_0r^3}\left(2\cos\theta\,\vec{e}_r+\sin\theta\,\vec{e}_\theta\right)
 \]
 \end{formulaBox}
 
-\noindent \textbf{基本特性}：电位大小与 $r^2$ 成反比，电场强度大小与 $r^3$ 成反比。
+即电位与 $r^2$ 成反比、场强与 $r^3$ 成反比，衰减比点电荷快，是分析介质极化与电磁辐射的基础模型。
 
-\subsubsection{静电场无旋性等价表述}
-静电场无旋是一组互为等价的物理关系：
+\subsection{电场线与等位面}
+
+$E$ 线上每点切线方向与该点场强方向一致，其微分方程为
 \begin{formulaBox}
 \[
-\nabla \times \vec{E} = 0
-\iff \vec{E} = -\nabla\varphi
-\iff \int_{P}^{Q} \vec{E} \cdot \mathrm{d}\vec{l} = \varphi_P - \varphi_Q
-\iff \oint_L \vec{E} \cdot \mathrm{d}\vec{l} = 0
+\vec{E}\times\mathrm{d}\vec{l}=0
+\quad\Longleftrightarrow\quad
+\frac{\mathrm{d}x}{E_x}=\frac{\mathrm{d}y}{E_y}=\frac{\mathrm{d}z}{E_z}
 \]
 \end{formulaBox}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+等位面方程为 $\varphi(x,y,z)=C$，它与平面的截迹为等位线。由 $\vec{E}=-\nabla\varphi$ 得：等位面与
+$E$ 线\textbf{处处正交}；$E$ 线指向\textbf{电位降低}方向；相邻等位面电位差相等时，
+\textbf{等位面愈密处场强愈大}。
 
-\subsection{高斯定律及其应用}
-静电场属于\textbf{有源无旋场}，高斯定理是描述静电场“有源”特性的核心方程，分为真空形式与电介质形式。
+\corepoint{等位面上电位处处相同，但场强一般\textbf{不}相同（场强取决于电位的变化率）。故“电位为零处场强
+必为零”“电位高处场强必大”“场强相等处电位必相等”均为错误判断。}
 
-\subsubsection{真空中高斯定理}
-静电场由空间中所有电荷共同激发，包含自由电荷与极化电荷两类。
-\paragraph{微分形式（散度方程，描述场点局部规律）}
-空间任意一点电场强度的散度，等于该点总电荷体密度除以真空介电常数：
+\section{高斯定律}
+
+\subsection{静电场中的导体}
+
+导体引入外电场后，自由电荷移动、积聚于表面，其附加场与外场在导体内处处抵消而达静电平衡。此时：
+（1） 导体内 $\vec{E}=0$；（2） 导体为\textbf{等位体}、表面为\textbf{等位面}；（3） 表面 $\vec{E}$
+\textbf{垂直于}表面；（4） 电荷只能分布在导体\textbf{表面}。
+
+\subsection{电介质的极化}
+
+介质中电子被束缚，外场作用下正负电荷作用中心不再重合，形成小电偶极子，称\textbf{介质极化}。
+取体积元 $\Delta V$，定义\textbf{电极化强度}
 \begin{formulaBox}
 \[
-\nabla \cdot \vec{E} = \frac{\rho}{\varepsilon_0}
-\]
-\end{formulaBox}
-式中 $\rho$ 为该点\textbf{总电荷体密度}，包含自由电荷与极化电荷。
-
-\paragraph{积分形式（电场通量定理，描述宏观闭合曲面规律）}
-穿过任意闭合曲面的电场强度总通量，等于该闭合曲面包围的全部电荷量除以真空介电常数：
-\begin{formulaBox}
-\[
-\oint_{S} \vec{E} \cdot \mathrm{d}\vec{S} = \frac{q}{\varepsilon_0}
-\]
-\end{formulaBox}
-该式常用于求解具有球对称、柱对称、平面对称分布的静电场，可大幅简化计算。
-
-\subsubsection{电介质的极化}
-电介质在外电场作用下发生极化，产生极化电荷，核心物理量：
-\begin{itemize}
-    \item \textbf{极化强度}：
-    \begin{formulaBox}
-    \[
-    \vec{P} = \lim_{\Delta V \to 0} \frac{\sum \vec{p}_i}{\Delta V}
-    \]
-    \end{formulaBox}
-    \item \textbf{极化电荷体密度}：
-    \begin{formulaBox}
-    \[
-    \rho_P = -\nabla \cdot \vec{P}
-    \]
-    \end{formulaBox}
-    \item \textbf{极化电荷面密度}：
-    \begin{formulaBox}
-    \[
-    \sigma_P = \vec{P} \cdot \vec{e}_n
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\subsubsection{电位移矢量与介质中高斯定理}
-定义\textbf{电位移矢量}：
-\begin{formulaBox}
-\[
-\vec{D} = \varepsilon_0 \vec{E} + \vec{P}
+\vec{P}=\lim_{\Delta V\to0}\frac{\sum\vec{p}_i}{\Delta V}\ (\mathrm{C/m^2}),
+\qquad
+\rho_p=-\nabla\cdot\vec{P},
+\qquad
+\sigma_p=\vec{P}\cdot\vec{e}_n,
+\qquad
+\vec{P}=\chi_e\varepsilon_0\vec{E}
 \]
 \end{formulaBox}
 
-对于\textbf{线性、各向同性介质}，满足本构关系：
+$\rho_p$、$\sigma_p$ 为极化电荷的体密度与面密度（$\vec{e}_n$ 为介质表面外法向），$\chi_e$ 为电极化率。
+
+\corepoint{均匀介质极化时体极化电荷为零（$\vec{P}$ 均匀则 $\nabla\cdot\vec{P}=0$），只在表面出现面极化电荷；
+不均匀介质即使无自由电荷也可能有体极化电荷。判断“何处有极化电荷”看 $\vec{P}$ 是否随位置变化，
+而不是看介质是否被极化。}
+
+\subsection{电通密度与高斯定律}
+
+把极化电荷用 $\vec{P}$ 表示后引入\textbf{电通（量）密度}（电位移矢量）：
 \begin{formulaBox}
 \[
-\vec{D} = \varepsilon \vec{E},\quad \varepsilon = \varepsilon_r \varepsilon_0
+\vec{D}=\varepsilon_0\vec{E}+\vec{P},
+\qquad
+\oint_S\vec{D}\cdot\mathrm{d}\vec{S}=q_f,
+\qquad
+\nabla\cdot\vec{D}=\rho_f
 \]
 \end{formulaBox}
 
-介质中高斯定理：
-微分形式：
+即任意闭合面上 $\vec{D}$ 的面积分等于面内\textbf{总自由电荷}，与极化电荷及面外电荷无关——引入
+$\vec{D}$ 的便利正在于此。对各向同性线性介质，代入 $\vec{P}=\chi_e\varepsilon_0\vec{E}$ 得构成方程
 \begin{formulaBox}
 \[
-\nabla \cdot \vec{D} = \rho_f
-\]
-\end{formulaBox}
-积分形式：
-\begin{formulaBox}
-\[
-\oint_S \vec{D} \cdot \mathrm{d}\vec{S} = q_f
-\]
-\end{formulaBox}
-其中 $\rho_f$、$q_f$ 分别为\textbf{自由电荷体密度}、闭合面内总自由电荷。
-
-\subsubsection{静电平衡下的导体}
-导体达到静电平衡后具备三大特性：
-\begin{itemize}
-    \item 导体内部电场强度 $\vec{E}=0$
-    \item 导体为\textbf{等位体}，导体表面为\textbf{等位面}
-    \item 自由电荷仅分布于导体外表面
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{静电场基本方程组与分界面衔接条件}
-不同媒质分界面处场量不连续，微分场方程失效，需由积分形式推导\textbf{分界面衔接条件}。
-
-\subsubsection{电场强度切向衔接条件}
-由静电场环路定理 $\displaystyle \oint_L \vec{E} \cdot \mathrm{d}\vec{l}=0$，得切向分量连续：
-\begin{formulaBox}
-\[
-E_{1t} = E_{2t}
-\]
-\end{formulaBox}
-矢量形式：
-\begin{formulaBox}
-\[
-\vec{e}_n \times \big(\vec{E}_2 - \vec{E}_1\big) = 0
+\vec{D}=\varepsilon_0(1+\chi_e)\vec{E}=\varepsilon\vec{E}=\varepsilon_r\varepsilon_0\vec{E}
 \]
 \end{formulaBox}
 
-\subsubsection{电位移矢量法向衔接条件}
-由介质中高斯定理，得法向分量关系：
-\begin{formulaBox}
-\[
-D_{2n} - D_{1n} = \sigma_f
-\]
-\end{formulaBox}
-矢量形式：
-\begin{formulaBox}
-\[
-\vec{e}_n \cdot \big(\vec{D}_2 - \vec{D}_1\big) = \sigma_f
-\]
-\end{formulaBox}
-$\sigma_f$ 为分界面上的\textbf{自由电荷面密度}。
+\subsection{用高斯定律计算电场}
 
-\subsubsection{两类典型分界面条件}
-\paragraph{1. 理想电介质分界面（$\sigma_f=0$）}
-此时 $D_{1n}=D_{2n}$，结合本构关系与切向连续条件，推导出\textbf{电场折射定律}：
-\begin{formulaBox}
-\[
-\frac{\tan\alpha_1}{\tan\alpha_2} = \frac{\varepsilon_1}{\varepsilon_2}
-\]
-\end{formulaBox}
-适用：各向同性线性介质、分界面无自由电荷。
+场分布具有平面对称、柱对称或球对称时，用高斯定律求场很直接。步骤：（1） 由电荷分布对称性判断
+$\vec{D}$ 的方向与等值面（球对称$\to$径向，柱对称$\to$径向，面对称$\to$法向）；（2） 过待求点作合适的高斯面
+（球面、同轴圆柱面加两端面、扁圆柱面），使面上 $\vec{D}$ 与法向平行且等值、或与法向垂直；
+（3） 由 $\oint_S\vec{D}\cdot\mathrm{d}\vec{S}=q_f$ 解出 $D$，再由 $\vec{D}=\varepsilon\vec{E}$ 得
+$\vec{E}$，必要时积分求 $\varphi$。
 
-\paragraph{2. 导体与介质分界面}
-静电平衡时导体内部 $\vec{E}_1=0,\ \vec{D}_1=0$，因此：
+\corepoint{高斯定律永远成立，但只有对称性足够时才可用来“解出”场强。对称性不足（有限长线段、偏心圆柱）只能
+回到叠加积分或解边值问题；多层介质按分界面分段，各段用高斯定律，再用衔接条件与电压约束联立。}
+
+\section{静电场基本方程、分界面上的衔接条件}
+
+\subsection{静电场基本方程}
+
+静电场是\textbf{无旋场}，同时又是\textbf{有散场}——静止电荷是它的散度源：
 \begin{formulaBox}
 \[
-\begin{cases}
-E_{2t} = 0 \\
-D_{2n} = \sigma_f
-\end{cases}
-\]
-\end{formulaBox}
-介质侧电场仅有法向分量：
-\begin{formulaBox}
-\[
-E_2 = \frac{\sigma_f}{\varepsilon_2}
+\begin{aligned}
+\text{积分形式：}\quad &\oint_S\vec{D}\cdot\mathrm{d}\vec{S}=q_f,
+\qquad \oint_L\vec{E}\cdot\mathrm{d}\vec{l}=0\\
+\text{微分形式：}\quad &\nabla\cdot\vec{D}=\rho_f,
+\qquad \nabla\times\vec{E}=0\\
+\text{构成方程：}\quad &\vec{D}=\varepsilon\vec{E}
+\qquad(\text{各向同性线性介质})
+\end{aligned}
 \]
 \end{formulaBox}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+积分形式刻画每条回路、每个闭合面上场量的整体情况，微分形式刻画各点及其邻域，便于分析计算。
 
-\subsection{静电场边值问题与唯一性定理}
-\subsubsection{泊松方程与拉普拉斯方程}
-将 $\vec{E}=-\nabla\varphi$ 代入高斯定理，得到电位的控制方程——\textbf{泊松方程}：
+\subsection{分界面上的衔接条件}
+
+分界面两侧物性突变，场量可能突变，基本方程的\textbf{微分形式失效}，须回到\textbf{积分形式}推导。
+设 $\vec{e}_n$ 由媒质 1 指向媒质 2。
+
+（1）围绕界面点作高 $\Delta h\to0$ 的小扁圆柱体（两端面 $\Delta S$ 分居两侧），用高斯定律，侧面通量
+趋零，得电通密度的法向条件（$\sigma_f$ 为界面自由电荷面密度）：
 \begin{formulaBox}
 \[
-\nabla^2 \varphi = -\frac{\rho}{\varepsilon}
+D_{2n}-D_{1n}=\sigma_f
+\qquad\Longleftrightarrow\qquad
+\vec{e}_n\cdot\left(\vec{D}_2-\vec{D}_1\right)=\sigma_f
 \]
 \end{formulaBox}
 
-无源区域（$\rho=0$）方程退化为\textbf{拉普拉斯方程}：
+（2）围绕界面点作与界面垂直的狭小矩形环路（垂直边长 $\Delta h\to0$），用环路定律，得电场强度的
+切向条件：
 \begin{formulaBox}
 \[
-\nabla^2 \varphi = 0
+E_{1t}=E_{2t}
+\qquad\Longleftrightarrow\qquad
+\vec{e}_n\times\left(\vec{E}_2-\vec{E}_1\right)=0
 \]
 \end{formulaBox}
 
-\subsubsection{三类边界条件}
-求解边值问题需给定边界条件，分为三类：
-\begin{itemize}
-    \item 第一类（狄利克雷）：边界电位已知
-    \begin{formulaBox}
-    \[
-    \varphi\big|_S = \varphi_0
-    \]
-    \end{formulaBox}
-    \item 第二类（诺伊曼）：边界电位法向导数已知
-    \begin{formulaBox}
-    \[
-    \dfrac{\partial \varphi}{\partial n}\bigg|_S = f
-    \]
-    \end{formulaBox}
-    \item 混合边界条件：边界同时包含上述两类条件
-\end{itemize}
+\subsection{两种特殊分界面与电位的衔接条件}
 
-\subsubsection{唯一性定理}
-给定完整边界条件后，泊松方程/拉普拉斯方程的解\textbf{唯一存在}。该定理是镜像法、分离变量法等间接解法的理论依据。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{镜像法与电轴法的求解思路}
-\subsubsection{镜像法基本原理}
-基于唯一性定理，引入\textbf{虚拟镜像电荷}等效替代导体/介质分界面上的感应电荷，将复杂边值问题转化为简单电荷体系的场叠加问题。
-
-\subsubsection{经典应用模型}
-\begin{itemize}
-    \item 点电荷 + 接地无限大导体平面
-    \item 点电荷 + 接地导体球面
-    \item 线电荷 + 平行导体圆柱（\textbf{电轴法}）
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{电容与部分电容的计算}
-\subsubsection{电容基本概念}
-电容是电场对应的电路参数，电容计算本质为静电场求解，流程如下：
-\[
-Q \xrightarrow{\oint_S \vec{D} \cdot \mathrm{d}\vec{S}} \vec{E} \xrightarrow{\int_A^B \vec{E} \cdot \mathrm{d}\vec{l}} U \implies C = \frac{Q}{U}
-\]
-
-\paragraph{电容定义}
-两导体系统的电容为导体电荷量与导体间电位差之比：
+（1）两种\textbf{理想电介质}分界面（$\sigma_f=0$）：$D_{1n}=D_{2n}$、$E_{1t}=E_{2t}$。设场与法线
+夹角为 $\alpha_1,\alpha_2$，由 $D_n=\varepsilon E\cos\alpha$、$E_t=E\sin\alpha$ 相除得\textbf{折射定律}
 \begin{formulaBox}
 \[
-C = \frac{Q}{U}
+\frac{\tan\alpha_1}{\tan\alpha_2}=\frac{\varepsilon_1}{\varepsilon_2}
 \]
 \end{formulaBox}
-单位：法拉($\mathrm{F}$)，工程常用微法($\mathrm{\mu F}$)、皮法($\mathrm{pF}$)。
 
-\paragraph{电容特性}
-电容仅由\textbf{导体形状、尺寸、相对位置、介质分布}决定，与带电量、电位差无关。
+即 $\varepsilon$ 大的一侧场与法线夹角大，电场线“折向”介电常数大的一侧。
 
-\paragraph{常用电容器}
-高压电力电容器、电子线路用陶瓷电容、电解电容、钽电容等。
-
-\subsubsection{部分电容}
-\paragraph{引入背景}
-对于三个及以上导体组成的多导体系统，导体间电压会受到所有导体电荷的相互影响，单一电容无法描述该特性，因此引入\textbf{部分电容}。
-
-\paragraph{静电独立系统}
-系统内电场仅由内部带电体产生，与外部电荷无关，满足：
+（2）\textbf{导体与电介质}分界面：静电平衡时导体内 $\vec{E}_1=0$、$\vec{D}_1=0$，故
 \begin{formulaBox}
 \[
-q_0 + q_1 + q_2 + \dots + q_n = 0
+E_{2t}=0,\qquad D_{2n}=\sigma_f,\qquad E_2=\frac{\sigma_f}{\varepsilon_2}
 \]
 \end{formulaBox}
-电位移线仅在系统内部导体之间起止。
 
-\paragraph{电荷与电压的关系}
-$n+1$ 导体静电独立系统，各导体电荷满足：
+介质侧电场只有法向分量，垂直于导体表面，大小由表面自由电荷面密度决定。
+
+（3）\textbf{用电位表示}：在界面两侧取相距 $d\to0$ 的两点，由
+$\varphi_A-\varphi_B=\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}$ 得
 \begin{formulaBox}
 \[
-\begin{cases}
-q_1 = C_{10}U_{10} + C_{12}U_{12} + \dots + C_{1n}U_{1n} \\
-\quad\vdots \\
-q_n = C_{n1}U_{n1} + C_{n2}U_{n2} + \dots + C_{n0}U_{n0}
-\end{cases}
+\varphi_1=\varphi_2,
+\qquad
+\varepsilon_1\frac{\partial\varphi_1}{\partial n}-\varepsilon_2\frac{\partial\varphi_2}{\partial n}=\sigma_f
+\]
+\end{formulaBox}
+
+即界面两侧\textbf{电位连续}（与 $E_{1t}=E_{2t}$ 等价），而电位法向导数有跃变。
+
+\corepoint{衔接条件必须与 $\vec{e}_n$ 的指向配套：规定 $\vec{e}_n$ 由媒质 1 指向媒质 2，才是
+$D_{2n}-D_{1n}=\sigma_f$；方向取反则右端变号，全题符号皆错。角度 $\alpha$ 一律与\textbf{法线}起算。}
+
+\section{静电场边值问题、唯一性定理}
+
+\subsection{泊松方程与拉普拉斯方程}
+
+把 $\vec{D}=\varepsilon\vec{E}$、$\vec{E}=-\nabla\varphi$ 代入 $\nabla\cdot\vec{D}=\rho_f$，对均匀介质
+（$\varepsilon$ 为常数）得
+\begin{formulaBox}
+\[
+\nabla\cdot(\varepsilon\nabla\varphi)=-\rho_f
+\quad\Longrightarrow\quad
+\nabla^2\varphi=-\frac{\rho_f}{\varepsilon},
+\qquad
+\nabla^2\varphi=0\ (\rho_f=0)
+\]
+\end{formulaBox}
+
+前者为\textbf{泊松方程}，后者为\textbf{拉普拉斯方程}。$\nabla^2$ 在直角、圆柱、球坐标系中的展开式
+见“矢量分析”部分（拉普拉斯算子一节），解题时按场域对称性选用相应形式。
+
+\subsection{边值问题与三类边界条件}
+
+只靠微分方程不能唯一确定解（积分过程中出现待定常数），须由边界条件定。故
+\begin{formulaBox}
+\[
+\text{边值问题}=\text{泛定方程（泊松或拉普拉斯方程）}+\text{定解条件（边界条件）}
 \]
 \end{formulaBox}
 
 \begin{itemize}
-    \item \textbf{自有部分电容}：
-    \begin{formulaBox}
-    \[
-    C_{k0} = \left. \frac{q_k}{U_{k0}} \right|_{\text{其余电压为0}}
-    \]
-    \end{formulaBox}
-    \item \textbf{互有部分电容}：
-    \begin{formulaBox}
-    \[
-    C_{ki} = \left. \frac{q_k}{U_{ki}} \right|_{\text{其余电压为0}}
-    \]
-    \end{formulaBox}
+    \item \textbf{第一类（狄里赫利问题）}：已知边界电位值 $\varphi|_S=g_1(\vec{r})$；
+    \item \textbf{第二类（纽曼问题）}：已知电位法向导数值
+    $\left.\dfrac{\partial\varphi}{\partial n}\right|_S=g_2(\vec{r})$；给定导体总电荷量也属此类
+    （由 $\oint_S\varepsilon\dfrac{\partial\varphi}{\partial n}\mathrm{d}S=-q$ 给出积分形式的条件）；
+    \item \textbf{第三类（混合问题）}：一部分边界给定 $\varphi$，另一部分给定 $\partial\varphi/\partial n$。
 \end{itemize}
 
-\paragraph{部分电容性质}
-\begin{enumerate}
-    \item 所有部分电容恒为正值
-    \item 互有部分电容满足互易性：
-    \begin{formulaBox}
-    \[
-    C_{ij}=C_{ji}
-    \]
-    \end{formulaBox}
-    \item 仅与导体结构、介质参数相关
-\end{enumerate}
+场域伸展到无限远时须补充\textbf{无穷远边界条件}：电荷分布在有限区域时
+$\lim_{r\to\infty}\varphi=$ 有限值，称\textbf{自然边界条件}。若介质分区均匀，则各子区域分别列方程，
+并\textbf{引入分界面衔接条件}作为定解条件的一部分。
 
-$n+1$ 导体系统中，部分电容总数量：
+\subsection{唯一性定理}
+
+\textbf{定理}：凡满足下列条件的电位函数是唯一解——（1） 在场域 $V$ 中满足电位的微分方程（分区均匀时
+满足各子区域的方程）；（2） 在不同介质分界面上符合衔接条件；（3） 在场域边界面 $S$ 上满足给定的边界条件。
+简述为：\textbf{满足电位微分方程和给定边界条件的解，就是唯一解}。
+
+\textbf{证明要点（反证法）}：设 $\varphi_1,\varphi_2$ 都满足泊松方程，则 $u=\varphi_1-\varphi_2$
+满足 $\nabla^2u=0$。对 $u$ 用高斯散度定理与 $\nabla\cdot(u\nabla u)=|\nabla u|^2+u\nabla^2u$，得
 \begin{formulaBox}
 \[
-\frac{n(n+1)}{2}
+\oint_S u\frac{\partial u}{\partial n}\,\mathrm{d}S=\int_V|\nabla u|^2\,\mathrm{d}V
 \]
 \end{formulaBox}
 
-\paragraph{工程应用}
-电路板导线、引脚与接地层之间存在分布部分电容，会造成回路间电磁耦合与干扰。
+第一类边界下全边界 $u=0$，第二类下全边界 $\partial u/\partial n=0$，两种情形左端均为零，故
+$\int_V|\nabla u|^2\mathrm{d}V=0$；被积函数非负，则 $V$ 内 $\nabla u=0$、$u=$ 常数，再由边界条件或
+参考点定该常数为零，于是 $\varphi_1=\varphi_2$。
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+唯一性定理的意义：它给出唯一解的条件，并可判定所得解是否正确——\textbf{只要能找到满足全部条件的解，
+它就是唯一正确的解}。镜像法、电轴法、分离变量法都在利用这一许可。
 
-\subsection{静电能量与电场力的分析}
-\subsubsection{静电场能量来源与表达式}
-静电场能量由电场建立过程中外力做功转化而来；线性介质中，电场能量仅由最终场分布决定，与充电过程无关。
+\corepoint{唯一性定理是解题许可而非理论摆设：凡“凑”出的解，只需验过 （1） 场内方程、（2） 分界面衔接条件、
+（3） 边界条件三关即为唯一解；反之，只满足边界条件而不满足场内方程的解一定不是解。}
 
-对电荷逐步建立过程积分，得到静电场总能量：
+\section{分离变量法}
+
+\subsection{基本思想与直角坐标下的解}
+
+一维问题可直接积分；二维、三维问题不能。\textbf{当场域边界面能与某正交坐标系的坐标面重合时}，
+分离变量法是有效解法：把电位写成单变量函数的\textbf{乘积}，代入偏微分方程，借“分离常数”化为几个
+常微分方程，解之并由边界条件定常数；所得解常为傅里叶级数形式，故又称\textbf{傅里叶法}。
+
+设电位只是 $x,y$ 的函数（沿 $z$ 无变化），令 $\varphi=X(x)Y(y)$，代入
+$\partial^2\varphi/\partial x^2+\partial^2\varphi/\partial y^2=0$ 并除以 $XY$：
 \begin{formulaBox}
 \[
-W_e = \frac{1}{2} \int_{V'} \varphi \rho \,\mathrm{d} V'
+\frac{1}{X}\frac{\mathrm{d}^2X}{\mathrm{d}x^2}+\frac{1}{Y}\frac{\mathrm{d}^2Y}{\mathrm{d}y^2}=0
+\quad\Longrightarrow\quad
+\frac{\mathrm{d}^2X}{\mathrm{d}x^2}+k^2X=0,\quad
+\frac{\mathrm{d}^2Y}{\mathrm{d}y^2}-k^2Y=0
 \]
 \end{formulaBox}
 
-不同电荷分布对应的能量公式：
-\begin{itemize}
-    \item 体电荷系统：
-    \begin{formulaBox}
-    \[
-    W_e = \frac{1}{2} \int_{V'} \varphi \rho \,\mathrm{d} V'
-    \]
-    \end{formulaBox}
-    \item 面电荷系统：
-    \begin{formulaBox}
-    \[
-    W_e = \frac{1}{2} \int_{S'} \varphi \sigma \,\mathrm{d} S'
-    \]
-    \end{formulaBox}
-    \item 多导体系统：
-    \begin{formulaBox}
-    \[
-    W_e = \frac{1}{2}\sum_{k=1}^n \varphi_k q_k
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\subsubsection{静电能量的空间分布}
-结合矢量恒等式、散度定理与 $\vec{E}=-\nabla\varphi$，将能量公式改写为场量积分形式。积分区域拓展至全空间时，无穷远面积分项趋近于零，最终得：
+左端两项分属 $x$、$y$ 而恒等，故必各等于同一常数，记作 $-k^2$，$k$ 称\textbf{分离常数}。$k=0$ 时
+解为线性函数；$k\neq0$ 时为三角函数与双曲函数。由线性叠加得一般解
 \begin{formulaBox}
 \[
-W_e = \frac{1}{2} \int_{V} \vec{D} \cdot \vec{E} \,\mathrm{d} V
+\varphi=(A_0x+B_0)(C_0y+D_0)
++\sum_{n}\left(A_n\cos k_nx+B_n\sin k_nx\right)
+\left(C_n\,\mathrm{ch}\,k_ny+D_n\,\mathrm{sh}\,k_ny\right)
 \]
 \end{formulaBox}
 
-\subsubsection{能量密度}
-定义\textbf{静电能量密度}（单位体积电场能量）：
+即 $x$ 的周期函数、$y$ 的双曲函数；分离常数换号则得另一个一般解（$x$ 双曲、$y$ 周期）。
+\textbf{如何选取分离常数由具体边界条件决定}，这是本法的关键。
+
+\subsection{圆柱坐标系中的解}
+
+设电位沿 $z$ 无变化，则
+$\rho\frac{\partial}{\partial\rho}\left(\rho\frac{\partial\varphi}{\partial\rho}\right)
++\frac{\partial^2\varphi}{\partial\varphi^2}=0$。令 $\varphi=R(\rho)Q(\varphi)$，分离得
 \begin{formulaBox}
 \[
-w_e = \frac{1}{2} \vec{D} \cdot \vec{E}
+n=0:\quad R_0=A_0\ln\rho+B_0,
+\qquad
+Q_0=C_0\varphi+D_0
 \]
 \end{formulaBox}
-结论：静电能量储存在整个电场空间中，电场是能量的载体。
+\begin{formulaBox}
+\[
+n\neq0:\quad R_n=A_n\rho^{n}+B_n\rho^{-n},
+\qquad
+Q_n=C_n\cos n\varphi+D_n\sin n\varphi
+\]
+\end{formulaBox}
 
-\subsubsection{电场力计算}
-工程与理论中常用\textbf{虚位移法（虚功原理）}求解带电导体所受的电场力。
+相应乘积叠加即为一般解。$\ln\rho$ 与 $\rho^{-n}$ 在 $\rho\to0$ 时发散，故圆柱内部（含轴线）的解中
+不能保留这两项——用“有限性”筛项。
+
+\subsection{求解步骤}
+
+（1） 按场域形状选坐标系，使边界面与坐标面吻合，写出边值问题；（2） 分离变量化为常微分方程；（3） 解之并
+组成通解（含分离常数与待定常数）；（4） 由边界条件定常数得唯一解。
+
+\corepoint{成败在第 （1） 步：坐标系选错则边界无法与坐标面重合，级数不能逐项比较系数。定系数时用“边界上处处
+为零 $\Rightarrow$ 该项系数为零”与三角函数正交性（乘 $\sin$ 或 $\cos$ 后积分）；判形式：有两条平行边界（周期）
+的方向用三角函数，延伸到无穷远的方向用衰减项。}
+
+\section{有限差分法}
+
+\subsection{基本思想与差分格式}
+
+边界形状复杂时一般只能求近似解。有限差分法把\textbf{场域用网格离散化}，把拉普拉斯方程用以各节点
+电位为未知数的\textbf{差分方程}代替，把偏微分方程问题化为联立差分方程组问题。
+
+用两组平行于坐标轴的直线把二维场域划成足够多的\textbf{正方形网格}，交点称节点，相邻平行网格线
+间距称\textbf{步距} $h$。用中心差商代替二阶偏导，得拉普拉斯方程的\textbf{差分格式}（五点格式）
+\begin{formulaBox}
+\[
+\frac{\partial^2\varphi}{\partial x^2}\approx\frac{\varphi_{i+1,j}-2\varphi_{i,j}+\varphi_{i-1,j}}{h^2}
+\quad\Longrightarrow\quad
+\varphi_{i,j}=\frac{1}{4}\left(\varphi_{i+1,j}+\varphi_{i-1,j}+\varphi_{i,j+1}+\varphi_{i,j-1}\right)
+\]
+\end{formulaBox}
+
+含义直观：\textbf{任一节点电位近似等于相邻四点电位的平均值}，对场域内每一节点均可列出一个差分方程。
+若边界不落在节点上（紧邻边界的节点），须按不等步距 $ph$、$qh$ 处理，差分格式中四邻项系数不再相等。
+
+\subsection{差分方程组的解法}
+
+节点数可达几百上千，直接解法不适用，但每方程只含少数几项，可用迭代法。
+
+（1）\textbf{高斯—塞德尔迭代法}：先选初值，再按
+\begin{formulaBox}
+\[
+\varphi^{(k+1)}_{i,j}=\frac{1}{4}\left(
+\varphi^{(k)}_{i+1,j}+\varphi^{(k+1)}_{i-1,j}
++\varphi^{(k)}_{i,j+1}+\varphi^{(k+1)}_{i,j-1}\right)
+\]
+\end{formulaBox}
+反复迭代（本轮新值立即代入，比雅可比法快一倍）。遇边界点须代入边界值。迭代到对所有内节点满足
+$\max\limits_{i,j}\left|\varphi^{(k+1)}_{i,j}-\varphi^{(k)}_{i,j}\right|<W$ 为止，$W$ 为预定最大
+允许误差；节点按“自然顺序”（先左到右、再下到上）排列。
+
+（2）\textbf{逐次超松弛法}：把每次迭代的变化量加权后再代入以加速收敛
+\begin{formulaBox}
+\[
+\varphi^{(k+1)}_{i,j}=(1-\alpha)\varphi^{(k)}_{i,j}
++\frac{\alpha}{4}\left(
+\varphi^{(k)}_{i+1,j}+\varphi^{(k+1)}_{i-1,j}
++\varphi^{(k)}_{i,j+1}+\varphi^{(k+1)}_{i,j-1}\right),
+\qquad 0<\alpha<2
+\]
+\end{formulaBox}
+$\alpha$ 称\textbf{加速收敛因子}：$\alpha=1$ 退化为高斯—塞德尔法，$\alpha>1$ 为超松弛。选得好可
+明显加快收敛，选得不好会振荡甚至发散，最佳因子需经验或试算确定。
+
+\corepoint{有限差分法优点是网格灵活、适应复杂边界、程序简单；缺点是只给节点上的数值解，精度受步距限制
+（步距减半则节点数增为四倍、计算量剧增），边界附近用不等步距格式时误差较大。其迭代格式与实验课
+“静电场有限差分法编程实现”一致。}
+
+\section{镜像法和电轴法}
+
+\subsection{原理与适用区域}
+
+两种方法的\textbf{实质}是：把实际不均匀媒质看成均匀媒质，而把分界面上的电荷分布（导体表面感应
+电荷、介质界面极化电荷）用虚设的\textbf{镜像电荷}代替。根据唯一性定理，只要虚设电荷与实际电荷
+共同产生的电场能满足给定边界条件，结果就正确。
+
+\corepoint{镜像法两条铁律：（1） 镜像电荷必须放在\textbf{待求场域之外}（否则引入新奇异点）；（2） 镜像解\textbf{只在
+原场域内}有效，边界另一侧的场不由这组电荷产生。违反任一条，答案必错。}
+
+\subsection{点电荷与无限大接地导体平面}
+
+接地无限大导体平面上方 $d$ 处有点电荷 $q$，上半空间须满足：除 $q$ 处外 $\nabla^2\varphi=0$；导体
+平面及无穷远处 $\varphi=0$。在平面下方对称点放 $-q$、撤去导体板、全空间充满 $\varepsilon_0$ 介质即可：
+\begin{formulaBox}
+\[
+\varphi=\frac{q}{4\pi\varepsilon_0}\left(\frac{1}{R_1}-\frac{1}{R_2}\right),
+\qquad
+R_1=\sqrt{x^2+y^2+(z-d)^2},\quad R_2=\sqrt{x^2+y^2+(z+d)^2}
+\]
+\end{formulaBox}
+
+$-q$ 即 $q$ 对导体平面的镜像，它代替了平面感应电荷的作用；\textbf{适用区域为平面上半空间}，下半
+空间实际无电场。由 $\sigma_f=D_n=\varepsilon_0E_n$ 得感应电荷面密度
+$\sigma_f=-qd/\left[2\pi(x^2+y^2+d^2)^{3/2}\right]$，总量为 $-q$。
+
+\subsection{点电荷与导体球}
+
+半径 $R$ 的接地导体球外、距球心 $d$ 处有点电荷 $q$。镜像电荷 $-q'$ 放在球心与 $q$ 的联线上、
+距球心 $b$ 处（球内），由球面电位为零可定
+\begin{formulaBox}
+\[
+b=\frac{R^2}{d},
+\qquad
+q'=\frac{R}{d}q,
+\qquad
+\varphi=\frac{1}{4\pi\varepsilon_0}\left(\frac{q}{R_1}-\frac{q'}{R_2}\right)
+\]
+\end{formulaBox}
+
+球面感应电荷总量为 $-Rq/d$。对\textbf{不接地、不带电}的孤立导体球，球面为未知常数电位且总电荷为
+零，须再在\textbf{球心}放 $+q'=Rq/d$，使其与球内镜像电荷总量为零。若为导体球壳内的点电荷，可反用
+结果（像电荷在球外，适用区域为球腔）。
+
+\subsection{点电荷与两种介质的分界平面}
+
+界面两侧介电常数为 $\varepsilon_1,\varepsilon_2$，左半空间有点电荷 $q$。镜像系统：左半空间的场由
+$q$ 与像点处的 $q'$ 共同产生（$\varepsilon_1$ 充满全空间）；右半空间的场由位于原电荷处的 $q''$
+单独产生（$\varepsilon_2$ 充满全空间）。由界面衔接条件解得
+\begin{formulaBox}
+\[
+q'=\frac{\varepsilon_1-\varepsilon_2}{\varepsilon_1+\varepsilon_2}q,
+\qquad
+q''=\frac{2\varepsilon_2}{\varepsilon_1+\varepsilon_2}q
+\]
+\end{formulaBox}
+
+$q'$ 在界面对称点，适用区域为含 $q$ 的一侧；$q''$ 在原电荷处，适用另一侧。若
+$\varepsilon_1=\varepsilon_2$ 则 $q'=0,q''=q$；若 $\varepsilon_2\to\infty$（相当于导体面）则
+$q'\to-q,q''\to2q$。
+
+\subsection{电轴法}
+
+两平行长直圆柱导体表面电荷分布不均匀且未知，已知的只是单位长度总电荷 $\pm\tau$。设想撤去圆柱、
+以两根相距 $2b$、线密度 $\pm\tau$ 的长直带电细线代替其表面电荷效应，这两根细线所在轴线即
+\textbf{电轴}。两圆柱外部任一点的电位为
+\begin{formulaBox}
+\[
+\varphi=\frac{\tau}{2\pi\varepsilon_0}\ln\frac{\rho_2}{\rho_1}+C
+\]
+\end{formulaBox}
+
+$\rho_1,\rho_2$ 为场点到 $+\tau$、$-\tau$ 的距离；参考点取在对称轴上时 $C=0$。由 $\rho_2/\rho_1=K$
+（常数）得等位线，为\textbf{一族偏心圆}：圆心 $x_0=\frac{K^2+1}{K^2-1}b$、半径
+$R=\left|\frac{2bK}{K^2-1}\right|$，且半径 $R$、圆心到原点距离 $d$、电轴到原点距离 $b$ 满足
+\begin{formulaBox}
+\[
+R^2=d^2-b^2
+\quad\Longrightarrow\quad
+b^2=h^2-a^2
+\]
+\end{formulaBox}
+
+后者是把圆柱半径 $a$、轴心距 $h$ 代入后的形式：由它确定电轴位置，代入电位式即得外部电位分布。
+对已知两圆柱间电压 $U_0$ 的情况，易得 $\tau$ 与 $U_0$ 的关系及单位长度电容：
+\begin{formulaBox}
+\[
+U_0=\frac{\tau}{\pi\varepsilon_0}\ln\frac{h+b}{a},
+\qquad
+C_0=\frac{\tau}{U_0}=\frac{\pi\varepsilon_0}{\ln\left[(h+b)/a\right]}
+\]
+\end{formulaBox}
+
+对两根不同半径、轴线距离为 $d$ 的非对称传输线，对每个圆柱分别写出 $b^2=h_1^2-a_1^2$、
+$b^2=h_2^2-a_2^2$，再结合 $h_1+h_2=d$ 联立解出电轴位置。
+
+\corepoint{电轴法只适用于\textbf{带等量异号电荷的两平行圆柱导体}（同号带电、三根以上导线不适用）。顺序：
+由 $b^2=h^2-a^2$ 定电轴位置 $\to$ 写 $\varphi=\frac{\tau}{2\pi\varepsilon_0}\ln\frac{\rho_2}{\rho_1}$
+$\to$ 由电压或电荷定 $\tau$ $\to$ 求 $C_0$。}
+
+\section{电容和部分电容}
+
+\subsection{电容及其计算}
+
+两带等量异号电荷的导体组成电容器，其电容定义为电荷与导体间电压之比：
+\begin{formulaBox}
+\[
+C=\frac{q}{U}
+=\frac{\oint_S\vec{D}\cdot\mathrm{d}\vec{S}}{\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}}
+=\frac{\oint_S\varepsilon\vec{E}\cdot\mathrm{d}\vec{S}}{\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}}
+\]
+\end{formulaBox}
+
+单位 $\mathrm{F}$（工程常用 $\mathrm{\mu F}$、$\mathrm{pF}$）。电容只与两导体的形状、尺寸、相互位置
+及其间介质有关，\textbf{与电荷量、电压无关}；孤立导体的电容指它与无限远处的电容。电容计算实质就是
+静电场计算：
+\begin{formulaBox}
+\[
+\text{设电荷 }q\ \xrightarrow{\oint_S\vec{D}\cdot\mathrm{d}\vec{S}}\ \vec{D},\vec{E}
+\ \xrightarrow{\int_A^B\vec{E}\cdot\mathrm{d}\vec{l}}\ U
+\ \xrightarrow{C=q/U}\ C
+\]
+\end{formulaBox}
+
+三个必背结果（介质为 $\varepsilon$）：
+\begin{formulaBox}
+\[
+C_{\text{平行板}}=\frac{\varepsilon S}{d},
+\qquad
+C_{0(\text{同轴圆柱})}=\frac{2\pi\varepsilon}{\ln(b/a)},
+\qquad
+C_{\text{同心球}}=\frac{4\pi\varepsilon ab}{b-a}
+\]
+\end{formulaBox}
+
+同轴圆柱式为\textbf{单位长度}电容；同心球式当 $b\to\infty$ 时趋于 $4\pi\varepsilon a$，即\textbf{孤立
+导体球}的电容。多层介质可按分界面分段、用衔接条件联立，或按串并联处理。
+
+\subsection{静电独立系统与电位系数}
+
+若系统内场的分布只与系统内带电体的形状、尺寸、相互位置及介质分布有关、与外部带电体无关，且所有
+电通密度线都从系统内带电体发出并终止于系统内带电体，则称\textbf{静电独立系统}。$n+1$ 个导体的
+静电独立系统必有
+\begin{formulaBox}
+\[
+q_0+q_1+\cdots+q_n=0
+\]
+\end{formulaBox}
+
+线性介质下由叠加原理得电位与电荷的关系（取 0 号导体为参考点，$\varphi_0=0$）：
+\begin{formulaBox}
+\[
+\varphi_k=\sum_{i=1}^{n}\alpha_{ki}q_i
+\qquad\Longleftrightarrow\qquad
+[\varphi]=[\alpha][q]
+\]
+\end{formulaBox}
+
+$\alpha_{kk}$ 为\textbf{自有电位系数}，$\alpha_{ki}$（$k\neq i$）为\textbf{互有电位系数}，性质：
+（1） 全为正值；（2） 自有系数大于与之有关的互有系数；（3） 只与几何形状、尺寸、相互位置及介电常数有关；
+（4） $\alpha_{ki}=\alpha_{ik}$（$[\alpha]$ 对称，是静电场互易原理的表现）。反解得以电位表示电荷的
+\textbf{感应系数}形式 $q_k=\sum_i\beta_{ki}\varphi_i$：自有感应系数为\textbf{正}、互有感应系数为
+\textbf{负}，且自有系数大于与之有关的互有系数的绝对值。
+
+\subsection{部分电容与电容网络}
+
+把上式改写为用该导体与其他各导体间电压表示，得
+\begin{formulaBox}
+\[
+q_k=C_{k1}U_{k1}+C_{k2}U_{k2}+\cdots+C_{k0}U_{k0}+\cdots+C_{kn}U_{kn}
+\]
+\end{formulaBox}
+
+系数 $C$ 称\textbf{部分电容}：$C_{k0}$ 为\textbf{自有部分电容}，$C_{ki}$ 为\textbf{互有部分电容}，
+定义为
+\begin{formulaBox}
+\[
+C_{k0}=\left.\frac{q_k}{U_{k0}}\right|_{\text{其余电压为零}},
+\qquad
+C_{ki}=\left.\frac{q_k}{U_{ki}}\right|_{\text{其余电压为零}}
+\]
+\end{formulaBox}
+
+性质：（1） 全为\textbf{正值}；（2） 只与导体几何、介质有关，\textbf{与电荷量无关}；（3） 互易性
+$C_{ki}=C_{ik}$。$n+1$ 个导体的静电独立系统中共有 $\frac{n(n+1)}{2}$ 个部分电容，它们构成一个
+\textbf{电容网络}，从而把静电场问题变为电容电路问题，把“场”与“路”联系起来。
+
+\corepoint{部分电容与等效电容含义不同：部分电容是网络支路参数，只与结构有关；等效电容是把两导体当电容器的两
+极板、加压后极板电荷与电压之比，还包含其他导体的影响（如二线传输线的等效电容受大地影响）。已知两个
+等效电容的测量值时，须借对称性与网络方程反解各支路部分电容。}
+
+\subsection{静电屏蔽}
+
+三导体系统中 1 号导体被接地的 0 号导体完全包围。由部分电容方程，0 号导体内无电场、$\varphi_{10}=0$；
+因 $U_{12}$ 可取任意值（导体 2 的电荷可任意），必有 $C_{12}=0$，于是
+\begin{formulaBox}
+\[
+q_1=C_{10}U_{10},
+\qquad
+q_2=C_{20}U_{20}
+\]
+\end{formulaBox}
+
+即 $q_1$ 只与 $U_{10}$ 有关、$q_2$ 只与 $U_{20}$ 有关，导体 1、2 之间\textbf{无静电联系}，达到
+静电屏蔽。工程上把不宜受外界电场影响（或不宜影响外界）的带电体用接地金属壳罩起来，如高压设备周围
+的屏蔽网。
+
+\section{静电能量与力}
+
+\subsection{带电体系统中的静电能量}
+
+静电能量是在电场建立过程中由\textbf{外力作功}转化而来的。设某一瞬时场中某点电位为 $\varphi$，
+把电荷增量 $\delta q$ 从无穷远移至该点，外力作功 $\delta A=\varphi\,\delta q$。对线性介质，达到最终
+分布所需作的功与过程无关，故可取各处电荷密度按同一比例 $m$（$0\le m\le1$）同步增长的方式，把
+$m$ 从 0 积到 1，得
+\begin{formulaBox}
+\[
+W_e=\frac{1}{2}\int_{V'}\rho\varphi\,\mathrm{d}V'
+=\frac{1}{2}\int_{S'}\sigma\varphi\,\mathrm{d}S'
+=\frac{1}{2}\sum_{k=1}^{n}q_k\varphi_k
+\]
+\end{formulaBox}
+
+第三式适用于只有带电导体的系统。系数 $1/2$ 来自充电过程中电荷与电位同时按比例增长（积两次）。
+对点电荷系统，能量可分为\textbf{自有能量}（只与各电荷自身有关，电荷相互移近时不变；点电荷的自有
+能量趋于无限大）与\textbf{互有能量}（由电荷间相互作用引起，是可测量的那部分）。
+
+\subsection{能量分布与能量密度}
+
+上述公式只给总能量，易误解为“能量集中在电荷上”。实际上静电能量分布在整个电场空间中。应用
+$\vec{D}=\varepsilon\vec{E}$、$\vec{E}=-\nabla\varphi$、矢量恒等式与散度定理，并把 $V$ 扩展到整个
+无限空间（$S$ 为 $r\to\infty$ 的球面，$\varphi\sim1/r$、$\vec{D}\sim1/r^2$、$\mathrm{d}S\sim r^2$，
+面积分项随 $1/r$ 趋于零），得
+\begin{formulaBox}
+\[
+W_e=\frac{1}{2}\int_{V_\infty}\vec{D}\cdot\vec{E}\,\mathrm{d}V,
+\qquad
+w_e=\frac{1}{2}\vec{D}\cdot\vec{E}=\frac{1}{2}\varepsilon E^2\ (\mathrm{J/m^3})
+\]
+\end{formulaBox}
+
+即\textbf{凡静电场不为零的空间都储存着静电能量，场是能量的载体}；$w_e$ 为\textbf{静电能量密度}。
+两式均为体积分但积分区域不同：$\frac12\int\rho\varphi\mathrm{d}V$ 为\textbf{电荷积分式}，区域是有
+电荷分布处；$\frac12\int\vec{D}\cdot\vec{E}\mathrm{d}V$ 为\textbf{电场积分式}，区域是整个空间。
+只有对全部电场空间积分，两式才相等。
+
+\corepoint{能量密度是\textbf{场}的属性，不是“某点电荷的能量密度”。用 $\frac12\int\rho\varphi\mathrm{d}V$ 时
+若只对部分区域（如只对某导体积分）会得到错误结果——这正是必须分清两式积分区域的原因。}
+
+\subsection{虚位移法计算静电力}
+
+小带电体受力可按定义 $\vec{F}=q\vec{E}$ 计算，其中 $\vec{E}$ 应理解为\textbf{除 $q$ 以外}其他电荷
+在 $q$ 处引起的场强；对连续分布电荷这样算相当复杂，常用基于虚功原理的\textbf{虚位移法}。
+
+\textbf{广义坐标}是确定各导体形状、尺寸与位置的一组独立几何量（距离、面积、体积、角度），企图改变
+某一广义坐标的力即对应的\textbf{广义力}。设只有一个广义坐标 $g$ 变化，功能过程为
+\begin{formulaBox}
+\[
+\mathrm{d}W_{\text{源}}=\mathrm{d}W_e+f\,\mathrm{d}g
+\]
+\end{formulaBox}
+
+（1）\textbf{各带电体总电荷不变}（不与外源相联，$\mathrm{d}q_k=0$）：$\mathrm{d}W_{\text{源}}=0$，
+$f\mathrm{d}g=-\mathrm{d}W_e$，即电场力作功靠\textbf{减少}静电能量实现：
+\begin{formulaBox}
+\[
+f=-\left.\frac{\partial W_e}{\partial g}\right|_{q=\text{常量}}
+\]
+\end{formulaBox}
+
+（2）\textbf{各带电体电位不变}（均接电源）：由 $W_e=\frac12\sum q_k\varphi_k$ 得
+$\mathrm{d}W_e=\frac12\mathrm{d}W_{\text{源}}$，故 $f\mathrm{d}g=\mathrm{d}W_e$，即外源提供的能量
+一半用于增加静电能量、一半用于电场力作功：
+\begin{formulaBox}
+\[
+f=+\left.\frac{\partial W_e}{\partial g}\right|_{\varphi=\text{常量}}
+\]
+\end{formulaBox}
+
+两种假设所得结果\textbf{应相等}——带电体实际未动（虚位移），电场力分布未变，求得的是当时的电荷与
+电位下的力。以 $W_e=\frac{q^2}{2C}$ 与 $\frac12CU^2$ 分别代入均得
+$f=\frac{q^2}{2C^2}\frac{\partial C}{\partial g}$，可见\textbf{电场力总有使电容 $C$ 增大的趋势}。
+对板面积 $S$、间距 $d$、介电常数 $\varepsilon$ 的平行板电容器（取 $d$ 为广义坐标）：
+\begin{formulaBox}
+\[
+f=-\frac{q^2}{2\varepsilon S}=-\frac{\varepsilon SU^2}{2d^2},
+\qquad
+p=\frac{f}{S}=\frac{\sigma^2}{2\varepsilon}=\frac{1}{2}\sigma E
+\]
+\end{formulaBox}
+
+负号表示电场力有使 $d$ 缩短的趋势（两极板相吸）。
+
+\corepoint{这里的系数 $1/2$ 是最大陷阱：极板受力只由\textbf{另一极板（其余电荷）}产生的场决定，而那部分场只占
+总场强的一半，故 $p=\frac12\sigma E$ 而非 $\sigma E$。球形带电薄膜的膨胀力同法得
+$p=\sigma^2/(2\varepsilon_0)$。}
+
+\subsection{法拉第对静电力的观点}
+
+法拉第认为：静电场中每一段电通密度管沿轴向受\textbf{纵张力}、垂直于轴向受\textbf{侧压力}，两者量值
+相等，都是
+\begin{formulaBox}
+\[
+\frac{1}{2}D\cdot E=\frac{1}{2}DE\qquad(\mathrm{N/m^2})
+\]
+\end{formulaBox}
+
+形象地说，电位移管像被拉紧的橡皮筋：沿轴向有收缩趋势、垂直方向有扩张趋势。据此可由场图判断受力：
+孤立带电体表面有扩张趋势；带等量异号电荷的两导体相吸；带等量同号电荷的两导体相斥；不带电导体有被
+吸向带电体的趋势。
+
+对两种介质的分界面，用极短的电通密度管取极限，得单位面积受力
+\begin{formulaBox}
+\[
+\text{场垂直于界面：}\ p=\frac{1}{2}D^2\left|\frac{1}{\varepsilon_1}-\frac{1}{\varepsilon_2}\right|,
+\qquad
+\text{场平行于界面：}\ p=\frac{1}{2}E^2\left|\varepsilon_1-\varepsilon_2\right|
+\]
+\end{formulaBox}
+
+结论（常考）：无论场与界面垂直还是平行，作用在界面上的力总\textbf{垂直于界面}，且总是\textbf{由
+介电常数大的一边指向小的一边}。
+
+\corepoint{本章主线：§1-1 定义场量（$\vec{E},\varphi$）$\to$ §1-2 引入介质与 $\vec{D}$、得散度方程 $\to$ §1-3 凑齐
+基本方程与衔接条件 $\to$ §1-4 化为边值问题并证唯一性 $\to$ §1-5～§1-7 三种直接解法与两种间接解法 $\to$
+§1-8～§1-9 由场求路参数（$C$）与力学量（$W_e,f$）。大题多落在“衔接条件＋边值问题＋镜像法＋电容/
+能量”这条链上，动手前先判断题目属于哪一环。}

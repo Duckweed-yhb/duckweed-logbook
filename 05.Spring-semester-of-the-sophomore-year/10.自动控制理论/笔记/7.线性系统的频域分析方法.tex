@@ -1,0 +1,488 @@
+% chap05.tex 第五章 线性系统的频域分析方法（大气排版版）
+\chapter{线性系统的频域分析方法}
+
+% ===== 局部排版优化（仅影响本章，使版面更舒展）=====
+\setlength{\parskip}{0.8ex plus 0.3ex minus 0.2ex}
+\setlist{
+    leftmargin=2.5em,
+    itemsep=0.6em,
+    parsep=0.3em,
+    topsep=0.8em,
+    partopsep=0.3em
+}
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{10pt}
+\addtolength{\abovedisplayskip}{2pt}
+\addtolength{\belowdisplayskip}{2pt}
+% ========================================
+
+\bigskip
+
+\section{本章考核要点}
+\begin{enumerate}
+    \item 频率特性的三种定义、物理意义及其与传递函数的关系；
+    \item 四种几何表示（Nyquist、Bode、Nichols）的坐标特点，最小相位与非最小相位环节的判别；
+    \item 八个典型环节的 Nyquist 图与 Bode 图，振荡环节的谐振频率与谐振峰值；
+    \item 开环幅相曲线的概略绘制（起点、终点、象限、与负实轴交点）与开环 Bode 图的六步作图法；
+    \item 奈奎斯特判据 $Z=P-2N$（半闭合曲线、补作圆弧、穿越次数）与对数频率稳定判据；
+    \item 稳定裕度：$\gamma$、$h$ 与 $h_{\mathrm{dB}}$ 的定义、判据与工程取值。
+\end{enumerate}
+\noindent\textbf{补充：}频域分析法研究稳态正弦响应的幅值与相角随频率的变化规律，由\emph{开环}频率特性判定\emph{闭环}稳定性与性能；属图解分析法，方便实用，但有一定近似性。与劳斯判据相比，频域判据可以直接研究"怎样调整结构参数来改善稳定性"，并能处理含延迟环节的系统。
+
+\medskip
+
+\section{频率特性的基本概念与几何表示}
+
+\subsection{正弦信号作用下的稳态输出}
+线性定常系统在正弦输入作用下，输出的稳态分量仍是\emph{同频率}的正弦量，只是幅值和相位不同。以 RC 滤波网络为例，$G(s)=\dfrac{1}{Ts+1}$（$T=RC$），输入 $u_r(t)=A\sin\omega t$，则 $U_c(s)=\dfrac{1}{Ts+1}\cdot\dfrac{A\omega}{s^2+\omega^2}$，部分分式展开后拉氏反变换得
+\[
+u_c(t)=\underbrace{\frac{A\omega T}{1+\omega^2T^2}e^{-\frac{t}{T}}}_{\text{瞬态分量}}+\underbrace{\frac{A}{\sqrt{1+\omega^2T^2}}\sin(\omega t-\arctan\omega T)}_{\text{稳态分量}}
+\]
+即稳态分量为 $u_{css}(t)=B\sin(\omega t-\alpha)$，$B=\dfrac{A}{\sqrt{1+\omega^2T^2}}$、$\alpha=\arctan\omega T$。可见：瞬态分量随时间衰减（稳定系统），稳态分量与输入同频，幅值比与相位差都只与 $\omega$ 有关。
+
+\paragraph{频率响应与频率特性}
+\textbf{频率响应}：线性系统稳态正弦响应的幅值、相角随输入频率变化的规律性。\\
+\textbf{频率特性}：描述这一规律的数学模型，记作 $G(j\omega)$。
+
+\subsection{频率特性的三种定义}
+\begin{enumerate}
+    \item \textbf{定义一（幅值比与相角差）}
+    \[
+    G(j\omega)=|G(j\omega)|\,\angle G(j\omega),\qquad
+    |G(j\omega)|=\frac{|c_s(t)|}{|r(t)|},\qquad
+    \angle G(j\omega)=\angle c_s(t)-\angle r(t)
+    \]
+    其中 $|G(j\omega)|$ 称\textbf{幅频特性}，$\angle G(j\omega)$ 称\textbf{相频特性}。
+    \item \textbf{定义二（传递函数令 $s=j\omega$）}
+    \[
+    G(j\omega)=G(s)\big|_{s=j\omega}
+    \]
+    这是最常用的求法。以惯性环节验证：$\dfrac{1}{1+j\omega T}=\dfrac{1}{\sqrt{1+\omega^2T^2}}\angle(-\arctan\omega T)$，与定义一完全一致。
+    \item \textbf{定义三（输出、输入傅氏变换之比）}
+    \[
+    G(j\omega)=\frac{C(j\omega)}{R(j\omega)}
+    \]
+    由 $C(s)=G(s)R(s)$ 令 $s=j\omega$ 即得，说明频率特性是系统（或环节）在频域的数学模型。
+\end{enumerate}
+
+\subsection{应注意的几个问题}
+\begin{enumerate}
+    \item $G(j\omega)=G(s)|_{s=j\omega}$：频率特性是一种数学模型，是令传递函数的 $s=j\omega$ 得到的一种\emph{特殊形式}；
+    \item 频率特性是从正弦\emph{稳态}响应求出的，但表示的是系统的\emph{动态}特性；
+    \item 频率特性指 $\omega:0\to\infty$ 全频段的规律，某一频率下的频率响应不能表示系统的动态特性；
+    \item 从稳态响应测频率特性，给实验获取频率特性提供了方便；但\emph{不稳定}系统的稳态分量发散，其频率特性观察不到（不能由实验测定）。
+\end{enumerate}
+
+\subsection{频率特性的几何表示法}
+把频率特性画成曲线再用图解研究，常用的四种形式见表~\ref{tab:freqgeom}。
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\caption{频率特性的四种几何表示}\label{tab:freqgeom}
+\begin{tabular}{p{3.8cm}p{2.2cm}p{4.0cm}p{3.0cm}}
+\toprule
+表示法 & 坐标系 & 纵、横坐标 & 用途 \\
+\midrule
+幅相特性（Nyquist 图） & $[G]$ 复平面 & 横 $\mathrm{Re}$、纵 $\mathrm{Im}$ & 判稳、数包围圈数 \\
+对数频率特性（Bode 图） & 半对数坐标 & 横 $\lg\omega$，纵 $L$、$\varphi$ & 叠加作图、判稳 \\
+对数幅相特性（Nichols 图） & 直角坐标 & 横 $\varphi(\omega)$、纵 $L(\omega)$ & 查闭环指标 \\
+幅频、相频特性曲线 & 直角坐标 & 横轴 $\omega$ & 看幅值、相位随频率的变化 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Nyquist 形式的频率特性特点}
+$KG(j\omega)$ 的频率特性是原 $G(j\omega)$ 曲线上各点幅值都增大为 $K$ 倍，\emph{相角不变}——即曲线形状不变，只是沿径向"伸缩"。
+
+\paragraph{对数频率特性的两个基本运算性质}
+\[
+20\lg|KG(j\omega)|=20\lg|G(j\omega)|+20\lg K,\qquad
+20\lg|G_1(j\omega)G_2(j\omega)|=20\lg|G_1|+20\lg|G_2|
+\]
+即\textbf{幅值相乘 $=$ 对数相加}，这是 Bode 图能"叠加作图"的根本原因。
+
+\subsection{Bode 图的坐标特点}
+\begin{itemize}
+    \item 横轴按 $\lg\omega$ 刻度（"十倍频程"记作 dec），按 $\omega$ 标定，等距等比；\textbf{没有 $\omega=0$ 这一点}（$\lg 0$ 不存在），故 Bode 图从很小的 $\omega$ 起画；
+    \item 纵轴 $L(\omega)=20\lg|G(j\omega)|$，单位分贝（dB），\emph{线性}分度；相频 $\varphi(\omega)=\angle G(j\omega)$，单位度（$^\circ$）。
+\end{itemize}
+Bode 图的优点：(1) 幅值相乘化为对数相加，便于叠加作图；(2) 可在很大频率范围内表示频率特性；(3) 利用实验数据容易确定 $L(\omega)$，进而确定 $G(s)$。工程作图常规定 $20\,\mathrm{dB}$ 对应 $2\,\mathrm{cm}$、$90^\circ$ 对应 $2\,\mathrm{cm}$，以便估读斜率与相角。
+
+\bigskip
+
+\section{典型环节的频率特性}
+
+\subsection{最小相位环节与非最小相位环节}
+\begin{description}
+    \item[定义] 在幅频特性相同的系统中，相频变化\emph{最小}的那个系统称为最小相位系统。
+    \item[结论] 最小相位系统没有右半 $s$ 平面的零点、极点，也不含延迟环节；反之，$s$ 右半平面有开环零点或极点（或含纯延迟 $e^{-\tau s}$）的环节即非最小相位环节——两者只差在零、极点的位置。
+    \item[应用] \textbf{最小相位系统的传递函数可由幅频特性唯一确定}；非最小相位系统不能由 $L(\omega)$ 唯一确定 $G(s)$，必须同时看相频。
+\end{description}
+一个重要事实：两个不同的传递函数可以有相同的幅频特性，但它们的相频变化范围不同；非最小相位系统的相角变化绝对值一般比最小相位系统的大，但\emph{非最小相位系统未必不稳定}。
+
+\subsection{典型环节的幅相频率特性（Nyquist 图）}
+设 $G(j\omega)=X(\omega)+jY(\omega)$，逐点描迹即可得 Nyquist 图。八个典型环节的要点见表~\ref{tab:nyqlink}；其中惯性环节与振荡环节的结论必须会证、会背，先单独说明。
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{典型环节的幅频、相频与 Nyquist 曲线形状（记 $u=\omega/\omega_n$）}\label{tab:nyqlink}
+\begin{tabular}{lp{2.4cm}p{3.3cm}p{2.5cm}p{3.1cm}}
+\toprule
+环节 & $G(s)$ & $|G(j\omega)|$ & $\angle G(j\omega)$ & Nyquist 曲线 \\
+\midrule
+比例 & $K$ & $K$ & $0^\circ$ & 实轴上一点 $(K,j0)$ \\
+微分 & $s$ & $\omega$ & $90^\circ$ & 正虚轴（起于原点） \\
+积分 & $\dfrac{1}{s}$ & $\dfrac{1}{\omega}$ & $-90^\circ$ & 负虚轴（$0^+\to\infty$） \\
+惯性 & $\dfrac{1}{Ts+1}$ & $\dfrac{1}{\sqrt{1+\omega^2T^2}}$ & $-\arctan\omega T$ & 第四象限\emph{下半圆} \\
+一阶微分 & $Ts+1$ & $\sqrt{1+\omega^2T^2}$ & $\arctan\omega T$ & 第一象限射线 \\
+振荡 & $\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$ & $\dfrac{1}{\sqrt{(1-u^2)^2+(2\zeta u)^2}}$ & $-\arctan\dfrac{2\zeta u}{1-u^2}$ & 第三、四象限 \\
+二阶微分 & $T^2s^2+2\zeta Ts+1$ & 振荡环节的倒数 & 振荡环节取反 & 第一、二象限 \\
+延迟 & $e^{-\tau s}$ & $1$ & $-\tau\omega$（即 $-57.3^\circ\tau\omega$） & 单位圆上顺时针无限旋转 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{惯性环节的 Nyquist 图是半圆（可证）}
+令 $G(j\omega)=\dfrac{1}{1+j\omega T}=\dfrac{1-j\omega T}{1+\omega^2T^2}=X+jY$，则
+\[
+X=\frac{1}{1+\omega^2T^2},\qquad Y=\frac{-\omega T}{1+\omega^2T^2}=-\omega TX
+\]
+由 $Y=-\omega TX$ 解出 $\omega T=-\dfrac{Y}{X}$ 代入 $X$ 式，整理得
+\[
+X^2-X+Y^2=0\quad\Longrightarrow\quad \left(X-\frac12\right)^2+Y^2=\left(\frac12\right)^2
+\]
+即曲线是以 $(\tfrac12,j0)$ 为圆心、半径 $\tfrac12$ 的圆；又 $Y<0$（$\omega>0$），故只取\emph{下半圆}。特征点：$\omega=0$ 时 $G(j0)=1\angle0^\circ$；$\omega=\frac1T$（转折频率）时 $|G|=0.707$、$\angle G=-45^\circ$；$\omega\to\infty$ 时 $G\to0\angle-90^\circ$。
+
+\paragraph{振荡环节的三个特征点与谐振}
+\[
+G(j0)=1\angle0^\circ,\qquad
+G(j\omega_n)=\frac{1}{2\zeta}\angle(-90^\circ),\qquad
+G(j\infty)=0\angle(-180^\circ)
+\]
+当 $\omega$ 由 $0\to\infty$，相角由 $0^\circ$ 单调减到 $-180^\circ$（不穿越 $\pm90^\circ$ 以外区域），Nyquist 图分布在第三、四象限；$G(j\omega_n)$ 是曲线与负虚轴的交点。
+
+幅值出现峰值即\textbf{谐振}。由 $\dfrac{d|G|}{d\omega}=0$ 得
+\[
+\omega_r=\omega_n\sqrt{1-2\zeta^2},\qquad
+M_r=|G(j\omega_r)|=\frac{1}{2\zeta\sqrt{1-\zeta^2}}
+\]
+谐振峰的存在性：
+\begin{itemize}
+    \item $\zeta>0.707$（即 $\beta=\arccos\zeta<45^\circ$）时 $1-2\zeta^2<0$，$\omega_r$、$M_r$ \emph{不存在}（幅频单调衰减）；
+    \item $\zeta=0.707$ 时 $\omega_r=0$、$M_r=1$（临界，无峰值）；
+    \item $0<\zeta<0.707$ 时 $\omega_r<\omega_n$、$M_r>1$；
+    \item $\zeta=0$ 时 $\omega_r=\omega_n$、$M_r\to\infty$（等幅振荡）。
+\end{itemize}
+
+\paragraph{非最小相位环节举例}
+不稳定惯性环节 $G(s)=\dfrac{1}{Ts-1}$：
+\[
+|G(j\omega)|=\frac{1}{\sqrt{1+\omega^2T^2}},\qquad
+\angle G(j\omega)=-\arctan\frac{\omega T}{-1}=-180^\circ+\arctan\omega T
+\]
+其幅频与惯性环节\emph{完全相同}，相频却整体差 $180^\circ$（起点 $G(j0)=-K$，终点 $0\angle-90^\circ$）。这正说明：只凭幅频特性不能判定非最小相位系统的稳定性。
+
+\subsection{典型环节的对数频率特性（Bode 图）}
+八个典型环节的渐近线见表~\ref{tab:bodelink}，作图时先按转折频率逐段叠加，再修正谐振峰。
+\begin{table}[htbp]
+\centering
+\caption{典型环节的 Bode 图（渐近线）}\label{tab:bodelink}
+\begin{tabular}{llll}
+\toprule
+环节 & $L(\omega)$ & 渐近线特征 & $\varphi(\omega)$ \\
+\midrule
+比例 $K$ & $20\lg K$ & 水平直线，随 $K$ 上下平移 & $0^\circ$ 水平线 \\
+微分 $s$ & $20\lg\omega$ & 斜率 $+20\,\mathrm{dB/dec}$，过 $(1,0)$ & $90^\circ$ 水平线 \\
+积分 $1/s$ & $-20\lg\omega$ & 斜率 $-20\,\mathrm{dB/dec}$，过 $(1,0)$ & $-90^\circ$ 水平线 \\
+惯性 $1/(Ts+1)$ & $-20\lg\sqrt{1+\omega^2T^2}$ & $\omega\ll\frac1T$ 为 $0\,\mathrm{dB}$；$\omega\gg\frac1T$ 为 $-20\,\mathrm{dB/dec}$ & $0^\circ\to-90^\circ$ \\
+一阶微分 $Ts+1$ & $20\lg\sqrt{1+\omega^2T^2}$ & $0\,\mathrm{dB}\to+20\,\mathrm{dB/dec}$ & $0^\circ\to+90^\circ$ \\
+振荡 & $-20\lg\sqrt{\left(1-\frac{\omega^2}{\omega_n^2}\right)^2+\left(2\zeta\frac{\omega}{\omega_n}\right)^2}$ & 低频 $0\,\mathrm{dB}$，高频 $-40\,\mathrm{dB/dec}$ & $0^\circ\to-180^\circ$ \\
+二阶微分 & 振荡环节取反 & $0\,\mathrm{dB}\to+40\,\mathrm{dB/dec}$ & $0^\circ\to+180^\circ$ \\
+延迟 $e^{-\tau s}$ & $20\lg1=0$ & 与 $\omega$ 轴重合 & $-\tau\omega$，随 $\omega$ 线性下降 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{几个必须记住的结论}
+\begin{enumerate}
+    \item 惯性环节在转折频率 $\omega=\frac1T$ 处 $L=-3\,\mathrm{dB}$、$\varphi=-45^\circ$；其对数相频曲线关于点 $\left(\frac1T,\,-45^\circ\right)$ \emph{中心对称}；
+    \item 振荡环节的渐近线在 $\omega_n$ 处由 $0\,\mathrm{dB}$ 折为 $-40\,\mathrm{dB/dec}$，实际曲线在 $\omega_n$ 附近有谐振峰，误差最大，需修正；
+    \item 若两个传递函数互为倒数（如 $s$ 与 $1/s$、$Ts+1$ 与 $1/(Ts+1)$、二阶微分与振荡环节），则它们的 Bode 幅频特性关于 $\omega$ 轴\emph{对称}，相频特性互为相反数——作图时只需画一个，另一个"翻过来"即可。
+\end{enumerate}
+
+\bigskip
+
+\section{控制系统的开环频率特性}
+
+\subsection{开环幅相特性（Nyquist 图）的概略绘制}
+设开环传递函数已化为含时间常数的形式
+{\small
+\[
+G(s)=\frac{K\prod_{i=1}^{m_1}(\tau_is+1)\prod_{k=1}^{m_2}(\tau_k^2s^2+2\zeta_k\tau_ks+1)}
+{s^{v}\prod_{j=1}^{n_1}(T_js+1)\prod_{l=1}^{n_2}(T_l^2s^2+2\zeta_lT_ls+1)}
+\]
+}
+则相频特性是各环节相角的\emph{代数和}：惯性 $-\arctan\omega T$、一阶微分 $+\arctan\tau\omega$、每个积分环节 $-90^\circ$，振荡环节由 $0^\circ$ 连续减到 $-180^\circ$。
+概略绘制\emph{不求逐点值}，只抓四件事：\textbf{起点、终点、象限、与负实轴的交点}。
+
+\paragraph{起点与终点}
+\[
+\text{起点：}\quad
+\begin{cases}
+G(j0)=K\angle0^\circ, & v=0\\[2pt]
+G(j0^+)=\infty\angle(-90^\circ v), & v>0
+\end{cases}
+\qquad
+\text{终点：}\quad G(j\infty)=0\angle[-90^\circ(n-m)]
+\]
+其中 $n$ 为开环极点数、$m$ 为零点数；Ⅰ、Ⅱ、Ⅲ 型系统的起点相角依次为 $-90^\circ$、$-180^\circ$、$-270^\circ$，终点相角再逐个叠加 $-90^\circ$。可见\textbf{型次只改起点，$n-m$ 只改终点相角}。
+
+\paragraph{与负实轴的交点、渐近线}
+令 $\mathrm{Im}[G(j\omega)]=0$ 解出穿越频率 $\omega_x$，再代回求 $\mathrm{Re}[G(j\omega_x)]$，即得曲线与实轴的交点坐标；若该点位于 $(-1,j0)$ 之左，就影响稳定性判断。\\
+对 $v\ge1$ 的系统，当 $\omega\to0^+$ 时曲线趋于无穷，若 $\mathrm{Re}[G(j0)]$ 为有限值 $a$，则 $G(j\omega)\to a-j\infty$，即存在一条\emph{垂直渐近线} $\mathrm{Re}=a$，可先画渐近线再描曲线。
+
+\subsection{开环 Bode 图的绘制步骤}
+\begin{enumerate}
+    \item \textbf{化标准型}：把 $G(s)$ 化为"尾 1"形式（各因子的常数项为 1），提取总增益 $K$；\emph{不要漏掉把 $(s+0.5)$ 写成 $0.5(2s+1)$ 时提取的系数}。
+    \item \textbf{顺序列出转折频率}：把各环节的转折频率由小到大排列，并注明环节类型（惯性、一阶微分、振荡、二阶微分）。
+    \item \textbf{确定基准线}：取最小转折频率\emph{之左}的特性及其延长线作为基准——基准点 $(\omega=1,\;L(1)=20\lg K)$，斜率 $-20v\;\mathrm{dB/dec}$。型次 $v$ 决定低频段斜率，$K$ 决定基准点高低。
+    \item \textbf{叠加作图}：每过一个转折频率，斜率改变一次：
+    \[
+    \text{惯性 }-20,\qquad \text{一阶微分 }+20,\qquad \text{振荡 }-40,\qquad \text{二阶微分 }+40\quad(\mathrm{dB/dec})
+    \]
+    相频曲线按"惯性 $0^\circ\to-90^\circ$、一阶微分 $0^\circ\to+90^\circ$、振荡 $0^\circ\to-180^\circ$、二阶微分 $0^\circ\to+180^\circ$"逐段叠加。
+    \item \textbf{修正}：(1) 两个惯性环节转折频率很接近时，渐近线与实际曲线偏差较大；(2) 振荡环节、二阶微分环节在 $\omega_n$ 附近有谐振峰（$\zeta$ 越小峰越高），需按 $M_r$ 修正。
+    \item \textbf{三查}：(1) $L(\omega)$ 最右端斜率 $=-20(n-m)\;\mathrm{dB/dec}$；(2) 转折点数 $=$（惯性）$+$（一阶微分）$+$（振荡）$+$（二阶微分）；(3) $\varphi(\infty)\to-90^\circ(n-m)$。
+\end{enumerate}
+\noindent 这三条检查是作图正确性的"自洽条件"，任何一条不满足，说明标准型化错、转折频率漏项或斜率叠加方向错。
+
+\subsection{由 Bode 图确定传递函数}
+\textbf{前提：最小相位系统}（否则 $L(\omega)$ 不能唯一确定 $G(s)$，还需相频信息）。步骤：
+\begin{enumerate}
+    \item 由低频段渐近线斜率 $-20v\;\mathrm{dB/dec}$ 确定型次 $v$（积分环节个数）；
+    \item 由低频段（或其延长线）在 $\omega=1$ 处的高度读出 $20\lg K$，得 $K$；等价地，若低频段延长线与 $0\,\mathrm{dB}$ 线交于 $\omega_0$，则 $20\lg\dfrac{K}{\omega_0^{v}}=0\Rightarrow K=\omega_0^{v}$；
+    \item 由各转折频率读出时间常数：惯性 $T=\frac{1}{\omega}$，一阶微分 $\tau=\frac{1}{\omega}$，振荡环节 $\omega_n=\omega$；
+    \item 由谐振峰高度定阻尼比 $20\lg M_r=20\lg\dfrac{1}{2\zeta\sqrt{1-\zeta^2}}$，解出 $\zeta$（有两个解，取与 $\varphi(\omega_n)=-90^\circ$ 相符的一个），最后用 $L(\omega_c)=0$ 校核。
+\end{enumerate}
+
+\paragraph{两个频率的术语}
+\textbf{剪切（截止）频率} $\omega_c$ 满足 $|G(j\omega_c)|=1$，即 $L(\omega_c)=0\,\mathrm{dB}$；\textbf{相位穿越频率} $\omega_g$ 满足 $\angle G(j\omega_g)=(2k+1)\pi$，即 $\varphi=-180^\circ$。二者分别是稳定裕度 $\gamma$、$h$ 的"测量点"。
+
+\subsection{Bode 图与 Nyquist 图的对应关系}
+\begin{table}[htbp]
+\centering
+\caption{Nyquist 图与 Bode 图的对应}\label{tab:bodenyq}
+\begin{tabular}{ll}
+\toprule
+Nyquist 图（$[G]$ 平面） & Bode 图 \\
+\midrule
+单位圆 $|G|=1$ & $0\,\mathrm{dB}$ 线 \\
+单位圆外 $|G|>1$ & $L(\omega)>0$ 的部分 \\
+单位圆内 $|G|<1$ & $L(\omega)<0$ 的部分 \\
+负实轴 & $\varphi=\pm180^\circ$ 线 \\
+临界点 $(-1,j0)$ & $\{L=0\,\mathrm{dB}\}\cap\{\varphi=-180^\circ\}$ \\
+$(-1,j0)$ 点\emph{左侧}的负实轴 & $L(\omega)>0$ 且 $\varphi=-180^\circ$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+两种曲线含相同的信息：Nyquist 图看"包围圈数"，Bode 图看"$L>0$ 频段内相频穿越 $-180^\circ$ 线的次数"，二者可以互相转画（例：Nyquist 图上顺时针穿过负实轴，对应 Bode 图上 $\varphi$ 由上而下穿过 $-180^\circ$）。
+
+\bigskip
+
+\section{频率域稳定判据}
+
+\subsection{判据的数学基础：幅角原理}
+系统稳定的充要条件是\emph{全部闭环极点具有负实部}。劳斯判据由闭环特征多项式系数判定，不解根，但不能用来研究"如何调整结构改善稳定性"；频域判据由\emph{开环}频率特性直接判定闭环稳定性，且可研究含延迟环节的系统。
+
+\paragraph{辅助函数与三个特点}
+\[
+F(s)=1+G(s)H(s)=\frac{B(s)+A(s)}{A(s)}
+\]
+\begin{enumerate}
+    \item $F(s)$ 的\textbf{零点} = 闭环传递函数的极点，$F(s)$ 的\textbf{极点} = 开环传递函数的极点；
+    \item $F(s)$ 的零点数与极点数相同（一般 $n\ge m$）；
+    \item $s$ 沿闭合曲线 $\Gamma$ 运动一周所得的两条闭曲线 $\Gamma_F$ 与 $\Gamma_{GH}$ 只差常数 1：$\Gamma_F$ 是 $\Gamma_{GH}$ 沿实轴正方向平移一个单位。故 \textbf{$\Gamma_F$ 包围原点的圈数 $=$ $\Gamma_{GH}$ 包围 $(-1,j0)$ 点的圈数}。
+\end{enumerate}
+
+\paragraph{幅角原理}
+设 $s$ 平面闭合曲线 $\Gamma$ 包围 $F(s)$ 的 $Z$ 个零点、$P$ 个极点，则 $s$ 沿 $\Gamma$ \emph{顺时针}运动一周时，$F(s)$ 平面上的闭曲线包围原点的圈数为
+\[
+R=P-Z\quad\Longrightarrow\quad Z=P-R
+\]
+$R>0$ 表示逆时针包围，$R<0$ 表示顺时针包围，$R=0$ 表示不包围。
+
+\paragraph{奈氏路径 $\Gamma$ 的选取}
+取 $\Gamma$ 包围整个右半 $s$ 平面（顺时针）：
+\begin{enumerate}
+    \item 正虚轴 $s=j\omega,\ \omega\in[0,+\infty)$；
+    \item 第 1 象限半径无穷大的 $1/4$ 圆弧 $s=\infty e^{j\theta},\ \theta\in[0^\circ,90^\circ]$；
+    \item 负虚轴 $\omega\in(-\infty,0]$ 与第 4 象限的无穷大 $1/4$ 圆弧（由对称性，作图时可只画 $\omega\ge0$ 的一半）。
+\end{enumerate}
+若开环在\emph{虚轴上有极点}，须用无穷小半圆把这些极点"绕出去"：含积分环节时在原点取 $s=\varepsilon e^{j\theta},\ \theta\in[-90^\circ,90^\circ]$；含等幅振荡环节时在 $\pm j\omega_n$ 附近同样取小半圆。此时 $P$ \emph{不包含}虚轴上的开环极点。
+
+\paragraph{半闭合曲线 $\Gamma_{GH}$}
+由于 $\Gamma$ 关于实轴对称、$G(s)H(s)$ 为实系数有理分式，$\Gamma_{GH}$ 也关于实轴对称，故只需画 $\mathrm{Im}\ge0$ 的一半，称为\emph{奈奎斯特曲线}（半闭合曲线），仍记 $\Gamma_{GH}$。它由两部分组成：
+\begin{enumerate}
+    \item $\omega:0\to+\infty$ 的\emph{开环幅相特性曲线}；
+    \item $\omega$ 为无穷大（或虚轴极点）时\emph{补作的圆弧}：
+    \begin{itemize}
+        \item 无虚轴极点且 $n>m$：对应原点（半径为零，可视为一点）；
+        \item 无虚轴极点且 $n=m$：对应 $K^*$ 点（$K^*$ 为开环根轨迹增益）；
+        \item 含 $v$ 个积分环节：从 $G(j0^+)H(j0^+)$ 起\emph{逆时针}补半径 $\infty$、圆心角 $v\times90^\circ$ 的圆弧；
+        \item 含 $\nu_1$ 个等幅振荡环节：从 $G(j\omega_n^-)H(j\omega_n^-)$ 起\emph{顺时针}补半径 $\infty$、圆心角 $\nu_1\times180^\circ$ 的圆弧至 $G(j\omega_n^+)$。
+    \end{itemize}
+\end{enumerate}
+
+\subsection{穿越次数 $N$ 的计算}
+设 $N_+$ 为正穿越次数之和、$N_-$ 为负穿越次数之和，则
+\[
+R=2N=2(N_+-N_-),\qquad Z=P-R=P-2N
+\]
+\begin{itemize}
+    \item \textbf{穿越}：$\Gamma_{GH}$ 穿过 $(-1,j0)$ 点\emph{左侧}的负实轴（$-\infty<x<-1$）。注意：穿过 $(-1,j0)$ 右侧的负实轴\emph{不计}；
+    \item \textbf{正穿越}：$\omega$ 增大时，曲线\emph{由上而下}穿过该段负实轴（对应逆时针包围，$N_+$ 计 $+1$）；
+    \item \textbf{负穿越}：$\omega$ 增大时，曲线\emph{由下而上}穿过该段负实轴（$N_-$ 计 $+1$，即 $N$ 中记 $-1$）；
+    \item \textbf{半次穿越}：曲线\emph{起始或终止}于 $(-1,j0)$ 点以左的负实轴，穿越次数记 $\pm\frac12$（由上而下为 $+\frac12$，由下而上为 $-\frac12$）；由补作的无穷大圆弧产生的穿越也要计入。
+\end{itemize}
+\textbf{$N$ 的最小单位为二分之一}，这是判据计算中最容易出错的地方。
+
+\subsection{奈奎斯特稳定判据}
+\begin{quote}
+\textbf{奈氏判据}：反馈控制系统稳定的充分必要条件是——半闭合曲线 $\Gamma_{GH}$ \emph{不穿过} $(-1,j0)$ 点，且\emph{逆时针}包围 $(-1,j0)$ 点的圈数 $R$ 等于开环传递函数的正实部极点数 $P$。
+\end{quote}
+等价的计算式：
+\[
+\boxed{\,Z=P-R=P-2N\,}
+\]
+\begin{itemize}
+    \item $Z$：右半 $s$ 平面中的\emph{闭环}极点个数（待求）；
+    \item $P$：右半 $s$ 平面中的\emph{开环}极点个数（已知，由开环分母的劳斯表或直接观察得到，\emph{不含虚轴极点}）；
+    \item $N=N_+-N_-$：半闭合曲线包围 $(-1,j0)$ 点的"折算圈数"。
+\end{itemize}
+判读：$Z>0$ 闭环不稳定（有 $Z$ 个右半平面闭环极点）；$Z=0$ 闭环稳定；$Z<0$ 说明 $N$ 或 $P$ 算错了，\emph{不是}"更稳定"。
+
+\paragraph{判稳的标准流程}
+\begin{enumerate}
+    \item 写出 $G(s)H(s)$，化为尾 1 标准型，读出 $v$、$n$、$m$、$K$；
+    \item 由开环分母定 $P$（右半平面极点数）；
+    \item 算起点 $G(j0^+)$、终点 $G(j\infty)$，定象限与走向；
+    \item 令 $\mathrm{Im}[G(j\omega)]=0$ 求与负实轴的交点，判断各交点在 $(-1,j0)$ 的左侧还是右侧；
+    \item 按 $v$ 补作无穷大圆弧（$v\times90^\circ$，逆时针），合成半闭合曲线；
+    \item 数 $N_+,\,N_-$（含半次），算 $Z=P-2N$，下结论。
+\end{enumerate}
+
+\paragraph{判据的三个注意点}
+\begin{enumerate}
+    \item $[s]$ 平面虚轴上有开环极点时，奈氏路径要从其\emph{右边}绕出半径无穷小的圆弧，$[G]$ 平面对应补作\emph{大圆弧}；
+    \item $N$ 的最小单位为二分之一；补作圆弧产生的穿越照常计入；
+    \item 若 $\Gamma_{GH}$ 恰好\emph{穿过} $(-1,j0)$ 点，说明闭环特征方程有共轭纯虚根，系统\textbf{临界稳定}（不是稳定）；此时穿越次数\emph{不计}该点本身的穿过。
+\end{enumerate}
+
+\subsection{对数频率稳定判据}
+把半闭合曲线"搬到"半对数坐标上，就得到对数判据，其关键仍是确定 $N$。
+
+\paragraph{对应关系的建立}
+穿越点：$\omega=\omega_c$ 时 $A(\omega_c)=1$、$L(\omega_c)=0$；$\omega=\omega_g$ 时 $\varphi(\omega_g)=(2k+1)\pi$。于是 $\Gamma_{GH}$ 在 $A(\omega)>1$ 时穿越负实轴 $\Longleftrightarrow$ 在 $L(\omega)>0$ 时 $\Gamma_\varphi$ 与 $(2k+1)\pi$ 平行线相交。
+
+\paragraph{$\Gamma_\varphi$ 的补作（与补圆弧对应）}
+\begin{enumerate}
+    \item 开环无虚轴极点时，$\Gamma_\varphi$ 就是 $\varphi(\omega)$ 曲线；
+    \item 含 $v$ 个积分环节时，在 $\omega=0^+$ 处（$L>0$ 的范围内）由下向上补画一条相角为 $v\times90^\circ$ 的\emph{虚直线}；
+    \item 含 $\nu_1$ 个等幅振荡环节时，从 $\varphi(\omega_n^-)$ 向上补画 $\nu_1\times180^\circ$ 的虚直线至 $\varphi(\omega_n^+)$。
+\end{enumerate}
+补画的虚直线\emph{作为相频特性的一部分}参与穿越计数。
+
+\paragraph{穿越的定义（Bode 图上）}
+在 $L(\omega)=20\lg|G(j\omega)H(j\omega)|>0\,\mathrm{dB}$ 的范围内，当 $\omega$ 增大时：
+\begin{itemize}
+    \item $\varphi$ 由\emph{下而上}穿过 $-180^\circ$ 线：\textbf{正穿越}一次（$N_+$）；
+    \item $\varphi$ 由\emph{上而下}穿过 $-180^\circ$ 线：\textbf{负穿越}一次（$N_-$）；
+    \item \textbf{半次正穿越}：$\varphi$ 曲线自 $-180^\circ$ 线\emph{开始向上}（起于或止于该线）；\textbf{半次负穿越}：自 $-180^\circ$ 线开始\emph{向下}；
+    \item 补作虚直线产生的穿越\emph{全算作负穿越}。
+\end{itemize}
+
+\paragraph{对数频率稳定判据}
+设 $P$ 为开环系统正实部极点数，反馈控制系统稳定的充分必要条件是
+\[
+\varphi(\omega_c)\neq(2k+1)\pi\ (k=0,1,2,\cdots)
+\quad\text{且}\quad
+Z=P-2N=0,\quad N=N_+-N_-
+\]
+其中 $N$ 只在 $L(\omega)>0$ 的频率范围内统计。对数判据与奈氏判据\emph{本质相同}，区别仅在于前者在 $L>0$ 的频段内依 $\Gamma_\varphi$ 定穿越次数。
+
+\paragraph{条件稳定系统与结构不稳定系统}
+$P=0$ 时，若改变开环增益等系数会使闭环稳定性发生变化（如"小增益稳定、大增益不稳定"或"稳定—不稳定—再稳定"），称\textbf{条件稳定系统}；若无论系数怎样变化闭环总不稳定（如 $G(s)H(s)=\dfrac{K}{s^2(Ts+1)}$），称\textbf{结构不稳定系统}。为表征"稳定的程度"，引入稳定裕度。
+
+\bigskip
+
+\section{稳定裕度}
+$(-1,j0)$ 点称\textbf{临界点}，$\Gamma_{GH}$ 相对临界点的位置（偏离程度）反映系统的\emph{相对稳定性}，用相角裕度 $\gamma$ 与幅值裕度 $h$ 度量。
+
+\subsection{相角裕度 $\gamma$}
+在剪切频率 $\omega_c$（$A(\omega_c)=1$，即 $L(\omega_c)=0\,\mathrm{dB}$）处，
+\[
+\boxed{\ \gamma=180^\circ+\angle\big[G(j\omega_c)H(j\omega_c)\big]\ }
+\]
+\textbf{物理意义}：若系统开环相频特性再\emph{滞后} $\gamma$ 度，系统就达到临界稳定（等幅振荡）。\\
+\textbf{判据}（$P=0$ 的最小相位系统）：$\gamma>0^\circ$ 稳定；$\gamma<0^\circ$ 不稳定；$\gamma=0^\circ$ 临界稳定。\\
+\textbf{工程取值}：为保证良好动态性能（较小超调），通常要求 $\gamma=30^\circ\sim60^\circ$。
+
+\subsection{幅值裕度 $h$}
+在相位穿越频率 $\omega_g$（$\varphi(\omega_g)=(2k+1)\pi$，即 $-180^\circ$）处，
+\[
+h=\frac{1}{|G(j\omega_g)H(j\omega_g)|},\qquad
+h_{\mathrm{dB}}=-20\lg|G(j\omega_g)H(j\omega_g)|\ (\mathrm{dB})
+\]
+注意 $h_{\mathrm{dB}}$ 的定义式\emph{带负号}：它等于 $20\lg h$。\\
+\textbf{物理意义}：若系统开环幅频特性再\emph{增大} $h$ 倍，系统就达到临界稳定；对不稳定的闭环系统，幅值裕度指出为使系统临界稳定，开环幅频特性应减小到原来的 $1/h$。\\
+\textbf{判据}：$h>1$（即 $h_{\mathrm{dB}}>0\,\mathrm{dB}$）稳定；$h<1$（$h_{\mathrm{dB}}<0\,\mathrm{dB}$）不稳定。\\
+\textbf{工程取值}：通常要求 $h_{\mathrm{dB}}>6\,\mathrm{dB}$。
+
+\subsection{关于两个裕度的几点说明}
+\begin{enumerate}
+    \item 两个裕度都是"极坐标图对 $(-1,j0)$ 点靠近程度"的度量，可作设计准则；\textbf{只用其中一个都不足以说明相对稳定性}，必须同时给出；适当裕度还能防止元件老化、增益与时间常数波动的破坏；
+    \item 对\emph{最小相位}系统，只有 $\gamma$ 与 $h$ 都为正值时系统才稳定，负裕度表示不稳定；
+    \item 对\emph{非最小相位}系统（开环右半平面有极点），稳定的系统反而可能具有负的相角裕度和幅值裕度，此时不能用"$\gamma>0$ 且 $h>1$"下结论；
+    \item 一阶、二阶系统的极坐标图与负实轴不相交，故 $h=\infty$，理论上不可能不稳定；
+    \item 条件稳定系统可能有两个或多个穿越频率 $\omega_g$，某些高阶系统还可能有多个剪切频率 $\omega_c$；对有多个 $\omega_c$ 的稳定系统，\textbf{相角裕度应在最高的 $\omega_c$ 处测量}；
+    \item 对最小相位系统，$\gamma$ 在 $30^\circ\sim60^\circ$ 之间等价于 $L(\omega)$ 在 $\omega_c$ 附近的斜率\emph{大于} $-40\,\mathrm{dB/dec}$；工程上多要求 $\omega_c$ 处斜率为 $-20\,\mathrm{dB/dec}$（$-40$ 时可能稳定也可能不稳定，$-60$ 或更陡多半不稳定）。
+\end{enumerate}
+\noindent 这也解释了"减小开环增益 $K$ 可增大 $\gamma$，但稳态误差变大"的矛盾——这正是需要第六章校正的原因。
+
+\subsection{闭环频率特性与频域性能指标（课件要点）}
+闭环幅频特性 $|\Phi(j\omega)|$ 的峰值称\textbf{谐振峰值} $M_r$，对应频率称谐振频率 $\omega_r$；对二阶系统有
+\[
+\omega_r=\omega_n\sqrt{1-2\zeta^2},\qquad M_r=\frac{1}{2\zeta\sqrt{1-\zeta^2}}\quad(0<\zeta<0.707)
+\]
+$M_r$ 表征闭环系统的相对稳定性（振荡倾向），它与开环相角裕度存在工程近似关系
+\[
+M_r\approx\frac{1}{\sin\gamma}
+\]
+据此，$\gamma=30^\circ$ 时 $M_r\approx2$，$\gamma=60^\circ$ 时 $M_r\approx1.15$——这正是"$\gamma$ 取 $30^\circ\sim60^\circ$"的另一种解释：$\gamma$ 太小则 $M_r$ 大、超调大；$\gamma$ 太大则系统响应迟缓。
+\noindent\textbf{说明：}本章课件只给出 $M_r$ 与 $\gamma$ 的上述关系及工程取值，未展开带宽频率、等 $M$ 圆与频域—时域指标的定量换算，故此处不作补充。
+
+\bigskip
+
+\section{本章易错点汇总}
+\begin{enumerate}
+    \item \textbf{惯性环节的 Nyquist 图是下半圆}，不是整圆、也不是上半圆；一阶微分环节才是上半平面的射线。圆心在 $(\tfrac12,j0)$、半径 $\tfrac12$，只取 $Y<0$ 的一半。
+    \item \textbf{方向的记忆}：积分沿\emph{负}虚轴（$\angle=-90^\circ$），微分沿\emph{正}虚轴（$\angle=+90^\circ$）；惯性 $0^\circ\to-90^\circ$，一阶微分 $0^\circ\to+90^\circ$。
+    \item \textbf{起点幅值为 $\infty$ 时必须补圆弧}：$v>0$ 时 $G(j0^+)=\infty\angle(-90^\circ v)$，$\Gamma_{GH}$ 要从 $G(j0^+)$ 起逆时针补 $v\times90^\circ$ 的大圆弧，否则包围圈数会算错。
+    \item \textbf{穿越只看 $(-1,j0)$ 左侧，且可以取半整数}：穿过 $(-1,j0)$ 与原点之间的负实轴不计入 $N$；曲线起于或止于该段时记 $\pm\frac12$。
+    \item \textbf{$P$ 不含虚轴极点}：积分环节、等幅振荡环节的极点位于虚轴，既不算右半平面极点，也必须用小半圆绕开，不能漏。
+    \item \textbf{$Z<0$ 是算错，不是更稳定}；$Z=0$ 才是稳定。$\Gamma_{GH}$ 恰好过 $(-1,j0)$ 时是\emph{临界稳定}。
+    \item \textbf{非最小相位系统不能由幅频唯一确定 $G(s)$}：幅频相同、相频不同的两个系统，必须补看相频（相位变化范围大的那个是非最小相位）。
+    \item \textbf{Bode 图没有 $\omega=0$ 点}：横轴按 $\lg\omega$ 分度，$\omega=1$ 处 $L=20\lg K$ 是基准点；不要把"$\omega=0$ 时的 $L$"写成有限值。
+    \item \textbf{幅值裕度的 dB 定义带负号}：$h_{\mathrm{dB}}=-20\lg|G(j\omega_g)|$，而 $h=1/|G(j\omega_g)|$，符号写反就把稳定判成不稳定；$\gamma$ 与 $h$ 必须同时给出，非最小相位系统不适用"两者皆正"的结论。
+    \item \textbf{Bode 图三查不能省}：最右端斜率 $-20(n-m)$、转折点数、$\varphi(\infty)=-90^\circ(n-m)$；三者不自治说明标准型或叠加有错。
+\end{enumerate}
+
+% ===== 恢复全局默认间距（避免影响后续章节）=====
+\setlength{\parskip}{0pt plus 1pt}
+\setlist{leftmargin=2em, itemsep=0.2em, parsep=0pt}
+\renewcommand{\arraystretch}{1}
+\setlength{\tabcolsep}{6pt}
+% ============================================

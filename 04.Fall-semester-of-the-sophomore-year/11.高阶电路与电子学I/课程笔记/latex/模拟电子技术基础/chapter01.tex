@@ -1,0 +1,259 @@
+% 第1章 常用半导体器件
+\chapter{常用半导体器件}
+
+本章主线：\textbf{内部载流子运动}决定\textbf{外部伏安特性}，再抽象为\textbf{参数与等效电路}。各器件的结论都可回到"多子与少子如何扩散、如何漂移、受哪个电场控制"来解释。
+
+\section{半导体基础}
+
+\subsection{本征半导体}
+
+\textbf{定义}：纯净的、具有晶体结构的半导体称为本征半导体。硅、锗都是四价元素，每个原子与相邻四个原子共用价电子形成共价键。
+
+\textbf{本征激发与复合}：价电子靠热运动挣脱共价键成为自由电子，同时在共价键中留下带正电的空位，称为空穴。产生电子--空穴对的过程称为本征激发，自由电子填补空位称为复合；两者数目相等时达到动态平衡，载流子浓度一定且电子、空穴浓度相等：
+\begin{equation}
+n_i = p_i = K_1 T^{\frac{3}{2}} e^{-\frac{E_{GO}}{2kT}}
+\formulaNote{$E_{GO}$ 为禁带宽度}
+\end{equation}
+其中 $E_{GO}$ 硅为 $1.21\,\text{eV}$、锗为 $0.785\,\text{eV}$；$K_1$ 是与载流子有效质量、有效能级密度有关的常量。
+
+运载电荷的粒子称为\textbf{载流子}；两种载流子都参与导电称为\textbf{双极性导电}（BJT 名称的由来）。载流子浓度只取决于材料与温度，温度升高时按指数增大，这是半导体器件温度敏感的根源。
+
+\subsection{杂质半导体}
+
+通过扩散工艺掺入少量合适杂质（浓度约 $10^{-6}$ 量级），可使一种载流子浓度提高几个数量级。
+\begin{itemize}
+    \item \textbf{N 型}：掺五价元素（如磷）。五价原子成键后多出一个易被激发的自由电子，杂质原子成为正离子，称为\textbf{施主原子}。电子为多子，空穴为少子，导电以电子电流为主。
+    \item \textbf{P 型}：掺三价元素（如硼）。三价原子成键时缺一个电子，从共价键夺取电子而产生空穴，杂质原子成为负离子，称为\textbf{受主原子}。空穴为多子，电子为少子。
+\end{itemize}
+
+\paragraph{易错点} 杂质半导体\textbf{整体仍电中性}；掺杂改变的是多子浓度，少子由本征激发产生，满足 $np=n_i^2$，故掺杂越多，少子越少。
+
+\subsection{PN 结}
+
+\paragraph{形成} P 区空穴与 N 区电子浓度差极大，发生\textbf{扩散运动}（由高浓度向低浓度）并在交界面附近复合，多子浓度下降：P 区留下不能移动的负离子，N 区留下正离子，形成\textbf{空间电荷区}。该区建立\textbf{内电场}（方向由 N 区指向 P 区）阻止扩散，同时使少子发生\textbf{漂移运动}。当扩散与漂移相等时达到动态平衡，空间电荷区宽度一定、两端存在内建电位差（势垒），净电流为零。区内载流子极少，分析时只考虑离子电荷，故又称\textbf{耗尽层}。
+
+\paragraph{单向导电性}
+\begin{itemize}
+    \item \textbf{正向偏置}（P 接正、N 接负）：外电场把多子推向空间电荷区，使其变窄、削弱内电场，扩散加剧而漂移减弱，扩散在电源作用下持续进行，形成较大的正向电流，PN 结导通；
+    \item \textbf{反向偏置}（P 接负、N 接正）：空间电荷区变宽、内电场加强，扩散被阻止、漂移加剧，形成由少子构成的很小反向电流，认为截止。
+\end{itemize}
+
+\paragraph{伏安特性方程}
+\begin{equation}
+i = I_S\left(e^{\frac{u}{U_T}} - 1\right)
+\formulaNote{$U_T=\dfrac{kT}{q}\approx26\,\text{mV}$}
+\end{equation}
+其中 $U_T$ 称为温度的电压当量（$T=300\,\text{K}$），$I_S$ 为反向饱和电流，与少子浓度有关，随温度升高迅速增大。
+
+\paragraph{结电容}
+\begin{itemize}
+    \item \textbf{势垒电容} $C_b$：反偏电压变化使空间电荷区宽度变化，耗尽层电荷量随之增减，等效为电容。它与结面积、耗尽层宽度、介电常数及外加电压有关，是\textbf{非线性}电容，反偏时为主；
+    \item \textbf{扩散电容} $C_d$：正偏时非平衡少子在耗尽层外侧形成浓度梯度，正偏电压增大则积累电荷增多。它与正向电流、温度电压当量及非平衡少子寿命有关，正偏时为主。
+\end{itemize}
+\begin{equation}
+C_j = C_b + C_d
+\formulaNote{结电容，高频时限制上限频率}
+\end{equation}
+
+\section{半导体二极管}
+
+将 PN 结封装并引出电极即构成二极管：P 区为阳极，N 区为阴极。其特性与 PN 结相同，但存在\textbf{体电阻和引线电阻}，故正向压降大于 PN 结压降，反向截止时表面漏电流使总反向电流增大。
+
+\subsection{伏安特性}
+\begin{itemize}
+    \item \textbf{开启电压} $U_{on}$：正向电压足够大时电流才从零按指数规律增大，开始导通的临界电压。硅管约 $0.5\,\text{V}$，锗管约 $0.1\,\text{V}$；
+    \item \textbf{导通压降}：充分导通后近似恒定，硅管取 $0.7\,\text{V}$，锗管取 $0.2\,\text{V}$；
+    \item \textbf{反向特性}：反偏时只有很小的反向饱和电流，反向电压增大到击穿电压后电流急剧增大。
+\end{itemize}
+温度升高时正向特性\textbf{左移}（同电流所需电压减小），反向特性\textbf{下移}（反向饱和电流增大）。
+
+\subsection{主要参数}
+\begin{enumerate}
+    \item \textbf{最大整流电流} $I_F$：允许通过的最大正向平均电流，超过则结温过高而烧坏；
+    \item \textbf{最高反向工作电压} $U_R$：允许外加的最大反向电压，通常取 $U_R=0.5\,U_{(BR)}$；
+    \item \textbf{反向电流} $I_R$：未击穿时的反向电流，越小单向导电性越好，随温度升高明显增大；
+    \item \textbf{最高工作频率} $f_M$：由结电容决定的上限频率，超过后失去单向导电性。
+\end{enumerate}
+
+\subsection{等效电路}
+
+\paragraph{折线化等效电路} 按精度要求选用，否则误差可能超出允许范围：
+\begin{enumerate}
+    \item \textbf{理想二极管模型}：正向压降为零、反向电流为零，相当于理想开关；
+    \item \textbf{恒压降模型}：正向压降为常量 $U_{on}$、反向电流为零，等效为理想二极管串联电压源；
+    \item \textbf{折线模型}：$u>U_{on}$ 后 $u$--$i$ 近似线性、斜率为 $1/r_D$，等效为理想二极管串联电压源再串联内阻。
+\end{enumerate}
+\begin{equation}
+r_D = \frac{\Delta U}{\Delta I}
+\end{equation}
+
+\paragraph{微变（交流）等效电路} 外加直流正向电压时二极管产生直流电流，对应的工作点为\textbf{静态工作点} $Q$。在 $Q$ 点叠加微小交流分量时，可用 $Q$ 点切线近似曲线，把二极管等效为一个动态电阻：
+\begin{equation}
+\frac{1}{r_d} = \frac{\mathrm{d}i_D}{\mathrm{d}u_D}
+\approx \frac{I_D}{U_T}
+\formulaNote{$I_D$ 为 $Q$ 点电流}
+\end{equation}
+可见 $Q$ 点越高 $r_d$ 越小，故大电流时二极管可近似视为短路。
+
+\subsection{稳压管}
+
+特殊工艺制造的面接触型硅二极管，工作在\textbf{反向击穿}状态：一定电流范围内端电压几乎不变，表现稳压特性；使用时必须串接限流电阻。等效电路用两组元件表示：$D_1$ 表示正向或反向未击穿时的情况，$D_2$、$U_Z$、$r_Z$ 表示反向击穿时的等效电路。
+
+\paragraph{主要参数} \textbf{稳定电压} $U_Z$ 为规定电流下的反向击穿电压；\textbf{稳定电流} $I_Z$ 为稳压状态的参考电流，低于 $I_{Z\min}$ 时失去稳压功能；\textbf{额定功耗} $P_{ZM}=U_Z I_{ZM}$；\textbf{动态电阻} $r_Z=\Delta U_Z/\Delta I_Z$ 越小稳压性能越好。
+
+\paragraph{温度系数} $\alpha=\Delta U_Z/\Delta T$：$U_Z<4\,\text{V}$ 为\textbf{齐纳击穿}、负温度系数；$U_Z>7\,\text{V}$ 为\textbf{雪崩击穿}、正温度系数；$4\sim7\,\text{V}$ 两种击穿并存，温度系数很小。
+
+\paragraph{易错点} 稳压管\textbf{必须反接}（阴极接高电位）才起稳压作用，正接时压降仅 $0.7\,\text{V}$；判断其是否工作在稳压区，须同时检验 $I_Z\ge I_{Z\min}$ 与 $P\le P_{ZM}$。
+
+\section{晶体三极管}
+
+晶体管有两种极性的载流子参与导电，故称\textbf{双极性晶体管}（BJT）。
+
+\paragraph{结构特点} 同一硅片上形成三个掺杂区、两个 PN 结。以 NPN 型为例：中间 P 区为\textbf{基区}，很薄且杂质浓度很低；一侧 N 区为\textbf{发射区}，掺杂浓度很高；另一侧 N 区为\textbf{集电区}，面积很大。各区引出 $b$、$e$、$c$；发射区与基区间的 PN 结为\textbf{发射结}，基区与集电区间的为\textbf{集电结}。三个结构特点各对应一个功能：发射区高掺杂保证发射能力强，基区薄而浓度低保证电子在基区复合少，集电区面积大且加反压保证收集能力强，缺一不可。
+
+\subsection{基本原理}
+
+共射接法以发射极为公共端：输入回路加 $V_{BB}$，输出回路加 $V_{CC}$ 且 $V_{CC}>V_{BB}$，以保证\textbf{发射结正偏、集电结反偏}，这是工作在放大区的\textbf{外部条件}。内部过程为：发射结正偏且发射区浓度高，大量电子扩散入基区（空穴向发射区扩散可忽略），形成 $I_E$；基区薄、浓度低且集电结反偏，进入基区的电子只有很少部分复合形成 $I_B$，绝大部分作为基区非平衡少子继续向集电结运动；集电结反偏且面积大，这些少子被收集形成 $I_C$。可见\textbf{放大作用的实质是用较小的基极电流控制较大的集电极电流}，$I_C$ 的能量来自 $V_{CC}$，故晶体管是电流控制的有源元件。
+
+\paragraph{电流关系}
+\begin{equation}
+\left\{
+\begin{aligned}
+I_E &= I_{EN}+I_{EP} = I_{CN}+I_{BN}+I_{EP}\\
+I_C &= I_{CN}+I_{CBO}\\
+I_B &= I_{BN}+I_{EP}-I_{CBO}
+\end{aligned}
+\right.
+\formulaNote{外部恒有 $I_E=I_C+I_B$}
+\end{equation}
+其中 $I_{EN}$、$I_{EP}$ 为发射区向基区、基区向发射区扩散的载流子电流，$I_{BN}$ 为基区复合电流，$I_{CN}$ 为非平衡少子漂移到集电区的电流，$I_{CBO}$ 为平衡少子在集电结的漂移电流。
+
+\paragraph{电流放大系数}
+\begin{equation}
+\bar\beta = \frac{I_{CN}}{I_B} = \frac{I_C - I_{CBO}}{I_B + I_{CBO}}
+\end{equation}
+\begin{equation}
+I_C = \bar\beta I_B + (1+\bar\beta)I_{CBO} = \bar\beta I_B + I_{CEO}
+\formulaNote{$I_{CEO}$ 为穿透电流}
+\end{equation}
+一般 $I_B\gg I_{CBO}$、$\bar\beta\gg1$，故 $I_C\approx\bar\beta I_B$，$I_E\approx\bar\beta I_B$。有交流输入时各极电流叠加动态分量：
+\begin{equation}
+\beta = \left.\frac{\Delta i_C}{\Delta i_B}\right|_{U_{CE}},
+\qquad
+\alpha = \left.\frac{\Delta i_C}{\Delta i_E}\right|_{U_{CB}}
+\end{equation}
+共基与共射放大系数的关系为
+\begin{equation}
+\bar\alpha = \frac{\bar\beta}{1+\bar\beta},
+\qquad
+\alpha = \frac{\beta}{1+\beta}\approx1
+\formulaNote{工程上 $\beta\approx\bar\beta$}
+\end{equation}
+注意 $\beta$ 不是常数，随 $I_C$ 与温度而变。
+
+\subsection{工作特性}
+
+\paragraph{输入特性} $U_{CE}$ 一定时 $i_B=f(u_{BE})$。$U_{CE}=0$ 时 $c$、$e$ 短接，发射结与集电结并联，特性与 PN 结伏安特性类似；$U_{CE}$ 增大时注入基区的少子有一部分被集电结收集，要发射同样多的电子需更大的 $u_{BE}$，曲线\textbf{右移}；$U_{CE}$ 增至约 $1\,\text{V}$ 后曲线几乎不再移动。
+
+\paragraph{输出特性} $I_B$ 一定时 $i_C=f(u_{CE})$，是一簇曲线。$u_{CE}$ 从零增大时集电结收集能力增强，$i_C$ 增大；到一定数值后已能收集几乎全部少子，$i_C$ 几乎平行于横轴，只取决于 $I_B$。
+
+\begin{table}[htbp]
+\centering
+\caption{晶体管的三个工作区（NPN 管）}
+\begin{tabular}{@{}llll@{}}
+\hline
+工作区 & 发射结 & 集电结 & 电流关系 \\
+\hline
+截止区 & $u_{BE}\le U_{on}$ & 反偏 $u_{CE}>u_{BE}$ & $i_C\le I_{CEO}\approx0$ \\
+放大区 & 正偏 $u_{BE}>U_{on}$ & 反偏 $u_{CE}>u_{BE}$ & $i_C=\beta i_B$ \\
+饱和区 & 正偏 $u_{BE}>U_{on}$ & 正偏 $u_{CE}<u_{BE}$ & $i_C<\beta i_B$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{判断口诀}：看集电结是否反偏。$u_{CE}>u_{BE}$ 即 $u_{CB}>0$，集电结反偏，管子处于放大区或截止区；$u_{CE}<u_{BE}$ 时集电结正偏，进入饱和区。小功率管 $u_{CB}=0$ 时称\textbf{临界饱和}。
+
+\paragraph{温度影响} 温度升高使少子浓度增加、漂移加剧：$I_{CBO}$ 每升高 $10\,{}^\circ\text{C}$ 约增大一倍；输入特性\textbf{左移}；$\beta$ 增大且 $I_{CEO}=(1+\beta)I_{CBO}$ 增大，输出特性整体\textbf{上移}。三者叠加使同一偏置下 $Q$ 点随温度漂移，这正是第 3 章引入差分放大电路的原因。
+
+\subsection{主要参数}
+
+\paragraph{直流参数} $\bar\beta=(I_C-I_{CEO})/I_B\approx I_C/I_B$；$\bar\alpha=(I_C-I_{CBO})/I_E\approx I_C/I_E$。极间反向电流有两个：$I_{CBO}$ 为发射极开路时集电结的反向饱和电流，$I_{CEO}$ 为基极开路时 $c$--$e$ 间的穿透电流，两者关系为
+\begin{equation}
+I_{CEO} = (1+\bar\beta)I_{CBO}
+\formulaNote{衡量温度稳定性的指标}
+\end{equation}
+
+\paragraph{交流参数} $\beta=\Delta i_C/\Delta i_B|_{U_{CE}}$、$\alpha=\Delta i_C/\Delta i_E|_{U_{CB}}$；\textbf{特征频率} $f_T$：频率升高时 $i_C$ 与 $i_B$ 之比数值下降并产生相移，使其数值下降到 1 的信号频率即 $f_T$，它标志管子高频性能的界限。
+
+\paragraph{极限参数} \textbf{最大集电极耗散功率} $P_{CM}$ 取决于允许温升，$P_{CM}=i_C u_{CE}$ 在输出特性上是一条双曲线，曲线上方为过损耗区；\textbf{最大集电极电流} $I_{CM}$ 为 $i_C$ 增大到使 $\beta$ 明显减小之前的限值；\textbf{极间反向击穿电压}为某电极开路时另两电极间允许加的最高反向电压，满足
+\begin{equation}
+U_{(BR)CBO}>U_{(BR)CEO}>U_{(BR)EBO}
+\end{equation}
+
+\section{场效应管}
+
+场效应管（FET）利用输入回路的\textbf{电场效应}控制输出回路电流，仅靠多数载流子导电，故称\textbf{单极型晶体管}。按结构分结型（JFET）与绝缘栅型（MOSFET）。
+
+\subsection{结型场效应管}
+
+\paragraph{结构} 在同一块 N 型半导体上制作两个高掺杂 P 区并连在一起作为栅极 $g$，N 型半导体两端引出漏极 $d$ 与源极 $s$；P 区与 N 区交界面的耗尽层夹在中间，漏源之间非耗尽层区域称为\textbf{导电沟道}。
+
+\paragraph{$u_{GS}$ 对沟道的控制} N 沟道管在 $g$--$s$ 间加负电压使耗尽层承受反压，$d$--$s$ 间加正电压形成 $i_D$。$u_{GS}=0$ 时耗尽层很窄、沟道很宽、电阻最小；$|u_{GS}|$ 增大则耗尽层加宽、沟道变窄、电阻增大；增大到某值时耗尽层闭合、沟道消失，此时的 $u_{GS}$ 称\textbf{夹断电压} $U_{GS(off)}$，此后 $i_D\approx0$。
+
+\paragraph{$u_{DS}$ 对沟道的控制} $u_{GS}$ 固定、$u_{DS}$ 增大时，沟道内电位由源到漏逐渐升高，漏极一侧沟道更窄，$u_{GD}=u_{GS}-u_{DS}$ 逐渐减小。当 $u_{GD}=U_{GS(off)}$ 时漏极一侧出现夹断，称为\textbf{预夹断}；$u_{DS}$ 继续增大，夹断区向源极延伸，电子所受阻力增大，而纵向电场增强使漂移加快，两种作用相互抵消，$i_D$ 几乎不变，呈现\textbf{恒流特性}。于是每个确定的 $u_{GS}$ 对应一个确定的 $i_D$，实现电压控制电流。
+
+输出特性分四个区：\textbf{可变电阻区}（曲线近似斜率不同的直线，斜率为 $d$--$s$ 间等效电导，可作压控电阻）、\textbf{恒流区}（近似一族平行于横轴的直线，是放大管的工作区）、\textbf{夹断区}（$i_D\approx0$）、\textbf{击穿区}（漏源电压过高时 $i_D$ 骤然增大，应避免）。
+
+\paragraph{转移特性与跨导}
+\begin{equation}
+i_D = I_{DSS}\left(1-\frac{u_{GS}}{U_{GS(off)}}\right)^2,
+\qquad U_{GS(off)}<u_{GS}<0
+\end{equation}
+\begin{equation}
+g_m = \left.\frac{\Delta i_D}{\Delta u_{GS}}\right|_{U_{DS}=\text{const}}
+\formulaNote{低频跨导，单位 mS}
+\end{equation}
+$I_{DSS}$ 为 $u_{GS}=0$ 时的饱和漏极电流。为保证耗尽层始终反偏：N 沟道管 $u_{GS}\le0$，P 沟道管 $u_{GS}\ge0$。
+
+\subsection{绝缘栅型场效应管}
+
+栅极与源极、栅极与漏极之间均用 SiO$_2$ 绝缘层隔离，栅极为金属铝，故称\textbf{金属--氧化物--半导体场效应管}（MOS 管）。按沟道极性分 N、P 沟道，按 $u_{GS}=0$ 时有无沟道分\textbf{增强型}（无沟道，$i_D=0$）与\textbf{耗尽型}（有沟道），共四种。
+
+\paragraph{N 沟道增强型} $u_{GS}=0$ 时无导电沟道，$i_D=0$。$u_{GS}>0$ 时栅极金属层聚集正电荷，排斥 P 型衬底靠近 SiO$_2$ 一侧的空穴，留下负离子区形成耗尽层；$u_{GS}$ 增大，耗尽层加宽，并把衬底自由电子吸引到耗尽层与绝缘层之间形成 N 型薄层，即\textbf{反型层}。反型层就是漏源间的导电沟道，越厚则电阻越小。使 $i_D$ 开始明显大于零的最小 $u_{GS}$ 称为\textbf{开启电压} $U_{GS(th)}$。其预夹断与恒流规律同结型管：
+\begin{equation}
+i_D = I_{DO}\left(\frac{u_{GS}}{U_{GS(th)}}-1\right)^2
+\formulaNote{$I_{DO}$ 为 $u_{GS}=2U_{GS(th)}$ 时的 $i_D$}
+\end{equation}
+
+\paragraph{N 沟道耗尽型} 制造时在绝缘层中掺入大量正离子，故 $u_{GS}=0$ 时已在 P 型衬底表层感应出反型层，\textbf{存在导电沟道}，$u_{GS}=0$ 即有 $i_D=I_{DSS}$；只有 $u_{GS}$ 减小（变负）到某值时反型层才消失，此值即 $U_{GS(off)}$。其特性与结型管相似，但 $u_{GS}$ 可正可负，使用更灵活。
+
+\subsection{主要参数}
+
+\paragraph{直流参数} \textbf{开启电压} $U_{GS(th)}$（增强型管使 $i_D>0$ 所需最小的 $|u_{GS}|$）；\textbf{夹断电压} $U_{GS(off)}$（耗尽型与结型管使 $i_D$ 为某微小值的 $u_{GS}$）；\textbf{饱和漏极电流} $I_{DSS}$（$u_{GS}=0$ 时产生预夹断的漏极电流）；\textbf{直流输入电阻} $R_{GS(DC)}$（栅源电压与栅极电流之比，结型管 $10^7\,\Omega$ 以上，MOS 管可达 $10^{9}\sim10^{15}\,\Omega$）。
+
+\paragraph{交流参数} \textbf{低频跨导} $g_m$ 表示栅源电压对漏极电流控制的强弱；\textbf{极间电容} $C_{gs}$、$C_{gd}$、$C_{ds}$ 数值很小（pF 级），这是场效应管高频性能优于晶体管的原因。
+
+\paragraph{极限参数} \textbf{最大漏极电流} $I_{DM}$；\textbf{击穿电压}：使电流骤然增大的漏源击穿电压 $U_{(BR)DS}$，以及击穿栅极与沟道间 PN 结（结型）或绝缘层（MOS）的栅源击穿电压 $U_{(BR)GS}$；\textbf{最大耗散功率} $P_{DM}$，取决于允许温升。
+
+\paragraph{易错点} MOS 管栅极绝缘层很薄，$U_{(BR)GS}$ 只有几十伏，\textbf{保存时必须三极短接}，焊接时电烙铁须良好接地，否则静电即可击穿。这是与晶体管最重要的使用差别。
+
+\subsection{场效应管总结}
+
+\begin{table}[htbp]
+\centering
+\caption{各类场效应管的偏置与电流方程对比}
+\begin{tabular}{@{}llll@{}}
+\hline
+类型 & $u_{GS}$ 极性 & 零偏时 & 特征电压 \\
+\hline
+N 沟道结型 & $\le0$ & 导通 & $U_{GS(off)}<0$ \\
+P 沟道结型 & $\ge0$ & 导通 & $U_{GS(off)}>0$ \\
+N 沟道增强型 & $>0$ & 截止 & $U_{GS(th)}>0$ \\
+N 沟道耗尽型 & 正负均可 & 导通 & $U_{GS(off)}<0$ \\
+\hline
+\end{tabular}
+\end{table}
+
+结型管与耗尽型管的电流方程同为 $i_D=I_{DSS}(1-u_{GS}/U_{GS(off)})^2$，增强型管为 $i_D=I_{DO}(u_{GS}/U_{GS(th)}-1)^2$。
+
+场效应管是电压控制器件、只有多子导电，因而输入电阻极高、温度稳定性好、噪声低、便于集成、源漏可互换；但跨导较小，同工艺下放大能力不及晶体管。

@@ -1,295 +1,246 @@
-\chapter{第三章 刚体力学基础}
+\chapter{第3章\texorpdfstring{\hspace{0.5em}}{ }刚体力学基础}
+
+前两章把研究对象简化为质点。实际上物体的机械运动除平动外，尚有转动和振动。本章把研究对象从质点扩大为由无数连续分布的质点组成、有形状和大小的\textbf{刚体}（rigid body）。所谓刚体，是指在任何外力作用下，其内部各质点间的相对位置均保持不变的物体，即形变可以忽略的理想模型。本章先引入描述物体转动的重要物理量——角动量和转动惯量，进而讨论引起角动量变化的三个规律：力矩的瞬时作用规律（刚体定轴转动定律）、力矩对时间的累积作用规律（角动量定理和角动量守恒定律）、力矩对空间的累积作用规律（刚体定轴转动的动能定理和机械能守恒定律），最后介绍刚体的平面平行运动。重点是刚体的定轴转动。
 
 \section{刚体运动的基本形式}
     \subsection{平动和转动}
-    刚体可以看成是由无数个连续分布的质点所组成的质点系，每个质点称为刚体的一个质量元。刚体在运动中各部分相对位置均保持不变，因此只要知道刚体上某一点的运动情况，则刚体上任一点乃至刚体运动的全貌便可确定。
+    刚体可以看成是由无数个连续分布的质点所组成的质点系，每个质点称为刚体的一个\textbf{质量元}。刚体在运动中各部分相对位置均保持不变，因此只要知道刚体上某一点的运动情况，则刚体上任一点乃至刚体运动的全貌便可确定。
 
-    刚体的运动可以分为平动和转动，刚体任何复杂的运动均可看成是二者的叠加。刚体上任一给定直线在运动中空间方向始终不变而保持平行，这样的运动称为平动。刚体平动时，刚体上各点的运动轨迹均相同，同一时刻刚体上各点均具有相同的速度和加速度，刚体平动时完全可以简化为质点处理，通常使用刚体质心的运动代表整个刚体的平动。
-
-    如果刚体上所有质点都绕同一直线作圆周运动，这种运动称为刚体的转动，这条直线称为转轴。若整个转轴相对参考系静止，这种转动称为定轴转动；假如转轴上只有一点相对参考系静止，而转轴方向却不断变动，我们称这种转动为定点转动。刚体的任何复杂运动均可看成是平动和转动的叠加，刚体的定轴转动及其规律是本章的重点内容。
+    刚体的运动可以分为平动和转动，刚体任何复杂的运动均可看成是二者的叠加。
+    \begin{enumerate}
+        \item \textbf{平动}（translation）：刚体上任一给定直线（或任意两质点间连线）在运动中空间方向始终不变而保持平行，这样的运动称为平动，如活塞、抽屉的运动。刚体平动时，刚体上各点的运动轨迹均相同，同一时刻各点具有相同的速度和加速度，因此完全可以简化为质点处理，通常用刚体质心的运动代表整个刚体的平动。
+        \item \textbf{转动}（rotation）：如果刚体上所有质点都绕同一直线作圆周运动，这种运动称为刚体的转动，这条直线称为\textbf{转轴}（rotation axis）。
+        \begin{itemize}
+            \item 若整个转轴相对参考系静止，称为\textbf{定轴转动}（如门窗、车床工件的转动）；
+            \item 若转轴上只有一点相对参考系静止而转轴方向不断变动，称为\textbf{定点转动}（如玩具陀螺、厢顶电风扇的转动）。
+        \end{itemize}
+    \end{enumerate}
+    车轮的滚动总可分解为车轮转轴的平动和整个车轮绕转轴的转动。刚体的定轴转动及其规律是本章的重点，也是研究整个刚体力学的基础。
 
     \subsection{描述刚体转动的物理量}
-    刚体定轴转动时，轴外刚体上的各个质点，尽管到轴的距离不同，相同的时间内转过的线位移也不同，但转过的角位移则相同。因此可以在刚体上任意选定一点，通过研究该点绕定轴的转动，以此来描述刚体的定轴转动。
+    刚体定轴转动时具有两个特征：轴上各点始终静止不动；轴外各质点虽有各自与轴垂直的转动平面、到轴的距离（转动半径）不同、相同时间内转过的线位移不同，但转过的\textbf{角位移相同}。因此可在刚体上任意选定一点，通过研究该点绕定轴的转动来描述整个刚体的定轴转动。
 
-    刚体上每个质点的转动平面都是与转轴相垂直的平面。通常选取与轴相固联的惯性系为参考系，相对参考系的任一固定方向 $Ox$ 均可作为参考方向，质点对转轴交点 $O$ 的位矢 $\boldsymbol{r}$ 与该 $Ox$ 方向的夹角 $\theta$ 即为质点的角坐标，刚体转动时角速度为
-    \[
-    \omega=\frac{\mathrm{d}\theta}{\mathrm{d}t}
-    \]
-    角速度方向沿转轴，遵从右手螺旋定则。当角速度变化时，角加速度大小为
-    \[
-    \alpha=\frac{\mathrm{d}\omega}{\mathrm{d}t}=\frac{\mathrm{d}^2\theta}{\mathrm{d}t^2}
-    \]
-    $\omega$ 变大时 $\alpha$ 与 $\omega$ 同向，$\omega$ 变小时 $\alpha$ 与 $\omega$ 反方向。
+    通常选取与轴相固联的惯性系为参考系，以相对参考系的任一固定方向 $Ox$ 作为参考方向，质点对转轴交点 $O$ 的位矢 $\boldsymbol{r}$ 与该方向的夹角 $\theta$ 即为该质点的\textbf{角坐标}。刚体转动时
+    \keyformula{\omega=\frac{\mathrm{d}\theta}{\mathrm{d}t},\qquad
+    \alpha=\frac{\mathrm{d}\omega}{\mathrm{d}t}=\frac{\mathrm{d}^{2}\theta}{\mathrm{d}t^{2}}}
+    角速度的方向沿转轴，遵从右手螺旋定则；$\omega$ 变大时 $\alpha$ 与 $\omega$ 同向，$\omega$ 变小时二者反向。定轴转动中角速度、角加速度只有沿转轴的两个方向，计算中常作标量处理。
 
-    在刚体定轴转动中，角速度、角加速度方向只有沿转轴的两个方向，所以计算中常作标量处理。相应质点的线速度 $\boldsymbol{v}$ 和加速度 $\boldsymbol{a}$ 与角量的关系：
-    \[
-    \begin{cases}
-    \boldsymbol{v}=\boldsymbol{\omega}\times\boldsymbol{r},\\
-    \boldsymbol{a}=\boldsymbol{\alpha}\times\boldsymbol{r}+\boldsymbol{\omega}\times\boldsymbol{v},
-    \end{cases}
-    \]
-    其中，$\boldsymbol{\alpha}\times\boldsymbol{r}$ 是质点的切向加速度，大小 $a_\mathrm{t}=r\alpha$；$\boldsymbol{\omega}\times\boldsymbol{v}$ 是质点的法向加速度，大小 $a_\mathrm{n}=r\omega^2$。
+    质点线速度与加速度同角量的关系为
+    \keyformula{\boldsymbol{v}=\boldsymbol{\omega}\times\boldsymbol{r},\qquad
+    \boldsymbol{a}=\boldsymbol{\alpha}\times\boldsymbol{r}+\boldsymbol{\omega}\times\boldsymbol{v}}
+    其中 $\boldsymbol{\alpha}\times\boldsymbol{r}$ 是切向加速度，大小 $a_{\mathrm{t}}=r\alpha$；$\boldsymbol{\omega}\times\boldsymbol{v}$ 是法向加速度，大小 $a_{\mathrm{n}}=r\omega^{2}=v^{2}/r$。
 
-\section{定轴转动刚体的角动量 转动惯量}
+    \begin{center}
+    \begin{tabular}{lll}
+    \toprule
+    运动学量 & 平动 & 定轴转动 \\
+    \midrule
+    位置 & $x$ & $\theta$ \\
+    速度 & $v=\mathrm{d}x/\mathrm{d}t$ & $\omega=\mathrm{d}\theta/\mathrm{d}t$ \\
+    加速度 & $a=\mathrm{d}v/\mathrm{d}t$ & $\alpha=\mathrm{d}\omega/\mathrm{d}t$ \\
+    匀变速公式 & $v=v_{0}+at$ & $\omega=\omega_{0}+\alpha t$ \\
+    匀变速公式 & $x=x_{0}+v_{0}t+\frac{1}{2}at^{2}$ & $\theta=\theta_{0}+\omega_{0}t+\frac{1}{2}\alpha t^{2}$ \\
+    匀变速公式 & $v^{2}-v_{0}^{2}=2a(x-x_{0})$ & $\omega^{2}-\omega_{0}^{2}=2\alpha(\theta-\theta_{0})$ \\
+    \bottomrule
+    \end{tabular}
+    \end{center}
+
+\section{定轴转动刚体的角动量\texorpdfstring{\hspace{0.5em}}{ }转动惯量}
     \subsection{刚体对定轴的角动量}
-    当刚体绕定轴作定轴转动时，刚体上各质元某一瞬时均以相同的角速度 $\boldsymbol{\omega}$ 绕该定轴作平面圆周运动。设刚体上某一质元 $\Delta m_i$ 距轴的距离为 $r_i$，其对该轴的角动量为 $L_i=\Delta m_i r_i^2 \omega$，整个刚体对该轴的角动量 $L_z$ 应等于刚体上所有质元对轴角动量的总和，即
-    \[
-    L_z = \sum_{i} L_i = \left(\sum_{i} \Delta m_i r_i^2\right)\omega
-    \]
+    当刚体绕定轴转动时，刚体上各质元某一瞬时均以相同的角速度 $\boldsymbol{\omega}$ 绕该轴作圆周运动。设刚体上某质元 $\Delta m_{i}$ 距轴的距离为 $r_{i}$，其速度方向与位矢垂直，故对该轴的角动量大小为 $L_{i}=\Delta m_{i}v_{i}r_{i}=\Delta m_{i}r_{i}^{2}\omega$。整个刚体对该轴的角动量等于各质元角动量的总和：
+    \keyformula{L_{z}=\sum_{i}L_{i}=\left(\sum_{i}\Delta m_{i}r_{i}^{2}\right)\omega}
+    括号中的量只与刚体的质量分布和转轴位置有关，记为转动惯量 $J$，于是
+    \keyformula{L_{z}=J\omega}
+    刚体对转轴的角动量方向与角速度方向一致，计算中通常先设定正方向，再用正负号表示 $L_{z}$ 的方向。
 
     \subsection{转动惯量}
-    \textbf{转动惯量定义}：质点系内每个质点的质量与该质点到转轴距离平方之积的总和，用 $J$ 表示，即
-    \[
-    J = \sum_{i} \Delta m_i r_i^2
-    \]
-    对质量连续分布的刚体，取微元形式积分：
-    \[
-    J = \int_{m} r^2 \mathrm{d}m
-    \]
-    在国际单位制中，转动惯量单位为 $\mathrm{kg\cdot m^2}$，量纲为 $\mathrm{ML^2T^0}$。
+        \subsubsection{定义与物理意义}
+        \textbf{转动惯量}（moment of inertia）：质点系内每个质点的质量与该质点到转轴距离平方之积的总和。
+        \keyformula{J=\sum_{i}\Delta m_{i}r_{i}^{2}\ \longrightarrow\ J=\int_{m}r^{2}\,\mathrm{d}m}
+        对质量连续分布的刚体用积分（$\mathrm{d}m=\lambda\,\mathrm{d}l$、$\sigma\,\mathrm{d}S$ 或 $\rho\,\mathrm{d}V$）；对质量面分布或体分布的物体，$r$ 恒为质元到转轴的垂直距离。SI 单位 $\mathrm{kg\cdot m^{2}}$，量纲 $\mathrm{ML^{2}}$。
 
-    转动惯量 $J$ 的大小与刚体的总质量及质量相对于给定轴的分布有关；在总质量一定的情况下，质量分布离轴愈远，转动惯量愈大；同时转动惯量还与转轴的位置有关，同一刚体，转轴位置不同，转动惯量也就不同。
+        转动惯量的大小取决于：
+        \begin{enumerate}
+            \item 刚体的\textbf{总质量}；
+            \item 质量相对于给定轴的\textbf{分布}——总质量一定时，质量分布离轴越远，转动惯量越大；
+            \item \textbf{转轴的位置}——同一刚体，转轴不同，转动惯量不同。
+        \end{enumerate}
+        因此说“某刚体的转动惯量”时必须指明是对哪一条轴。转动惯量在转动中的地位相当于质量在平动中的地位，它量度刚体转动惯性的大小。
 
-    引入转动惯量概念后，定轴转动刚体的角动量可以表示为
-    \[
-    L_z = J \omega
-    \]
-    刚体对转轴的角动量 $L_z$ 的方向与角速度 $\boldsymbol{\omega}$ 的方向一致，计算中通常设定正方向后用正负来表示 $L_z$ 的方向。
+        \subsubsection{回转半径}
+        设物体总质量 $m=\sum\Delta m_{i}$，对给定轴的转动惯量为 $J$，定义对该转轴的\textbf{回转半径}（radius of gyration）$r_{G}$ 为
+        \keyformula{r_{G}=\sqrt{\frac{J}{m}},\qquad J=mr_{G}^{2}}
+        即把全部质量集中在距轴 $r_{G}$ 处时，其转动惯量与原刚体相同。
 
-    \subsubsection{回转半径}
-    设物体的总质量 $m=\sum \Delta m_i$，刚体对给定轴的转动惯量为 $J$，定义物体对该转轴的回转半径 $r_G$ 为
-    \[
-    r_G=\sqrt{\frac{J}{m}}
-    \]
+        \subsubsection{平行轴定理}
+        若质量为 $m$ 的刚体对过质心 $C$ 的轴的转动惯量为 $J_{C}$，则对与该轴平行、相距为 $d$ 的另一轴的转动惯量为
+        \keyformula{J=J_{C}+md^{2}}
+        可见在一切平行轴中，过质心的轴对应的转动惯量最小。
 
-    \subsubsection{平行轴定理}
-    \textbf{平行轴定理}：若质量为$m$的刚体对过其质心$C$的转轴的转动惯量为$J_C$，则刚体对平行于该轴、和它相距为$d$的另一平行转轴的转动惯量：
-    \[
-    J = J_C + md^2
-    \]
+        \subsubsection{正交轴定理}
+        薄板形刚体对板面内两条相互正交轴的转动惯量之和，等于它对过两轴交点且垂直于板面的那条轴的转动惯量：
+        \keyformula{J_{z}=J_{x}+J_{y}}
+        该定理只适用于薄板（面分布）刚体。
 
-    \subsubsection{正交轴定理}
-    薄板形刚体对于板面内的两条正交轴的转动惯量之和等于这个物体对过该两轴交点并垂直于板面的那条转轴的转动惯量，即
-    \[
-    J_z = J_y + J_x
-    \]
+        \subsubsection{常见刚体的转动惯量}
+        \begin{center}
+        \begin{tabular}{ll}
+        \toprule
+        刚体（质量为 $m$） & 转轴与转动惯量 \\
+        \midrule
+        细杆（长 $l$） & 过中心且垂直于杆：$J=\dfrac{1}{12}ml^{2}$ \\
+        细杆（长 $l$） & 过一端且垂直于杆：$J=\dfrac{1}{3}ml^{2}$ \\
+        圆环、薄圆筒（半径 $R$） & 过中心轴：$J=mR^{2}$ \\
+        圆盘、实心圆柱（半径 $R$） & 过中心轴：$J=\dfrac{1}{2}mR^{2}$ \\
+        球壳（半径 $R$） & 过直径：$J=\dfrac{2}{3}mR^{2}$ \\
+        实心球（半径 $R$） & 过直径：$J=\dfrac{2}{5}mR^{2}$ \\
+        矩形薄板（边长 $a,b$） & 过中心且垂直板面：$J=\dfrac{1}{12}m(a^{2}+b^{2})$ \\
+        \bottomrule
+        \end{tabular}
+        \end{center}
+        \corepoint{记忆要点：质量越向外分布，系数越大（圆环 $1$ $>$ 圆盘 $1/2$ $>$ 实心球 $2/5$）；细杆过端点是过中心的 $4$ 倍，可由平行轴定理 $J=ml^{2}/12+m(l/2)^{2}$ 验证。}
 
 \section{刚体定轴转动定律}
-    \subsection{刚体角动量的时间变化率 对转轴的力矩}
+    \subsection{刚体角动量的时间变化率\texorpdfstring{\hspace{0.5em}}{ }对转轴的力矩}
     质点系角动量对时间的变化率等于系统所受的合外力矩，即 $\dfrac{\mathrm{d}\boldsymbol{L}}{\mathrm{d}t}=\boldsymbol{M}$。
 
-    力作用于定轴转动的刚体上时，外力 $\boldsymbol{F}$ 可以分解为平行于转轴的力 $\boldsymbol{F}_\parallel$ 和垂直于转轴（在转动平面内）的力 $\boldsymbol{F}_\perp$。$\boldsymbol{F}_\parallel$ 的力矩对转动不起作用，只有在转动平面里的 $\boldsymbol{F}_\perp$ 的力矩才对刚体的转动运动有作用。定轴转动刚体角动量的时间变化率与外力对转轴的力矩的矢量关系：
-    \[
-    \frac{\mathrm{d}\boldsymbol{L}}{\mathrm{d}t}=\boldsymbol{M}_z=\boldsymbol{r}\times\boldsymbol{F}_\perp
-    \]
-    力矩表征着力对物体转动的作用，它是力的大小、方向及作用点诸因素组成的一个物理量。
+    力作用于定轴转动的刚体上时，外力 $\boldsymbol{F}$ 可分解为平行于转轴的分量 $\boldsymbol{F}_{\parallel}$ 和垂直于转轴（在转动平面内）的分量 $\boldsymbol{F}_{\perp}$。$\boldsymbol{F}_{\parallel}$ 的力矩垂直于转轴，对绕该轴的转动不起作用；只有转动平面内的 $\boldsymbol{F}_{\perp}$ 的力矩才起作用。于是定轴转动刚体角动量的时间变化率与外力对转轴的力矩的关系为
+    \keyformula{\frac{\mathrm{d}\boldsymbol{L}}{\mathrm{d}t}=\boldsymbol{M}_{z}=\boldsymbol{r}\times\boldsymbol{F}_{\perp}}
+    力矩的大小 $M_{z}=rF_{\perp}\sin\varphi=F_{\perp}d$，$d$ 为力臂。力矩表征力对物体转动的作用，是力的大小、方向及作用点诸因素共同决定的物理量；单位 $\mathrm{N\cdot m}$。
 
     \subsection{刚体定轴转动定律}
-    \textbf{刚体定轴转动定律}：刚体所受的对于某定轴的合外力矩等于刚体对此定轴的转动惯量与刚体在此合外力矩作用下所获得的角加速度的乘积。
-    \[
-    M_z = J \alpha
-    \]
-    该式是合外力矩对刚体的瞬时作用规律，式中各量均需是同一时刻对同一刚体、同一转轴而言。
+    \textbf{刚体定轴转动定律}：刚体所受的对于某定轴的合外力矩，等于刚体对该定轴的转动惯量与刚体在此合外力矩作用下所获得的角加速度的乘积。
+    \keyformula{M_{z}=J\alpha}
+    该式是合外力矩对刚体的瞬时作用规律，式中各量必须是对同一时刻、同一刚体、同一转轴而言。
+    \corepoint{定轴转动定律与牛顿第二定律地位相当：$M_{z}\leftrightarrow F$，$J\leftrightarrow m$，$\alpha\leftrightarrow a$。解题时定轴转动定律与牛顿第二定律（对参与运动的平动物体）联立，再由绳与轮之间“不打滑”的运动学关系 $a=R\alpha$ 补充一个方程。}
 
 \section{刚体的角动量定理和角动量守恒定律}
     \subsection{刚体的角动量定理}
-    刚体可以看作由质元组成的质点系，角动量定理微分形式和积分形式：
-    \[
-    \boldsymbol{M}=\frac{\mathrm{d}\boldsymbol{L}}{\mathrm{d}t},\qquad \int_{t_1}^{t_2} \boldsymbol{M}\mathrm{d}t=\boldsymbol{L}_2-\boldsymbol{L}_1
-    \]
-    对于定轴转动刚体，各矢量均可沿轴用标量表示，定轴角动量定理：
-    \[
-    \int_{t_1}^{t_2} M_z \mathrm{d}t = L_{z2}-L_{z1}
-    \]
-    该式表明：在一段时间内作用在刚体上的外力的冲量矩等于刚体在该段时间内的角动量的增量。
+    刚体可看作由质元组成的质点系，其角动量定理的微分形式与积分形式为
+    \keyformula{\boldsymbol{M}=\frac{\mathrm{d}\boldsymbol{L}}{\mathrm{d}t},\qquad
+    \int_{t_{1}}^{t_{2}}\boldsymbol{M}\,\mathrm{d}t=\boldsymbol{L}_{2}-\boldsymbol{L}_{1}}
+    对定轴转动的刚体，各矢量均可沿轴用标量表示：
+    \keyformula{\int_{t_{1}}^{t_{2}}M_{z}\,\mathrm{d}t=L_{z2}-L_{z1}=J\omega_{2}-J\omega_{1}}
+    即在一段时间内作用在刚体上的外力的\textbf{冲量矩}等于刚体在同一段时间内角动量的增量。
 
     \subsection{刚体的角动量守恒定律}
-    若刚体所受合外力矩 $\boldsymbol{M}=0$，则有
-    \[
-    J\boldsymbol{\omega}=\text{常矢量}
-    \]
-    说明：若刚体所受合外力矩为零，则刚体的角动量保持不变，称为刚体的角动量守恒定律。
-
-    刚体角动量守恒常用情况：
+    若刚体（或系统）所受对某定轴的合外力矩为零，则对该轴的角动量保持不变：
+    \keyformula{J\boldsymbol{\omega}=\text{常矢量}}
+    三种常见情形：
     \begin{enumerate}
-        \item 对定轴转动的刚体，转动过程中转动惯量 $J$ 保持不变，合外力矩为零时，刚体将以恒定的角速度 $\omega$ 绕定轴转动。轮船、飞机、火箭上用作导航定向的回转仪就是利用这一原理制成的。
-        \item 对定轴转动的非刚体，物体上各质元相对转轴距离可变，转动惯量 $J$ 也是可变的。当转动系统所受合外力矩 $M=0$ 时，$J\boldsymbol{\omega}=$常矢量，$J$ 和 $\boldsymbol{\omega}$ 成反比。人站在可绕竖直转轴转动的转台上，两臂平伸，两手各握重物，转动起来后收拢双臂，人和转台转速加快；伸出双臂，转速又变慢。滑冰运动员、跳水运动员、芭蕾演员，经常运用角动量守恒的原理完成优美动作。
-        \item 物体系统的角动量守恒，当几个相互关联的质点和刚体组成系统时，各物体对同一转轴的角动量分别是 $J_1\boldsymbol{\omega}_1$，$J_2\boldsymbol{\omega}_2$，$\dots$，$\boldsymbol{r}_j\times m_j \boldsymbol{v}_j$，若整个系统对同一转轴所受的合外力矩为零，则整个物体系统对该转轴的总角动量守恒，即
+        \item 对\textbf{定轴转动的刚体}，转动过程中 $J$ 不变，合外力矩为零时刚体以恒定角速度绕轴转动。轮船、飞机、火箭上用作导航定向的回转仪即利用此原理。
+        \item 对\textbf{定轴转动的非刚体}，各质元到轴的距离可变，$J$ 也可变。合外力矩为零时 $J\omega=$ 常量，$J$ 与 $\omega$ 成反比：人站在可绕竖直轴转动的转台上，两臂平伸、手握重物，转动后收拢双臂转速加快，张开双臂转速变慢；滑冰运动员、跳水运动员、芭蕾演员常借此完成动作。
+        \item 对\textbf{物体系统}，当若干质点和刚体组成系统且对同一轴的外力矩之和为零时，系统对该轴的总角动量守恒：
         \[
-        \sum_i J_i \boldsymbol{\omega}_i + \sum_j (\boldsymbol{r}_j \times m_j \boldsymbol{v}_j) = \text{常矢量}.
+        \sum_{i}J_{i}\boldsymbol{\omega}_{i}+\sum_{j}\left(\boldsymbol{r}_{j}\times m_{j}\boldsymbol{v}_{j}\right)
+        =\text{常矢量}
         \]
     \end{enumerate}
-    角动量守恒定律与动量守恒定律和能量守恒定律一样，均是自然界中的普遍规律。在微观领域内，常应用角动量守恒来推算粒子衰变产物的运动状态。
+    角动量守恒定律与动量守恒定律、能量守恒定律一样，是自然界的普遍规律；在微观领域也常用它推算粒子衰变产物的运动状态。
 
-\section{进动}
-    陀螺是常见的玩具，当它不旋转时，由于受到重力矩的作用，会立即倾倒在地。但当陀螺绕自身对称轴高速旋转（通常称自旋）时，尽管同样也受到重力矩的作用，却不会倒下来。这是刚体转动轴不固定时的常见实例。我们把陀螺高速自转的同时，其自身对称轴还将绕竖直轴作回旋运动的现象称为进动。
+    \subsection{进动}
+    当陀螺不旋转时，受重力矩作用会立即倾倒；但当它绕自身对称轴高速自旋时，尽管同样受重力矩作用却不会倒下。陀螺高速自转的同时，其自身对称轴还绕竖直轴作回旋运动，这种现象称为\textbf{进动}（precession），又称回转运动。
 
-    用角动量定理可以解释陀螺的进动。设陀螺的质量为 $m$，对自身轴的转动惯量为 $J$。若陀螺自转角速度为 $\boldsymbol{\omega}$，则陀螺绕自身轴的自旋角动量为
+    设陀螺质量为 $m$、对自身轴的转动惯量为 $J$、自旋角速度为 $\omega$，则自旋角动量
     \[
-    \boldsymbol{L}=J\boldsymbol{\omega},
+    \boldsymbol{L}=J\boldsymbol{\omega}
     \]
-    式中，$\boldsymbol{L}$ 的方向沿自身的对称轴。以陀螺与地面的接触点 $O$ 为参考点，陀螺所受重力矩为
+    方向沿自身对称轴。以陀螺与地面的接触点 $O$ 为参考点，重力矩为
     \[
-    \boldsymbol{M}=\boldsymbol{r}_c \times m\boldsymbol{g},
+    \boldsymbol{M}=\boldsymbol{r}_{c}\times m\boldsymbol{g}
     \]
-    $\boldsymbol{M}$ 的方向垂直纸面向里，与陀螺的自旋角动量 $\boldsymbol{L}$ 垂直。所以，重力矩不能改变 $\boldsymbol{L}$ 的大小，而只能改变其方向。当重力矩作用于陀螺 $\mathrm{d}t$ 时间后，陀螺自旋角动量 $\boldsymbol{L}$ 的增量为
+    其方向与 $\boldsymbol{L}$ 垂直，故只能改变 $\boldsymbol{L}$ 的方向而不改变其大小。经 $\mathrm{d}t$ 时间，角动量增量为 $\mathrm{d}\boldsymbol{L}=\boldsymbol{M}\,\mathrm{d}t$，方向与 $\boldsymbol{M}$ 平行，于是 $\boldsymbol{L}$ 在水平面内持续偏转，自转轴绕竖直轴扫出一个圆锥面。设自转轴与圆锥轴线夹角为 $\theta$，则
     \[
-    \mathrm{d}\boldsymbol{L}=\boldsymbol{M}\mathrm{d}t,
+    \mathrm{d}\varphi=\frac{|\mathrm{d}\boldsymbol{L}|}{L\sin\theta}
     \]
-    $\mathrm{d}\boldsymbol{L}$ 的方向与 $\boldsymbol{M}$ 方向平行，即自旋角动量 $\boldsymbol{L}$ 的方向将水平地转向 $\boldsymbol{L}+\mathrm{d}\boldsymbol{L}$ 方向，并不沿竖直方向向下倾斜。于是，自旋角动量 $\boldsymbol{L}$ 在水平面内持续偏转而形成绕竖直轴的进动，表现为沿一个圆锥面转动。这一圆锥面的轴线是竖直的，锥顶就在陀螺尖顶与地面的接触点 $O$。由矢量图可以看出，在 $\mathrm{d}t$ 时间内，陀螺自转轴转过的角度为
-    \[
-    \mathrm{d}\varphi=\frac{|\mathrm{d}\boldsymbol{L}|}{L\sin\theta},
-    \]
-    相应的角速度称为进动角速度 $\boldsymbol{\Omega}$，其大小为
-    \[
-    \Omega=\frac{\mathrm{d}\varphi}{\mathrm{d}t}=\frac{|\mathrm{d}\boldsymbol{L}|}{L\sin\theta \mathrm{d}t}=\frac{M}{L\sin\theta}.
-    \]
-    式中，$\theta$ 为陀螺的自身轴与圆锥的轴线之间的夹角。上式说明，进动的角速度与外力矩 $M$ 成正比，而与自旋角动量成反比，亦即与自旋转角速度 $\boldsymbol{\omega}$ 成反比。
+    相应的\textbf{进动角速度}大小为
+    \keyformula{\Omega=\frac{\mathrm{d}\varphi}{\mathrm{d}t}
+    =\frac{M}{L\sin\theta}=\frac{M}{J\omega\sin\theta}}
+    可见进动角速度与外力矩成正比，与自旋角动量（从而与自旋角速度）成反比。
 
-    使车轮绕水平放置的自身轴旋转起来，松手后，车轮的轴将在水平面内以竖直轴顶端的凹槽为中心旋转起来。我们把表现这种现象的具有自身对称轴的物体系统叫作回转仪，因而进动运动又叫回转运动，可以证明，其绕竖直轴进动的角速度仍具有相同的结果。
+    \corepoint{该进动公式是近似关系：推导中把陀螺绕自身轴的自旋角动量当作总角动量，忽略了进动角动量，因此只有 $\omega\gg\Omega$ 时才成立。一般情况下自转轴还会周期性摆动，称为章动。}
 
-    进动效应在工程实践中有着广泛的应用。例如，炮弹在飞行过程中，要受到空气阻力，阻力的方向总是与炮弹质心的速度方向相反，但其力线不一定通过质心。阻力对质心的力矩就会使炮弹在空中翻转。为避免这种事故，就在炮膛内壁刻出螺旋线（或称来复线），使炮弹出膛后，还能绕自身轴高速旋转，这样，飞行中的空气阻力矩将不再使它翻转，而只是使它绕着质心前进方向进动。它的轴线始终只与前进方向有不大的偏离，而弹头总是大致指向前方了。
-
-    地球本身就是一个很大的回转仪，因为地球有自转，又受到太阳及其他星体的引力，因而地球在运动中要产生进动，在微观世界中，进动现象也十分普遍。例如，物质中绕核运动的电子处在外磁场中时，也会产生以外磁场方向为轴线的进动。
-
-    应当指出，进动角速度公式只是一个近似关系，因为在推导中作了一个简化处理：即把陀螺绕自身轴的角动量作为陀螺的总角动量，而实际上陀螺的总角动量应该是它的自旋角动量和进动角动量的矢量和。只有在自旋角速度 $\omega$ 远大于进动角速度 $\Omega$ 时，这样的简化才会有效。即只有 $\omega\gg\Omega$ 时，公式才成立。在一般情况下，陀螺（或车轮）的自身轴还会周期性地摆动（称章动）。
+    具有自身对称轴、能产生进动现象的物体系统称为\textbf{回转仪}。进动效应在工程上应用广泛：炮膛内壁刻出螺旋线（来复线），使炮弹出膛后绕自身轴高速自旋，空气阻力矩便只使其轴线绕前进方向进动而不再翻转；地球本身是一个巨大的回转仪，在太阳及其他星体引力作用下也会产生进动；微观上，绕核运动的电子处在外磁场中也会以外磁场方向为轴进动。
 
 \section{刚体定轴转动的动能定理和机械能守恒定律}
     \subsection{刚体转动动能和势能}
-    设刚体作定轴转动，在某一时刻角速度的大小为 $\omega$，刚体上任一质元 $\Delta m_i$ 距转轴 $r_i$，则它的动能为
+    设刚体作定轴转动，某时刻角速度大小为 $\omega$，刚体上任一质元 $\Delta m_{i}$ 距轴 $r_{i}$，其动能为
     \[
-    \Delta E_{\mathrm{k}_i}=\frac12 \Delta m_i v_i^2=\frac12 \Delta m_i r_i^2 \omega^2,
+    \Delta E_{\mathrm{k}i}=\frac{1}{2}\Delta m_{i}v_{i}^{2}=\frac{1}{2}\Delta m_{i}r_{i}^{2}\omega^{2}
     \]
-    整个刚体的转动动能为刚体所有质元动能之和，即
-    \[
-    E_\mathrm{k}=\sum_i \Delta E_{\mathrm{k}_i}=\frac12 \left(\sum_i \Delta m_i r_i^2\right)\omega^2.
-    \]
-    由转动惯量定义，$\sum_i \Delta m_i r_i^2 = J$，所以
-    \[
-    E_\mathrm{k}=\dfrac{1}{2}J\omega^2
-    \]
-
-    同样的，刚体重力势能为刚体所有质元重力势能之和。若任一质元 $\Delta m_i$，其相对势能零点的高度为 $h_i$，则刚体重力势能 $E_\mathrm{p}$ 为
-    \[
-    E_\mathrm{p}=\sum_i \Delta m_i g h_i,
-    \]
-    又可知质心相对势能零点的高度为
-    \[
-    h_C=\frac{\sum_i \Delta m_i h_i}{\sum_i \Delta m_i},
-    \]
-    考虑到刚体总质量 $m=\sum \Delta m_i$，所以刚体的重力势能为
-    \[
-    E_\mathrm{p}=m g h_C,
-    \]
-    即刚体的重力势能相当于刚体的质量 $m$ 集中在质心 $C$ 处的质点的重力势能，$h_C$ 为刚体质心高度。
+    整个刚体的转动动能为各质元动能之和：
+    \keyformula{E_{\mathrm{k}}=\sum_{i}\Delta E_{\mathrm{k}i}
+    =\frac{1}{2}\left(\sum_{i}\Delta m_{i}r_{i}^{2}\right)\omega^{2}
+    =\frac{1}{2}J\omega^{2}}
+    刚体的重力势能等于各质元重力势能之和。设质心相对势能零点的高度为
+    $h_{C}=\dfrac{\sum\Delta m_{i}h_{i}}{m}$，则
+    \keyformula{E_{\mathrm{p}}=\sum_{i}\Delta m_{i}gh_{i}=mgh_{C}}
+    即刚体的重力势能相当于全部质量集中在质心处的质点所具有的重力势能。
 
     \subsection{力矩的功}
-    外力对刚体做功等于作用于刚体的各个外力对刚体做功的总和。设刚体在外力作用下有一个元角位移 $\mathrm{d}\theta=\omega \cdot \mathrm{d}t$，外力 $\boldsymbol{F}_i$ 所做的元功 $\mathrm{d}W_i=\boldsymbol{F}_i \cdot \mathrm{d}\boldsymbol{l}_i$，其中 $\mathrm{d}\boldsymbol{l}_i$ 是 $\boldsymbol{F}_i$ 作用点在该点转动平面上的元位移，$\mathrm{d}\boldsymbol{l}_i=\boldsymbol{v}_i \mathrm{d}t$，而速度 $\boldsymbol{v}_i=\boldsymbol{\omega}\times\boldsymbol{r}_i$，所以
+    设刚体在外力作用下有元角位移 $\mathrm{d}\theta=\omega\,\mathrm{d}t$，力 $\boldsymbol{F}_{i}$ 作用点的元位移 $\mathrm{d}\boldsymbol{l}_{i}=\boldsymbol{v}_{i}\,\mathrm{d}t$，且 $\boldsymbol{v}_{i}=\boldsymbol{\omega}\times\boldsymbol{r}_{i}$，则元功
     \[
-    \mathrm{d}W_i=\boldsymbol{F}_i \cdot (\boldsymbol{\omega}\times\boldsymbol{r}_i)\mathrm{d}t,
+    \mathrm{d}W_{i}=\boldsymbol{F}_{i}\cdot\left(\boldsymbol{\omega}\times\boldsymbol{r}_{i}\right)\mathrm{d}t
     \]
-    又由矢量混积的轮换性 $\boldsymbol{a}\cdot(\boldsymbol{b}\times\boldsymbol{c})=\boldsymbol{b}\cdot(\boldsymbol{c}\times\boldsymbol{a})=\boldsymbol{c}\cdot(\boldsymbol{a}\times\boldsymbol{b})$，上式可记为
+    由矢量混合积的轮换性 $\boldsymbol{a}\cdot(\boldsymbol{b}\times\boldsymbol{c})=\boldsymbol{b}\cdot(\boldsymbol{c}\times\boldsymbol{a})$，得
     \[
-    \mathrm{d}W_i=\boldsymbol{\omega}\cdot(\boldsymbol{r}_i\times\boldsymbol{F}_i)\mathrm{d}t,
+    \mathrm{d}W_{i}=\boldsymbol{\omega}\cdot\left(\boldsymbol{r}_{i}\times\boldsymbol{F}_{i}\right)\mathrm{d}t
     \]
-    显然，所有外力元功的总和为
+    所有外力的元功之和为
+    \keyformula{\mathrm{d}W=\sum_{i}\boldsymbol{\omega}\cdot\boldsymbol{M}_{i}\,\mathrm{d}t
+    =\boldsymbol{M}_{\text{外}}\cdot\mathrm{d}\boldsymbol{\theta}}
+    即力对刚体做的功可用力矩与角位移的乘积计算，故称\textbf{力矩的功}。当角位置由 $\theta_{1}$ 变到 $\theta_{2}$ 时
     \[
-    \mathrm{d}W=\sum_i \boldsymbol{\omega}\cdot(\boldsymbol{r}_i\times\boldsymbol{F}_i)\mathrm{d}t=\sum_i \boldsymbol{M}_i \cdot \boldsymbol{\omega}\mathrm{d}t=\boldsymbol{M}_\text{外}\cdot \mathrm{d}\boldsymbol{\theta},
+    W=\int_{\theta_{1}}^{\theta_{2}}M_{\text{外}}\,\mathrm{d}\theta
     \]
-    上式表明，力对刚体做功可以用力矩大小与角位移的乘积来计算，所以也叫力矩做功。当角位置从 $\theta_1\rightarrow\theta_2$，则力矩做功为
-    \[
-    W=\int \mathrm{d}W=\int_{\theta_1}^{\theta_2} \boldsymbol{M}_\text{外} \cdot \mathrm{d}\boldsymbol{\theta},
-    \]
-    由功率的定义，力矩的功率可表示为
-    \[
-    P=\frac{\mathrm{d}W}{\mathrm{d}t}=\frac{\boldsymbol{M}_\text{外}\cdot \mathrm{d}\boldsymbol{\theta}}{\mathrm{d}t}=\boldsymbol{M}_\text{外}\cdot \boldsymbol{\omega}.
-    \]
+    力矩的功率为
+    \keyformula{P=\frac{\mathrm{d}W}{\mathrm{d}t}=M_{\text{外}}\omega}
 
     \subsection{刚体定轴转动的动能定理}
-    质点动能定理可由牛顿定律导出，同样刚体定轴转动的动能定理也可由转动定轴定律导出。由力矩元功表达式
+    由力矩的元功表达式及转动定律 $M=J\alpha$
     \[
-    \mathrm{d}W=M\mathrm{d}\theta=J\alpha \mathrm{d}\theta=J\frac{\mathrm{d}\omega}{\mathrm{d}t}\mathrm{d}\theta=J\mathrm{d}\omega \frac{\mathrm{d}\theta}{\mathrm{d}t}=J\omega \mathrm{d}\omega.
+    \mathrm{d}W=M\,\mathrm{d}\theta=J\alpha\,\mathrm{d}\theta
+    =J\frac{\mathrm{d}\omega}{\mathrm{d}t}\mathrm{d}\theta=J\omega\,\mathrm{d}\omega
     \]
-    在外力矩作用下，当刚体从 $t_1$ 时刻的 $\theta_1$ 和 $\omega_1$ 变化到 $t_2$ 时刻的 $\theta_2$ 和 $\omega_2$ 时，对上式积分得
-    \[
-    W=\int_{\theta_1}^{\theta_2} M \mathrm{d}\theta=\int_{\omega_1}^{\omega_2} J \omega \mathrm{d}\omega=\frac12 J \omega_2^2-\frac12 J \omega_1^2
-    \]
-    上式称为刚体定轴转动的动能定理。它表明刚体转动动能的增量等于合外力矩对刚体所做的功。
+    从 $t_{1}$（$\theta_{1},\omega_{1}$）积分到 $t_{2}$（$\theta_{2},\omega_{2}$），得
+    \keyformula{W=\int_{\theta_{1}}^{\theta_{2}}M\,\mathrm{d}\theta
+    =\frac{1}{2}J\omega_{2}^{2}-\frac{1}{2}J\omega_{1}^{2}}
+    即刚体转动动能的增量等于合外力矩对刚体所做的功。
 
     \subsection{刚体定轴转动的机械能守恒定律}
-    如果刚体定轴转动中除受外力矩外，尚受摩擦力矩和重力矩作用，按动能定理则有
+    若刚体除受外力矩外还受摩擦力矩和重力矩作用，按动能定理有
     \[
-    W=\int_{\theta_1}^{\theta_2} \left(\boldsymbol{M}_\text{外}+\boldsymbol{M}_\text{非保内}+\boldsymbol{M}_\text{重}\right)\mathrm{d}\theta=\left(\frac12 J \omega_2^2+m g h_{C2}\right)-\left(\frac12 J \omega_1^2+m g h_{C1}\right).
+    W=\int_{\theta_{1}}^{\theta_{2}}\left(M_{\text{外}}+M_{\text{非保内}}+M_{\text{重}}\right)\mathrm{d}\theta
+    =\left(\frac{1}{2}J\omega_{2}^{2}+mgh_{C2}\right)-\left(\frac{1}{2}J\omega_{1}^{2}+mgh_{C1}\right)
     \]
-    上式即为重力场中刚体定轴转动的功能原理。
-
-    如果刚体只受保守力矩作用，则刚体机械能守恒。即
-    \[
-    \frac12 J\omega^2 + m g h_C = \text{常量}.
-    \]
-    对于包含刚体的力学系统，只有保守内力做功，外力矩与非保守内力矩做功均为零时，系统的机械能（转动动能、平动动能、重力势能之和）保持守恒。
+    这就是重力场中刚体定轴转动的功能原理。若刚体只受保守力矩作用，则机械能守恒：
+    \keyformula{\frac{1}{2}J\omega^{2}+mgh_{C}=\text{常量}}
+    对包含刚体的力学系统，只有在保守内力做功、外力与非保守内力（矩）做功均为零时，系统的机械能（转动动能 + 平动动能 + 重力势能）才守恒。
+    \corepoint{刚体的机械能守恒是“转动动能、质心平动动能、重力势能”三者的总和守恒；有摩擦或有绳与轮间的滑动时，必须用功能原理而不能直接用机械能守恒。}
 
 \section{刚体的平面平行运动}
     \subsection{刚体平面平行运动的描述}
-    如果刚体上任一质元的运动轨迹都平行于某一固定平面，这种运动称为刚体的平面平行运动。刚体的平面平行运动的特点是刚体上每一质元的运动轨迹都是平面曲线，且各平面互相平行；刚体在运动中转轴始终保持平行且垂直于某一固定平面。
+    若刚体上任一质元的运动轨迹都平行于某一固定平面，这种运动称为\textbf{平面平行运动}。其特点是：每个质元的轨迹都是平面曲线且各平面互相平行；刚体在运动中转轴始终保持平行且垂直于该固定平面。
 
-    刚体作平面平行运动时，通常的研究方法是将其运动分解为整个刚体随质心的平动和绕过质心并垂直于运动平面的转轴的定轴的转动。
-
-    刚体作平面平行运动时，平动部分需用其质心速度 $\boldsymbol{v}_C$ 和质心加速度 $\boldsymbol{a}_C$ 来描述。而刚体绕质心的转动可用角速度 $\boldsymbol{\omega}$ 和角加速度 $\boldsymbol{\alpha}$ 来描述。这样，刚体上任一点的速度和加速度均可按运动叠加原理求出。据此，刚体上任一点（距质心位置为 $\boldsymbol{r}$）的速度可表示为
-    \[
-    \boldsymbol{v}=\boldsymbol{v}_C+\boldsymbol{\omega}\times\boldsymbol{r},
-    \]
-    任一点的加速度可表示为
-    \[
-    \boldsymbol{a}=\boldsymbol{a}_C+\boldsymbol{a}_\text{绕C},
-    \]
-    式中，$\boldsymbol{\omega}$ 和 $\boldsymbol{a}_\text{绕C}$ 均为刚体上该点绕质心转动时，在该时刻所具有的角速度和线加速度。
+    研究方法是把运动分解为\textbf{随质心的平动}与\textbf{绕过质心并垂直于运动平面的转轴的转动}。平动部分用质心速度 $\boldsymbol{v}_{C}$、质心加速度 $\boldsymbol{a}_{C}$ 描述，转动部分用角速度 $\boldsymbol{\omega}$、角加速度 $\boldsymbol{\alpha}$ 描述。由运动叠加原理，刚体上任一点（相对质心的位矢为 $\boldsymbol{r}$）的速度与加速度为
+    \keyformula{\boldsymbol{v}=\boldsymbol{v}_{C}+\boldsymbol{\omega}\times\boldsymbol{r},\qquad
+    \boldsymbol{a}=\boldsymbol{a}_{C}+\boldsymbol{a}_{\text{绕}C}}
 
     \subsection{刚体平面平行运动的动力学规律}
-    对刚体平面平行运动的动力学分析，同样可把运动分解为刚体随质心的平动和绕质心的转动来分析。
+    随质心的平动遵从质心运动定理
+    \keyformula{\sum_{i}\boldsymbol{F}_{i}=m\boldsymbol{a}_{C}
+    =m\frac{\mathrm{d}\boldsymbol{v}_{C}}{\mathrm{d}t}}
+    其分量式为 $\sum F_{xi}=ma_{Cx}$、$\sum F_{yi}=ma_{Cy}$，其中 $m$ 为刚体总质量，各外力不一定通过质心。
 
-    刚体随质心的平动规律遵从质心运动定理，即
-    \[
-    \sum_i \boldsymbol{F}_i = m \frac{\mathrm{d}^2 \boldsymbol{r}_C}{\mathrm{d}t^2}=m \frac{\mathrm{d}\boldsymbol{v}_C}{\mathrm{d}t}=m \boldsymbol{a}_C.
-    \]
-    式中，$m$ 为刚体总质量，$\boldsymbol{a}_C$ 为质心的加速度，$\sum_i \boldsymbol{F}_i$ 为整个刚体受到的外力的合矢量（各外力 $\boldsymbol{F}_i$ 不一定通过质心）。刚体作平面平行运动时，质心运动定理的分量式为
-    \[
-    \begin{cases}
-    \sum_i F_{xi}=m a_{Cx},\\
-    \sum_i F_{yi}=m a_{Cy}.
-    \end{cases}
-    \]
-
-    理论和实验均证明，刚体绕通过质心的转轴的转动遵从定轴转动定律，于是有
-    \[
-    M_C = J_C \alpha
-    \]
-    式中，$M_C$ 是外力对通过质心的转轴的合外力矩；$J_C$、$\alpha$ 是刚体对通过质心的转轴的转动惯量和角加速度。因此，质心平动公式和绕质心转动公式是求解刚体平面平行运动的动力学基本方程组。在刚体既有随质心平动又有绕质心转动的情况下，它的动能也包括随质心的平动和绕质心的转动两部分，即
-    \[
-    E_\mathrm{k}=\frac12 m v_C^2+\frac12 J_C \omega^2.
-    \]
+    绕通过质心的转轴的转动遵从定轴转动定律
+    \keyformula{M_{C}=J_{C}\alpha}
+    这两个方程就是求解刚体平面平行运动动力学问题的基本方程组。刚体的动能也由两部分组成：
+    \keyformula{E_{\mathrm{k}}=\frac{1}{2}mv_{C}^{2}+\frac{1}{2}J_{C}\omega^{2}}
 
     \subsection{纯滚动}
-    若刚体在滚动过程中刚体与接触面之间无相对滑动，这种运动称为纯滚动。
+    若刚体在滚动过程中与接触面之间无相对滑动，这种运动称为\textbf{纯滚动}。圆柱（或圆球）每滚过一周，中心轴前进的距离等于横截面的周长，于是中心轴前进距离 $x_{C}$ 与转角 $\theta$ 的关系为 $x_{C}=R\theta$。逐次求导得\textbf{纯滚动条件}：
+    \keyformula{x_{C}=R\theta,\qquad v_{C}=R\omega,\qquad a_{C}=R\alpha}
+    三式中求解问题时只需用到其中一个。纯滚动时接触点为\textbf{瞬时转动中心}，接触点的速度为零（因此静摩擦力不做功），故纯滚动的机械能守恒。
 
-    当圆柱体或圆球作纯滚动时，质心的平动与绕质心轴的转动这两种运动虽然是独立的，但描述质心平动与绕质心转动的物理量之间却有一定的对应关系。圆柱体（或圆球）每滚过一周，其中心轴前进的距离必等于圆柱体横截面的周长。于是得出中心轴前进的距离 $x_C$ 与圆柱体绕中心轴转动的角度 $\theta$ 的关系为
-    \[
-    x_C=R\theta,
-    \]
-    式中，$R$ 为圆柱体横截面的半径。对上式求导得质心的前进速度 $v_C$ 与绕轴转动的角速度 $\omega$ 之间关系为
-    \[
-    v_C=\frac{\mathrm{d}x_C}{\mathrm{d}t}=R\frac{\mathrm{d}\theta}{\mathrm{d}t}=R\omega,
-    \]
-    再对上式求导，可得质心的加速度 $a_C$ 与转动角加速度间的关系为
-    \[
-    a_C=\frac{\mathrm{d}v_C}{\mathrm{d}t}=R\frac{\mathrm{d}\omega}{\mathrm{d}t}=R\alpha.
-    \]
-    我们将质心平动与绕质心轴转动的上述三个关系式称为纯滚动条件（求解问题时只需其中一个），即
-    \[
-    \begin{cases}
-    x_C=R\theta,\\
-    v_C=R\omega,\\
-    a_C=R\alpha.
-    \end{cases}
-    \]
-    通常应用质心运动定理、绕质心转动定律和纯滚动条件，即可求解作纯滚动的刚体平面平行运动问题。
+    通常联立质心运动定理、绕质心转动定律与纯滚动条件，即可求解纯滚动问题。
+    \corepoint{判断“纯滚动”与“又滑又滚”的差别就在于 $v_{C}=R\omega$ 是否成立：前者静摩擦力不做功、机械能守恒；后者滑动摩擦力做负功、机械能不守恒。}

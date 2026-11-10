@@ -171,9 +171,12 @@
 
 % ======================== 目录深度关键配置（开启五级显示） ========================
 \setcounter{secnumdepth}{5}   % 正文允许编号到第5级标题
-\setcounter{tocdepth}{5}      % 目录TOC渲染显示到第5级标题
+\setcounter{tocdepth}{3}      % 目录只到三级，避免五级目录溢出一整页
 
 % ======================== 文档入口 ========================
+\renewcommand{\tablename}{表}
+\renewcommand{\figurename}{图}
+
 \begin{document}
 
 % 封面页
@@ -190,7 +193,7 @@
 \input{3.质点运动学.tex}
 \input{4.质点动力学.tex}
 \input{5.刚体力学基础.tex}
-\input{6.流体力学.tex}
+\input{6.流体力学简介.tex}
 \input{7.狭义相对论.tex}
 
 % ========== 第二篇 电磁学 ==========

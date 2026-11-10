@@ -1,164 +1,270 @@
-% 子文件：6.定积分.tex
-% 主文档中使用 \input{6.定积分} 引入，不含 document 环境
+% ============================================================
+% 8.定积分.tex —— 第5章 定积分（同济《高等数学》第七版·上册）
+% 第一节 定积分的概念与性质（问题举例 / 定义 / 近似计算 / 性质）
+% 第二节 微积分基本公式（位置与速度 / 积分上限函数 / 牛顿—莱布尼茨公式）
+% 第三节 定积分的换元法和分部积分法
+% 第四节 反常积分（无穷限 / 无界函数）
+% 第五节 反常积分的审敛法 Γ函数
+% 只写知识点，不抄例题与习题。
+% ============================================================
 
 \section{定积分的概念与性质}
-\subsection{定积分的概念}
 
-定义6.1\quad 设函数$f(x)$在区间$[a,b]$上有定义，用分点
-\[
-a=x_1<x_2<\cdots<x_i<x_{i+1}<\cdots<x_n<x_{n+1}=b
-\]
-将区间$[a,b]$分为$n$个小区间$[x_i,x_{i+1}]$，记$\Delta x_i=x_{i+1}-x_i$，$\lambda=\max\{|\Delta x_i|\}$。任取$\xi_i\in[x_i,x_{i+1}],\ i=1,2,\cdots,n$。如果乘积的和式
-\[
-\sum_{i=1}^{n}f(\xi_i)\Delta x_i
-\]
-（称为积分和）的极限
-\[
-\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i)\Delta x_i
-\]
-存在，且这个极限与$x_i$和$\xi_i$的取法无关，则称$f(x)$在$[a,b]$上可积，并称此极限值为$f(x)$在区间$[a,b]$上由$a$到$b$的定积分，用记号$\int _a^bf(x)dx$表示之，即
-\[
-\int _a^bf(x)dx=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i)\Delta x_i.
-\]
+\subsection{定积分问题举例}
 
-定理6.1\quad 如果$f(x)$在$[a,b]$上可积，则$f(x)$在$[a,b]$上必有界。
-
-定理6.2\quad 如果
-
-定理6.3\quad 如果
-
-\subsection{定积分的简单性质}
-定积分是由被积函数与积分区间所确定的一个数。由此不难得到下列性质。在本段中，假定所涉及的定积分都存在。
+\noindent\textbf{曲边梯形的面积}\quad 设$f(x)\in C[a,b]$，$f(x)\ge0$。由$y=f(x)$、$x$轴及$x=a$、$x=b$围成的图形称为\emph{曲边梯形}。求面积$A$的四步：
 \begin{enumerate}
-    \item 
-    \item 
-    \item 
-    \item $\int_a^b\bigl[kf(x)+lg(x)\bigr]dx=k\int_a^bf(x)dx+l\int_a^bg(x)dx\quad(k,l为常数).$
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 定积分中值定理\quad 设$f(x)\in C[a,b]$，则至少存在一点$\xi\in[a,b]$，使得
-
-上式也叫做平均值公式。求连续变量的平均值就要用到它。
+  \item \textbf{分割}：以分点$a=x_0<x_1<\cdots<x_n=b$把$[a,b]$分成$n$个小区间，第$i$个窄曲边梯形面积记为$\Delta A_i$；
+  \item \textbf{近似}：任取$\xi_i\in[x_{i-1},x_i]$，以$f(\xi_i)\Delta x_i$近似代替$\Delta A_i$（以直代曲、以常代变）；
+  \item \textbf{求和}：$A\approx\sum\limits_{i=1}^{n}f(\xi_i)\Delta x_i$；
+  \item \textbf{取极限}：令$\lambda=\max\{\Delta x_i\}\to0$，得$A=\lim\limits_{\lambda\to0}\sum\limits_{i=1}^{n}f(\xi_i)\Delta x_i$。
 \end{enumerate}
 
-\noindent 设，证明柯西不等式。
+\noindent\textbf{变速直线运动的路程}\quad 设$v=v(t)\ge0$连续，则$s=\lim\limits_{\lambda\to0}\sum\limits_{i=1}^{n}v(\tau_i)\Delta t_i$。两个问题意义不同，却归结为同一数学结构，由此抽象出定积分。
 
-\section{微积分基本定理}
+\subsection{定积分的定义}
 
-定理6.4
-
-它还说明，连续函数$f(x)$
-
-定理6.5\quad 如果$F(x)$是$[a,b]$区间上连续函数$f(x)$的一个原函数，则
+\noindent\textbf{定义5.1}\quad 设$f(x)$在$[a,b]$上有界，用分点
 \[
-\int_a^bf(x)dx=F(b)-F(a) \tag{3}
+a=x_0<x_1<x_2<\cdots<x_{i-1}<x_i<\cdots<x_n=b
+\]
+把$[a,b]$分成$n$个小区间$[x_{i-1},x_i]$，记$\Delta x_i=x_i-x_{i-1}$，$\lambda=\max\limits_{1\le i\le n}\{\Delta x_i\}$。在每个小区间上任取$\xi_i\in[x_{i-1},x_i]$，作\emph{积分和}
+$S_n=\sum\limits_{i=1}^{n}f(\xi_i)\Delta x_i$。如果当$\lambda\to0$时$S_n$的极限存在，且\textbf{与分法无关、与$\xi_i$的取法无关}，则称$f(x)$在$[a,b]$上\emph{可积}，并称此极限为$f(x)$在$[a,b]$上的\emph{定积分}：
+\[
+\int_a^b f(x)\,\mathrm{d}x=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i)\Delta x_i .
+\]
+其中$a$为积分下限，$b$为积分上限，$[a,b]$为积分区间。
+
+\keyformula{\int_a^b f(x)\,\mathrm{d}x=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i)\Delta x_i}
+
+\noindent\textbf{规定}\quad $\displaystyle\int_a^af(x)\mathrm{d}x=0$，$\displaystyle\int_a^bf(x)\mathrm{d}x=-\int_b^af(x)\mathrm{d}x\ (a>b)$。
+
+\noindent\textbf{几何意义}\quad $f\ge0$时为曲边梯形面积；$f\le0$时为面积的相反数；$f$变号时为$x$轴上、下方面积的\textbf{代数和}。
+
+\noindent\textbf{可积性}\quad (1) \textbf{必要}：可积必有界（有界不充分）；(2) \textbf{充分}：$f\in C[a,b]$；(3) \textbf{充分}：$f$有界且只有\emph{有限个间断点}。
+
+\corepoint{定积分是一个\textbf{数}，只与区间和被积函数有关，与积分变量字母无关：$\int_a^bf(x)\mathrm{d}x=\int_a^bf(t)\mathrm{d}t$。$\mathrm{d}x$必须写，它标明积分变量；结果\textbf{不带$C$}。}
+
+\subsection{定积分的近似计算}
+
+把$[a,b]$分成$n$等份，$h=\dfrac{b-a}{n}$，$x_i=a+ih$，则
+
+\noindent\textbf{矩形法}\quad
+$\displaystyle\int_a^bf(x)\mathrm{d}x\approx\frac{b-a}{n}\sum_{i=1}^{n}f(x_{i-1})$（左端点）或$\displaystyle\approx\frac{b-a}{n}\sum_{i=1}^{n}f(x_i)$（右端点）。
+
+\noindent\textbf{梯形法}\quad 以折线代曲线：
+\[
+\int_a^bf(x)\,\mathrm{d}x\approx\frac{b-a}{n}\left[\frac{f(a)+f(b)}{2}+\sum_{i=1}^{n-1}f(x_i)\right].
 \]
 
-证明\quad 因为
-
-$C$是待定常数，即有
-
-令$x=a$
-
-\noindent 特别，公式(3)称为牛顿—莱布尼茨公式。
-
-\noindent 公式
-
-\section{定积分的计算}
-\subsection{定积分的换元积分法}
-
-定理6.6\quad 设$f(x)\in C[a,b]$，对变换$x=\phi(t)$，若有$\alpha,\beta$满足：
-\begin{enumerate}
-    \item[(i)] $\phi(\alpha)=a,\ \phi(\beta)=b$；
-    \item[(ii)] 在$\alpha,\beta$界定的区间上，$a\le \phi(t)\le b$；
-    \item[(iii)] 在$\alpha,\beta$界定的区间上，$\phi(t)$有连续的导数，
-\end{enumerate}
-则
+\noindent\textbf{抛物线法（辛普森公式）}\quad 要求$n$为\textbf{偶数}，过每三个相邻分点作抛物线：
 \[
-\int_a^bf(x)dx=\int_{\alpha}^{\beta}f\bigl[\phi(t)\bigr]\phi'(t)dt.
+\int_a^bf(x)\,\mathrm{d}x\approx\frac{b-a}{3n}\left[f(a)+f(b)+4\!\!\sum_{i=1}^{n/2}f(x_{2i-1})+2\!\!\sum_{i=1}^{n/2-1}f(x_{2i})\right].
 \]
-这个定理说明用换元积分法计算定积分时，应把积分上、下限同时换为新的积分变量的上、下限，通过新的积分算出积分值。这样避免了求$f(x)$的原函数，所以对变换$x=\phi(t)$也不要求它有反函数。
 
-设$f(x)$在区间
+\corepoint{三种近似精度递增：矩形法最差，梯形法次之；抛物线法对次数$\le3$的多项式\textbf{精确成立}，同分点下最准。$n$必须为偶数才能用抛物线法，这是最易漏的前提。}
 
-由定积分定义不难推证，对一般可积函数
+\subsection{定积分的性质}
+
+以下设所涉积分均存在。
+
+\noindent\textbf{性质1（线性）}\quad $\displaystyle\int_a^b[kf+lg]\mathrm{d}x=k\int_a^bf\mathrm{d}x+l\int_a^bg\mathrm{d}x$。
+
+\noindent\textbf{性质2（区间可加）}\quad 对任意$a,b,c$（不要求$a<c<b$），$\displaystyle\int_a^bf\mathrm{d}x=\int_a^cf\mathrm{d}x+\int_c^bf\mathrm{d}x$。
+
+\noindent\textbf{性质3（保号性）}\quad $f\ge0$且$a<b$ $\Rightarrow$ $\displaystyle\int_a^bf\mathrm{d}x\ge0$。
+
+\noindent\textbf{性质4（保序性）}\quad $f\le g$ $\Rightarrow$ $\displaystyle\int_a^bf\mathrm{d}x\le\int_a^bg\mathrm{d}x$。
+
+\noindent\textbf{性质5（绝对值不等式）}\quad $\left|\displaystyle\int_a^bf\mathrm{d}x\right|\le\displaystyle\int_a^b|f|\mathrm{d}x$。
+
+\noindent\textbf{性质6（估值定理）}\quad 若$m\le f(x)\le M$（$a<b$），则
+\[
+m(b-a)\le\int_a^bf(x)\,\mathrm{d}x\le M(b-a).
+\]
+
+\noindent\textbf{性质7（积分中值定理）}\quad 若$f\in C[a,b]$，则至少存在$\xi\in[a,b]$使
+\[
+\int_a^bf(x)\,\mathrm{d}x=f(\xi)(b-a),
+\]
+而$f(\xi)=\dfrac{1}{b-a}\displaystyle\int_a^bf\,\mathrm{d}x$称为$f$在$[a,b]$上的\emph{平均值}。
+
+\keyformula{m(b-a)\le\int_a^bf\mathrm{d}x\le M(b-a);\qquad \int_a^bf\mathrm{d}x=f(\xi)(b-a)}
+
+\corepoint{保号性要求\emph{下限小于上限}。$f$连续且$\int_a^bf\mathrm{d}x=0$只说明$f$在$[a,b]$上\textbf{变号或为零}（至少一个零点），加$f\ge0$才能推出$f\equiv0$。中值定理的$\xi$只保证存在，不能当具体值用。}
+
+\section{微积分基本公式}
+
+\subsection{变速直线运动中位置函数与速度函数之间的联系}
+
+设位置$s=s(t)$，速度$v=v(t)=s'(t)$，则区间$[T_1,T_2]$上的路程既等于$\int_{T_1}^{T_2}v\,\mathrm{d}t$，又等于$s(T_2)-s(T_1)$，故
+\[
+\int_{T_1}^{T_2}v(t)\,\mathrm{d}t=s(T_2)-s(T_1),
+\]
+即定积分可用被积函数的原函数在端点处的值之差来计算。此事实对一般连续函数也成立。
+
+\subsection{积分上限的函数及其导数}
+
+设$f\in C[a,b]$，定义$\Phi(x)=\displaystyle\int_a^xf(t)\,\mathrm{d}t$，称为\emph{积分上限函数}（变上限积分）。
+
+\noindent\textbf{定理5.1（原函数存在定理）}\quad 若$f\in C[a,b]$，则$\Phi(x)$在$[a,b]$上可导，且
+\[
+\Phi'(x)=\frac{\mathrm{d}}{\mathrm{d}x}\int_a^xf(t)\,\mathrm{d}t=f(x).
+\]
+即\textbf{连续函数的变上限积分是它的一个原函数}，从而连续函数必有原函数。
+
+\noindent\textbf{定理5.2（复合形式）}\quad 设$f$连续，$\varphi,\psi$可导，则
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\int_{\varphi(x)}^{\psi(x)}f(t)\,\mathrm{d}t=f[\psi(x)]\psi'(x)-f[\varphi(x)]\varphi'(x).
+\]
+
+\keyformula{\frac{\mathrm{d}}{\mathrm{d}x}\int_a^xf(t)\mathrm{d}t=f(x);\qquad \frac{\mathrm{d}}{\mathrm{d}x}\int_{\varphi(x)}^{\psi(x)}f(t)\mathrm{d}t=f(\psi)\psi'-f(\varphi)\varphi'}
+
+\corepoint{变上限求导时被积函数\textbf{不能含$x$}；形如$\int_a^xf(x-t)\mathrm{d}t$必须先换元（令$u=x-t$）把$x$移出被积函数。上下限都是函数时，别忘"上限导数$-$下限导数"的减号。}
+
+\subsection{牛顿—莱布尼茨公式}
+
+\noindent\textbf{定理5.3（微积分基本定理）}\quad 若$F(x)$是连续函数$f(x)$在$[a,b]$上的一个原函数，则
+\[
+\int_a^bf(x)\,\mathrm{d}x=F(b)-F(a)=\bigl[F(x)\bigr]_a^b ,
+\]
+称为\emph{牛顿—莱布尼茨公式}（微积分基本公式）。
+
+\noindent\textbf{意义}\quad 把求定积分（积分和的极限）归结为求原函数，使定积分可算；同时揭示微分与积分互为逆运算。
+
+\noindent\textbf{步骤}\quad (1) 检验$f$在$[a,b]$上连续；(2) 求$f$的\emph{一个}原函数$F$（不带$C$）；(3) 代入上下限作差$F(b)-F(a)$。
+
+\corepoint{公式条件是$f$在$[a,b]$上\textbf{连续}。若区间内有瑕点（如$\int_{-1}^1\frac{\mathrm{d}x}{x^2}$），\textbf{不能}直接用N-L公式，须按反常积分处理；硬套会得出$-2$之类的荒谬结果。}
+
+\section{定积分的换元法和分部积分法}
+
+\subsection{定积分的换元法}
+
+\noindent\textbf{定理5.4}\quad 设$f\in C[a,b]$，$x=\varphi(t)$满足：(1) $\varphi(\alpha)=a$，$\varphi(\beta)=b$，且$t$在$\alpha,\beta$之间时$\varphi(t)\in[a,b]$；(2) $\varphi'(t)$在$[\alpha,\beta]$（或$[\beta,\alpha]$）上连续。则
+\[
+\int_a^bf(x)\,\mathrm{d}x=\int_{\alpha}^{\beta}f[\varphi(t)]\varphi'(t)\,\mathrm{d}t .
+\]
+
+\noindent\textbf{与不定积分的区别}\quad 定积分换元\textbf{必须同时换积分限}，且\textbf{不需回代}：求出关于$t$的原函数后直接用$t$的上下限作差。
+
+\noindent\textbf{对称区间的奇偶性}\quad 设$f$在$[-a,a]$上连续，则
+\[
+\int_{-a}^{a}f(x)\,\mathrm{d}x=
+\begin{cases}
+0, & f(-x)=-f(x)\ (\text{奇}),\\[4pt]
+2\displaystyle\int_0^{a}f(x)\,\mathrm{d}x, & f(-x)=f(x)\ (\text{偶}).
+\end{cases}
+\]
+
+\noindent\textbf{常用结论}（$f$连续）
+\begin{align*}
+&\int_0^{\pi}xf(\sin x)\,\mathrm{d}x=\frac{\pi}{2}\int_0^{\pi}f(\sin x)\,\mathrm{d}x,\qquad
+\int_0^{\pi/2}f(\sin x)\,\mathrm{d}x=\int_0^{\pi/2}f(\cos x)\,\mathrm{d}x,\\
+&\int_0^{\pi/2}\sin^nx\,\mathrm{d}x=\int_0^{\pi/2}\cos^nx\,\mathrm{d}x=
+\begin{cases}
+\dfrac{n-1}{n}\cdot\dfrac{n-3}{n-2}\cdots\dfrac{1}{2}\cdot\dfrac{\pi}{2}, & n\ \text{偶},\\[8pt]
+\dfrac{n-1}{n}\cdot\dfrac{n-3}{n-2}\cdots\dfrac{2}{3}, & n\ \text{奇}.
+\end{cases}
+\end{align*}
+
+\corepoint{三条铁律：换元必换限；限的对应由$x=\varphi(t)$直接算出；$\varphi(t)$须单调（教材条件已保证），否则一个$x$对应多个$t$会算重。用奇偶性时区间必须\textbf{关于原点对称}。}
 
 \subsection{定积分的分部积分法}
 
-定理6.7\quad 设$u(x),v(x)$在区间$[a,b]$上有连续的导数，则
+\noindent\textbf{定理5.5}\quad 设$u(x),v(x)$在$[a,b]$上有连续导数，则
+\[
+\int_a^bu\,\mathrm{d}v=\bigl[uv\bigr]_a^b-\int_a^bv\,\mathrm{d}u ,
+\quad\text{即}\quad
+\int_a^bu(x)v'(x)\,\mathrm{d}x=\bigl[u(x)v(x)\bigr]_a^b-\int_a^bu'(x)v(x)\,\mathrm{d}x .
+\]
+$u$的选取顺序仍为"反对幂指三"。记$I_n=\displaystyle\int_0^{\pi/2}\sin^nx\,\mathrm{d}x$，则$I_n=\dfrac{n-1}{n}I_{n-2}$（$n\ge2$），$I_0=\dfrac{\pi}{2}$，$I_1=1$。
 
-由不定积分的分部积分法以及牛顿—莱布尼茨公式，这是显然的。
+\corepoint{$\bigl[uv\bigr]_a^b$这一项\textbf{必须代上下限}，忘了等于只做了不定积分。被积函数含绝对值或分段定义时，先在分界点\textbf{拆区间}再分部。}
 
 \section{反常积分}
-定积分$\int_a^bf(x)dx$受到两个限制，其一，积分区间$[a,b]$是有限区间；其二，被积函数在积分区间上是有界函数。
 
-\subsection{无穷区间上的反常积分}
+定积分$\int_a^bf\mathrm{d}x$有两个前提：区间\emph{有限}、被积函数\emph{有界}。突破其一即为\emph{反常积分}（广义积分）。
 
-定义6.2\quad 设对任何大于$a$的实数$b$，$f(x)$在$[a,b]$上均可积，则称极限
+\subsection{无穷限的反常积分}
+
+\noindent\textbf{定义5.2}\quad 设$f$在$[a,+\infty)$上连续，$b>a$。若$\lim\limits_{b\to+\infty}\displaystyle\int_a^bf(x)\mathrm{d}x$存在，则称此极限为$f$在$[a,+\infty)$上的反常积分，记
 \[
-\lim_{b\to+\infty}\int_a^bf(x)dx
+\int_a^{+\infty}f(x)\,\mathrm{d}x=\lim_{b\to+\infty}\int_a^bf(x)\,\mathrm{d}x ,
 \]
-为$f(x)$在无穷区间$[a,+\infty)$上的反常积分（或广义积分），记为$\int_a^{+\infty}f(x)dx$，即
-
-当这个极限存在时，则称反常积分$\int_a^{+\infty}f(x)dx$收敛（存在），否则称它发散。
-
-类似地，定义反常积分
-
-
-其中$c$为任一实常数。反常积分$\int_{-\infty}^{+\infty}f(x)dx$收敛的充要条件是两个反常积分$\int_{-\infty}^{c}f(x)dx$和$\int_{c}^{+\infty}f(x)dx$均收敛。
-
-若$F(x)$是连续函数$f(x)$的原函数，计算反常积分时，为书写方便，记
+并称它\emph{收敛}；极限不存在则称\emph{发散}。类似地定义$\displaystyle\int_{-\infty}^bf\mathrm{d}x$，且
 \[
-\begin{aligned}
-F(+\infty) &= \lim_{x \to +\infty} F(x), \quad F(-\infty) = \lim_{x \to -\infty} F(x), \\
-\int_a^{+\infty} f(x) \, dx &= F(x) \bigg|_a^{+\infty} = F(+\infty) - F(a), \\
-\int_{-\infty}^b f(x) \, dx &= F(x) \bigg|_{-\infty}^b = F(b) - F(-\infty), \\
-\int_{-\infty}^{+\infty} f(x) \, dx &= F(x) \bigg|_{-\infty}^{+\infty} = F(+\infty) - F(-\infty).
-\end{aligned}
+\int_{-\infty}^{+\infty}f(x)\,\mathrm{d}x=\int_{-\infty}^{c}f(x)\,\mathrm{d}x+\int_c^{+\infty}f(x)\,\mathrm{d}x
 \]
-这时反常积分的收敛与发散取决于$F(+\infty)$和$F(-\infty)$是否存在。
+当右端\textbf{两个积分都收敛}时才收敛（$c$任取）。
+
+\noindent\textbf{记法}\quad 令$F(+\infty)=\lim\limits_{x\to+\infty}F(x)$，$F(-\infty)=\lim\limits_{x\to-\infty}F(x)$，则$\displaystyle\int_a^{+\infty}f\mathrm{d}x=F(x)\big|_a^{+\infty}=F(+\infty)-F(a)$；收敛性取决于$F(\pm\infty)$是否为有限值。
+
+\noindent\textbf{$p$积分}\quad $\displaystyle\int_a^{+\infty}\frac{\mathrm{d}x}{x^p}\ (a>0)$：$p>1$收敛，$p\le1$发散。
+
+\corepoint{$\int_{-\infty}^{+\infty}f$的收敛是"两段各自收敛"，\textbf{不是}主值$\lim\limits_{R\to+\infty}\int_{-R}^{R}f$。例如$\int_{-\infty}^{+\infty}x\mathrm{d}x$发散（主值为0）。必须\textbf{拆两段}分别算。}
 
 \subsection{无界函数的反常积分}
 
-定义6.3\quad 若$\forall \varepsilon > 0$，$f(x)$在$[a+\varepsilon,b]$上可积，在$a$点右邻域内$f(x)$无界（称$a$为瑕点），称极限
+\noindent\textbf{定义5.3}\quad 设$f$在$(a,b]$上连续，在$a$的右邻域内无界（$a$称为\emph{瑕点}）。若$\lim\limits_{\varepsilon\to0^+}\displaystyle\int_{a+\varepsilon}^bf(x)\mathrm{d}x$存在，则称此极限为$f$在$(a,b]$上的反常积分（\emph{瑕积分}），仍记$\displaystyle\int_a^bf(x)\mathrm{d}x$，即
 \[
-\lim_{\varepsilon\to0^+}\int_{a+\varepsilon}^bf(x)dx
+\int_a^bf(x)\,\mathrm{d}x=\lim_{\varepsilon\to0^+}\int_{a+\varepsilon}^{b}f(x)\,\mathrm{d}x ,
 \]
-为无界函数$f(x)$在$(a,b]$上的反常积分（或瑕积分），记为$\int_a^bf(x)dx$，即
+并称它收敛，否则发散。瑕点为$b$时取$\lim\limits_{\varepsilon\to0^+}\int_a^{b-\varepsilon}f\mathrm{d}x$；瑕点$c\in(a,b)$时须\textbf{两端都收敛}。
+
+\noindent\textbf{瑕积分$p$判别}\quad $\displaystyle\int_a^b\frac{\mathrm{d}x}{(x-a)^p}$：$p<1$收敛，$p\ge1$发散（$b>a$）。
+
+\corepoint{先\textbf{找瑕点}（使被积函数趋于无穷的点）。常漏判：$\int_0^1\frac{\mathrm{d}x}{\sqrt{x(1-x)}}$（两端皆瑕点）、$\int_0^{\pi}\frac{\mathrm{d}x}{\sin x}$（$x=0,\pi$）、$\int_0^1\frac{\ln x}{x}\mathrm{d}x$。有瑕点就不能直接套N-L公式。}
+
+\section{反常积分的审敛法 \texorpdfstring{$\Gamma$}{Gamma}函数}
+
+\subsection{无穷限反常积分的审敛法}
+
+总设$f$在$[a,+\infty)$上连续且$f(x)\ge0$。
+
+\noindent\textbf{定理5.6（比较判别法）}\quad 设$0\le f\le g\ (x\ge a)$：(1) 若$\int_a^{+\infty}g$收敛，则$\int_a^{+\infty}f$收敛；(2) 若$\int_a^{+\infty}f$发散，则$\int_a^{+\infty}g$发散。
+
+\noindent\textbf{定理5.7（极限判别法）}\quad (1) 若存在$p>1$使$\lim\limits_{x\to+\infty}x^pf(x)=c\ (0\le c<+\infty)$，则$\int_a^{+\infty}f$收敛；(2) 若存在$p\le1$使$\lim\limits_{x\to+\infty}x^pf(x)=c\ (0<c\le+\infty)$，则$\int_a^{+\infty}f$发散。
+
+\noindent\textbf{定理5.8（绝对收敛）}\quad 若$\int_a^{+\infty}|f|\mathrm{d}x$收敛，则$\int_a^{+\infty}f\mathrm{d}x$也收敛，称\emph{绝对收敛}；若$\int f$收敛而$\int|f|$发散，称\emph{条件收敛}（如$\int_1^{+\infty}\frac{\sin x}{x}\mathrm{d}x$）。
+
+\subsection{无界函数的反常积分的审敛法}
+
+设$x=a$为瑕点，$f(x)\ge0$，$f$在$(a,b]$上连续。
+
+\noindent\textbf{比较判别法}\quad 设$0\le f\le g$：(1) 若$\int_a^bg$收敛，则$\int_a^bf$收敛；(2) 若$\int_a^bf$发散，则$\int_a^bg$发散。
+
+\noindent\textbf{极限判别法}\quad (1) 若存在$p<1$使$\lim\limits_{x\to a^+}(x-a)^pf(x)=c\ (0\le c<+\infty)$，则收敛；(2) 若存在$p\ge1$使$\lim\limits_{x\to a^+}(x-a)^pf(x)=c\ (0<c\le+\infty)$，则发散。
+
+\keyformula{\int_a^{+\infty}\frac{\mathrm{d}x}{x^p}:p>1\ \text{收敛};\qquad \int_a^b\frac{\mathrm{d}x}{(x-a)^p}:p<1\ \text{收敛}}
+
+\corepoint{无穷限与瑕积分的$p$条件\textbf{相反}（一个要$p>1$，一个要$p<1$）。取$p=1$最方便：若$\lim(x-a)f(x)=c>0$即发散。多个瑕点或"既有瑕点又无穷远"时，必须逐段拆开判，全部收敛才算收敛。}
+
+\subsection{\texorpdfstring{$\Gamma$}{Gamma}函数}
+
+\noindent\textbf{定义5.4}\quad 含参变$s$的反常积分
 \[
-\int_a^bf(x)dx=\lim_{\varepsilon\to0^+}\int_{a+\varepsilon}^{b}f(x)dx.
+\Gamma(s)=\int_0^{+\infty}x^{s-1}\mathrm{e}^{-x}\,\mathrm{d}x\qquad(s>0)
 \]
-当这个极限存在时，则称反常积分
+称为\emph{$\Gamma$函数}（伽马函数）。它在$s>0$时收敛，且在该区间内连续、可导。
 
-\section{反常积分敛散性判别法}
+\noindent\textbf{性质}
+\begin{align*}
+&\Gamma(s+1)=s\Gamma(s)\ (s>0);\qquad \Gamma(n+1)=n!\ (n=1,2,\cdots);\\
+&\Gamma(1)=1,\qquad \Gamma\!\left(\tfrac12\right)=\sqrt{\pi}.
+\end{align*}
 
-反常积分敛散性判别法
+\noindent\textbf{常用变形}\quad 令$x=t^2$得$\Gamma(s)=2\displaystyle\int_0^{+\infty}t^{2s-1}\mathrm{e}^{-t^2}\mathrm{d}t$，由此$\displaystyle\int_0^{+\infty}\mathrm{e}^{-x^2}\mathrm{d}x=\frac{\sqrt{\pi}}{2}$，$\displaystyle\int_0^{+\infty}x^2\mathrm{e}^{-x^2}\mathrm{d}x=\frac{\sqrt{\pi}}{4}$。
 
-比较判别法1
+\corepoint{$\Gamma$的定义域是$s>0$，在$s=0$处发散（$\lim\limits_{s\to0^+}\Gamma(s)=+\infty$）。用递推公式把$s$往$0$推时，每一步都必须保持自变量$>0$。$\Gamma(\frac12)=\sqrt\pi$必背，多数概率积分靠它。}
 
-无穷小比较法1
-
-比较判别法2
-
-无穷大比较法2
-
-$\Gamma$函数
-
-\section{定积分的应用举例}
-
-微元法
-
-平面区域的面积
-
-立体体积
-
-平均值
-
-平面曲线的弧长
-
-功的计算
-
-力与力矩的计算
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{对象} & \textbf{收敛条件} & \textbf{发散条件} \\
+\midrule
+$\int_a^{+\infty}\frac{\mathrm{d}x}{x^p}$ & $p>1$ & $p\le1$ \\
+$\int_a^b\frac{\mathrm{d}x}{(x-a)^p}$ & $p<1$ & $p\ge1$ \\
+\bottomrule
+\end{tabular}
+\end{center}

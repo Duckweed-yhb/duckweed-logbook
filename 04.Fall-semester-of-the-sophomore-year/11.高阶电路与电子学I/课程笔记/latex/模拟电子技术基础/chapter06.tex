@@ -1,0 +1,264 @@
+% 第6章 信号的运算和处理
+\chapter{信号的运算和处理}
+
+本章讨论运放的线性应用（\textbf{信号运算}：比例、加减、微积分、对数指数、乘法；\textbf{有源滤波}）与非线性应用中的一部分（精密整流、取样保持）。第3章已给出理想运放指标，第5章已给出深度负反馈下的虚短虚断，本章只引用结论，重点是“电路怎么接、公式怎么来、条件在哪里”。
+
+\section{运算电路的分析基础}
+\subsection{理想运放线性工作的前提}
+运算电路把运放接成\textbf{负反馈}，使其工作在传输特性的线性段：$u_O=A_{od}(u_P-u_N)$，$A_{od}\to\infty$。$u_O$ 被电源限幅而只能是有限值，故 $u_P-u_N\to0$，即\textbf{虚短}；又因 $r_{id}\to\infty$，$i_P=i_N=0$，即\textbf{虚断}：
+\begin{equation}
+u_P = u_N \formulaNote{虚短},\qquad i_P = i_N = 0 \formulaNote{虚断}
+\end{equation}
+这两个结论同时要求三条：电路有\textbf{负反馈}（开环或正反馈时运放工作在非线性区，$u_P\neq u_N$）、输出不饱和（$|u_O|<U_{OM}$）、信号频率在开环带宽内（否则 $A_{od}$ 已明显下降）。
+
+\subsection{节点法分析步骤}
+固定五步：(1) 确认运放处于线性区；(2) 写出同相端电位 $u_P$；(3) 用虚短令 $u_N=u_P$，用虚断认为流入运放两输入端的电流为零；(4) 对 $N$ 节点列 KCL；(5) 解出 $u_O$ 与各输入的关系。多输入时可用叠加定理：每次只保留一个输入、其余置零，最后代数相加。
+
+\formulaNote{易错}：列 KCL 时“运放输入端没有电流”这一条不要漏，否则会把方程写成三个未知量。
+
+\subsection{平衡电阻}
+实际运放存在输入偏置电流与失调电压。为使两输入端对地的直流等效电阻相等、让偏置电流产生的误差相互抵消，应满足
+\begin{equation}
+R_N = R_P \formulaNote{平衡条件}
+\end{equation}
+反相比例电路中即把 $R'=R\parallel R_f$ 接在同相端。平衡电阻只改善直流误差，不改变交流增益表达式。
+
+\section{基本运算电路}
+\subsection{比例运算电路}
+\subsubsection{反相比例运算电路}
+信号经 $R$ 送入反相端，$R_f$ 跨接在输出与反相端之间，同相端经 $R'$ 接地。
+由虚短 $u_N=u_P=0$（\textbf{虚地}），由虚断对 $N$ 节点列 KCL：$\dfrac{u_I-0}{R}=\dfrac{0-u_O}{R_f}$，得
+\begin{equation}
+u_O = -\frac{R_f}{R}\,u_I
+\end{equation}
+三个必须记住的结论：电压增益只由电阻比决定、极性相反；输入电阻 $R_i=R$（不是无穷大）；反相端为虚地，\textbf{共模输入电压近似为零}，这是它抗共模干扰好的原因。
+
+当需要的增益很大而 $R_f$ 又不能取得太大时，用 \textbf{T 形网络}代替单个 $R_f$：$R_2$ 与 $R_4$ 串联后又经 $R_3$ 接地，其等效反馈电阻为
+\begin{equation}
+R_f' = R_2+R_4+\frac{R_2R_4}{R_3}
+= (R_2+R_4)\left(1+\frac{R_2\parallel R_4}{R_3}\right),
+\qquad u_O = -\frac{R_f'}{R_1}u_I
+\end{equation}
+即用几支几十千欧的电阻实现“等效几百千欧”的反馈支路，避免大阻值电阻带来的精度与噪声问题。
+
+\subsubsection{同相比例运算电路}
+输入直接加在同相端，反相端经 $R$ 接地、经 $R_f$ 接输出。由虚短 $u_N=u_P=u_I$，对 $N$ 节点列 KCL 得
+\begin{equation}
+u_O = \left(1+\frac{R_f}{R}\right)u_I
+\end{equation}
+特点与反相组态恰好互补：输入电阻趋于无穷（不从前级取电流）；输出与输入同相；但\textbf{输入端存在共模电压 $u_{CM}=u_I$}，对运放的共模抑制比与共模输入范围有要求。$R_f=0$（或 $R\to\infty$）时增益为 1。
+
+\subsubsection{电压跟随器}
+把输出全部反馈到反相端，反馈系数 $F=1$，则
+\begin{equation}
+u_O = u_I
+\end{equation}
+它是同相比例电路 $R_f=0$、$R=\infty$ 的特例，增益为 1 而输入电阻极大、输出电阻极小，专门用来做\textbf{隔离缓冲}：把高内阻信号源与低阻负载隔开，或在滤波、取样电路之间提供隔离。有源滤波器之所以“有源”，靠的就是这一级隔离。
+
+\subsection{加减运算电路}
+\subsubsection{反相求和电路}
+多个输入各经一个电阻接到反相端，共用一个 $R_f$。虚地使各支路互不影响，对 $N$ 节点列 KCL：
+\begin{equation}
+u_O = -R_f\left(\frac{u_{I1}}{R_1}+\frac{u_{I2}}{R_2}+\frac{u_{I3}}{R_3}\right)
+= -\sum_{i}\frac{R_f}{R_i}u_{Ii}
+\end{equation}
+各路权重可独立设计，这是反相求和的最大优点；代价是输入电阻等于各自的 $R_i$，且为虚地输入。
+
+\subsubsection{同相求和电路}
+各输入经 $R_i$ 汇于同相端，同相端再接平衡电阻 $R_p$ 接地。用节点法求 $u_P$，再由同相比例关系 $u_O=(1+R_f/R)u_P$ 得
+\begin{equation}
+u_P=\frac{\sum_i u_{Ii}/R_i}{1/R_p+\sum_i 1/R_i},\qquad
+u_O=\left(1+\frac{R_f}{R}\right)u_P
+\end{equation}
+当满足平衡条件 $R_1\parallel R_2\parallel R_3=R\parallel R_f$ 时，上式化简为与反相求和同形的结果
+\begin{equation}
+u_O = R_f\left(\frac{u_{I1}}{R_1}+\frac{u_{I2}}{R_2}+\frac{u_{I3}}{R_3}\right)
+\end{equation}
+同相求和输入电阻高，但各路权重相互牵连（改变任一 $R_i$ 会同时改变 $u_P$ 与平衡条件），调整比反相求和麻烦。
+
+\subsubsection{加减运算电路}
+把反相求和与同相求和合并：一部分信号进反相端、另一部分进同相端，用叠加定理相加。在平衡条件 $R_1\parallel R_2=R_3\parallel R_4\parallel R_f$ 下
+\begin{equation}
+u_O = R_f\left(\frac{u_{I3}}{R_3}+\frac{u_{I4}}{R_4}-\frac{u_{I1}}{R_1}-\frac{u_{I2}}{R_2}\right)
+= u_{O2}+u_{O1}
+\end{equation}
+若只有两输入且 $R_1=R_2=R_3=R_4=R_f$，则 $u_O=u_{I2}-u_{I1}$，成为\textbf{差分（减法）电路}；此时四个电阻必须严格配对，否则共模抑制能力急剧下降。
+
+\begin{table}[htbp]
+\centering
+\caption{四种基本运算电路的对比}
+\begin{tabular}{@{}llll@{}}
+\hline
+电路 & 输出表达式 & 输入电阻 & 共模输入 \\
+\hline
+反相比例 & $u_O=-\dfrac{R_f}{R}u_I$ & $R$ & 约等于 0 \\
+同相比例 & $u_O=\left(1+\dfrac{R_f}{R}\right)u_I$ & 趋于无穷 & $u_I$（最大） \\
+反相求和 & $u_O=-\sum \dfrac{R_f}{R_i}u_{Ii}$ & 各为 $R_i$ & 约等于 0 \\
+加减运算 & $u_O=R_f\left(\sum\dfrac{u_{I+}}{R_+}-\sum\dfrac{u_{I-}}{R_-}\right)$ & 各为对应 $R$ & 由同相端决定 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{积分与微分运算电路}
+\subsubsection{积分运算电路}
+把反相比例电路中的 $R_f$ 换成电容 $C$。电容上电压等于电流的积分，而虚地使流过 $C$ 的电流恒为 $u_I/R$，故
+\begin{equation}
+u_O = -\frac{1}{C}\int i_C\,\mathrm{d}t
+= -\frac{1}{RC}\int_{t_1}^{t_2}u_I\,\mathrm{d}t + u_O(t_1)
+\end{equation}
+$RC$ 为积分时间常数。输入为阶跃时输出是斜坡（$u_O=-\dfrac{u_I}{RC}t$）；输入为方波时输出为三角波；输入为正弦时输出为超前 $90^\circ$ 的余弦。这些波形对应关系是第7章三角波发生电路的基础。
+
+实际电路要处理两个问题：直流失调与偏置电流会被长期积分而使输出漂到饱和，应在 $C$ 两端并接大阻值电阻泄放直流或加复位开关；积分电容的漏电与介质吸收会带来误差，应选漏电小的电容。
+
+\subsubsection{微分运算电路}
+把 $R$ 与 $C$ 位置互换：$C$ 串在输入端、$R$ 作反馈电阻，流过反馈电阻的电流为 $C\,\mathrm{d}u_I/\mathrm{d}t$，
+\begin{equation}
+u_O = -i_R R = -RC\,\frac{\mathrm{d}u_I}{\mathrm{d}t}
+\end{equation}
+输入为阶跃时输出是尖峰，输入为三角波时输出为方波。基本微分电路不能用在实际系统中：它对高频噪声的增益随频率无限增大，任何阶跃都会使运放饱和而“卡死”。实用电路做三处改造：输入端串小电阻限流并抑制高频增益、反馈电阻上反并联稳压管限幅、并小电容做相位补偿（高频段变回比例特性）。
+
+\subsection{对数与指数运算电路}
+\subsubsection{对数运算电路}
+把二极管（或三极管的发射结）接在反相端的反馈支路中。PN 结的正向电流与电压近似为指数关系 $i_D\approx I_S\,\mathrm{e}^{u_D/U_T}$，其中 $U_T=kT/q$ 为温度的电压当量，室温下约 $26\ \mathrm{mV}$。虚地使 $u_N=0$，虚断使全部输入电流流过 PN 结：$i_D=u_I/R$，于是
+\begin{equation}
+u_O = -u_D = -U_T\ln\frac{u_I}{R I_S}\qquad (u_I>0)
+\end{equation}
+输出电压与输入的对数成正比。它有两个固有缺陷：$U_T$ 与 $I_S$ 都随温度变化（$I_S$ 每升高 $10^\circ\mathrm{C}$ 约增大一倍），温漂很大，需用差分对管或热敏电阻补偿；输入只能为正，动态范围受失调与 PN 结体电阻限制。
+
+\subsubsection{指数（反对数）运算电路}
+把 PN 结移到输入端、反馈支路用电阻 $R$：输入电压直接加在 PN 结上，流过它的电流被 $R$ 转换成输出电压，
+\begin{equation}
+u_O = -R I_S\,\mathrm{e}^{u_I/U_T}\qquad (u_I>0)
+\end{equation}
+其输入输出关系与对数电路互为反函数。对数电路与指数电路串联即可实现乘法：$\ln u_{I1}+\ln u_{I2}=\ln(u_{I1}u_{I2})$，再取指数就得乘积；同理相减得除法、乘常数得乘方。
+
+\subsection{乘法运算电路}
+模拟乘法器实现 $u_O=K u_X u_Y$，$K$ 为乘积系数（单位 $\mathrm{V^{-1}}$）。主流结构是\textbf{变跨导式}（吉尔伯特单元）：差分对的跨导 $g_m$ 与尾电流成正比，用一路输入控制尾电流、另一路作差分输入，输出电流即正比于两输入之积，再经负载电阻转为电压。按输入允许的极性分单象限、二象限、四象限（最常用）三种。
+
+乘法器的典型运算：平方 $u_O=Ku_I^2$（输出恒正，用于有效值运算与倍频，因 $\cos^2\omega t$ 含 $2\omega$ 分量）；乘方；把乘法器接在运放反馈支路并利用虚短虚断反解，可得除法与开方，如 $u_O=\sqrt{-u_I/K}$。这类电路有“锁定”风险（上电可能停在错误工作点），需加限幅二极管或启动电路，并保证根号内与分母的极性正确。
+
+\section{有源滤波器}
+\subsection{分类与有源化的意义}
+滤波器按通带位置分为五种：低通 LPF、高通 HPF、带通 BPF、带阻 BEF（陷波）、全通 APF。频率特性用复函数 $\dot A_u=\dot U_O/\dot U_I=A_u(f)\angle\varphi(f)$ 描述。三个参数必须分清：\textbf{通带增益} $A_{up}$ 是通带内的平坦值；\textbf{截止频率} $f_p$ 是幅值降到 $A_{up}/\sqrt2$（下降 $3\ \mathrm{dB}$）处的频率；\textbf{特征频率} $f_0$ 是传递函数分母中与 $\omega$ 有关的特征值，它不一定等于 $f_p$。
+
+无源 RC 滤波器的致命弱点是“带不动负载”：负载与 RC 网络并联，会同时改变通带增益与截止频率，参数只在空载时成立。有源滤波器在 RC 网络与负载之间插入高输入电阻、低输出电阻的隔离级（电压跟随器或同相放大器），使滤波特性与负载无关，并可提供增益；受运放带宽限制，它只适用于低频与音频段（约几百千赫以下）。
+
+\subsection{一阶低通滤波器}
+\subsubsection{同相输入一阶低通}
+RC 低通网络接在同相端，后接同相比例放大。电容的阻抗为 $1/(sC)$，分压得
+\begin{equation}
+A_u(s) = \left(1+\frac{R_2}{R_1}\right)\frac{1}{1+sRC}
+=\frac{A_{up}}{1+s/\omega_0},\qquad f_0=\frac{1}{2\pi RC}
+\end{equation}
+以 $s=\mathrm{j}\omega$ 代入，写成便于查表的频率形式：
+\begin{equation}
+\dot A_u = \frac{A_{up}}{1+\mathrm{j}\dfrac{f}{f_0}},\qquad
+|\dot A_u| = \frac{A_{up}}{\sqrt{1+(f/f_0)^2}},\qquad
+\varphi = -\arctan\frac{f}{f_0}
+\end{equation}
+由 $|\dot A_u|=A_{up}/\sqrt{2}$ 得 $f=f_0$，故\textbf{一阶电路的通带截止频率就等于特征频率} $f_p=f_0$；$f\gg f_0$ 时幅值按 $-20\ \mathrm{dB/dec}$（即每十倍频下降 20 dB）衰减，相位趋于 $-90^\circ$。
+
+\subsubsection{反相输入一阶低通}
+积分运算电路本身就具有低通特性：把 $R_f$ 换成电容，传递函数为
+\begin{equation}
+A_u(s) = -\frac{R_2}{R_1}\cdot\frac{1}{1+sR_2C},\qquad f_p=f_0=\frac{1}{2\pi R_2C}
+\end{equation}
+通带内是反相比例（增益 $-R_2/R_1$），高频段被电容旁路而衰减。它的优点是输入为虚地、共模误差小；缺点与所有反相组态一样，输入电阻等于 $R_1$。
+
+\subsection{二阶低通滤波器}
+\subsubsection{简单二阶低通}
+两级 RC 串联再接同相放大。取 $C_1=C_2=C$，可解得
+\begin{equation}
+A_u(s) = \left(1+\frac{R_2}{R_1}\right)\frac{1}{1+3sRC+(sRC)^2},
+\qquad f_0=\frac{1}{2\pi RC}
+\end{equation}
+即
+\begin{equation}
+\dot A_u=\frac{A_{up}}{1-\left(\dfrac{f}{f_0}\right)^2+\mathrm{j}\,3\dfrac{f}{f_0}}
+\end{equation}
+分母中 $s$ 项系数为 3，说明等效品质因数 $Q=1/3<0.707$，幅频曲线在 $f_0$ 附近明显“塌陷”。求 $-3\ \mathrm{dB}$ 点：令 $|\dot A_u|/A_{up}=1/\sqrt2$，得 $(1-x^2)^2+9x^2=2$（$x=f/f_0$），即 $x^4+7x^2-1=0$，解得 $x=0.374$，故
+\begin{equation}
+f_p \approx 0.37 f_0
+\end{equation}
+这正是“二阶电路 $f_p\neq f_0$”的典型例子。高频段它以 $-40\ \mathrm{dB/dec}$ 衰减，过渡带比一阶陡一倍，但通带边缘下塌过多。
+
+\subsubsection{压控电压源二阶低通}
+为把 $Q$ 提到 $0.707$ 附近，把第一级电容 $C_1$ 的下端从地改接到输出端，引入\textbf{正反馈}（同时保留同相比例的负反馈）。设 $C_1=C_2=C$，可推出
+\begin{equation}
+A_u(s) = \frac{A_{up}}{1+(3-A_{up})sRC+(sRC)^2},\qquad A_{up}=1+\frac{R_2}{R_1}
+\end{equation}
+与分母标准形 $1+\dfrac{1}{Q}\cdot\dfrac{s}{\omega_0}+\left(\dfrac{s}{\omega_0}\right)^2$ 对比，得
+\begin{equation}
+f_0=\frac{1}{2\pi RC},\qquad Q=\frac{1}{3-A_{up}}
+\end{equation}
+结论很关键：$A_{up}$ 越接近 3，$Q$ 越大、$f_0$ 附近峰起越高；$A_{up}\ge 3$ 时 $Q\to\infty$，电路自激振荡，\textbf{所以必须保证 $A_{up}<3$}。取 $Q=1/\sqrt2$（最大平坦，即巴特沃斯特性的二阶实现）时 $A_{up}=3-\sqrt2\approx1.586$，此时 $f_p=f_0$；$Q>0.707$ 时幅频出现峰值，$f_p>f_0$。
+
+\subsubsection{无限增益多路反馈二阶低通}
+把运放接成反相组态（同相端接地，运放本身“增益无穷大”），反馈网络有两条通路（$C_1$ 与 $R_f$ 都接到反相端），故称无限增益多路反馈（MFB）。其传递函数与参数为
+\begin{equation}
+A_u(s)=\frac{A_{up}}{1+sC_2R_2R_f\left(\dfrac{1}{R_1}+\dfrac{1}{R_2}+\dfrac{1}{R_f}\right)+s^2C_1C_2R_2R_f},
+\qquad A_{up}=-\frac{R_f}{R_1}
+\end{equation}
+\begin{equation}
+f_0=\frac{1}{2\pi\sqrt{C_1C_2R_2R_f}},\qquad
+Q=(R_1\parallel R_2\parallel R_f)\sqrt{\frac{C_1}{C_2R_2R_f}}
+\end{equation}
+它只用一只运放、元件少、$Q$ 可达较高值，且输入为虚地；代价是反相输入、输入阻抗低。二阶滤波器的这两种经典结构（压控电压源型与 MFB 型）合起来覆盖了绝大多数工程需求。
+
+\subsection{高通、带通、带阻与全通滤波器}
+\subsubsection{高通滤波器}
+高通与低通在结构上\textbf{对偶}：把低通网络中的电阻与电容互换即可。一阶同相高通为
+\begin{equation}
+A_u(s)=\left(1+\frac{R_2}{R_1}\right)\frac{sRC}{1+sRC},\qquad f_0=\frac{1}{2\pi RC},\ f_p=f_0
+\end{equation}
+低频段幅值按 $+20\ \mathrm{dB/dec}$ 上升、相位超前趋于 $+90^\circ$，高频段趋于 $A_{up}$。二阶压控电压源高通只需把两只电容与两只电阻互换位置：
+\begin{equation}
+A_u(s)=\frac{A_{up}(sRC)^2}{1+(3-A_{up})sRC+(sRC)^2}
+\end{equation}
+$f_0$、$Q$ 与低通同形，稳定性条件同样是 $A_{up}<3$。
+
+\subsubsection{带通、带阻与全通滤波器}
+把低通与高通\textbf{级联}即得带通：低通的截止频率要高于高通的截止频率，两者通带重叠处即带通滤波器的通带。主要参数为中心频率与带宽：
+\begin{equation}
+f_0\approx\sqrt{f_{pL}\,f_{pH}},\qquad BW=f_{pH}-f_{pL},\qquad Q=\frac{f_0}{BW}
+\end{equation}
+$Q$ 越大选频越尖锐。工程上更常用单运放的二阶带通（压控电压源型或 MFB 型），其分子含一次 $s$ 项，故低频、高频段各以 $\pm20\ \mathrm{dB/dec}$ 衰减。
+
+把输入同时送到低通与高通、再把两路输出\textbf{求和}即得带阻：中间被两者共同抑制的频段就是阻带；抑制单一频率（如 $50\ \mathrm{Hz}$ 工频）可用双 T 网络配运放构成陷波器。全通滤波器（APF）幅频全频段平坦、只改变相位，用“原信号与一阶全通网络输出相减”实现，用于相位校正与延迟均衡。
+
+\subsection{滤波器的选用与限制}
+\begin{table}[htbp]
+\centering
+\caption{五类滤波器小结}
+\begin{tabular}{@{}llll@{}}
+\hline
+类型 & 通带 & 阻带 & 典型实现 \\
+\hline
+低通 LPF & $f<f_p$ & $f>f_p$ & RC 分压 + 同相放大、MFB \\
+高通 HPF & $f>f_p$ & $f<f_p$ & 低通的对偶（R 与 C 互换）\\
+带通 BPF & $f_{pL}<f<f_{pH}$ & 两侧 & LPF 与 HPF 级联 \\
+带阻 BEF & 两侧 & $f_{pL}<f<f_{pH}$ & LPF 与 HPF 求和、双 T 网络 \\
+全通 APF & 全频段 & 无 & 相减结构，只校相位 \\
+\hline
+\end{tabular}
+\end{table}
+
+选用时依次确定：通带增益 $A_{up}$、截止频率 $f_p$、阶数 $n$（每阶约 $\pm20\ \mathrm{dB/dec}$）、可接受的峰值。三条限制：$A_{up}f_0\ll GBW$，否则高频衰减更快甚至自激；电容容差（$\pm5\%\sim\pm20\%$）直接决定 $f_0$ 的准确度；$Q$ 越高，$f_0$ 与峰值对元件误差越敏感，二阶电路 $Q$ 一般不超过 10。
+
+\section{其他信号处理电路}
+\subsection{精密整流、取样保持与仪用放大器}
+普通二极管整流有 $U_{on}$（约 $0.7\ \mathrm{V}$）的死区，毫伏级信号无法整流。把二极管放进运放的\textbf{反馈支路}内，虚短会补偿它的导通压降，只要运放不饱和，输出与输入就严格线性，故称精密整流：半波用一只运放两只二极管，全波（绝对值）用两只运放，一路取半波、一路反相加法，得 $u_O=|u_I|$。
+
+取样保持（S/H）用开关把输入电压存到电容上、其余时间保持，是模数转换前的必备环节；峰值检测用“二极管 + 保持电容 + 高输入阻抗缓冲”记住最大值。两者的误差都来自漏电与偏置电流使电容缓慢放电，以及开关瞬间的电荷注入。
+
+电压-电流转换（V/I）利用虚地与反馈，使输出电流只由输入电压和取样电阻决定、与负载无关，用于传感器恒流供电与 $4\sim20\ \mathrm{mA}$ 电流环。仪用放大器为三运放结构：前两级同相放大、用一只电阻设定增益，第三级差分，$A_u=\left(1+\dfrac{2R_1}{R}\right)\dfrac{R_3}{R_2}$，输入电阻与共模抑制比都极高，用于热电偶、应变片等微弱差分信号（结构见第3章）。
+
+\section{本章小结与易错点}
+\begin{itemize}
+    \item 虚短虚断是\textbf{线性区}结论，运放饱和、开环或正反馈（比较器、振荡器）都不能用，这是第7章最容易混的地方。
+    \item 反相组态输入为虚地、共模误差小、输入电阻等于 $R_1$；同相组态输入电阻极大、但有 $u_{CM}=u_I$。
+    \item 求和/加减电路要区分“是否满足平衡条件”，不满足时同相求和不能写成 $\sum R_f u_{Ii}/R_i$ 的简式。
+    \item 积分电路要处理直流漂移（并大电阻或复位开关），微分电路要处理高频噪声（串限流电阻、并稳压管限幅、并小电容补偿）。
+    \item 一阶滤波器 $f_p=f_0$，二阶 $f_p\neq f_0$（简单二阶 $f_p\approx0.37f_0$）；压控电压源型靠正反馈提高 $Q$，$A_{up}\ge3$ 自激。
+    \item 有源滤波器受带宽限制（$A_{up}f_0\ll GBW$）；对数、指数电路精度受 $U_T$、$I_S$ 温度特性支配，必须补偿。
+\end{itemize}

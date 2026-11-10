@@ -1,305 +1,402 @@
-\section{$n$维向量的概念及其线性运算}
+% 第4章 向量组的线性相关性（同济《线性代数》第七版 第4章）
+% 节次与教材一致：§1 向量组及其线性组合；§2 向量组的线性相关性；§3 向量组的秩；
+% §4 向量空间（第七版把向量空间移到第4章第4节）；§5 线性方程组的解的结构。
+% 只用 \section / \subsection，正文不写例题与习题。
 
-\subsection{$n$维向量的定义}
-\begin{definition}
-数域$F$内的$n$个数$a_1,a_2,\dots,a_n$组成的有序数组$\boldsymbol{\alpha}$叫做数域$F$上的$n$维向量（简称向量），记作
+\section{向量组及其线性组合}
+
+\subsection{$n$维向量的概念}
+\begin{definition}[$n$维向量]
+数域$F$内的$n$个数$a_1,a_2,\dots,a_n$组成的有序数组$\boldsymbol{\alpha}$叫做数域$F$上的\textbf{$n$维向量}（简称向量），记作
 \[
 \boldsymbol{\alpha}=(a_1,a_2,\dots,a_n)
-\]
-或
-\[
+\quad\text{或}\quad
 \boldsymbol{\alpha}=
 \begin{pmatrix}
-a_1\\
-a_2\\
-\vdots\\
-a_n
+a_1\\ a_2\\ \vdots\\ a_n
 \end{pmatrix}.
 \]
-前一个表示式称为**行向量**，后一个表示式称为**列向量**。数$a_i$叫做此$n$维向量的第$i$个分量。
+前者称为\textbf{行向量}，后者称为\textbf{列向量}；数$a_i$称为该向量的第$i$个\textbf{分量}。分量全为实数的向量称为\textbf{实向量}，分量中含有复数的向量称为\textbf{复向量}。本书如无特别声明，只讨论实向量。
 \end{definition}
 
-\subsection{$n$维向量的线性运算}
-\begin{definition}
-设$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n),\boldsymbol{\beta}=(b_1,b_2,\dots,b_n)$都是$n$维向量，那么向量$(a_1+b_1,a_2+b_2,\dots,a_n+b_n)$叫做向量$\boldsymbol{\alpha}$与$\boldsymbol{\beta}$的和，记作$\boldsymbol{\alpha}+\boldsymbol{\beta}$，即
+按第2章的规定，行向量就是行矩阵，列向量就是列矩阵，行向量与列向量都按矩阵的运算规则进行运算。$n$维列向量与$n$维行向量是两个不同的向量；未指明行、列时，一律当作\textbf{列向量}，行向量用$\boldsymbol{\alpha}^{T}$等表示。
+
+当$n=3$时，$n$维向量可看作以原点为起点的有向线段，即解析几何中的向量；当$n>3$时它不再有直观的几何形象，只是沿用几何术语。
+\begin{definition}[向量组]
+若干个同维数的列向量（或同维数的行向量）所组成的集合叫做\textbf{向量组}。一个$m\times n$矩阵的全体列向量是一个含$n$个$m$维列向量的向量组，其全体行向量是一个含$m$个$n$维行向量的向量组。
+\end{definition}
+
+含有限个向量的有序向量组与矩阵一一对应：$m$个$n$维列向量$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$构成$n\times m$矩阵
 \[
-\boldsymbol{\alpha}+\boldsymbol{\beta}=(a_1+b_1,a_2+b_2,\dots,a_n+b_n).
+A=(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m),
 \]
+称$A$为该向量组所构成的矩阵。这是把向量组的讨论转化为矩阵讨论的桥梁。
+
+\subsection{线性运算}
+\begin{definition}[向量加法]
+设$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n),\boldsymbol{\beta}=(b_1,b_2,\dots,b_n)$都是$n$维向量，则向量$(a_1+b_1,a_2+b_2,\dots,a_n+b_n)$叫做$\boldsymbol{\alpha}$与$\boldsymbol{\beta}$的\textbf{和}，记作$\boldsymbol{\alpha}+\boldsymbol{\beta}$。
 \end{definition}
 
-\begin{definition}
-设$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n)$为数域$F$上$n$维向量，$k$为数域$F$中数，那么，向量$(ka_1,ka_2,\dots,ka_n)$叫做$k$与向量$\boldsymbol{\alpha}$的乘积，记作$k\boldsymbol{\alpha}$，即
-\[
-k\boldsymbol{\alpha}=(ka_1,ka_2,\dots,ka_n).
-\]
+\begin{definition}[数乘]
+设$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n)$为数域$F$上的$n$维向量，$k\in F$，则向量$(ka_1,ka_2,\dots,ka_n)$叫做数$k$与向量$\boldsymbol{\alpha}$的\textbf{乘积}，记作$k\boldsymbol{\alpha}$。
 \end{definition}
 
-向量的加法与向量的数乘统称为向量的**线性运算**。
-
-$n$维向量的线性运算满足下述八条性质：对任意$\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\gamma}$，$k,l\in F$：
+向量的加法与数乘统称为向量的\textbf{线性运算}。对任意$\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\gamma}$及$k,l\in F$，线性运算满足八条性质：
 \begin{enumerate}
     \item $\boldsymbol{\alpha}+\boldsymbol{\beta}=\boldsymbol{\beta}+\boldsymbol{\alpha}$；
     \item $(\boldsymbol{\alpha}+\boldsymbol{\beta})+\boldsymbol{\gamma}=\boldsymbol{\alpha}+(\boldsymbol{\beta}+\boldsymbol{\gamma})$；
-    \item $\boldsymbol{\alpha}+\boldsymbol{0}=\boldsymbol{\alpha}$；
-    \item $\boldsymbol{\alpha}+(-\boldsymbol{\alpha})=\boldsymbol{0}$；
-    \item $1\boldsymbol{\alpha}=\boldsymbol{\alpha},\;(-1)\boldsymbol{\alpha}=-\boldsymbol{\alpha},\;0\boldsymbol{\alpha}=\boldsymbol{0}$；
+    \item $\boldsymbol{\alpha}+\boldsymbol{0}=\boldsymbol{\alpha}$（存在零向量）；
+    \item $\boldsymbol{\alpha}+(-\boldsymbol{\alpha})=\boldsymbol{0}$（存在负向量）；
+    \item $1\boldsymbol{\alpha}=\boldsymbol{\alpha}$；
     \item $k(l\boldsymbol{\alpha})=(kl)\boldsymbol{\alpha}$；
     \item $k(\boldsymbol{\alpha}+\boldsymbol{\beta})=k\boldsymbol{\alpha}+k\boldsymbol{\beta}$；
     \item $(k+l)\boldsymbol{\alpha}=k\boldsymbol{\alpha}+l\boldsymbol{\alpha}$。
 \end{enumerate}
+由这八条还可推出$0\boldsymbol{\alpha}=\boldsymbol{0}$，$(-1)\boldsymbol{\alpha}=-\boldsymbol{\alpha}$，$k\boldsymbol{0}=\boldsymbol{0}$。这八条正是第6章"线性空间"公理的原型。
 
-
-\section{向量组线性相关与线性无关}
-
-\subsection{线性相关与线性无关的定义}
-\begin{definition}
-对于$n$维向量$\boldsymbol{\beta},\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$，如果有一组数$k_1,k_2,\dots,k_m$使
+\subsection{线性组合与线性表示}
+\begin{definition}[线性组合、线性表示]
+给定向量组$A:\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$，对于任何一组实数$k_1,k_2,\dots,k_m$，表达式
 \[
-\boldsymbol{\beta}=k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+\dots+k_m\boldsymbol{\alpha}_m,
+k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+\dots+k_m\boldsymbol{\alpha}_m
 \]
-则称向量$\boldsymbol{\beta}$是$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$的**线性组合**，或称$\boldsymbol{\beta}$可由$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$**线性表示**。此时称$k_1,k_2,\dots,k_m$为**组合系数**或**表示系数**。
+称为向量组$A$的一个\textbf{线性组合}，$k_1,k_2,\dots,k_m$称为这个线性组合的\textbf{系数}。
+
+给定向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$和向量$\boldsymbol{b}$，若存在一组数$\lambda_1,\dots,\lambda_m$使
+\[
+\boldsymbol{b}=\lambda_1\boldsymbol{\alpha}_1+\lambda_2\boldsymbol{\alpha}_2+\dots+\lambda_m\boldsymbol{\alpha}_m,
+\]
+则称向量$\boldsymbol{b}$是向量组$A$的线性组合，或称$\boldsymbol{b}$\textbf{能由向量组$A$线性表示}。
 \end{definition}
 
-几何向量$\boldsymbol{a},\boldsymbol{b}$共线的充要条件是，存在不全为零的常数，使得$\lambda_1\boldsymbol{a}+\lambda_2\boldsymbol{b}=\boldsymbol{0}$。
-
-三个向量$\boldsymbol{a},\boldsymbol{b},\boldsymbol{c}$共面的充要条件是，存在不全为零的常数，使得$\lambda_1\boldsymbol{a}+\lambda_2\boldsymbol{b}+\lambda_3\boldsymbol{c}=\boldsymbol{0}$。
-
-\begin{definition}
-设有$n$维向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$，如果存在数域$F$中一组不全为零的常数$k_1,k_2,\dots,k_m$使
-\[
-k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0},
-\]
-则称向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$**线性相关**。否则，称这个向量组为**线性无关**。
-\end{definition}
-
-由线性相关的定义可以得出：如果一向量组的一部分构成的向量组线性相关，那么这个向量组也线性相关。如果一个向量组线性无关，那么它的任何一部分向量组也线性无关。
-
-由线性无关的定义可知，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性无关的充要条件是，只有当$k_1=k_2=\dots=k_m=0$时，才有
-\[
-k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0}.
-\]
-
-\subsection{线性相关性的一种刻画}
-两个几何向量共线，三个几何向量共面的另一种表述是：其中一个向量可以写成其余向量的线性组合。类似地，$n$维向量组线性相关有如下刻画。
-
-\begin{theorem}
-向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$（$m\ge2$）线性相关的充要条件是$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$中至少有一个向量可由其余$m-1$个向量线性表示。
-\end{theorem}
-
-\subsection{线性相关的判定}
-\begin{enumerate}
-    \item 可以用线性相关的定义或定理4.1判断向量组的相关性。
-    \item 可利用向量组对应的矩阵的秩来判断向量组的相关性。
-\end{enumerate}
-
-$n$维向量$\boldsymbol{\alpha}$可以看成行矩阵（行向量）$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n)$，也可以看成列矩阵（列向量）
-\[
-\boldsymbol{\alpha}=
-\begin{pmatrix}
-a_1 \\
-a_2 \\
-\vdots \\
-a_n
-\end{pmatrix}.
-\]
-
-向量组
-\[
-\boldsymbol{\alpha}_1=\begin{pmatrix} a_{11} \\ a_{21} \\ \vdots \\ a_{n1} \end{pmatrix},\;
-\boldsymbol{\alpha}_2=\begin{pmatrix} a_{12} \\ a_{22} \\ \vdots \\ a_{n2} \end{pmatrix},\;\dots,\;
-\boldsymbol{\alpha}_m=\begin{pmatrix} a_{1m} \\ a_{2m} \\ \vdots \\ a_{nm} \end{pmatrix},
-\]
-可以构成矩阵
-\[
-A=
-\begin{pmatrix}
-a_{11}&a_{12}&\dots&a_{1m}\\
-a_{21}&a_{22}&\dots&a_{2m}\\
-\vdots&\vdots&\ddots&\vdots \\
-a_{n1}&a_{n2}&\dots&a_{nm}
-\end{pmatrix}
-=(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m).
-\]
-称$A$为向量组对应的矩阵，所以一个含有有限个向量的列向量组，总可以看成由一个矩阵的全体列向量所构成。
-
-由向量组线性相关的定义可知，矩阵$A$的列向量组线性相关的充要条件是存在不全为零的数$k_1,k_2,\dots,k_m$，使
-\[
-k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0},
-\]
-也就是
+"$\boldsymbol{b}$能由$A$线性表示"等价于线性方程组
 \[
 (\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m)
-\begin{pmatrix}k_1\\k_2\\\vdots\\k_m\end{pmatrix}
-=\boldsymbol{0},
+\begin{pmatrix}\lambda_1\\ \lambda_2\\ \vdots\\ \lambda_m\end{pmatrix}
+=\boldsymbol{b},\qquad\text{即}\quad A\boldsymbol{x}=\boldsymbol{b}
 \]
-即$A\boldsymbol{\beta}=\boldsymbol{0}$，其中$\boldsymbol{\beta}=(k_1,k_2,\dots,k_m)' \neq \boldsymbol{0}$。
+有解，解向量就是表示系数。
 
-\paragraph{矩阵判别法}
-设有$n\times m$矩阵
+\begin{definition}[向量组的线性表示与等价]
+设有两个向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$及$B:\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s$。若$B$中每个向量都能由向量组$A$线性表示，则称\textbf{向量组$B$能由向量组$A$线性表示}；若$A$与$B$能相互线性表示，则称这两个\textbf{向量组等价}。
+\end{definition}
+
+将$A,B$所构成的矩阵分别记作$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r)$，$B=(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s)$。$B$能由$A$线性表示，即存在矩阵$K=(k_{ij})_{r\times s}$使
 \[
-A=
-\begin{pmatrix}
-a_{11}&a_{12}&\dots&a_{1m}\\
-a_{21}&a_{22}&\dots&a_{2m}\\
-\vdots&\vdots&\ddots&\vdots \\
-a_{n1}&a_{n2}&\dots&a_{nm}
-\end{pmatrix},
+(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r)K,
+\quad\text{即}\quad B=AK,
 \]
-则$A$的列向量组
+$K$称为这一线性表示的\textbf{系数矩阵}。于是：$C=AB$时，$C$的列向量组能由$A$的列向量组线性表示（$B$为系数矩阵），$C$的行向量组能由$B$的行向量组线性表示（$A$为系数矩阵）。
+
+矩阵的行（列）等价与向量组的等价相对应：矩阵$A$经初等行变换化为$B$，则$A$的行向量组与$B$的行向量组等价；$A$与$B$列等价，则它们的列向量组等价。
+
+\subsection{线性表示的秩判据}
+\begin{theorem}[线性表示的秩判据]
+向量$\boldsymbol{b}$能由向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$线性表示的充分必要条件是矩阵$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)$的秩等于矩阵$B=(A,\boldsymbol{b})$的秩，即
 \[
-\boldsymbol{\alpha}_1=\begin{pmatrix} a_{11} \\ a_{21} \\ \vdots \\ a_{n1} \end{pmatrix},\;
-\boldsymbol{\alpha}_2=\begin{pmatrix} a_{12} \\ a_{22} \\ \vdots \\ a_{n2} \end{pmatrix},\;\dots,\;
-\boldsymbol{\alpha}_m=\begin{pmatrix} a_{1m} \\ a_{2m} \\ \vdots \\ a_{nm} \end{pmatrix},
+R(A)=R(A,\boldsymbol{b})\quad\Longleftrightarrow\quad R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)
+=R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m,\boldsymbol{b}).
 \]
-线性无关（线性相关）的充要条件是$R(A)=m$（$R(A)<m$），即$A$的秩等于（小于）$A$的列向量个数。
+\end{theorem}
 
-证明 \quad 必要性：假如 %待补
-
-矩阵判别法刻画了列向量组线性无关与列满矩阵直接的联系。这样，就把$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$的线性相关性的讨论转化成了关于矩阵的秩的讨论，即：若$R(A)<m$，则$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性相关；若$R(A)=m$，则$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性无关。同理可证，$A$的行向量组线性无关$\Leftrightarrow R(A)$等于$A$的行向量的个数。
-
-当$A$为$n$阶方阵时，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$线性无关的充要条件是$|A|\neq 0$。
-
-\begin{corollary}
-设
+\begin{theorem}[向量组线性表示的秩判据]
+向量组$B:\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s$能由向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$线性表示的充分必要条件是矩阵$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r)$的秩等于矩阵$(A,B)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r,\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s)$的秩，即
 \[
-\boldsymbol{\alpha}_i=\begin{pmatrix}a_{1i}\\a_{2i}\\\vdots\\a_{ri}\end{pmatrix},\quad
-\boldsymbol{\beta}_i=\begin{pmatrix}a_{1i}\\a_{2i}\\\vdots\\a_{ri}\\a_{r+1,i}\\\vdots\\a_{r+s,i}\end{pmatrix},\quad i=1,2,\dots,m.
+R(A)=R(A,B).
 \]
-若$r$维向量$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性无关，则$r+s$维向量组$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_m$也线性无关。
+\end{theorem}
+
+\begin{corollary}[向量组等价的秩判据]
+向量组$A$与向量组$B$等价的充分必要条件是
+\[
+R(A)=R(B)=R(A,B).
+\]
 \end{corollary}
 
+\begin{theorem}[表示关系的秩不等式]
+若向量组$B$能由向量组$A$线性表示，则
+\[
+R(B)\le R(A).
+\]
+\end{theorem}
+
+由$B=AK$及矩阵秩的性质$R(AK)\le R(A)$即得。此定理说明：向量组经线性表示后秩不会增大；等价的向量组必有相同的秩（但秩相同未必等价）。
+
+\keyformula{\boldsymbol{b}\ \text{可由}\ A\ \text{表示}\iff R(A)=R(A,\boldsymbol{b}),\qquad B\ \text{可由}\ A\ \text{表示}\iff R(A)=R(A,B)}
+
+\keyformula{A\ \text{与}\ B\ \text{等价}\iff R(A)=R(B)=R(A,B),\qquad B\ \text{可由}\ A\ \text{表示}\ \Rightarrow\ R(B)\le R(A)}
+
+\subsection{判定与计算步骤}
+\begin{enumerate}
+    \item 写增广矩阵：把$\boldsymbol{b}$（或向量组$B$的每个向量）排在$A$的右边，得$(A,\boldsymbol{b})$或$(A,B)$。
+    \item 用初等行变换把$(A,\boldsymbol{b})$化为行阶梯形，比较$R(A)$与$R(A,\boldsymbol{b})$：相等则能表示，否则不能。
+    \item 若需要求出表示式，继续把$(A,\boldsymbol{b})$化为\textbf{行最简形}，写出$A\boldsymbol{x}=\boldsymbol{b}$的通解；通解中的自由未知数任意取值，就给出了表示式（表示式一般不唯一，除非$R(A)=m$，此时唯一）。
+\end{enumerate}
+
+\corepoint{
+三个易错点：\\
+（1）比较秩时一定比较$R(A)$与$R(A,\boldsymbol{b})$，不能只算$R(\boldsymbol{b})$；\\
+（2）"不能表示"的判据是$R(A)\ne R(A,\boldsymbol{b})$（此时必是$R(A,\boldsymbol{b})=R(A)+1$）；\\
+（3）表示系数不唯一时，不同自由未知数取值对应不同的表示式，但都有效；若题目要求"写出表示式"，须写出带任意常数的通式。
+}
+
+\section{向量组的线性相关性}
+
+\subsection{线性相关与线性无关}
+\begin{definition}[线性相关、线性无关]
+给定向量组$A:\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$，若存在\textbf{不全为零}的数$k_1,k_2,\dots,k_m$使
+\[
+k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0},
+\]
+则称向量组$A$是\textbf{线性相关}的；否则称它\textbf{线性无关}，即
+\[
+k_1\boldsymbol{\alpha}_1+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0}
+\ \Longrightarrow\ k_1=k_2=\dots=k_m=0.
+\]
+\end{definition}
+
+几点直接结论：
+\begin{enumerate}
+    \item 只含一个向量的向量组：$\boldsymbol{\alpha}=\boldsymbol{0}$时线性相关，$\boldsymbol{\alpha}\ne\boldsymbol{0}$时线性无关；
+    \item 含两个向量$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$的向量组线性相关$\iff$两向量的分量对应成比例，几何意义是两向量共线；
+    \item 三个向量线性相关的几何意义是三向量共面；
+    \item 含零向量的向量组一定线性相关。
+\end{enumerate}
+
+线性相关与线性表示的联系：向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$线性相关，等价于齐次线性方程组
+\[
+x_1\boldsymbol{\alpha}_1+x_2\boldsymbol{\alpha}_2+\dots+x_m\boldsymbol{\alpha}_m=\boldsymbol{0},
+\quad\text{即}\quad A\boldsymbol{x}=\boldsymbol{0}
+\]
+有非零解。
+
+\subsection{相关性的秩判据}
+\begin{theorem}[线性相关性的秩判据]
+向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性相关的充分必要条件是它所构成的矩阵$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)$的秩小于向量个数$m$；向量组线性无关的充分必要条件是$R(A)=m$。即
+\[
+\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\ \text{线性相关}\iff R(A)<m,
+\qquad
+\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\ \text{线性无关}\iff R(A)=m.
+\]
+\end{theorem}
+
+\textbf{证明}\quad 必要性：设向量组线性相关，则存在不全为零的$x_1,\dots,x_m$使$A\boldsymbol{x}=\boldsymbol{0}$，即齐次方程组$A\boldsymbol{x}=\boldsymbol{0}$有非零解，由第3章定理知$R(A)<m$。充分性：若$R(A)<m$，则$A\boldsymbol{x}=\boldsymbol{0}$有非零解$\boldsymbol{x}=(k_1,\dots,k_m)^{T}\ne\boldsymbol{0}$，即$k_1\boldsymbol{\alpha}_1+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0}$且系数不全为零，故向量组线性相关。\hfill$\square$
+
+这一判据把"线性相关性"完全转化为"矩阵的秩"，是本章全部计算的基础。
+
 \begin{corollary}
-设$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$是$m$个$n$维向量，如果$m>n$，那么向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$必定线性相关。
+当$A$为$n$阶方阵时，其列向量组$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$线性无关的充分必要条件是$|A|\ne 0$；线性相关的充分必要条件是$|A|=0$。
 \end{corollary}
 
-证明 %待补
+\begin{corollary}[加长向量组]
+设$\boldsymbol{\alpha}_i=(a_{1i},a_{2i},\dots,a_{ri})^{T}$，$\boldsymbol{\beta}_i=(a_{1i},\dots,a_{ri},a_{r+1,i},\dots,a_{r+s,i})^{T}$，$i=1,2,\dots,m$，即$\boldsymbol{\beta}_i$是$\boldsymbol{\alpha}_i$的"加长"。若$r$维向量组$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$线性无关，则$r+s$维向量组$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_m$也线性无关。
+\end{corollary}
 
+等价说法：\textbf{线性无关的向量组，截短（去掉分量）后未必无关；而线性相关的向量组，加长后仍相关。}（"短无关$\Rightarrow$长无关"，"长相关$\Rightarrow$短相关"。）
+
+\begin{theorem}[向量个数多于维数必相关]
+设$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$是$m$个$n$维向量，若$m>n$，则向量组必定线性相关。
+\end{theorem}
+
+\textbf{证明}\quad $A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)$是$n\times m$矩阵，$R(A)\le\min\{n,m\}=n<m$，由秩判据知线性相关。\hfill$\square$
+
+\subsection{相关性的基本结论}
+\begin{theorem}[相关性的三条基本结论]
+\begin{enumerate}
+    \item 若向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$线性相关，则加上若干向量所得的向量组$B$也线性相关；反之，若$B$线性无关，则其任何部分组（特别地$A$）都线性无关。
+    \item $m$个$n$维向量组成的向量组，当$n<m$时一定线性相关；特别地，$n+1$个$n$维向量一定线性相关。
+    \item 设向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$线性无关，而向量组$B:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m,\boldsymbol{b}$线性相关，则$\boldsymbol{b}$必能由$A$线性表示，且表示式唯一。
+\end{enumerate}
+\end{theorem}
+
+\textbf{证明}\quad (1) 若有不全为零的$k_1,\dots,k_r$使$\sum k_i\boldsymbol{\alpha}_i=\boldsymbol{0}$，则把它们与$B$中新增向量的系数取$0$，便得$B$的非平凡零组合，故$B$相关。\\
+(3) 由$B$相关，存在不全为零的$\lambda_1,\dots,\lambda_m,\lambda$使$\lambda_1\boldsymbol{\alpha}_1+\dots+\lambda_m\boldsymbol{\alpha}_m+\lambda\boldsymbol{b}=\boldsymbol{0}$。若$\lambda=0$，则$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$线性相关，矛盾，故$\lambda\ne0$，于是
+\[
+\boldsymbol{b}=-\frac{\lambda_1}{\lambda}\boldsymbol{\alpha}_1-\dots-\frac{\lambda_m}{\lambda}\boldsymbol{\alpha}_m .
+\]
+唯一性：若有两种表示，相减得$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$的一个零组合，由无关性知系数全为零，两种表示相同。\hfill$\square$
+
+\begin{theorem}["至少一个可由其余表示"]
+向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$（$m\ge2$）线性相关的充分必要条件是其中至少有一个向量能由其余$m-1$个向量线性表示。
+\end{theorem}
+
+注意：线性相关时\textbf{并非每个}向量都能由其余向量表示。例如$\boldsymbol{\alpha}_1=(1,0),\boldsymbol{\alpha}_2=(2,0),\boldsymbol{\alpha}_3=(0,1)$线性相关，但$\boldsymbol{\alpha}_3$不能由$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$表示。这是最容易出错的一处。
+
+\subsection{判定步骤与常用手法}
+\begin{enumerate}
+    \item \textbf{定义法}：设$k_1\boldsymbol{\alpha}_1+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0}$，解出$k_i$是否必须全为零。
+    \item \textbf{秩法（首选）}：写出矩阵$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)$，用初等行变换求$R(A)$，与$m$比较。$R(A)<m$相关，$R(A)=m$无关。
+    \item \textbf{行列式法}：当向量个数等于维数（方阵）时，算$|A|$，$|A|=0$相关，$|A|\ne0$无关。
+    \item \textbf{矩阵等式法}：若$(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r)K$且$\boldsymbol{\alpha}$组无关，则$\boldsymbol{\beta}$组无关$\iff R(K)=s$。
+\end{enumerate}
+
+\keyformula{k_1\boldsymbol{\alpha}_1+\dots+k_m\boldsymbol{\alpha}_m=\boldsymbol{0}\ \text{有非零解}\iff A\boldsymbol{x}=\boldsymbol{0}\ \text{有非零解}\iff R(A)<m}
+
+\keyformula{A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)\ \text{为方阵时：}\ \text{无关}\iff |A|\ne0,\qquad m>n\ \Rightarrow\ \text{必相关}}
+
+\corepoint{
+判断相关性的三条"铁律"与三个陷阱：\\
+（1）秩与"向量个数"比，不是与"维数"比：$R(A)=m$才无关；\\
+（2）"$m>n$必相关"只说个数超过维数，反过来不成立——$m\le n$也可能相关；\\
+（3）相关$\Rightarrow$存在某个向量可由其余表示，但\textbf{不能指定是哪一个}；判断"$\boldsymbol{\beta}$能否由$\boldsymbol{\alpha}$组表示"仍要用"线性表示的秩判据"。
+}
 
 \section{向量组的秩}
 
-\subsection{极大无关组}
-设有两个向量组：(1)$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$；(2)$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_s$。
-
-\begin{definition}
-如果向量组(1)中的每个向量都可由向量组(2)线性表示，则称向量组(1)**可由向量组(2)线性表示**。如果向量组(1)和(2)可以互相线性表示，则称向量组(1)与向量组(2)**等价**。
-\end{definition}
-
-\begin{definition}
-设$S$是$n$维向量构成的向量组，在$S$中选取$r$个向量$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$，如果满足
+\subsection{最大无关组与秩}
+\begin{definition}[最大线性无关向量组]
+设有向量组$A$，如果在$A$中能选出$r$个向量$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$，满足
 \begin{enumerate}
-    \item $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$线性无关；
-    \item 任取$\boldsymbol{\alpha}\in S$，总有$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r,\boldsymbol{\alpha}$线性相关，
+    \item[(i)] 向量组$A_0:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$线性无关；
+    \item[(ii)] 向量组$A$中任意$r+1$个向量（如果$A$中有$r+1$个向量的话）都线性相关，
 \end{enumerate}
-则称向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$为向量组$S$的一个**极大线性无关向量组**（简称极大无关组）。
+那么称$A_0$是向量组$A$的一个\textbf{最大线性无关向量组}（简称\textbf{最大无关组}）。
 \end{definition}
 
-向量组的极大无关组一般不是唯一的。
+\begin{definition}[向量组的秩]
+最大无关组所含向量的个数$r$称为\textbf{向量组$A$的秩}，记作$R(A)$或$R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)$。只含零向量的向量组没有最大无关组，规定它的秩为$0$。
+\end{definition}
 
+由定义直接得到：
+\begin{enumerate}
+    \item 若向量组$A$线性无关，则$A$本身就是它的最大无关组，且$R(A)=m$；反之$R(A)=m$时$A$线性无关。
+    \item 向量组$A$与它的任一最大无关组等价（最大无关组是$A$的部分组，故能被$A$表示；而$A$中任一向量与$A_0$组成的$r+1$个向量相关，由"无关组添加向量后相关，则新向量可由原组唯一表示"知它可由$A_0$表示）。
+    \item 一个向量组的最大无关组一般不唯一，但所含向量个数相同（见下节定理）。
+    \item $n$维向量组至多含$n$个向量的最大无关组，故$R(A)\le n$。
+\end{enumerate}
+
+\begin{corollary}[最大无关组的等价定义]
+设向量组$A_0:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$是向量组$A$的一个部分组，且满足
+\begin{enumerate}
+    \item[(i)] $A_0$线性无关；
+    \item[(ii)] $A$中任一向量都能由$A_0$线性表示，
+\end{enumerate}
+则$A_0$便是$A$的最大无关组。
+\end{corollary}
+
+\textbf{证明}\quad 只需证$A$中任意$r+1$个向量线性相关。设$\boldsymbol{b}_1,\dots,\boldsymbol{b}_{r+1}$是$A$中任取的$r+1$个向量，由条件(ii)它们都能由$A_0$线性表示，故其构成的矩阵的秩$R\le R(A_0)=r<r+1$，由秩判据知它们线性相关。\hfill$\square$
+
+用这个等价定义求秩最方便：只需找一组"既无关、又能表示全体"的向量。
+
+\subsection{秩与矩阵的秩}
 \begin{theorem}
-设$n$维向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性无关，而向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m,\boldsymbol{\alpha}$线性相关，则$\boldsymbol{\alpha}$可由$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性表示，且表示法唯一。
-\end{theorem}
-
-定理表明，一个向量组与它的任一极大无关组总是等价的。
-
-\subsection{向量组的秩}
-\begin{theorem}
-设有两个$n$维向量组：(1)$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$；(2)$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_s$。如果向量组(1)线性无关，且向量组(1)可由向量组(2)线性表示，则$r\le s$。
+设有两个$n$维向量组$A:\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$，$B:\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s$。若$A$线性无关，且$A$能由$B$线性表示，则$r\le s$。
 \end{theorem}
 
 \begin{corollary}
-若向量组(1)和向量组(2)都线性无关，且向量组(1)与向量组(2)等价，则$r=s$。进而，同一个向量组的任意两个极大无关组等价，且含有的向量个数相同。
+若向量组$A,B$都线性无关且等价，则$r=s$；进而，同一向量组的任意两个最大无关组等价，且所含向量个数相同。
 \end{corollary}
 
-推论指出，同一个向量组的任意两个极大无关组都是等价的，并且一个向量组的极大无关组所含向量个数由这个向量组唯一确定。
-
-\begin{definition}
-向量组的极大无关组所含向量的个数称为这个**向量组的秩**。
-\end{definition}
-
-由向量组的秩的定义可知，向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$线性无关的充要条件是这个向量组的秩等于它所含向量的个数$m$。
-
-\begin{corollary}
-设向量组(1)的秩为$r_1$，向量组(2)的秩为$r_2$，若向量组(1)能由向量组(2)线性表示，则$r_1\le r_2$。进而，等价的向量组有相同的秩。
-\end{corollary}
-
-\subsection{向量组的秩与矩阵的秩的关系}
-\begin{theorem}
-设$A$是$n\times m$矩阵，则$A$的列向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$的秩等于矩阵$A$的秩。
+\begin{theorem}[矩阵的秩等于行秩、列秩]
+设$A$是$n\times m$矩阵，则$A$的列向量组的秩等于$A$的秩，也等于$A$的行向量组的秩，即
+\[
+R(A)=A\ \text{的列向量组的秩}=A\ \text{的行向量组的秩}.
+\]
 \end{theorem}
 
-证明 \quad $R(A)=r$，则$A$至少含一个$r$阶子式$D_r\neq 0$。若$D_r$位于$A$中的第$k_1,k_2,\dots,k_r$列上，$k_1<k_2<\dots<k_r$，则由$A$的这$r$个列向量$\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_r}$构成的矩阵$A_1=(\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_r})$是列满矩阵，根据矩阵判别法，$\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_r}$线性无关。设$\boldsymbol{\alpha}_j$是$A$的任意一个列向量，若$k_1,k_2,\dots,k_r$中某$k_i=j$，则显然$\boldsymbol{\alpha}_j$可由$\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_r}$线性表示，从而$\boldsymbol{\alpha}_j,\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_r}$线性相关。否则，不妨设$k_1<k_2<\dots<k_i<j<k_{i+1}<\dots<k_r$，于是矩阵
-\[
-A_2=(\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_i},\boldsymbol{\alpha}_j,\boldsymbol{\alpha}_{k_{i+1}},\dots,\boldsymbol{\alpha}_{k_r})
-\]
-是$A$的子矩阵，故$R(A_2)\le R(A)=r<r+1$，由矩阵判别法，向量组$\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_i},\boldsymbol{\alpha}_j,\boldsymbol{\alpha}_{k_{i+1}},\dots,\boldsymbol{\alpha}_{k_r}$线性相关。于是$\boldsymbol{\alpha}_{k_1},\boldsymbol{\alpha}_{k_2},\dots,\boldsymbol{\alpha}_{k_r}$是$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$的一个极大无关组，故其秩也为$r$。
+\textbf{证明}\quad 设$R(A)=r$，则$A$至少含一个$r$阶子式$D_r\ne0$。若$D_r$位于$A$的第$k_1<k_2<\dots<k_r$列上，则由这$r$个列向量构成的矩阵$A_1=(\boldsymbol{\alpha}_{k_1},\dots,\boldsymbol{\alpha}_{k_r})$含非零$r$阶子式，故$R(A_1)=r$，即这$r$列线性无关。又任取$A$的$r+1$个列向量，它们构成的矩阵是$A$的子矩阵，其秩$\le R(A)=r<r+1$，故这$r+1$列线性相关。因此$\boldsymbol{\alpha}_{k_1},\dots,\boldsymbol{\alpha}_{k_r}$是列向量组的一个最大无关组，列向量组的秩为$r$。行向量组同理（因$R(A)=R(A^{T})$）。\hfill$\square$
 
-注意：由于$R(A)=R(A')$，而$A$的行向量组的秩就是$A'$的列向量组的秩，故也等于$A$的秩。所以
-\[
-R(A)=A\text{的行向量组的秩}=A\text{的列向量组的秩}.
-\]
+由证明可见：\textbf{$D_r$所在的$r$个列（行）向量就是列（行）向量组的一个最大无关组。}
 
-由定理的证明可知，若$R(A)=r$，$D_r$是$A$的一个$r$阶非零子式，则$D_r$所在的$r$个列（行）向量就是$A$的列（行）向量组的一个极大无关组。
+\begin{theorem}
+若向量组$B$能由向量组$A$线性表示，则$R(B)\le R(A)$；若$A,B$等价，则$R(A)=R(B)$。
+\end{theorem}
 
+增加了$r$个向量，秩最多增加$r$：$R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m,\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s)\le R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)+R(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_s)$。
+
+\subsection{求秩与最大无关组的步骤}
+\begin{enumerate}
+    \item 以$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$为列构成矩阵$A$。
+    \item 只用\textbf{初等行变换}把$A$化为行阶梯形（行变换不改变列向量组的线性关系，这是关键）。
+    \item 行阶梯形中\textbf{非零行的行数}$=R(A)=$向量组的秩。
+    \item 行阶梯形中\textbf{每个非零行首元所在的列号}$k_1,\dots,k_r$，对应的原向量$\boldsymbol{\alpha}_{k_1},\dots,\boldsymbol{\alpha}_{k_r}$就是一个最大无关组。
+    \item 若要把其余向量用最大无关组表示，把$A$继续化为\textbf{行最简形}$B=(\boldsymbol{b}_1,\dots,\boldsymbol{b}_m)$，则$A\boldsymbol{x}=\boldsymbol{0}$与$B\boldsymbol{x}=\boldsymbol{0}$同解，读出$B$中非首元列的关系式，即得原向量间的同一关系式。
+\end{enumerate}
+
+\corepoint{
+（1）求最大无关组\textbf{只能用行变换}。若用了列变换，列向量组的对应关系被破坏，"首元所在列"不再是原向量的编号。\\
+（2）秩相同不等于等价：$(\boldsymbol{\alpha}_1)=(1,0)^{T}$与$(\boldsymbol{\alpha}_2)=(2,0)^{T}$秩都是1、互相等价；但$(1,0)^{T}$与$(0,1)^{T}$秩都为1却互不能表示。判等价必须验$R(A)=R(B)=R(A,B)$。\\
+（3）零向量组（只含零向量）的秩规定为$0$，没有最大无关组。
+}
+
+\keyformula{R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)=R\bigl((\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)\bigr)=\text{行阶梯形非零行数}}
+
+\keyformula{\boldsymbol{\alpha}\ \text{组无关}\iff R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)=m,\qquad B\ \text{可由}\ A\ \text{表示}\Rightarrow R(B)\le R(A)}
 
 \section{向量空间}
 
-\subsection{向量空间的概念}
-\begin{definition}
-设$V$是数域$F$上的$n$维向量构成的非空集合，如果满足
+\subsection{向量空间与子空间}
+\begin{definition}[向量空间]
+设$V$为$n$维向量的集合，如果集合$V$非空，且集合$V$对于向量的加法及数乘两种运算封闭，那么就称集合$V$为\textbf{向量空间}。所谓封闭，是指
+\[
+\boldsymbol{a}\in V,\ \boldsymbol{b}\in V\ \Rightarrow\ \boldsymbol{a}+\boldsymbol{b}\in V;
+\qquad
+\boldsymbol{a}\in V,\ \lambda\in\mathbb{R}\ \Rightarrow\ \lambda\boldsymbol{a}\in V.
+\]
+\end{definition}
+
+$n$维向量的全体$\mathbb{R}^{n}$是向量空间。当$n>3$时它没有直观几何意义，但$n=3$时它就是取定坐标原点后的点空间。
+
+判断一个集合是否为向量空间，实质是检验两条封闭性（八条运算律在$\mathbb{R}^{n}$中自动成立）。典型结论：
 \begin{enumerate}
-    \item 若$\boldsymbol{\alpha}\in V,\boldsymbol{\beta}\in V$，则$\boldsymbol{\alpha}+\boldsymbol{\beta}\in V$；
-    \item 若$\boldsymbol{\alpha}\in V,k\in F$，则$k\boldsymbol{\alpha}\in V$，
+    \item 齐次线性方程组$A\boldsymbol{x}=\boldsymbol{0}$的解集$S=\{\boldsymbol{x}\mid A\boldsymbol{x}=\boldsymbol{0}\}$是向量空间，称为\textbf{解空间}；
+    \item 非齐次线性方程组$A\boldsymbol{x}=\boldsymbol{b}$（$\boldsymbol{b}\ne\boldsymbol{0}$）的解集\textbf{不是}向量空间（对加法、数乘都不封闭）；
+    \item 形如$(0,a_2,\dots,a_n)^{T}$的向量全体是向量空间（第一个分量恒为0，对运算封闭）；
+    \item 由$\boldsymbol{\alpha},\boldsymbol{b}$生成的集合$V=\{\boldsymbol{x}\mid \boldsymbol{x}=\lambda\boldsymbol{\alpha}+\mu\boldsymbol{b},\ \lambda,\mu\in\mathbb{R}\}$是向量空间；一般地，由向量组$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$生成的
+    \[
+    L=\{\boldsymbol{x}\mid \boldsymbol{x}=\lambda_1\boldsymbol{\alpha}_1+\dots+\lambda_m\boldsymbol{\alpha}_m,\ \lambda_i\in\mathbb{R}\}
+    \]
+    是向量空间，记作$L=\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\}$，它与向量组$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$等价。若两向量组等价，则它们生成的向量空间相等。
 \end{enumerate}
-则称集合$V$为数域$F$上**向量空间**。
+
+\begin{definition}[子空间]
+设有向量空间$V$及$V_0$，若$V_0\subseteq V$，就称$V_0$是$V$的\textbf{子空间}。任何由$n$维向量组成的向量空间都是$\mathbb{R}^{n}$的子空间。
 \end{definition}
 
-\textbf{例8} \quad 设$\boldsymbol{\alpha},\boldsymbol{\beta}$为数域$F$上两个已知的$n$维向量，集合
-\[
-V=\{\,\boldsymbol{\gamma}\mid \boldsymbol{\gamma}=k\boldsymbol{\alpha}+l\boldsymbol{\beta},\;k,l \in F\,\}
-\]
-是一个向量空间，因为若$\boldsymbol{\gamma}_1=k_1\boldsymbol{\alpha}+l_1\boldsymbol{\beta},\boldsymbol{\gamma}_2=k_2\boldsymbol{\alpha}+l_2\boldsymbol{\beta}$，则有
-\[
-\boldsymbol{\gamma}_1+\boldsymbol{\gamma}_2=(k_1+k_2)\boldsymbol{\alpha}+(l_1+l_2)\boldsymbol{\beta}.
-\]
-
-\begin{definition}
-设$V_1$及$V_2$都是同一数域$F$上的向量空间，若$V_1\subseteq V_2$，则称$V_1$是$V_2$的**子空间**。
-\end{definition}
-
-\subsection{向量空间的基、维数与坐标}
-\begin{definition}
-设$V$是数域$F$上的向量空间，如果$V$中的有序向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$线性无关，且$V$中任一向量均可由$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$线性表示，则称$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$是向量空间$V$的**基**（或基底）。称$V$的基所含向量的个数为$V$的**维数**。若$V$的维数是$r$，则称$V$为$r$维向量空间。
-\end{definition}
-
-注意：
+\subsection{维数与坐标}
+\begin{definition}[基与维数]
+设$V$为向量空间，如果$r$个向量$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r\in V$，且满足
 \begin{enumerate}
-    \item 同一个向量空间的任两组基含有向量的个数相同。
-    \item $r$维向量空间$V$中任一含有$r$个向量的线性无关的向量组都是$V$的基。
-    \item 若$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$可线性表示$r$维向量空间$V$中任一向量，则$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$是$V$的一个基。
+    \item[(i)] $\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$线性无关；
+    \item[(ii)] $V$中任一向量都可由$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$线性表示，
+\end{enumerate}
+那么称$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$为向量空间$V$的一个\textbf{基}，$r$称为向量空间$V$的\textbf{维数}，记作$\dim V=r$，并称$V$为$r$维向量空间。只含零向量的向量空间没有基，规定其维数为$0$。
+\end{definition}
+
+把向量空间看作向量组，则$V$的基就是向量组的最大无关组，$V$的维数就是向量组的秩；$V$可表示为$V=\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r\}$。
+
+关于基的三点注意：
+\begin{enumerate}
+    \item 同一向量空间的任意两组基所含向量个数相同（都等于$\dim V$）；
+    \item $r$维向量空间$V$中任意$r$个线性无关的向量都是$V$的基；
+    \item 若$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$能线性表示$V$中任一向量，且$r=\dim V$，则它们是$V$的一个基。
 \end{enumerate}
 
 \begin{theorem}[基扩充定理]
 有限维向量空间$V$中任意一组线性无关的向量都可以扩充成$V$的一个基。
 \end{theorem}
 
-证 \quad %待补
+\textbf{证明}\quad 设$V$是有限维的，存在有限向量组$S$使$V=\operatorname{Span}S$。设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_s$线性无关。从$S$中依次取向量，凡能保持线性无关的就添入，得到含$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_s$的向量组$A_0$，它线性无关且在$S$中极大。于是$S$中每个向量都可由$A_0$表示，从而$V=\operatorname{Span}S\subseteq\operatorname{Span}A_0$，故$A_0$是$V$的基，且包含原来的$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_s$。\hfill$\square$
 
-\begin{definition}
-设$V$是$r$维向量空间，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$是$V$的一个基，对任意$\boldsymbol{\alpha} \in V$，若有$x_i\in F,\;i=1,2,\dots,r$，使
+\begin{definition}[坐标]
+设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$是$r$维向量空间$V$的一个基，对任意$\boldsymbol{\alpha}\in V$，若有$x_1,\dots,x_r\in\mathbb{R}$使
 \[
 \boldsymbol{\alpha}=x_1\boldsymbol{\alpha}_1+x_2\boldsymbol{\alpha}_2+\dots+x_r\boldsymbol{\alpha}_r,
 \]
-则称向量$(x_1,x_2,\dots,x_r)$或$(x_1,x_2,\dots,x_r)'$是向量$\boldsymbol{\alpha}$关于基$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$（或者说在基$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_r$下）的**坐标向量**，简称**坐标**。
+则有序数组$(x_1,x_2,\dots,x_r)$称为向量$\boldsymbol{\alpha}$在基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_r$下的\textbf{坐标}。基给定后，坐标是唯一的。
 \end{definition}
 
-\subsection{坐标变换}
-设$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$及$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n$是向量空间$V$的两个基，且
+在$\mathbb{R}^{n}$中取单位坐标向量组$\boldsymbol{e}_1,\dots,\boldsymbol{e}_n$为基，则以$(x_1,\dots,x_n)^{T}$为分量的向量$\boldsymbol{x}$在该基下的坐标就是$(x_1,\dots,x_n)^{T}$本身，故$\boldsymbol{e}_1,\dots,\boldsymbol{e}_n$称为$\mathbb{R}^{n}$的\textbf{自然基}。
+
+\subsection{基变换与坐标变换}
+\begin{definition}[基变换公式与过渡矩阵]
+设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$及$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$是向量空间$V$的两个基，且
 \[
 \begin{cases}
-\boldsymbol{\beta}_1= p_{11}\boldsymbol{\alpha}_1+p_{21}\boldsymbol{\alpha}_2+\dots+p_{n1}\boldsymbol{\alpha}_n, \\
-\boldsymbol{\beta}_2= p_{12}\boldsymbol{\alpha}_1+p_{22}\boldsymbol{\alpha}_2+\dots+p_{n2}\boldsymbol{\alpha}_n, \\
-\qquad\qquad\qquad\cdots\cdots\cdots\cdots\\
-\boldsymbol{\beta}_n= p_{1n}\boldsymbol{\alpha}_1+p_{2n}\boldsymbol{\alpha}_2+\dots+p_{nn}\boldsymbol{\alpha}_n.
+\boldsymbol{\beta}_1=p_{11}\boldsymbol{\alpha}_1+p_{21}\boldsymbol{\alpha}_2+\dots+p_{n1}\boldsymbol{\alpha}_n,\\
+\boldsymbol{\beta}_2=p_{12}\boldsymbol{\alpha}_1+p_{22}\boldsymbol{\alpha}_2+\dots+p_{n2}\boldsymbol{\alpha}_n,\\
+\qquad\qquad\cdots\cdots\cdots\cdots\\
+\boldsymbol{\beta}_n=p_{1n}\boldsymbol{\alpha}_1+p_{2n}\boldsymbol{\alpha}_2+\dots+p_{nn}\boldsymbol{\alpha}_n,
 \end{cases}
 \]
 即
@@ -307,182 +404,125 @@ V=\{\,\boldsymbol{\gamma}\mid \boldsymbol{\gamma}=k\boldsymbol{\alpha}+l\boldsym
 (\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n)
 =(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n)
 \begin{pmatrix}
-p_{11} &p_{12}&\dots&p_{1n}\\
-p_{21}&p_{22}&\dots &p_{2n}\\
-\vdots&\vdots&\ddots&\vdots \\
-p_{n1}&p_{n2}&\dots&p_{nn}
-\end{pmatrix}.
-\]
-则称这个式子为**基变换公式**。称矩阵
-\[
-P=
-\begin{pmatrix}
-p_{11} &p_{12}&\dots&p_{1n}\\
-p_{21}&p_{22}&\dots &p_{2n}\\
-\vdots&\vdots&\ddots&\vdots \\
+p_{11}&p_{12}&\dots&p_{1n}\\
+p_{21}&p_{22}&\dots&p_{2n}\\
+\vdots&\vdots&\ddots&\vdots\\
 p_{n1}&p_{n2}&\dots&p_{nn}
 \end{pmatrix}
+=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P .
 \]
-为由基$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$到$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n$的**过渡矩阵**。由$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n$线性无关可知，过渡矩阵$P$可逆。
+该式称为\textbf{基变换公式}，矩阵$P$称为由基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$到基$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$的\textbf{过渡矩阵}。由$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$线性无关知$P$可逆。
+\end{definition}
 
-\begin{theorem}
-设向量空间$V$的基$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$到$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n$的过渡矩阵是$P=(p_{ij})$，$V$中向量$\boldsymbol{\alpha}$在基$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$下的坐标是$(x_1,x_2,\dots,x_n)$，在基$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n$下的坐标是$(x_1',x_2',\dots,x_n')$，则坐标变换公式
+注意$P$的各列恰是新基向量在旧基下的坐标——即"新基$=$旧基$\times P$"，$P$的列是$\boldsymbol{\beta}_j$的坐标，方向不能反。
+
+\begin{theorem}[坐标变换公式]
+设向量空间$V$的基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$到基$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$的过渡矩阵是$P$，$V$中向量$\boldsymbol{\alpha}$在基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$下的坐标是$(x_1,\dots,x_n)^{T}$，在基$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$下的坐标是$(x_1',\dots,x_n')^{T}$，则
 \[
-\begin{pmatrix} x_1\\ x_2\\ \vdots\\ x_n \end{pmatrix}
+\begin{pmatrix}x_1\\x_2\\\vdots\\x_n\end{pmatrix}
 =P
-\begin{pmatrix} x_1'\\ x_2'\\ \vdots\\ x_n' \end{pmatrix}
-\quad\text{或}\quad
-\begin{pmatrix} x_1'\\ x_2'\\ \vdots\\ x_n' \end{pmatrix}
+\begin{pmatrix}x_1'\\x_2'\\\vdots\\x_n'\end{pmatrix},
+\qquad\text{即}\quad
+\begin{pmatrix}x_1'\\x_2'\\\vdots\\x_n'\end{pmatrix}
 =P^{-1}
-\begin{pmatrix} x_1\\ x_2\\ \vdots\\ x_n \end{pmatrix}.
+\begin{pmatrix}x_1\\x_2\\\vdots\\x_n\end{pmatrix}.
 \]
 \end{theorem}
 
+\textbf{证明}\quad 由$\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)\boldsymbol{x}=(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)\boldsymbol{x}'$及$(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P$，得$(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)\boldsymbol{x}=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P\boldsymbol{x}'$，由$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$线性无关得$\boldsymbol{x}=P\boldsymbol{x}'$。\hfill$\square$
 
-\section{欧氏空间}
+\keyformula{(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P\quad(\text{基变换}),\qquad \boldsymbol{x}=P\boldsymbol{x}',\quad \boldsymbol{x}'=P^{-1}\boldsymbol{x}\quad(\text{坐标变换})}
 
-\subsection{内积的概念}
-\begin{definition}
-设$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n),\ \boldsymbol{\beta}=(b_1,b_2,\dots,b_n)\in \mathbb{R}^n$，记
+\keyformula{\dim\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\}=R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)}
+
+\corepoint{
+（1）方向："由旧基到新基"的过渡矩阵$P$满足$(\text{新基})=(\text{旧基})P$，$P$的\textbf{第$j$列}是新基第$j$个向量在旧基下的坐标。\\
+（2）坐标变换是"反着走"的：$\boldsymbol{x}=P\boldsymbol{x}'$（旧坐标$=$过渡矩阵$\times$新坐标）。记混方向是本节最常见的错误。\\
+（3）求$P$的标准做法：把$(\text{旧基}\mid\text{新基})$用初等行变换化为$(E\mid P)$，即$P=A^{-1}B$，其中$A,B$分别以旧、新基向量为列。
+}
+
+\section{线性方程组的解的结构}
+
+本节从"解空间"的角度重述第3章用初等变换得到的结论，是第4章向量理论的应用。
+
+\subsection{齐次线性方程组的解集}
+设齐次线性方程组
 \[
-(\boldsymbol{\alpha},\boldsymbol{\beta})
-=a_1b_1+a_2b_2+\dots+a_nb_n
-=\sum_{k=1}^{n} a_kb_k,
-\]
-称$(\boldsymbol{\alpha},\boldsymbol{\beta})$为向量的**内积**。
-\end{definition}
-
-显然，$n$维向量的内积是几何向量数量积的推广。
-
-称定义了线性运算和内积的$\mathbb{R}^n$为**欧氏空间**，以后仍用$\mathbb{R}^n$表示这个欧氏空间。
-
-容易验证，这里定义的内积满足下列运算规律：
-\begin{enumerate}
-    \item $(\boldsymbol{\alpha},\boldsymbol{\beta})=(\boldsymbol{\beta},\boldsymbol{\alpha})$；
-    \item $(k\boldsymbol{\alpha},\boldsymbol{\beta})=k(\boldsymbol{\alpha},\boldsymbol{\beta})$；
-    \item $(\boldsymbol{\alpha}+\boldsymbol{\beta},\boldsymbol{\gamma})=(\boldsymbol{\alpha},\boldsymbol{\gamma})+(\boldsymbol{\beta},\boldsymbol{\gamma})$；
-    \item $(\boldsymbol{\alpha},\boldsymbol{\alpha})\ge 0$，且$(\boldsymbol{\alpha},\boldsymbol{\alpha})=0\Leftrightarrow \boldsymbol{\alpha}=\boldsymbol{0}$；
-    \item $(\boldsymbol{\alpha},k\boldsymbol{\beta}+l\boldsymbol{\gamma})=k(\boldsymbol{\alpha},\boldsymbol{\beta})+l(\boldsymbol{\alpha},\boldsymbol{\gamma})$。
-\end{enumerate}
-
-\begin{definition}
-设$\boldsymbol{\alpha}=(a_1,a_2,\dots,a_n)\in \mathbb{R}^n$，令
-\[
-|\boldsymbol{\alpha}|=\sqrt{(\boldsymbol{\alpha},\boldsymbol{\alpha})}=\sqrt{a_1^2+a_2^2+\dots+a_n^2},
-\]
-称$|\boldsymbol{\alpha}|$为向量$\boldsymbol{\alpha}$的**长度**，称长度为$1$的向量为**单位向量**。
-\end{definition}
-
-\begin{lemma}
-向量的内积满足
-\[
-(\boldsymbol{\alpha},\boldsymbol{\beta})^2\le(\boldsymbol{\alpha},\boldsymbol{\alpha})(\boldsymbol{\beta},\boldsymbol{\beta}) \tag{1}
-\]
-即
-\[
-|(\boldsymbol{\alpha},\boldsymbol{\beta})|\le|\boldsymbol{\alpha}||\boldsymbol{\beta}|,
-\]
-称式(1)为**施瓦茨(Schwarz)不等式**。
-\end{lemma}
-
-\begin{theorem}
-设$\boldsymbol{\alpha},\boldsymbol{\beta}\in \mathbb{R}^n$，则
-\begin{enumerate}
-    \item $|\boldsymbol{\alpha}|\ge0$，且$|\boldsymbol{\alpha}|=0\Longleftrightarrow\boldsymbol{\alpha}=\boldsymbol{0}$（非负性）；
-    \item $|k\boldsymbol{\alpha}|=|k||\boldsymbol{\alpha}|$（正齐次性）；
-    \item $|\boldsymbol{\alpha}+\boldsymbol{\beta}|\le|\boldsymbol{\alpha}|+|\boldsymbol{\beta}|$（三角不等式）。
-\end{enumerate}
-\end{theorem}
-
-\begin{definition}
-设$\boldsymbol{\alpha},\boldsymbol{\beta}\in \mathbb{R}^n,\boldsymbol{\alpha}\ne\boldsymbol{0},\boldsymbol{\beta}\ne\boldsymbol{0}$，称
-\[
-\psi=\arccos\frac{(\boldsymbol{\alpha},\boldsymbol{\beta})}{|\boldsymbol{\alpha}||\boldsymbol{\beta}|}\quad(0\le\psi\le\pi)
-\]
-为$\boldsymbol{\alpha}$与$\boldsymbol{\beta}$的**夹角**。
-\end{definition}
-
-当$(\boldsymbol{\alpha},\boldsymbol{\beta})=0$时，称向量$\boldsymbol{\alpha}$与$\boldsymbol{\beta}$**正交**，记为$\boldsymbol{\alpha}\perp\boldsymbol{\beta}$。显然，若$\boldsymbol{\alpha}=\boldsymbol{0}$，则$\boldsymbol{\alpha}$与$\mathbb{R}^n$中任何向量都正交。
-
-\subsection{规范正交基}
-称两两正交的非零向量构成的向量组为**正交向量组**。
-
-由单位向量构成的正交向量组称为**规范正交向量组**。
-
-\begin{definition}
-设$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$是向量空间$V$的一个基。如果$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$两两正交，则称$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$是$V$的一个**正交基**。如果每个向量$\boldsymbol{\alpha}_i$又都是单位向量，则称$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$是$V$的一个**规范正交基**。
-\end{definition}
-
-显然，若$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n\in \mathbb{R}^n$，则$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$是$\mathbb{R}^n$的规范正交基的充要条件是
-\[
-(\boldsymbol{\alpha}_i,\boldsymbol{\alpha}_j)=
 \begin{cases}
-1,&i=j,\\
-0,&i\ne j
+a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
+a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
+\qquad\qquad\cdots\cdots\cdots\cdots\\
+a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=0,
 \end{cases}
-\quad(i,j=1,2,\dots,n).
 \]
-
-\subsubsection{Schmidt正交化方法}
-设$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$是$n$维向量构成的线性无关向量组。
-\begin{enumerate}
-    \item 求与$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$等价的正交向量组$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_m$；
-    \item 求与$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_m$等价的规范正交向量组$\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\dots,\boldsymbol{\gamma}_m$。
-\end{enumerate}
-称(1)为**正交化过程**，称(2)为**规范化过程**（也称单位化过程）。
-
-为将向量组规范化，只需令
+记系数矩阵$A=(a_{ij})_{m\times n}$，则方程组可写作$A\boldsymbol{x}=\boldsymbol{0}$。其解集
 \[
-\boldsymbol{\gamma}_1=\frac{\boldsymbol{\beta}_1}{|\boldsymbol{\beta}_1|},\quad
-\boldsymbol{\gamma}_2=\frac{\boldsymbol{\beta}_2}{|\boldsymbol{\beta}_2|},\quad
-\dots,\quad
-\boldsymbol{\gamma}_m=\frac{\boldsymbol{\beta}_m}{|\boldsymbol{\beta}_m|}
+S=\{\boldsymbol{x}\mid A\boldsymbol{x}=\boldsymbol{0}\}\subseteq\mathbb{R}^{n}
 \]
-即可。
-
-可以按如下的Schmidt正交化方法将向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$正交化：
+对加法与数乘封闭，是一个向量空间，称为该齐次方程组的\textbf{解空间}。若$\boldsymbol{\xi}_1,\dots,\boldsymbol{\xi}_{t}$是解空间的一个基，则方程组的通解为
 \[
-\begin{aligned}
-\boldsymbol{\beta}_1&=\boldsymbol{\alpha}_1, \\
-\boldsymbol{\beta}_2&=\boldsymbol{\alpha}_2-\frac{(\boldsymbol{\alpha}_2,\boldsymbol{\beta}_1)}{(\boldsymbol{\beta}_1,\boldsymbol{\beta}_1)}\boldsymbol{\beta}_1, \\
-\boldsymbol{\beta}_3&=\boldsymbol{\alpha}_3-\frac{(\boldsymbol{\alpha}_3,\boldsymbol{\beta}_1)}{(\boldsymbol{\beta}_1,\boldsymbol{\beta}_1)}\boldsymbol{\beta}_1-\frac{(\boldsymbol{\alpha}_3,\boldsymbol{\beta}_2)}{(\boldsymbol{\beta}_2,\boldsymbol{\beta}_2)}\boldsymbol{\beta}_2,\\
-\vdots&\\
-\boldsymbol{\beta}_m&=\boldsymbol{\alpha}_m-\frac{(\boldsymbol{\alpha}_m,\boldsymbol{\beta}_1)}{(\boldsymbol{\beta}_1,\boldsymbol{\beta}_1)}\boldsymbol{\beta}_1-\frac{(\boldsymbol{\alpha}_m,\boldsymbol{\beta}_2)}{(\boldsymbol{\beta}_2,\boldsymbol{\beta}_2)}\boldsymbol{\beta}_2-\dots-\frac{(\boldsymbol{\alpha}_m,\boldsymbol{\beta}_{m-1})}{(\boldsymbol{\beta}_{m-1},\boldsymbol{\beta}_{m-1})}\boldsymbol{\beta}_{m-1}.
-\end{aligned}
-\]
-则称$\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_m$是与$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$等价的正交向量组。
-
-Schmidt正交化方法的优点是，不仅$\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\dots,\boldsymbol{\gamma}_m$与$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_m$等价，而且对任意$i,\ 1\le i\le m$，$\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\dots,\boldsymbol{\gamma}_i$与$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_i$都等价，从而
-\[
-L(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_i)=L(\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\dots,\boldsymbol{\gamma}_i),\quad i=1,2,\dots,m.
+\boldsymbol{x}=c_1\boldsymbol{\xi}_1+c_2\boldsymbol{\xi}_2+\dots+c_t\boldsymbol{\xi}_{t}\qquad(c_1,\dots,c_t\in\mathbb{R}).
 \]
 
-\subsection{正交矩阵}
-容易看出，$n\times n$实矩阵$A=(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\cdots,\boldsymbol{\alpha}_n)$的列向量组$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\cdots,\boldsymbol{\alpha}_n$是$\mathbb{R}^n$的基的充要条件是$A$可逆。
-
-\begin{definition}
-如果$n$阶实方阵$A$满足
-\[
-A'A=E,
-\]
-则称$A$为**正交矩阵**。
+\begin{definition}[基础解系]
+齐次线性方程组$A\boldsymbol{x}=\boldsymbol{0}$的解空间的一个基，称为该齐次线性方程组的\textbf{基础解系}。
 \end{definition}
 
-$n$阶正交矩阵$A$具有以下性质：
-\begin{enumerate}
-    \item $A$是可逆矩阵，且$A^{-1}=A'$；
-    \item $A'$也是可逆矩阵（从而$A^{-1}$也是正交矩阵）；
-    \item 对任意$n$维列向量$\boldsymbol{X}$和$\boldsymbol{Y}$，$A\boldsymbol{X}$保持向量$\boldsymbol{X}$的长度，即$|A\boldsymbol{X}|=|\boldsymbol{X}|$；
-    \item 对任意$n$维列向量$\boldsymbol{X}$和$\boldsymbol{Y}$，$A\boldsymbol{X}$和$A\boldsymbol{Y}$保持$\boldsymbol{X}$和$\boldsymbol{Y}$的内积，即$(A\boldsymbol{X},A\boldsymbol{Y})=(\boldsymbol{X},\boldsymbol{Y})$；
-    \item $|A|=1$或者$|A|=-1$。
-\end{enumerate}
+求通解只需求出基础解系。
 
-\begin{theorem}
-设有$n\times n$矩阵$A=(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n)$，则$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$构成$\mathbb{R}^n$一个规范正交基的充要条件是$A$是正交矩阵。
+\begin{theorem}[解空间的维数]
+设$m\times n$矩阵$A$的秩$R(A)=r$，则$n$元齐次线性方程组$A\boldsymbol{x}=\boldsymbol{0}$的解空间$S$的维数为
+\[
+\dim S=n-r,
+\]
+即基础解系恰含$n-r$个向量（$n-r$也就是自由未知数的个数）。
 \end{theorem}
 
-注意：
+当$R(A)=n$时方程组只有零解，没有基础解系（$S$只含零向量）；当$R(A)=r<n$时，基础解系含$n-r$个向量，且任意$n-r$个线性无关的解都可构成基础解系，故基础解系不唯一，通解形式也不唯一。
+
+\subsection{求基础解系的步骤}
 \begin{enumerate}
-    \item 由正交矩阵的性质(2)，正交矩阵$A$的行向量组也是$\mathbb{R}^n$的规范正交基。
-    \item 定理中的“规范”两字是不能去掉的。
+    \item 对$A$作初等行变换，化为\textbf{行最简形}，定出首元所在列（对应"主变量"）与其余列（对应"自由未知数"）。
+    \item 把$n-r$个自由未知数依次取$(1,0,\dots,0),(0,1,\dots,0),\dots,(0,\dots,0,1)$，回代求出主变量。
+    \item 这样得到的$n-r$个解向量即为基础解系$\boldsymbol{\xi}_1,\dots,\boldsymbol{\xi}_{n-r}$，它们线性无关（因为自由未知数部分的坐标向量是单位坐标向量组）。
+    \item 写出通解$\boldsymbol{x}=c_1\boldsymbol{\xi}_1+\dots+c_{n-r}\boldsymbol{\xi}_{n-r}$。
 \end{enumerate}
+
+\subsection{非齐次线性方程组解的结构}
+设非齐次线性方程组$A\boldsymbol{x}=\boldsymbol{b}$（$\boldsymbol{b}\ne\boldsymbol{0}$），其对应的齐次方程组$A\boldsymbol{x}=\boldsymbol{0}$称为它的\textbf{导出组}。解向量具有两条性质：
+
+\textbf{性质1}\quad 设$\boldsymbol{\eta}_1,\boldsymbol{\eta}_2$都是$A\boldsymbol{x}=\boldsymbol{b}$的解，则$\boldsymbol{\eta}_1-\boldsymbol{\eta}_2$是导出组$A\boldsymbol{x}=\boldsymbol{0}$的解。
+
+\textbf{性质2}\quad 设$\boldsymbol{\eta}$是$A\boldsymbol{x}=\boldsymbol{b}$的解，$\boldsymbol{\xi}$是导出组$A\boldsymbol{x}=\boldsymbol{0}$的解，则$\boldsymbol{\eta}+\boldsymbol{\xi}$仍是$A\boldsymbol{x}=\boldsymbol{b}$的解。
+
+由此得到解的\textbf{结构定理}：若$\boldsymbol{\eta}^{*}$是$A\boldsymbol{x}=\boldsymbol{b}$的一个\textbf{特解}，$\boldsymbol{\xi}_1,\dots,\boldsymbol{\xi}_{n-r}$是导出组的基础解系，则$A\boldsymbol{x}=\boldsymbol{b}$的通解为
+\[
+\boldsymbol{x}=\boldsymbol{\eta}^{*}+c_1\boldsymbol{\xi}_1+c_2\boldsymbol{\xi}_2+\dots+c_{n-r}\boldsymbol{\xi}_{n-r}
+\qquad(c_1,\dots,c_{n-r}\in\mathbb{R}).
+\]
+即：\textbf{非齐次方程组的通解$=$它的一个特解$+$导出组的通解}。反过来，它的任一解都必可写成这种形式（由性质1，$\boldsymbol{\eta}-\boldsymbol{\eta}^{*}$是导出组的解）。
+
+\keyformula{A\boldsymbol{x}=\boldsymbol{0}:\quad \dim S=n-R(A),\qquad \boldsymbol{x}=c_1\boldsymbol{\xi}_1+\dots+c_{n-r}\boldsymbol{\xi}_{n-r}}
+
+\keyformula{A\boldsymbol{x}=\boldsymbol{b}:\quad \boldsymbol{x}=\boldsymbol{\eta}^{*}+c_1\boldsymbol{\xi}_1+\dots+c_{n-r}\boldsymbol{\xi}_{n-r}\quad(\boldsymbol{\eta}^{*}\ \text{为任一特解})}
+
+\begin{table}[htbp]
+\centering
+\caption{$n$元线性方程组$A\boldsymbol{x}=\boldsymbol{b}$解的判定}
+\begin{tabular}{@{}lll@{}}
+\toprule
+条件 & 结论 & 解的结构\\
+\midrule
+$R(A)\ne R(A,\boldsymbol{b})$ & 无解 & ——\\
+$R(A)=R(A,\boldsymbol{b})=n$ & 有唯一解 & 只有特解$\boldsymbol{\eta}^{*}$\\
+$R(A)=R(A,\boldsymbol{b})=r<n$ & 有无穷多解 & $\boldsymbol{\eta}^{*}+c_1\boldsymbol{\xi}_1+\dots+c_{n-r}\boldsymbol{\xi}_{n-r}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\corepoint{
+（1）"无穷多解"时通解中\textbf{任意常数的个数}恒为$n-R(A)$，与$m$无关；写答案时漏掉常数或个数写错都是硬伤。\\
+（2）特解只需\textbf{一个}，通常取自由未知数全为$0$时得到的那个解；特解不同，通解的形式不同但解集相同。\\
+（3）验证答案：把通解代回$A\boldsymbol{x}=\boldsymbol{b}$；再检查基础解系是否满足$A\boldsymbol{\xi}_i=\boldsymbol{0}$且彼此线性无关。\\
+（4）非齐次方程组的解集\textbf{不是}向量空间，"两个解之和"一般不再是解，故不能对非齐次组套用"解空间""基"的说法。
+}

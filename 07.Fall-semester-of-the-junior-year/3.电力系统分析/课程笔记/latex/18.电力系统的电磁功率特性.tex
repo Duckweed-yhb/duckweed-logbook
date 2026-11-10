@@ -1,0 +1,255 @@
+% ============================================================
+% 第 16 章  电力系统的电磁功率特性
+% （教材：何仰赞、温增银《电力系统分析》下册 第 16 章）
+% 结构对齐 16.1—16.4；例题、习题不录
+% ============================================================
+
+\chapter{电力系统的电磁功率特性}
+
+功角稳定问题的核心是转子运动方程，而方程的右端是 $P_T-P_e$。
+机械功率 $P_T$ 由原动机决定，相对简单；\textbf{电磁功率 $P_e$ 与功角 $\delta$ 的关系}
+才是稳定分析的关键——它决定了“功率极限”和“稳定边界”。
+本章系统地给出 $P_e=f(\delta)$：隐极与凸极、有无电阻、有无并联支路、有无励磁调节、
+简单系统与复杂系统。
+
+\section{简单电力系统的功率特性}
+
+\subsection{隐极式发电机的功率特性}
+
+设发电机经变压器、线路接无限大母线（电压 $U$ 恒定）。把所有串联电抗归算到同一侧，
+记 $\boldsymbol{X_{d\Sigma}=X_d+X_{T1}+X_L/2+X_{T2}}$（含全部外接电抗），
+略去电阻，则隐极机（$X_d=X_q$）的电磁功率为
+\keyformula{P_e=\frac{E_qU}{X_{d\Sigma}}\sin\delta,\qquad P_{\max}=\frac{E_qU}{X_{d\Sigma}}}
+$\delta$ 为 $\dot E_q$ 与 $\dot U$ 之间的相位差，即功角。
+功率极限 $P_{\max}$ 与 $E_qU$ 成正比、与总电抗成反比——这给出提高输送能力的三条途径：
+提高电压、减小电抗（串补、分裂导线、双回线）、提高励磁（增大 $E_q$）。
+
+\subsection{凸极式发电机的功率特性}
+
+凸极机 $X_d\ne X_q$，$d$、$q$ 轴磁阻不同，即使不计励磁（$E_q=0$）也能传送有功，
+故功率特性多出一项\textbf{磁阻功率}（反应功率）：
+\keyformula{P_e=\frac{E_qU}{X_{d\Sigma}}\sin\delta
+  +\frac{U^{2}}{2}\left(\frac{1}{X_{q\Sigma}}-\frac{1}{X_{d\Sigma}}\right)\sin 2\delta}
+两项的物理含义：
+\begin{itemize}
+  \item 第一项（\textbf{基本分量}，$\sin\delta$）：由励磁磁通与电枢反应共同作用，
+        与 $E_q$ 成正比，是隐极机唯一的成分；
+  \item 第二项（\textbf{磁阻分量}，$\sin2\delta$）：由 $X_d\ne X_q$ 引起的磁阻变化产生，
+        与励磁无关，周期为 $\pi$（$\delta=45^\circ$ 附近最大）。
+\end{itemize}
+由于磁阻分量在 $\delta$ 较小时为正，凸极机的功率极限比同参数隐极机略大，
+且最大功率出现的角度略小于 $90^\circ$。
+
+\begin{table}[htbp]
+  \centering
+  \caption{两种机型的功率特性对比}
+  \small
+  \begin{tabular}{@{}p{0.12\linewidth}p{0.40\linewidth}p{0.38\linewidth}@{}}
+    \toprule
+    机型 & 功率特性 & 特点 \\
+    \midrule
+    隐极机 & $P_e=\dfrac{E_qU}{X_{d\Sigma}}\sin\delta$ & 单一正弦项；$X_d=X_q$ \\
+    凸极机 & $P_e=\dfrac{E_qU}{X_{d\Sigma}}\sin\delta
+      +\dfrac{U^{2}}{2}\left(\dfrac{1}{X_{q\Sigma}}-\dfrac{1}{X_{d\Sigma}}\right)\sin2\delta$
+      & 有磁阻功率；$E_q=0$ 时仍能送有功 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{凸极机多出的 $\sin2\delta$ 项常被漏写。检验方法：令 $E_q=0$（失磁），
+隐极机 $P_e=0$，而凸极机仍有 $P_e\propto\sin2\delta$——这就是“凸极机可以异步运行、
+隐极机不能”的根据，也是第 17 章“异步运行”一节的基础。}
+
+\section{网络接线及参数对功率特性的影响}
+
+\subsection{串联电阻的影响}
+
+设发电机经 $Z=R+jX$ 接无限大母线，不计凸极效应，则
+\begin{equation}
+  P_e=\frac{E_qU}{Z^{2}}\left(R\cos\delta+X\sin\delta\right)-\frac{U^{2}R}{Z^{2}} .
+\end{equation}
+由 $\mathrm{d}P_e/\mathrm{d}\delta=0$ 得最大功率对应的功角满足
+\begin{equation}
+  \tan\delta_m=\frac{X}{R},
+\end{equation}
+即 $\delta_m<90^\circ$（$R$ 越大，$\delta_m$ 越小，越偏离 $90^\circ$）。
+电阻还使功率极限降低、并在 $\delta=0$ 时产生负的功率（$R$ 上消耗有功）。
+结论：\textbf{串联电阻使功率极限下降、极限角减小，对稳定不利}。
+高压电网 $R\ll X$，故常略去电阻，但做精确稳定计算时应计入。
+
+\subsection{并联电阻的影响}
+
+并联电阻（如用恒定阻抗表示的负荷、并联电抗器的有功损耗、线路电导）从网络中分走有功，
+其影响有两个方面：
+\begin{itemize}
+  \item \textbf{直接消耗}：并联电阻上消耗的有功随其端电压平方变化，
+        使“送到受端的功率”小于“发电机发出的功率”，功率特性整体下移；
+  \item \textbf{改变网络等值参数}：并联支路使网络的等值电势与等值电抗都发生变化，
+        相当于在发电机与系统之间多了一条有功通路，从而改变了 $P_e$ 对 $\delta$ 的依赖关系。
+\end{itemize}
+定量分析时，把并联电阻与负荷一并归入节点导纳矩阵（第 4 章），
+再作网络化简，得到“等值电势 $E_{eq}$、等值电抗 $X_{eq}$”，功率特性仍写成
+$P_e=E_{eq}U\sin\delta/X_{eq}$ 的形式，只是参数变了。
+若并联电阻较大（负荷较轻），其影响可忽略；若并联电阻较小（重负荷、低电压），
+则功率极限明显下降。
+
+\subsection{并联电抗的影响}
+
+中间变电所装设并联电抗器（吸收容性无功）会降低该点电压，从而降低输电线路的功率极限；
+反之，并联电容器（或静止补偿器）提高该点电压，可提高功率极限。
+
+设发电机经 $X_1$ 送到中间节点（电压 $U_m$），再经 $X_2$ 送到无限大母线（$U$），
+中间节点接并联电抗 $X_p$。略去电阻时，中间节点电压满足
+\begin{equation}
+  U_m\approx\frac{U X_p}{X_2+X_p}+\text{（与传输功率有关的部分）},
+\end{equation}
+即 $X_p$ 越小（并联电抗越强），$U_m$ 越低。而功率极限
+\begin{equation}
+  P_{\max}\approx\frac{E_qU_m}{X_1}
+\end{equation}
+正比于 $U_m$，故并联电抗使 $P_{\max}$ 下降，并联电容使 $P_{\max}$ 上升。
+
+这一结论有重要的工程含义：\textbf{无功补偿不仅调压，也直接改变稳定水平}——
+并联电容器、静止补偿器在提高电压的同时提高了功率极限；
+而长线空载或轻载时为限制工频过电压而投入的并联电抗器，则会降低输送能力，
+故运行中须按输送功率协调投切。这是第 19 章“并联补偿提高稳定性”的理论根据。
+
+\subsection{发电机与无限大系统复合联接时的功率特性}
+
+实际系统中发电机经多级变压器、多回线路接系统，等值电抗为各元件串联之和：
+\begin{equation}
+  X_{\Sigma}=X_d+X_{T1}+\frac{X_{L1}}{2}+\cdots+X_{Tn},
+\end{equation}
+功率特性仍为 $P_e=E_qU\sin\delta/X_{\Sigma}$ 的形式，但有三点须注意：
+\begin{enumerate}
+  \item $\delta$ 是“等值发电机电动势”与“系统电压”之间的夹角，它\textbf{包含了变压器与
+        线路的相角偏移}，不等于发电机的实际功角；
+  \item 若中间有负荷或并联支路，须先把它们归入网络，再化简为“等值电势串等值电抗”；
+  \item 若网络中有环网或多电源，须先作网络化简（第 4 章），把系统化为
+        “单机—无穷大”或“少机”等值模型，才可用单机公式。
+\end{enumerate}
+复合联接的实质是：\textbf{把“多级电压、多回线路”折算成一条等值电抗}，
+使稳定分析回到单机模型。这一步做对了，后面等面积定则、$\delta_{cm}$ 公式才能用。
+
+\section{自动励磁调节器对功率特性的影响}
+
+\subsection{无调节励磁时发电机端电压的变化}
+
+若无自动励磁调节（$E_q$ 恒定），当发电机出力增大、$\delta$ 增大时，定子电流增大，
+发电机电抗上的压降增大，故\textbf{端电压 $U_G$ 随出力增大而下降}。
+端电压下降又使功率特性“变软”：$P_e$ 随 $\delta$ 的增长比 $E_q$ 恒定时更慢，
+功率极限更低。
+
+\subsection{自动励磁调节器对功率特性的影响}
+
+自动励磁调节器（AVR）的作用是：端电压下降时迅速增大励磁电流，维持端电压。
+其效果是把功率特性从“$E_q$ 恒定”变为“$U_G$ 恒定”：
+\keyformula{P_e=\frac{U_GU}{X_{\text{外}}}\sin\delta,\qquad
+  P_{\max}=\frac{U_GU}{X_{\text{外}}}}
+由于 $X_{\text{外}}<X_{d\Sigma}$，且 $U_G$ 在运行中基本不变，故\textbf{功率极限显著提高}，
+静态稳定极限角也可从 $90^\circ$ 提高到接近 $90^\circ$（理想励磁时理论上为 $90^\circ$，
+实际因调节器有死区与滞后，略小于 $90^\circ$）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{励磁调节对功率极限的影响}
+  \small
+  \begin{tabular}{@{}p{0.20\linewidth}p{0.32\linewidth}p{0.36\linewidth}@{}}
+    \toprule
+    励磁方式 & 功率特性 & 功率极限 \\
+    \midrule
+    无调节（$E_q$ 恒定） & $P_e=E_qU\sin\delta/X_{d\Sigma}$ & 较低，$U_G$ 随出力下降 \\
+    比例式调节（维持 $U_G$） & $P_e=U_GU\sin\delta/X_{\text{外}}$ & 明显提高 \\
+    理想调节（$U_G$ 完全恒定） & 同上，且 $\delta$ 可达 $90^\circ$ & 最高 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{用各种电势表示的功率特性}
+
+同一台发电机可用不同电势与相应电抗表示，对应不同的时间尺度：
+
+\begin{table}[htbp]
+  \centering
+  \caption{不同电势表示的功率特性及其适用场合}
+  \small
+  \begin{tabular}{@{}p{0.12\linewidth}p{0.34\linewidth}p{0.26\linewidth}p{0.22\linewidth}@{}}
+    \toprule
+    电势 & 功率特性 & 对应电抗 & 适用 \\
+    \midrule
+    $E_q$ & $P_e=E_qU\sin\delta/X_{d\Sigma}$ & $X_d$ & 稳态、静态稳定 \\
+    $E_q'$ & $P_e=E_q'U\sin\delta'/X_{d\Sigma}'$ & $X_d'$ & 暂态过程（阻尼绕组已衰减） \\
+    $E''$ & $P_e\approx E''U\sin\delta''/X_{d\Sigma}''$ & $X_d''$ & 次暂态、短路初瞬 \\
+    $U_G$ & $P_e=U_GU\sin\delta/X_{\text{外}}$ & 外接电抗 & 有强励、端电压恒定时 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+由表可见一条规律：\textbf{电势取得越“靠外”（$E_q\to E_q'\to E''\to U_G$），
+所用到的电抗越小，功率极限越高，但适用的时间尺度越短}。
+这解释了为什么“短路初瞬的功率极限最高（$E''$、$X_d''$），稳态的最低（$E_q$、$X_d$）”。
+
+\section{复杂电力系统的功率特性}
+
+多机系统中，第 $i$ 台发电机的电磁功率不仅与自己的功角有关，还与其他所有发电机的功角有关。
+设各机用 $E_i\angle\delta_i$ 表示、网络用节点导纳矩阵 $\boldsymbol Y=\boldsymbol G+j\boldsymbol B$ 表示，则
+\keyformula{P_{ei}=E_i^{2}G_{ii}+\sum_{\substack{j=1\\ j\ne i}}^{n}E_iE_j
+  \left(G_{ij}\cos\delta_{ij}+B_{ij}\sin\delta_{ij}\right)}
+其中 $\delta_{ij}=\delta_i-\delta_j$。
+\begin{itemize}
+  \item $E_i^{2}G_{ii}$ 是“自功率”，与自身功角无关（相当于本机对网络电阻的损耗）；
+  \item 求和项是“互功率”，由各机之间的功角差决定——这就是\textbf{多机系统功率特性的耦合性}，
+        也是多机系统稳定分析远比单机复杂的根本原因。
+\end{itemize}
+工程上常作两种简化：
+\begin{enumerate}
+  \item \textbf{单机无穷大等值}：把被研究机组以外的系统等值为一台无穷大母线，
+        适用于“该机远离其余机组”或“其余机组惯性极大”的场合；
+  \item \textbf{两机等值}：把系统分为两个机群，各自等值为一台机，适用于区域间振荡分析。
+\end{enumerate}
+
+\subsection{两机系统的相对功角特性}
+
+两机系统中，真正决定稳定的是\textbf{相对功角} $\delta_{12}=\delta_1-\delta_2$。
+把两机各自向联络线送出的功率相减，可把两机系统化为“一台等值机对无穷大母线”的形式：
+\begin{equation}
+  P_{12}=\frac{E_1E_2}{X_{\Sigma}}\sin\delta_{12},
+  \qquad X_{\Sigma}=X_1+X_{L}+X_2 ,
+\end{equation}
+其中 $X_1$、$X_2$ 为两机（含升压变）的电抗，$X_L$ 为联络线电抗。
+惯性时间常数也须用两机的\textbf{等值惯性常数}
+\begin{equation}
+  T_{J12}=\frac{T_{J1}T_{J2}}{T_{J1}+T_{J2}}
+\end{equation}
+（相当于两机惯量的串联）。这样，两机系统的暂态稳定分析就完全回到单机模型，
+等面积定则、极限切除角公式都可直接套用。这一“相对运动”的思想，
+是多机系统稳定分析中最常用的降维手段。
+
+\subsection{功率特性在工程中的三种用法}
+
+\begin{table}[htbp]
+  \centering
+  \caption{功率特性的工程用法}
+  \small
+  \begin{tabular}{@{}p{0.16\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    用法 & 问的问题 & 用到的量 \\
+    \midrule
+    定极限 & 这条线路最多能送多少功率 & $P_{\max}=EU/X_{\Sigma}$，配合 $K_p$ \\
+    定运行点 & 当前出力对应的功角是多少 & $\delta_0=\arcsin\left(P_0X_{\Sigma}/(EU)\right)$ \\
+    定措施 & 提高输送能力该改哪个参数 & $\partial P_{\max}/\partial U>0$、
+      $\partial P_{\max}/\partial X<0$、$\partial P_{\max}/\partial E>0$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+由 $P_{\max}=EU/X_{\Sigma}$ 可算出“每提高 $1\%$ 电压、每减小 $1\%$ 电抗”对输送能力的贡献：
+$P_{\max}$ 与 $U$、$E$ 成正比，与 $X_{\Sigma}$ 成反比。
+这解释了为什么\textbf{提高电压等级、采用串联电容补偿、增加并联回路}是提高输电能力的三大手段，
+而“提高励磁（增大 $E$）”则是最经济的手段（不需新增一次设备）。
+
+\corepoint{本章的核心是一张图（$P_e$-$\delta$ 曲线）和一串参数（用哪个电势配哪个电抗）。
+答题时先明确“用哪个电势、对应哪个电抗、是隐极还是凸极、有没有电阻与并联支路”，
+再写功率特性——这四问决定了公式的具体形式。复杂系统则要回到
+$P_{ei}=E_i^2G_{ii}+\sum E_iE_j(G_{ij}\cos\delta_{ij}+B_{ij}\sin\delta_{ij})$ 这个通式，
+它是一切多机稳定程序的功率计算内核。}

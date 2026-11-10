@@ -1,405 +1,863 @@
-% cSpell:ignore SR,LSB,MSB,CMOS,TTL,EPROM,Flash,SRAM,DRAM,74LS74,74LS112,74LS175,CC4013,CC4027,DFF,JFF,ROM,PROM
+% cSpell:ignore SRAM,DRAM,ROM,PROM,EPROM,EEPROM,CMOS,TTL,SDRAM,CS,RW,LSB,MSB
 \setlength{\parskip}{0.4em}
 \setlength{\itemsep}{0.2em}
 \setlength{\tabcolsep}{4pt}
 
 \chapter{半导体存储电路}
-\section{时序逻辑基础与触发器}
-\subsection{时序电路基本概念}
-\subsubsection{组合电路与时序电路区分}
-\begin{itemize}
-    \item 组合逻辑电路：仅由门电路构成，无记忆，无反馈，输出仅由当前输入决定；
-    \item 时序逻辑电路：包含\textbf{存储单元（触发器）+ 组合逻辑 + 反馈回路}
-    \begin{enumerate}
-        \item 存储单元保存电路当前状态；
-        \item 组合逻辑接收输入，当前状态，计算新状态与输出；
-        \item 新状态送入存储单元，等待时钟更新；
-        \item 输出由输入+当前状态共同决定。
-    \end{enumerate}
-\end{itemize}
-\noindent 易错提示：两级反相器首尾反馈构成简单存储单元，利用传输延迟实现记忆，属于最基础时序单元。
 
-\subsection{SR锁存器（基本存储单元）}
-\subsubsection{或非门构成基本SR锁存器}
-电路由两个或非门交叉反馈组成，输入低电平有效$S_D',R_D'$，输出$Q,Q'$；
+本章按“1 位存储单元 $\rightarrow$ 多位寄存器 $\rightarrow$ 大容量存储器”的顺序展开：
+先由门电路的反馈构成能记忆一位二值信号的\textbf{锁存器}，再加入时钟控制演化为\textbf{触发器}；
+把 $n$ 个触发器并联即得\textbf{寄存器}，把大量存储单元与地址译码器组合即得\textbf{存储器}。
+逻辑功能、触发方式、电路结构三者的关系是本章主线。
+
+\section{概述}
+\subsection{存储单元与触发器的定义}
 \begin{itemize}
-    \item $S_D'=0,R_D'=1$：置1，$Q=1,Q'=0$；
-    \item $S_D'=1,R_D'=0$：置0，$Q=0,Q'=1$；
-    \item $S_D'=1,R_D'=1$：保持原有状态；
-    \item $S_D'=0,R_D'=0$：不定态，禁止同时为0。
+    \item \textbf{存储单元}：能够保存 1 位二值信息（0 或 1）的电路单元。
+    \item \textbf{触发器（flip-flop，FF）}：在时钟（触发）信号作用下，能够按预定规律改变状态并保持新状态的存储单元电路。
+    \item \textbf{锁存器（latch）}：没有独立时钟端、状态直接由输入电平决定并保持的存储单元，是触发器的最简形式。
 \end{itemize}
 
-\subsubsection{与非门构成SR锁存器}
-输入高电平有效$S,R$，逻辑符号S、R输入端无小圆圈；约束条件$SR=0$，禁止$S=R=1$。
+\noindent 触发器必须具备两个特征：
+\begin{enumerate}
+    \item 具有两个能够\textbf{自行保持}的稳定状态（0 态与 1 态），且两个输出端 $Q$、$\overline{Q}$ 互补；
+    \item 在输入信号撤除后，状态仍能保持，即具有\textbf{记忆}功能。
+\end{enumerate}
 
-\subsection{触发器结构演化脉络（背诵框架）}
-无记忆门电路串联 $\rightarrow$ 基本RS锁存器（无同步时钟）
-$\rightarrow$ 同步电平触发器（CLK电平控制，空翻缺陷）
-$\rightarrow$ 主从式脉冲触发器（解决空翻，仍有SR约束）
-$\rightarrow$ 主从JK脉冲触发器（消除不定态，仍存在一次翻转问题）
-$\rightarrow$ 边沿触发器（仅时钟边沿采样输入，抗干扰最强）
+组合逻辑电路的输出只由当前输入决定，无记忆；一旦把输出反馈回输入，就可能出现“输入撤除后状态不变”的第二稳定点，这正是存储单元的来源。
+两级反相器首尾相接（或两个与非门交叉反馈）即构成最简单的存储单元，其保持能力靠正反馈自锁实现。
 
-\subsection{电平触发触发器}
-\subsubsection{同步RS电平触发器电路与真值表}
-由4个与非门构成：$G_3,G_4$为时钟控制门，$G_1,G_2$构成基础SR锁存器；CLK高电平有效。
-\[
-\begin{aligned}
-&CLK=0:\quad S,R\text{封锁，}Q^*=Q \quad (\text{保持})\\
-&CLK=1:\quad
+\subsection{触发器的分类}
+\begin{table}[!htbp]
+\centering
+\caption{触发器的三种分类维度}
+\begin{tabular}{lll}
+\toprule
+分类依据 & 类别 & 特征 \\
+\midrule
+电路结构（决定触发方式） & 基本 SR 锁存器 & 无时钟，输入电平直接控制 \\
+ & 电平触发（同步）触发器 & 时钟有效电平期间全程响应 \\
+ & 脉冲触发（主从）触发器 & 时钟有效期间接收、边沿更新 \\
+ & 边沿触发器 & 仅在时钟边沿采样输入 \\
+\midrule
+逻辑功能 & SR、JK、D、T、$T'$ & 由特性表与特性方程描述 \\
+器件工艺 & TTL、CMOS & 影响电平、扇出与速度 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{易错点：}“结构”和“功能”是两个独立维度。同一个 JK 触发器既可能做成主从结构，也可能做成边沿结构；
+同一个主从结构既可以做成 SR 型，也可以做成 JK 型。但\textbf{触发方式由结构唯一决定}（见 \S\ref{sec:ff_relation}）。
+
+\subsection{结构演变脉络与各级缺陷}
+\begin{table}[!htbp]
+\centering
+\caption{触发器结构演变：每一步解决了什么、又留下什么}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{6.0cm}}
+\toprule
+阶段 & 解决的问题 & 遗留缺陷 \\
+\midrule
+组合逻辑门串联 & —— & 无记忆功能 \\
+基本 RS 锁存器（加反馈） & 有记忆 & 不能在 CP 作用下同步工作 \\
+同步（电平）RS 触发器 & 由时钟统一控制 & CP 有效期间多次翻转（空翻），有 $SR=0$ 约束 \\
+主从 RS 触发器 & 一个 CP 只翻转一次 & 仍有 $SR=0$ 约束，主触发器可多次翻转 \\
+主从 JK 触发器 & 消除约束条件，功能最全 & 一次翻转问题，抗干扰仍差 \\
+边沿触发器 & 只在边沿采样，无空翻、无一次翻转 & 需满足建立时间、保持时间 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{SR 锁存器}
+\subsection{与非门构成的基本 SR 锁存器}
+两个与非门 $G_1$、$G_2$ 的输出交叉反馈到对方的一个输入端，另两个输入端作为置位端 $S_D'$ 与复位端 $R_D'$。
+两输入端\textbf{低电平有效}（逻辑符号上画小圆圈），输出为 $Q$ 与 $\overline{Q}$。
+
+\begin{table}[!htbp]
+\centering
+\caption{与非门基本 SR 锁存器的功能表（低电平有效）}
+\begin{tabular}{cc|cc|l}
+\toprule
+$S_D'$ & $R_D'$ & $Q$ & $Q^*$ & 功能说明 \\
+\midrule
+1 & 1 & 0 & 0 & 保持（存储） \\
+1 & 1 & 1 & 1 & 保持（存储） \\
+0 & 1 & $\times$ & 1 & 置 1（置位） \\
+1 & 0 & $\times$ & 0 & 置 0（复位） \\
+0 & 0 & $\times$ & 1 & 两输出同时为 1，\textbf{不定态} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent 状态方程（特性方程）：记撇号表示该端低电平有效，则
+\begin{equation}
+Q^* = \overline{S_D'} + R_D'\,Q,
+\qquad
+\text{约束条件：}\ S_D' + R_D' = 1
+\quad(\text{即不能同时为 }0)
+\label{eq:sr_nand}
+\end{equation}
+
+\noindent 工作过程分析（逐门推演）：
+\begin{enumerate}
+    \item $S_D'=0,\ R_D'=1$：$G_1$ 有一个 0 输入，输出 $Q=1$；该 1 又送入 $G_2$，与 $R_D'=1$ 共同使 $\overline{Q}=0$，反馈自锁。
+    \item $S_D'=1,\ R_D'=0$：$G_2$ 输出 $\overline{Q}=1$，反馈使 $G_1$ 两输入全 1，$Q=0$，自锁。
+    \item $S_D'=R_D'=1$：两门各有一个 1 来自对方输出，状态由上一时刻决定，保持。
+    \item $S_D'=R_D'=0$：两门都被强制输出 1，$Q=\overline{Q}=1$，违反互补关系；若两端同时回到 1，次态取决于两门延迟的随机差别，故称\textbf{不定态}。
+\end{enumerate}
+
+\subsection{或非门构成的基本 SR 锁存器}
+两个或非门交叉反馈，输入端 $S_D$、$R_D$ \textbf{高电平有效}，功能表与非门型相反：全 0 保持、置 1 端为 1 时置 1、两输入端同时为 1 时两输出同时为 0（不定）。
+
+\begin{equation}
+Q^* = S_D + \overline{R_D}\,Q,
+\qquad
+\text{约束条件：}\ S_D R_D = 0
+\quad(\text{即不能同时为 }1)
+\label{eq:sr_nor}
+\end{equation}
+
+\begin{table}[!htbp]
+\centering
+\caption{两种基本 SR 锁存器对照}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{5.1cm}>{\raggedright\arraybackslash}p{5.1cm}}
+\toprule
+项目 & 与非门型 & 或非门型 \\
+\midrule
+有效电平 & 低电平有效（符号带小圆圈） & 高电平有效（符号不带圆圈） \\
+保持条件 & $S_D'=R_D'=1$ & $S_D=R_D=0$ \\
+置 1 条件 & $S_D'=0$ & $S_D=1$ \\
+置 0 条件 & $R_D'=0$ & $R_D=1$ \\
+禁止条件 & $S_D'=R_D'=0$，两输出同为 1 & $S_D=R_D=1$，两输出同为 0 \\
+特性方程 & $Q^*=\overline{S_D'}+R_D'Q$ & $Q^*=S_D+\overline{R_D}Q$ \\
+约束条件 & $S_D'+R_D'=1$ & $S_D R_D=0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{记忆要点：}“与非门配低电平、或非门配高电平”——输入端有效电平与门类型相反，因为非门把有效电平翻了一次。
+
+\subsection{逻辑符号与波形读图规则}
+\begin{itemize}
+    \item 输入端画\textbf{小圆圈}表示低电平有效；不画圆圈表示高电平有效。
+    \item 两个输出端永远满足 $Q$ 与 $\overline{Q}$ 互补；\textbf{不定态}时二者同为 1（与非门型）或同为 0（或非门型）。
+    \item 画波形时，凡遇禁止组合后再回到保持状态，$Q$ 的真值无法确定，应画阴影或标注“不定”，不能随意指定为 0 或 1。
+\end{itemize}
+
+\noindent\textbf{易错点：}
+\begin{enumerate}
+    \item 把两种结构的极性记反：与非门型“0 有效”，或非门型“1 有效”。
+    \item 认为不定态是“随机翻转”。不定态是指\textbf{逻辑上无法确定}，实际电路会停在某一个状态，但不可预测、不可依赖。
+    \item 认为约束条件只是一种“建议”。约束被破坏时不仅输出错误，在大电流下还可能损坏器件，必须从电路上保证不会出现。
+\end{enumerate}
+
+\subsection{基本 SR 锁存器的工程应用}
+\begin{itemize}
+    \item \textbf{机械开关消抖}：按键闭合/断开瞬间的抖动脉冲使 $S_D'$、$R_D'$ 反复跳变，锁存器只在第一次有效跳变时翻转，输出被“记忆”住，消除抖动。
+    \item \textbf{上电复位}：利用 RC 网络在上电瞬间产生低电平，把系统各触发器置为确定的初始状态。
+    \item \textbf{作为其他触发器的内部单元}：所有电平、主从、边沿触发器内部都含有基本 SR 锁存器作为存储核心。
+\end{itemize}
+
+\section{电平触发的触发器}
+\subsection{同步 SR 触发器的电路结构}
+在基本 SR 锁存器前加两个控制与非门 $G_3$、$G_4$，其一个输入端接时钟 $CLK$，另两端接 $S$、$R$。
+$G_1$、$G_2$ 仍构成基本锁存器。由于 $G_3$、$G_4$ 输出低电平有效，故 $S$、$R$ \textbf{高电平有效}，$CLK$ \textbf{高电平有效}。
+
+\begin{table}[!htbp]
+\centering
+\caption{同步（电平触发）SR 触发器功能表}
+\begin{tabular}{cc|cc|l}
+\toprule
+$CLK$ & $S$ & $R$ & $Q$ & $Q^*$ \\
+\midrule
+0 & $\times$ & $\times$ & 任意 & $Q$（保持，输入被封锁） \\
+1 & 0 & 0 & 0/1 & $Q$（保持） \\
+1 & 0 & 1 & 任意 & 0（置 0） \\
+1 & 1 & 0 & 任意 & 1（置 1） \\
+1 & 1 & 1 & 任意 & 不定（禁止） \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{equation}
 \begin{cases}
-S=0,R=0 & Q^*=Q \quad \text{保持}\\
-S=1,R=0 & Q^*=1 \quad \text{置1}\\
-S=0,R=1 & Q^*=0 \quad \text{置0}\\
-S=1,R=1 & \text{不定态，禁止}
+CLK=0:\quad Q^* = Q\\[2pt]
+CLK=1:\quad Q^* = S + \overline{R}\,Q,\qquad SR = 0
 \end{cases}
-\end{aligned}
-\]
+\label{eq:sync_sr}
+\end{equation}
 
-\subsubsection{电平RS触发器核心缺陷：空翻现象}
-CLK=1高电平区间内，若S/R多次跳变，输出$Q$会跟随输入多次翻转；
-\begin{itemize}
-    \item 缺陷1：一个时钟周期输出多次变化，逻辑混乱；
-    \item 缺陷2：存在约束条件$SR=0$，不能同时输入1；
-\end{itemize}
+\subsection{空翻现象}
+在 $CLK=1$ 的整个高电平期间，$G_3$、$G_4$ 始终开启，$S$、$R$ 的任何跳变都会经锁存器反映到输出。
+若一个时钟周期内 $S$、$R$ 变化多次，$Q$ 也随之翻转多次，这种现象称为\textbf{空翻}。
 
-\subsubsection{电平D锁存器（D触发器，消除SR约束）}
-将S端接输入D，R端接D反相，电路由5个与非门构成，CLK高电平透明。
-\[
-Q^* = D \quad (CLK=1\text{有效})
-\]
-真值表：
-\begin{center}
-\setlength{\tabcolsep}{4pt}\small
+\noindent 空翻带来的三个问题：
+\begin{enumerate}
+    \item 一个时钟周期内输出多次变化，电路的“次态”不再是时钟周期的单值函数，逻辑无法预期；
+    \item 抗干扰能力差：时钟高电平期间任何尖峰都会写入；
+    \item 存在 $SR=0$ 约束，使用不便。
+\end{enumerate}
+
+\noindent\textbf{解决思路：}限制“一个时钟周期只允许状态改变一次”。两条技术路线：主从结构（脉冲触发）与边沿结构。
+
+\subsection{电平触发的 D 触发器（D 锁存器）}
+把 $S$ 端接输入 $D$、$R$ 端接 $\overline{D}$（用反相器由 $D$ 产生），从电路上永远满足 $SR=0$，得到单端输入的 D 锁存器。
+
+\begin{equation}
+Q^* = D \quad (CLK=1 \text{ 有效}),\qquad Q^*=Q \quad (CLK=0)
+\label{eq:d_latch}
+\end{equation}
+
+\begin{table}[!htbp]
+\centering
+\caption{电平触发 D 触发器（D 锁存器）功能表}
 \begin{tabular}{cc|c}
 \toprule
-CLK & D & $Q^*$ \\
+$CLK$ & $D$ & $Q^*$ \\
 \midrule
-0 & $\times$ & $Q$（保持）\\
+0 & $\times$ & $Q$（锁存） \\
 1 & 0 & 0 \\
 1 & 1 & 1 \\
 \bottomrule
 \end{tabular}
-\end{center}
-特点：CLK高电平时输出跟随输入，电平透明；CLK变0瞬间锁存当前D值。
+\end{table}
 
-\subsection{脉冲触发触发器}
-\subsubsection{主从RS脉冲触发器}
-电路由两级电平RS触发器串联：
-1. 主触发器：CLK=1期间接收S/R，更新主状态$Q_m$；
-2. 从触发器：$\overline{CLK}=1$（CLK下降沿）跟随$Q_m$更新输出$Q$；
-工作分两步：
+\noindent 动作特点：$CLK=1$ 期间输出\textbf{跟随}输入变化，称“透明”；$CLK$ 回到 0 的瞬间把当时的 $D$ 值锁存。
+逻辑符号为矩形框内标 $1D$、$C1$，$CLK$ 端不画小圆圈（高电平有效）。它仍是电平触发，同样存在“透明期多次翻转”的问题。
+
+\subsection{电平触发方式的动作特点与适用场合}
+\begin{itemize}
+    \item 动作条件：$CLK$ 为有效电平的\textbf{整个期间}都接收输入并更新状态。
+    \item 适用场合：数据锁存、总线暂存、异步数据缓冲（$CLK$ 无效时数据被“冻结”）。
+    \item 不适用场合：计数器、移位寄存器等要求“每来一个时钟只走一步”的电路（会出现空翻）。
+\end{itemize}
+
+\section{脉冲触发的触发器}
+\subsection{主从 SR 触发器的结构与两步动作}
+把两个\textbf{电平触发}的 SR 触发器串接：$G_5\sim G_8$ 构成主触发器，$G_1\sim G_4$ 构成从触发器，
+主触发器的时钟为 $CLK$，从触发器的时钟为 $\overline{CLK}$（由 $CLK$ 经反相得到）。
+
 \begin{enumerate}
-    \item $CLK=1$：主触发器随S/R变化，从触发器锁存不变；
-    \item $CLK$下降沿$1\rightarrow0$：主触发器冻结状态，从触发器同步更新，一个时钟周期输出仅变化一次，解决空翻。
+    \item $CLK=1$：主触发器按 $S$、$R$ 更新（$Q_{\text{主}}$ 随输入变化），从触发器因 $CLK_{\text{从}}=0$ 被封锁，输出 $Q$ 保持；
+    \item $CLK$ 由 $1\rightarrow 0$（下降沿）：主触发器被封锁、状态冻结，从触发器获得有效时钟，跟随 $Q_{\text{主}}$ 更新。
 \end{enumerate}
-约束条件：仍满足$SR=0$，$S=R=1$出现不定态。
 
-\subsubsection{主从JK脉冲触发器（消除SR不定态）}
-将输出$Q,Q'$交叉反馈至S、R输入端，等效$S=JQ',\ R=KQ$，彻底消除$S=R=1$不定态。
-\[
-Q^* = JQ' + K'Q \quad (\text{下降沿更新})
-\]
-真值表：
-\begin{center}
-\setlength{\tabcolsep}{3pt}\small
-\begin{tabular}{cc|cc}
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}[scale=0.78,font=\small]
+\node[draw,minimum width=3.8cm,minimum height=1.6cm] (m) at (0,0) {主触发器};
+\node[draw,minimum width=3.8cm,minimum height=1.6cm] (s) at (0,-3.2) {从触发器};
+\draw[->] (-5.6,0.5) -- (-1.95,0.5) node[above,pos=0.6] {$S$};
+\draw[->] (-5.6,0.0) -- (-1.95,0.0) node[above,pos=0.6] {$R$};
+\draw[->] (0,-0.85) -- (0,-2.35) node[right,pos=0.5] {$Q_{\text{主}}$};
+\draw[->] (1.95,-0.3) -- (2.7,-0.3) node[right] {$CLK$};
+\draw[->] (1.95,-2.6) -- (2.7,-2.6) node[right] {$Q$};
+\draw[->] (1.95,-3.5) -- (2.7,-3.5) node[right] {$\overline{CLK}$};
+\end{tikzpicture}
+\caption{主从结构：主、从两个电平触发器串接，时钟反相}
+\label{fig:master_slave}
+\end{figure}
+
+\noindent 因此一个时钟周期内输出\textbf{只可能改变一次}，空翻被克服。
+功能表与同步 SR 触发器相同（表 \ref{tab:sync_sr_like}），只是“采样时刻”由高电平期间改为下降沿。
+
+\begin{table}[!htbp]
+\centering
+\caption{主从 SR 触发器功能表（与电平触发 SR 相同，作用时刻不同）}
+\label{tab:sync_sr_like}
+\begin{tabular}{cc|cc|cl}
 \toprule
-J & K & $Q^*$ & 功能 \\
+$CLK$ & $S$ & $R$ & $Q$ & $Q^*$ & 说明 \\
 \midrule
-0 & 0 & $Q$ & 保持 \\
-0 & 1 & 0 & 置0 \\
-1 & 0 & 1 & 置1 \\
-1 & 1 & $Q'$ & 计数翻转 \\
+$\times$ & $\times$ & $\times$ & 任意 & $Q$ & 保持原态 \\
+$\downarrow$ & 0 & 0 & 0/1 & $Q$ & 保持 \\
+$\downarrow$ & 0 & 1 & 任意 & 0 & 置 0（复位） \\
+$\downarrow$ & 1 & 0 & 任意 & 1 & 置 1（置位） \\
+$\downarrow$ & 1 & 1 & 任意 & 不定 & 禁止 \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
 
-\paragraph{一次翻转问题（主从JK核心缺陷）}
-CLK=1高电平期间，主触发器仅能翻转一次；一旦主状态改变，无论J/K后续如何变化，$Q_m$不再复原。干扰信号会造成错误输出，抗干扰能力弱。
+\noindent\textbf{注意：}表中第一行 $CLK=\times$ 表示“该时钟周期内没有出现下降沿”，此时无论 $S$、$R$ 如何，状态一律保持。
+其余各行只在 $CLK=1$ 期间 $S$、$R$ 保持不变时成立。若 $CLK=1$ 期间输入有变化，从触发器的次态由\textbf{下降沿到来时刻主触发器的状态} $Q_{\text{主}}$ 决定，必须逐段推算。
 
-\subsubsection{脉冲触发器通用特点}
+\subsection{主从 JK 触发器}
+主从 SR 触发器仍有 $SR=0$ 约束。把输出 $Q$、$\overline{Q}$ 交叉反馈到输入端，使 $S=J\overline{Q}$、$R=KQ$，
+则 $S$、$R$ 永远不可能同时为 1（因为 $Q$ 与 $\overline{Q}$ 互补），约束条件被自动满足，得到主从 JK 触发器。
+这对反馈线在集成电路内部已经接好，外部只引出 $J$、$K$。
+
+\begin{equation}
+\boxed{\,Q^* = J\overline{Q} + \overline{K}\,Q\,} \qquad (\text{下降沿更新})
+\label{eq:jk}
+\end{equation}
+
+\begin{table}[!htbp]
+\centering
+\caption{主从 JK 触发器功能表}
+\begin{tabular}{cc|cc|l}
+\toprule
+$J$ & $K$ & $Q$ & $Q^*$ & 功能 \\
+\midrule
+0 & 0 & 0 & 0 & 保持 \\
+0 & 0 & 1 & 1 & 保持 \\
+0 & 1 & 0 & 0 & 置 0（复位） \\
+0 & 1 & 1 & 0 & 置 0（复位） \\
+1 & 0 & 0 & 1 & 置 1（置位） \\
+1 & 0 & 1 & 1 & 置 1（置位） \\
+1 & 1 & 0 & 1 & 翻转（计数） \\
+1 & 1 & 1 & 0 & 翻转（计数） \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent 功能概括：$J=K=0$ 保持、$J\neq K$ 置位或复位、$J=K=1$ 计数翻转，四种功能齐全，故称“万能触发器”。
+有些集成 JK 触发器的 $J$、$K$ 各有多个输入端，它们之间是\textbf{与}的关系（$J=J_1J_2\cdots$）。
+
+\subsection{一次翻转问题}
+主从 JK 的 $J$、$K$ 经反馈与 $Q$ 相关，因此主触发器在 $CLK=1$ 期间\textbf{只可能翻转一次}：
 \begin{itemize}
-    \item 输出仅在CLK下降沿更新，单周期仅变化一次，无空翻；
-    \item 主触发器在CLK=1期间仍接收输入干扰，存在一次翻转缺陷；
-    \item JK无约束条件，主从RS仍需$SR=0$。
+    \item 若 $Q=0$，则 $S=J\overline{Q}=J$ 才可能为 1，只允许 $J=1$ 的信号进入主触发器；
+    \item 若 $Q=1$，则 $R=KQ=K$ 才可能为 1，只允许 $K=1$ 的信号进入主触发器。
 \end{itemize}
 
-\subsection{边沿触发器}
-核心优势：仅CLK边沿瞬间采样输入，其余时间输入变化完全不影响输出，彻底解决一次翻转，空翻，抗干扰最强。
-分类：上升沿触发，下降沿触发。
+\noindent 一旦主触发器翻转，$Q_{\text{主}}$ 变化会立即封锁相反方向的输入通路，此后 $J$、$K$ 再怎么变都不会使 $Q_{\text{主}}$ 复原。
+若 $CLK=1$ 期间有干扰脉冲进入，$Q_{\text{主}}$ 被错误置位并保持到下降沿，导致输出错误——这就是\textbf{一次翻转}造成的抗干扰缺陷。
 
-\subsubsection{CMOS传输型上升沿D边沿触发器}
-两级D锁存器串联，时钟反相控制传输门TG1/TG2，TG3/TG4：
+\noindent\textbf{易错点：}把“一次翻转”当成优点。它只是把“多次翻转”压缩成“一次”，本质仍是 $CLK$ 高电平期间接收输入，抗干扰能力不如边沿触发。
+
+\subsection{脉冲触发方式的动作特点}
 \begin{enumerate}
-    \item $CLK=0$：主级TG1导通，接收D；从级TG3关断，输出锁存；
-    \item $CLK$上升沿$0\rightarrow1$：主级TG1关断锁存D；从级TG3导通，输出更新$Q^*=D$；
-    \item $CLK=1$：主级隔离输入，从级保持输出，输入D变化无任何影响。
+    \item \textbf{分两步动作}：$CLK=1$ 时主触发器接收输入、从触发器保持；$CLK$ 下降沿到后，从触发器按 $Q_{\text{主}}$ 翻转，故输出一个周期只变一次。
+    \item \textbf{主触发器在 $CLK=1$ 期间的行为}：主从 SR 可随输入多次翻转；主从 JK 只可能翻转一次。
+    \item \textbf{异步端的作用}：有异步置 0/置 1 时，主、从触发器\textbf{同时}被复位/置位。
+    \item \textbf{波形画法}：不能简单看“边沿时刻的 $J$、$K$”。必须先判断 $CLK=1$ 期间主触发器是否被置位，再决定下降沿时从触发器跟随什么。
 \end{enumerate}
-逻辑符号CLK输入端无小圆圈，代表上升沿触发。
 
-\subsubsection{维持阻塞型D边沿触发器}
-内置置1维持线，置0阻塞线，上升沿触发；异步置位$S_D'$，复位$R_D'$低电平优先，不受时钟控制。
+\section{边沿触发的触发器}
+\label{sec:edge}
+边沿触发的目标是：次态\textbf{仅}由时钟上升沿（或下降沿）到达时刻的输入决定，与时钟其他时刻的输入无关。
+常见实现有四种：两个电平触发 D 触发器串接、CMOS 传输门结构、维持阻塞结构、利用门传输延迟的结构。
 
-\subsubsection{下降沿JK边沿触发器}
-逻辑符号CLK端带小圆圈，仅下降沿读取J、K输入，其余时刻J/K干扰完全无效，无一次翻转缺陷，工业最常用。
+\subsection{用两个电平触发 D 触发器构成的边沿触发器}
+$FF_1$、$FF_2$ 都是电平触发的 D 触发器，$CLK_1=CLK$，$CLK_2=\overline{CLK}$。
+\begin{enumerate}
+    \item $CLK=0$：$FF_1$ 透明，$Q_1$ 跟随 $D$；$FF_2$ 封锁，$Q$ 保持。
+    \item $CLK$ 上升沿：$FF_1$ 被封锁，把\textbf{前沿到达前一瞬间}的 $D$ 锁存下来；同时 $FF_2$ 变为透明，把 $Q_1$ 送到输出。
+    \item $CLK=1$：$FF_2$ 保持，$FF_1$ 隔离输入，$D$ 的变化不再影响输出。
+\end{enumerate}
+故为\textbf{上升沿触发的 D 触发器}，特性方程 $Q^*=D$，逻辑符号 $CLK$ 端无小圆圈。
 
-\subsection{触发器逻辑功能与转换}
-\subsubsection{电路结构，逻辑功能，触发方式三者关系}
-\begin{itemize}
-    \item 逻辑功能与电路结构无固定对应关系
-    \item 触发方式由电路结构唯一决定
-    \begin{enumerate}
-        \item 同步4与非门RS：电平触发，CLK高电平全程响应输入；
-        \item 两级串联主从RS/JK：脉冲触发，仅CLK下降沿更新输出；
-        \item 双D锁存器CMOS/维持阻塞D：边沿触发，仅上升沿采样；
-        \item 带圆圈CLK端JK：下降沿边沿触发。
-    \end{enumerate}
-\end{itemize}
+\subsection{CMOS 传输门边沿触发器}
+主、从两级各由一对 CMOS 传输门（$TG_1\sim TG_4$）与反相器构成，两组传输门由 $CLK$、$\overline{CLK}$ 反相控制：
+\begin{enumerate}
+    \item $CLK=0$：$TG_1$ 通、$TG_2$ 断 $\Rightarrow Q_1=D$，主级跟随输入；$TG_3$ 断、$TG_4$ 通 $\Rightarrow$ 从级反馈通路接通，自锁保持 $Q$。
+    \item $CLK$ 上升沿后：$TG_1$ 断、$TG_2$ 通 $\Rightarrow$ 主级锁存前沿前的 $D$；$TG_3$ 通、$TG_4$ 断 $\Rightarrow Q^*=D$，反馈断开不锁存。
+    \item $CLK=1$ 期间：主级隔离输入，输出保持不变；直到下一个上升沿才可能改变。
+\end{enumerate}
+结论：上升沿触发的 D 触发器。传输门结构的静态功耗极低，是 CMOS 集成触发器的标准形式。
 
-\subsubsection{四类触发器完整对比}
-\paragraph{SR触发器}
-特性方程：
-\[
+\subsection{维持阻塞触发器}
+TTL 工艺的边沿触发器，由 6 个与非门 $G_1\sim G_6$ 构成，$G_1$、$G_2$ 为基本锁存器，$G_3$、$G_4$ 为输入控制门，
+$G_5$、$G_6$ 与三条内部反馈线（(1) 置 1 线、(2) 维持线与置 1 阻塞线、(3) 置 0 阻塞线）配合完成“边沿采样 + 期间封锁”。
+\begin{enumerate}
+    \item $CLK=0$：$G_3$、$G_4$ 被封锁，输出均为高电平，触发器保持原态；
+    \item $CLK$ 上升沿：$G_6$ 输出 $\overline{D}$、$G_5$ 输出 $D$，经 $G_3$、$G_4$ 使 $Q=D$，完成一次采样；
+    \item $CLK=1$：$G_3$、$G_4$ 虽开启，但两者输出必有一个为 0；该 0 一方面封锁 $G_5$ 或 $G_6$，使 $D$ 的数据通路断开，另一方面通过维持线/阻塞线把锁存器的状态“顶住”，$D$ 再变也写不进去。
+\end{enumerate}
+维持阻塞触发器为\textbf{上升沿触发}，设有低电平有效的异步置位端 $\overline{S_D}$、复位端 $\overline{R_D}$。
+
+\subsection{边沿 JK 触发器}
+利用门电路传输延迟时间的差异（时钟经不同路径到达两个输入门的时间不同）实现边沿采样，
+其逻辑符号的 $CLK$ 端画小圆圈，为\textbf{下降沿触发的边沿 JK 触发器}，功能表与主从 JK 完全相同。
+
+\subsection{边沿触发方式的动作特点}
+\begin{enumerate}
+    \item 次态仅取决于时钟\textbf{有效沿到达瞬间}的输入，其余时刻输入任意变化都不影响输出；
+    \item 无空翻、无一次翻转，抗干扰能力最强，工作频率最高；
+    \item 必须满足\textbf{建立时间}与\textbf{保持时间}：输入在有效沿前后的一小段时间内必须稳定，否则可能进入亚稳态。
+\end{enumerate}
+
+\subsection{异步置位、复位端（直接置位/复位端）}
+集成触发器除时钟端外，一般还有 $\overline{S_D}$（异步置 1）、$\overline{R_D}$（异步置 0）两个端子，它们
+\textbf{低电平有效}、\textbf{不受时钟控制}、\textbf{优先级最高}。
+
+\begin{table}[!htbp]
+\centering
+\caption{带异步端的触发器完整功能表（以 $\overline{S_D}$、$\overline{R_D}$ 低有效为例）}
+\begin{tabular}{cc|cc|cl}
+\toprule
+$\overline{R_D}$ & $\overline{S_D}$ & $CLK$ & $Q$ & $Q^*$ & 说明 \\
+\midrule
+0 & 1 & $\times$ & $\times$ & 0 & 异步置 0，与时钟无关 \\
+1 & 0 & $\times$ & $\times$ & 1 & 异步置 1，与时钟无关 \\
+0 & 0 & $\times$ & $\times$ & 不定 & 禁止（两输出同时为 1） \\
+1 & 1 & 有效沿 & —— & 按 $J,K$/$D$ 更新 & 正常工作 \\
+1 & 1 & 无效 & —— & $Q$ & 保持 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{易错点：}
+\begin{enumerate}
+    \item 画波形时漏查异步端。异步端一旦有效，无论时钟处于什么状态、处于什么时刻，输出立即被强制。
+    \item 认为异步端“只在上电时用”。它常用于系统初始化、计数器强制归零，是设计中的常用手段。
+    \item 正常工作时应把 $\overline{S_D}$、$\overline{R_D}$ 接\textbf{高电平}（悬空的 TTL 输入端等效高电平，但 CMOS 严禁悬空）。
+\end{enumerate}
+
+\section{触发器的逻辑功能及其描述方法}
+不论内部结构如何，触发器对外表现的逻辑功能只有五种，用\textbf{特性表、特性方程、状态转换图、时序图}描述。
+
+\subsection{SR 触发器}
+\begin{equation}
 \begin{cases}
-Q^* = S + R'Q \\
-SR = 0 \quad (\text{约束条件，禁止}S=1,R=1)
+Q^* = S + \overline{R}\,Q\\
+SR = 0 \quad(\text{约束条件})
 \end{cases}
-\]
-功能：置1，置0，保持，无计数功能。
+\label{eq:sr}
+\end{equation}
+具有置 1、置 0、保持三种功能，无翻转功能；两个输入端不能同时有效。
 
-\paragraph{JK触发器（万能触发器，无约束）}
-特性方程：
-\[
-Q^* = JQ' + K'Q
-\]
-功能全覆盖：保持(J=K=0)，置0(J=0,K=1)，置1(J=1,K=0)，计数翻转(J=K=1)。
+\subsection{JK 触发器}
+\begin{equation}
+Q^* = J\overline{Q} + \overline{K}\,Q
+\label{eq:jk2}
+\end{equation}
+具有保持、置 0、置 1、翻转全部四种功能，无约束条件，是功能最全的触发器。
 
-\paragraph{T触发器（计数专用）}
-特性方程：
-\[
-Q^* = TQ' + T'Q
-\]
-真值：$T=0$保持，$T=1$翻转计数。
+\subsection{T 触发器与 $T'$ 触发器}
+\begin{equation}
+Q^* = T\overline{Q} + \overline{T}\,Q = T \oplus Q
+\label{eq:t}
+\end{equation}
+$T=0$ 保持、$T=1$ 翻转。若把 $T$ 固定接 1（即 $J=K=1$），则 $Q^*=\overline{Q}$，每来一个时钟必翻转一次，
+称 \textbf{$T'$ 触发器}（计数型触发器），是构成二进制计数器的最基本单元。
 
-\paragraph{D触发器（锁存/移位专用）}
-特性方程：
-\[
+\subsection{D 触发器}
+\begin{equation}
 Q^* = D
-\]
-功能：跟随输入，锁存数据，无保持/翻转独立模式。
+\label{eq:d}
+\end{equation}
+只有置 0、置 1 两种功能（$Q^*$ 只由 $D$ 决定，与 $Q$ 无关），用于数据锁存与移位。
 
-\subsubsection{触发器相互转换}
+\subsection{五种触发器特性方程汇总}
+\begin{table}[!htbp]
+\centering
+\caption{按逻辑功能分类的触发器汇总}
+\begin{tabular}{llll}
+\toprule
+类型 & 特性方程 & 约束条件 & 功能与用途 \\
+\midrule
+SR & $Q^*=S+\overline{R}Q$ & $SR=0$ & 置 1、置 0、保持；结构最简单 \\
+JK & $Q^*=J\overline{Q}+\overline{K}Q$ & 无 & 功能最全，可实现其余各类 \\
+T & $Q^*=T\overline{Q}+\overline{T}Q$ & 无 & 保持/翻转，计数专用 \\
+$T'$ & $Q^*=\overline{Q}$ & 无 & 每个时钟必翻转，二分频 \\
+D & $Q^*=D$ & 无 & 跟随/锁存，移位寄存器专用 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{四种描述方法及其用途}
+\begin{table}[!htbp]
+\centering
+\caption{触发器逻辑功能的描述方法}
+\begin{tabular}{lll}
+\toprule
+方法 & 形式 & 主要用途 \\
+\midrule
+特性表 & 输入、现态、次态三栏表 & 直观，适合查功能、列真值 \\
+特性方程 & 次态的逻辑表达式 & 分析/设计时代入驱动方程 \\
+状态转换图 & 圆圈表示状态、箭头标输入条件 & 观察状态迁移、判断自启动 \\
+时序图（波形图） & 时间轴上的电平波形 & 分析动态行为、验证时序 \\
+驱动表 & 由“现态 $\rightarrow$ 次态”反求输入 & 设计时由状态方程反推驱动方程 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{触发器之间的功能转换}
+\textbf{转换原则：}目标触发器的特性方程必须与原触发器的特性方程在相同输入下给出相同次态。
+做法是把目标方程“凑”成原触发器特性方程的形式，再逐项对比系数。
+
 \begin{enumerate}
-    \item JK $\rightarrow$ D：令$J=D,\ K=D'$；
-    \item JK $\rightarrow$ T：令$J=T,\ K=T$；
-    \item D $\rightarrow$ JK：$D=JQ'+K'Q$；
-    \item D $\rightarrow$ T：$D=T\oplus Q$。
+    \item \textbf{JK $\rightarrow$ D}：令 $Q^*=J\overline{Q}+\overline{K}Q=D=D(\overline{Q}+Q)=D\overline{Q}+DQ$，对比得 $J=D,\ K=\overline{D}$。
+    \item \textbf{JK $\rightarrow$ T}：$Q^*=T\overline{Q}+\overline{T}Q$，对比得 $J=K=T$。
+    \item \textbf{JK $\rightarrow$ $T'$}：$T=1$，故 $J=K=1$。
+    \item \textbf{D $\rightarrow$ JK}：$Q^*=D$，令 $D=J\overline{Q}+\overline{K}Q$，用与门/或门/非门综合该式。
+    \item \textbf{D $\rightarrow$ T}：$D=T\overline{Q}+\overline{T}Q=T\oplus Q$。
+    \item \textbf{D $\rightarrow$ $T'$}：$D=\overline{Q}$，把 $\overline{Q}$ 反馈到 $D$ 端即可。
 \end{enumerate}
 
-\subsubsection{触发器四种描述方法}
+\begin{table}[!htbp]
+\centering
+\caption{触发器功能转换的输入连接关系}
+\begin{tabular}{lll}
+\toprule
+原触发器 $\rightarrow$ 目标 & 输入端的连接 & 所需附加门 \\
+\midrule
+JK $\rightarrow$ D & $J=D,\ K=\overline{D}$ & 1 个反相器 \\
+JK $\rightarrow$ T & $J=K=T$ & 无 \\
+JK $\rightarrow$ $T'$ & $J=K=1$ & 无 \\
+D $\rightarrow$ JK & $D=J\overline{Q}+\overline{K}Q$ & 与门、或门、非门 \\
+D $\rightarrow$ T & $D=T\oplus Q$ & 1 个异或门 \\
+D $\rightarrow$ $T'$ & $D=\overline{Q}$ & 1 个反相器 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{易错点：}功能转换只改变\textbf{逻辑功能}，不改变\textbf{触发方式}。
+用下降沿主从 JK 触发器接成 D 触发器，得到的仍是下降沿触发的 D 触发器，不能当上升沿器件使用。
+
+\subsection{电路结构、逻辑功能与触发方式的关系}
+\label{sec:ff_relation}
+\begin{enumerate}
+    \item \textbf{结构与功能之间没有固定对应关系}：SR 功能既可用电平结构实现，也可用主从结构实现；JK 功能既有主从结构，也有维持阻塞、边沿结构。
+    \item \textbf{结构与触发方式之间有固定对应关系}：电平结构 $\Rightarrow$ 电平触发；两级串接主从结构 $\Rightarrow$ 脉冲触发（下降沿更新）；双锁存器/维持阻塞/传输延迟结构 $\Rightarrow$ 边沿触发。
+\end{enumerate}
+
+\begin{table}[!htbp]
+\centering
+\caption{结构 $\rightarrow$ 触发方式的对应关系}
+\begin{tabular}{lll}
+\toprule
+结构 & 触发方式 & 状态更新时间 \\
+\midrule
+基本 SR 锁存器 & 直接电平触发（无时钟） & 输入变化的任意时刻 \\
+同步（门控）结构 & 电平触发 & $CLK$ 有效电平全程 \\
+主从结构（两级串接） & 脉冲触发 & $CLK$ 下降沿（有效沿） \\
+双 D 锁存器 / 传输门 / 维持阻塞 & 边沿触发 & $CLK$ 上升沿或下降沿 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent 逻辑符号的读法：
 \begin{itemize}
-    \item 逻辑符号：符号标记含义
-    \begin{itemize}
-        \item $\wedge$：边沿触发；$\neg$：主从脉冲触发；
-        \item CLK端小圆圈：下降沿/低电平有效；无圆圈：上升沿/高电平有效；
-        \item $S_D',R_D'$带非号：异步置1，置0，不受时钟控制。
-    \end{itemize}
-    \item 特性真值表：罗列全部输入，现态对应的次态；
-    \item 特性方程：卡诺图化简得到次态逻辑表达式；
-    \item 状态转换图：圆圈代表状态，箭头标注输入条件跳转。
-    \item 驱动表：给定现态，目标次态，求所需输入。
+    \item $CLK$ 端\textbf{画小圆圈}：下降沿触发或低电平有效；不画圆圈：上升沿触发或高电平有效。
+    \item $CLK$ 端标“$\wedge$”（三角）：边沿触发；标“$\neg$”或双线：主从脉冲触发。
+    \item 输入端标“$1J$/$1K$/$1D$”：受时钟控制的功能输入端；标“$\overline{S_D}$/$\overline{R_D}$”：不受时钟控制的异步端。
 \end{itemize}
 
-\subsubsection{波形绘图标准解题步骤}
+\subsection{触发器波形图的绘制方法}
+\textbf{标准步骤：}
 \begin{enumerate}
-    \item 写出触发器次态特性方程，标注异步置0/置1优先级；
-    \item 标注电路初始状态，全程优先检查异步置位/复位信号；
-    \item 特性方程仅在有效时钟沿/有效电平区间生效，其余时刻保持；
-    \item 分类型绘图规则
-    \begin{itemize}
-        \item 电平锁存器：CLK高电平跟随输入，下降沿锁存；
-        \item 主从JK：CLK=1主触发器可变，下降沿定输出，存在一次翻转；
-        \item 边沿触发器：仅有效沿读取输入，其余干扰无效。
-    \end{itemize}
+    \item 写出每个触发器的特性方程，并单独列出\textbf{异步置 0/置 1 端}、$CLK$ 端的逻辑表达式；
+    \item 标出初始状态，并在每一步都优先检查异步端是否有效；
+    \item 特性方程\textbf{只在时钟条件满足时成立}（有效沿/有效电平），其余时刻触发器保持；
+    \item 按时钟分段推进：确定每个有效沿（或每个有效电平区间）到来时刻的输入值，代入方程求次态；
+    \item 主从结构按“$CLK=1$ 期间主触发器怎么变、下降沿时从触发器跟什么”分两步推；
+    \item 边沿结构按“有效沿到来\textbf{之前}的稳定输入”决定次态，注意传输延迟。
 \end{enumerate}
 
-\subsubsection{波形绘图例题示范}
-例：下降沿JK触发器组合电路，输入A、B、初态$Q=0$
-推导驱动输入：
-\[
-J=\overline{A+A\overline{Q}}=\overline{A},\quad K=\overline{B+B\overline{Q}}
-\]
-代入JK特性方程：
-\[
-Q^* = \overline{A}\,Q' + B\,Q
-\]
-分情况化简，根据时钟下降沿分段绘制波形。
-
-\subsection{触发器动态特性}
-本节为拓展自学内容，主要研究传输延迟，建立时间，保持等时序参数，考试不作硬性要求。
-
-\subsection{集成触发器及其工程应用}
-\subsubsection{常用集成触发器芯片分类表}
-\begin{center}
-\setlength{\tabcolsep}{2pt}\tiny
-\begin{tabular}{cccc}
+\begin{table}[!htbp]
+\centering
+\caption{三类触发器画波形时的判断依据}
+\begin{tabular}{lll}
 \toprule
-系列 & 型号 & 器件功能 & 触发方式 \\
+类型 & 何时更新 & 判断依据 \\
 \midrule
-TTL & 74LS74 & 双D触发器 & 上升沿 \\
-& 74LS112 & 双JK触发器 & 下降沿 \\
-& 74LS175 & 四D锁存器 & 高电平 \\
-CMOS & CC4013 & 双D触发器 & 上升沿 \\
-& CC4027 & 双JK触发器 & 上升/下降沿可选 \\
+电平触发（锁存器） & $CLK$ 有效电平全程 & 该电平区间内的输入值，输入变则输出变 \\
+主从（脉冲）触发 & $CLK$ 有效沿（通常下降沿） & 下降沿时刻主触发器的状态 $Q_{\text{主}}$ \\
+边沿触发 & $CLK$ 有效沿 & 有效沿\textbf{之前}瞬间的稳定输入 \\
 \bottomrule
 \end{tabular}
-\end{center}
-市场主流集成触发器仅两大类：D触发器，JK触发器。
+\end{table}
 
-\subsubsection{集成JK触发器 74LS112}
-引脚：$CP$时钟，$J/K$同步输入，$\overline{S_D}$异步置1，$\overline{R_D}$异步置0，异步端低电平有效，优先级高于时钟。
-\begin{center}
-\setlength{\tabcolsep}{2pt}\tiny
-\begin{tabular}{cccccc|cc}
+\noindent\textbf{易错点：}
+\begin{enumerate}
+    \item 在无效时钟区间内让输出跟着输入变化——只有电平触发才允许。
+    \item 忽略输入与时钟沿“同时跳变”的情况。边沿触发器此时状态由跳变前的值决定（理想情况），实际电路可能出现亚稳态。
+    \item 画完不检查 $Q$ 与 $\overline{Q}$ 是否始终互补。
+\end{enumerate}
+
+\section{触发器的动态特性（自学）}
+静态特性只回答“稳态是什么”，动态特性回答“要多快、要多稳”。工程上关注四个参数：
+\begin{itemize}
+    \item \textbf{传输延迟 $t_{pd}$}：从有效时钟沿到输出稳定所经历的时间；
+    \item \textbf{建立时间 $t_{set}$}：输入数据必须在有效时钟沿\textbf{之前}提前稳定的最短时间；
+    \item \textbf{保持时间 $t_h$}：输入数据在有效时钟沿\textbf{之后}必须继续保持的最短时间；
+    \item \textbf{最高时钟频率 $f_{\max}$}：由 $t_{pd}$、$t_{set}$ 与组合逻辑延迟共同限制，$f_{\max}$ 随级联级数增加而下降。
+\end{itemize}
+边沿触发器之所以对 $t_{set}$、$t_h$ 敏感，是因为它在极短的边沿窗口内采样，窗口内输入不稳定就可能采到中间电平而进入亚稳态。
+
+\section{集成触发器及其应用}
+市场上常见的集成触发器只有 JK 与 D 两大类。选型时不仅要看逻辑功能，还必须看\textbf{触发方式}与\textbf{异步端极性}。
+
+\subsection{集成 JK 触发器 74LS112}
+双 JK 触发器，\textbf{下降沿触发}，带低电平有效的异步置 1 端 $\overline{S_D}$ 与异步置 0 端 $\overline{R_D}$。
+
+\begin{table}[!htbp]
+\centering
+\caption{74LS112 功能表}
+\begin{tabular}{ccccc|cc}
 \toprule
-J & K & $Q^n$ & $\overline{R_D}$ & $\overline{S_D}$ & CP & $Q^{n+1}$ & 功能 \\
+$\overline{R_D}$ & $\overline{S_D}$ & $CLK$ & $J$ & $K$ & $Q^{n+1}$ & 功能 \\
 \midrule
-$\times$ & $\times$ & $\times$ & 0 & 1 & $\times$ & 0 & 异步置0 \\
-$\times$ & $\times$ & $\times$ & 1 & 0 & $\times$ & 1 & 异步置1 \\
-0 & 0 & 0 & 1 & 1 & $\downarrow$ & 0 & 保持 \\
-0 & 0 & 1 & 1 & 1 & $\downarrow$ & 1 & 保持 \\
-0 & 1 & 0 & 1 & 1 & $\downarrow$ & 0 & 置0 \\
-1 & 0 & 0 & 1 & 1 & $\downarrow$ & 1 & 置1 \\
-1 & 1 & 0 & 1 & 1 & $\downarrow$ & 1 & 翻转 \\
-1 & 1 & 1 & 1 & 1 & $\downarrow$ & 0 & 翻转 \\
-1 & 1 & 1 & 0 & 0 & $\times$ & $\times$ & 不定态 \\
+0 & 1 & $\times$ & $\times$ & $\times$ & 0 & 异步置 0 \\
+1 & 0 & $\times$ & $\times$ & $\times$ & 1 & 异步置 1 \\
+0 & 0 & $\times$ & $\times$ & $\times$ & 不定 & 禁止 \\
+1 & 1 & $\downarrow$ & 0 & 0 & $Q^n$ & 保持 \\
+1 & 1 & $\downarrow$ & 0 & 1 & 0 & 置 0 \\
+1 & 1 & $\downarrow$ & 1 & 0 & 1 & 置 1 \\
+1 & 1 & $\downarrow$ & 1 & 1 & $\overline{Q^n}$ & 翻转 \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
 
-\subsubsection{集成D触发器 74LS74}
-引脚：$CP$上升沿有效，$D$同步输入，$\overline{S_D}/\overline{R_D}$低电平异步置1/置0。
-\begin{center}
-\setlength{\tabcolsep}{3pt}\tiny
+\subsection{集成 D 触发器 74LS74}
+双 D 触发器，\textbf{上升沿触发}，$\overline{S_D}$、$\overline{R_D}$ 低电平有效且优先于时钟。
+
+\begin{table}[!htbp]
+\centering
+\caption{74LS74 功能表}
 \begin{tabular}{cccc|c}
 \toprule
-D & $\overline{R_D}$ & $\overline{S_D}$ & CP & $Q^{n+1}$ \\
+$\overline{R_D}$ & $\overline{S_D}$ & $CLK$ & $D$ & $Q^{n+1}$ \\
 \midrule
-$\times$ & 0 & 1 & $\times$ & 0 \\
-$\times$ & 1 & 0 & $\times$ & 1 \\
-0 & 1 & 1 & $\uparrow$ & 0 \\
-1 & 1 & 1 & $\uparrow$ & 1 \\
-$\times$ & 0 & 0 & $\times$ & 不定态 \\
+0 & 1 & $\times$ & $\times$ & 0 \\
+1 & 0 & $\times$ & $\times$ & 1 \\
+0 & 0 & $\times$ & $\times$ & 不定 \\
+1 & 1 & $\uparrow$ & 0 & 0 \\
+1 & 1 & $\uparrow$ & 1 & 1 \\
+1 & 1 & 0 或 1 & $\times$ & $Q^n$ \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
 
-\subsubsection{集成触发器实用应用电路}
+\subsection{两个典型应用电路}
 \begin{enumerate}
-    \item 无抖动按键开关：JK触发器消除机械开关毛刺，驱动继电器；
-    \item 同步单脉冲产生电路：两级D触发器级联，输出固定宽度同步脉冲。
+    \item \textbf{无抖动单按钮开关}：按钮 $S$ 每按一次只给触发器一个下降沿，触发器接成计数形式（$J=K=1$），
+    输出 $Q$ 每按一次翻转一次，经三极管驱动继电器即可实现“按一下通、再按一下断”。机械抖动的多个脉冲被触发器“整形成一次”。
+    \item \textbf{同步单脉冲发生器}：用两个 74LS74 借助 $CLK$ 产生两个起始时刻不同的脉冲，再由与非门选通，
+    输出脉宽等于一个 $CLK$ 周期、与 $CLK$ 严格同步的单脉冲。它与按钮机械触点产生的毛刺无关，可用于设备启动、系统调试与检测。
 \end{enumerate}
 
-\subsection{触发器全章核心小结}
-\begin{itemize}
-    \item 本质：触发器是1位二进制存储时序单元；
-    \item 结构演化：基本锁存器$\rightarrow$电平同步$\rightarrow$主从脉冲$\rightarrow$边沿触发器；
-    \item 功能分类：SR（带约束），JK（万能无约束），D（锁存），T（计数）；
-    \item 触发方式对比
-    \begin{itemize}
-        \item 电平触发：CP全程响应，有空翻；
-        \item 主从脉冲：下降沿更新，存在一次翻转；
-        \item 边沿触发：仅边沿采样，无空翻无一次翻转，抗干扰最优；
-    \end{itemize}
-    \item 工程选型：集成电路仅D、JK，异步端低电平优先；
-    \item 解题工具：特性方程，真值表，状态转换图，驱动表。
-\end{itemize}
+\subsection{集成触发器选型要点}
+\begin{table}[!htbp]
+\centering
+\caption{常用集成触发器}
+\begin{tabular}{llll}
+\toprule
+型号 & 功能 & 触发方式 & 备注 \\
+\midrule
+74LS74 & 双 D 触发器 & 上升沿 & 异步端低有效 \\
+74LS112 & 双 JK 触发器 & 下降沿 & 异步端低有效 \\
+74LS175 & 四 D 触发器 & 上升沿 & 常作 4 位数码寄存器 \\
+74LS75 & 四 D 锁存器 & 高电平 & 电平触发，透明 \\
+CC4013 & 双 D 触发器 & 上升沿 & CMOS，功耗低 \\
+CC4027 & 双 JK 触发器 & 上升沿 & CMOS \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{寄存器}
-\subsubsection{寄存器基础定义}
-寄存器用于存储一组多位二进制代码；多位寄存器由对应数量触发器构成。
-\begin{itemize}
-    \item 分类：数码寄存器，移位寄存器；
-    \item 输入模式：并行输入，串行输入；
-    \item 输出模式：并行输出，串行输出；
-    \item 典型芯片：74LS75，74LS175。
-\end{itemize}
+\section{寄存器}
+\subsection{寄存器的定义与分类}
+\textbf{寄存器}是用于寄存一组二值代码的电路，$n$ 位寄存器由 $n$ 个触发器加若干附加逻辑门组成，可存放一组 $n$ 位二进制代码。
 
-\subsubsection{四位并行数码寄存器}
-由4个D触发器构成，统一时钟并行读写，带全局清零端。
+\begin{table}[!htbp]
+\centering
+\caption{寄存器的分类}
+\begin{tabular}{lll}
+\toprule
+分类依据 & 类别 & 特点 \\
+\midrule
+功能 & 数码寄存器 & 只并行存入/取出，不移位 \\
+ & 移位寄存器 & 在时钟作用下逐位移动 \\
+输入方式 & 并行输入 & 各位同时送入，速度快 \\
+ & 串行输入 & 逐位送入，占用引脚少、需多个时钟 \\
+输出方式 & 并行输出 & 各位同时取出 \\
+ & 串行输出 & 从末级逐位取出 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsubsection{四位右移移位寄存器}
-每时钟脉冲右移一位；支持串入，串出，并行输出；串行存入多位数据需要对应时钟周期。
-
-\section{半导体存储电路}
-\subsection{存储器总体分类}
-读写特性划分
-\begin{itemize}
-    \item ROM只读存储器：出厂固化，正常仅可读；细分掩模，PROM，EPROM，Flash；
-    \item RAM随机读写：随时读写，断电丢失；细分SRAM，DRAM。
-\end{itemize}
-
-\subsubsection{SRAM静态随机存储器}
-硬件结构：地址译码器，存储矩阵，读写控制，片选，三态端口。
-\begin{itemize}
-    \item $CS'=1$：芯片未选中，端口高阻；
-    \item $CS'=0$：芯片工作，$R/W'=1$读，$R/W'=0$写。
-\end{itemize}
-静态单元：六管MOS，依靠触发器存数据，无需刷新。
-
-\subsubsection{DRAM动态RAM}
-依靠电容存电荷，集成度高，必须定期刷新，自学了解。
-
-\subsubsection{ROM只读存储器}
-电路结构：地址输入$\rightarrow$译码$\rightarrow$存储矩阵$\rightarrow$输出缓冲；交叉点有元件记1，无记0。
-ROM细分
+\subsection{数码寄存器}
+由 $n$ 个 D 触发器并联构成，共用同一个时钟，带全局异步清零端。工作分三步：
 \begin{enumerate}
-    \item 掩模ROM：工厂一次性固化，大批量低成本；
-    \item PROM：用户一次性编程，不可改写；
-    \item EPROM/Flash：可多次擦写，闪存用于U盘，手机。
+    \item \textbf{清零}：$\overline{R_D}$ 有效，各位同时置 0，清除旧数据；
+    \item \textbf{送数}：并行数据 $D_0\sim D_{n-1}$ 加在各触发器 $D$ 端，来一个时钟（或使能为高）后同时写入；
+    \item \textbf{取数}：从 $Q_0\sim Q_{n-1}$ 同时读出，取数过程不破坏原数据（读出是非破坏性的）。
+\end{enumerate}
+电平触发的 74LS75 与边沿触发的 74LS175 都是 4 位数码寄存器，前者在时钟高电平期间透明，后者只在上升沿取样。
+
+\subsection{移位寄存器}
+把 $n$ 个 D 触发器首尾相接，前一级的 $Q$ 接后一级的 $D$，共用同一时钟，即构成\textbf{移位寄存器}。
+串行输入 $D_I$ 进第一级，$Q_0\sim Q_{n-1}$ 为并行输出，末级 $Q_{n-1}$ 为串行输出。
+
+\begin{itemize}
+    \item \textbf{移位原理}：每一个时钟有效沿，$Q_i^*=Q_{i-1}$，数据整体向高位移一位，$D_I$ 进入最低位。
+    \item \textbf{为什么能“同时”移位}：触发器有传输延迟 $t_{pd}$，时钟沿到达时各级读到的都是前一级\textbf{原来的}状态，故不会出现“一个时钟内数据穿透多级”的错误。
+    \item \textbf{串行存入 $n$ 位数据}需要 $n$ 个时钟周期；若同时用并行输出，则第 $n$ 个时钟后数据已就位。
+\end{itemize}
+
+\begin{table}[!htbp]
+\centering
+\caption{4 位右移寄存器串行存入 1011 的过程（自低位起逐位送入）}
+\begin{tabular}{cc|cccc}
+\toprule
+时钟 & 串行输入 $D_I$ & $Q_0$ & $Q_1$ & $Q_2$ & $Q_3$ \\
+\midrule
+0（清零） & —— & 0 & 0 & 0 & 0 \\
+1 & 1 & 1 & 0 & 0 & 0 \\
+2 & 1 & 1 & 1 & 0 & 0 \\
+3 & 0 & 0 & 1 & 1 & 0 \\
+4 & 1 & 1 & 0 & 1 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent 4 个时钟后 $Q_3Q_2Q_1Q_0=1011$，与送入顺序一致。若要串行取出，需再经 4 个时钟从末级逐位读出。
+左移与右移只是连接方向相反；把两者用控制门组合起来即得双向移位寄存器（74LS194，见“时序逻辑电路”一章）。
+
+\subsection{寄存器的扩展与工程要点}
+\begin{itemize}
+    \item \textbf{位数扩展}：多片并联，时钟与清零端共用，数据端按位拼接。
+    \item \textbf{串并转换}：串行输入 + 并行输出即“串 $\rightarrow$ 并”，反之为“并 $\rightarrow$ 串”，是通信接口的基本功能。
+    \item \textbf{数值运算}：左移一位相当于乘 2，右移一位相当于除 2（对无符号二进制数成立）。
+    \item \textbf{延时}：$n$ 级移位寄存器可把信号延迟 $n$ 个时钟周期。
+\end{itemize}
+
+\section{存储器}
+\subsection{基本结构与主要指标}
+存储器由四部分组成：\textbf{地址译码器}、\textbf{存储矩阵}、\textbf{读写控制电路}、\textbf{三态输入/输出电路}。
+\begin{itemize}
+    \item \textbf{地址线} $n$ 根：经译码产生 $2^n$ 根字线，每根字线选中一个字（一行存储单元）；
+    \item \textbf{数据线（位线）} $m$ 根：一个字的 $m$ 位同时读出或写入；
+    \item \textbf{容量}：字数 $\times$ 位数 $=2^n\times m$，如 $1024\times 8$ 位 $=1\,\mathrm{K}\times 8$。
+\end{itemize}
+每个“字线 $\times$ 位线”的交叉点就是一个\textbf{存储单元}，存放 1 位二进制数。
+
+\subsection{只读存储器 ROM}
+\subsubsection{结构与工作原理}
+ROM 中数据在出厂或编程时写入，正常工作时\textbf{只能读出、不能改写}，断电后数据不丢失（非易失）。
+以二极管 ROM 为例：$n=2$ 根地址线经译码器产生 4 根字线 $W_0\sim W_3$，4 根位线 $D_0\sim D_3$ 经三态门输出。
+某个交叉点上接有二极管（或其他器件），则该位存 1；没有器件则存 0。
+
+读出过程：地址 $A_1A_0$ 经译码使对应字线为高电平，该字线上接有器件的位线被拉高，经三态门输出，其余位线保持低电平。
+$EN'=0$ 时三态门导通、数据输出；$EN'=1$ 时输出高阻，便于与其他芯片共享数据总线。
+
+\subsubsection{阵列观点}
+ROM 的存储矩阵可看作两级阵列的级联：
+\begin{itemize}
+    \item \textbf{与阵列}（地址译码器）：产生 $2^n$ 个最小项（字线），结构固定；
+    \item \textbf{或阵列}（存储矩阵）：把选中的字线“或”到位线，交叉点是否有器件决定该位取 1 还是 0。
+\end{itemize}
+因此 ROM 的本质是“\textbf{固定的与阵列 + 可编程的或阵列}”，这也是它能直接实现组合逻辑函数的根本原因。
+
+\subsubsection{ROM 的分类}
+\begin{table}[!htbp]
+\centering
+\caption{各类 ROM 的写入/擦除方式}
+\begin{tabular}{llll}
+\toprule
+类型 & 写入方式 & 能否改写 & 典型用途 \\
+\midrule
+掩模 ROM & 制造时由掩模版决定 & 不能 & 大批量固定程序、字库 \\
+PROM & 用户用编程器熔断熔丝，一次性 & 不能 & 小批量、样机 \\
+EPROM & 紫外线擦除后重写 & 可（需拆下） & 开发阶段 \\
+EEPROM & 电信号擦除、按字节改写 & 可 & 参数存储 \\
+Flash（闪存） & 电信号擦除、按块改写 & 可 & U 盘、手机、固态盘 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Flash 为压缩单元面积去掉了选通管，改用叠栅 MOS 管：向浮栅充电利用雪崩注入，放电利用隧道效应，
+故写入与擦除的电压、时间不同，擦除按“块”进行。
+
+\subsection{随机存储器 RAM}
+RAM 可随时读出、随时写入，断电后信息丢失（易失）。
+\subsubsection{静态 RAM（SRAM）}
+\begin{itemize}
+    \item \textbf{片选} $\overline{CS}$：$\overline{CS}=0$ 时芯片工作；$\overline{CS}=1$ 时 I/O 口为高阻，芯片不工作，可与总线脱开。
+    \item \textbf{读写控制} $\overline{R/W}$：$=1$ 时读（存储单元的数据送到 I/O 口）；$=0$ 时写（I/O 口的数据写入存储单元）。
+    \item \textbf{存储单元}：六管 N 沟道增强型 MOS 单元。$T_1\sim T_4$ 构成基本 RS 触发器作为存储核心，$T_5$、$T_6$ 为门控管；
+    行选 $X_i=1$ 时该行被选中，$T_5$、$T_6$ 导通，$Q$、$\overline{Q}$ 与位线 $B_j$、$\overline{B_j}$ 接通；再由列选 $Y_j$ 把该列接到读写缓冲器。
+    \item 只要不断电，触发器自锁即可保持数据，\textbf{不需要刷新}；但单元管数多，集成度较低、功耗较大。
+\end{itemize}
+
+\subsubsection{动态 RAM（DRAM）}
+以 MOS 管栅极电容存储电荷，靠电荷有无表示 1/0，单元只需一个管子加一个电容，集成度远高于 SRAM。
+电容电荷会泄漏，必须在电荷失效前周期性\textbf{刷新}（读出后原样写回），刷新由内部或外部刷新电路完成。
+DRAM 速度快、密度高、成本低，是主存的首选；SRAM 速度快但密度低，多用作 Cache。
+
+\begin{table}[!htbp]
+\centering
+\caption{SRAM 与 DRAM 对比}
+\begin{tabular}{lll}
+\toprule
+项目 & SRAM（静态） & DRAM（动态） \\
+\midrule
+存储原理 & 双稳态触发器自锁 & 栅极电容存储电荷 \\
+单元管数 & 6 管 & 1 管 + 1 电容 \\
+是否刷新 & 不需要 & 需周期性刷新 \\
+集成度 & 较低 & 高 \\
+速度 & 快 & 较慢（有刷新开销） \\
+典型用途 & Cache、小容量高速缓存 & 主存储器 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{存储器容量的扩展}
+\subsubsection{位扩展}
+字数够、位数不够时使用：把多片的\textbf{地址线、读写控制线、片选线全部并联}，数据线按位分组，各片同时工作，共同拼出一个更宽的字。
+例如用 8 片 $1024\times 1$ 位 RAM 可构成 $1024\times 8$ 位存储器：8 片的 $A_0\sim A_9$、$\overline{CS}$、$\overline{R/W}$ 并联，
+8 根数据线分别接 8 片的 I/O 端。
+
+\subsubsection{字扩展}
+位数够、字数不够时使用：低位地址并联到各片的地址端，\textbf{高位地址经译码器产生各片的片选信号}。
+以 4 片 $256\times 8$ 位 RAM 构成 $1024\times 8$ 位存储器为例：
+
+\begin{enumerate}
+    \item 数据线 $IO_0\sim IO_7$ 四片并联，作为总的 8 位数据口；
+    \item 地址线 $A_0\sim A_7$ 四片并联，每片内部寻址 256 个字；
+    \item $\overline{R/W}$ 四片并联，统一控制读写；
+    \item 高位地址 $A_8$、$A_9$ 送 2 线—4 线译码器，译码输出 $\overline{Y_0}\sim\overline{Y_3}$ 分别接四片的 $\overline{CS}$。
 \end{enumerate}
 
-\subsubsection{存储器容量扩展}
-容量格式：字数$\times$位数；两种扩展
+\begin{table}[!htbp]
+\centering
+\caption{$1024\times 8$ 存储器的地址分配}
+\begin{tabular}{cc|cccc|c}
+\toprule
+$A_9$ & $A_8$ & $\overline{CS_1}$ & $\overline{CS_2}$ & $\overline{CS_3}$ & $\overline{CS_4}$ & 选中地址范围 \\
+\midrule
+0 & 0 & 0 & 1 & 1 & 1 & $000\sim255$（$A_7\sim A_0$） \\
+0 & 1 & 1 & 0 & 1 & 1 & $256\sim511$ \\
+1 & 0 & 1 & 1 & 0 & 1 & $512\sim767$ \\
+1 & 1 & 1 & 1 & 1 & 0 & $768\sim1023$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{字位同时扩展}
+容量既不够宽也不够深时，先做位扩展组成足够宽的字，再做字扩展组成足够的字数，两级扩展可叠加使用。
+
+\noindent\textbf{易错点：}
 \begin{enumerate}
-    \item 位扩展：单片位宽不足，多片数据线并联拓宽位；
-    \item 字扩展：单片存储量不足，高位地址译码区分各芯片片选。
+    \item 位扩展时误把数据线也并联到同一根总线上——那样各片会同时驱动总线造成冲突，位扩展必须\textbf{按位分线}。
+    \item 字扩展时把高位地址也接到各片地址端，导致片内地址与片选重复译码。
+    \item 忘记三态：多片共享数据线时，未被选中的片子必须处于高阻，因此 $\overline{CS}$ 必须参与控制。
 \end{enumerate}
 
-\subsubsection{字扩展电路实例}
-采用4片$256\times8$位RAM，搭配2线-4线译码器实现$1024\times8$位存储容量。
+\subsection{用存储器实现组合逻辑函数}
+\textbf{原理：}把输入变量接地址端，则每根字线对应一个最小项；数据线输出即为这些最小项之“或”。
+因此 ROM 天然是一个“查表型”多输出组合逻辑电路：地址就是输入组合，数据就是函数值。
+
+\textbf{实现步骤：}
+\begin{enumerate}
+    \item 把每个输出函数化为最小项之和 $Y_i=\sum m(\cdots)$；
+    \item 确定容量：地址位数 $n=$ 输入变量个数，字数 $=2^n$；数据位数 $m=$ 输出函数个数；
+    \item 按最小项编号在存储矩阵对应交叉点“打点”（存 1），其余存 0；
+    \item 输入变量接地址端，数据端即为各输出函数。
+\end{enumerate}
+
+\noindent 由于与阵列固定、或阵列可编程，ROM 在需要“多输入、多输出、任意真值表”的场合比用门电路搭建更简洁，
+典型应用是字符发生器（如八段/七段字符显示器：地址为字符编码，数据为各段的亮灭代码）。
+
+\section{本章小结}
 \begin{itemize}
-    \item 低位地址$A_0\sim A_7$全部并联接入四片RAM地址端；
-    \item 读写控制信号$R/W'$全局并联；
-    \item 高位地址$A_8,A_9$送入2线-4线译码器，译码输出分别接四片片选$CS'$；
-    \item 所有芯片8位I/O数据线并联作为总输出端口。
+    \item 触发器是 1 位存储单元；两个稳定状态靠正反馈自锁，靠时钟控制更新。
+    \item 结构演变：基本 SR 锁存器 $\rightarrow$ 电平（同步）$\rightarrow$ 脉冲（主从）$\rightarrow$ 边沿，每一步解决上一级的一个缺陷。
+    \item 触发方式由结构决定：电平触发在有效电平全程响应（有空翻）；主从结构在有效沿更新（有一次翻转）；边沿触发只在沿上采样（抗干扰最好）。
+    \item 逻辑功能与结构无关：SR（有约束）、JK（万能）、T/$T'$（计数）、D（锁存/移位），四类特性方程必须记牢。
+    \item 异步置位/复位端低电平有效、优先于时钟，分析波形时每步都要先查。
+    \item 寄存器 = $n$ 个触发器 + 附加门；数码寄存器并行存取，移位寄存器逐位移动，可实现串并转换与乘除 2。
+    \item 存储器容量 $=2^n\times m$；位扩展并联地址与片选、分开数据线；字扩展用高位地址译码产生片选。
+    \item ROM = 固定与阵列 + 可编程或阵列，可直接实现多输出组合逻辑函数。
 \end{itemize}
-
-\subsubsection{用ROM实现组合逻辑函数}
-\paragraph{基本原理}
-ROM分为地址译码与阵列，存储矩阵或阵列两部分。将输入变量作为ROM地址输入，每根字线对应一个最小项，数据线输出即为输入变量组合逻辑函数，天然实现多输出逻辑电路。
-ROM结构本质：固定与阵列 + 可编程或阵列。
-
-\paragraph{实例1：多输出逻辑函数实现}
-给定四输入四输出逻辑表达式：
-\[
-\begin{cases}
-Y_1 = A'BC + A'B'C \\
-Y_2 = AB'CD' + BCD' + A'BCD \\
-Y_3 = ABCD' + A'BC'D' \\
-Y_4 = A'B'CD' + ABCD
-\end{cases}
-\]
-转换为最小项之和形式：
-\[
-\begin{cases}
-Y_1 = \sum m(2,3,6,7) \\
-Y_2 = \sum m(6,7,10,14) \\
-Y_3 = \sum m(4,14) \\
-Y_4 = \sum m(2,15)
-\end{cases}
-\]
-实现方案：选用$16\times4$位ROM，4位输入变量$A,B,C,D$接地址端$A_3,A_2,A_1,A_0$，存储矩阵对应最小项位置打点，四根数据线分别输出$Y_1,Y_2,Y_3,Y_4$。
-
-\paragraph{实例2：ROM实现八段字符显示器}
-采用4输入16线地址译码ROM，输入$D,C,B,A$代表4位BCD数字；8位数据线输出对应八段数码管$a,b,c,d,e,f,g,h$；存储矩阵按数字显示字形打点，片选使能$EN'$低电平有效，直接驱动共阴极/共阳极数码管。

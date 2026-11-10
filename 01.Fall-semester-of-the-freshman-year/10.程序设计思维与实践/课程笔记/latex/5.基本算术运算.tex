@@ -1,0 +1,262 @@
+% 第3章 基本算术运算（教材第3章 3.1--3.5）
+\lstset{language=C}
+
+\section{C运算符和表达式}
+
+C 语言共提供 34 种运算符。按所需操作数（Operand，也称运算对象）的个数，运算符分为一元（单目）、二元（双目）和三元（三目）三种；条件运算符是 C 语言中唯一的三元运算符。
+
+\subsection{算术运算符和表达式}
+
+由算术运算符及其操作数组成的表达式称为算术表达式，操作数既可以是常量、变量，也可以是函数调用。C 的算术运算符共 5 个，其优先级与结合性见表~\ref{tab:arith-op}。
+
+\begin{table}[htbp]
+\centering
+\caption{算术运算符的优先级与结合性}\label{tab:arith-op}
+\small
+\begin{tabularx}{\textwidth}{@{}llclX@{}}
+\toprule
+运算符 & 名称 & 操作数个数 & 优先级 & 示例与结果 \\
+\midrule
+\texttt{-}（一元） & 取相反数 & 1 & 最高 & \texttt{-5} $\Rightarrow$ \texttt{-5} \\
+\texttt{*} & 乘法 & 2 & 较高 & \texttt{3*4} $\Rightarrow$ \texttt{12} \\
+\texttt{/} & 除法 & 2 & 较高 & \texttt{12/5} $\Rightarrow$ \texttt{2}；\texttt{12/5.0} $\Rightarrow$ \texttt{2.4} \\
+\texttt{\%} & 求余 & 2 & 较高 & \texttt{11\%5} $\Rightarrow$ \texttt{1} \\
+\texttt{+} & 加法 & 2 & 最低 & \texttt{5+1} $\Rightarrow$ \texttt{6} \\
+\texttt{-}（二元） & 减法 & 2 & 最低 & \texttt{5-1} $\Rightarrow$ \texttt{4} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{（1）运算结果与操作数类型有关。}这是 C 的算术运算区别于数学运算的最重要一点。两个整数相除的商仍为整数，小数部分被直接舍去（不是四舍五入），称为\textbf{整数除法}（Integer Division）；只要有一个操作数是实数，就按\textbf{浮点数除法}（Floating Division）进行，整数操作数在运算前被自动转换为实数。
+
+\begin{lstlisting}
+int   a = 12, b = 5;
+double c = 12.0;
+a / b      /* 2      : 整数除法，舍去小数部分 */
+a / 5.0    /* 2.4    : 浮点数除法，a 先转成 double */
+c / b      /* 2.4    : 浮点数除法 */
+(float)a / b  /* 2.4  : 先把 a 强转为 float 再相除 */
+\end{lstlisting}
+
+\textbf{（2）求余运算限定两个操作数都是整型}，不能对实数求余。求余时左操作数为被除数、右操作数为除数，结果是整除后的余数（Remainder），\textbf{余数的符号与被除数的符号相同}：
+\[
+11\%5=1,\qquad (-11)\%5=-1,\qquad 11\%(-5)=1 .
+\]
+
+\textbf{（3）C 语言没有幂运算符。}数学上的 $x^y$ 必须写成 \texttt{pow(x, y)}（需 \texttt{<math.h>}），而 $\sqrt{x}$ 写成 \texttt{sqrt(x)}。
+
+\textbf{（4）优先级与结合性。}取相反数最高，其次是 \texttt{* / \%}，最低是 \texttt{+ -}；\texttt{* / \%} 三者同级，\texttt{+ -} 二者同级。同级混合运算按结合性决定顺序：一元取相反数为右结合（自右向左），其余算术运算符为左结合（自左向右）。任何表达式中都优先计算圆括号内的值，因此当优先级容易出错时，宁可用括号把意图写死。
+
+一个经典的例子是把三位整数的各位数字拆出来：\texttt{153 \% 10} 得个位 3，\texttt{153 / 100} 得百位 1，而十位既可用 \texttt{(153 / 10) \% 10} 得到，也可用 \texttt{(153 - 1*100) / 10} 得到。注意后一种写法里的圆括号不能省，因为 \texttt{/} 的优先级高于 \texttt{-}。
+
+\subsection{复合的赋值运算符}
+
+涉及算术运算的复合赋值运算符有 5 个：\texttt{+=}、\texttt{-=}、\texttt{*=}、\texttt{/=}、\texttt{\%=}。运算符的两个字符之间不能有空格。
+
+它的形式与等价关系是：
+\[
+\texttt{a\ op=\ b}\quad\Longleftrightarrow\quad \texttt{a = a\ op\ (b)}
+\]
+即：先把等号右侧的表达式整体用圆括号括起来，再把等号左侧的运算符移到等号右侧，最后在等号左侧补上被赋值的变量名。
+
+\begin{table}[htbp]
+\centering
+\caption{复合赋值运算及其等价形式}
+\small
+\begin{tabularx}{\textwidth}{@{}llX@{}}
+\toprule
+复合赋值 & 等价形式 & 说明 \\
+\midrule
+\texttt{n += m + 1} & \texttt{n = n + (m + 1)} & 右侧整体加括号 \\
+\texttt{n -= m + 1} & \texttt{n = n - (m + 1)} & 同上 \\
+\texttt{n *= m + 1} & \texttt{n = n * (m + 1)} & \textbf{不等价}于 \texttt{n = n * m + 1} \\
+\texttt{n /= m + 1} & \texttt{n = n / (m + 1)} & 整数除法时结果可能为 0 \\
+\texttt{n \%= m + 1} & \texttt{n = n \% (m + 1)} & 两侧必须都是整型 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+复合赋值书写更简洁，生成的代码执行效率也略高（只需对左操作数求值一次）。但要记住它\textbf{不是数学等式}，不能与 \texttt{==} 混淆。
+
+\subsection{增1运算符和减1运算符}
+
+\texttt{++} 与 \texttt{--} 都是一元运算符，作用是把变量的值加 1 或减 1，有前缀与后缀两种形式：
+
+\begin{itemize}
+  \item \textbf{前缀形式} \texttt{++i}：先对 \texttt{i} 加 1，再使用 \texttt{i} 的新值；
+  \item \textbf{后缀形式} \texttt{i++}：先使用 \texttt{i} 的当前值，再对 \texttt{i} 加 1。
+\end{itemize}
+
+作为独立语句使用时，\texttt{i++;} 与 \texttt{++i;} 完全等价，都是把 \texttt{i} 加 1。差别只出现在\textbf{把增 1 表达式当作值来用}的场合：
+
+\begin{lstlisting}
+int i = 1, j;
+j = i++;    /* j = 1, i = 2 ：先把旧值 1 赋给 j，再自加 */
+j = ++i;    /* i 先变 2，j = 2 */
+\end{lstlisting}
+
+使用时有几条硬规则：
+
+\begin{enumerate}
+  \item 增 1、减 1 的操作数必须是\textbf{变量}（可修改的左值），\texttt{5++}、\texttt{(i+j)++} 都是错误的；
+  \item 不要对一个算术表达式或常量使用 \texttt{++}、\texttt{--}；
+  \item 不在同一条语句中对同一变量多次使用 \texttt{++}、\texttt{--}。C 标准没有规定这类表达式的求值顺序，编译器可以自由重排，不同编译器（甚至同一编译器的不同优化级别）可能给出不同结果。良好的程序设计风格不写这种晦涩的表达式。
+\end{enumerate}
+
+\corepoint{最容易失分的一类题是“\texttt{i++ + ++i} 等于多少”。正确的回答不是某个数，而是“这是一个未定义行为，不该写”。考场上遇到这类题，先判断它是否属于同一变量的多次修改，再决定能不能算。}
+
+\section{宏常量与宏替换}
+
+程序中直接写死的常数称为\textbf{幻数}（Magic Number），例如圆周率写成 \texttt{3.14159}。幻数带来三类麻烦：可读性差（过一段时间连作者都想不起这个常数是什么）、多处书写容易写错、需要修改时必须逐处查找且容易遗漏。
+
+解决办法之一是用\textbf{宏定义}给它起个名字。宏常量（Macro Constant，也称符号常量）是用一个标识符表示的常量，由编译预处理指令 \texttt{\#define} 定义：
+
+\begin{lstlisting}
+#define PI 3.14159      /* 宏名习惯全部大写；宏名与字符串之间无等号 */
+#define MAX 100         /* 行末不加分号：宏定义不是 C 语句 */
+\end{lstlisting}
+
+预处理阶段会把源程序中该宏名\textbf{原样替换}成后面的字符串，这个过程称为\textbf{宏替换}（Macro Substitution）。替换是“傻瓜式”的纯文本操作，因此有几条必须记住的规则：
+
+\begin{enumerate}
+  \item 宏名与替换字符串之间可以有多个空白符，但\textbf{不能写等号}。写成 \texttt{\#define PI = 3.14159} 后，\texttt{2*PI*r} 会展开成 \texttt{2*=3.14159*r}，产生语法错误；
+  \item 行末\textbf{不加分号}。加了分号，分号会一起被替换进去；
+  \item 宏替换\textbf{不做语法检查}，也不做类型检查；只有宏展开后的源程序在编译时才会暴露语法错误；
+  \item 替换字符串里的\textbf{双引号内}与宏名相同的字符\textbf{不会被替换}；
+  \item 宏名没有数据类型、没有作用域限制，从定义处到文件末尾一直有效。
+\end{enumerate}
+
+\section{const 常量}
+
+宏常量的最大问题是\textbf{没有数据类型}、编译器不做类型检查。若要一个“有类型的常量”，使用 \texttt{const} 类型修饰符：
+
+\begin{lstlisting}
+const double PI = 3.14159;   /* 有类型、只读 */
+const int    MAX = 100;
+\end{lstlisting}
+
+把 \texttt{const} 放在类型名之前，即可把其后的标识符声明为具有该类型的 const 常量。编译器把 const 常量放在\textbf{只读存储区}（只读数据段），程序运行中不允许修改它的值，因此 \texttt{const} 常量\textbf{只能在定义时赋初值}。
+
+\begin{table}[htbp]
+\centering
+\caption{宏常量与 const 常量的对比}
+\small
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+比较项 & 宏常量 \texttt{\#define} & const 常量 \\
+\midrule
+处理阶段 & 预处理阶段做文本替换 & 编译阶段处理，运行时有存储单元 \\
+数据类型 & 无 & 有 \\
+类型检查 & 不做 & 做，能发现类型错误 \\
+作用域 & 无（定义处到文件末尾） & 块级作用域 \\
+调试 & 符号表中无该名字 & 符号表中有，可观察其值 \\
+修改 & 修改定义处即可（但无保护） & 不允许修改，误改会编译报错 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+常规建议是优先用 \texttt{const}：它有类型、能检查、能调试。仅在需要“纯文本替换”（如条件编译、宏函数）时才用 \texttt{\#define}。
+
+\section{自动类型转换与强制类型转换运算符}
+
+\subsection{表达式中的自动类型转换}
+
+相同类型的操作数运算，结果类型与操作数类型相同；不同类型混合运算时，编译器先把所有操作数转换成\textbf{取值范围较大}的类型，称为\textbf{类型提升}（Type Promotion）。转换方向由低到高：
+
+\[
+\texttt{char},\ \texttt{short}\ \to\ \texttt{int}\ \to\ \texttt{unsigned int}\ \to\ \texttt{long}\ \to\ \texttt{unsigned long}\ \to\ \texttt{long double}
+\]
+（\texttt{float} 在运算中一律提升为 \texttt{double}；C99 中还有 \texttt{long long}、\texttt{unsigned long long}，位于 \texttt{long}、\texttt{unsigned long} 与浮点类型之间。）
+
+两条要点：
+
+\begin{itemize}
+  \item 所有 \texttt{char} 与 \texttt{short} 都先提升为 \texttt{int}，这一步称为\textbf{整数提升}（Integral Promotion）；
+  \item 一个特例：若一个操作数是 \texttt{long}、另一个是 \texttt{unsigned}，且 \texttt{unsigned} 的值不能用 \texttt{long} 表示，则两者都转换为 \texttt{unsigned long}。
+\end{itemize}
+
+转换之后每对操作数类型相同，所以结果类型自然与操作数类型相同。正因为存在这种规则，\texttt{1/2} 得 0 而 \texttt{1.0/2} 得 0.5——参与运算的类型决定了运算本身，而不是你想让结果是什么。
+
+\subsection{赋值中的自动类型转换}
+
+赋值时若左侧变量的类型与右侧表达式的类型不同，右侧的值会被自动转换成\textbf{左侧变量的类型}再存入。这是一把双刃剑：
+
+\begin{itemize}
+  \item 由取值范围小的类型转向大的类型是\textbf{安全}的；
+  \item 由取值范围大的类型转向小的类型\textbf{不安全}，可能发生数据信息丢失或数值溢出（例如把 \texttt{pow()} 的结果赋给 \texttt{long}，小数位丢失，结果超出范围时还会溢出）；
+  \item 好的编译器会对这类隐式转换发出警告。
+\end{itemize}
+
+\subsection{强制类型转换运算符}
+
+强制类型转换（casting）运算符的写法是
+\[
+(\text{类型})\ \text{表达式}
+\]
+它是一个一元运算符，与其他一元运算符优先级相同。与自动转换的“隐式”相对，强转是\textbf{显式}声明“我确实要这样转”，能消除隐式转换带来的隐患。
+
+\begin{lstlisting}
+int m = 5;
+m / 2               /* 2        : 整数除法，小数位被舍去 */
+(float)(m / 2)      /* 2.000000 : 先整除得 2，再在 2 后面补小数位 */
+(float)m / 2        /* 2.500000 : 先把 m 转成实数，再做浮点除法 */
+m                   /* 5        : 强转不改变 m 本身的类型和值 */
+\end{lstlisting}
+
+最后一行是关键：\texttt{(float)m} 只是取 \texttt{m} 的值临时转换成一个实数\textbf{值}参与运算，\texttt{m} 的类型与内容都没有被改变。
+
+\section{常用的标准数学函数}
+
+C 标准数学函数库提供了丰富的数学函数，常用的有 \texttt{sqrt}（平方根）、\texttt{fabs}（绝对值）、\texttt{pow}（幂）、\texttt{exp}、\texttt{log}、\texttt{log10}、\texttt{sin}、\texttt{cos}、\texttt{tan} 等，完整列表见教材附录。使用时必须在程序开头包含头文件：
+
+\begin{lstlisting}
+#include <math.h>
+double s = sqrt(2.0);        /* 1.414214 */
+double t = fabs(-3.5);       /* 3.5 : 实型取绝对值，整型用 abs() */
+double u = pow(2.0, 10.0);   /* 1024.0 : C 没有幂运算符 */
+double v = sin(3.14159 / 6); /* 0.5   : 三角函数参数是弧度，不是角度 */
+\end{lstlisting}
+
+把数学公式写成 C 表达式时，最典型的三类错误是：
+
+\begin{enumerate}
+  \item 漏写乘号。数学上 $s(s-a)(s-b)$ 可以省略乘号，C 语言中 \texttt{*} 一个都不能省；
+  \item 整数除法。把 $\frac{1}{2}(a+b+c)$ 写成 \texttt{1/2*(a+b+c)} 得 0，应写 \texttt{1.0/2*(a+b+c)} 或 \texttt{(a+b+c)/2.0}；
+  \item 强转位置错。\texttt{(float)((a+b+c)/2)} 是先整除再强转，小数位已经丢了；正确写法是把分子先转成实数，即 \texttt{(float)(a+b+c)/2}。
+\end{enumerate}
+
+\corepoint{判断一个算术表达式对不对，不看它“看起来像不像数学公式”，而看\textbf{每个中间结果的类型}。养成逐层标注类型的习惯：每一步是整数还是实数、会不会溢出、会不会被截断。}
+
+\section{本章知识点小结}
+
+\begin{itemize}
+  \item 算术运算的结果类型由操作数类型决定：整数除法舍小数，求余只能用于整型，余数符号随被除数；
+  \item 优先级：一元取反 $>$ \texttt{* / \%} $>$ \texttt{+ -}；结合性：一元右结合，其余左结合；括号优先；
+  \item 复合赋值 \texttt{a op= b} 等价于 \texttt{a = a op (b)}，右侧整体加括号；
+  \item \texttt{i++} 与 \texttt{++i} 只在“取表达式的值”时有差别，同一变量不要在同一条语句里多次自增；
+  \item 常量两种写法：宏常量（无类型、纯替换）与 const 常量（有类型、只读、只能定义时初始化）；
+  \item 混合运算按“由低到高”自动提升；赋值按“右侧转成左侧”转换；强转不改变变量本身。
+\end{itemize}
+
+\section{本章常见错误小结}
+
+\begin{table}[htbp]
+\centering
+\caption{第 3 章常见错误与纠正}
+\small
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+易错写法 & 错在哪里 & 纠正 \\
+\midrule
+\texttt{1/2*x} & 整数除法，结果为 0 & \texttt{1.0/2*x} \\
+\texttt{(float)(m/2)} & 先整除再强转，精度已丢失 & \texttt{(float)m/2} \\
+\texttt{a\%2.0} & 求余的操作数必须为整型 & 改为整型操作数 \\
+\texttt{\#define PI = 3.14} & 多写了等号，宏展开成 \texttt{2*=3.14*r} & \texttt{\#define PI 3.14} \\
+\texttt{\#define PI 3.14;} & 多写了分号，分号进入表达式 & 去掉分号 \\
+\texttt{\#define MAX 10} 后写 \texttt{max} & 宏名区分大小写 & 大小写一致 \\
+\texttt{const int N; N=5;} & const 常量只能定义时初始化 & \texttt{const int N = 5;} \\
+\texttt{5++} / \texttt{(a+b)++} & 自增的操作数必须是变量 & 改为对变量操作 \\
+\texttt{sin(30)} & 三角函数参数为弧度，不是角度 & \texttt{sin(30*PI/180)} \\
+\bottomrule
+\end{tabularx}
+\end{table}

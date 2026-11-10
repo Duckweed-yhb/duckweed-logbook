@@ -136,7 +136,7 @@ Python 在执行 \texttt{eval()} 前，会自动对字符串进行 NFKC 标准�
     \item \texttt{U+FB00} → \texttt{ff}
 \end{itemize}
 
-利用该特性，可以实现**1 个字符输入 → 展开为多个字符**，从而突破长度限制。
+利用该特性，可以实现\textbf{1 个字符输入 → 展开为多个字符}，从而突破长度限制。
 
 \subsubsection{Payload 构造}
 构造 Payload：
@@ -267,7 +267,7 @@ LSB 隐写就是修改 RGB 颜色分量中最低的二进制位：
 \end{itemize}
 
 \subsubsection{文本隐写}
-文本隐写利用不可见字符实现信息隐藏，典型为**零宽字符隐写**，将秘密信息编码进 Unicode 零宽字符中并嵌入普通文本，肉眼无法察觉。
+文本隐写利用不可见字符实现信息隐藏，典型为\textbf{零宽字符隐写}，将秘密信息编码进 Unicode 零宽字符中并嵌入普通文本，肉眼无法察觉。
 
 \paragraph{常见零宽字符}
 \begin{itemize}[leftmargin=*]

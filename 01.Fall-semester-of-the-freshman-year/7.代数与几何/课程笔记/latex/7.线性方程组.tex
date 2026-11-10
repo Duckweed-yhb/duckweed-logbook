@@ -1,186 +1,310 @@
+﻿\section{矩阵的初等变换}
 
-\section{线性方程组有解的充要条件}
-\subsection{基本概念}
-设有线性方程组
-\[
-\begin{cases}
-a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=b_1,\\
-a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=b_2,\\
-\cdots\quad\cdots\quad\cdots\quad\cdots\\
-a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=b_m,
-\end{cases} \tag{1}
-\]
-记
-\[
-A=
-\begin{pmatrix}
-a_{11} & a_{12} & \dots & a_{1n}\\
-a_{21} & a_{22} & \dots & a_{2n}\\
-\cdots & \cdots & \cdots & \cdots\\
-a_{m1} & a_{m2} & \dots & a_{mn}
-\end{pmatrix},\quad
-\beta=
-\begin{pmatrix}
-b_1\\b_2\\\vdots\\b_m
-\end{pmatrix},\quad
-X=
-\begin{pmatrix}
-x_1\\x_2\\\vdots\\x_n
-\end{pmatrix},
-\]
-则式（1）可写成矩阵形式
-\[
-AX=\beta \tag{2}
-\]
-记
-\[
-\alpha_1=\begin{pmatrix}a_{11}\\a_{21}\\\vdots\\a_{m1}\end{pmatrix},\;
-\alpha_2=\begin{pmatrix}a_{12}\\a_{22}\\\vdots\\a_{m2}\end{pmatrix},\;\dots,\;
-\alpha_n=\begin{pmatrix}a_{1n}\\a_{2n}\\\vdots\\a_{mn}\end{pmatrix},
-\]
-则式（2）可写成向量形式
-\[
-x_1\alpha_1+x_2\alpha_2+\dots+x_n\alpha_n=\beta \tag{3}
-\]
-称$A$为方程组（1）的系数矩阵。
+\subsection{初等变换的概念}
 
-记增广矩阵
-\[
-B=
-\left(\begin{array}{cccc|c}
-a_{11} & a_{12} & \cdots & a_{1n} & b_1 \\
-a_{21} & a_{22} & \cdots & a_{2n} & b_2 \\
-\vdots & \vdots & &\vdots & \vdots \\
-a_{m1} & a_{m2} & \cdots & a_{mn} & b_m \\
-\end{array}\right)
-\]
-称$B$为方程组（1）的增广矩阵。
-
-若$x_1=d_1,\,x_2=d_2,\,\cdots,\,x_n=d_n$为方程组的解，则称
-\[
-X=\begin{pmatrix}d_1\\d_2\\\vdots\\d_n\end{pmatrix}
-\]
-为方程组（1）的解（向量），显然，这个向量$X$就是方程组（2）的解。
-
-若方程组有解，则称这个方程组是相容的，否则称这个方程组不相容。
-
-若式（1）中$b_1,b_2,\cdots,b_m$不全为$0$，则称式（1）为非齐次线性方程组；
-若式（1）中$b_1,b_2,\cdots,b_m$全部为$0$，则称式（1）为齐次线性方程组。
-
-由于$x_1=x_2=\cdots=x_n=0$是齐次线性方程组的零解，所以，齐次线性方程组总是相容的。
-
-\subsection{非齐次线性方程组有解的充要条件}
-由（3）式可知，方程组（1）的解就是向量$\beta$用向量组$\alpha_1,\alpha_2,\dots,\alpha_n$线性表示的线性系数。下边三种提法等价。
+\begin{definition}
+下面三种变换称为矩阵的\textbf{初等行变换}：
 \begin{enumerate}
-    \item 方程组（1）有解；
-    \item 向量$\beta$可由向量组$\alpha_1,\alpha_2,\dots,\alpha_n$线性表示；
-    \item 向量组$\alpha_1,\alpha_2,\dots,\alpha_n$与$\alpha_1,\alpha_2,\dots,\alpha_n,\beta$等价。
+\item 对换矩阵的两行（对换$i,j$两行，记作$r_i\leftrightarrow r_j$）；
+\item 以数$k\neq0$乘矩阵的某一行（第$i$行乘$k$，记作$r_i\times k$）；
+\item 把矩阵的某一行乘数$k$加到另一行上去（第$j$行的$k$倍加到第$i$行，记作$r_i+kr_j$）。
+\end{enumerate}
+把上述定义中的“行”换成“列”，即得\textbf{初等列变换}的定义（记作$c_i\leftrightarrow c_j$、$c_i\times k$、$c_i+kc_j$）。初等行变换与初等列变换统称\textbf{初等变换}。
+\end{definition}
+
+三种初等变换都是可逆的，且其逆变换是同一类型的初等变换：
+\[
+r_i\leftrightarrow r_j\ \text{的逆变换是其本身};\qquad
+r_i\times k\ \text{的逆变换是}\ r_i\times\frac{1}{k};\qquad
+r_i+kr_j\ \text{的逆变换是}\ r_i+(-k)r_j.
+\]
+
+\begin{definition}
+如果矩阵$A$经有限次初等变换变成矩阵$B$，就称矩阵$A$与$B$\textbf{等价}，记作$A\cong B$。
+\end{definition}
+
+等价是矩阵之间的一种关系，具有三条性质：反身性（$A\cong A$）、对称性（$A\cong B\Rightarrow B\cong A$）、传递性（$A\cong B,B\cong C\Rightarrow A\cong C$）。等价关系把全体$m\times n$矩阵分成若干等价类，同一等价类的矩阵“形状不同而本质相同”（秩相同，见§2）。
+
+\subsection{行阶梯形矩阵与行最简形矩阵}
+
+\begin{definition}
+称矩阵$A$为\textbf{行阶梯形矩阵}，如果它满足：
+\begin{enumerate}
+\item 若有零行（元素全为零的行），则零行全部位于非零行的下方；
+\item 各非零行左起第一个非零元的列标，由上至下严格递增。
+\end{enumerate}
+\end{definition}
+
+行阶梯形矩阵的“台阶”逐行右移、逐行下降，形如阶梯。若再要求每个非零行的首非零元都是$1$、且这些$1$是它们所在列的唯一非零元，则称为\textbf{行最简形矩阵}。
+
+\begin{theorem}
+任何矩阵$A$总可以只经初等行变换化为行阶梯形矩阵，并可进一步化为行最简形矩阵。
+\end{theorem}
+
+\textbf{化行阶梯形的步骤}（自上而下，逐列推进）：
+\begin{enumerate}
+\item 在剩下的子矩阵中选一个非零元作为主元（一般选绝对值小、易计算者，或先用$r_i\leftrightarrow r_j$把非零元换到当前行）；
+\item 用$r_j+kr_i$把主元\textbf{下方}同列的元素全部化为$0$（若主元不为$1$，可先用$r_i\times k$化为$1$以避免分数）；
+\item 对下方的子矩阵重复上述过程，直至剩下的行全为零行。
 \end{enumerate}
 
-\textbf{定理5.1}\quad 非齐次线性方程组（1）有解的充要条件是它的系数矩阵的秩等于其增广矩阵的秩，即
-\[
-R(A)=R(B)
-\]
+\textbf{化行最简形}：在行阶梯形的基础上，\textbf{自下而上}用$r_i+kr_j$把每个首非零元\textbf{上方}的元素也化为$0$，再用$r_i\times k$把首非零元化为$1$。
 
-\section{线性方程组解的结构}
-\subsection{齐次线性方程组解的结构}
-设有齐次线性方程组
-\[
-\begin{cases}
-a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
-a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
-\cdots\quad\cdots\quad\cdots\quad\cdots\\
-a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=0,
-\end{cases} \tag{4}
-\]
-写成矩阵形式为
-\[
-AX=0 \tag{5}
-\]
-写成向量形式为
-\[
-x_1\alpha_1+x_2\alpha_2+\cdots+x_n\alpha_n=0. \tag{6}
-\]
+\corepoint{
+（1）初等\textbf{行}变换与初等\textbf{列}变换一般不能混用：解线性方程组只允许行变换（列变换会改变未知量的对应关系）；求秩、求标准形时行、列变换都可用。
+（2）化行阶梯形时，主元所在列下方必须全为$0$，否则不是阶梯形；主元位置选择不当会使计算量剧增。
+（3）行最简形的首非零元是$1$且其所在列“上下都干净”，这是读出方程组的解、求逆矩阵的关键形态。
+}
 
-记$N(A)$为齐次线性方程组（5）的全体解向量所构成的（解）集合。
+\subsection{初等矩阵}
 
-\textbf{定理5.2}\quad 齐次线性方程组（5）的解集合$N(A)$是向量空间，并且$N(A)$的维数是$n-R(A)$。
-
-\textbf{推论5.1}\quad 设$A$是$m\times n$矩阵，$X=(x_1,x_2,\cdots,x_n)'$，则
+\begin{definition}
+由单位矩阵$E$经过\textbf{一次}初等变换得到的方阵，称为\textbf{初等矩阵}。初等矩阵共有三类：
 \begin{enumerate}
-    \item $AX=0$有唯一解(只有零解)$\iff R(A)$等于未知数的个数$n \iff A$为列满秩矩阵；
-    \item $AX=0$有无穷多解（有非零解）$\iff R(A)$小于未知数的个数$n$；
-    \item 当$r=R(A)<n$时，设$\xi_1,\xi_2,\cdots,\xi_{n-r}$是$N(A)$的基，则$AX=0$的解空间可表示成
-    \[
-    N(A)=\{X\mid X=k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r};\;k_1,k_2,\cdots,k_{n-r}\in F\}.
-    \]
-    称$N(A)$的基$\xi_1,\xi_2,\cdots,\xi_{n-r}$为方程组（4）的基础解系。方程组（4）的通解可以表示成
-    \[
-    X=k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r},
-    \]
-    其中$k_1,k_2,\cdots,k_{n-r}$为任意常数。
+\item 把单位矩阵的第$i,j$两行（列）对换，记作$E(i,j)$；
+\item 以数$k\neq0$乘单位矩阵的第$i$行（列），记作$E(i(k))$；
+\item 以数$k$乘单位矩阵的第$j$行加到第$i$行（或以$k$乘第$i$列加到第$j$列），记作$E(i,j(k))$。
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+设$A$是一个$m\times n$矩阵，则
+\begin{enumerate}
+\item 对$A$施行一次初等\textbf{行}变换，相当于在$A$的\textbf{左边}乘一个相应的$m$阶初等矩阵；
+\item 对$A$施行一次初等\textbf{列}变换，相当于在$A$的\textbf{右边}乘一个相应的$n$阶初等矩阵。
+\end{enumerate}
+\end{theorem}
+
+初等矩阵的性质：
+\begin{enumerate}
+\item 初等矩阵都是可逆矩阵，且逆矩阵仍是同类型的初等矩阵：
+\[
+E(i,j)^{-1}=E(i,j),\qquad E(i(k))^{-1}=E\left(i\left(\tfrac{1}{k}\right)\right),\qquad E(i,j(k))^{-1}=E(i,j(-k));
+\]
+\item 初等矩阵的转置仍是初等矩阵：$E(i,j)'=E(i,j)$，$E(i(k))'=E(i(k))$，$E(i,j(k))'=E(j,i(k))$；
+\item $|E(i,j)|=-1$，$|E(i(k))|=k$，$|E(i,j(k))|=1$，故初等矩阵的行列式都不为$0$。
 \end{enumerate}
 
-当$R(A)=n$时，方程组（4）只有零解，$N(A)=\{0\}$。此时，方程组（4）没有基础解系。
-
-当$R(A)<n$时，$\xi_1,\xi_2,\cdots,\xi_s$为$AX=0$的基础解系的充要条件是：$\xi_1,\xi_2,\cdots,\xi_s$为$AX=0$的$n-R(A)$个线性无关的解向量。
-
-\textbf{推论5.2}\quad $n$个未知数$n$个方程的齐次线性方程组
+\begin{theorem}
+方阵$A$可逆的充要条件是：存在有限个初等矩阵$P_1,P_2,\cdots,P_k$，使
 \[
-\begin{cases}
-a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
-a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
-\cdots\quad\cdots\quad\cdots\quad\cdots\\
-a_{n1}x_1+a_{n2}x_2+\dots+a_{nn}x_n=0,
-\end{cases} \tag{4}
+A=P_1P_2\cdots P_k.
 \]
-有非零解的充要条件是它的系数行列式$|A|=0$。
+\end{theorem}
 
-\subsection{非齐次线性方程组解的结构}
-设有非齐次线性方程组
-\[
-\begin{cases}
-a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=b_1,\\
-a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=b_2,\\
-\cdots\quad\cdots\quad\cdots\quad\cdots\\
-a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=b_m,
-\end{cases} \tag{5}
-\]
-称齐次线性方程组
-\[
-\begin{cases}
-a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n=0,\\
-a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n=0,\\
-\cdots\quad\cdots\quad\cdots\quad\cdots\\
-a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n=0,
-\end{cases} \tag{6}
-\]
-为非齐次线性方程组（5）的导出组，或称方程组（6）为与方程组（5）对应的齐次线性方程组。
-将式（5）和式（6）分别写成矩阵形式$AX=\beta$和$AX=0$。
+由此得\textbf{初等变换法求逆矩阵}：设$A$为$n$阶可逆矩阵，由$P_1P_2\cdots P_sA=E$得$P_1P_2\cdots P_sE=A^{-1}$。两式表明：若一系列初等行变换把$A$化成$E$，则同样的行变换把$E$化成$A^{-1}$。于是对分块矩阵$(A\mid E)$施行初等行变换，当$A$化成$E$时，右边的$E$就化成了$A^{-1}$：
 
-\textbf{定理5.3}\quad 方程组（5）和方程组（6）的解向量，满足：
+\keyformula{(A\mid E)\xrightarrow{\ \text{初等行变换}\ }(E\mid A^{-1})}
+
+类似地，若$A$可逆，则
+\[
+(A\mid B)\xrightarrow{\text{行变换}}(E\mid A^{-1}B),\qquad
+\begin{pmatrix}A\\B\end{pmatrix}\xrightarrow{\text{列变换}}\begin{pmatrix}E\\BA^{-1}\end{pmatrix}.
+\]
+这两条一次性解出了矩阵方程$AX=B$与$XA=B$，不必先求$A^{-1}$。
+
+\corepoint{
+$(A\mid E)\to(E\mid A^{-1})$过程中\textbf{只能做行变换}，一旦用了列变换结果必错。若中途出现全零行，说明$A$不可逆（$|A|=0$），应立即停止并判定“不可逆”。
+}
+
+\section{矩阵的秩}
+
+\subsection{秩的概念}
+
+在$m\times n$矩阵$A$中，任取$k$行与$k$列（$k\le\min\{m,n\}$），位于这些行列交叉处的$k^2$个元素按原位置构成的$k$阶行列式，称为$A$的一个\textbf{$k$阶子式}。$A$共有$C_m^kC_n^k$个$k$阶子式。
+
+\begin{definition}
+矩阵$A$中非零子式的最高阶数称为矩阵$A$的\textbf{秩}，记作$R(A)$（或$r(A)$、$\mathrm{rank}(A)$）。
+\end{definition}
+
+规定零矩阵的秩为$0$。由定义直接得：
 \begin{enumerate}
-    \item 若$\eta_1,\eta_2$都是（5）的解，则$\eta_1-\eta_2$是（6）的解；
-    \item 若$\eta$是（5）的解，$\xi$是（6）的解，则$X=\eta+\xi$还是（5）的解。
+\item $0\le R(A)\le\min\{m,n\}$；
+\item $R(A)=0\iff A=O$；
+\item $R(A)\ge r\iff A$中至少有一个$r$阶子式不为零；
+\item $R(A)<r\iff A$中所有$r$阶子式全为零；
+\item $R(A)=r\iff A$有$r$阶非零子式，而所有$r+1$阶子式（若存在）全为零。
 \end{enumerate}
 
-\textbf{推论5.3}\quad 设$A$是方程组（5）的系数矩阵，$B$是（5）的增广矩阵，$n$是（5）的未知数个数，则
+\begin{theorem}
+矩阵经初等变换后，其秩不变。
+\end{theorem}
+
+证明思路：只需证一次初等变换不改变秩。对“倍乘”“倍加”变换，非零子式的对应关系可直接搬运；对“对换”变换，子式至多变号。反过来，因初等变换可逆，秩也不会增大，故秩不变。
+
+\begin{corollary}
+$R(A)=r$的充要条件是$A$经初等变换可化为
+\[
+\begin{pmatrix}E_r&O\\O&O\end{pmatrix}_{m\times n},
+\]
+称之为$A$的\textbf{等价标准形}。即存在$m$阶可逆矩阵$P$与$n$阶可逆矩阵$Q$，使$PAQ=\begin{pmatrix}E_r&O\\O&O\end{pmatrix}$。
+\end{corollary}
+
+\subsection{求矩阵的秩}
+
+由定义求秩要检查大量子式，实际计算用初等变换：
+
 \begin{enumerate}
-    \item 方程组（5）有唯一解$\iff R(A)=R(B)=n$；
-    \item 方程组(5)有无穷多解$\iff R(A)=R(B)<n$。
-    \item 当$r=R(A)=R(B)<n$（$n$为未知数个数）时，设$\xi_1,\xi_2,\cdots,\xi_{n-r}$是方程组（6）的一个基础解系，$\eta^*$是方程组（5）的一个特解，则（5）的通解可表示成
-    \[
-    X=\eta^*+k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r}, \tag{7}
-    \]
-    其中$k_1,k_2,\cdots,k_{n-r}$为任意常数。
+\item 用初等行变换（也可兼用列变换）把$A$化为\textbf{行阶梯形矩阵}；
+\item 行阶梯形矩阵中\textbf{非零行的行数}就是$R(A)$。
 \end{enumerate}
 
-\section{利用矩阵的初等变换解线性方程组}
-考察方程组$AX=0$。设$A$经初等行变换化为$A_1$，则$AX=0$与$A_1X=0$同解。
-事实上，因$A$经初等行变换化为$A_1$，所以存在可逆矩阵$P$使$PA=A_1$。
-设$\xi$是$AX=0$的解，则$A_1\xi=PA\xi=P0=0$；
-设$\xi$是$A_1X=0$的解，则$A\xi=P^{-1}A_1\xi=P^{-1}0=0$。
-因此，我们经常用初等行变换将$A$化成$A_1$，使方程组$A_1X=0$容易求解，然后去解方程组$A_1X=0$。
+道理是：行阶梯形矩阵的非零行数等于其非零子式的最高阶数，而初等变换不改变秩。
 
-类似地，对非齐次线性方程组$AX=\beta$，我们经常将增广矩阵$B=(A\vdots\beta)$用初等行变换化为$\tilde{B}=(\tilde{A}\vdots\tilde{\beta})$，使$\tilde{A}X=\tilde{\beta}$容易求解，然后去解方程组$\tilde{A}X=\tilde{\beta}$。
+\corepoint{
+（1）$R(A)$是一个\textbf{数}（非负整数），不是矩阵；写“$R(A)=0$”表示零矩阵，不是“$A=0$”之外的意思。
+（2）$R(A)=n$（$n$为阶数）$\iff|A|\neq0\iff A$可逆$\iff A\cong E_n$，这四条等价说法必须能互相转换。
+（3）求秩时若用了列变换，最后读“非零行数”仍然正确（秩不变），但若目的是解方程组，列变换会打乱未知量次序。
+}
 
+\subsection{秩的性质与不等式}
+
+设$A$为$m\times n$矩阵，$B$为$n\times p$矩阵，$P,Q$为可逆矩阵，则
+\begin{enumerate}
+\item $R(A')=R(A)$（转置不改变秩）；
+\item $R(PA)=R(AQ)=R(PAQ)=R(A)$（乘可逆矩阵不改变秩）；
+\item $R(A+B)\le R(A)+R(B)$（$A,B$同型）；
+\item $R(AB)\le\min\{R(A),R(B)\}$；
+\item $R(AB)\ge R(A)+R(B)-n$（Sylvester不等式）；
+\item 特别地，若$AB=O$，则$R(A)+R(B)\le n$；
+\item $\max\{R(A),R(B)\}\le R(A,B)\le R(A)+R(B)$，其中$(A,B)$是把$A,B$按列拼成的分块矩阵；
+\item $R\begin{pmatrix}A&O\\O&B\end{pmatrix}=R(A)+R(B)$；
+\item 若$A$为$n$阶方阵且$A^2=A$，则$R(A)+R(A-E)=n$。
+\end{enumerate}
+
+\keyformula{R(AB)\le\min\{R(A),R(B)\},\qquad R(AB)\ge R(A)+R(B)-n,\qquad AB=O\Rightarrow R(A)+R(B)\le n}
+
+\corepoint{
+$R(A+B)\le R(A)+R(B)$一般\textbf{不能取等}，$R(AB)\le\min\{R(A),R(B)\}$同样不能取等；而$AB=O$时$R(A)+R(B)\le n$是“取等”的常见情形（当且仅当$A$的零空间维数恰好等于$R(B)$）。含未知参数的秩讨论，方法是：先化行阶梯形，令某个主元恰为$0$，分别讨论参数取值。
+}
+
+\subsection{满秩矩阵}
+
+设$A$为$m\times n$矩阵：
+\begin{itemize}
+\item 若$R(A)=m$，称$A$为\textbf{行满秩矩阵}；
+\item 若$R(A)=n$，称$A$为\textbf{列满秩矩阵}；
+\item 若$R(A)=\min\{m,n\}$，简称$A$为\textbf{满秩矩阵}；
+\item $n$阶方阵$A$满秩$\iff R(A)=n\iff|A|\neq0\iff A$可逆。
+\end{itemize}
+
+满秩矩阵的等价标准形形态：
+\[
+A\ \text{列满秩}\iff A\cong\begin{pmatrix}E_n\\O\end{pmatrix};\qquad
+A\ \text{行满秩}\iff A\cong\begin{pmatrix}E_m&O\end{pmatrix}.
+\]
+
+\section{线性方程组的解}
+
+\subsection{解的判定定理}
+
+设有$m$个方程、$n$个未知量的线性方程组
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=b_1,\\
+a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=b_2,\\
+\quad\cdots\cdots\cdots\cdots\\
+a_{m1}x_1+a_{m2}x_2+\cdots+a_{mn}x_n=b_m,
+\end{cases}
+\]
+记系数矩阵$A=(a_{ij})_{m\times n}$，未知量列向量$X=(x_1,\cdots,x_n)'$，常数项列向量$\beta=(b_1,\cdots,b_m)'$，则方程组可写成矩阵形式$AX=\beta$；记\textbf{增广矩阵}
+\[
+B=(A\mid\beta)=\left(\begin{array}{cccc|c}
+a_{11}&a_{12}&\cdots&a_{1n}&b_1\\
+a_{21}&a_{22}&\cdots&a_{2n}&b_2\\
+\vdots&\vdots&&\vdots&\vdots\\
+a_{m1}&a_{m2}&\cdots&a_{mn}&b_m
+\end{array}\right).
+\]
+若把$A$按列分块为$A=(\alpha_1,\alpha_2,\cdots,\alpha_n)$，则方程组又可写成向量形式
+\[
+x_1\alpha_1+x_2\alpha_2+\cdots+x_n\alpha_n=\beta.
+\]
+于是“方程组有解”$\iff$“$\beta$可由$A$的列向量组线性表示”。若方程组有解，称它是\textbf{相容的}，否则称\textbf{不相容}。若$\beta\neq0$，称方程组为\textbf{非齐次}的；若$\beta=0$，即$AX=0$，称为\textbf{齐次}线性方程组（它总有零解，故总是相容的）。
+
+\begin{theorem}[有解判定]
+$n$元线性方程组$AX=\beta$有解的充要条件是
+\[
+R(A)=R(A\mid\beta).
+\]
+\end{theorem}
+
+\begin{theorem}[解的个数]
+设$R(A)=R(A\mid\beta)=r$，$n$为未知量个数，则
+\begin{enumerate}
+\item 若$r=n$，方程组有\textbf{唯一解}；
+\item 若$r<n$，方程组有\textbf{无穷多解}，其中有$n-r$个自由未知量；
+\item 若$R(A)<R(A\mid\beta)$，方程组\textbf{无解}。
+\end{enumerate}
+\end{theorem}
+
+\keyformula{R(A)=R(A\mid\beta)=r:\quad r=n\Rightarrow\text{唯一解},\qquad r<n\Rightarrow\text{无穷多解};\qquad
+R(A)<R(A\mid\beta)\Rightarrow\text{无解}}
+
+判定定理的直观解释：把增广矩阵化为行阶梯形后，若出现形如$(0\ \cdots\ 0\mid d)$（$d\neq0$）的行，即“$0=d$”这样的矛盾方程，则无解——这正是$R(A)<R(A\mid\beta)$；若不出现矛盾行，则剩下的等式都能解，自由未知量个数就是$n-r$。
+
+\subsection{齐次线性方程组}
+
+对$AX=0$（$A$为$m\times n$矩阵），因$R(A)\le R(A\mid 0)=R(A)$恒成立，故\textbf{齐次方程组总是相容}（至少有零解）。
+
+\begin{theorem}
+设$A$为$m\times n$矩阵，则
+\begin{enumerate}
+\item $AX=0$只有零解$\iff R(A)=n$（$A$列满秩）；
+\item $AX=0$有非零解$\iff R(A)<n$；
+\item 特别地，当$m<n$（方程个数少于未知量个数）时，$AX=0$必有非零解；
+\item 当$m=n$时，$AX=0$有非零解$\iff|A|=0$（与克拉默法则的推论一致）。
+\end{enumerate}
+\end{theorem}
+
+当$R(A)=r<n$时，$AX=0$的全部解可表示为
+\[
+X=k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r}\quad(k_1,\cdots,k_{n-r}\text{为任意常数}),
+\]
+其中$\xi_1,\cdots,\xi_{n-r}$是$AX=0$的$n-r$个线性无关的解向量（\textbf{基础解系}）。求法即下面的“自由未知量法”；基础解系与解空间的完整理论见第4章§5。
+
+\subsection{非齐次线性方程组}
+
+设$AX=\beta$（$\beta\neq0$），称$AX=0$为它的\textbf{导出组}（对应的齐次方程组）。
+
+\begin{theorem}
+设$\eta_1,\eta_2$都是$AX=\beta$的解，$\xi$是$AX=0$的解，则
+\begin{enumerate}
+\item $\eta_1-\eta_2$是$AX=0$的解；
+\item $\eta_1+\xi$仍是$AX=\beta$的解。
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}[通解结构]
+若$AX=\beta$有解，$R(A)=r<n$，$\eta^{*}$是$AX=\beta$的一个\textbf{特解}，$\xi_1,\cdots,\xi_{n-r}$是导出组$AX=0$的基础解系，则$AX=\beta$的\textbf{通解}为
+\[
+X=\eta^{*}+k_1\xi_1+k_2\xi_2+\cdots+k_{n-r}\xi_{n-r}\quad(k_1,\cdots,k_{n-r}\text{为任意常数}).
+\]
+即“非齐次通解＝一个特解＋导出组通解”。
+\end{corollary}
+
+\subsection{用初等变换求通解（步骤）}
+
+\begin{enumerate}
+\item 写出增广矩阵$B=(A\mid\beta)$，只用\textbf{初等行变换}化为行阶梯形，判断$R(A)$与$R(A\mid\beta)$：若$R(A)<R(A\mid\beta)$，无解，停止；
+\item 继续化为\textbf{行最简形}（首非零元为$1$，所在列其余元为$0$）；
+\item 由行最简形写出同解的方程组：首非零元对应的未知量用其余未知量表示；
+\item 把\textbf{自由未知量}（非首非零元对应的未知量）依次取$(1,0,\cdots,0),(0,1,\cdots,0),\cdots$，并令常数项为$0$，得导出组的基础解系$\xi_1,\cdots,\xi_{n-r}$；再令自由未知量全取$0$，得特解$\eta^*$；
+\item 写出通解$X=\eta^*+k_1\xi_1+\cdots+k_{n-r}\xi_{n-r}$。
+\end{enumerate}
+
+\corepoint{
+（1）解方程组\textbf{只能做初等行变换}，绝不能做列变换（列变换相当于把未知量改名，通解会对不上）。
+（2）判断有无解必须用$R(A)$与$R(A\mid\beta)$，只看$R(A)$会误判。
+（3）$R(A)=R(A\mid\beta)<n$时“有无穷多解”，答案必须写出\textbf{通解}含$n-r$个任意常数，只写一个特解算错。
+（4）齐次方程组$AX=0$的基础解系必须取$n-R(A)$个\textbf{线性无关}的解；若自由未知量取值组选取不当，可能取到线性相关的向量组。
+（5）含参数的方程组，先化阶梯形，再对参数使主元为零的取值逐个讨论（此时秩可能下降，解的个数随之改变）。
+}
+
+\subsection{与矩阵方程、矩阵秩的联系}
+
+\begin{enumerate}
+\item $AX=B$（$B$为$m\times p$矩阵）可视为$p$个“系数矩阵相同、常数项不同”的方程组同时求解，用$(A\mid B)\xrightarrow{\text{行变换}}$行最简形处理；若$A$可逆，则$X=A^{-1}B$。
+\item $AX=0$有非零解$\iff R(A)<n$，这条判据在第4章用于判定向量组线性相关，在第5章用于求特征向量（$(\lambda E-A)X=0$有非零解$\iff|\lambda E-A|=0$）。
+\item $R(AB)\le\min\{R(A),R(B)\}$与$AB=O\Rightarrow R(A)+R(B)\le n$可由“$B$的每一列都是$AX=0$的解”直接看出。
+\end{enumerate}

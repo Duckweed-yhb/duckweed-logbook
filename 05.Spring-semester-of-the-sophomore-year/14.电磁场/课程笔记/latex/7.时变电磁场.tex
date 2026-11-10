@@ -1,670 +1,756 @@
-% 时变电磁场 - 子文件（仅用于 \input 引入）
-% 电磁场课程笔记
-% 无额外依赖，可直接编译
+﻿% ============================================================
+% 时变电磁场（子文件，只放内容：不重复 \usepackage、不改字号）
+% 对应教材：冯慈璋·马西奎《工程电磁场导论》第 4 章
+% 节名与教材 §4-1 ～ §4-6 一一对齐，章号、节号由主文档自动生成
+% ============================================================
 
-% -------------------------- 正文 --------------------------
-\section{时变电磁场}
+% formulaBox 原本由 3.矢量分析.tex 定义；这里做一次“未定义才定义”的保护，
+% 避免那个文件被改写后本文件整章报 Environment formulaBox undefined。
+\makeatletter
+\@ifundefined{formulaBox}{%
+  \newenvironment{formulaBox}{%
+    \par\begin{adjustbox}{max width=\linewidth}%
+    \begin{tcolorbox}[colback=blue!8!white,colframe=transparent,boxrule=0pt,halign=center,boxsep=2pt,left=4pt,right=4pt,top=3pt,bottom=3pt]%
+  }{%
+    \end{tcolorbox}\end{adjustbox}\par
+  }%
+}{}
+\makeatother
 
-\subsection{本章内容概览}
-本章系统讲解时变电磁场的基础理论，核心知识点如下：
-\begin{itemize}
-    \item \textbf{电磁感应定律和全电流定律}
-    \item \textbf{电磁场基本方程组、分界面上的衔接条件}
-    \item \textbf{动态位及其积分解}
-    \item \textbf{电磁功率流和坡印廷矢量}
-    \item \textbf{正弦电磁场}
-    \item \textbf{电磁辐射}
-\end{itemize}
+\chapter{时变电磁场}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+本章讨论随时间变化的电磁场：场量既是空间坐标的函数，又是时间的函数，电场与磁场互为源、构成
+统一的电磁场。全章六节对应教材 \S 4-1～\S 4-6：电磁感应定律和全电流定律 → 电磁场基本方程组·
+分界面上的衔接条件 → 动态位及其积分解 → 电磁功率流和坡印亭矢量 → 正弦电磁场 → 电磁辐射。
+前四节是“建方程 + 求位 + 算功率”的主干，后两节给出最常用的复数化工具与最简单的辐射模型。
 
-\subsection{电磁感应定律和全电流定律}
-\subsubsection{法拉第定律的推广}
-\paragraph{1. 法拉第定律的原始描述}
-当与导体回路交链的磁通发生变化时，回路中会产生感应电动势和感应电流，这就是\textbf{法拉第电磁感应定律}。
+\section{电磁感应定律和全电流定律}
+
+本节是全章的起点：电磁感应与全电流两条定律，分别回答“变化的磁场如何产生电场”和
+“变化的电场如何产生磁场”。
+
+\subsection{电磁感应定律及其三种表现形式}
+
+当穿过闭合导体回路的磁通（不论由于什么原因）发生变化时，回路中出现感应电流，说明回路中
+必然存在感应电动势。法拉第总结出：闭合回路中的感应电动势与穿过该回路的磁通随时间的变化率
+成正比，
 
 \begin{formulaBox}
 \[
-\mathcal{E} = -\frac{\partial \Phi_m}{\partial t} = -\frac{\partial}{\partial t} \int_{S} \vec{B} \cdot d\vec{S}
+\mathcal{E}=-\frac{\mathrm{d}\Phi_m}{\mathrm{d}t}
+=-\frac{\mathrm{d}}{\mathrm{d}t}\int_{S}\vec{B}\cdot \mathrm{d}\vec{S}
 \]
 \end{formulaBox}
 
-负号表示感应电流产生的磁场总是阻碍原磁场的变化。
+式中 $S$ 是由闭合回路 $l$ 所限定的面积。\textbf{参考方向的规定}：感应电动势的参考方向与
+穿过回路的磁通的参考方向符合右手螺旋关系；面积元的正法线方向与 $l$ 的绕向也符合右手螺旋关系。
+负号即楞次定律：感应电流产生的磁场总要阻碍原磁场的变化。
 
-\paragraph{2. 静止回路的感生电动势}
-回路静止不动，磁通变化仅因 $\vec{B}$ 随时间变化时，感应电动势可写为：
+按磁通变化的原因，式中的 $-{\mathrm{d}\Phi_m}/{\mathrm{d}t}$ 可拆成三种情形：
+
+\textbf{（1）感生电动势。}$\vec{B}$ 随时间变化而回路（相对媒质）不动：
 \begin{formulaBox}
 \[
-\mathcal{E} = \oint_{L} \vec{E}_j \cdot d\vec{l} = -\int_{S} \frac{\partial \vec{B}}{\partial t} \cdot d\vec{S}
+\mathcal{E}=\oint_{l}\vec{E}_j\cdot \mathrm{d}\vec{l}
+=-\int_{S}\frac{\partial \vec{B}}{\partial t}\cdot \mathrm{d}\vec{S}
+\]
+\end{formulaBox}
+变压器即依此工作，故又称\textbf{变压器电动势}。
+
+\textbf{（2）动生电动势。}$\vec{B}$ 恒定而回路整体或局部以速度 $\vec{v}$ 相对媒质运动：
+\begin{formulaBox}
+\[
+\mathcal{E}=\oint_{l}(\vec{v}\times \vec{B})\cdot \mathrm{d}\vec{l}
+\]
+\end{formulaBox}
+这是发电机的工作原理，故又称\textbf{发电机电动势}。其微观解释是导体中的自由电荷受洛伦兹
+磁力 $q\vec{v}\times\vec{B}$ 驱动。
+
+\textbf{（3）两者同时存在。}感应电动势为两者的叠加：
+$\mathcal{E}=\oint_{l}(\vec{E}+\vec{v}\times\vec{B})\cdot \mathrm{d}\vec{l}$，
+右端分别是感生项 $-\int_S\partial\vec{B}/\partial t\cdot \mathrm{d}\vec{S}$ 与动生项
+$\oint_l(\vec{v}\times\vec{B})\cdot \mathrm{d}\vec{l}$。
+
+两个层次要分清：\textbf{感应电动势}只取决于磁通变化率，与回路材料无关，可推广到任意假想回路；
+\textbf{感应电流}还要由电阻决定，回路不闭合时有电动势而无电流。故感应电动势更本质。
+
+\subsection{感应电场（涡旋电场）}
+
+电动势是非保守电场的环路积分，回路中存在感应电动势，说明回路中存在非保守电场。麦克斯韦据此
+假设：\textbf{除了电荷产生电场外，变化的磁场也总要在空间产生电场}，这种电场称为
+\textbf{感应电场}，记作 $\vec{E}_j$。
+
+这一假设的关键在于它\textbf{不限于导体回路}：不论空间有无导体、有无回路，不论在真空中还是
+媒质中，时变磁场与 $\vec{E}_j$ 都相伴存在。于是
+
+\begin{formulaBox}
+\[
+\oint_{l}\vec{E}_j\cdot \mathrm{d}\vec{l}
+=-\int_{S}\frac{\partial \vec{B}}{\partial t}\cdot \mathrm{d}\vec{S}
+\quad\Longrightarrow\quad
+\nabla\times \vec{E}_j=-\frac{\partial \vec{B}}{\partial t},
+\qquad \nabla\cdot \vec{E}_j=0
 \]
 \end{formulaBox}
 
-该电动势又称为\textbf{感生电动势}，是变压器工作的原理，也称为变压器电势。
+感应电场的环量不为零，是\textbf{非保守场}；其力线是无头无尾的闭合曲线，故又称
+\textbf{涡旋电场}；它无源（$\nabla\cdot\vec{E}_j=0$），不始于电荷、不止于电荷。
 
-\paragraph{3. 麦克斯韦对法拉第定律的推广（感应电场）}
-麦克斯韦假说认为：
-\begin{itemize}
-    \item 变化磁场产生的感应电场 $\vec{E}_j$，不仅存在于导体回路中，而且存在于空间中的任意点上，时变磁场与 $\vec{E}_j$ 相伴存在；
-    \item 除了电荷产生电场外，变化的磁场也总要在空间产生电场，由变化磁场产生的电场，称为\textbf{感应电场} $\vec{E}_j$；
-    \item 麦克斯韦假说对回路没有任何限制，即不论空间有无导体、有无回路，不论是在真空或媒质中它都适用。
-\end{itemize}
+空间中的总电场是库仑场与感应电场的叠加 $\vec{E}=\vec{E}_C+\vec{E}_j$：
 
-法拉第定律的实质：\textbf{时变磁场激发电场（感应电场）}。
-
-\paragraph{4. 库仑场与感应电场的对比}
-电荷产生的电场（库仑场）与感应电场的场方程对比：
 \begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\textbf{库仑场} & \textbf{感应电场} \\
-\hline
-$\begin{cases}
-\nabla \times \vec{E}_C = 0 \\
-\nabla \cdot \vec{E}_C = \dfrac{\rho}{\varepsilon_0}
-\end{cases}$
-&
-$\begin{cases}
-\nabla \times \vec{E}_j = -\dfrac{\partial \vec{B}}{\partial t} \\
-\nabla \cdot \vec{E}_j = 0
-\end{cases}$ \\
-\hline
-库仑场是\textbf{有源无旋场} & 感应电场是\textbf{有旋无源场（涡旋电场）} \\
-\hline
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.45\linewidth}
+>{\raggedright\arraybackslash}p{0.45\linewidth}@{}}
+\toprule
+\textbf{库仑场（电荷激发）} & \textbf{感应电场（变化磁场激发）} \\
+\midrule
+$\nabla\times \vec{E}_C=0$，$\nabla\cdot \vec{E}_C=\rho/\varepsilon_0$
+& $\nabla\times \vec{E}_j=-\partial \vec{B}/\partial t$，$\nabla\cdot \vec{E}_j=0$ \\
+有源无旋场，保守场，可引入标量电位 $\vec{E}_C=-\nabla\varphi$
+& 有旋无源场（涡旋电场），非保守场，\textbf{不能}引入单值标量电位 \\
+力线起于正电荷、止于负电荷 & 力线闭合，无起点无终点 \\
+\bottomrule
 \end{tabular}
 \end{center}
 
-自由空间中的总电场 $\vec{E} = \vec{E}_C + \vec{E}_j$ 满足：
+总电场的两个方程为
 \begin{formulaBox}
 \[
-\begin{cases}
-\nabla \times \vec{E} = -\dfrac{\partial \vec{B}}{\partial t} \\
-\nabla \cdot \vec{E} = \dfrac{\rho}{\varepsilon_0}
-\end{cases}
+\nabla\times \vec{E}=-\frac{\partial \vec{B}}{\partial t},
+\qquad
+\nabla\cdot \vec{E}=\frac{\rho}{\varepsilon_0}
 \]
 \end{formulaBox}
-该式包含着时变磁场激励电场的重要信息，也被称为\textbf{麦克斯韦第II方程}。
+其旋度方程即\textbf{麦克斯韦第二方程}的微分形式，包含“时变磁场激励电场”这一重要信息，
+是电磁感应定律的微分形式。
 
-\subsubsection{全电流定律}
-\paragraph{1. 问题的提出：安培环路定律的矛盾}
-在时变场中，应用安培环路定律会遇到矛盾：
-\[
-\oint_{L} \vec{H} \cdot d\vec{l} = \int_{S_1} \vec{J} \cdot d\vec{S} = i
-\]
-\[
-\oint_{L} \vec{H} \cdot d\vec{l} = \int_{S_2} \vec{J} \cdot d\vec{S} = 0
-\]
-这说明传导电流在电容器中是不连续的，安培环路定律在时变场中不再适用。
+\subsection{全电流定律与位移电流}
 
-\paragraph{2. 位移电流的引入}
-麦克斯韦假说认为，时变电场也会产生等效的电流——\textbf{位移电流}。
-电位移矢量 $\vec{D} = \varepsilon_0 \vec{E} + \vec{P} = \varepsilon \vec{E}$ 的时间变化率可等效为电流密度，称为\textbf{位移电流密度}：
+把恒定磁场的安培环路定律用到含电容的交流电路上会出现矛盾：取同一闭合曲线 $l$ 所限定的两个
+不同曲面 $S_1$（穿过导线）与 $S_2$（穿过电容器极板间），得
+
+\[
+\oint_{l}\vec{H}\cdot \mathrm{d}\vec{l}=\int_{S_1}\vec{J}\cdot \mathrm{d}\vec{S}=i,
+\qquad
+\oint_{l}\vec{H}\cdot \mathrm{d}\vec{l}=\int_{S_2}\vec{J}\cdot \mathrm{d}\vec{S}=0
+\]
+
+两式矛盾，根源是\textbf{传导电流在电容器处不连续}，故安培环路定律不能直接用于非恒定电流。
+
+麦克斯韦注意到：极板处传导电流中断，但同时极板上电荷量在变化，极板间电场也在变化。他把电
+位移（电通密度）的时间变化率看作一种等效的电流密度，称为\textbf{位移电流密度}：
+
 \begin{formulaBox}
 \[
-\vec{J}_D = \frac{\partial \vec{D}}{\partial t}
-\]
-\end{formulaBox}
-
-位移电流的物理本质是\textbf{变化的电场}。它解决了时变场中电流不连续的问题，也与电荷守恒定律自洽：
-\[
-\nabla \cdot \vec{J}_C + \frac{\partial \rho}{\partial t} = \nabla \cdot \vec{J}_C + \frac{\partial}{\partial t} (\nabla \cdot \vec{D}) = \nabla \cdot \left( \vec{J}_C + \frac{\partial \vec{D}}{\partial t} \right) = 0
-\]
-
-\paragraph{3. 全电流及其连续性}
-全电流是传导电流与位移电流的总和：
-\begin{formulaBox}
-\[
-\vec{J} = \vec{J}_C + \vec{J}_D = \vec{J}_C + \frac{\partial \vec{D}}{\partial t}
+\vec{J}_D=\frac{\partial \vec{D}}{\partial t},
+\qquad
+\vec{J}=\vec{J}_C+\vec{J}_D=\vec{J}_C+\frac{\partial \vec{D}}{\partial t}
 \]
 \end{formulaBox}
 
-全电流满足连续性：
+两者之和称为\textbf{全电流}。由电荷守恒定律 $\oint_S\vec{J}_C\cdot \mathrm{d}\vec{S}
+=-\dfrac{\mathrm{d}q}{\mathrm{d}t}$ 与高斯定律 $\oint_S\vec{D}\cdot \mathrm{d}\vec{S}=q$ 可得
+
 \[
-\nabla \cdot \vec{J} = \nabla \cdot (\vec{J}_C + \vec{J}_D) = 0
+\nabla\cdot \vec{J}=\nabla\cdot\left(\vec{J}_C+\frac{\partial \vec{D}}{\partial t}\right)
+=\nabla\cdot \vec{J}_C+\frac{\partial \rho}{\partial t}=0
 \]
-即\textbf{全电流是连续的}，且与电荷守恒定律等价。
 
-\paragraph{4. 全电流定律的形式}
-引入全电流后，安培环路定律推广为全电流定律：
+即\textbf{全电流是连续的}。这与电荷守恒定律是等价的（互为充要）。
 
-微分形式（\textbf{麦克斯韦第I方程}）：
+把安培环路定律修正为全电流定律：
+
 \begin{formulaBox}
 \[
-\nabla \times \vec{H} = \vec{J}_C + \frac{\partial \vec{D}}{\partial t}
+\oint_{l}\vec{H}\cdot \mathrm{d}\vec{l}
+=\int_{S}\left(\vec{J}_C+\frac{\partial \vec{D}}{\partial t}\right)\cdot \mathrm{d}\vec{S},
+\qquad
+\nabla\times \vec{H}=\vec{J}_C+\frac{\partial \vec{D}}{\partial t}
 \]
 \end{formulaBox}
 
-积分形式：
-\begin{formulaBox}
-\[
-\oint_{L} \vec{H} \cdot d\vec{l} = \int_{S} \left( \vec{J}_C + \frac{\partial \vec{D}}{\partial t} \right) \cdot d\vec{S}
-\]
-\end{formulaBox}
+后者即\textbf{麦克斯韦第一方程}的微分形式。其物理内容为：不但传导电流能激发磁场，位移电流
+也\textbf{以相同的方式}激发磁场。这就是“变化的电场产生磁场”，与“变化的磁场产生电场”一起，
+使电磁场成为相互激发、不可分割的统一体。
 
-\paragraph{5. 位移电流的磁效应}
-麦克斯韦假说认为：位移电流也产生磁场，且与传导电流产生的磁场具有相同的性质。
-\[
-\begin{cases}
-\nabla \times \vec{H}_C = \vec{J}_C \\
-\nabla \cdot \vec{B}_C = 0
-\end{cases}
-\quad
-\begin{cases}
-\nabla \times \vec{H}_D = \vec{J}_D \\
-\nabla \cdot \vec{B}_D = 0
-\end{cases}
-\]
+\subsection{位移电流与传导电流的对比}
 
-总磁场的方程为：
-\begin{formulaBox}
-\[
-\begin{cases}
-\nabla \times \vec{H} = \vec{J}_C + \dfrac{\partial \vec{D}}{\partial t} \\
-\nabla \cdot \vec{B} = 0
-\end{cases}
-\]
-\end{formulaBox}
-这是麦克斯韦区别于前人的主要贡献之一，揭示了\textbf{变化的电场也能产生磁场}。
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.34\linewidth}p{0.34\linewidth}@{}}
+\toprule
+\textbf{比较项} & \textbf{传导电流} $\vec{J}_C=\gamma\vec{E}$ & \textbf{位移电流} $\vec{J}_D=\partial\vec{D}/\partial t$ \\
+\midrule
+起因 & 带电粒子的宏观定向运动 & 电场（电位移）随时间变化 \\
+激发磁场 & 相同规律，都满足 $\nabla\times\vec{H}=\vec{J}$ 的形式 & 相同规律，都对磁场有贡献 \\
+热效应 & 产生焦耳热 $p=J_C^2/\gamma$ & 真空中不产生焦耳热；介质中由 $\varepsilon$ 变化引起的部分有热效应，但规律不同 \\
+连续性 & 一般不连续（电容器处中断） & 与传导电流之和连续 \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\corepoint{最常错的两处：（1）位移电流\textbf{不是}电荷的运动，真空中它只对应电场的变化，因此
+\textbf{不能}写成 $\vec{J}_D=\rho\vec{v}$，也\textbf{不}服从欧姆定律；（2）“全电流连续”说的是
+$\vec{J}_C+\vec{J}_D$ 连续，\textbf{不能}因此说传导电流连续。判据上还要记住：导体中
+$J_D/J_C=\omega\varepsilon/\gamma$，良导体中这个比值极小，所以低频下导体内可以只算传导电流
+（这正是第 5 章磁准静态场的入口）。}
 
-\subsection{电磁场基本方程组、分界面上的衔接条件}
-\subsubsection{媒质中的麦克斯韦方程组}
-麦克斯韦方程组分为微分形式和积分形式：
+\section{电磁场基本方程组·分界面上的衔接条件}
+
+\subsection{麦克斯韦方程组（积分形式与微分形式）}
+
+把前几章的结论与位移电流假设合起来，就得到概括一切宏观电磁现象的四个方程，即
+\textbf{麦克斯韦方程组}：
 
 \begin{formulaBox}
-微分形式：
-\[
-\begin{cases}
-\nabla \times \vec{H} = \vec{J}_C + \dfrac{\partial \vec{D}}{\partial t} \\[6pt]
-\nabla \times \vec{E} = -\dfrac{\partial \vec{B}}{\partial t} \\[6pt]
-\nabla \cdot \vec{B} = 0 \\[6pt]
-\nabla \cdot \vec{D} = \rho_f
-\end{cases}
-\]
 积分形式：
 \[
 \begin{cases}
-\displaystyle \oint_{L} \vec{H} \cdot d\vec{l} = \int_{S} \left( \vec{J}_C + \dfrac{\partial \vec{D}}{\partial t} \right) \cdot d\vec{S} \\[6pt]
-\displaystyle \oint_{L} \vec{E} \cdot d\vec{l} = -\int_{S} \dfrac{\partial \vec{B}}{\partial t} \cdot d\vec{S} \\[6pt]
-\displaystyle \oint_{S} \vec{B} \cdot d\vec{S} = 0 \\[6pt]
-\displaystyle \oint_{S} \vec{D} \cdot d\vec{S} = \int_{V} \rho_f dV
+\displaystyle\oint_{l}\vec{H}\cdot \mathrm{d}\vec{l}
+=\int_{S}\left(\vec{J}_C+\dfrac{\partial \vec{D}}{\partial t}\right)\cdot \mathrm{d}\vec{S}\\[10pt]
+\displaystyle\oint_{l}\vec{E}\cdot \mathrm{d}\vec{l}
+=-\int_{S}\dfrac{\partial \vec{B}}{\partial t}\cdot \mathrm{d}\vec{S}\\[10pt]
+\displaystyle\oint_{S}\vec{B}\cdot \mathrm{d}\vec{S}=0\\[10pt]
+\displaystyle\oint_{S}\vec{D}\cdot \mathrm{d}\vec{S}=\int_{V}\rho_f\,\mathrm{d}V
+\end{cases}
+\qquad\xrightarrow[\text{高斯、斯托克斯}]{\text{散度、旋度定理}}\qquad
+\begin{cases}
+\nabla\times \vec{H}=\vec{J}_C+\dfrac{\partial \vec{D}}{\partial t}\\[8pt]
+\nabla\times \vec{E}=-\dfrac{\partial \vec{B}}{\partial t}\\[8pt]
+\nabla\cdot \vec{B}=0\\[8pt]
+\nabla\cdot \vec{D}=\rho_f
 \end{cases}
 \]
 \end{formulaBox}
 
-同时，宏观电磁场的理论基础还包含\textbf{洛伦兹力公式}：
+有媒质存在时方程组尚不完备，还须补充\textbf{构成关系（辅助方程）}。对各向同性线性媒质：
+
 \begin{formulaBox}
 \[
-\vec{f} = q\vec{E} + q(\vec{v} \times \vec{B})
+\vec{D}=\varepsilon\vec{E},\qquad \vec{B}=\mu\vec{H},\qquad \vec{J}_C=\gamma\vec{E}
 \]
 \end{formulaBox}
 
-\paragraph{方程组的整体物理意义}
-麦克斯韦方程组全面总结了电磁场的运动规律，表明变化的电场和磁场是相互联系、不可分割的统一体。它与洛伦兹力公式一起，构成了宏观电磁场的理论基础。方程组本身是不对称的，原因在于磁场的无源性：不存在磁荷和磁流密度。
+与洛伦兹力公式一起构成宏观电磁场理论的完整基础：
+$\vec{f}=q\vec{E}+q(\vec{v}\times\vec{B})$。
 
-\subsubsection{关于麦克斯韦方程组的几点说明}
+四个方程的物理意义分别是：第 I 方程 = 全电流定律（传导电流与变化电场都激发磁场）；第 II 方程
+= 推广的电磁感应定律（变化磁场激发有旋电场）；第 III 方程 = 磁通连续性（磁力线无头无尾）；
+第 IV 方程 = 高斯定律（电荷以发散方式产生电场）。方程组\textbf{不对称}的根源是磁场的无源性：
+不存在磁荷，也没有磁流密度。
+
+\subsection{关于方程组的几点说明}
+
 \begin{enumerate}
-    \item \textbf{两个旋度方程是核心方程，第III方程不独立}：
-    由法拉第定律可推导磁通连续性方程：
-    \[
-    \nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}
-    \Rightarrow \nabla \cdot (\nabla \times \vec{E}) = \nabla \cdot \left(-\frac{\partial \vec{B}}{\partial t}\right) = 0
-    \Rightarrow -\frac{\partial}{\partial t} (\nabla \cdot \vec{B}) = 0
-    \Rightarrow \nabla \cdot \vec{B} = C
-    \]
-    上式在整个时间轴上对任意情况都成立，故 $C=0$，即 $\nabla \cdot \vec{B} = 0$。
+  \item \textbf{两个旋度方程是核心，第 III 方程不独立。}由第 II 方程取散度：
+  $\nabla\cdot(\nabla\times\vec{E})=-\dfrac{\partial}{\partial t}(\nabla\cdot\vec{B})=0$，
+  得 $\nabla\cdot\vec{B}=C$；该式在整个时间轴上对任意情况都成立，故 $C=0$。
 
-    \item \textbf{方程组隐含电荷守恒定律}：
-    由安培环路定律和高斯定律可推导出电荷守恒定律：
-    \[
-    \left.
-    \begin{aligned}
-    \nabla \times \vec{H} &= \vec{J}_C + \frac{\partial \vec{D}}{\partial t} \\
-    \nabla \cdot \vec{D} &= \rho_f
-    \end{aligned}
-    \right\}
-    \Rightarrow \nabla \cdot (\nabla \times \vec{H}) = \nabla \cdot \left( \vec{J}_C + \frac{\partial \vec{D}}{\partial t} \right) = 0
-    \Rightarrow \nabla \cdot \vec{J}_C + \frac{\partial \rho_f}{\partial t} = 0
-    \]
+  \item \textbf{方程组隐含电荷守恒定律。}由第 I、IV 方程取散度：
+  $\nabla\cdot(\nabla\times\vec{H})=\nabla\cdot\vec{J}_C
+  +\dfrac{\partial}{\partial t}(\nabla\cdot\vec{D})=0$，
+  即 $\nabla\cdot\vec{J}_C+\dfrac{\partial\rho_f}{\partial t}=0$。
 
-    \item \textbf{方程组是线性方程组，满足叠加定理条件}。
+  \item \textbf{方程组是线性方程组}，满足叠加定理，这是分解为各频率正弦场分别求解的依据。
 
-    \item \textbf{静电场、恒定电场、静磁场是麦克斯韦方程组的特例}：
-    令 $\frac{\partial}{\partial t} = 0$，则方程组退化为：
-    \begin{formulaBox}
-    \[
-    \begin{cases}
-    \nabla \times \vec{H} = \vec{J}_C \\
-    \nabla \times \vec{E} = 0 \\
-    \nabla \cdot \vec{B} = 0 \\
-    \nabla \cdot \vec{D} = \rho_f
-    \end{cases}
-    \]
-    \end{formulaBox}
+  \item \textbf{静电场、恒定电场、恒定磁场都是它的特例}：令 $\partial/\partial t=0$ 即退化为
+  $\nabla\times\vec{H}=\vec{J}_C$、$\nabla\times\vec{E}=0$、$\nabla\cdot\vec{B}=0$、
+  $\nabla\cdot\vec{D}=\rho_f$。
 
-    \item \textbf{方程组和各向同性线性媒质的物性方程一起，构成一组完整的电磁学方程}。
+  \item 方程组与物性方程一起\textbf{完备、自洽}；给定电荷电流分布及初始、边界条件，场的
+  变化被唯一确定（电磁场的唯一性定理）。
 
-    \item \textbf{方程组具有自洽性和完备性}。
-
-    \item \textbf{电磁场的波动性}：
-    在无源自由空间中，$\vec{J}_C=0, \rho_f=0$，麦克斯韦方程组为：
-    \begin{formulaBox}
-    \[
-    \begin{cases}
-    \nabla \times \vec{H} = \dfrac{\partial \vec{D}}{\partial t} \\
-    \nabla \times \vec{E} = -\dfrac{\partial \vec{B}}{\partial t} \\
-    \nabla \cdot \vec{B} = 0 \\
-    \nabla \cdot \vec{D} = 0
-    \end{cases}
-    \]
-    \end{formulaBox}
-    时变电磁场可相互激发，电场和磁场能量相互转换，使电磁场像波浪一样由场源通过任意媒质向远处传播出去，这就是\textbf{电磁波}，是无线电通信的基础。
-
-    在各向同性、线性、均匀媒质中，可推导出\textbf{广义波动方程}：
-    \begin{formulaBox}
-    \[
-    \begin{cases}
-    \nabla^2 \vec{H} - \mu\gamma \dfrac{\partial \vec{H}}{\partial t} - \mu\varepsilon \dfrac{\partial^2 \vec{H}}{\partial t^2} = 0 \\[6pt]
-    \nabla^2 \vec{E} - \mu\gamma \dfrac{\partial \vec{E}}{\partial t} - \mu\varepsilon \dfrac{\partial^2 \vec{E}}{\partial t^2} = 0
-    \end{cases}
-    \]
-    \end{formulaBox}
-    在理想介质中，$\gamma=0$，得到\textbf{齐次波动方程}：
-    \begin{formulaBox}
-    \[
-    \begin{cases}
-    \nabla^2 \vec{H} - \dfrac{1}{c^2} \dfrac{\partial^2 \vec{H}}{\partial t^2} = 0 \\[6pt]
-    \nabla^2 \vec{E} - \dfrac{1}{c^2} \dfrac{\partial^2 \vec{E}}{\partial t^2} = 0
-    \end{cases}
-    \quad \text{其中} \quad c = \frac{1}{\sqrt{\mu_0\varepsilon_0}}
-    \]
-    \end{formulaBox}
-    波动是电磁场的基本运动形态。
+  \item \textbf{电磁场的波动性。}无源自由空间中 $\vec{J}_C=0$、$\rho_f=0$，方程组成为
+  $\nabla\times\vec{H}=\partial\vec{D}/\partial t$、$\nabla\times\vec{E}=-\partial\vec{B}/\partial t$、
+  $\nabla\cdot\vec{B}=0$、$\nabla\cdot\vec{D}=0$。电场与磁场互为源、相互激发，能量在两者之间
+  连续转换，使电磁场像波浪一样由场源向远处传播——这就是\textbf{电磁波}，是无线电通信的基础。
+  对各向同性、线性、均匀媒质，可导出
+  \textbf{广义波动方程}
+  \begin{formulaBox}
+  \[
+  \nabla^2\vec{E}-\mu\gamma\frac{\partial \vec{E}}{\partial t}
+  -\mu\varepsilon\frac{\partial^2\vec{E}}{\partial t^2}=0,
+  \qquad
+  \nabla^2\vec{H}-\mu\gamma\frac{\partial \vec{H}}{\partial t}
+  -\mu\varepsilon\frac{\partial^2\vec{H}}{\partial t^2}=0
+  \]
+  \end{formulaBox}
+  理想介质中 $\gamma=0$，得到\textbf{齐次波动方程}
+  \begin{formulaBox}
+  \[
+  \nabla^2\vec{E}-\frac{1}{v^2}\frac{\partial^2\vec{E}}{\partial t^2}=0,
+  \qquad
+  \nabla^2\vec{H}-\frac{1}{v^2}\frac{\partial^2\vec{H}}{\partial t^2}=0,
+  \qquad v=\frac{1}{\sqrt{\mu\varepsilon}}
+  \]
+  \end{formulaBox}
+  真空中 $v=c=1/\sqrt{\mu_0\varepsilon_0}=3\times10^{8}\,\mathrm{m/s}$；波动是电磁场的基本
+  运动形态。
 \end{enumerate}
 
-\subsubsection{时变场的分界面衔接条件}
-由麦克斯韦方程组的积分形式可推导出分界面上的边界条件。设介质分界面的法向单位矢量 $\vec{n}_{12}$ 由介质1指向介质2，则衔接条件为：
+\subsection{分界面上的衔接条件}
+
+把方程组的积分形式用于跨越分界面的扁平小盒与狭长小回路，即得衔接条件。设 $\vec{n}_{12}$ 为
+由媒质 1 指向媒质 2 的单位法向矢量，$\vec{K}$ 为分界面上的面电流线密度，$\sigma_f$ 为面电荷密度：
+
 \begin{formulaBox}
 \[
 \begin{cases}
-\vec{n}_{12} \times (\vec{H}_2 - \vec{H}_1) = \vec{K} \\
-\vec{n}_{12} \times (\vec{E}_2 - \vec{E}_1) = 0 \\
-\vec{n}_{12} \cdot (\vec{B}_2 - \vec{B}_1) = 0 \\
-\vec{n}_{12} \cdot (\vec{D}_2 - \vec{D}_1) = \sigma_f
+\vec{n}_{12}\times(\vec{H}_2-\vec{H}_1)=\vec{K}
+&\Longleftrightarrow\quad H_{1t}-H_{2t}=K\\[6pt]
+\vec{n}_{12}\times(\vec{E}_2-\vec{E}_1)=0
+&\Longleftrightarrow\quad E_{1t}=E_{2t}\\[6pt]
+\vec{n}_{12}\cdot(\vec{B}_2-\vec{B}_1)=0
+&\Longleftrightarrow\quad B_{1n}=B_{2n}\\[6pt]
+\vec{n}_{12}\cdot(\vec{D}_2-\vec{D}_1)=\sigma_f
+&\Longleftrightarrow\quad D_{2n}-D_{1n}=\sigma_f
 \end{cases}
 \]
 \end{formulaBox}
 
-\paragraph{1. 两种理想介质分界面（$\vec{K}=0, \sigma_f=0$）}
-此时边界条件简化为：
-\[
-\begin{cases}
-\vec{n}_{12} \times (\vec{H}_2 - \vec{H}_1) = 0 \\
-\vec{n}_{12} \times (\vec{E}_2 - \vec{E}_1) = 0 \\
-\vec{n}_{12} \cdot (\vec{B}_2 - \vec{B}_1) = 0 \\
-\vec{n}_{12} \cdot (\vec{D}_2 - \vec{D}_1) = 0
-\end{cases}
-\Rightarrow
-\begin{cases}
-H_{2t} = H_{1t} \\
-E_{2t} = E_{1t} \\
-B_{2n} = B_{1n} \\
-D_{2n} = D_{1n}
-\end{cases}
-\]
-由此可推导出电磁场的\textbf{折射定律}：
-\[
-\frac{\tan\alpha_1}{\tan\alpha_2} = \frac{\varepsilon_1}{\varepsilon_2}, \quad
-\frac{\tan\beta_1}{\tan\beta_2} = \frac{\mu_1}{\mu_2}
-\]
-其中 $\alpha_1, \alpha_2$ 为电场与分界面法线的夹角，$\beta_1, \beta_2$ 为磁场与分界面法线的夹角。
+四种衔接条件恰好对应四个方程：\textbf{切向 $\vec{H}$ 的跃变等于面电流}、\textbf{切向 $\vec{E}$
+连续}、\textbf{法向 $\vec{B}$ 连续}、\textbf{法向 $\vec{D}$ 的跃变等于面电荷}。连续介质
+内部的方程组加上分界面上的衔接条件，才构成任意区域完整的电磁场方程。
 
-\paragraph{2. 理想导体表面的边界条件}
-设介质1为理想导体，其内部不存在时变电磁场，则边界条件为：
+\subsection{两类常见分界面与折射定律}
+
+\textbf{（1）两种理想介质分界面}（$\sigma_f=0$，$\vec{K}=0$）：四个量都连续
 \begin{formulaBox}
 \[
-\begin{cases}
-\vec{n}_{12} \times \vec{H}_2 = \vec{K} \\
-\vec{n}_{12} \times \vec{E}_2 = 0 \\
-\vec{n}_{12} \cdot \vec{B}_2 = 0 \\
-\vec{n}_{12} \cdot \vec{D}_2 = \sigma_f
-\end{cases}
-\Rightarrow
-\begin{cases}
-H_{2t} = -K' \\
-E_{2t} = 0 \\
-B_{2n} = 0 \\
-D_{2n} = \sigma_f
-\end{cases}
+H_{1t}=H_{2t},\qquad E_{1t}=E_{2t},\qquad B_{1n}=B_{2n},\qquad D_{1n}=D_{2n}
 \]
 \end{formulaBox}
-这表明：在理想导体表面，电场的切向分量为零，磁场的法向分量为零，电力线垂直于导体表面，磁力线平行于导体表面。
-
-\paragraph{3. 衔接条件的物理意义}
-连续介质内部的麦克斯韦方程组与媒质分界面上的衔接条件一起，构成了任意区域的电磁场方程。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{动态位及其积分解}
-\subsubsection{动态位的引入与达朗贝尔方程}
-在线性、各向同性、均匀介质中，由麦克斯韦方程组引入矢量位 $\vec{A}$ 和标量位 $\varphi$，满足：
+由此可导出\textbf{折射定律}：设 $\alpha_1,\alpha_2$ 为电场与法线的夹角，$\beta_1,\beta_2$ 为
+磁场与法线的夹角，则
 \begin{formulaBox}
 \[
-\vec{B} = \nabla \times \vec{A}, \quad \vec{E} = -\frac{\partial \vec{A}}{\partial t} - \nabla \varphi
+\frac{\tan\alpha_1}{\tan\alpha_2}=\frac{\varepsilon_1}{\varepsilon_2},
+\qquad
+\frac{\tan\beta_1}{\tan\beta_2}=\frac{\mu_1}{\mu_2}
 \]
 \end{formulaBox}
 
-将上述关系代入麦克斯韦第IV方程 $\nabla \cdot \vec{D} = \rho_f$，可得：
-\[
-\nabla \cdot (\varepsilon \vec{E}) = \rho_f
-\Rightarrow \nabla \cdot \left( -\varepsilon \nabla \varphi - \varepsilon \frac{\partial \vec{A}}{\partial t} \right) = \rho_f
-\Rightarrow \nabla^2 \varphi + \frac{\partial}{\partial t} (\nabla \cdot \vec{A}) = -\frac{\rho_f}{\varepsilon}
-\]
-
-同理，由麦克斯韦第I方程可推导出：
-\[
-\nabla^2 \vec{A} - \mu\varepsilon \frac{\partial^2 \vec{A}}{\partial t^2} = -\mu \vec{J}_C + \nabla \left( \nabla \cdot \vec{A} + \mu\varepsilon \frac{\partial \varphi}{\partial t} \right)
-\]
-
-此时矢量位和标量位耦合在一起，联立求解困难。为了简化，引入\textbf{洛伦兹规范}：
+\textbf{（2）理想导体表面}（导体内部无时变场，$\vec{E}_1=\vec{B}_1=0$）：
 \begin{formulaBox}
 \[
-\nabla \cdot \vec{A} + \mu\varepsilon \frac{\partial \varphi}{\partial t} = 0
+\vec{n}_{12}\times\vec{H}_2=\vec{K},\qquad
+\vec{n}_{12}\times\vec{E}_2=0,\qquad
+\vec{n}_{12}\cdot\vec{B}_2=0,\qquad
+\vec{n}_{12}\cdot\vec{D}_2=\sigma_f
+\]
+\end{formulaBox}
+即：理想导体表面\textbf{切向电场为零、法向磁场为零}，电力线垂直于导体表面，磁力线平行于导体
+表面，电流以面电流形式在表面流动。
+
+\corepoint{衔接条件三个易错点：（1）$\vec{n}_{12}$ 的方向必须“由 1 指向 2”，反过来写会让
+$\sigma_f$、$K$ 的符号全错；（2）连续的是 $E_t$ 与 $B_n$，\textbf{不是} $E_n$ 与 $B_t$
+（$D_n$ 只在无面电荷时连续）；（3）时变场里即使导体“理想”，其表面仍可有 $\sigma_f$ 与 $\vec{K}$，
+不能把“导体内部无场”误推成“导体表面无电荷”。}
+
+\section{动态位及其积分解}
+
+\subsection{位函数的引入}
+
+直接解 $\vec{E}$、$\vec{B}$ 的耦合方程组很困难，因此引入辅助位函数把问题化为波动方程的求解。
+由 $\nabla\cdot\vec{B}=0$ 可令
+
+\begin{formulaBox}
+\[
+\vec{B}=\nabla\times\vec{A},
+\qquad
+\vec{E}=-\frac{\partial \vec{A}}{\partial t}-\nabla\varphi
 \]
 \end{formulaBox}
 
-在此规范下，矢量位和标量位的方程解耦，得到\textbf{达朗贝尔方程}：
+$\vec{A}$ 称为\textbf{矢量位函数}（动态矢量位），$\varphi$ 称为\textbf{标量位函数}
+（动态标量位）。注意 $\vec{E}$ 的表达式比静电场多出 $-\partial\vec{A}/\partial t$ 一项：
+时变场中电场不再单由电荷产生，\textbf{不能}再写 $\vec{E}=-\nabla\varphi$。
+
+\subsection{达朗贝尔方程与洛伦兹条件}
+
+把上式代入第 IV、第 I 方程，在线性、各向同性、均匀媒质中得
+
 \begin{formulaBox}
 \[
-\begin{cases}
-\nabla^2 \vec{A} - \mu\varepsilon \dfrac{\partial^2 \vec{A}}{\partial t^2} = -\mu \vec{J}_C \\[6pt]
-\nabla^2 \varphi - \mu\varepsilon \dfrac{\partial^2 \varphi}{\partial t^2} = -\dfrac{\rho_f}{\varepsilon}
-\end{cases}
+\nabla^2\varphi+\frac{\partial}{\partial t}(\nabla\cdot\vec{A})=-\frac{\rho_f}{\varepsilon},
+\qquad
+\nabla^2\vec{A}-\mu\varepsilon\frac{\partial^2\vec{A}}{\partial t^2}
+=-\mu\vec{J}_C+\nabla\left(\nabla\cdot\vec{A}+\mu\varepsilon\frac{\partial\varphi}{\partial t}\right)
 \]
 \end{formulaBox}
 
-\subsubsection{达朗贝尔方程的特解（推迟位）}
-在无限大均匀媒质中，达朗贝尔方程的特解为：
+两式通过 $\nabla\cdot\vec{A}$ 与 $\partial\varphi/\partial t$ 耦合，联立求解困难。由于位函数
+本身有选择的自由度（规范不变性），可选取\textbf{洛伦兹条件}
 \begin{formulaBox}
 \[
-\vec{A}(\vec{r}, t) = \frac{\mu}{4\pi} \int_{V'} \frac{\vec{J}_C(\vec{r}', t - \frac{R}{v})}{R} dV'
-\]
-\[
-\varphi(\vec{r}, t) = \frac{1}{4\pi\varepsilon} \int_{V'} \frac{\rho_f(\vec{r}', t - \frac{R}{v})}{R} dV'
+\nabla\cdot\vec{A}+\mu\varepsilon\frac{\partial\varphi}{\partial t}=0
 \]
 \end{formulaBox}
-其中 $R = |\vec{r} - \vec{r}'|$ 为场点与源点的距离，波速 $v = \frac{1}{\sqrt{\mu\varepsilon}}$。
-
-这些解被称为\textbf{推迟位}，其物理意义为：场点 $P$ 在时刻 $t$ 的电磁位，不是由 $t$ 时刻的场源分布决定，而是由 $t' = t - \frac{R}{v}$ 时刻的场源分布决定。相差的时间 $\Delta t = \frac{R}{v}$ 正是电磁作用以速度 $v$ 传播距离 $R$ 所需的时间。
-
-推迟效应说明：
-- 电磁扰动是以有限速度传播的，不存在超距作用；
-- 空间各点的动态位总是滞后于激励源的变化，电磁波由近及远地向外传播，其波速由媒质特性决定。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{电磁功率流和坡印廷矢量}
-\subsubsection{坡印廷定理}
-\paragraph{1. 基本假定与能量密度}
-麦克斯韦假定：在均匀各向同性介质中，任意点的电磁能量由电场能量和磁场能量组成，能量密度为：
-\begin{formulaBox}
-\[
-w = w_e + w_m = \frac{1}{2} \vec{E} \cdot \vec{D} + \frac{1}{2} \vec{B} \cdot \vec{H} \quad (\text{单位：J/m}^3)
-\]
-\end{formulaBox}
-
-体积 $V$ 中电磁场的总能量为：
-\[
-W = \int_{V} w dV = \int_{V} \left( \frac{1}{2} \vec{E} \cdot \vec{D} + \frac{1}{2} \vec{B} \cdot \vec{H} \right) dV \quad (\text{单位：J})
-\]
-
-\paragraph{2. 能量的时间变化率}
-能量的时间变化率为：
-\[
-\frac{\partial W}{\partial t} = \int_{V} \frac{\partial}{\partial t} \left( \frac{1}{2} \vec{E} \cdot \vec{D} + \frac{1}{2} \vec{B} \cdot \vec{H} \right) dV
-\]
-
-应用媒质的物性方程 $\vec{D} = \varepsilon \vec{E}$、$\vec{B} = \mu \vec{H}$，可推导出：
-\[
-\frac{\partial}{\partial t} \left( \frac{1}{2} \vec{D} \cdot \vec{E} \right) = \vec{E} \cdot \frac{\partial \vec{D}}{\partial t}, \quad
-\frac{\partial}{\partial t} \left( \frac{1}{2} \vec{B} \cdot \vec{H} \right) = \vec{H} \cdot \frac{\partial \vec{B}}{\partial t}
-\]
-
-因此能量变化率可写为：
-\[
-\frac{\partial W}{\partial t} = \int_{V} \left( \vec{E} \cdot \frac{\partial \vec{D}}{\partial t} + \vec{H} \cdot \frac{\partial \vec{B}}{\partial t} \right) dV
-\]
-
-应用麦克斯韦方程组：
-\[
-\nabla \times \vec{H} = \vec{J}_C + \frac{\partial \vec{D}}{\partial t} \Rightarrow \vec{E} \cdot \frac{\partial \vec{D}}{\partial t} = \vec{E} \cdot (\nabla \times \vec{H}) - \vec{E} \cdot \vec{J}_C
-\]
-\[
-\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t} \Rightarrow \vec{H} \cdot \frac{\partial \vec{B}}{\partial t} = -\vec{H} \cdot (\nabla \times \vec{E})
-\]
-
-代入能量变化率表达式，并利用矢量恒等式 $\vec{E} \cdot (\nabla \times \vec{H}) - \vec{H} \cdot (\nabla \times \vec{E}) = \nabla \cdot (\vec{E} \times \vec{H})$，可得：
-\[
-\frac{\partial W}{\partial t} = \int_{V} \left( \nabla \cdot (\vec{E} \times \vec{H}) - \vec{E} \cdot \vec{J}_C \right) dV
-\]
-
-应用高斯散度定理，得到\textbf{坡印廷定理}的最终形式：
-\begin{formulaBox}
-\[
--\frac{\partial W}{\partial t} = \oint_{A} (\vec{E} \times \vec{H}) \cdot d\vec{A} + \int_{V} \vec{E} \cdot \vec{J}_C dV
-\]
-\end{formulaBox}
-
-\paragraph{3. 坡印廷定理的物理意义}
-坡印廷定理是\textbf{能量守恒定律和转换定律在电磁场中的具体表现}：
-- $-\frac{\partial W}{\partial t}$：区域内减少的电磁功率；
-- $\oint_{A} \vec{S} \cdot d\vec{A}$：流出区域的电磁功率（能量的流动）；
-- $\int_{V} \vec{E} \cdot \vec{J}_C dV$：电磁功率转化为其他形式功率的度量（如焦耳损耗）。
-
-该式表明：电磁场不仅有能量，而且能量是流动的，坡印廷矢量 $\vec{S} = \vec{E} \times \vec{H}$ 表征了这种能量流动的特征。
-
-\subsubsection{坡印廷矢量}
-定义\textbf{坡印廷矢量（能流密度矢量）}：
-\begin{formulaBox}
-\[
-\vec{S} = \vec{E} \times \vec{H}
-\]
-\end{formulaBox}
-
-- 大小：单位为 $\text{W/m}^2$，表示单位时间内通过垂直于传播方向的单位面积的电磁能量；
-- 方向：表示电磁能量传播或流动的方向。
-
-其物理意义为：单位时间内，通过垂直于传播方向的单位面积的电磁功率。
-
-\subsubsection{典型实例分析}
-\paragraph{1. 长直同轴电缆的能流}
-设内导体半径为 $a$，外导体内半径为 $b$，内外导体间电压为 $U$，流过电流为 $I$。
-
-- \textbf{理想导体情况}：
-  内导体内电场为0，能量仅在内外导体之间流动。内外导体之间：
-  \[
-  \vec{E} = \frac{U}{\rho \ln(b/a)} \vec{e}_\rho, \quad
-  \vec{H} = \frac{I}{2\pi\rho} \vec{e}_\varphi
-  \]
-  坡印廷矢量：
-  \[
-  \vec{S} = \vec{E} \times \vec{H} = \frac{UI}{2\pi\rho^2 \ln(b/a)} \vec{e}_z
-  \]
-  传输功率：
-  \[
-  P = \int_{A} \vec{S} \cdot d\vec{A} = UI
-  \]
-  结论：电磁能量在导体之间沿轴线流动，由电源流向负载，导体的作用是建立场，为能量传输指明方向。
-
-- \textbf{非理想导体情况}：
-  内导体内部存在轴向电场 $E_z = \frac{I}{\pi a^2 \gamma}$，坡印廷矢量有径向分量，指向内导体：
-  \[
-  S_\rho = E_z \times H_\varphi = -\frac{I^2 r}{2\pi a}
-  \]
-  这部分能量在导体内部转化为焦耳热损耗，单位长度损耗功率为 $I^2 r$。
-
-\paragraph{2. 圆柱形平板电容器的能流}
-缓慢充电时，电容器内部的能量增加是从侧面流进去的，而不是通过极板上的导线流入。这进一步说明导线不是能量的载体，能量是由场传输的。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{正弦电磁场}
-\subsubsection{正弦电磁场的定义与研究意义}
-以一定频率做正弦变化的场，称为\textbf{正弦电磁场}。
-
-研究正弦电磁场的意义：一般情况下，非正弦变化的时变场可以应用傅里叶级数将它分解成稳态场和频率分量各不相同的正弦电磁场，来分别加以研究。
-
-\subsubsection{正弦电磁场的复数表示法}
-在直角坐标系中，随时间作正弦变化的电场强度的一般形式为：
-\[
-\vec{E}(x,y,z,t) = E_{xm}(x,y,z)\cos(\omega t + \phi_x)\vec{e}_x + E_{ym}(x,y,z)\cos(\omega t + \phi_y)\vec{e}_y + E_{zm}(x,y,z)\cos(\omega t + \phi_z)\vec{e}_z
-\]
-
-引入\textbf{电场强度复矢量} $\dot{\vec{E}}(x,y,z)$，其定义为：
-\begin{formulaBox}
-\[
-\vec{E}(x,y,z,t) = \text{Re}\left[ \dot{\vec{E}}(x,y,z) \sqrt{2} e^{j\omega t} \right]
-\]
-其中：
-\[
-\dot{\vec{E}}(x,y,z) = \dot{E}_x \vec{e}_x + \dot{E}_y \vec{e}_y + \dot{E}_z \vec{e}_z = \frac{1}{\sqrt{2}} E_{xm} e^{j\phi_x} \vec{e}_x + \frac{1}{\sqrt{2}} E_{ym} e^{j\phi_y} \vec{e}_y + \frac{1}{\sqrt{2}} E_{zm} e^{j\phi_z} \vec{e}_z
-\]
-\end{formulaBox}
-
-复数法的优势：对时间的求导运算可以转化为乘积运算：
-\[
-\frac{\partial \vec{E}(x,y,z,t)}{\partial t} = \text{Re}\left[ j\omega \dot{\vec{E}}(x,y,z) \sqrt{2} e^{j\omega t} \right]
-\]
-
-\subsubsection{坡印廷定理的复数形式}
-对于正弦电磁场，坡印廷定理的复数形式为：
-\begin{formulaBox}
-\[
--\oint_{A} (\dot{\vec{E}} \times \dot{\vec{H}}^*) \cdot d\vec{A} = \int_{V} \dot{\vec{J}}_C^* \cdot \dot{\vec{E}} dV + j\omega \int_{V} (\dot{\vec{B}} \cdot \dot{\vec{H}}^* - \dot{\vec{E}} \cdot \dot{\vec{D}}^*) dV
-\]
-\end{formulaBox}
-
-定义\textbf{复坡印廷矢量} $\dot{\vec{S}} = \dot{\vec{E}} \times \dot{\vec{H}}^*$，流入闭合面 $A$ 的复功率为：
-\[
-\widetilde{S} = -\oint_{A} \dot{\vec{S}} \cdot d\vec{A}
-\]
-
-- 有功功率（平均功率）：$P = \text{Re}[\widetilde{S}] = \int_{V} \dot{\vec{J}}_C^* \cdot \dot{\vec{E}} dV$，表示体积 $V$ 内媒质焦耳热损耗的平均值；
-- 无功功率：$Q = \text{Im}[\widetilde{S}] = \omega \int_{V} (\dot{\vec{B}} \cdot \dot{\vec{H}}^* - \dot{\vec{E}} \cdot \dot{\vec{D}}^*) dV$，表示体积 $V$ 内电磁能量的交换。
-
-引入复坡印廷矢量的目的是便于直接用矢量计算能流密度的大小和方向。复数形式侧重在有功功率、无功功率或复功率守恒，与时域形式没有一一对应的关系。
-
-\subsubsection{达朗贝尔方程的复数形式及其解}
-对于正弦电磁场，达朗贝尔方程的复数形式为：
+使方程解耦，得到一对形式完全对称的\textbf{达朗贝尔方程}：
 \begin{formulaBox}
 \[
 \begin{cases}
-\nabla^2 \dot{\vec{A}} + \beta^2 \dot{\vec{A}} = -\mu \dot{\vec{J}}_C \\[6pt]
-\nabla^2 \dot{\varphi} + \beta^2 \dot{\varphi} = -\dfrac{\dot{\rho}_f}{\varepsilon}
-\end{cases}
-\]
-其中相位常数（\textbf{波数}）$\beta = \omega\sqrt{\mu\varepsilon}$，单位为 rad/m。
-\end{formulaBox}
-
-在无限大均匀媒质中，动态位解的复数形式（滞后位）为：
-\begin{formulaBox}
-\[
-\dot{\vec{A}} = \frac{\mu}{4\pi} \int_{V'} \frac{\dot{\vec{J}}_C e^{-j\beta R}}{R} dV'
-\]
-\[
-\dot{\varphi} = \frac{1}{4\pi\varepsilon} \int_{V'} \frac{\dot{\rho}_f e^{-j\beta R}}{R} dV'
-\]
-\end{formulaBox}
-其中 $e^{-j\beta R}$ 表示场点变化滞后于源点变化的相位差为 $\beta R$，该项的存在表明了场的波动性。
-
-电场、磁场与动态位的关系在复数形式下为：
-\[
-\begin{cases}
-\dot{\vec{B}} = \nabla \times \dot{\vec{A}} \\
-\dot{\vec{E}} = -j\omega \dot{\vec{A}} - \nabla \dot{\varphi} = -j\omega \dot{\vec{A}} + \frac{\nabla(\nabla \cdot \dot{\vec{A}})}{j\omega\mu\varepsilon}
-\end{cases}
-\]
-洛伦兹规范的复数形式为：$\nabla \cdot \dot{\vec{A}} + j\omega\mu\varepsilon \dot{\varphi} = 0$。因此，只要求出 $\dot{\vec{A}}$，就可计算出电场和磁场。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{电磁辐射}
-\subsubsection{电磁辐射的基本概念}
-电磁能量脱离源而单独存在于空间中，这种现象称为\textbf{电磁辐射}。
-
-\paragraph{电磁辐射的普遍性}
-任何物体都有辐射，其本质是内部带电粒子的运动激发电磁场向外传播。日常接触的红外线、微波等都属于电磁辐射，而只有频率极高的电离辐射（如紫外线、X射线、$\gamma$ 射线）才可能对人体健康产生致癌影响。
-
-\subsubsection{单元偶极子天线辐射}
-长度 $l$ 远小于波长的线电流元 $I\mathrm{d}\vec{l}$ 是辐射场源的基本组成单元，称为\textbf{电基本振子}，又称单元偶极子。
-
-设电流元为 $\dot{I}\Delta l$，则其矢量位为：
-\[
-\dot{\vec{A}}(\vec{r}) = \frac{\mu_0 \dot{I} \Delta l}{4\pi r} e^{-j\beta r} \vec{e}_z
-\]
-
-代入电场和磁场与动态位的关系，可得单元偶极子在自由空间中激发的电磁场：
-\begin{formulaBox}
-\[
-\begin{cases}
-\dot{E}_r = \sqrt{\dfrac{\mu_0}{\varepsilon_0}} \dfrac{\dot{I} \Delta l \beta^2}{2\pi} e^{-j\beta r} \cos\theta \left[ \dfrac{1}{(\beta r)^2} - j\dfrac{1}{(\beta r)^3} \right] \\[6pt]
-\dot{E}_\theta = \sqrt{\dfrac{\mu_0}{\varepsilon_0}} \dfrac{\dot{I} \Delta l \beta^2}{4\pi} e^{-j\beta r} \sin\theta \left[ \dfrac{1}{(\beta r)^2} + j\dfrac{1}{\beta r} - j\dfrac{1}{(\beta r)^3} \right] \\[6pt]
-\dot{H}_\varphi = \dfrac{\dot{I} \Delta l \beta^2}{4\pi} e^{-j\beta r} \sin\theta \left[ \dfrac{1}{(\beta r)^2} + j\dfrac{1}{\beta r} \right] \\[6pt]
-\dot{E}_\varphi = \dot{H}_r = \dot{H}_\theta = 0
+\displaystyle\nabla^2\vec{A}-\mu\varepsilon\frac{\partial^2\vec{A}}{\partial t^2}=-\mu\vec{J}_C\\[10pt]
+\displaystyle\nabla^2\varphi-\mu\varepsilon\frac{\partial^2\varphi}{\partial t^2}
+=-\frac{\rho_f}{\varepsilon}
 \end{cases}
 \]
 \end{formulaBox}
 
-\subsubsection{辐射场的分区特性}
-根据场点与源点的距离 $r$ 与波长 $\lambda$ 的关系，可将场分为近区和远区。
+达朗贝尔方程是\textbf{非齐次波动方程}：等号左边的 $\mu\varepsilon\,\partial^2/\partial t^2$ 项
+正是波动性的来源，去掉它就是泊松方程（即恒定场的情形）。
 
-\paragraph{1. 近区电磁场（感应区，$\beta r \ll 1$）}
-此时推迟效应可以忽略，场的分布特性与恒定电磁场类似：
+\subsection{达朗贝尔方程的特解——推迟位}
+
+在无限大均匀媒质中，达朗贝尔方程的特解为
+
+\begin{formulaBox}
+\[
+\vec{A}(\vec{r},t)=\frac{\mu}{4\pi}\int_{V'}
+\frac{\vec{J}_C\left(\vec{r}',\,t-\dfrac{R}{v}\right)}{R}\,\mathrm{d}V',
+\qquad
+\varphi(\vec{r},t)=\frac{1}{4\pi\varepsilon}\int_{V'}
+\frac{\rho_f\left(\vec{r}',\,t-\dfrac{R}{v}\right)}{R}\,\mathrm{d}V'
+\]
+\end{formulaBox}
+$R=|\vec{r}-\vec{r}'|$ 为场点到源点的距离，$v=1/\sqrt{\mu\varepsilon}$ 为电磁波的传播速度。
+
+这两个解称为\textbf{推迟位}（滞后位）。其物理意义：场点 $P$ 在时刻 $t$ 的位，不是由 $t$ 时刻
+的源分布决定，而是由 $t'=t-R/v$ 时刻的源分布决定；时间差 $\Delta t=R/v$ 正是电磁作用以速度
+$v$ 传播距离 $R$ 所需的时间。可见电磁扰动以\textbf{有限速度}传播，不存在超距作用；空间各点的
+位总是滞后于激励源，电磁波由近及远向外传播，波速由媒质特性决定。
+
+\corepoint{洛伦兹条件与库仑规范别混：洛伦兹条件
+$\nabla\cdot\vec{A}+\mu\varepsilon\partial\varphi/\partial t=0$ 是为解耦达朗贝尔方程而选，
+适用于时变场；库仑规范 $\nabla\cdot\vec{A}=0$ 适用于恒定磁场（此时
+$\nabla^2\vec{A}=-\mu\vec{J}_C$、$\nabla^2\varphi=-\rho_f/\varepsilon$ 退化为泊松方程）。
+另外“推迟位”只对无限大均匀媒质成立，有边界面时必须叠加满足边界条件的解。}
+
+\section{电磁功率流和坡印亭矢量}
+
+\subsection{坡印亭定理}
+
+设均匀各向同性媒质中，电磁场的能量密度为电场能量密度与磁场能量密度之和
+\begin{formulaBox}
+\[
+w=w_e+w_m=\frac{1}{2}\vec{E}\cdot\vec{D}+\frac{1}{2}\vec{B}\cdot\vec{H}
+\quad(\mathrm{J/m^3}),
+\qquad
+W=\int_{V}w\,\mathrm{d}V
+\]
+\end{formulaBox}
+
+求 $W$ 的时间变化率，用物性方程与第 I、II 方程消去 $\partial\vec{D}/\partial t$、
+$\partial\vec{B}/\partial t$，再用恒等式
+$\nabla\cdot(\vec{E}\times\vec{H})=\vec{H}\cdot(\nabla\times\vec{E})
+-\vec{E}\cdot(\nabla\times\vec{H})$ 与高斯散度定理，得\textbf{坡印亭定理}：
+
+\begin{formulaBox}
+\[
+-\frac{\partial W}{\partial t}
+=\oint_{A}(\vec{E}\times\vec{H})\cdot \mathrm{d}\vec{A}
++\int_{V}\vec{E}\cdot\vec{J}_C\,\mathrm{d}V
+\]
+\end{formulaBox}
+
+它表示：区域内单位时间减少的电磁能量 $-\partial W/\partial t$，一部分通过包围该区域的闭合面
+$A$ 流出（$\oint_A\vec{S}\cdot \mathrm{d}\vec{A}$），一部分在区域内转化为焦耳热
+（$\int_V\vec{E}\cdot\vec{J}_C\,\mathrm{d}V$，即 $\int_V J_C^2/\gamma\,\mathrm{d}V$）。
+这是\textbf{能量守恒与转换定律在电磁场中的具体表现}。
+
+\subsection{含电源的坡印亭定理}
+
+若区域内还有电源（局外场 $\vec{E}_e$ 作用），则要加入电源提供的功率项：
+
+\begin{formulaBox}
+\[
+\oint_{A}(\vec{E}\times\vec{H})\cdot \mathrm{d}\vec{A}
+=-\frac{\partial W}{\partial t}
+-\int_{V}\frac{J_C^{2}}{\gamma}\,\mathrm{d}V
++\int_{V}\vec{J}\cdot\vec{E}_e\,\mathrm{d}V
+\]
+\end{formulaBox}
+
+式中各项依次为：向外输送的电磁功率、储能的变化、焦耳热损耗、电源提供的功率。注意“电源”项
+对应非静电力做功，与 $-\partial W/\partial t$ 符号方向相反。
+
+\subsection{坡印亭矢量与典型能流}
+
+定义\textbf{坡印亭矢量}（能流密度矢量、功率流密度矢量）
+\begin{formulaBox}
+\[
+\vec{S}=\vec{E}\times\vec{H}\qquad(\mathrm{W/m^2})
+\]
+\end{formulaBox}
+大小表示单位时间内通过垂直于能量传播方向的单位面积的电磁能量，方向即能量流动方向。
+
+\textbf{（1）长直同轴电缆。}内外导体均为理想导体时，两导体之间为真空，设电压 $U$、电流 $I$，
+则
+\[
+\vec{E}=\frac{U}{\rho\ln(b/a)}\vec{e}_\rho,\qquad
+\vec{H}=\frac{I}{2\pi\rho}\vec{e}_\varphi
+\quad\Longrightarrow\quad
+\vec{S}=\frac{UI}{2\pi\rho^{2}\ln(b/a)}\vec{e}_z
+\]
+沿横截面 $A$ 积分得
+$P=\int_{A}\vec{S}\cdot \mathrm{d}\vec{A}=UI$，即传输功率恰等于电路理论中的 $UI$。结论：
+\textbf{电磁能量在导体之间的空间沿轴线流动}，导体（理想）本身不传输能量，其作用是引导场、
+约束能量的流动方向。
+
+\textbf{（2）导体非理想时。}内导体内部存在轴向电场
+$E_z=I/(\pi a^{2}\gamma)$，于是坡印亭矢量有指向导体内部的径向分量 $S_\rho<0$，这部分能量
+进入导体并转化为焦耳热，单位长度损耗功率为 $I^{2}r$。这正是“损耗
+功率是从场流入导体的”这一图景。
+
+\textbf{（3）圆柱形平板电容器缓慢充电。}内部能量增加所需的功率是从\textbf{侧面}由场流入的，
+而非经极板导线流入——导线不是能量载体，能量由场传输。
+
+\corepoint{坡印亭矢量的两个常见误用：（1）$\vec{S}$ 是\textbf{能流密度}，某点的 $\vec{S}$ 并不
+等于该点“消耗的功率”，判断某区域获得/失去功率必须做面积分；（2）$\vec{S}=\vec{E}\times\vec{H}$
+不代表能量一定沿导线方向流动——在同轴电缆中能量走的是导体\textbf{之间}的空间，在电阻器中
+能量从侧面\textbf{流入}电阻体。}
+
+\section{正弦电磁场}
+
+\subsection{复数表示法}
+
+以一定频率作正弦变化的场称为\textbf{正弦电磁场}。一般非正弦时变场可用傅里叶级数分解为稳态
+分量与各频率正弦分量分别研究，因此正弦场是基本工具。
+
+设电场各分量同频率、不同初相：
+\[
+\vec{E}(x,y,z;t)=E_{xm}\cos(\omega t+\phi_x)\vec{e}_x
++E_{ym}\cos(\omega t+\phi_y)\vec{e}_y
++E_{zm}\cos(\omega t+\phi_z)\vec{e}_z
+\]
+引入\textbf{电场强度复矢量}（有效值相量）
+\begin{formulaBox}
+\[
+\vec{E}(x,y,z;t)=\mathrm{Re}\left[\sqrt{2}\,\dot{\vec{E}}(x,y,z)e^{j\omega t}\right],
+\qquad
+\dot{\vec{E}}=\frac{1}{\sqrt{2}}\left(E_{xm}e^{j\phi_x}\vec{e}_x
++E_{ym}e^{j\phi_y}\vec{e}_y+E_{zm}e^{j\phi_z}\vec{e}_z\right)
+\]
+\end{formulaBox}
+其中 $\sqrt{2}$ 的约定使 $|\dot{\vec{E}}|$ 为\textbf{有效值}。复数法的最大好处是对时间的求导
+化为乘 $j\omega$：
+\begin{formulaBox}
+\[
+\frac{\partial}{\partial t}\ \longleftrightarrow\ j\omega,
+\qquad
+\frac{\partial^2}{\partial t^2}\ \longleftrightarrow\ -\omega^{2}
+\]
+\end{formulaBox}
+
+\subsection{麦克斯韦方程组的复数形式}
+
+把 $\partial/\partial t\to j\omega$ 代入微分形式方程组，得
 \begin{formulaBox}
 \[
 \begin{cases}
-\dot{E}_r = -j\dfrac{\dot{I} \Delta l}{2\pi\omega\varepsilon_0 r^3} \cos\theta = \dfrac{\dot{p}}{2\pi\varepsilon_0 r^3} \cos\theta \\[6pt]
-\dot{E}_\theta = -j\dfrac{\dot{I} \Delta l}{4\pi\omega\varepsilon_0 r^3} \sin\theta = \dfrac{\dot{p}}{4\pi\varepsilon_0 r^3} \sin\theta \\[6pt]
-\dot{H}_\varphi = \dfrac{\dot{I} \Delta l}{4\pi r^2} \sin\theta
+\nabla\times\dot{\vec{H}}=\dot{\vec{J}}_C+j\omega\dot{\vec{D}}\\[6pt]
+\nabla\times\dot{\vec{E}}=-j\omega\dot{\vec{B}}\\[6pt]
+\nabla\cdot\dot{\vec{B}}=0\\[6pt]
+\nabla\cdot\dot{\vec{D}}=\dot{\rho}_f
 \end{cases}
+\qquad
+\dot{\vec{D}}=\varepsilon\dot{\vec{E}},\quad
+\dot{\vec{B}}=\mu\dot{\vec{H}},\quad
+\dot{\vec{J}}_C=\gamma\dot{\vec{E}}
 \]
-其中电偶极矩 $\dot{p} = \dfrac{\dot{I} \Delta l}{j\omega}$。
+\end{formulaBox}
+第一式可写成
+$\nabla\times\dot{\vec{H}}=(\gamma+j\omega\varepsilon)\dot{\vec{E}}$：括号内的
+$\gamma+j\omega\varepsilon$ 把传导电流与位移电流合在一起，是分析有损耗媒质的出发点
+（第 5 章判断“良导体/良介质”就是比较这两项的大小）。
+
+\subsection{复坡印亭矢量与坡印亭定理的复数形式}
+
+定义\textbf{复坡印亭矢量}
+\begin{formulaBox}
+\[
+\dot{\vec{S}}=\dot{\vec{E}}\times\dot{\vec{H}}^{*},
+\qquad
+\vec{S}_{av}=\mathrm{Re}\left[\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right]
+=\frac{1}{T}\int_{0}^{T}\vec{S}(t)\,\mathrm{d}t
+\]
+\end{formulaBox}
+其实部是坡印亭矢量的平均值（有功功率密度，表示能量流动），虚部是无功功率密度（表示电磁能量
+的交换）。对 $\dot{\vec{S}}$ 取散度并利用复数形式的第 I、II 方程，再体积分、用散度定理，得
+\textbf{坡印亭定理的复数形式}：
+\begin{formulaBox}
+\[
+-\oint_{A}\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)\cdot \mathrm{d}\vec{A}
+=\int_{V}\dot{\vec{J}}_C^{*}\cdot\dot{\vec{E}}\,\mathrm{d}V
++j\omega\int_{V}\left(\dot{\vec{B}}\cdot\dot{\vec{H}}^{*}
+-\dot{\vec{E}}\cdot\dot{\vec{D}}^{*}\right)\mathrm{d}V
+\]
+\end{formulaBox}
+与电路中的复功率 $\tilde{S}=P+j(Q_L-Q_C)$ 对照，若体积内不含电源：
+\begin{formulaBox}
+\[
+\tilde{S}=-\oint_{A}\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)\cdot \mathrm{d}\vec{A}
+=P+jQ
+\]
+\[
+P=\mathrm{Re}[\tilde{S}]=\int_{V}\dot{\vec{J}}_C^{*}\cdot\dot{\vec{E}}\,\mathrm{d}V
+\ \ \text{（焦耳热损耗的平均值，即有功功率）}
+\]
+\[
+Q=\mathrm{Im}[\tilde{S}]
+=\omega\int_{V}\left(\dot{\vec{B}}\cdot\dot{\vec{H}}^{*}
+-\dot{\vec{E}}\cdot\dot{\vec{D}}^{*}\right)\mathrm{d}V
+\ \ \text{（电磁能量的交换，即无功功率）}
+\]
 \end{formulaBox}
 
-近区场的特点：
-- 电场和磁场相位相差90度，平均能流为零，主要是无功功率；
-- 只考虑电能和磁能的交换和振荡，忽略向外辐射的电磁能量，即认为没有能量向外辐射。
+按“等效电路”的观点令 $P=I^{2}R$、$Q=I^{2}X$，可得时变场中体积 $V$ 内媒质的\textbf{等效电路
+参数}
+\begin{formulaBox}
+\[
+R=\frac{1}{I^{2}}\,\mathrm{Re}\left[-\oint_{A}
+\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)\cdot \mathrm{d}\vec{A}\right],
+\qquad
+X=\frac{1}{I^{2}}\,\mathrm{Im}\left[-\oint_{A}
+\left(\dot{\vec{E}}\times\dot{\vec{H}}^{*}\right)\cdot \mathrm{d}\vec{A}\right]
+\]
+\end{formulaBox}
+$R$ 反映介质/导体的损耗，$X$ 反映体内磁场储能（内电抗）。这两个式子是第 5 章“导体的交流
+内阻抗”的计算依据。
 
-\paragraph{2. 远区电磁场（辐射区，$\beta r \gg 1$）}
-此时推迟效应不可忽略，场具有行波性质：
+\subsection{达朗贝尔方程的复数形式与滞后位}
+
+正弦稳态下达朗贝尔方程化为\textbf{非齐次亥姆霍兹方程}
 \begin{formulaBox}
 \[
 \begin{cases}
-\dot{E}_\theta = j\sqrt{\dfrac{\mu_0}{\varepsilon_0}} \dfrac{\dot{I} \Delta l \sin\theta}{2\lambda r} e^{-j\beta r} \\[6pt]
-\dot{H}_\varphi = j\dfrac{\dot{I} \Delta l \sin\theta}{2\lambda r} e^{-j\beta r} \\[6pt]
-\dot{E}_r = \dot{E}_\varphi = \dot{H}_r = \dot{H}_\theta = 0
+\nabla^{2}\dot{\vec{A}}+\beta^{2}\dot{\vec{A}}=-\mu\dot{\vec{J}}_C\\[6pt]
+\nabla^{2}\dot{\varphi}+\beta^{2}\dot{\varphi}=-\dfrac{\dot{\rho}_f}{\varepsilon}
 \end{cases}
+\qquad
+\beta=\omega\sqrt{\mu\varepsilon}\ \ (\mathrm{rad/m})
 \]
 \end{formulaBox}
+$\beta$ 称为\textbf{相位常数}（波数）。时间上推迟 $\Delta t=R/v$ 相当于相位上滞后
+$\omega\Delta t=\omega R/v=\beta R$，故解（\textbf{滞后位}）为
+\begin{formulaBox}
+\[
+\dot{\vec{A}}=\frac{\mu}{4\pi}\int_{V'}
+\frac{\dot{\vec{J}}_C\,e^{-j\beta R}}{R}\,\mathrm{d}V',
+\qquad
+\dot{\varphi}=\frac{1}{4\pi\varepsilon}\int_{V'}
+\frac{\dot{\rho}_f\,e^{-j\beta R}}{R}\,\mathrm{d}V'
+\]
+\end{formulaBox}
+因子 $e^{-j\beta R}$ 表示场点比源点滞后 $\beta R$ 的相位，\textbf{它的存在标志着场的波动性}；
+若 $\beta R\ll 1$（即 $R\ll\lambda$），可令 $e^{-j\beta R}\approx1$，滞后位退化为静态场的
+位函数表达式。
 
-远区场的特点：
-- 场量的相位随 $r$ 的增大不断滞后，具有行波性质；
-- 等相位面为球面，故远区场是\textbf{球面波}；
-- 电场和磁场同相位，存在向外传播的有功功率，形成电磁辐射。
+场量与位的关系、洛伦兹条件在复数形式下为
+\begin{formulaBox}
+\[
+\dot{\vec{B}}=\nabla\times\dot{\vec{A}},
+\qquad
+\dot{\vec{E}}=-j\omega\dot{\vec{A}}-\nabla\dot{\varphi}
+=-j\omega\dot{\vec{A}}+\frac{\nabla(\nabla\cdot\dot{\vec{A}})}{j\omega\mu\varepsilon},
+\qquad
+\nabla\cdot\dot{\vec{A}}+j\omega\mu\varepsilon\dot{\varphi}=0
+\]
+\end{formulaBox}
+即只要求出 $\dot{\vec{A}}$，就能算出 $\dot{\vec{E}}$ 与 $\dot{\vec{H}}$。
 
-\paragraph{远区场的关键参数}
+\corepoint{三个高频错点：（1）本书用\textbf{有效值}相量，所以
+$\vec{S}_{av}=\mathrm{Re}[\dot{\vec{E}}\times\dot{\vec{H}}^{*}]$ \textbf{不带} $1/2$；
+若改用幅值相量则必须补 $1/2$，两种约定不能混用。（2）复坡印亭定理不是由时域形式逐项“翻译”
+来的，它与时域形式没有一一对应关系：时域形式讲能量守恒与转换，复数形式讲有功、无功与复功率
+守恒。（3）只有实部是平均功率，虚部是能量交换，\textbf{不能}把 $|\dot{\vec{S}}|$ 当成平均功率
+密度。}
+
+\section{电磁辐射}
+
+\subsection{电磁辐射与单元偶极子天线}
+
+电磁能量脱离场源而单独存在于空间中的现象称为\textbf{电磁辐射}。只要有随时间变化的电流、
+电荷，就会产生辐射；辐射过程形成电磁波并以有限速度传播。天线就是一种专门的辐射器。
+
+实际的线天线可看作许多\textbf{单元偶极子}（电基本振子）串联而成：一段载流细导线，其长度与
+横截面尺寸都远小于波长，且观察点到导线上各点距离近似相同。故其上电流可视为等幅同相，
+$\dot{I}$ 为有效值。
+
+单元偶极子位于坐标原点、沿 $z$ 轴放置时，其矢量位为
+\begin{formulaBox}
+\[
+\dot{\vec{A}}(\vec{r})=\frac{\mu_0\dot{I}\Delta l}{4\pi r}e^{-j\beta r}\vec{e}_z
+\]
+\end{formulaBox}
+代入 $\dot{\vec{H}}=\nabla\times\dot{\vec{A}}/\mu_0$、
+$\dot{\vec{E}}=-j\omega\dot{\vec{A}}+\nabla(\nabla\cdot\dot{\vec{A}})/(j\omega\mu_0\varepsilon_0)$，
+得自由空间中的辐射场（球坐标）：三个分量 $\dot{E}_r$、$\dot{E}_\theta$、$\dot{H}_\varphi$
+各含 $1/(\beta r)$、$1/(\beta r)^{2}$、$1/(\beta r)^{3}$ 三类项，且
+$\dot{E}_\varphi=\dot{H}_r=\dot{H}_\theta=0$。$\beta r$ 很小时高次幂项占主导，$\beta r$ 很大时
+$1/(\beta r)$ 项占主导，故必须分区讨论（\textbf{轻推导、重结论}）。
+
+\subsection{近区场与远区场}
+
+\textbf{（1）近区场（$r\ll\lambda$，即 $\beta r\ll1$）。}高次幂项占主导，$e^{-j\beta r}\approx1$：
+\begin{formulaBox}
+\[
+\dot{E}_r=\frac{\dot{p}}{2\pi\varepsilon_0 r^{3}}\cos\theta,
+\qquad
+\dot{E}_\theta=\frac{\dot{p}}{4\pi\varepsilon_0 r^{3}}\sin\theta,
+\qquad
+\dot{H}_\varphi=\frac{\dot{I}\Delta l}{4\pi r^{2}}\sin\theta,
+\qquad
+\dot{p}=\frac{\dot{I}\Delta l}{j\omega}
+\]
+\end{formulaBox}
+特点：磁场与用毕奥—沙伐定律算出的电流元磁场相同，电场与用库仑定律算出的电偶极子电场相同，
+场与源\textbf{同相位}——即推迟效应可忽略，时变场的分布规律与恒定场完全相同。从能量看，
+电场与磁场相位相差 $90^{\circ}$，复坡印亭矢量只有虚部，平均能流为零：近区内只有电能与磁能的
+交换和振荡，\textbf{不向外净辐射能量}（该结论是忽略高次项的近似结果）。
+
+\textbf{（2）远区场（$r\gg\lambda$，即 $\beta r\gg1$）。}只保留 $1/(\beta r)$ 项：
+\begin{formulaBox}
+\[
+\dot{E}_\theta=j\sqrt{\frac{\mu_0}{\varepsilon_0}}
+\frac{\dot{I}\Delta l\sin\theta}{2\lambda r}e^{-j\beta r},
+\qquad
+\dot{H}_\varphi=j\frac{\dot{I}\Delta l\sin\theta}{2\lambda r}e^{-j\beta r},
+\qquad
+\dot{E}_r=\dot{E}_\varphi=\dot{H}_r=\dot{H}_\theta=0
+\]
+\end{formulaBox}
+远区场的四个特征：
 \begin{itemize}
-    \item \textbf{波阻抗}：自由空间中，远区电场与磁场的比值为常数：
-    \[
-    Z_0 = \frac{\dot{E}_\theta}{\dot{H}_\varphi} = \sqrt{\frac{\mu_0}{\varepsilon_0}} \approx 377\,\Omega
-    \]
-    波阻抗描述了远区场中电场和磁场的振幅关系。
-
-    \item \textbf{辐射功率与辐射电阻}：穿过半径为 $r$ 的球面向外辐射的总电磁功率为：
-    \[
-    P = \oint_{A} \text{Re}(\dot{\vec{S}}) \cdot d\vec{A} = I^2 \left[ 80\pi^2 \left( \frac{\Delta l}{\lambda} \right)^2 \right] = I^2 R_e
-    \]
-    其中 $R_e = 80\pi^2 \left( \frac{\Delta l}{\lambda} \right)^2$ 称为\textbf{辐射电阻}，它表征了天线辐射电磁能量的能力。
+  \item \textbf{行波性}：相位随 $r$ 增大不断滞后，推迟效应不可忽略，场具有波的性质；
+  \item \textbf{球面波}：等相面是以源为中心的球面；
+  \item \textbf{横电磁波}：$\vec{E}\perp\vec{H}\perp$ 传播方向，且满足右手螺旋关系，且
+  \item \textbf{波阻抗为实数}：$Z_0=\dot{E}_\theta/\dot{H}_\varphi
+  =\sqrt{\mu_0/\varepsilon_0}\approx377\,\Omega$，电场与磁场同相位，复坡印亭矢量只有实部，
+  沿 $r$ 方向不断向外辐射能量。故远区又称\textbf{辐射区}，其中的场称\textbf{辐射场}。
 \end{itemize}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\subsection{辐射功率、辐射电阻与方向性}
+
+穿过半径为 $r$ 的球面向外辐射的总平均功率为
+\begin{formulaBox}
+\[
+P=\oint_{A}\mathrm{Re}(\dot{\vec{S}})\cdot \mathrm{d}\vec{A}
+=80\pi^{2}\left(\frac{\Delta l}{\lambda}\right)^{2}I^{2}=I^{2}R_e,
+\qquad
+R_e=80\pi^{2}\left(\frac{\Delta l}{\lambda}\right)^{2}
+\]
+\end{formulaBox}
+$P$ 与 $r$ 无关，说明能量不在空间停留，而是不断由波源向外辐射。与 $P=I^{2}R$ 对照，把
+$R_e$ 称为\textbf{辐射电阻}，它表征天线辐射电磁能量的能力：$R_e$ 越大，辐射能力越强。
+
+远区场的振幅还与观察方向有关：$\dot{E}_\theta,\dot{H}_\varphi\propto\sin\theta$，即
+\textbf{方向性因子} $F(\theta)=\sin\theta$。$\theta=90^{\circ}$（垂直于偶极子轴）辐射最强，
+$\theta=0^{\circ}$ 或 $180^{\circ}$（沿轴线）无辐射；与 $\varphi$ 无关，故 H 面方向图是圆。
+以 $F(\theta)$ 绘制的图形称\textbf{方向图}；多个相同单元按规律排列构成\textbf{天线阵}，其
+方向性函数为单元因子与阵因子之积（方向性相乘原理），可获得更强方向性。
+
+\corepoint{辐射部分三个易错点：（1）\textbf{辐射电阻不是损耗电阻}，它不代表发热，而是把辐射出去
+的功率“等效”为电路中的电阻消耗；（2）近区“平均能流为零”是忽略了 $1/(\beta r)$ 等高次项的
+\textbf{近似}结论，真正的辐射恰恰来自这些被忽略的项，故不能说“近区绝对不辐射”；（3）波阻抗
+$377\,\Omega$ 只对\textbf{远区、自由空间}成立，近区 $\dot{E}_\theta/\dot{H}_\varphi$ 是复数且
+随 $r$ 变化，不能套用。}

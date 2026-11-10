@@ -1,150 +1,326 @@
-\section{线性空间的概念}
+% 第6章 线性空间与线性变换（同济《线性代数》第七版 第6章，选学但保留）
+% §1 线性空间的定义与性质；§2 维数、基与坐标；§3 基变换与坐标变换；
+% §4 线性变换；§5 线性变换的矩阵表示式。正文不写例题与习题。
+
+\section{线性空间的定义与性质}
+
+第4章的向量是"有序数组"，本章把向量与向量空间的概念公理化：元素是什么并不重要，重要的是元素之间定义了满足八条规律的加法与数乘。
+
 \subsection{线性空间的定义}
-\textbf{定义7.1}\quad 设$V$是一个非空集合，$F$是一个数域，如果对任意两个元素$\alpha,\beta\in V$，总有唯一的一个元素$\gamma\in V$与之对应，称$\gamma$为$\alpha$与$\beta$的和，记作$\gamma=\alpha+\beta$；又对于任一数$k\in F$及任一元素$\alpha\in V$，有唯一的一个$\delta\in V$与之对应，称为$k$与$\alpha$的积，记作$\delta=k\alpha$；并且这两种运算满足以下八条规律（设$\alpha,\beta,\gamma\in V;\;k,l\in F$）：
+\begin{definition}[线性空间]
+设$V$是一个非空集合，$F$是一个数域（本书取实数域$\mathbb{R}$）。如果在$V$中定义了一个\textbf{加法}，即对任意$\boldsymbol{\alpha},\boldsymbol{\beta}\in V$，总有唯一的$\boldsymbol{\gamma}\in V$与之对应，记作$\boldsymbol{\gamma}=\boldsymbol{\alpha}+\boldsymbol{\beta}$；又在$V$中定义了一个\textbf{数与元素的乘法}（简称数乘），即对任一$\lambda\in F$与任一$\boldsymbol{\alpha}\in V$，总有唯一的$\boldsymbol{\delta}\in V$与之对应，记作$\boldsymbol{\delta}=\lambda\boldsymbol{\alpha}$；并且这两种运算满足以下八条运算规律（设$\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\gamma}\in V$，$\lambda,\mu\in F$）：
 \begin{enumerate}
-    \item $\alpha+\beta=\beta+\alpha$；
-    \item $(\alpha+\beta)+\gamma=\alpha+(\beta+\gamma)$；
-    \item 在$V$中存在元素$\boldsymbol{0}$，使得对任意$\alpha\in V$，都有$\alpha+\boldsymbol{0}=\alpha$，称这个元素$\boldsymbol{0}$为$V$的零元素；
-    \item 对任意$\alpha\in V$，存在负元素，使得$\alpha+(-\alpha)=\boldsymbol{0}$；
-    \item $1\alpha=\alpha$；
-    \item $k(l\alpha)=(kl)\alpha$；
-    \item $(k+l)\alpha=k\alpha+l\alpha$；
-    \item $k(\alpha+\beta)=k\alpha+k\beta$。
+    \item $\boldsymbol{\alpha}+\boldsymbol{\beta}=\boldsymbol{\beta}+\boldsymbol{\alpha}$；
+    \item $(\boldsymbol{\alpha}+\boldsymbol{\beta})+\boldsymbol{\gamma}=\boldsymbol{\alpha}+(\boldsymbol{\beta}+\boldsymbol{\gamma})$；
+    \item 在$V$中存在零元素$\boldsymbol{0}$，对任何$\boldsymbol{\alpha}\in V$都有$\boldsymbol{\alpha}+\boldsymbol{0}=\boldsymbol{\alpha}$；
+    \item 对任何$\boldsymbol{\alpha}\in V$，存在$\boldsymbol{\alpha}$的负元素$\boldsymbol{\beta}\in V$，使$\boldsymbol{\alpha}+\boldsymbol{\beta}=\boldsymbol{0}$；
+    \item $1\boldsymbol{\alpha}=\boldsymbol{\alpha}$；
+    \item $\lambda(\mu\boldsymbol{\alpha})=(\lambda\mu)\boldsymbol{\alpha}$；
+    \item $(\lambda+\mu)\boldsymbol{\alpha}=\lambda\boldsymbol{\alpha}+\mu\boldsymbol{\alpha}$；
+    \item $\lambda(\boldsymbol{\alpha}+\boldsymbol{\beta})=\lambda\boldsymbol{\alpha}+\lambda\boldsymbol{\beta}$；
 \end{enumerate}
-那么，就称$V$为数域$F$上的线性空间。
+那么就称$V$为（数域$F$上的）\textbf{线性空间}（或称向量空间），$V$中的元素统称为\textbf{向量}。
+\end{definition}
 
-称满足上述八条规律的加法与数乘为线性运算。
+八条规律的含义：$(i)(ii)$是加法的交换律、结合律；$(iii)(iv)$保证加法有逆运算；$(v)(vi)$与$(vii)(viii)$是数乘的结合律与分配律，$(v)$保证非零数乘有逆运算。满足这八条规律的加法与数乘统称为\textbf{线性运算}。
 
-设$V$是数域$F$上的线性空间，还有性质：
+\corepoint{
+线性空间$=$集合$+$线性运算。同一个集合若定义两种不同的线性运算，就构成不同的线性空间；若所定义的运算不满足八条规律，就不是线性空间。所以"运算"才是线性空间的本质，元素本身是什么并不重要。
+}
+
+常见与常见反例：
 \begin{enumerate}
-    \item $V$中的零元素是唯一的，记为$\boldsymbol{0}$；
-    \item $V$中每个元素的负元素是唯一的，记$\alpha$的负元素为$-\alpha$；
-    \item $0\alpha=\boldsymbol{0},\;(-1)\alpha=-\alpha,\;k\boldsymbol{0}=\boldsymbol{0}$；
-    \item $k\alpha=\boldsymbol{0}\Rightarrow k=0$或$\alpha=\boldsymbol{0}$。
+    \item 次数不超过$n$的多项式全体$P[x]_n=\{a_nx^{n}+\dots+a_1x+a_0\}$，按通常的多项式加法与数乘，构成线性空间（对运算封闭，八条规律自动满足）。
+    \item 次数\textbf{恰等于}$n$的多项式全体，按通常运算\textbf{不}构成线性空间：两个$n$次多项式相加，最高次项可能抵消而次数降低，对加法不封闭。
+    \item 形如$A\sin(x+B)$的函数全体，按函数加法与数乘构成线性空间。
+    \item 正实数全体$\mathbb{R}^{+}$，若定义$a\oplus b=ab$，$\lambda\odot a=a^{\lambda}$，则构成线性空间（零元素是数$1$，$a$的负元素是$a^{-1}$）——这说明"向量"完全可以是数。
+    \item 检验一个集合是否为线性空间时，若运算不是通常的实数加、乘，必须逐条验证八条规律，只验封闭性不够。
 \end{enumerate}
+
+\subsection{线性空间的性质}
+设$V$是线性空间，则
+\begin{enumerate}
+    \item $V$中的零元素是唯一的；
+    \item $V$中每个元素的负元素是唯一的，$\boldsymbol{\alpha}$的负元素记作$-\boldsymbol{\alpha}$；
+    \item $0\boldsymbol{\alpha}=\boldsymbol{0}$，$(-1)\boldsymbol{\alpha}=-\boldsymbol{\alpha}$，$\lambda\boldsymbol{0}=\boldsymbol{0}$；
+    \item 若$\lambda\boldsymbol{\alpha}=\boldsymbol{0}$，则$\lambda=0$或$\boldsymbol{\alpha}=\boldsymbol{0}$。
+\end{enumerate}
+（第4条在一般线性空间中不再"显然"，须由八条规律推出：若$\lambda\ne0$，两端乘$\lambda^{-1}$得$\boldsymbol{\alpha}=\lambda^{-1}\boldsymbol{0}=\boldsymbol{0}$。）
 
 \subsection{子空间}
-\textbf{定义7.2}\quad 设$V$是数域$F$上的线性空间，$L$是$V$的一个非空子集，如果$L$对于$V$上所定义的加法和数乘也构成$F$上的线性空间，则称$L$是$V$的一个线性子空间，简称$L$是$V$的一个子空间。
+\begin{definition}[子空间]
+设$V$是一个线性空间，$L$是$V$的一个非空子集，如果$L$对于$V$中所定义的加法与数乘两种运算也构成一个线性空间，则称$L$为$V$的\textbf{线性子空间}，简称\textbf{子空间}。
+\end{definition}
 
-\textbf{定理7.1}\quad $F$上的线性空间$V$的非空子集$L$构成$V$的子空间的充要条件是：$L$对于$V$中的线性运算封闭，即
+\begin{theorem}[子空间的判定]
+线性空间$V$的非空子集$L$构成$V$的子空间的充分必要条件是：$L$对于$V$中的线性运算封闭，即
+\[
+\boldsymbol{\alpha},\boldsymbol{\beta}\in L\ \Rightarrow\ \boldsymbol{\alpha}+\boldsymbol{\beta}\in L;
+\qquad
+\boldsymbol{\alpha}\in L,\ \lambda\in F\ \Rightarrow\ \lambda\boldsymbol{\alpha}\in L .
+\]
+\end{theorem}
+
+因为$L\subseteq V$，八条规律中的$(i)(ii)(v)(vi)(vii)(viii)$自动成立，只需封闭性即可保证$(iii)(iv)$（由$0\boldsymbol{\alpha}=\boldsymbol{0}$、$(-1)\boldsymbol{\alpha}=-\boldsymbol{\alpha}$，零元素与负元素都在$L$中）。
+
+由$V$中向量组$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$所生成的子空间为
+\[
+L=\{\boldsymbol{\gamma}\mid \boldsymbol{\gamma}=\lambda_1\boldsymbol{\alpha}_1+\dots+\lambda_m\boldsymbol{\alpha}_m,\ \lambda_i\in F\}
+=\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\},
+\]
+它是包含$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$的最小子空间。
+
+\keyformula{L\le V\ \text{（子空间）}\iff L\ne\varnothing\ \text{且}\ L\ \text{对加法、数乘封闭}}
+
+\keyformula{\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\}=\Bigl\{\textstyle\sum_{i=1}^{m}\lambda_i\boldsymbol{\alpha}_i\Bigm|\lambda_i\in F\Bigr\},\qquad \dim\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m\}=R(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m)}
+
+\section{维数、基与坐标}
+
+\subsection{基与维数}
+第4章中由线性运算建立的概念（线性组合、线性相关、最大无关组等）只涉及线性运算，因此对一般线性空间中的向量仍然适用，可直接引用。
+
+\begin{definition}[基、维数]
+在线性空间$V$中，如果存在$n$个向量$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n$，满足
 \begin{enumerate}
-    \item 对任意$\alpha,\beta\in L$，都有$\alpha+\beta\in L$；
-    \item 对任意$\alpha\in L$，对任意$k\in F$，都有$k\alpha\in L$。
+    \item[(i)] $\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$线性无关；
+    \item[(ii)] $V$中任一向量总可由$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$线性表示，
 \end{enumerate}
+那么$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$就称为线性空间$V$的一个\textbf{基}（基底），$n$称为线性空间$V$的\textbf{维数}，记作$\dim V=n$。维数为$n$的线性空间称为\textbf{$n$维线性空间}，记作$V_n$。
+\end{definition}
 
-设$V$是数域$F$上的线性空间，$\alpha,\beta\in V$，集合
-\[
-L=\{\gamma\mid \gamma=k\alpha+l\beta,\;k,l\in F\}
-\]
-是$V$的一个子空间。这是由于，若$\gamma_1=k_1\alpha+l_1\beta,\;\gamma_2=k_2\alpha+l_2\beta,\;k_1,l_1,k_2,l_2\in F$，则有
-\[
-\gamma_1+\gamma_2=(k_1+k_2)\alpha+(l_1+l_2)\beta\in L,
-\]
-\[
-k\gamma_1=kk_1\alpha+kl_1\beta\in L,\quad k\in F.
-\]
-称这个线性空间为由向量$\alpha,\beta$所生成的（$V$的）子空间。
+只含一个零向量的线性空间没有基，规定其维数为$0$。$n$维与零维线性空间统称\textbf{有限维线性空间}；本书不讨论无限维线性空间。
 
-一般地，由$V$中向量组$\alpha_1,\alpha_2,\cdots,\alpha_m$所生成的线性子空间为
+由第4章的理论：若把线性空间看作向量组，则$V$的基就是该向量组的最大无关组，$V$的维数就是该向量组的秩。对$n$维线性空间$V_n$，若$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$为其一个基，则
 \[
-L=\{\gamma\mid \gamma=k_1\alpha_1+k_2\alpha_2+\cdots+k_m\alpha_m,\;k_1,k_2,\cdots,k_m\in F\}.
+V_n=\operatorname{Span}\{\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n\},
 \]
+这就比较清楚地显示出$V_n$的构造。
 
-\section{线性空间的基底、维数与坐标}
-\textbf{定义7.3}\quad 在线性空间$V$中，如果存在$n$个向量$\alpha_1,\alpha_2,\cdots,\alpha_n$，满足
+\subsection{坐标}
+\begin{definition}[坐标]
+设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$是线性空间$V_n$的一个基，对于任一向量$\boldsymbol{\alpha}\in V$，总有且仅有一组有序数$x_1,x_2,\dots,x_n\in F$，使
+\[
+\boldsymbol{\alpha}=x_1\boldsymbol{\alpha}_1+x_2\boldsymbol{\alpha}_2+\dots+x_n\boldsymbol{\alpha}_n,
+\]
+这组有序数就称为向量$\boldsymbol{\alpha}$在该基中的\textbf{坐标}，并记作$(x_1,x_2,\dots,x_n)$。
+\end{definition}
+
+取定一个基以后，$V_n$中的向量$\boldsymbol{\alpha}$与$\mathbb{R}^{n}$中的坐标向量$\boldsymbol{x}=(x_1,\dots,x_n)^{T}$之间就有一一对应的关系，且这个对应关系\textbf{保持线性运算}：
+\[
+\boldsymbol{\alpha}\leftrightarrow\boldsymbol{x},\quad \boldsymbol{\beta}\leftrightarrow\boldsymbol{y}
+\ \Longrightarrow\ 
+k\boldsymbol{\alpha}+l\boldsymbol{\beta}\leftrightarrow k\boldsymbol{x}+l\boldsymbol{y}.
+\]
+因此$V_n$与$\mathbb{R}^{n}$有相同的结构，称$V_n$与$\mathbb{R}^{n}$\textbf{同构}。一般地，两个线性空间之间若存在保持线性运算的一一对应，就说它们同构；维数相等的有限维线性空间都同构，即\textbf{线性空间的结构完全由它的维数决定}。
+
+但要注意：$\mathbb{R}^{n}$中的内积概念在一般线性空间$V_n$中不一定有意义——同构只保证线性运算，不保证内积。
+
+\subsection{求坐标的步骤}
 \begin{enumerate}
-    \item $\alpha_1,\alpha_2,\cdots,\alpha_n$线性无关；
-    \item $V$中任意向量$\alpha$，都使$\alpha_1,\alpha_2,\cdots,\alpha_n,\alpha$线性相关，
-\end{enumerate}
-那么就称$\alpha_1,\alpha_2,\cdots,\alpha_n$为线性空间$V$的一个基底（简称基），称$V$的基所含向量的个数$n$为线性空间$V$的维数。
-
-维数为$n$的线性空间称为$n$维线性空间，记为$V_n$。只含一个零向量的线性空间，称为零维线性空间。$n$维与零维线性空间统称为有限维线性空间。
-
-\textbf{定义7.4}\quad 设$\alpha_1,\alpha_2,\cdots,\alpha_n$是$F$上线性空间$V_n$的一个基，对于任意一个向量$\alpha\in V$，总有且仅有一组有序数$x_1,x_2,\cdots,x_n\in F$，使
-\[
-\alpha=x_1\alpha_1+x_2\alpha_2+\cdots+x_n\alpha_n,
-\]
-称$x_1,x_2,\cdots,x_n$为$\alpha$关于基$\alpha_1,\alpha_2,\cdots,\alpha_n$的坐标，记为$(x_1,x_2,\cdots,x_n)$。
-
-\section{线性变换}
-\subsection{线性变换的定义及性质}
-\textbf{定义7.5}\quad 设$V_n,U_m$分别是数域$F$上的$n$维和$m$维的线性空间。如果按照一定规则$\mathcal{A}$，对于$V_n$中任一元素$\alpha$，总有$U_m$中一个确定的元素$\beta$和它对应，那么，这个对应的规则$\mathcal{A}$称为由$V_n$到$U_m$的映射。
-
-设映射$\mathcal{A}$将$V_n$中元素$\alpha$映成$U_m$中元素$\beta$，则记为$\mathcal{A}(\alpha)=\beta$或$\mathcal{A}\alpha=\beta$。
-
-称$\beta$为$\alpha$的像，像的全体构成的集合称为像集，记作$\mathcal{A}(V_n)$，即
-\[
-\mathcal{A}(V_n) = \{ \beta \mid \beta = \mathcal{A}(\alpha),\; \alpha \in V_n \}.
-\]
-
-\textbf{定义7.6}\quad 如果由$V_n$到$U_m$的映射$\mathcal{A}$满足：
-\begin{enumerate}
-    \item 对任意$\alpha_1,\alpha_2\in V_n$，都有$\mathcal{A}(\alpha_1+\alpha_2)=\mathcal{A}(\alpha_1)+\mathcal{A}(\alpha_2)$；
-    \item 对任意$\alpha\in V_n$及任意$k\in F$，都有$\mathcal{A}(k\alpha)=k\mathcal{A}(\alpha)$，
-\end{enumerate}
-则称$\mathcal{A}$是从$V_n$到$U_m$的线性映射。
-
-设$\mathcal{A}_1,\mathcal{A}_2$都是$V_n$到$U_m$的映射，如果对任意$\alpha\in V_n$，都有$\mathcal{A}_1(\alpha)=\mathcal{A}_2(\alpha)$，则称$\mathcal{A}_1$与$\mathcal{A}_2$相等，记为$\mathcal{A}_1=\mathcal{A}_2$。
-
-线性空间$V_n$到自身的线性映射称为$V_n$的线性变换。
-
-将$V_n$中任意向量都变成$V_n$中零向量的变换是$V_n$的线性变换，称其为零变换，记为$\Gamma_0$，即 $\Gamma_0(\alpha) = \boldsymbol{0},\; \forall \alpha \in V_n$。
-
-又如将$V_n$中任意向量$\alpha$仍变成$\alpha$的变换也是$V_n$的线性变换，称其为$V_n$上的恒等变换，记为$1_V$，即 $1_V(\alpha) = \alpha,\; \forall \alpha \in V_n$。
-
-$V_n$中的线性变换 $\mathcal{A}$ 满足：
-\begin{enumerate}
-    \item $\mathcal{A}(\boldsymbol{0}) = \boldsymbol{0},\; \mathcal{A}(-\alpha) = -\mathcal{A}(\alpha)$；
-    \item 若 $\beta = k_1 \alpha_1 + k_2 \alpha_2 + \cdots + k_m \alpha_m$，则
+    \item 设所求坐标为$\boldsymbol{x}=(x_1,\dots,x_n)^{T}$，按定义把$\boldsymbol{\alpha}=x_1\boldsymbol{\alpha}_1+\dots+x_n\boldsymbol{\alpha}_n$写成矩阵形式
     \[
-    \mathcal{A}(\beta) = k_1 \mathcal{A}(\alpha_1) + k_2 \mathcal{A}(\alpha_2) + \cdots + k_m \mathcal{A}(\alpha_m);
+    (\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n)\boldsymbol{x}=\boldsymbol{\alpha}.
     \]
-    \item 若 $\alpha_1, \alpha_2, \cdots, \alpha_m$ 线性相关，则 $\mathcal{A}(\alpha_1), \mathcal{A}(\alpha_2), \cdots, \mathcal{A}(\alpha_m)$ 也线性相关；
-    \item $\mathcal{A}$ 的像集 $\mathcal{A}(V_n)$ 是 $V_n$ 的一个线性子空间，称为 $\mathcal{A}$ 的像空间；
-    \item 使 $\mathcal{A}(\alpha) = \boldsymbol{0}$ 的 $\alpha$ 的全体
-    \[
-    \operatorname{Ker} \mathcal{A} = \{ \alpha \in V_n \mid \mathcal{A}(\alpha) = \boldsymbol{0} \}
-    \]
-    也是$V_n$的一个子空间，称为$\mathcal{A}$的核。
+    \item 若在$\mathbb{R}^{n}$中，令$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)$，解方程组$A\boldsymbol{x}=\boldsymbol{\alpha}$（用初等行变换化$(A,\boldsymbol{\alpha})$为行最简形），所得解即坐标。
+    \item 若题目只问"是否为基"，等价于判断$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$线性无关（$n$个向量在$n$维空间中），即$R(A)=n$或$|A|\ne0$。
 \end{enumerate}
 
-\subsection{线性变换的矩阵表示}
-设 $\mathcal{A}$ 是 $V_n$ 中的一个线性变换，$\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n$ 是 $V_n$ 的一个基。由于 $\mathcal{A}(\boldsymbol{\epsilon}_1), \mathcal{A}(\boldsymbol{\epsilon}_2), \ldots, \mathcal{A}(\boldsymbol{\epsilon}_n)$ 仍在 $V_n$ 中，所以，它们可由 $\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n$ 唯一地线性表示，设
+\corepoint{
+（1）坐标是\textbf{相对于某个基}而言的，换基则坐标改变，写坐标必须说明"在基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$下"。\\
+（2）求坐标是解线性方程组，不是"把基按行排好直接读"；只有取自然基$\boldsymbol{e}_1,\dots,\boldsymbol{e}_n$时，坐标才恰好等于分量。\\
+（3）多项式空间中求坐标，要先把向量用基"归并同类项"比较系数，本质仍是解方程组。
+}
+
+\section{基变换与坐标变换}
+
+同一向量在不同基中的坐标不同，两者之间的关系由过渡矩阵刻画。
+
+\subsection{基变换公式与过渡矩阵}
+设$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$及$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$是线性空间$V_n$的两个基，把新基向量用旧基线性表示：
 \[
 \begin{cases}
-\mathcal{A}(\boldsymbol{\epsilon}_1) = a_{11} \boldsymbol{\epsilon}_1 + a_{21} \boldsymbol{\epsilon}_2 + \cdots + a_{n1} \boldsymbol{\epsilon}_n, \\
-\mathcal{A}(\boldsymbol{\epsilon}_2) = a_{12} \boldsymbol{\epsilon}_1 + a_{22} \boldsymbol{\epsilon}_2 + \cdots + a_{n2} \boldsymbol{\epsilon}_n, \\
-\vdots \\
-\mathcal{A}(\boldsymbol{\epsilon}_n) = a_{1n} \boldsymbol{\epsilon}_1 + a_{2n} \boldsymbol{\epsilon}_2 + \cdots + a_{nn} \boldsymbol{\epsilon}_n.
-\end{cases} \tag{1}
+\boldsymbol{\beta}_1=p_{11}\boldsymbol{\alpha}_1+p_{21}\boldsymbol{\alpha}_2+\dots+p_{n1}\boldsymbol{\alpha}_n,\\
+\boldsymbol{\beta}_2=p_{12}\boldsymbol{\alpha}_1+p_{22}\boldsymbol{\alpha}_2+\dots+p_{n2}\boldsymbol{\alpha}_n,\\
+\qquad\qquad\cdots\cdots\cdots\cdots\\
+\boldsymbol{\beta}_n=p_{1n}\boldsymbol{\alpha}_1+p_{2n}\boldsymbol{\alpha}_2+\dots+p_{nn}\boldsymbol{\alpha}_n,
+\end{cases}
 \]
-其右边系数矩阵的转置矩阵为
+记$P=(p_{ij})_{n\times n}$，用矩阵形式写作
 \[
-A = \begin{pmatrix}
-a_{11} & a_{12} & \cdots & a_{1n} \\
-a_{21} & a_{22} & \cdots & a_{2n} \\
-\vdots & \vdots & \ddots & \vdots \\
-a_{n1} & a_{n2} & \cdots & a_{nn}
-\end{pmatrix}.
+(\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\dots,\boldsymbol{\beta}_n)
+=(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\dots,\boldsymbol{\alpha}_n)
+\begin{pmatrix}p_{11}&p_{12}&\dots&p_{1n}\\p_{21}&p_{22}&\dots&p_{2n}\\\vdots&\vdots&\ddots&\vdots\\p_{n1}&p_{n2}&\dots&p_{nn}\end{pmatrix}
+=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P .
 \]
-记 $\mathcal{A}(\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n) = \bigl(\mathcal{A}(\boldsymbol{\epsilon}_1), \mathcal{A}(\boldsymbol{\epsilon}_2), \ldots, \mathcal{A}(\boldsymbol{\epsilon}_n)\bigr)$，式(1)可形式地写成
+此式称为\textbf{基变换公式}，矩阵$P$称为由基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$到基$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$的\textbf{过渡矩阵}。由于$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$线性无关，过渡矩阵$P$必可逆。
+
+\subsection{坐标变换公式}
+\begin{theorem}[坐标变换公式]
+设$V_n$中的向量$\boldsymbol{\alpha}$在基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$中的坐标为$(x_1,\dots,x_n)^{T}$，在基$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$中的坐标为$(x_1',\dots,x_n')^{T}$。若两个基满足基变换公式$(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P$，则有
 \[
-\mathcal{A}(\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n)
-= (\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n) A. \tag{2}
+\begin{pmatrix}x_1\\x_2\\\vdots\\x_n\end{pmatrix}
+=P\begin{pmatrix}x_1'\\x_2'\\\vdots\\x_n'\end{pmatrix},
+\qquad\text{或}\qquad
+\begin{pmatrix}x_1'\\x_2'\\\vdots\\x_n'\end{pmatrix}
+=P^{-1}\begin{pmatrix}x_1\\x_2\\\vdots\\x_n\end{pmatrix}.
 \]
-称矩阵 $A$ 为线性变换 $\mathcal{A}$ 在基 $\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_n$ 下的矩阵。
+\end{theorem}
 
-\textbf{定理7.2}\quad 在线性空间$V_n$中取两个基：
+\textbf{证明}\quad 由$\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)\boldsymbol{x}=(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)\boldsymbol{x}'=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P\boldsymbol{x}'$，而$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$线性无关，故$\boldsymbol{x}=P\boldsymbol{x}'$。\hfill$\square$
+
+定理的逆命题也成立：若任一向量的两种坐标都满足$\boldsymbol{x}=P\boldsymbol{x}'$，则两个基满足$(\boldsymbol{\beta})=(\boldsymbol{\alpha})P$。
+
+\subsection{求过渡矩阵与坐标的方法}
+\begin{enumerate}
+    \item \textbf{代入法（定义法）}：把每个新基向量用旧基线性表示，解得系数，按"第$j$列是新基第$j$个向量的坐标"排成$P$。
+    \item \textbf{初等变换法}：在$\mathbb{R}^{n}$中，令$A=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)$，$B=(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)$，则$B=AP$，$P=A^{-1}B$。对$(A\mid B)$作初等行变换，当$A$化成$E$时，$B$就化成了$P$，即
+    \[
+    (A\mid B)\ \xrightarrow{\text{行变换}}\ (E\mid P).
+    \]
+    \item \textbf{坐标变换}：先用上法求$P$，再用$\boldsymbol{x}'=P^{-1}\boldsymbol{x}$（或解$P\boldsymbol{x}'=\boldsymbol{x}$）求新坐标。
+\end{enumerate}
+
+\keyformula{(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P\quad(\text{基变换}),\qquad \boldsymbol{x}=P\boldsymbol{x}'\quad(\text{旧坐标}=\text{过渡矩阵}\times\text{新坐标})}
+
+\keyformula{P=A^{-1}B,\qquad (A\mid B)\longrightarrow(E\mid P)}
+
+\corepoint{
+（1）方向极易记反：$P$是"由旧基\textbf{到}新基"的过渡矩阵，满足$(\text{新基})=(\text{旧基})P$；坐标变换则是$\boldsymbol{x}=P\boldsymbol{x}'$，即"旧坐标$=$过渡矩阵$\times$新坐标"，两者方向一致，不必再记$P^{-1}$在左边还是右边，直接用$\boldsymbol{x}=P\boldsymbol{x}'$推。\\
+（2）$P$的列必须是新基向量在旧基下的坐标；若把$P$的行写成坐标，转置一下就错了。\\
+（3）用$(A\mid B)\to(E\mid P)$时只能做\textbf{行变换}；若$A$不可逆说明$B$不是基，应回头检查。
+}
+
+\section{线性变换}
+
+\subsection{映射与线性变换}
+\begin{definition}[映射]
+设有两个非空集合$A,B$，如果对于$A$中任一元素$\boldsymbol{\alpha}$，按照一定的规则，总有$B$中一个确定的元素$\boldsymbol{\beta}$和它对应，那么这个对应规则称为从$A$到$B$的\textbf{映射}，记作$T$，并记$\boldsymbol{\beta}=T(\boldsymbol{\alpha})$或$\boldsymbol{\beta}=T\boldsymbol{\alpha}$。$\boldsymbol{\beta}$称为$\boldsymbol{\alpha}$在映射$T$下的\textbf{像}，$\boldsymbol{\alpha}$称为$\boldsymbol{\beta}$的\textbf{原像}；$A$称为$T$的\textbf{定义域}，像的全体$T(A)=\{\boldsymbol{\beta}\mid\boldsymbol{\beta}=T(\boldsymbol{\alpha}),\ \boldsymbol{\alpha}\in A\}$称为\textbf{像集}。
+\end{definition}
+
+映射是函数概念的推广。
+
+\begin{definition}[线性映射、线性变换]
+设$V_n,U_m$分别是$n$维和$m$维线性空间，$T$是从$V_n$到$U_m$的映射。如果$T$满足
+\begin{enumerate}
+    \item[(i)] 任给$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2\in V_n$，有$T(\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2)=T(\boldsymbol{\alpha}_1)+T(\boldsymbol{\alpha}_2)$；
+    \item[(ii)] 任给$\boldsymbol{\alpha}\in V_n$，$\lambda\in F$，有$T(\lambda\boldsymbol{\alpha})=\lambda T(\boldsymbol{\alpha})$，
+\end{enumerate}
+那么$T$就称为从$V_n$到$U_m$的\textbf{线性映射}。$V_n$到自身的线性映射称为$V_n$中的\textbf{线性变换}。
+\end{definition}
+
+简言之，线性映射就是\textbf{保持线性组合}的映射：
 \[
-\alpha_1,\alpha_2,\cdots,\alpha_n\quad\text{和}\quad\beta_1,\beta_2,\cdots,\beta_n.
+T(k_1\boldsymbol{\alpha}_1+\dots+k_m\boldsymbol{\alpha}_m)=k_1T(\boldsymbol{\alpha}_1)+\dots+k_mT(\boldsymbol{\alpha}_m).
 \]
-设由基$\alpha_1,\alpha_2,\cdots,\alpha_n$到基$\beta_1,\beta_2,\cdots,\beta_n$的过渡矩阵是$P$，$V_n$中线性变换$\mathcal{A}$在两个基下的矩阵依次为$A$和$B$，则
+
+典型例子：多项式空间的求导运算$D$（$Dp=p'$）是线性变换；$\mathbb{R}^{n}$中由$n$阶矩阵$A$确定的变换$T(\boldsymbol{x})=A\boldsymbol{x}$是线性变换；平面上的旋转变换、把向量投影到某平面上的变换都是线性变换。而$T(p)=1$（把任何多项式映成常数$1$）不是线性变换，因为$T(p+q)=1\ne1+1=T(p)+T(q)$。
+
+零变换$\Gamma_0$（把一切向量映成$\boldsymbol{0}$）与恒等变换$I$（$I(\boldsymbol{\alpha})=\boldsymbol{\alpha}$）都是线性变换。
+
+\subsection{线性变换的基本性质}
+设$T$是$V_n$中的线性变换，则
+\begin{enumerate}
+    \item $T(\boldsymbol{0})=\boldsymbol{0}$，$T(-\boldsymbol{\alpha})=-T(\boldsymbol{\alpha})$；
+    \item 若$\boldsymbol{\beta}=k_1\boldsymbol{\alpha}_1+\dots+k_m\boldsymbol{\alpha}_m$，则$T(\boldsymbol{\beta})=k_1T(\boldsymbol{\alpha}_1)+\dots+k_mT(\boldsymbol{\alpha}_m)$（线性变换由它在一组基上的像唯一确定）；
+    \item 若$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_m$线性相关，则$T(\boldsymbol{\alpha}_1),\dots,T(\boldsymbol{\alpha}_m)$也线性相关；
+    \item 像集$T(V_n)$是$V_n$的子空间，称为$T$的\textbf{像空间}；
+    \item 使$T(\boldsymbol{\alpha})=\boldsymbol{0}$的$\boldsymbol{\alpha}$的全体
+    \[
+    N_T=\ker T=\{\boldsymbol{\alpha}\in V_n\mid T(\boldsymbol{\alpha})=\boldsymbol{0}\}
+    \]
+    也是$V_n$的子空间，称为$T$的\textbf{核}。
+\end{enumerate}
+
+注意性质3的\textbf{逆命题不成立}：线性无关的向量组经线性变换后可能变得线性相关（例如投影变换把平面内两条不共线向量都投到同一条直线上）。这是因为线性变换可能"压平"空间。
+
+\corepoint{
+（1）判断一个映射是否为线性变换，只需验加法与数乘两条；常用来否定的是"常数项不为零"的映射（如$T(\boldsymbol{x})=A\boldsymbol{x}+\boldsymbol{b}$，$\boldsymbol{b}\ne\boldsymbol{0}$不是线性变换）。\\
+（2）$T(\boldsymbol{0})=\boldsymbol{0}$是必要条件：若$T(\boldsymbol{0})\ne\boldsymbol{0}$，则$T$一定不是线性变换。\\
+（3）像空间与核都是子空间，不要把"核"与"零向量"混淆：核一般含无穷多向量，只是其中包含零向量。
+}
+
+\section{线性变换的矩阵表示式}
+
+\subsection{线性变换在给定基下的矩阵}
+设$T$是$V_n$中的线性变换，$\boldsymbol{\varepsilon}_1,\boldsymbol{\varepsilon}_2,\dots,\boldsymbol{\varepsilon}_n$是$V_n$的一个基。由于$T(\boldsymbol{\varepsilon}_j)$仍在$V_n$中，故可由该基唯一地线性表示：
 \[
-B=P^{-1}AP.
+\begin{cases}
+T(\boldsymbol{\varepsilon}_1)=a_{11}\boldsymbol{\varepsilon}_1+a_{21}\boldsymbol{\varepsilon}_2+\dots+a_{n1}\boldsymbol{\varepsilon}_n,\\
+T(\boldsymbol{\varepsilon}_2)=a_{12}\boldsymbol{\varepsilon}_1+a_{22}\boldsymbol{\varepsilon}_2+\dots+a_{n2}\boldsymbol{\varepsilon}_n,\\
+\qquad\qquad\cdots\cdots\cdots\cdots\\
+T(\boldsymbol{\varepsilon}_n)=a_{1n}\boldsymbol{\varepsilon}_1+a_{2n}\boldsymbol{\varepsilon}_2+\dots+a_{nn}\boldsymbol{\varepsilon}_n .
+\end{cases}
+\]
+记
+\[
+A=\begin{pmatrix}
+a_{11}&a_{12}&\dots&a_{1n}\\
+a_{21}&a_{22}&\dots&a_{2n}\\
+\vdots&\vdots&\ddots&\vdots\\
+a_{n1}&a_{n2}&\dots&a_{nn}
+\end{pmatrix},
+\]
+则上式可形式地写成
+\[
+T(\boldsymbol{\varepsilon}_1,\boldsymbol{\varepsilon}_2,\dots,\boldsymbol{\varepsilon}_n)
+=\bigl(T(\boldsymbol{\varepsilon}_1),T(\boldsymbol{\varepsilon}_2),\dots,T(\boldsymbol{\varepsilon}_n)\bigr)
+=(\boldsymbol{\varepsilon}_1,\boldsymbol{\varepsilon}_2,\dots,\boldsymbol{\varepsilon}_n)A .
 \]
 
-定理7.2表明，线性空间$V_n$中同一线性变换在两个不同基下的矩阵是相似的，其相似变换矩阵就是相应的过渡矩阵。
+\begin{definition}[线性变换的矩阵]
+上述矩阵$A$称为线性变换$T$在基$\boldsymbol{\varepsilon}_1,\boldsymbol{\varepsilon}_2,\dots,\boldsymbol{\varepsilon}_n$下的\textbf{矩阵}。
+\end{definition}
 
-\textbf{定义7.7}\quad $V_n$的线性变换$\mathcal{A}$的像空间$\mathcal{A}(V_n)$的维数，称为线性变换$\mathcal{A}$的秩。
+矩阵$A$由基的像$T(\boldsymbol{\varepsilon}_1),\dots,T(\boldsymbol{\varepsilon}_n)$唯一确定；反之，给定一个$n$阶矩阵$A$，也就给定了基的像，从而唯一确定一个以$A$为矩阵的线性变换。因此在\textbf{取定一组基之后，线性变换与$n$阶矩阵一一对应}。
 
-可以看出，若$A$是线性变换$\mathcal{A}$的矩阵，则$\mathcal{A}$的秩就等于矩阵$A$的秩，若$A$的秩是$r$，则$\mathcal{A}$的核$\operatorname{Ker}\mathcal{A}$的维数为$n-r$。
+若$V_n$中向量$\boldsymbol{\alpha}$在该基下的坐标为$\boldsymbol{x}=(x_1,\dots,x_n)^{T}$，则$T(\boldsymbol{\alpha})$在同一基下的坐标为
+\[
+\boldsymbol{y}=A\boldsymbol{x},
+\quad\text{即}\quad
+T\bigl((\boldsymbol{\varepsilon}_1,\dots,\boldsymbol{\varepsilon}_n)\boldsymbol{x}\bigr)
+=(\boldsymbol{\varepsilon}_1,\dots,\boldsymbol{\varepsilon}_n)A\boldsymbol{x}.
+\]
+
+\subsection{不同基下矩阵的关系}
+\begin{theorem}[同一线性变换在不同基下的矩阵相似]
+设线性空间$V_n$中取定两个基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$和$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$，由基$\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n$到基$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$的过渡矩阵为$P$；$V_n$中的线性变换$T$在这两个基下的矩阵依次为$A$和$B$，则
+\[
+B=P^{-1}AP .
+\]
+\end{theorem}
+
+\textbf{证明}\quad 由$(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P$得
+\[
+\begin{aligned}
+T(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)
+&=T\bigl((\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)P\bigr)
+=\bigl(T(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)\bigr)P\\
+&=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_n)AP
+=(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)P^{-1}AP,
+\end{aligned}
+\]
+又$T(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)=(\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n)B$，而$\boldsymbol{\beta}_1,\dots,\boldsymbol{\beta}_n$线性无关，故$B=P^{-1}AP$。\hfill$\square$
+
+定理表明：\textbf{同一线性变换在不同基下的矩阵是相似的，相似变换矩阵就是过渡矩阵$P$}。这是"相似"概念的几何意义——相似矩阵正是同一个线性变换在不同基下的矩阵。
+
+\subsection{线性变换的秩}
+\begin{definition}[线性变换的秩]
+线性变换$T$的像空间$T(V_n)$的维数，称为线性变换$T$的\textbf{秩}。
+\end{definition}
+
+若$A$是$T$的矩阵，则$T$的秩就等于$R(A)$；若$R(A)=r$，则$T$的核的维数为
+\[
+\dim\ker T=n-r .
+\]
+（因为$\ker T$就是齐次方程组$A\boldsymbol{x}=\boldsymbol{0}$的解空间。）
+
+\keyformula{T(\boldsymbol{\varepsilon}_1,\dots,\boldsymbol{\varepsilon}_n)=(\boldsymbol{\varepsilon}_1,\dots,\boldsymbol{\varepsilon}_n)A,\qquad T(\boldsymbol{\alpha})\ \text{的坐标}=A\boldsymbol{x}}
+
+\keyformula{B=P^{-1}AP\ (\text{换基}),\qquad \operatorname{rank}T=R(A),\qquad \dim\ker T=n-R(A)}
+
+\corepoint{
+（1）求$T$在基$\boldsymbol{\varepsilon}_1,\dots,\boldsymbol{\varepsilon}_n$下的矩阵，关键是算$T(\boldsymbol{\varepsilon}_j)$并把它们\textbf{用该基}表示，系数按\textbf{列}排成$A$；若把系数按行排，得到的是$A^{T}$。\\
+（2）同一变换换基后矩阵变为$P^{-1}AP$，不是$P^{T}AP$（那是合同变换），也不是$P^{-1}AP^{-1}$。\\
+（3）"线性变换与矩阵一一对应"依赖于\textbf{取定一组基}；换基后对应同一个变换的矩阵不同，但它们相似。\\
+（4）$\dim$像$+\dim$核$=n$是验算的有力工具。
+}

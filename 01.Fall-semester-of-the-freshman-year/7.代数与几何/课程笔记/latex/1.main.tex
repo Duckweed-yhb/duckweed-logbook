@@ -1,146 +1,88 @@
-% 代数与几何 核心公式与考点汇总 - XeLaTeX无错优化版（紧凑布局）
-% 适配MiKTeX/TeXLive、Windows、中文路径
-\documentclass[12pt,a4paper,oneside]{article}
-
-% ======================== 核心宏包 ========================
-\usepackage{graphicx}
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usepackage{geometry}
-\usepackage{microtype}
-\usepackage{needspace}
-
-\usepackage[UTF8, fontset=windows]{ctex}
+% 代数与几何课程笔记 —— 主文档（正文排版集中在 0.样式.tex，章节文件只放内容）
+% 编译：xelatex 1.main.tex 两遍；成品输出见 build.ps1
+% 章序对齐教材：同济《工程数学·线性代数》第七版（2023），第 1–6 章 + 附录
+\documentclass[11pt,a4paper,oneside,openany]{book}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
 \setsansfont{Microsoft YaHei}
 
-\usepackage{amsmath,amssymb,amsfonts}
+\newcommand{\YHBbooktrue}{}
+\newcommand{\YHBcourse}{代数与几何}
+\newcommand{\YHBversion}{v1.2}
+\newcommand{\YHBquote}{以矩阵刻画变换，以向量描摹空间。}
+\newcommand{\YHBcoverSize}{38pt}
+\newcommand{\YHBcoverLead}{46pt}
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{3F3350}
+\definecolor{yhbAccent2}{HTML}{7A6386}
+\input{0.样式.tex}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepackage{amsthm}
 \newtheorem{theorem}{定理}[section]
 \newtheorem{lemma}[theorem]{引理}
 \newtheorem{corollary}[theorem]{推论}
 \newtheorem{definition}[theorem]{定义}
 \newtheorem{property}[theorem]{性质}
-\usepackage{upgreek}
-\usepackage{xcolor}
-\usepackage{colortbl}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{makecell}
-\usepackage{siunitx}
-\usepackage{titlesec}
-\usepackage{titletoc}
-\usepackage{tcolorbox}
-\usepackage{fancyhdr}
-\usepackage{enumitem}
-
-\definecolor{mainblue}{RGB}{41, 90, 141}
-\definecolor{secondcyan}{RGB}{26, 117, 117}
-\definecolor{thirdteal}{RGB}{27, 120, 101}
-\definecolor{highlight}{RGB}{255, 240, 200}
-\definecolor{tablehead}{RGB}{230, 240, 250}
-\definecolor{textgray}{RGB}{60, 60, 60}
-
-\usepackage[
-    bookmarks=true,unicode=true,colorlinks=true,
-    linkcolor=mainblue,citecolor=mainblue,urlcolor=mainblue,
-    pdfborder={0 0 0}
-]{hyperref}
-\usepackage{hypcap}
-\usepackage{caption}
-\captionsetup{labelformat=empty}
-
-% ======================== 基础设置 ========================
-\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\color{mainblue}\bfseries\small 代数与几何 核心公式与考点汇总}
-\fancyhead[R]{\color{mainblue}\thepage}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\headrule}{\color{mainblue}\hrule width\headwidth height\headrulewidth}
-\fancypagestyle{plain}{
-    \fancyhf{}
-    \fancyhead[L]{\color{mainblue}\bfseries\small 代数与几何 核心公式与考点汇总}
-    \fancyhead[R]{\color{mainblue}\thepage}
-    \renewcommand{\headrulewidth}{0.5pt}
-}
-
-\titlespacing*{\section}{0pt}{6pt plus 2pt minus 2pt}{3pt plus 2pt minus 2pt}
-\titlespacing*{\subsection}{0pt}{4pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt}
-\titlespacing*{\subsubsection}{0pt}{3pt plus 1pt minus 1pt}{1pt plus 1pt minus 1pt}
-
-\setlist{
-    itemsep=0.1ex,
-    parsep=0.2ex,
-    leftmargin=1.5em,
-    labelsep=0.4em,
-    topsep=0.2ex,
-    partopsep=0.1ex,
-    font=\small
-}
-\setlist[itemize,2]{leftmargin=1.8em,label=$\cdot$,itemsep=0.05ex,parsep=0.1ex}
-
-\numberwithin{equation}{section}
-\allowdisplaybreaks
-\setlength{\abovedisplayskip}{3pt}
-\setlength{\belowdisplayskip}{3pt}
-\setlength{\abovedisplayshortskip}{2pt}
-\setlength{\belowdisplayshortskip}{2pt}
-\makeatletter
-\renewcommand{\@mathmargin}{0pt}
-\makeatother
-
-\setlength{\emergencystretch}{2em}
-\sloppy
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.8ex}
-\setlength{\tabcolsep}{4pt}
-
-% ======================== 自定义命令 ========================
-\newcommand{\keyformula}[1]{%
-    \needspace{2\baselineskip}%
-    \begin{tcolorbox}[
-        colback=highlight,colframe=white,boxrule=0pt,arc=0pt,
-        left=6pt,right=6pt,top=4pt,bottom=4pt,center upper,
-        boxsep=0pt
-    ]
-    $\displaystyle #1$
-    \end{tcolorbox}%
-    \vspace{0.2em}
-}
-
-\newcommand{\symb}[2]{\textbf{#1}：\parbox[t]{10cm}{\raggedright #2}\\[0.3ex]}
-
-\newcommand{\corepoint}[1]{%
-    \begin{tcolorbox}[
-        colback=white,colframe=mainblue,boxrule=0.5pt,arc=2pt,
-        left=6pt,right=6pt,top=2pt,bottom=2pt,center upper,
-        boxsep=0pt
-    ]
-    \textbf{\color{mainblue}核心考点：#1}
-    \end{tcolorbox}%
-    \vspace{0.2em}
-}
-
-% ======================== 文档内容 ========================
 \begin{document}
 \input{2.cover.tex}
-\clearpage
+\frontmatter
 \thispagestyle{fancy}
 \tableofcontents
-\clearpage
+\mainmatter
 
+% ---------------- 第 1 章 行列式 ----------------
+% 教材 §1 二阶与三阶行列式 / §2 全排列和对换 / §3 n 阶行列式的定义
+%      §4 行列式的性质 / §5 行列式按行（列）展开
+\chapter{行列式}
 \input{3.n阶行列式.tex}
+
+% ---------------- 第 2 章 矩阵及其运算 ----------------
+% 教材 §1 线性方程组和矩阵 / §2 矩阵的运算 / §3 逆矩阵
+%      §4 克拉默法则 / §5 矩阵分块法
+\chapter{矩阵及其运算}
 \input{4.矩阵.tex}
-\input{5.几何向量.tex}
-\input{6.n维向量.tex}
+
+% ---------------- 第 3 章 矩阵的初等变换与线性方程组 ----------------
+% 教材 §1 矩阵的初等变换 / §2 矩阵的秩 / §3 线性方程组的解
+\chapter{矩阵的初等变换与线性方程组}
 \input{7.线性方程组.tex}
+
+% ---------------- 第 4 章 向量组的线性相关性 ----------------
+% 教材 §1 向量组及其线性组合 / §2 向量组的线性相关性 / §3 向量组的秩
+%      §4 向量空间 / §5 线性方程组的解的结构
+\chapter{向量组的线性相关性}
+\input{6.n维向量.tex}
+
+% ---------------- 第 5 章 相似矩阵及二次型 ----------------
+% 教材 §1 向量的内积、长度及正交性 / §2 方阵的特征值与特征向量 / §3 相似矩阵
+%      §4 对称矩阵的对角化 / §5 二次型及其标准形 / §6 用配方法化二次型成标准形 / §7 正定二次型
+\chapter{相似矩阵及二次型}
 \input{8.特征值&特征向量&相似矩阵.tex}
-\input{9.线性空间&线性变换.tex}
 \input{10.二次型与二次曲面.tex}
+
+% ---------------- 第 6 章 线性空间与线性变换（选学） ----------------
+% 教材 §1 线性空间的定义与性质 / §2 维数、基与坐标 / §3 基变换与坐标变换
+%      §4 线性变换 / §5 线性变换的矩阵表示式
+\chapter{线性空间与线性变换}
+\input{9.线性空间&线性变换.tex}
+
+% ---------------- 附录（教材无对应章，保留拓展内容） ----------------
+\appendix
+% 附录章标题显示为「附录 A」而不是「第 A 章」
+\titleformat{\chapter}[display]
+  {\sffamily\bfseries\color{yhbAccent}}
+  {\normalsize\sffamily 附录\,\thechapter}
+  {6pt}
+  {\LARGE}
+  [{\vspace{5pt}{\color{yhbAccent!55}\titlerule[1pt]}}]
+
+\chapter{几何向量与二次曲面}
+\input{5.几何向量.tex}
+
+\chapter{拓展与补充}
 \input{11.拓展.tex}
 
 \end{document}

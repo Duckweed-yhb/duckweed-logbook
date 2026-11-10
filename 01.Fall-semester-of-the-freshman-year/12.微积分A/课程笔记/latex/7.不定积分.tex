@@ -1,127 +1,305 @@
-% 子文件：5.不定积分.tex
-% 主文档中使用 \input{5.不定积分} 引入，不含 document 环境
+% ============================================================
+% 7.不定积分.tex —— 第4章 不定积分（同济《高等数学》第七版·上册）
+% 与教材"节"对齐：
+%   第一节 不定积分的概念与性质（原函数与不定积分的概念 / 基本积分表 / 不定积分的性质）
+%   第二节 换元积分法（第一类换元法 / 第二类换元法）
+%   第三节 分部积分法
+%   第四节 有理函数的积分（有理函数的积分 / 可化为有理函数的积分举例）
+%   第五节 积分表的使用
+% 只写知识点，不抄例题与习题。
+% ============================================================
 
-\section{原函数与不定积分}
+\section{不定积分的概念与性质}
+
 \subsection{原函数与不定积分的概念}
 
-定义5.1\quad 如果在某区间$I$上，
+\noindent\textbf{定义4.1（原函数）}\quad 如果在区间$I$上，可导函数$F(x)$的导函数为$f(x)$，即对任一$x\in I$，
 \[
-F'(x)=f(x)\quad\text{或}\quad dF(x)=f(x)dx,
+F'(x)=f(x)\quad\text{或}\quad \mathrm{d}F(x)=f(x)\,\mathrm{d}x,
 \]
-则称$F(x)$为$f(x)$在$I$上的一个原函数。
+那么称$F(x)$为$f(x)$在区间$I$上的一个原函数。
 
-一般地说，若$F(x)$为$f(x)$的一个原函数，则$F(x)+C$亦为$f(x)$的原函数（$C$为任意常数），这是因为
+\noindent\textbf{原函数存在定理}\quad 如果函数$f(x)$在区间$I$上连续，那么$f(x)$在区间$I$上必有原函数。
+
+\noindent 教材据此给出的构造是：设$f(x)\in C[a,b]$，则变上限积分
 \[
-\bigl[F(x)+C\bigr]'=F'(x)=f(x).
+\Phi(x)=\int_a^x f(t)\,\mathrm{d}t,\qquad x\in[a,b]
 \]
+是$f(x)$的一个原函数（该结论在第5章"微积分基本公式"中正式证明）。这一句把第4章与第5章接上：\textbf{连续 $\Rightarrow$ 有原函数}，但原函数不一定能用初等函数表示。
 
-定理5.1\quad 如果$F(x)$是$f(x)$在区间$I$上的一个原函数，则$f(x)$在$I$上的任一原函数都可表示为$F(x)+C$的形式，其中$C$为某一常数。
-
-这个定理表明：形如$F(x)+C$的一族函数是$f(x)$的全部原函数。
-
-定义5.2\quad 设$F(x)$是$f(x)$的任一原函数，则$f(x)$的全部原函数的一般表达式
+\noindent\textbf{定理4.1（原函数的结构）}\quad 如果$F(x)$是$f(x)$在区间$I$上的一个原函数，那么$f(x)$的任一原函数都可表示为
 \[
 F(x)+C
 \]
-称为函数$f(x)$的不定积分，记作$\int f(x)\,dx = F(x)+C$，即
+的形式，其中$C$为任意常数。
+
+\noindent 也就是说：\textbf{同一被积函数的全部原函数只差一个常数}；一旦找到一个原函数，就找到了全体。
+
+\noindent\textbf{定义4.2（不定积分）}\quad 在区间$I$上，函数$f(x)$的带有任意常数项的原函数称为$f(x)$在区间$I$上的不定积分，记作$\displaystyle\int f(x)\,\mathrm{d}x$，即
 \[
-\int f(x)dx=F(x)+C.
+\int f(x)\,\mathrm{d}x=F(x)+C,
 \]
-其中，$\int$叫做积分号，$f(x)dx$叫做被积表达式，$f(x)$叫做被积函数，$x$叫做积分变量，任意常数$C$叫做积分常数。
+其中$\int$称为积分号，$f(x)$称为被积函数，$f(x)\,\mathrm{d}x$称为被积表达式，$x$称为积分变量，$C$称为积分常数。
 
-不定积分的几何意义：设$F(x)$是$f(x)$的一个原函数，则$y=F(x)$的图形称为$f(x)$的一条积分曲线。因为$F'(x)=f(x)$，所以积分曲线上任一点$(x,F(x))$处的切线斜率恰好等于$f(x)$。若把这条积分曲线沿$y$轴方向平移$C$个单位，就得到另一条积分曲线$y=F(x)+C$。所以不定积分就是这样一族积分曲线通用的方程。曲线族中各条曲线在横坐标相同的点处的切线平行。
+\noindent\textbf{几何意义}\quad $y=F(x)$的图形称为$f(x)$的一条\emph{积分曲线}，其上每点切线斜率等于该点函数值。沿$y$轴平移$|C|$个单位仍是积分曲线，故不定积分表示\emph{一族}积分曲线，横坐标相同的点处切线互相平行。
 
-定理5.2\quad 若$f(x)\in C[a,b]$，则它必有原函数。
+\keyformula{\int f(x)\,\mathrm{d}x=F(x)+C\iff F'(x)=f(x)}
 
-\subsection{不定积分的性质和基本公式}
+\corepoint{不定积分是\textbf{函数族}，不是一个数，也不是一条曲线。$\int$与$\mathrm{d}$互为逆运算，但方向不同：先积后导还原函数，先导后积还原函数\textbf{再加$C$}。原函数存在定理只保证"连续必有原函数"，不保证原函数是初等函数（如$\mathrm{e}^{-x^2}$、$\frac{\sin x}{x}$）。}
 
-性质1
+\subsection{基本积分表}
+
+把基本求导公式逐条"倒过来"读，就得到基本积分表。下表是最低限度的工具，其余公式都要靠换元、分部积分化归到它。
+
+\begin{center}
+\begin{tabular}{@{}ll@{\qquad}ll@{}}
+\toprule
+(1) $\displaystyle\int k\,\mathrm{d}x=kx+C$ & &
+(13) $\displaystyle\int a^x\,\mathrm{d}x=\frac{a^x}{\ln a}+C$ & \\[6pt]
+(2) $\displaystyle\int x^{\mu}\,\mathrm{d}x=\frac{x^{\mu+1}}{\mu+1}+C\ (\mu\neq-1)$ & &
+(14) $\displaystyle\int \sinh x\,\mathrm{d}x=\cosh x+C$ & \\[6pt]
+(3) $\displaystyle\int\frac{\mathrm{d}x}{x}=\ln|x|+C$ & &
+(15) $\displaystyle\int \cosh x\,\mathrm{d}x=\sinh x+C$ & \\[6pt]
+(4) $\displaystyle\int\frac{\mathrm{d}x}{1+x^2}=\arctan x+C$ & &
+(16) $\displaystyle\int\tan x\,\mathrm{d}x=-\ln|\cos x|+C$ & \\[6pt]
+(5) $\displaystyle\int\frac{\mathrm{d}x}{\sqrt{1-x^2}}=\arcsin x+C$ & &
+(17) $\displaystyle\int\cot x\,\mathrm{d}x=\ln|\sin x|+C$ & \\[6pt]
+(6) $\displaystyle\int\cos x\,\mathrm{d}x=\sin x+C$ & &
+(18) $\displaystyle\int\sec x\,\mathrm{d}x=\ln|\sec x+\tan x|+C$ & \\[6pt]
+(7) $\displaystyle\int\sin x\,\mathrm{d}x=-\cos x+C$ & &
+(19) $\displaystyle\int\csc x\,\mathrm{d}x=\ln|\csc x-\cot x|+C$ & \\[6pt]
+(8) $\displaystyle\int\frac{\mathrm{d}x}{\cos^2x}=\tan x+C$ & &
+(20) $\displaystyle\int\frac{\mathrm{d}x}{a^2+x^2}=\frac{1}{a}\arctan\frac{x}{a}+C$ & \\[6pt]
+(9) $\displaystyle\int\frac{\mathrm{d}x}{\sin^2x}=-\cot x+C$ & &
+(21) $\displaystyle\int\frac{\mathrm{d}x}{a^2-x^2}=\frac{1}{2a}\ln\left|\frac{a+x}{a-x}\right|+C$ & \\[6pt]
+(10) $\displaystyle\int\sec x\tan x\,\mathrm{d}x=\sec x+C$ & &
+(22) $\displaystyle\int\frac{\mathrm{d}x}{x^2-a^2}=\frac{1}{2a}\ln\left|\frac{x-a}{x+a}\right|+C$ & \\[6pt]
+(11) $\displaystyle\int\csc x\cot x\,\mathrm{d}x=-\csc x+C$ & &
+(23) $\displaystyle\int\frac{\mathrm{d}x}{\sqrt{a^2-x^2}}=\arcsin\frac{x}{a}+C$ & \\[6pt]
+(12) $\displaystyle\int \mathrm{e}^x\,\mathrm{d}x=\mathrm{e}^x+C$ & &
+(24) $\displaystyle\int\frac{\mathrm{d}x}{\sqrt{x^2\pm a^2}}=\ln\left|x+\sqrt{x^2\pm a^2}\right|+C$ & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{(2)是幂函数公式，$\mu=-1$必须单列为(3)；(3)的绝对值不能省，因为$\ln x$只在$x>0$有定义；(21)(22)的分母是$a^2-x^2$与$x^2-a^2$，两种结果一个是$\frac{a+x}{a-x}$、一个是$\frac{x-a}{x+a}$，考试最爱在这里互换；(24)中$\pm$要与根号内符号一致。}
+
+\subsection{不定积分的性质}
+
+设$f(x),g(x)$的原函数都存在，$k,l$为常数。
+
+\noindent\textbf{性质1（互逆性）}
 \[
-\bigl(\int f(x)dx\bigr)'=f(x)\quad\text{或}\quad d\int f(x)dx=f(x)dx;
+\left(\int f(x)\,\mathrm{d}x\right)'=f(x),\qquad \mathrm{d}\int f(x)\,\mathrm{d}x=f(x)\,\mathrm{d}x;
 \]
 \[
-\int f'(x)dx=f(x)+C\quad\text{或}\quad\int df(x)=f(x)+C.
+\int F'(x)\,\mathrm{d}x=F(x)+C,\qquad \int \mathrm{d}F(x)=F(x)+C.
 \]
 
-性质2\quad 若在同一区间上$f(x),g(x)$都有原函数，则
+\noindent\textbf{性质2（线性性）}\quad 若$k,l$不同时为零，则
 \[
-\int\bigl[af(x)+bg(x)\bigr]dx=a\int f(x)dx+b\int g(x)dx,
+\int\bigl[kf(x)+lg(x)\bigr]\mathrm{d}x=k\int f(x)\,\mathrm{d}x+l\int g(x)\,\mathrm{d}x.
 \]
-其中$a,b$是不同时为零的常数。
 
-性质2称为积分线性性质。
+\noindent\textbf{性质3（分项积分）}\quad 有限个函数代数和的不定积分，等于各函数不定积分的代数和。这是"拆项"的依据：把复杂被积函数拆成基本积分表中的项。
 
-\noindent 不定积分基本公式（1）
-\begin{enumerate}
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    \item $\int \sin xdx=-\cos x+C;$
-    \item $\int \cos xdx=\sin x+C;$
-    \item $\int \sec^2 xdx=\int \frac{1}{\cos^2 x}dx=\tan x+C;$
-    \item $\int \csc^2 xdx=\int \frac{1}{\sin^2 x}dx=-\cot x+C;$
-    \item $\int \sec x\tan xdx=\sec x+C;$
-    \item $\int \csc x\cot xdx=-\csc x+C;$
-    \item $\int\frac{dx}{\sqrt{1-x^2}}=\arcsin x+C;$
-    \item $\int\frac{dx}{1+x^2}=\arctan x+C;$
-\end{enumerate}
+\noindent\textbf{常用方法：分项积分法}\quad 通过代数恒等变形（拆项、加项减项、同乘同除、分子分母同除、假分式化为多项式加真分式）把被积函数化为表中的形式，再逐项积分。例如
+\[
+\int\frac{x^2}{1+x^2}\,\mathrm{d}x=\int\Bigl(1-\frac{1}{1+x^2}\Bigr)\mathrm{d}x=x-\arctan x+C .
+\]
 
-\noindent 分项积分法
+\corepoint{性质2只对\textbf{线性}运算成立，积分号内不能随便"乘进去"：$\int f g\,\mathrm{d}x\neq\int f\,\mathrm{d}x\cdot\int g\,\mathrm{d}x$，$\int\frac{f}{g}\mathrm{d}x\neq\frac{\int f}{\int g}$。另外，逐项积分后各常数$C_1+C_2$要合并写成一个$C$。}
 
 \section{换元积分法}
-\subsection{换元积分公式}
-设
 
-\noindent 第一换元积分法
+复合函数求导法则的逆运算，就是换元积分法：求导时"链式"多出来的因子$\varphi'(x)$，在积分时正好被$\mathrm{d}\varphi(x)$吸收。
 
-\noindent 第二换元积分法
+\subsection{第一类换元法（凑微分法）}
 
-当被积函数中：
-\begin{itemize}
-    \item[$1^\circ$] 含有$\sqrt{a^2-x^2}$时，做变换$x=a\sin t$；
-    \item[$2^\circ$] 含有$\sqrt{x^2+a^2}$时，做变换$x=a\tan t$；
-    \item[$3^\circ$] 含有$\sqrt{x^2-a^2}$时，做变换$x=a\sec t$；
-    \item[$4^\circ$] 含有$\sqrt{ax+b}$时，做变换$t=\sqrt{ax+b}$，即$x=\dfrac{t^2-b}{a}$，常常是可行的。
-\end{itemize}
+\noindent\textbf{定理4.2}\quad 设$f(u)$有原函数$F(u)$，$u=\varphi(x)$可导，则
+\[
+\int f\bigl[\varphi(x)\bigr]\varphi'(x)\,\mathrm{d}x=\int f(u)\,\mathrm{d}u=F(u)+C=F\bigl[\varphi(x)\bigr]+C .
+\]
 
-一般情况下（如被积函数是分式，分母为次数较高的幂函数时），倒变换可以用来消去分母中的变量。
+\keyformula{\int f\bigl[\varphi(x)\bigr]\varphi'(x)\,\mathrm{d}x \overset{u=\varphi(x)}{=\!=\!=\!=} \int f(u)\,\mathrm{d}u=F(u)+C}
 
-\noindent 不定积分基本公式（2）
+\noindent\textbf{操作步骤}
 \begin{enumerate}
-    \setcounter{enumi}{14}
-    \item $\int\tan xdx=-\ln|\cos x|+C;$
-    \item $\int\cot xdx=\ln|\sin x|+C;$
-    \item $\int\sec xdx=\ln|\sec x+\tan x|+C;$
-    \item $\int\csc xdx=\ln|\csc x-\cot x|+C;$
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
+  \item 观察被积函数，把它看成$f[\varphi(x)]\cdot\varphi'(x)$的形状，即"主体函数 + 内层导数"；
+  \item 凑微分：$\varphi'(x)\,\mathrm{d}x=\mathrm{d}\varphi(x)$，令$u=\varphi(x)$，化为$\int f(u)\,\mathrm{d}u$；
+  \item 查基本积分表积出$F(u)+C$；
+  \item 回代$u=\varphi(x)$，得到原变量的结果。
 \end{enumerate}
 
+\noindent\textbf{常用凑微分对照表}
+\begin{center}
+\begin{tabular}{@{}ll@{\qquad}ll@{}}
+\toprule
+$\mathrm{d}x=\frac{1}{a}\,\mathrm{d}(ax+b)$ & $(a\neq0)$ &
+$x\,\mathrm{d}x=\frac{1}{2}\,\mathrm{d}(x^2)$ & \\[4pt]
+$\frac{\mathrm{d}x}{x}=\mathrm{d}(\ln x)$ & $(x>0)$ &
+$\mathrm{e}^x\,\mathrm{d}x=\mathrm{d}(\mathrm{e}^x)$ & \\[4pt]
+$\frac{\mathrm{d}x}{\sqrt{x}}=2\,\mathrm{d}(\sqrt{x})$ & &
+$\frac{\mathrm{d}x}{x^2}=-\mathrm{d}\bigl(\frac{1}{x}\bigr)$ & \\[4pt]
+$\cos x\,\mathrm{d}x=\mathrm{d}(\sin x)$ & &
+$\sin x\,\mathrm{d}x=-\mathrm{d}(\cos x)$ & \\[4pt]
+$\sec^2x\,\mathrm{d}x=\mathrm{d}(\tan x)$ & &
+$\frac{\mathrm{d}x}{1+x^2}=\mathrm{d}(\arctan x)$ & \\[4pt]
+$\frac{\mathrm{d}x}{\sqrt{1-x^2}}=\mathrm{d}(\arcsin x)$ & &
+$\sec x\tan x\,\mathrm{d}x=\mathrm{d}(\sec x)$ & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{常用变形技巧}
+\begin{itemize}
+  \item \textbf{三角恒等式}：$\sin^2x=\frac{1-\cos2x}{2}$，$\cos^2x=\frac{1+\cos2x}{2}$，$1+\tan^2x=\sec^2x$，积化和差；
+  \item \textbf{拆分子}：$\frac{1}{x(1+x)}=\frac{1}{x}-\frac{1}{1+x}$；
+  \item \textbf{配方}：$x^2+px+q=\bigl(x+\frac{p}{2}\bigr)^2+\bigl(q-\frac{p^2}{4}\bigr)$，化为$u^2\pm a^2$；
+  \item \textbf{提公因子}：$\frac{1}{\sin x\cos x}=\tan x+\cot x$。
+\end{itemize}
+
+\corepoint{凑微分的本质是"识别内层函数"，不是背公式。判断标准：把$\varphi'(x)\mathrm{d}x$凑成$\mathrm{d}\varphi(x)$后，剩下的部分必须是\textbf{只含}$\varphi(x)$的函数。若凑完还剩$x$，说明凑错了，要换思路（改第二类换元或分部积分）。}
+
+\subsection{第二类换元法（变量代换法）}
+
+\noindent\textbf{定理4.3}\quad 设$x=\psi(t)$是单调的、可导的函数，且$\psi'(t)\neq0$，又设$f[\psi(t)]\psi'(t)$具有原函数$G(t)$，则
+\[
+\int f(x)\,\mathrm{d}x=\int f\bigl[\psi(t)\bigr]\psi'(t)\,\mathrm{d}t=G(t)+C=G\bigl[\psi^{-1}(x)\bigr]+C ,
+\]
+其中$\psi^{-1}(x)$是$x=\psi(t)$的反函数。
+
+\noindent\textbf{与第一类的区别}\quad 第一类是"$u=\varphi(x)$"（把$x$的函数代换出去）；第二类是"$x=\psi(t)$"（把$t$的函数代换进来），换完必须\textbf{回代}，所以要求$\psi$单调可导、$\psi'\neq0$以保证反函数存在。
+
+\noindent\textbf{三角代换（去根号的主力）}
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+被积函数含 & 代换 & 微分 & 根号化简 \\
+\midrule
+$\sqrt{a^2-x^2}$ & $x=a\sin t,\ t\in\bigl[-\frac{\pi}{2},\frac{\pi}{2}\bigr]$ & $\mathrm{d}x=a\cos t\,\mathrm{d}t$ & $a\cos t$ \\
+$\sqrt{a^2+x^2}$ & $x=a\tan t,\ t\in\bigl(-\frac{\pi}{2},\frac{\pi}{2}\bigr)$ & $\mathrm{d}x=a\sec^2t\,\mathrm{d}t$ & $a\sec t$ \\
+$\sqrt{x^2-a^2}$ & $x=a\sec t,\ t\in\bigl[0,\frac{\pi}{2}\bigr)\cup\bigl[\pi,\frac{3\pi}{2}\bigr)$ & $\mathrm{d}x=a\sec t\tan t\,\mathrm{d}t$ & $a\tan t$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{根式代换（无理函数）}
+\begin{itemize}
+  \item 含$\sqrt[n]{ax+b}$：令$t=\sqrt[n]{ax+b}$（含$\sqrt{ax+b}$时$x=\frac{t^2-b}{a}$，$\mathrm{d}x=\frac{2t}{a}\mathrm{d}t$）；
+  \item 含$\sqrt{\frac{ax+b}{cx+d}}$：令$t=\sqrt{\frac{ax+b}{cx+d}}$，可同时消去两个根号；
+  \item 含$\sqrt{ax^2+bx+c}$：先配方成$\sqrt{u^2\pm A^2}$或$\sqrt{A^2-u^2}$，再作三角代换。
+\end{itemize}
+
+\noindent\textbf{倒代换}\quad 令$x=\frac{1}{t}$（$t\neq0$），用于被积函数是分式且分母次数明显高于分子（如$\int\frac{\mathrm{d}x}{x\sqrt{x^2+1}}$、$\int\frac{\mathrm{d}x}{x(x^7+2)}$）。此时$\mathrm{d}x=-\frac{1}{t^2}\mathrm{d}t$，分母中的$x^k$会变成$\frac{1}{t^k}$，往往能大幅降次。
+
+\corepoint{回代是第二类换元的\textbf{必经步骤}，忘了回代等于没做完。三角代换要写清$t$的取值范围，否则开根号$\sqrt{a^2\sin^2t}=a|\sin t|$会丢符号；教材给出的区间已保证$\cos t\ge0$、$\sec t>0$、$\tan t$符号可控。求出反函数后可用\textbf{辅助直角三角形}回代，比硬解快。}
+
 \section{分部积分法}
-根据不定积分性质1，性质2有
+
+\noindent\textbf{定理4.4}\quad 设$u=u(x)$，$v=v(x)$具有连续导数，则由$(uv)'=u'v+uv'$两边积分并移项得
 \[
-\int u\,dv=uv-\int v\,du \tag{1}
+\int u\,\mathrm{d}v=uv-\int v\,\mathrm{d}u,
 \]
-亦即
+或写作
 \[
-\int uv'dx=uv-\int vu'dx \tag{2}
+\int uv'\,\mathrm{d}x=uv-\int vu'\,\mathrm{d}x .
 \]
-积分公式（1）或（2）称为分部积分公式。
 
-应用分部积分法时，
+\keyformula{\int u\,\mathrm{d}v=uv-\int v\,\mathrm{d}u}
 
-当被积函数形如
+\noindent\textbf{作用}\quad 把$\int u\,\mathrm{d}v$转化为$\int v\,\mathrm{d}u$。选$u$的原则：求导后变简单、积分后不变复杂。
 
-\section{几类函数的积分}
+\noindent\textbf{选$u$的优先顺序（口诀：反对幂指三）}
+\[
+\text{反三角函数} \succ \text{对数函数} \succ \text{幂函数} \succ \text{指数函数} \succ \text{三角函数}
+\]
+排在前面的取作$u$，剩下的连同$\mathrm{d}x$一起作$\mathrm{d}v$。
+
+\noindent\textbf{按被积函数形状选用法}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+被积函数类型 & 处理方式 \\
+\midrule
+$P_n(x)\mathrm{e}^{ax}$、$P_n(x)\sin ax$、$P_n(x)\cos ax$ & 取$u=P_n(x)$，\textbf{分部$n$次}，幂次逐次降低 \\
+$P_n(x)\ln x$、$P_n(x)\arcsin x$、$P_n(x)\arctan x$ & 取$u=\ln x$等反三角/对数，$v$由$P_n$积出 \\
+$\mathrm{e}^{ax}\sin bx$、$\mathrm{e}^{ax}\cos bx$ & 任取其一，\textbf{分部两次}后出现"循环"，移项解出原积分 \\
+$\ln x$、$\arcsin x$、$\arctan x$单独出现 & 取$u$为它，$\mathrm{d}v=\mathrm{d}x$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{循环型积分的收尾}\quad 形如$I=\int \mathrm{e}^{ax}\sin bx\,\mathrm{d}x$，分部两次后右端重新出现$I$：
+\[
+I=\frac{\mathrm{e}^{ax}(a\sin bx-b\cos bx)}{a^2+b^2}+C ,
+\]
+做法是"移项合并"而非继续分部。
+
+\corepoint{分部积分的两大失败模式：(1) $u$与$v$选反了（如$\int x\ln x\,\mathrm{d}x$取$u=x$），越积越复杂，应立即停下换选法；(2) 循环型忘记移项，无限分部。另外$\int v\,\mathrm{d}u$中的$v$不必再加常数，常数统一放到最后。}
+
+\section{有理函数的积分}
+
 \subsection{有理函数的积分}
 
-\subsection{三角函数有理式的积分}
+\noindent\textbf{定义4.3}\quad 两个多项式的商$\dfrac{P(x)}{Q(x)}$称为有理函数，其中$P(x),Q(x)$无公因式。当分子次数低于分母次数时称为\textbf{真分式}，否则称为\textbf{假分式}。
 
-\subsection{简单无理函数的积分}
+\noindent\textbf{化简路线}
+\begin{enumerate}
+  \item \textbf{假分式先做多项式除法}：$\dfrac{P(x)}{Q(x)}=\text{多项式}+\dfrac{r(x)}{Q(x)}$，多项式部分直接积分；
+  \item \textbf{分母因式分解}：在实数范围内，$Q(x)$必分解为一次因式$(x-a)^k$与二次不可约因式$(x^2+px+q)^l$（$p^2-4q<0$）的乘积；
+  \item \textbf{真分式拆成部分分式}，再逐项积分。
+\end{enumerate}
+
+\noindent\textbf{部分分式分解定理}\quad 设$\dfrac{P(x)}{Q(x)}$为真分式，则它可唯一地分解为下列四类简单分式之和：
+\[
+\frac{A}{x-a},\qquad \frac{A}{(x-a)^k},\qquad \frac{Ax+B}{x^2+px+q},\qquad \frac{Ax+B}{(x^2+px+q)^l},
+\]
+其中$k,l\ge2$时，重因式要写全各次幂（如$\frac{A_1}{x-a}+\frac{A_2}{(x-a)^2}+\cdots$），$A,B$为待定常数。确定常数用\textbf{待定系数法}（通分比较系数）或\textbf{赋值法}（取$x=a$等特殊值）。
+
+\noindent\textbf{四类简单分式的积分}
+\begin{align*}
+\int\frac{A}{x-a}\,\mathrm{d}x &= A\ln|x-a|+C,\\
+\int\frac{A}{(x-a)^k}\,\mathrm{d}x &= \frac{A}{1-k}\cdot\frac{1}{(x-a)^{k-1}}+C\quad(k\ge2),\\
+\int\frac{Ax+B}{x^2+px+q}\,\mathrm{d}x &= \frac{A}{2}\ln(x^2+px+q)+\frac{2B-Ap}{\sqrt{4q-p^2}}\arctan\frac{2x+p}{\sqrt{4q-p^2}}+C .
+\end{align*}
+
+\noindent 最后一种（$l\ge2$）不能直接积，要用\textbf{递推公式}。记$I_n=\displaystyle\int\frac{\mathrm{d}x}{(x^2+a^2)^n}$，则
+\[
+I_n=\frac{x}{2a^2(n-1)(x^2+a^2)^{n-1}}+\frac{2n-3}{2a^2(n-1)}I_{n-1}\qquad(n\ge2),
+\]
+而$I_1=\frac{1}{a}\arctan\frac{x}{a}+C$。二次不可约因式先用配方法化为$(x+\frac{p}{2})^2+a^2$，再套用。
+
+\keyformula{\frac{P(x)}{Q(x)}=\text{多项式}+\sum\frac{A_i}{(x-a)^i}+\sum\frac{B_jx+C_j}{(x^2+px+q)^j}}
+
+\corepoint{有理函数\textbf{一定能}积成初等函数，但计算量可能极大。判断是否值得走这条路：分母次数$\le4$且易分解时直接拆；否则优先考虑换元或查积分表。分解时注意\textbf{重因式要写全部幂次}，这是最常见的漏项。}
+
+\subsection{可化为有理函数的积分举例}
+
+\noindent\textbf{1. 三角函数有理式}\quad 由$\sin x,\cos x$与常数经有限次四则运算构成的函数记作$R(\sin x,\cos x)$。
+
+\noindent\textbf{万能代换}：令$t=\tan\dfrac{x}{2}$，则
+\[
+\sin x=\frac{2t}{1+t^2},\qquad \cos x=\frac{1-t^2}{1+t^2},\qquad \mathrm{d}x=\frac{2\,\mathrm{d}t}{1+t^2},
+\]
+于是$\displaystyle\int R(\sin x,\cos x)\,\mathrm{d}x=\int R\Bigl(\frac{2t}{1+t^2},\frac{1-t^2}{1+t^2}\Bigr)\frac{2}{1+t^2}\,\mathrm{d}t$，必化为有理函数。
+
+\noindent\textbf{更省力的特例}
+\noindent\textbf{更省力的特例}\quad 若$R(-\sin x,\cos x)=-R(\sin x,\cos x)$（关于$\sin x$为奇），令$t=\cos x$；若$R(\sin x,-\cos x)=-R(\sin x,\cos x)$，令$t=\sin x$；若$R(-\sin x,-\cos x)=R(\sin x,\cos x)$，令$t=\tan x$。
+
+\noindent\textbf{2. 简单无理函数}\quad 含$\sqrt[n]{ax+b}$令$t=\sqrt[n]{ax+b}$；含$\sqrt[n]{\dfrac{ax+b}{cx+d}}$令$t=\sqrt[n]{\dfrac{ax+b}{cx+d}}$；含$\sqrt{ax^2+bx+c}$先配方再作三角代换（见第二节），或整体令$t=x+\sqrt{ax^2+bx+c}$。
+
+\corepoint{万能代换\textbf{一定能}化成有理函数，但常把分母次数抬得很高；能用$t=\sin x$、$t=\cos x$、$t=\tan x$的特例就别用万能代换。无理函数换元后\textbf{不要忘记把$\mathrm{d}x$也换掉}，并把结果回代为$x$的表达式。}
+
+\section{积分表的使用}
+
+附录积分表按被积函数类型分组编排（含$a^2\pm x^2$、$\sqrt{a^2\pm x^2}$、三角、反三角、指数对数、有理式等类）。使用时按下列顺序操作：
+
+\begin{enumerate}
+  \item \textbf{先化形}：提常数、配方、拆项，把被积函数整理成与表中条目\emph{同型}，并把参数$a,b$一一对应（表中的$a$是常数，不是变量）；
+  \item \textbf{查表}：形状一致时直接套用，$C$不能漏；不一致时作代换$u=\varphi(x)$化为原型，积完再回代；
+  \item \textbf{递推降次}：给出递推公式的条目（如$\int\frac{\mathrm{d}x}{(x^2+a^2)^n}$）由$n$逐次降到$n=1$再积；
+  \item \textbf{验证}：对结果求导，能还原被积函数即正确。
+\end{enumerate}
+
+\corepoint{查表不是"抄公式"，关键是\textbf{参数对应}与\textbf{化形}。同型条目有多条时选分母次数低、无递推的。若查不到，该积分可能不是初等函数（如$\int\mathrm{e}^{-x^2}\mathrm{d}x$、$\int\frac{\sin x}{x}\mathrm{d}x$），应停止尝试。}

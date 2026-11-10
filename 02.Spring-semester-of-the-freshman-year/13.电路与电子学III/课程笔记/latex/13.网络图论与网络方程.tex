@@ -1,0 +1,333 @@
+% 电路与电子学III 课程笔记 —— 第十一章（教材第11章）网络图论与网络方程
+\chapter{网络图论与网络方程}
+
+\section{网络的图、树}
+
+\subsection{网络的图}
+把电路中每一个元件（或每一个广义支路）抽象为一条\textbf{支路}，把元件的连接点抽象为一个\textbf{节点}，
+所得由节点和支路组成的集合称为\textbf{图}（graph），记作 $G$。图只描述电路的\textbf{拓扑结构}（连接关系），
+不反映元件的性质与参数。
+
+\begin{itemize}
+  \item \textbf{有向图}：给每条支路规定参考方向的图。支路方向通常取该支路电流的参考方向。
+  \item \textbf{连通图}：图中任意两个节点之间至少存在一条路径。
+  \item \textbf{子图}：节点集和支路集分别是原图的子集的图。
+\end{itemize}
+设图的节点数为 $n$、支路数为 $b$。画图时应注意：电压源与电阻的串联、电流源与电导的并联，
+都可先化为一条\textbf{广义支路}再抽象为一条支路；互感属于元件性质（磁耦合），在图中不予表现。
+
+\subsection{树}
+连通图 $G$ 的一个\textbf{树}（tree）$T$ 是满足下列三个条件的子图：
+\begin{enumerate}
+  \item 包含 $G$ 的\textbf{全部}节点；
+  \item \textbf{连通}；
+  \item \textbf{不含任何回路}。
+\end{enumerate}
+树中的支路称为\textbf{树支}，不属于树的支路称为\textbf{连支}。记树支数为 $n_t$、连支数为 $n_l$，
+由定义可推出
+\begin{keyformula}{n_t=n-1,\qquad n_l=b-(n-1)=b-n+1}
+\end{keyformula}
+一个连通图一般有许多棵树，但任一树的树支数恒为 $n-1$、连支数恒为 $b-n+1$。
+选树的方法：先任取一条支路，以后每添一条支路必须使它与已选支路连通且不形成回路，直到包含全部节点为止。
+
+\subsection{割集}
+割集（cut set）是连通图的一个支路集合，它满足：\textbf{（1）} 把这些支路全部移去，图分为两个互相分离的部分；
+\textbf{（2）} 少移去其中任何一条支路，图仍连通（即“最少支路集合”）。直观地说，割集是“把图一刀切成两块”
+所必须切断的最少支路集合。判定要点：去掉该集合后图恰好分成\textbf{两部分}（不是三部分或更多），
+且不能再少一条。
+
+\begin{corepoint}{割集判定的两个反例最常见：\textbf{（1）} 去掉后分成三部分（如三条并联支路各自成孤岛）——不是割集；
+\textbf{（2）} 去掉后图仍连通（切开不彻底）——不是割集。另外，任一支路单独成割集的充要条件是该支路为
+“割边”（悬吊支路）。基本割集一定含且只含\textbf{一个}树支，这是它与一般割集的区别。}
+\end{corepoint}
+
+\section{基本回路和基本割集}
+
+对一个复杂电路，如何列出一组独立的且足够的 KVL、KCL 方程，是电路理论的基本问题之一，
+这可借助图论中基本回路和基本割集的概念解决。
+
+\subsection{基本回路}
+选定树 $T$ 后，\textbf{只包含一条连支}、其余全为树支的回路称为\textbf{基本回路}（单连支回路）。
+连支有 $b-n+1$ 条，故基本回路共有 $b-n+1$ 个。每个基本回路只含一条独有的连支，
+因此\textbf{任一基本回路不可能由其他基本回路的组合得到}，即基本回路组是一组\textbf{独立回路}，
+其上列写的 KVL 方程是一组独立方程。
+
+\subsection{基本割集}
+选定树 $T$ 后，\textbf{只包含一条树支}、其余全为连支的割集称为\textbf{基本割集}（单树支割集）。
+树支有 $n-1$ 条，故基本割集共有 $n-1$ 个，它们是一组\textbf{独立割集}，其上列写的 KCL 方程是一组独立方程。
+
+\subsection{独立变量}
+\begin{keyformula}{\text{\songti 连支电流 } i_l\ \text{\songti 是一组独立的支路电流（}b-n+1\text{\songti  个）};\qquad
+  \text{\songti 树支电压 } u_t\ \text{\songti 是一组独立的支路电压（}n-1\text{\songti  个）}}
+\end{keyformula}
+理由：全部支路电流中，连支电流不能仅通过 KCL 表达成其他连支电流的线性组合——因为仅由连支不能形成割集；
+反之，每条树支至少属于一个基本割集，其电流必可由连支电流表示。对偶地，任一连支电压都可用树支电压的
+线性组合（通过 KVL）表示，而树支电压不能互相表示，因为仅由树支不能形成回路。
+
+\begin{corepoint}{四个“数”必须分清：独立节点数 $n-1$；独立回路数（网孔数）$b-n+1$；树支数 $n-1$；
+连支数 $b-n+1$。列写电路方程时\textbf{独立 KCL 方程 $n-1$ 个、独立 KVL 方程 $b-n+1$ 个}，
+两者之和恰为 $b$，与待求支路电流（或电压）个数相等，这正是“足够”的含义。}
+\end{corepoint}
+
+\section{基尔霍夫定律方程的关联矩阵形式}
+
+\subsection{关联矩阵}
+对有向图 $G$，用矩阵 $\boldsymbol{A}_a$ 描述节点与支路的关联关系，其元素定义为
+\begin{equation}
+  a_{ij}=\begin{cases}
+    +1,&\text{\songti 支路 }j\text{\songti  从节点 }i\text{\songti  连出}\\
+    -1,&\text{\songti 支路 }j\text{\songti  向节点 }i\text{\songti  连入}\\
+    0,&\text{\songti 支路 }j\text{\songti  与节点 }i\text{\songti  不直接相连}
+  \end{cases}
+\end{equation}
+所得 $n\times b$ 矩阵称为\textbf{节点—支路关联矩阵}（incidence matrix）。由于每一列恰有一个 $+1$ 和一个 $-1$，
+$\boldsymbol{A}_a$ 的各行之和为零，即 $\boldsymbol{A}_a$ 的秩最大为 $n-1$。划去参考节点所对应的一行，
+得 $(n-1)\times b$ 的\textbf{降阶关联矩阵}，仍记作 $\boldsymbol{A}$，其秩为 $n-1$。
+
+\textbf{示例}：四个节点（编号 1、2、3、4）、六条支路的有向图，各支路的方向依次为
+$1:1\to2$、$2:2\to3$、$3:1\to3$、$4:2\to4$、$5:3\to4$、$6:1\to4$，取节点 4 为参考节点，则
+\begin{equation}
+  \boldsymbol{A}=\begin{bmatrix}
+    1&0&1&0&0&1\\
+    -1&1&0&1&0&0\\
+    0&-1&-1&0&1&0
+  \end{bmatrix}_{3\times6}
+\end{equation}
+（若把参考节点 4 对应的一行 $[0\ \ 0\ \ 0\ \ -1\ \ -1\ \ -1]$ 补回，则每列之和为零，
+说明完整的 $\boldsymbol{A}_a$ 各行线性相关，其秩为 $n-1=3$。）
+
+\subsection{KCL 与 KVL 的矩阵形式}
+对每个独立节点列 KCL，写成矩阵形式即
+\begin{keyformula}{\boldsymbol{A}\boldsymbol{I}=\boldsymbol{0},\qquad
+  \boldsymbol{U}=\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n}
+\end{keyformula}
+其中 $\boldsymbol{I}=[i_1\ i_2\ \cdots\ i_b]^{\mathrm{T}}$ 为支路电流向量，
+$\boldsymbol{U}_n=[u_{n1}\ u_{n2}\ \cdots\ u_{n,n-1}]^{\mathrm{T}}$ 为节点电压向量（相对参考节点），
+$\boldsymbol{U}=[u_1\ u_2\ \cdots\ u_b]^{\mathrm{T}}$ 为支路电压向量。前者是 $n-1$ 个独立 KCL 方程；
+后者表明\textbf{支路电压可用节点电压线性表示}，是由节点电压求支路电压的变换式。
+
+\begin{corepoint}{$\boldsymbol{A}\boldsymbol{I}=\boldsymbol{0}$ 中 $\boldsymbol{A}$ 是\textbf{降阶}矩阵（去掉参考节点一行），
+若用完整的 $\boldsymbol{A}_a$，则有一行是其余各行的负和，方程线性相关、不能用来求解。
+“支路电压 $=$ 节点电压之差”这一物理事实，正是 $\boldsymbol{U}=\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n$ 的内容，
+符号由支路方向决定，方向取反则整列变号。}
+\end{corepoint}
+
+\section{基尔霍夫定律方程的基本回路矩阵形式}
+
+\subsection{基本回路矩阵}
+用矩阵 $\boldsymbol{B}$ 描述基本回路与支路的关联关系，元素定义为
+\begin{equation}
+  b_{ij}=\begin{cases}
+    +1,&\text{\songti 支路 }j\text{\songti  在基本回路 }i\text{\songti  中，且方向与回路方向一致}\\
+    -1,&\text{\songti 支路 }j\text{\songti  在基本回路 }i\text{\songti  中，且方向与回路方向相反}\\
+    0,&\text{\songti 支路 }j\text{\songti  不在基本回路 }i\text{\songti  中}
+  \end{cases}
+\end{equation}
+$\boldsymbol{B}$ 是 $(b-n+1)\times b$ 矩阵，回路方向取该回路独有连支的方向。若支路编号按\textbf{先树支后连支}、
+基本回路编号与连支编号一致，则
+\begin{equation}
+  \boldsymbol{B}=\left[\boldsymbol{B}_t\ \middle|\ \boldsymbol{E}_l\right]
+\end{equation}
+其中 $\boldsymbol{E}_l$ 是 $(b-n+1)$ 阶单位矩阵（每条基本回路只含一条独有连支，且系数为 $+1$）。
+
+\subsection{KVL 与 KCL 的矩阵形式}
+沿每个基本回路列 KVL，写成矩阵形式即
+\begin{keyformula}{\boldsymbol{B}\boldsymbol{U}=\boldsymbol{0},\qquad
+  \boldsymbol{I}=\boldsymbol{B}^{\mathrm{T}}\boldsymbol{I}_l}
+\end{keyformula}
+前者是 $b-n+1$ 个独立 KVL 方程；后者表明\textbf{全部支路电流可用连支电流（即基本回路电流）线性表示}。
+把 $\boldsymbol{B}=\left[\boldsymbol{B}_t\ \middle|\ \boldsymbol{E}_l\right]$ 代入，
+并记 $\boldsymbol{I}=[\boldsymbol{I}_t\ \ \boldsymbol{I}_l]^{\mathrm{T}}$，由 $\boldsymbol{B}\boldsymbol{U}=\boldsymbol{0}$ 得
+\begin{keyformula}{\boldsymbol{U}_l=-\boldsymbol{B}_t\boldsymbol{U}_t,\qquad
+  \boldsymbol{I}_t=\boldsymbol{B}_t^{\mathrm{T}}\boldsymbol{I}_l,\qquad \boldsymbol{I}_l=\boldsymbol{I}_l}
+\end{keyformula}
+即\textbf{连支电压可由树支电压表示、树支电流可由连支电流表示}，这正是 11.2 节“树支电压独立、连支电流独立”
+的矩阵表述。
+
+\begin{corepoint}{$\boldsymbol{B}\boldsymbol{I}=\boldsymbol{0}$ \textbf{不成立}，$\boldsymbol{B}\boldsymbol{U}=\boldsymbol{0}$ 才是 KVL；
+$\boldsymbol{A}\boldsymbol{I}=\boldsymbol{0}$ 才是 KCL。两个矩阵“乘电压”与“乘电流”的对象不能弄反：
+\textbf{关联矩阵 $A$ 管电流（KCL），回路矩阵 $B$ 管电压（KVL），割集矩阵 $C$ 管电流（KCL）}。
+记住“$A$、$C$ 乘 $I$，$B$ 乘 $U$”可避免大量符号错误。}
+\end{corepoint}
+
+\section{基尔霍夫定律方程的基本割集矩阵形式}
+
+\subsection{基本割集矩阵}
+用矩阵 $\boldsymbol{C}$ 描述基本割集与支路的关联关系，元素定义为
+\begin{equation}
+  c_{ij}=\begin{cases}
+    +1,&\text{\songti 支路 }j\text{\songti  在基本割集 }i\text{\songti  中，且方向与割集方向一致}\\
+    -1,&\text{\songti 支路 }j\text{\songti  在基本割集 }i\text{\songti  中，且方向与割集方向相反}\\
+    0,&\text{\songti 支路 }j\text{\songti  不在基本割集 }i\text{\songti  中}
+  \end{cases}
+\end{equation}
+$\boldsymbol{C}$ 是 $(n-1)\times b$ 矩阵，割集方向取该割集独有树支的方向。若支路编号先树支后连支、
+基本割集编号与树支编号一致，则
+\begin{equation}
+  \boldsymbol{C}=\left[\boldsymbol{E}_t\ \middle|\ \boldsymbol{C}_l\right]
+\end{equation}
+
+\subsection{KCL 与 KVL 的矩阵形式}
+对每个基本割集列 KCL，写成矩阵形式即
+\begin{keyformula}{\boldsymbol{C}\boldsymbol{I}=\boldsymbol{0},\qquad
+  \boldsymbol{U}=\boldsymbol{C}^{\mathrm{T}}\boldsymbol{U}_t}
+\end{keyformula}
+前一式是 $n-1$ 个独立 KCL 方程；后一式表明\textbf{支路电压可用树支电压（割集电压）线性表示}。
+把 $\boldsymbol{U}=\boldsymbol{C}^{\mathrm{T}}\boldsymbol{U}_t$ 代入基本回路的 KVL 方程
+$\boldsymbol{B}\boldsymbol{U}=\boldsymbol{0}$，由于该式对任意的树支电压向量 $\boldsymbol{U}_t$ 都成立，
+就必须有 $\boldsymbol{B}\boldsymbol{C}^{\mathrm{T}}=\boldsymbol{0}$——这就是下面要讨论的矩阵之间的关系。
+
+\subsection{三个矩阵之间的关系}
+同一网络图、同一棵树，且支路编号一致时，有
+\begin{keyformula}{\boldsymbol{A}\boldsymbol{B}^{\mathrm{T}}=\boldsymbol{0},\qquad
+  \boldsymbol{B}\boldsymbol{C}^{\mathrm{T}}=\boldsymbol{0},\qquad
+  \boldsymbol{C}_l=-\boldsymbol{B}_t^{\mathrm{T}}}
+\end{keyformula}
+第一式说明“任一回路在任一节点上的关联代数和为零”（闭合路径进出节点次数相等）；第二式说明
+“任一割集与任一回路相交的支路数为偶数（且方向取向后代数和为零）”；第三式给出了两种矩阵的直接换算。
+这些正交关系正是特勒根定理（第 3 章）的图论证明依据。
+
+\textbf{几点说明}：$\boldsymbol{A}$ 只与图有关；$\boldsymbol{B}$、$\boldsymbol{C}$ 还与所选树有关。
+树的选取不同，$\boldsymbol{B}$、$\boldsymbol{C}$ 不同，但由它们列出的电路方程的解相同。
+
+\begin{corepoint}{$\boldsymbol{B}\boldsymbol{C}^{\mathrm{T}}=\boldsymbol{0}$ 是最有用的校验式：写出 $\boldsymbol{B}$、$\boldsymbol{C}$ 后相乘，
+若不为零阵必有元素符号抄错。另外，“$b-n+1$ 个基本回路”与“$n-1$ 个基本割集”共同构成完备的独立方程，
+这就是\textbf{回路电流法}与\textbf{割集电压法（含节点电压法）}的图论解释。}
+\end{corepoint}
+
+\section{广义支路及其方程的矩阵形式}
+
+\subsection{广义支路}
+为使矩阵方程形式统一，把每条支路统一表示为一个阻抗 $Z_k$ 与电压源 $u_{Sk}$ 串联、再与电流源 $i_{Sk}$
+并联的\textbf{广义支路}。设支路电压、电流取关联参考方向，则支路方程为
+\begin{keyformula}{\boldsymbol{U}=\boldsymbol{Z}\left(\boldsymbol{I}-\boldsymbol{I}_S\right)+\boldsymbol{U}_S
+  \quad\Longleftrightarrow\quad
+  \boldsymbol{I}=\boldsymbol{Y}\left(\boldsymbol{U}-\boldsymbol{U}_S\right)+\boldsymbol{I}_S}
+\end{keyformula}
+其中 $\boldsymbol{Z}=\mathrm{diag}[Z_1,\cdots,Z_b]$ 为\textbf{支路阻抗矩阵}，
+$\boldsymbol{Y}=\boldsymbol{Z}^{-1}=\mathrm{diag}[Y_1,\cdots,Y_b]$ 为\textbf{支路导纳矩阵}，
+$\boldsymbol{U}_S$、$\boldsymbol{I}_S$ 分别为支路电压源向量与支路电流源向量。
+当 $Z_k=0$（第 $k$ 支路为纯电压源）时 $\boldsymbol{Z}$ 不可逆，应以 $\boldsymbol{Y}$ 形式列方程；
+反之当 $Y_k=0$（纯电流源）时应用 $\boldsymbol{Z}$ 形式。
+
+\subsection{受控源的处理}
+若支路 $i$ 是 VCCS 的被控支路，受支路 $j$ 的电压控制、控制系数为 $g_{ij}$，则支路导纳矩阵的
+$i$ 行 $j$ 列元素产生增量 $\pm g_{ij}$：当控制电压、被控电流分别与支路 $j$、支路 $i$ 的方向一致时取“$+$”号，
+否则每改变一个方向就变号一次。按此规则可直接写出含 VCCS 的支路导纳矩阵——此时 $\boldsymbol{Y}$
+\textbf{不再是对角阵}。
+
+\begin{corepoint}{$\boldsymbol{Z}$、$\boldsymbol{Y}$ 对无受控源的网络是对角阵，一旦含受控源就出现非对角元，
+且\textbf{不再对称}（这正是非互易性的矩阵表现）。另外支路方向改变时，$\boldsymbol{U}_S$、$\boldsymbol{I}_S$、
+$\boldsymbol{Z}$ 中相应行、列都要变号，切勿只改一个。}
+\end{corepoint}
+
+\section{电路方程的矩阵形式}
+
+\subsection{节点电压方程的矩阵形式}
+把支路方程 $\boldsymbol{I}=\boldsymbol{Y}(\boldsymbol{U}-\boldsymbol{U}_S)+\boldsymbol{I}_S$ 代入
+$\boldsymbol{A}\boldsymbol{I}=\boldsymbol{0}$，再把 $\boldsymbol{U}=\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n$
+代入，得
+\begin{equation}
+  \boldsymbol{A}\boldsymbol{Y}\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n
+  =\boldsymbol{A}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{A}\boldsymbol{I}_S
+\end{equation}
+\begin{keyformula}{\boldsymbol{Y}_n\boldsymbol{U}_n=\boldsymbol{I}_{Sn},\qquad
+  \boldsymbol{Y}_n=\boldsymbol{A}\boldsymbol{Y}\boldsymbol{A}^{\mathrm{T}},\qquad
+  \boldsymbol{I}_{Sn}=\boldsymbol{A}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{A}\boldsymbol{I}_S}
+\end{keyformula}
+$\boldsymbol{Y}_n$ 称为\textbf{节点导纳矩阵}（$(n-1)$ 阶方阵，对角元为自导纳、非对角元为互导纳），
+$\boldsymbol{I}_{Sn}$ 称为\textbf{节点源电流向量}（第一项是电压源化成电流源后流入各节点的电流，
+第二项是流出各节点的电流源电流）。这是 $(n-1)$ 个联立方程，待求量为 $\boldsymbol{U}_n$。
+
+\subsection{回路电流方程的矩阵形式}
+把支路方程 $\boldsymbol{U}=\boldsymbol{Z}(\boldsymbol{I}-\boldsymbol{I}_S)+\boldsymbol{U}_S$ 代入
+$\boldsymbol{B}\boldsymbol{U}=\boldsymbol{0}$，再把 $\boldsymbol{I}=\boldsymbol{B}^{\mathrm{T}}\boldsymbol{I}_l$ 代入，得
+\begin{keyformula}{\boldsymbol{Z}_l\boldsymbol{I}_l=\boldsymbol{U}_{Sl},\qquad
+  \boldsymbol{Z}_l=\boldsymbol{B}\boldsymbol{Z}\boldsymbol{B}^{\mathrm{T}},\qquad
+  \boldsymbol{U}_{Sl}=\boldsymbol{B}\boldsymbol{Z}\boldsymbol{I}_S-\boldsymbol{B}\boldsymbol{U}_S}
+\end{keyformula}
+$\boldsymbol{Z}_l$ 称为\textbf{回路阻抗矩阵}（$b-n+1$ 阶），$\boldsymbol{U}_{Sl}$ 称为\textbf{回路源电压向量}。
+待求量是连支电流，即基本回路电流。
+
+\subsection{割集电压方程的矩阵形式}
+把 $\boldsymbol{U}=\boldsymbol{C}^{\mathrm{T}}\boldsymbol{U}_t$ 与支路方程代入 $\boldsymbol{C}\boldsymbol{I}=\boldsymbol{0}$，得
+\begin{keyformula}{\boldsymbol{Y}_t\boldsymbol{U}_t=\boldsymbol{I}_{St},\qquad
+  \boldsymbol{Y}_t=\boldsymbol{C}\boldsymbol{Y}\boldsymbol{C}^{\mathrm{T}},\qquad
+  \boldsymbol{I}_{St}=\boldsymbol{C}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{C}\boldsymbol{I}_S}
+\end{keyformula}
+$\boldsymbol{Y}_t$ 称为\textbf{割集导纳矩阵}，是节点导纳矩阵的推广（把节点推广为基本割集），
+待求量为树支电压（割集电压）。取割集为包围每个节点的割集时，割集电压法即退化为节点电压法。
+
+\subsection{状态方程的矩阵形式}
+若取电容电压与电感电流为状态变量，则由割集（对含电容的节点）KCL、回路（对含电感的回路）KVL
+与元件方程消去非状态变量，可统一写成
+\begin{equation}
+  \dot{\boldsymbol{X}}=\boldsymbol{A}\boldsymbol{X}+\boldsymbol{B}\boldsymbol{V},\qquad
+  \boldsymbol{Y}=\boldsymbol{C}\boldsymbol{X}+\boldsymbol{D}\boldsymbol{V}
+\end{equation}
+状态变量个数等于独立储能元件数，也等于网络方程的阶数；矩阵 $\boldsymbol{A}$、$\boldsymbol{B}$、$\boldsymbol{C}$、
+$\boldsymbol{D}$ 由网络拓扑（关联矩阵）与元件参数共同决定。
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\tablename}{表}%
+  \caption{三种网络方程矩阵形式的对照}
+  \begin{tabular}{llll}
+    \toprule
+    方法 & 待求量 & 系数矩阵 & 右端向量 \\
+    \midrule
+    节点电压法 & $\boldsymbol{U}_n$（$n-1$ 个） & $\boldsymbol{Y}_n=\boldsymbol{A}\boldsymbol{Y}\boldsymbol{A}^{\mathrm{T}}$
+      & $\boldsymbol{A}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{A}\boldsymbol{I}_S$ \\
+    回路电流法 & $\boldsymbol{I}_l$（$b-n+1$ 个） & $\boldsymbol{Z}_l=\boldsymbol{B}\boldsymbol{Z}\boldsymbol{B}^{\mathrm{T}}$
+      & $\boldsymbol{B}\boldsymbol{Z}\boldsymbol{I}_S-\boldsymbol{B}\boldsymbol{U}_S$ \\
+    割集电压法 & $\boldsymbol{U}_t$（$n-1$ 个） & $\boldsymbol{Y}_t=\boldsymbol{C}\boldsymbol{Y}\boldsymbol{C}^{\mathrm{T}}$
+      & $\boldsymbol{C}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{C}\boldsymbol{I}_S$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{列写步骤}
+\begin{enumerate}
+  \item 画出网络的有向图，按广义支路定义把每个元件（含电源）归并到相应支路；
+  \item 选定树（常取含电压源、电容较多的支路为树支），确定树支、连支，编号先树支后连支；
+  \item 写出关联矩阵 $\boldsymbol{A}$（或基本回路矩阵 $\boldsymbol{B}$、基本割集矩阵 $\boldsymbol{C}$）；
+  \item 写出支路导纳矩阵 $\boldsymbol{Y}$（或支路阻抗矩阵 $\boldsymbol{Z}$）、支路源向量
+        $\boldsymbol{U}_S$、$\boldsymbol{I}_S$（含受控源时按 11.6 节规则修改矩阵）；
+  \item 按 $\boldsymbol{Y}_n=\boldsymbol{A}\boldsymbol{Y}\boldsymbol{A}^{\mathrm{T}}$ 等公式作矩阵运算，得到方程并求解；
+  \item 由 $\boldsymbol{U}=\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n$ 与支路方程求出各支路电压、电流。
+\end{enumerate}
+
+\begin{corepoint}{矩阵形式的优点是\textbf{具有一般性、形式紧凑、便于计算机编程}（不必像人工列方程那样
+逐条写 KCL/KVL）。对简单电路，直接列方程反而更快；矩阵形式的价值在于复杂电路与程序化计算。
+考试中若要求“用矩阵形式列写”，务必把 $\boldsymbol{A}$（或 $\boldsymbol{B}$、$\boldsymbol{C}$）、
+$\boldsymbol{Y}$（或 $\boldsymbol{Z}$）与源向量写全，最后再写出乘积形式的方程。}
+\end{corepoint}
+
+\section{本章小结}
+\begin{enumerate}
+  \item 图由节点和支路组成，用于描述电路的结构；一棵树包含全部节点、连通且不含回路，
+        树支数为 $n-1$，连支数为 $b-n+1$。
+  \item 只含一条连支的回路称为基本回路；只含一条树支的割集称为基本割集。基本回路上列写的 KVL
+        方程、基本割集上列写的 KCL 方程各是一组独立方程；树支电压是一组独立的支路电压，
+        连支电流是一组独立的支路电流。
+  \item 关联矩阵 $\boldsymbol{A}$、基本回路矩阵 $\boldsymbol{B}$、基本割集矩阵 $\boldsymbol{C}$ 分别是节点与支路、
+        基本回路与支路、基本割集与支路关联关系的数学表示；其中 $\boldsymbol{B}$、$\boldsymbol{C}$ 与所选树有关。
+  \item 基尔霍夫定律的矩阵形式：$\boldsymbol{A}\boldsymbol{I}=\boldsymbol{0}$、$\boldsymbol{U}=\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n$；
+        $\boldsymbol{B}\boldsymbol{U}=\boldsymbol{0}$、$\boldsymbol{I}=\boldsymbol{B}^{\mathrm{T}}\boldsymbol{I}_l$；
+        $\boldsymbol{C}\boldsymbol{I}=\boldsymbol{0}$、$\boldsymbol{U}=\boldsymbol{C}^{\mathrm{T}}\boldsymbol{U}_t$。
+        且 $\boldsymbol{A}\boldsymbol{B}^{\mathrm{T}}=\boldsymbol{0}$、$\boldsymbol{B}\boldsymbol{C}^{\mathrm{T}}=\boldsymbol{0}$、
+        $\boldsymbol{C}_l=-\boldsymbol{B}_t^{\mathrm{T}}$。
+  \item 广义支路方程为 $\boldsymbol{U}=\boldsymbol{Z}(\boldsymbol{I}-\boldsymbol{I}_S)+\boldsymbol{U}_S$ 或
+        $\boldsymbol{I}=\boldsymbol{Y}(\boldsymbol{U}-\boldsymbol{U}_S)+\boldsymbol{I}_S$；
+        含 VCCS 时支路导纳矩阵出现非对角元，可按方向规则直接填写。
+  \item 节点电压方程 $\boldsymbol{A}\boldsymbol{Y}\boldsymbol{A}^{\mathrm{T}}\boldsymbol{U}_n
+        =\boldsymbol{A}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{A}\boldsymbol{I}_S$；
+        回路电流方程 $\boldsymbol{B}\boldsymbol{Z}\boldsymbol{B}^{\mathrm{T}}\boldsymbol{I}_l
+        =\boldsymbol{B}\boldsymbol{Z}\boldsymbol{I}_S-\boldsymbol{B}\boldsymbol{U}_S$；
+        割集电压方程 $\boldsymbol{C}\boldsymbol{Y}\boldsymbol{C}^{\mathrm{T}}\boldsymbol{U}_t
+        =\boldsymbol{C}\boldsymbol{Y}\boldsymbol{U}_S-\boldsymbol{C}\boldsymbol{I}_S$。
+  \item 状态方程与输出方程的矩阵形式分别为 $\dot{\boldsymbol{X}}=\boldsymbol{A}\boldsymbol{X}+\boldsymbol{B}\boldsymbol{V}$、
+        $\boldsymbol{Y}=\boldsymbol{C}\boldsymbol{X}+\boldsymbol{D}\boldsymbol{V}$。
+\end{enumerate}
+
+\endinput

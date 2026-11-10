@@ -1,278 +1,615 @@
-% -------------------------- 矢量分析笔记（子文件） --------------------------
-% 说明：本文件为子文件，由主文档 \input{xxx} 引入，不含 document 环境与重复宏包
-% 依赖宏包（请在主文档 preamble 中添加）：
-% \usepackage{tcolorbox}
-% \tcbuselibrary{skins}
-% 定义彩色公式框：浅蓝背景、无边框、内边距适中
-\newtcolorbox{formulaBox}{
-    colback=blue!8!white,   % 浅蓝底色
-    colframe=transparent,   % 隐藏边框
-    boxrule=0pt,
-    halign=center,          % 公式居中
-    boxsep=2pt,
-    left=4pt,right=4pt,top=3pt,bottom=3pt
+% -------------------------- 矢量分析（教材 附录一 / 课件 第0章） --------------------------
+% 说明：本文件为子文件，由主文档 \input 引入，不含 document 环境与重复宏包
+% 依赖宏包（主文档 preamble 已装）：tcolorbox、adjustbox、booktabs、amsmath
+%
+% 彩色公式框：本文件定义一次，供 4.静电场.tex 等同目录子文件复用（勿重复定义）
+\newenvironment{formulaBox}{%
+    \par\begin{adjustbox}{max width=\linewidth}%
+    \begin{tcolorbox}[colback=blue!8!white,colframe=transparent,boxrule=0pt,halign=center,boxsep=2pt,left=4pt,right=4pt,top=3pt,bottom=3pt]%
+}{%
+    \end{tcolorbox}\end{adjustbox}\par
 }
 
 % -------------------------- 正文 --------------------------
-\section{矢量分析}
+\chapter{矢量分析}
 
-\subsection{正交坐标系}
-\subsubsection{正交坐标系定义}
-正交坐标系是指坐标系中各坐标基矢量相互垂直（点积为0）、且为单位矢量的坐标系，满足正交性和归一性，是矢量分析的基础框架。
+矢量分析是研究电磁场理论的重要数学工具。它对简化公式、明确概念、掌握观察规律的实质有极大裨益，
+也是学习电磁场入门的数学基础。本章（教材列为附录一，课件称“第 0 章”）只讨论梯度、散度、旋度的概念、物理意义
+与直角坐标系下的计算，并给出三种正交坐标系中的常用公式；不追求纯数学论证，侧重阐明物理概念与
+应用手段。
 
-\subsubsection{三种常用正交坐标系}
-\begin{itemize}
-    \item \textbf{直角坐标系（笛卡尔坐标系）}：坐标 \((x, y, z)\)，单位矢量 \(\vec{e}_x, \vec{e}_y, \vec{e}_z\)（常矢量），适用于规则几何形状、线性问题。
-    \item \textbf{柱坐标系}：坐标 \((\rho, \phi, z)\)，单位矢量 \(\vec{e}_\rho, \vec{e}_\phi, \vec{e}_z\)（\(\vec{e}_\rho, \vec{e}_\phi\) 为变矢量），适用于圆柱对称问题。
-    \item \textbf{球坐标系}：坐标 \((r, \theta, \phi)\)，单位矢量 \(\vec{e}_r, \vec{e}_\theta, \vec{e}_\phi\)（均为变矢量），适用于球对称问题。
-\end{itemize}
+\section{正交坐标系}
 
-\subsubsection{坐标变换公式}
-\begin{itemize}
-    \item 直角坐标 \(\leftrightarrow\) 柱坐标
-    \[
-    \rho = \sqrt{x^2+y^2},\quad \phi = \arctan\frac{y}{x},\quad z=z
-    \]
-    \item 直角坐标 \(\leftrightarrow\) 球坐标
-    \[
-    r = \sqrt{x^2+y^2+z^2},\quad \theta = \arccos\frac{z}{r},\quad \phi = \arctan\frac{y}{x}
-    \]
-\end{itemize}
+\subsection{场的描述与坐标系的选择}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{矢量代数}
-\subsubsection{矢量基本表示}
-矢量为既有大小又有方向的量，直角坐标系中表示为：
-\[
-\vec{A} = A_x \vec{e}_x + A_y \vec{e}_y + A_z \vec{e}_z
-\]
-矢量模长：
-\[
-|\vec{A}| = \sqrt{A_x^2 + A_y^2 + A_z^2}
-\]
-
-\subsubsection{矢量点乘（数量积）}
-\begin{itemize}
-    \item \textbf{定义}：$\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}|\cos\theta$，$\theta$ 为两矢量夹角。
-    \item \textbf{直角坐标（核心公式）}：
-    \begin{formulaBox}
-    \[
-    \vec{A} \cdot \vec{B} = A_xB_x + A_yB_y + A_zB_z
-    \]
-    \end{formulaBox}
-    \item \textbf{性质}：满足交换律、分配律，运算结果为标量。
-    \item \textbf{几何意义}：表征两矢量同向程度，正交矢量点积为 $0$。
-\end{itemize}
-
-\subsubsection{矢量叉乘（矢量积）}
-\begin{itemize}
-    \item \textbf{定义}：$\vec{A} \times \vec{B} = |\vec{A}||\vec{B}|\sin\theta \, \vec{e}_n$，运算结果为矢量。
-    \item \textbf{直角坐标（行列式，核心公式）}
-    \begin{formulaBox}
-    \[
-    \vec{A} \times \vec{B} = \begin{vmatrix}
-    \vec{e}_x & \vec{e}_y & \vec{e}_z \\
-    A_x & A_y & A_z \\
-    B_x & B_y & B_z
-    \end{vmatrix}
-    \]
-    \end{formulaBox}
-    \item \textbf{性质}：反交换律 $\vec{A} \times \vec{B} = -\vec{B} \times \vec{A}$，不满足结合律。
-    \item \textbf{几何意义}：模长等于两矢量张成的平行四边形面积。
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{标量场与矢量场}
-\begin{itemize}
-    \item \textbf{标量场}：空间每一点对应一个标量数值，如电势 $\varphi(\vec{r})$、温度 $T(\vec{r})$。
-    \item \textbf{等值面（等势面）}：满足 $\varphi(x,y,z) = C$ 的空间曲面，等值面互不相交。
-    \item \textbf{矢量场}：空间每一点对应一个矢量，如电场 $\vec{E}(\vec{r})$、磁场 $\vec{H}(\vec{r})$。
-    \item \textbf{矢量线方程（核心公式）}：描述矢量场方向的曲线，满足微分关系
-    \begin{formulaBox}
-    \[
-    \frac{dx}{A_x} = \frac{dy}{A_y} = \frac{dz}{A_z}
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{标量场的梯度}
-\subsubsection{哈密顿算子}
-矢量微分算子，直角坐标系形式：
+电磁场的场量是空间点与时间的函数。为了同时刻画“大小”“方向”和“变化率”，必须选一套坐标基。
+当坐标系的三个坐标基矢量互相垂直、且都取单位矢量时，称为\textbf{正交坐标系}，它同时满足
+正交性与归一性：
 \begin{formulaBox}
 \[
-\nabla = \frac{\partial}{\partial x}\vec{e}_x + \frac{\partial}{\partial y}\vec{e}_y + \frac{\partial}{\partial z}\vec{e}_z
+\vec{e}_i\cdot\vec{e}_j=\delta_{ij}=
+\begin{cases}1, & i=j\\ 0, & i\neq j\end{cases}
+\qquad |\vec{e}_i|=1
 \]
 \end{formulaBox}
 
-\subsubsection{梯度定义与意义}
-\begin{itemize}
-    \item \textbf{梯度公式（核心）}
-    \begin{formulaBox}
-    \[
-    \nabla \varphi = \frac{\partial \varphi}{\partial x}\vec{e}_x + \frac{\partial \varphi}{\partial y}\vec{e}_y + \frac{\partial \varphi}{\partial z}\vec{e}_z
-    \]
-    \end{formulaBox}
-    \item \textbf{物理意义}：标量场变化率最大的方向，大小等于最大变化率。
-    \item \textbf{几何意义}：梯度方向与等值面垂直。
-\end{itemize}
+题目的边界形状决定坐标系的选择——边界若能与某坐标系的坐标面相重合，问题往往能大幅简化。
+这正是后面“分离变量法”能否奏效的前提。
 
-\subsubsection{方向导数}
-方向导数描述标量场 $\varphi$ 在空间某一点，沿\textbf{指定方向}的变化率。
-\begin{itemize}
-    \item $l$：任意给定的\textbf{方向矢量}（大小为该方向的步长）。
-    \item $\vec{l}_0$：$l$ 方向上的\textbf{单位矢量}，即 $\vec{l}_0 = \dfrac{\vec{l}}{|\vec{l}|}$，模长 $|\vec{l}_0|=1$。
-    \item \textbf{计算公式（核心）}
-    \begin{formulaBox}
-    \[
-    \frac{\partial \varphi}{\partial l} = \nabla \varphi \cdot \vec{l}_0
-    \]
-    \end{formulaBox}
-    \item 最大值为 $|\nabla\varphi|$（沿梯度方向），最小值为 $-|\nabla\varphi|$（沿梯度反方向）。
-    \item 沿等值面切线方向，方向导数恒为 $0$。
-\end{itemize}
+\subsection{三种常用正交坐标系}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+\begin{table}[htbp]
+\centering
+{\small\textbf{表 1-1\quad 三种正交坐标系的坐标、基矢量与适用场域}}\\[2pt]
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+坐标系 & 坐标 & 单位矢量 & 基矢量是否随位置变化 \\
+\midrule
+直角（笛卡儿） & $(x,y,z)$ & $\vec{e}_x,\vec{e}_y,\vec{e}_z$ & 常矢量，不随位置变化 \\
+圆柱 & $(\rho,\varphi,z)$ & $\vec{e}_\rho,\vec{e}_\varphi,\vec{e}_z$ & $\vec{e}_\rho,\vec{e}_\varphi$ 随 $\varphi$ 变 \\
+球 & $(r,\theta,\varphi)$ & $\vec{e}_r,\vec{e}_\theta,\vec{e}_\varphi$ & 三者均随位置变化 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{矢量场的通量与散度}
-\subsubsection{通量}
-矢量场穿过曲面的流量称为通量：
-\[
-\Phi = \iint_{S} \vec{A} \cdot \mathrm{d}\vec{S}
-\]
-闭合曲面通量（外法向为正，常用）：
+名称约定：$\rho$ 为圆柱坐标的径向距离，$\varphi$ 为方位角；$r$ 为球坐标的矢径长度，
+$\theta$ 为极角（与 $z$ 轴夹角），$\varphi$ 为方位角。三者取值范围
+$\rho\ge 0$、$r\ge 0$、$0\le\theta\le\pi$、$0\le\varphi<2\pi$。
+
+基矢量是否随位置变化，决定了求导与 $\nabla$ 表达式的繁简：直角坐标的三个基矢量方向固定，
+故可直接对分量求导，运算最简；圆柱坐标的 $\vec{e}_\rho$、$\vec{e}_\varphi$ 随 $\varphi$ 改变，
+是“变矢量”，对它们求导不为零，这正是圆柱坐标下 $\nabla$ 表达式出现 $1/\rho$ 因子的根源；
+球坐标的三个基矢量都随位置改变。相应地，直角坐标适用于无限大平面、矩形边界、平板电极；
+圆柱坐标适用于同轴电缆、长直导线；球坐标适用于点电荷、同心球壳。
+
+\subsection{坐标变换与单位矢量的变换}
+
+同一场点在不同坐标系中的坐标之间可以互换。设 $x,y,z$ 为直角坐标，则
 \begin{formulaBox}
 \[
-\Phi = \oiint_{S} \vec{A} \cdot \mathrm{d}\vec{S}
-\]
-\end{formulaBox}
-
-\subsubsection{散度}
-散度表征空间微元内场源的发散强度，定义为单位体积闭合曲面的净通量。
-\begin{itemize}
-    \item \textbf{定义式}
-    \[
-    \nabla \cdot \vec{A} = \lim_{\Delta V \to 0} \frac{1}{\Delta V}\oiint_{S} \vec{A} \cdot \mathrm{d}\vec{S}
-    \]
-    \item \textbf{直角坐标（核心公式）}
-    \begin{formulaBox}
-    \[
-    \nabla \cdot \vec{A} = \frac{\partial A_x}{\partial x} + \frac{\partial A_y}{\partial y} + \frac{\partial A_z}{\partial z}
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\subsubsection{柱坐标散度（重点公式）}
-\begin{formulaBox}
-\[
-\nabla \cdot \vec{A} = \frac{1}{\rho} \frac{\partial (\rho A_\rho)}{\partial \rho} + \frac{1}{\rho} \frac{\partial A_\phi}{\partial \phi} + \frac{\partial A_z}{\partial z}
+\begin{aligned}
+&\text{直角}\to\text{圆柱}:\quad \rho=\sqrt{x^2+y^2},\quad \varphi=\arctan\frac{y}{x},\quad z=z\\
+&\text{圆柱}\to\text{直角}:\quad x=\rho\cos\varphi,\quad y=\rho\sin\varphi,\quad z=z\\
+&\text{直角}\to\text{球}:\quad r=\sqrt{x^2+y^2+z^2},\quad \theta=\arccos\frac{z}{r},\quad \varphi=\arctan\frac{y}{x}\\
+&\text{球}\to\text{直角}:\quad x=r\sin\theta\cos\varphi,\quad y=r\sin\theta\sin\varphi,\quad z=r\cos\theta
+\end{aligned}
 \]
 \end{formulaBox}
 
-\subsubsection{球坐标散度（重点公式）}
+反三角函数的象限由 $x$、$y$ 的符号共同确定（只用 $\arctan(y/x)$ 会丢失象限信息，这是坐标变换
+最常见的错误）。单位矢量之间的变换为
 \begin{formulaBox}
 \[
-\nabla \cdot \vec{A} = \frac{1}{r^2} \frac{\partial (r^2 A_r)}{\partial r} 
-+ \frac{1}{r \sin\theta} \frac{\partial (A_\theta \sin\theta)}{\partial \theta} 
-+ \frac{1}{r \sin\theta} \frac{\partial A_\phi}{\partial \phi}
+\begin{aligned}
+\vec{e}_\rho&=\cos\varphi\,\vec{e}_x+\sin\varphi\,\vec{e}_y, &
+\vec{e}_\varphi&=-\sin\varphi\,\vec{e}_x+\cos\varphi\,\vec{e}_y\\[2pt]
+\vec{e}_r&=\sin\theta\cos\varphi\,\vec{e}_x+\sin\theta\sin\varphi\,\vec{e}_y+\cos\theta\,\vec{e}_z, &
+\vec{e}_\theta&=\cos\theta\cos\varphi\,\vec{e}_x+\cos\theta\sin\varphi\,\vec{e}_y-\sin\theta\,\vec{e}_z
+\end{aligned}
+\]
+\end{formulaBox}
+
+线元、面元、体元是推导管积分的基础，必须记准：
+\begin{formulaBox}
+\[
+\begin{aligned}
+\text{直角}:\quad &\mathrm{d}l=\mathrm{d}x\,\vec{e}_x+\mathrm{d}y\,\vec{e}_y+\mathrm{d}z\,\vec{e}_z,\quad \mathrm{d}V=\mathrm{d}x\,\mathrm{d}y\,\mathrm{d}z\\
+\text{圆柱}:\quad &\mathrm{d}l=\mathrm{d}\rho\,\vec{e}_\rho+\rho\,\mathrm{d}\varphi\,\vec{e}_\varphi+\mathrm{d}z\,\vec{e}_z,\quad \mathrm{d}V=\rho\,\mathrm{d}\rho\,\mathrm{d}\varphi\,\mathrm{d}z\\
+\text{球}:\quad &\mathrm{d}l=\mathrm{d}r\,\vec{e}_r+r\,\mathrm{d}\theta\,\vec{e}_\theta+r\sin\theta\,\mathrm{d}\varphi\,\vec{e}_\varphi,\quad \mathrm{d}V=r^2\sin\theta\,\mathrm{d}r\,\mathrm{d}\theta\,\mathrm{d}\varphi
+\end{aligned}
+\]
+\end{formulaBox}
+
+\subsection{源点、场点与距离矢量}
+
+计算场量时要区分两个点：产生场的电荷所在处称\textbf{源点}，坐标带撇
+（$x',y',z'$ 或 $\vec{r}'$）；待求场量的点称\textbf{场点}，坐标不带撇（$x,y,z$ 或 $\vec{r}$）。
+两者之间的\textbf{距离矢量}规定由源点指向场点：
+\begin{formulaBox}
+\[
+\vec{R}=\vec{r}-\vec{r}'=R\,\vec{e}_R,\qquad R=|\vec{r}-\vec{r}'|=\sqrt{(x-x')^2+(y-y')^2+(z-z')^2}
+\]
+\end{formulaBox}
+
+由此导出电磁场中使用频率最高的两个微分关系（$\nabla$ 对场点作用，$\nabla'$ 对源点作用）：
+\begin{formulaBox}
+\[
+\nabla R=\frac{\vec{R}}{R}=\vec{e}_R,\qquad
+\nabla'\left(\frac{1}{R}\right)=-\nabla\left(\frac{1}{R}\right)=\frac{\vec{R}}{R^3}=\frac{\vec{e}_R}{R^2}
+\]
+\end{formulaBox}
+
+\corepoint{注意 $\nabla$ 与 $\nabla'$ 只差一个负号，但作用对象完全不同：前者对场点求导，后者对源点求导。
+写积分式时若把 $\nabla$ 提到积分号外，必须确认被积函数中只有源点坐标与积分变量有关。}
+
+\section{矢量代数}
+
+\subsection{标量与矢量}
+
+\textbf{标量}：坐标轴转动时数值不变的物理量，如质量、温度、电位、能量、电阻、电荷量。
+\textbf{矢量}：坐标轴转动时按转动矩阵变换的物理量，如位移、速度、力、电场强度、电流密度。
+矢量在直角坐标系中写成三个分量与基矢量之积的和，其模为
+\begin{formulaBox}
+\[
+\vec{A}=A_x\vec{e}_x+A_y\vec{e}_y+A_z\vec{e}_z,\qquad
+|\vec{A}|=\sqrt{A_x^2+A_y^2+A_z^2},\qquad
+\vec{e}_A=\frac{\vec{A}}{|\vec{A}|}
+\]
+\end{formulaBox}
+
+\subsection{矢量点乘（标量积）}
+
+定义为两矢量模与夹角余弦之积，结果是一个标量：
+\begin{formulaBox}
+\[
+\vec{A}\cdot\vec{B}=|\vec{A}||\vec{B}|\cos(\vec{A},\vec{B})
+=A_xB_x+A_yB_y+A_zB_z
+\]
+\end{formulaBox}
+
+\textbf{理解要点}：点乘等于一个矢量在另一矢量方向上的投影与另一矢量模的乘积——即“$\vec{A}$ 在
+$\vec{B}$ 上的投影乘以 $|\vec{B}|$”。因此
+
+\begin{itemize}
+    \item $\vec{A}\cdot\vec{B}=0\iff \vec{A}\perp\vec{B}$（正交判据）；
+    \item 满足交换律 $\vec{A}\cdot\vec{B}=\vec{B}\cdot\vec{A}$ 与分配律
+    $\vec{A}\cdot(\vec{B}+\vec{C})=\vec{A}\cdot\vec{B}+\vec{A}\cdot\vec{C}$；
+    \item 物理原型：力做功 $W=\vec{F}\cdot\vec{l}$，电通量 $\Phi=\vec{D}\cdot\vec{S}$。
+\end{itemize}
+
+\subsection{矢量叉乘（矢量积）}
+
+结果仍为矢量，大小等于两矢量张成的平行四边形面积，方向由右手螺旋法则确定：
+\begin{formulaBox}
+\[
+\vec{A}\times\vec{B}=
+\begin{vmatrix}
+\vec{e}_x & \vec{e}_y & \vec{e}_z\\
+A_x & A_y & A_z\\
+B_x & B_y & B_z
+\end{vmatrix}
+=|\vec{A}||\vec{B}|\sin(\vec{A},\vec{B})\,\vec{e}_n
 \]
 \end{formulaBox}
 
 \begin{itemize}
-    \item \textbf{物理意义}：描述场的源/汇强度，$\nabla\cdot\vec{A}>0$ 为源，$<0$ 为汇。
+    \item $\vec{A}\times\vec{B}=0\iff \vec{A}\parallel\vec{B}$（平行判据）；
+    \item 反交换律 $\vec{A}\times\vec{B}=-\vec{B}\times\vec{A}$，且不满足结合律；
+    \item 物理原型：力矩 $\vec{M}=\vec{r}\times\vec{F}$，洛伦兹力 $\vec{F}=q\vec{v}\times\vec{B}$，
+    以及“绕行方向与曲面法向成右手螺旋”的有向面积规定。
 \end{itemize}
 
-\subsubsection{散度定理（高斯定理，核心定理）}
+展开行列式时\textbf{$y$ 分量带负号}，这是叉乘最容易出错的一处：
 \begin{formulaBox}
 \[
-\oiint_{\partial V} \vec{A} \cdot \mathrm{d}\vec{S} = \iiint_V \nabla \cdot \vec{A} \, \mathrm{d} V
-\]
-\end{formulaBox}
-闭合曲面积分 $\iff$ 体积分。
-
-\vspace{0.8cm}\hrule\vspace{0.8cm}
-
-\subsection{矢量场的环量与旋度}
-\subsubsection{环量}
-矢量场沿闭合曲线的线积分，反映场的旋转特性：
-\begin{formulaBox}
-\[
-\Gamma = \oint_L \vec{A} \cdot \mathrm{d}\vec{l}
+\vec{A}\times\vec{B}=(A_yB_z-A_zB_y)\vec{e}_x+(A_zB_x-A_xB_z)\vec{e}_y+(A_xB_y-A_yB_x)\vec{e}_z
 \]
 \end{formulaBox}
 
-\subsubsection{旋度}
-\begin{itemize}
-    \item \textbf{直角坐标（行列式，核心）}
-    \begin{formulaBox}
-    \[
-    \nabla \times \vec{A} = \begin{vmatrix}
-    \vec{e}_x & \vec{e}_y & \vec{e}_z \\
-    \partial_x & \partial_y & \partial_z \\
-    A_x & A_y & A_z
-    \end{vmatrix}
-    \]
-    \end{formulaBox}
-\end{itemize}
+\subsection{混合积与矢量的分解}
 
-\begin{itemize}
-    \item \textbf{柱坐标（行列式，重点）}
-    \begin{formulaBox}
-    \[
-    \nabla \times \vec{A} = \frac{1}{\rho}
-    \begin{vmatrix}
-    \vec{e}_\rho & \rho\vec{e}_\phi & \vec{e}_z \\
-    \frac{\partial}{\partial \rho} & \frac{\partial}{\partial \phi} & \frac{\partial}{\partial z} \\
-    A_\rho & \rho A_\phi & A_z
-    \end{vmatrix}
-    \]
-    \end{formulaBox}
-
-    \item \textbf{球坐标（行列式，重点）}
-    \begin{formulaBox}
-    \[
-    \nabla \times \vec{A} = \frac{1}{r^2\sin\theta}
-    \begin{vmatrix}
-    \vec{e}_r & r\vec{e}_\theta & r\sin\theta\vec{e}_\phi \\
-    \frac{\partial}{\partial r} & \frac{\partial}{\partial \theta} & \frac{\partial}{\partial \phi} \\
-    A_r & r A_\theta & r\sin\theta A_\phi
-    \end{vmatrix}
-    \]
-    \end{formulaBox}
-\end{itemize}
-
-\subsubsection{斯托克斯定理（核心定理）}
+三个矢量的混合积 $\vec{A}\cdot(\vec{B}\times\vec{C})$ 是一个标量，其绝对值等于三矢量张成的
+平行六面体体积，且满足轮换对称性；二重叉乘则服从“展开法则”：
 \begin{formulaBox}
 \[
-\oint_L \vec{A} \cdot \mathrm{d}\vec{l} = \iint_S (\nabla \times \vec{A}) \cdot \mathrm{d}\vec{S}
+\vec{A}\cdot(\vec{B}\times\vec{C})=\vec{B}\cdot(\vec{C}\times\vec{A})=\vec{C}\cdot(\vec{A}\times\vec{B}),\qquad
+\vec{A}\times(\vec{B}\times\vec{C})=(\vec{A}\cdot\vec{C})\vec{B}-(\vec{A}\cdot\vec{B})\vec{C}
 \]
 \end{formulaBox}
 
-\vspace{0.8cm}\hrule\vspace{0.8cm}
+利用正交基，任一矢量都可沿三个互相垂直的方向唯一分解，这正是把矢量方程化为三个标量方程的依据。
 
-\subsection{矢量恒等式与亥姆霍兹定理}
-\subsubsection{重要矢量恒等式（必考公式）}
+\section{标量场与矢量场}
+
+\subsection{场的概念}
+
+分布着某种物理量的空间区域称为该物理量的\textbf{场}。若物理量是标量，称为\textbf{标量场}，
+记作 $f(x,y,z;t)$，如温度场、电位场；若是矢量，称为\textbf{矢量场}，记作
+$\vec{A}(x,y,z;t)$，如速度场、电场、磁场。不随时间变化的场称\textbf{静态场}，
+否则称\textbf{时变场}（动态场）。
+
+\subsection{标量场的等值面与等值线}
+
+等值面是函数值相等的空间曲面，其方程为
+\begin{formulaBox}
+\[
+f(x,y,z)=C
+\]
+\end{formulaBox}
+
+取不同的 $C$ 得到一族等值面，它们充满整个场域。由于 $f$ 一般是单值函数，\textbf{等值面互不相交}。
+电位场中的等位面、温度场中的等温面都是等值面；平行平面场（二维场）中等值面退化为\textbf{等值线}。
+
+等值面的疏密可直接读出场的强弱：相邻等值面间差值相同时，面愈密处场量变化愈剧烈，梯度愈大。
+
+\subsection{矢量场的矢量线}
+
+矢量线是这样的曲线：线上每一点的切线方向与该点矢量场的方向相同，如静电场中的电力线、
+流速场中的流线。矢量线充满场域但互不相交（否则该点场方向不唯一）。
+
+因为线元 $\mathrm{d}\vec{l}$ 与 $\vec{A}$ 同向，故矢量线的微分方程（亦称矢量线方程）为
+\begin{formulaBox}
+\[
+\vec{A}\times\mathrm{d}\vec{l}=0
+\quad\Longleftrightarrow\quad
+\frac{\mathrm{d}x}{A_x}=\frac{\mathrm{d}y}{A_y}=\frac{\mathrm{d}z}{A_z}
+\]
+\end{formulaBox}
+
+\corepoint{矢量线方程是“成比例”的微分方程组，求解时任取其中一对作常微分方程积分，得到两个积分曲面，
+其交线即为矢量线。若给定过某点，用该点坐标定出积分常数。}
+
+作过某曲面 $S$ 上全部点的矢量线，这些线围成的管状区域称\textbf{矢量管}。矢量线只表征方向；
+若要同时表征大小，则规定\textbf{穿过单位垂直面积的矢量线条数正比于场的大小}——线愈密处场愈强。
+
+\section{标量场的梯度}
+
+\subsection{方向导数}
+
+标量场 $f(P)$ 从给定点沿某方向 $l$ 的变化率称为\textbf{方向导数}，记作 $\partial f/\partial l$。
+设 $l$ 的方向余弦为 $\cos\alpha,\cos\beta,\cos\gamma$，$\vec{e}_l$ 为 $l$ 方向的单位矢量，则
+\begin{formulaBox}
+\[
+\frac{\partial f}{\partial l}=\frac{\partial f}{\partial x}\cos\alpha
++\frac{\partial f}{\partial y}\cos\beta
++\frac{\partial f}{\partial z}\cos\gamma,
+\qquad
+\vec{e}_l=\vec{e}_x\cos\alpha+\vec{e}_y\cos\beta+\vec{e}_z\cos\gamma
+\]
+\end{formulaBox}
+
+方向导数大于零表示沿该方向 $f$ 增大，小于零表示减小，等于零表示沿该方向 $f$ 不变
+（即沿等值面的切向）。它是一个\textbf{与方向有关}的量：同一点沿不同方向，变化率不同。
+
+\subsection{梯度的定义、大小与方向}
+
+既然从一点出发有无穷多个方向，自然要问：哪个方向变化率最大？最大值是多少？把上式的三个偏导数
+记成一个矢量 $\vec{g}$，则方向导数就是 $\vec{g}$ 在 $\vec{e}_l$ 上的投影：
+\begin{formulaBox}
+\[
+\frac{\partial f}{\partial l}=\vec{g}\cdot\vec{e}_l=|\vec{g}|\cos(\vec{g},\vec{e}_l)
+\]
+\end{formulaBox}
+
+当 $\vec{e}_l$ 与 $\vec{g}$ 同向时方向导数取最大值 $|\vec{g}|$，反向时取最小值 $-|\vec{g}|$，
+垂直时为零。于是定义该矢量为标量场的\textbf{梯度}：
+\begin{formulaBox}
+\[
+\operatorname{grad} f=\nabla f
+=\frac{\partial f}{\partial x}\vec{e}_x+\frac{\partial f}{\partial y}\vec{e}_y+\frac{\partial f}{\partial z}\vec{e}_z
+\]
+\end{formulaBox}
+
 \begin{itemize}
-    \item 梯度的旋度恒为零：
-    \begin{formulaBox}
-    \[
-    \nabla \times (\nabla \varphi) = 0
-    \]
-    \end{formulaBox}
-    \item 旋度的散度恒为零：
-    \begin{formulaBox}
-    \[
-    \nabla \cdot (\nabla \times \vec{A}) = 0
-    \]
-    \end{formulaBox}
+    \item 梯度是\textbf{矢量}，且是空间坐标点的函数；其\textbf{方向}为该点最大变化率的方向，
+    其\textbf{模}等于该点的最大方向导数。
+    \item 已知梯度即可求任一方向的方向导数：$\partial f/\partial l=\nabla f\cdot\vec{e}_l$。
+    \item 梯度\textbf{垂直于等值面}，且指向函数值增大的方向；等值面法向单位矢量
+    $\vec{e}_n=\pm\nabla f/|\nabla f|$。
+    \item $\nabla f=0$ 的点是 $f$ 的驻点；若在场域内处处 $\nabla f=0$，则 $f$ 为常数。
 \end{itemize}
 
-\subsubsection{亥姆霍兹定理}
+在圆柱、球坐标系中，梯度的表达式多出 $1/\rho$、$1/r$ 因子：
+\begin{formulaBox}
+\[
+\nabla f=\frac{\partial f}{\partial\rho}\vec{e}_\rho+\frac{1}{\rho}\frac{\partial f}{\partial\varphi}\vec{e}_\varphi+\frac{\partial f}{\partial z}\vec{e}_z,
+\qquad
+\nabla f=\frac{\partial f}{\partial r}\vec{e}_r+\frac{1}{r}\frac{\partial f}{\partial\theta}\vec{e}_\theta+\frac{1}{r\sin\theta}\frac{\partial f}{\partial\varphi}\vec{e}_\varphi
+\]
+\end{formulaBox}
+
+\subsection{哈密顿算子}
+
+为书写与运算方便，引入\textbf{矢量性微分算子}（哈密顿算子，读作 nabla）：
+\begin{formulaBox}
+\[
+\nabla=\vec{e}_x\frac{\partial}{\partial x}+\vec{e}_y\frac{\partial}{\partial y}+\vec{e}_z\frac{\partial}{\partial z}
+\]
+\end{formulaBox}
+
+它同时具备两种性质：既有\textbf{微分性}（对跟随其后的函数求导），又有\textbf{矢量性}
+（可像矢量一样作点乘、叉乘，但不能与之交换顺序）。因此同一符号可以表示三种运算：
+\begin{formulaBox}
+\[
+\begin{aligned}
+\nabla f&:\quad \text{梯度（标量场}\to\text{矢量场）}\\
+\nabla\cdot\vec{A}&:\quad \text{散度（矢量场}\to\text{标量场）}\\
+\nabla\times\vec{A}&:\quad \text{旋度（矢量场}\to\text{矢量场）}
+\end{aligned}
+\]
+\end{formulaBox}
+
+算子作用于不同对象时遵守普通求导法则，例如对两个标量场之积：
+\begin{formulaBox}
+\[
+\nabla(au+bv)=a\nabla u+b\nabla v,\qquad \nabla(uv)=u\nabla v+v\nabla u
+\]
+\end{formulaBox}
+
+（$a,b$ 为常数。）注意 $\nabla$ 不能写成 $\vec{A}\cdot\nabla$ 与 $\nabla\cdot\vec{A}$ 混用：
+前者是标量算子，后者是散度，两者含义不同。
+
+\subsection{拉普拉斯算子}
+
+两个 $\nabla$ 的标积是一个标量算子，称\textbf{拉普拉斯算子}：
+\begin{formulaBox}
+\[
+\nabla^2=\nabla\cdot\nabla=\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}+\frac{\partial^2}{\partial z^2}
+\]
+\end{formulaBox}
+
+它作用在标量函数上得标量（拉普拉斯运算），作用在矢量函数上则对三个分量分别运算：
+\begin{formulaBox}
+\[
+\nabla^2 f=\frac{\partial^2 f}{\partial x^2}+\frac{\partial^2 f}{\partial y^2}+\frac{\partial^2 f}{\partial z^2},
+\qquad
+\nabla^2\vec{A}=(\nabla^2A_x)\vec{e}_x+(\nabla^2A_y)\vec{e}_y+(\nabla^2A_z)\vec{e}_z
+\]
+\end{formulaBox}
+
+圆柱、球坐标系中的标量拉普拉斯算子为
+\begin{formulaBox}
+\[
+\nabla^2 f=\frac{1}{\rho}\frac{\partial}{\partial\rho}\left(\rho\frac{\partial f}{\partial\rho}\right)
++\frac{1}{\rho^2}\frac{\partial^2 f}{\partial\varphi^2}+\frac{\partial^2 f}{\partial z^2}
+\]
+\end{formulaBox}
+\begin{formulaBox}
+\[
+\nabla^2 f=\frac{1}{r^2}\frac{\partial}{\partial r}\left(r^2\frac{\partial f}{\partial r}\right)
++\frac{1}{r^2\sin\theta}\frac{\partial}{\partial\theta}\left(\sin\theta\frac{\partial f}{\partial\theta}\right)
++\frac{1}{r^2\sin^2\theta}\frac{\partial^2 f}{\partial\varphi^2}
+\]
+\end{formulaBox}
+
+\corepoint{圆柱坐标下 $\nabla^2 f$ 的第一项必须写成 $\frac{1}{\rho}\frac{\partial}{\partial\rho}\left(\rho\frac{\partial f}{\partial\rho}\right)$，
+不能写成 $\frac{\partial^2 f}{\partial\rho^2}$；球坐标下也不等于 $\frac{\partial^2 f}{\partial r^2}$。
+少了 $\rho$、$r^2$ 因子是解泊松/拉普拉斯方程时最常见的错误。}
+
+\section{矢量场的通量与散度}
+
+\subsection{通量}
+
+在矢量场中取一个有向曲面 $S$（$\vec{e}_n$ 为其单位法向），矢量 $\vec{A}$ 在 $S$ 上的面积分
+称为 $\vec{A}$ 穿过 $S$ 的\textbf{通量}：
+\begin{formulaBox}
+\[
+\Phi=\iint_S\vec{A}\cdot\mathrm{d}\vec{S}=\iint_S\vec{A}\cdot\vec{e}_n\,\mathrm{d}S
+=\iint_S\left(A_x\,\mathrm{d}y\mathrm{d}z+A_y\,\mathrm{d}z\mathrm{d}x+A_z\,\mathrm{d}x\mathrm{d}y\right)
+\]
+\end{formulaBox}
+
+通量的数学意义是\textbf{穿过有向曲面的矢量线条数}；物理意义随场而定：流速场的通量是单位时间
+穿过 $S$ 的体积流量，电流密度 $\vec{J}$ 的通量是电流，电位移 $\vec{D}$ 的通量是自由电荷量。
+
+对\textbf{闭合曲面}，习惯取外法向为正，此时通量表示穿出的净通量，可据其正负判断面内源的性质：
+\begin{formulaBox}
+\[
+\Phi=\oiint_S\vec{A}\cdot\mathrm{d}\vec{S}
+=\begin{cases}
+>0, & \text{面内有正源（发出矢量线）}\\
+<0, & \text{面内有负源（汇集矢量线）}\\
+=0, & \text{无源，或正源与负源相抵}
+\end{cases}
+\]
+\end{formulaBox}
+
+通量是积分量，只反映曲面所围区域内的\textbf{整体}情况，说不清面内某一点的性质——因此引出散度。
+
+\subsection{散度的定义与计算}
+
+散度是“通量的体密度”，即单位体积发出的通量：
+\begin{formulaBox}
+\[
+\operatorname{div}\vec{A}=\nabla\cdot\vec{A}
+=\lim_{\Delta V\to 0}\frac{1}{\Delta V}\oiint_S\vec{A}\cdot\mathrm{d}\vec{S}
+\]
+\end{formulaBox}
+
+在直角坐标系中可展开为三个偏导数之和：
+\begin{formulaBox}
+\[
+\nabla\cdot\vec{A}=\frac{\partial A_x}{\partial x}+\frac{\partial A_y}{\partial y}+\frac{\partial A_z}{\partial z}
+\]
+\end{formulaBox}
+
+柱坐标与球坐标下的散度为
+\begin{formulaBox}
+\[
+\nabla\cdot\vec{A}=\frac{1}{\rho}\frac{\partial(\rho A_\rho)}{\partial\rho}
++\frac{1}{\rho}\frac{\partial A_\varphi}{\partial\varphi}+\frac{\partial A_z}{\partial z}
+\]
+\end{formulaBox}
+\begin{formulaBox}
+\[
+\nabla\cdot\vec{A}=\frac{1}{r^2}\frac{\partial(r^2A_r)}{\partial r}
++\frac{1}{r\sin\theta}\frac{\partial(\sin\theta A_\theta)}{\partial\theta}
++\frac{1}{r\sin\theta}\frac{\partial A_\varphi}{\partial\varphi}
+\]
+\end{formulaBox}
+
 \begin{itemize}
-    \item 若矢量场的散度、旋度及边界条件给定，且场在无穷远处趋于0，则场唯一确定。
-    \item 任意矢量场可唯一分解为：无旋场（梯度场）+ 无散场（旋度场）。
-    \item 是电磁场理论与流体力学中场的唯一性与分解的基础。
+    \item 散度是\textbf{标量}，是空间坐标点的函数，描述该点通量源的强度与正负。
+    \item $\nabla\cdot\vec{A}>0$：该点有发出通量线的正源；$<0$：有汇集通量线的负源；
+    $=0$：该点无源。
+    \item 若场中处处 $\nabla\cdot\vec{A}=0$，称\textbf{无源场}（如恒定磁场）。
+    \item 静电场中 $\nabla\cdot\vec{D}=\rho_f$：静止电荷就是电场的散度源。
 \end{itemize}
+
+\subsection{高斯散度定理}
+
+把散度的定义对体积积分，就得到电磁场理论中使用最广的积分变换定理：
+\begin{formulaBox}
+\[
+\oiint_S\vec{A}\cdot\mathrm{d}\vec{S}=\iiint_V\nabla\cdot\vec{A}\,\mathrm{d}V
+\qquad (S \text{ 为包围 } V \text{ 的闭合曲面})
+\]
+\end{formulaBox}
+
+它把\textbf{闭合曲面上的面积分}与\textbf{体积分}互相转化，是“微分形式 $\Leftrightarrow$ 积分形式”场方程的桥梁：
+静电场的高斯定理、恒定磁场的磁通连续性方程、时变场的电荷守恒方程都由它沟通。
+
+\corepoint{应用散度定理前须检查两件事：（1） $S$ 必须是闭合面且取外法向；（2） $\vec{A}$ 在 $V$ 内须有连续的一阶偏导数。
+若场域内有奇异点（如点电荷所在处），必须把这些点挖去，用“挖补法”在多连通域上分区应用。}
+
+\section{矢量场的环量与旋度}
+
+\subsection{环量}
+
+矢量场沿有向闭合曲线的线积分称为\textbf{环量}：
+\begin{formulaBox}
+\[
+\Gamma=\oint_L\vec{A}\cdot\mathrm{d}\vec{l}
+\]
+\end{formulaBox}
+
+环量的物理意义随场而定：力场中的环量是力沿闭合路径做的功；流速场中的环量反映流体是否作涡旋运动。
+$\Gamma=0$ 表示沿该回路无涡旋源；$\Gamma\neq 0$ 表示回路包围的区域内必有产生涡旋的源。
+但环量和通量一样是积分量，说不清回路内每一点的涡旋强度——因此引出旋度。
+
+\subsection{环量面密度与旋度}
+
+围绕一点可取无穷多个方向的面元 $S$，每个面元对应一个环量面密度 $\Gamma/\Delta S$。其中最大者
+的方向与大小就定义了旋度。在直角坐标系中：
+\begin{formulaBox}
+\[
+\operatorname{rot}\vec{A}=\nabla\times\vec{A}=
+\begin{vmatrix}
+\vec{e}_x & \vec{e}_y & \vec{e}_z\\[2pt]
+\dfrac{\partial}{\partial x} & \dfrac{\partial}{\partial y} & \dfrac{\partial}{\partial z}\\[6pt]
+A_x & A_y & A_z
+\end{vmatrix}
+\]
+\end{formulaBox}
+
+\begin{itemize}
+    \item 旋度是\textbf{矢量}：其\textbf{方向}为使环量面密度取最大值时面元法线的方向，
+    其\textbf{模}等于该点环量面密度的最大值。
+    \item $\nabla\times\vec{A}\neq 0$：该点矢量线有旋（存在涡旋源）；$=0$：该点无旋。
+    若场中处处 $\nabla\times\vec{A}=0$，称\textbf{无旋场}（如静电场）。
+    \item 若 $\nabla\times\vec{A}=\vec{J}\neq 0$，称 $\vec{J}$ 为\textbf{旋度源}（涡旋源）。
+\end{itemize}
+
+柱坐标与球坐标下的旋度为（注意行列式中的 $\rho$、$r$、$\sin\theta$ 因子）
+\begin{formulaBox}
+\[
+\nabla\times\vec{A}=\frac{1}{\rho}
+\begin{vmatrix}
+\vec{e}_\rho & \rho\vec{e}_\varphi & \vec{e}_z\\[2pt]
+\dfrac{\partial}{\partial\rho} & \dfrac{\partial}{\partial\varphi} & \dfrac{\partial}{\partial z}\\[6pt]
+A_\rho & \rho A_\varphi & A_z
+\end{vmatrix}
+\]
+\end{formulaBox}
+\begin{formulaBox}
+\[
+\nabla\times\vec{A}=\frac{1}{r^2\sin\theta}
+\begin{vmatrix}
+\vec{e}_r & r\vec{e}_\theta & r\sin\theta\,\vec{e}_\varphi\\[2pt]
+\dfrac{\partial}{\partial r} & \dfrac{\partial}{\partial\theta} & \dfrac{\partial}{\partial\varphi}\\[6pt]
+A_r & rA_\theta & r\sin\theta\,A_\varphi
+\end{vmatrix}
+\]
+\end{formulaBox}
+
+\subsection{斯托克斯定理}
+
+把旋度的定义沿曲面叠加，得到另一个基本积分变换定理：
+\begin{formulaBox}
+\[
+\oint_L\vec{A}\cdot\mathrm{d}\vec{l}=\iint_S(\nabla\times\vec{A})\cdot\mathrm{d}\vec{S}
+\]
+\end{formulaBox}
+
+其中 $S$ 是以闭合曲线 $L$ 为周界的曲面，$L$ 的绕行方向与 $S$ 的法向成\textbf{右手螺旋}关系。
+它把\textbf{闭合曲线上的线积分}与\textbf{曲面积分}互相转化，是推导分界面衔接条件、建立
+“环量 $\Leftrightarrow$ 旋度”场方程的工具。
+
+\corepoint{斯托克斯定理中 $L$ 与 $S$ 的方向必须成右手螺旋；若算出的环量符号与预期相反，八成是绕行方向
+或法向取反了。散度定理与斯托克斯定理合起来，构成“微分场方程 $\Leftrightarrow$ 积分场方程”的完整通道。}
+
+\section{无源场和无旋场}
+
+\subsection{无源场}
+
+若在场域中每一点恒有 $\nabla\cdot\vec{A}=0$，称 $\vec{A}$ 为\textbf{无源场}。它有两个重要性质。
+
+\textbf{性质 1（矢量管通量守恒）}：无源场中穿过任一个矢量管的所有截面的通量都相等。
+证明要点是取矢量管的一段，其上、下端面 $S_1$、$S_2$ 与侧面 $S_3$ 构成闭合面，由散度定理
+$\oiint\vec{A}\cdot\mathrm{d}\vec{S}=0$，而侧面上 $\vec{A}\cdot\vec{e}_n=0$，故穿过 $S_1$ 与
+$S_2$ 的通量大小相等、符号相反。在磁场中这一性质称为\textbf{磁通连续性原理}。
+
+\textbf{性质 2（存在矢势）}：任一矢量场旋度再取散度恒为零，即
+$\nabla\cdot(\nabla\times\vec{F})\equiv 0$，所以旋度场一定是无源场；反之，无源场 $\vec{A}$ 必存在
+另一矢量场 $\vec{F}$ 使
+\begin{formulaBox}
+\[
+\vec{A}=\nabla\times\vec{F}
+\]
+\end{formulaBox}
+
+$\vec{F}$ 称为 $\vec{A}$ 的\textbf{矢势}（矢量位）。例如恒定磁场中 $\nabla\cdot\vec{B}=0$，
+故 $\vec{B}=\nabla\times\vec{A}$，$\vec{A}$ 即磁矢位。
+
+\subsection{无旋场}
+
+若在场域中每一点恒有 $\nabla\times\vec{A}=0$，称 $\vec{A}$ 为\textbf{无旋场}。
+
+\textbf{性质 1}：无旋场沿任意闭合路径的环量等于零，$\oint_L\vec{A}\cdot\mathrm{d}\vec{l}=0$。
+因此无旋场中场力做功与路径无关，故又称\textbf{保守场}。静电场 $\oint\vec{E}\cdot\mathrm{d}\vec{l}=0$ 即属此类。
+
+\textbf{性质 2}：无旋场可表示为某一标量函数的梯度场。因为任一标量场的梯度再取旋度恒为零，
+即 $\nabla\times(\nabla\varphi)\equiv 0$，所以梯度场一定是无旋场；反之无旋场 $\vec{A}$ 可写成
+\begin{formulaBox}
+\[
+\vec{A}=-\nabla\varphi
+\]
+\end{formulaBox}
+
+这样的场称\textbf{位势场}，$\varphi$ 称 $\vec{A}$ 的\textbf{位函数}。静电场中 $\varphi$ 就是电位，
+满足 $\vec{E}=-\nabla\varphi$。（式中负号来自物理约定：电场指向电位降低的方向。）
+
+\subsection{调和场}
+
+散度与旋度都等于零的矢量场称\textbf{调和场}，它是既无源又无旋的场。设 $\vec{A}=-\nabla\varphi$
+且 $\nabla\cdot\vec{A}=0$，则
+\begin{formulaBox}
+\[
+\nabla\cdot(-\nabla\varphi)=-\nabla^2\varphi=0
+\quad\Longrightarrow\quad
+\nabla^2\varphi=0
+\]
+\end{formulaBox}
+
+即调和场的位函数必满足\textbf{拉普拉斯方程}；满足拉普拉斯方程且具有二阶连续偏导数的函数称
+\textbf{调和函数}。若矢量场仅无旋而不无源，其位函数满足\textbf{泊松方程}
+$\nabla^2\varphi=-\rho/\varepsilon_0$。这正是静电场边值问题的方程来源。
+
+\section{亥姆霍兹定理}
+
+\textbf{定理}：在空间有限区域 $V$ 内的任一矢量场 $\vec{A}$，由它的\textbf{散度}、\textbf{旋度}
+和\textbf{边界条件}（即包围 $V$ 的闭合面 $S$ 上矢量场的分布）唯一地确定。
+
+等价表述：给定了矢量场的通量源密度 $\nabla\cdot\vec{A}$、涡旋源密度 $\nabla\times\vec{A}$ 以及
+场域的边界条件，就可唯一确定该矢量场。
+
+\begin{itemize}
+    \item 该定理说明：一个矢量场可以分解为无旋部分与无散部分之和，
+    \begin{formulaBox}
+    \[
+    \vec{A}=-\nabla\varphi+\nabla\times\vec{F}
+    \]
+    \end{formulaBox}
+    前者由散度源（通量源）产生，后者由旋度源（涡旋源）产生。
+    \item 它是电磁场理论中“场的唯一性”与“场的分解”的基础：静电场由 $\nabla\cdot\vec{D}=\rho_f$
+    与 $\nabla\times\vec{E}=0$ 唯一确定；恒定磁场由 $\nabla\times\vec{H}=\vec{J}$ 与
+    $\nabla\cdot\vec{B}=0$ 唯一确定；时变场则由完整的麦克斯韦方程组确定。
+    \item 由此也看出为什么静电场可以用标量电位描述（无旋，只剩散度源），而恒定磁场必须用矢量位
+    描述（无散，只剩旋度源）。
+\end{itemize}
+
+\corepoint{本章五组关系必须烂熟：$\nabla\varphi$（梯度，标量$\to$矢量）、$\nabla\cdot\vec{A}$（散度，矢量$\to$标量）、
+$\nabla\times\vec{A}$（旋度，矢量$\to$矢量）、$\nabla^2$（拉普拉斯，标量$\to$标量），以及两条恒等式
+$\nabla\times(\nabla\varphi)\equiv 0$、$\nabla\cdot(\nabla\times\vec{A})\equiv 0$。
+后面每一章的场方程都由这几个算子写成。}

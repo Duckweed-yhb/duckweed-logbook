@@ -1,0 +1,297 @@
+% 第11章 指针和数组（教材 11.1--11.7）
+% 只写内容：不重复 \usepackage，不改字号与页面设置
+\providecommand{\nul}{\texttt{'\textbackslash0'}}
+
+\section{指针和一维数组间的关系}
+\subsection{数组名就是首元素地址}
+一维数组在内存中连续存放，数组名本身就是这段内存的\textbf{首元素地址}：
+\begin{lstlisting}
+int a[5] = {10, 20, 30, 40, 50};
+int *p = a;          /* 等价于 p = &a[0]; */
+printf("%d\n", *p);        /* 10 */
+printf("%d\n", *(p + 2));  /* 30，与 a[2] 相同 */
+\end{lstlisting}
+由此得到本课程最重要的一组等价关系：
+\keyformula{a[i] \;\equiv\; *(a+i), \qquad \&a[i] \;\equiv\; a+i}
+也就是说：\textbf{下标运算的本质是"首地址 + 偏移，再解引用"}。正因为加法可交换，\texttt{*(a+i)} 与 \texttt{*(i+a)} 相同，于是 \texttt{a[i]} 与 \texttt{i[a]} 在语法上也等价——但后者可读性极差，只作理解，不要写进代码。
+
+\subsection{数组名的两个"特殊"之处}
+\begin{itemize}
+  \item \textbf{数组名是地址常量}，不能赋值、不能自增：\texttt{a = p;}、\texttt{a++;} 都非法。指针变量 \texttt{p} 则可以随意改变指向（\texttt{p++}），这是数组名与指针最本质的区别。
+  \item \textbf{\texttt{a} 与 \texttt{\&a} 的值相同，类型不同}。\texttt{a} 的类型是 \texttt{int *}（指向一个 \texttt{int}），\texttt{\&a} 的类型是 \texttt{int (*)[5]}（指向"含 5 个 int 的数组"，即整个数组）。因此 \texttt{a+1} 只移动 4 字节，而 \texttt{\&a+1} 移动 20 字节。
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{一维数组的三种指针写法（\texttt{int a[5]}）}
+\footnotesize
+\begin{tabular}{@{}llll@{}}
+\toprule
+表达式 & 类型 & 含义 & 等价写法 \\
+\midrule
+\texttt{a} & \texttt{int *} & 首元素地址 & \texttt{\&a[0]} \\
+\texttt{a+i} & \texttt{int *} & 第 $i$ 个元素的地址 & \texttt{\&a[i]} \\
+\texttt{*(a+i)} & \texttt{int} & 第 $i$ 个元素的值 & \texttt{a[i]} \\
+\texttt{\&a} & \texttt{int (*)[5]} & 整个数组的地址 & —— \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{用指针遍历数组}
+\begin{lstlisting}
+int a[5] = {1, 2, 3, 4, 5}, *p, sum = 0;
+for (p = a; p < a + 5; p++)      /* 指针作循环变量 */
+    sum += *p;
+/* 等价的指针相减：两个指针相减得到相隔的元素个数 */
+int n = (int)(p - a);            /* 循环结束后 p == a + 5，故 n = 5 */
+\end{lstlisting}
+\textbf{指针相减}的两个前提：两个指针指向同一数组（或数组末尾的下一个位置），且类型相同；结果是以"元素个数"为单位的 \texttt{ptrdiff\_t} 型整数，不是字节差。
+
+\corepoint{不要以为"指针法比下标法快"。对 \texttt{a[i]} 与 \texttt{*(a+i)}，编译器生成的机器码通常完全相同；可读性才是选择标准。真正需要指针的场合是：函数要改变实参、要在函数间传递"一段数据"、要实现动态数据结构。}
+
+\section{指针和二维数组间的关系}
+\subsection{二维数组名的类型是"行指针"}
+设 \texttt{int a[3][4];}。二维数组可以看作"由 3 个一维数组组成的数组"，每个一维数组含 4 个 \texttt{int}。因此：
+\begin{itemize}
+  \item \texttt{a} 的类型是 \texttt{int (*)[4]}——\textbf{指向"含 4 个 int 的数组"的指针}，俗称\textbf{行指针}（数组指针）。\texttt{a+1} 跳过一整行，地址值增加 $4\times4=16$ 字节。
+  \item \texttt{a+i} 指向第 $i$ 行（这一整行），\texttt{*(a+i)} 退化后是第 $i$ 行首元素的地址，类型为 \texttt{int *}。
+  \item 再偏移 $j$ 个元素：\texttt{*(a+i)+j} 就是 \texttt{\&a[i][j]}；解引用得 \texttt{*(*(a+i)+j)}，即 \texttt{a[i][j]}。
+\end{itemize}
+\keyformula{a[i][j] \;\equiv\; *(a[i]+j) \;\equiv\; *(*(a+i)+j)}
+\begin{lstlisting}
+int a[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+int (*p)[4] = a;               /* 行指针：一次跳一行 */
+printf("%d\n", *(*(p + 1) + 2));   /* 7，即 a[1][2] */
+printf("%d\n", p[2][3]);           /* 12：行指针也能用两维下标 */
+\end{lstlisting}
+
+\subsection{数组指针与指针数组}
+这两个名字极易混，区别只在"先结合谁"：
+
+\begin{table}[htbp]
+\centering
+\caption{\texttt{int (*p)[4]} 与 \texttt{int *q[4]} 的区别}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}p{2.6cm}p{2.6cm}X@{}}
+\toprule
+声明 & 读法 & 本质 & 一次偏移 \\
+\midrule
+\texttt{int (*p)[4];} & p 是指针，指向含 4 个 int 的数组 & \textbf{数组指针}（行指针），一个指针 & 一整行（16 字节） \\
+\texttt{int *q[4];} & q 是数组，含 4 个元素，元素是 int * & \textbf{指针数组}，四个指针 & 一个指针大小 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+口诀：\textbf{看括号}。\texttt{(*p)} 说明"p 先是指针"，其余是它指向的东西；\texttt{*q[4]} 中 \texttt{[]} 优先级高于 \texttt{*}，所以 \texttt{q} 先是数组。
+
+\subsection{二维数组作函数参数}
+形参必须写成"行指针"形式，第二维（列数）不可省：
+\begin{lstlisting}
+void PrintMatrix(int (*a)[4], int rows)   /* 与 int a[][4] 完全等价 */
+{
+    int i, j;
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < 4; j++) printf("%4d", a[i][j]);
+        printf("\n");
+    }
+}
+\end{lstlisting}
+\textbf{为什么不能写成 \texttt{int **a}？} 因为 \texttt{a[i][j]} 会被编译成 \texttt{*(*(a+i)+j)}：第一步 \texttt{a+i} 若按 \texttt{int **} 解释，只前进一个指针大小，取出的"行地址"其实是元素数据本身，再解引用就完全错了。\texttt{int **} 对应的是"指针数组 + 每行单独分配"的结构，与二维数组不是一回事（见第四节）。
+
+\corepoint{二维数组的"行"概念是编译期信息：编译器靠列数 $N$ 算出 \texttt{a+i} 的步长。所以列数一旦省略，地址运算无从谈起。传二维数组时，把行数当普通参数传，把列数写进形参类型，是最稳的写法。}
+
+\section{指针数组及其应用}
+\subsection{指针数组用于表示多个字符串}
+表示多个字符串有两种做法：二维字符数组，或"指针数组 + 各字符串"。后者往往更灵活、更省空间。
+\begin{lstlisting}
+/* 做法一：二维字符数组，每行定长 10，浪费空间，行不可整体交换 */
+char names1[3][10] = {"China", "Japan", "Korea"};
+
+/* 做法二：指针数组，三个指针各指向一个字符串字面量 */
+char *names2[3] = {"China", "Japan", "Korea"};
+
+/* 排序时只交换指针，不必搬运字符串内容 */
+char *t = names2[0]; names2[0] = names2[2]; names2[2] = t;
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering
+\caption{二维字符数组与字符指针数组对照}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}p{3.4cm}X@{}}
+\toprule
+比较项 & \texttt{char a[3][10]} & \texttt{char *p[3]} \\
+\midrule
+内存布局 & 30 字节连续空间，每行定长 & 3 个指针 + 各字符串本身 \\
+空间利用 & 短串也按最长者占位，浪费 & 按实际长度分配，节省 \\
+能否修改内容 & 能（自己拥有副本） & 不能（指向只读区字面量） \\
+交换两"行" & 必须 \texttt{strcpy} 搬内容 & 交换指针即可，$O(1)$ \\
+排序效率 & 低（大量字节搬运） & 高（只搬 4/8 字节的地址） \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{指针数组用于表示命令行参数}
+带参数运行程序时，操作系统把命令行按空白拆成若干字符串，交给 \texttt{main}：
+\begin{lstlisting}
+/* argc：参数个数（含程序名本身）；argv：指针数组，各元素指向一个参数字符串 */
+int main(int argc, char *argv[])
+{
+    int i;
+    printf("program: %s\n", argv[0]);       /* argv[0] 是程序名 */
+    for (i = 1; i < argc; i++)
+        printf("arg %d: %s\n", i, argv[i]);
+    return 0;                                /* argv[argc] 恒为 NULL，可作结束标志 */
+}
+\end{lstlisting}
+形参 \texttt{char *argv[]} 与 \texttt{char **argv} 完全等价——这正是"指针数组名退化为指向指针的指针"的实例。若程序名是 \texttt{copy}，运行 \texttt{copy a.txt b.txt}，则 \texttt{argc} 为 3，\texttt{argv[1]} 是 \texttt{"a.txt"}、\texttt{argv[2]} 是 \texttt{"b.txt"}。
+
+\section{动态数组}
+\subsection{C 程序的内存映像}
+一个运行中的 C 程序，内存大致分成四块：
+
+\begin{table}[htbp]
+\centering
+\caption{C 程序的内存分区}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{2.4cm}p{4.6cm}X@{}}
+\toprule
+区域 & 存放内容 & 生命周期与特点 \\
+\midrule
+代码区 & 机器指令、字符串字面量等只读数据 & 程序运行期间始终存在，只读 \\
+静态存储区 & 全局变量、\texttt{static} 变量 & 程序开始到结束；未初始化则自动为 0 \\
+栈（stack） & 函数的局部变量、形参、返回地址 & 随函数调用自动分配、返回自动回收；容量小、速度快 \\
+堆（heap） & \texttt{malloc/calloc/realloc} 申请的内存 & 由程序员手动申请、手动 \texttt{free}；容量大、速度较慢 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+"局部数组开不大"就是因为它在栈上：数组一大会栈溢出；"数组长度必须编译期确定"也是因为栈帧大小在编译时就要算好。要按运行期才知道的长度开数组，只能上堆。
+
+\subsection{动态内存分配函数}
+\begin{table}[htbp]
+\centering
+\caption{四个动态内存管理函数（stdlib.h）}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{4.1cm}X@{}}
+\toprule
+函数原型 & 功能与要点 \\
+\midrule
+\texttt{void *malloc(size\_t size)} & 申请 \texttt{size} 字节，\textbf{不初始化}；成功返回首地址，失败返回 \texttt{NULL} \\
+\texttt{void *calloc(size\_t n, size\_t size)} & 申请 $n\times\texttt{size}$ 字节并\textbf{全部清零} \\
+\texttt{void *realloc(void *p, size\_t size)} & 把已申请块调整为 \texttt{size} 字节；可能搬家，\textbf{必须用返回值重新赋值} \\
+\texttt{void free(void *p)} & 释放 \texttt{p} 指向的堆内存；\texttt{p} 必须是 \texttt{malloc} 系列返回的地址，且只能释放一次 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+三条铁律：
+\begin{enumerate}
+  \item \texttt{malloc} 返回 \texttt{void *}，赋给具体类型指针时需强制转换：\texttt{(int *)malloc(...)}。
+  \item \textbf{必须检查返回值是否为 \texttt{NULL}}（内存不足时会失败），否则后续解引用会崩溃。
+  \item \textbf{有申请必有释放}，且释放后应把指针置 \texttt{NULL}，防止误用（\texttt{free(p); p = NULL;}）。
+\end{enumerate}
+
+\subsection{长度可变的一维动态数组}
+\begin{lstlisting}
+int n, i, *a;
+printf("n = ");
+scanf("%d", &n);                       /* 长度由运行期决定 */
+a = (int *)malloc(n * sizeof(int));    /* 申请 n 个 int 的空间 */
+if (a == NULL) {                       /* 防御式编程：先判空 */
+    printf("Not enough memory!\n");
+    return -1;
+}
+for (i = 0; i < n; i++) a[i] = i * i;  /* 用法与普通数组完全相同 */
+free(a);                               /* 用完必须释放 */
+a = NULL;                              /* 置空，避免悬垂 */
+\end{lstlisting}
+
+\subsection{长度可变的二维动态数组}
+两种常见建法，各有取舍：
+\begin{lstlisting}
+/* 方式一：指针数组 + 每行单独申请（行与行之间不保证连续，但可让各行列数不同） */
+int rows = 3, cols = 4, i, j, **a;
+a = (int **)malloc(rows * sizeof(int *));
+if (a == NULL) return -1;
+for (i = 0; i < rows; i++) {
+    a[i] = (int *)malloc(cols * sizeof(int));
+    if (a[i] == NULL) return -1;
+}
+a[1][2] = 7;
+for (i = 0; i < rows; i++) free(a[i]);   /* 释放顺序：先各行，再指针数组 */
+free(a);
+
+/* 方式二：一次性申请连续块，再按行切分（内存连续，缓存友好） */
+int *buf = (int *)malloc(rows * cols * sizeof(int));
+int \textbf{b  = (int })malloc(rows * sizeof(int *));
+for (i = 0; i < rows; i++) b[i] = buf + i * cols;
+/* 释放：free(b); free(buf);  顺序不能反，否则 buf 地址丢失 */
+\end{lstlisting}
+
+\corepoint{释放顺序与申请顺序\textbf{相反}，并且"每块都要释放一次、只释放一次"。方式一漏掉 \texttt{free(a[i])} 会造成内存泄漏；方式二先 \texttt{free(buf)} 再 \texttt{free(b)} 虽不报错，但 \texttt{b[i]} 已成悬垂。工程上把"申请/释放"成对写在一个函数的两端，能避免绝大多数疏漏。}
+
+\section{本章扩充内容}
+\subsection{常见的内存错误及其对策}
+\begin{table}[htbp]
+\centering
+\caption{动态内存的六类典型错误}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{4.4cm}Xp{3.6cm}@{}}
+\toprule
+错误 & 表现与后果 & 对策 \\
+\midrule
+申请后不判 \texttt{NULL} & 内存不足时解引用空指针，立即崩溃 & 每次都写 \texttt{if (p == NULL)} \\
+越界读写 & 破坏堆管理信息或相邻数据，崩溃点与出错点相距很远 & 下标严格 $<n$；用 \texttt{calloc} 便于发现未初始化 \\
+重复 \texttt{free} & 破坏空闲链表，常见"double free"崩溃 & 释放后置 \texttt{NULL} \\
+\texttt{free} 非堆地址 & 释放栈变量或数组名，未定义行为 & 只释放 \texttt{malloc} 系列返回的地址 \\
+释放后继续使用 & 悬垂指针，读到已被复用的数据 & 释放后不再引用该指针 \\
+忘记释放 & 内存泄漏，长时间运行的程序逐渐耗尽内存 & 申请与释放成对出现，路径分支都要覆盖 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{缓冲区溢出攻击}
+\textbf{原理}：栈上分配局部数组时，数组之后紧跟的是函数的返回地址、保存的寄存器等控制信息。若程序对输入不做长度检查（如 \texttt{strcpy}、\texttt{gets}、\texttt{scanf("\%s")} 写入定长数组），超长输入会\textbf{越过数组边界}，把精心构造的数据写到返回地址上；函数返回时便"跳到"攻击者指定的代码处执行。这类攻击称为\textbf{缓冲区溢出攻击}（buffer overflow），是历史上最著名的安全漏洞类型之一。
+
+\textbf{典型隐患写法}：
+\begin{lstlisting}
+char buf[10];
+strcpy(buf, input);        /* input 超过 9 个字符即溢出 */
+gets(buf);                 /* 完全不检查长度，已被标准移除 */
+scanf("%s", buf);          /* 同理，危险 */
+\end{lstlisting}
+
+\textbf{防御手段}（从代码到系统层层设防）：
+\begin{itemize}
+  \item \textbf{代码层}：改用 \texttt{fgets}、\texttt{strncpy}、\texttt{snprintf}、\texttt{scanf("\%9s")}，并显式检查长度；对来自外部的输入一律视为"不可信"。
+  \item \textbf{编译器层}：开启栈保护（GCC 的 \texttt{-fstack-protector}）插入"金丝雀"值，返回前校验其是否被改写。
+  \item \textbf{系统层}：栈不可执行（NX）、地址随机化（ASLR）等机制，使溢出即使发生也难以被利用。
+\end{itemize}
+
+\section{本章知识点小结}
+\begin{itemize}
+  \item 数组名是首元素地址、是地址常量；\texttt{a[i] $\equiv$ *(a+i)}，\texttt{\&a[i] $\equiv$ a+i}。
+  \item \texttt{a} 与 \texttt{\&a} 值同类型异：前者步长一个元素，后者步长整个数组。
+  \item 指针可遍历数组、可相减求元素个数；相减须同数组、同类型。
+  \item 二维数组名是行指针 \texttt{int (*)[N]}：\texttt{a+i} 跳一行，\texttt{*(a+i)} 是行首地址；
+  \item 元素访问满足 \texttt{a[i][j] $\equiv$ *(*(a+i)+j)}，也等于 \texttt{*(a[i]+j)}。
+  \item 数组指针 \texttt{int (*p)[4]} 是一个指针；指针数组 \texttt{int *q[4]} 是四个指针。
+  \item 二维数组作形参，列数不可省，行数另行传入；\texttt{int **} 不能接二维数组。
+  \item 指针数组可表示多个字符串（省空间、可交换指针排序）与命令行参数 \texttt{argv}。
+  \item C 程序内存分代码区、静态区、栈、堆；动态数组用 \texttt{malloc/calloc/realloc} 在堆上申请，用 \texttt{free} 释放。
+  \item 动态内存的五条纪律：判空、不越界、不重复释放、释放后置空、申请与释放成对。
+\end{itemize}
+
+\section{本章常见错误小结}
+\begin{enumerate}
+  \item \textbf{给数组名赋值或自增}：\texttt{a = p;}、\texttt{a++;} 编译报错，因为 \texttt{a} 是地址常量。
+  \item \textbf{混淆 \texttt{a+1} 与 \texttt{\&a+1}}：前者移动一个元素，后者移动整个数组；在二维数组里则分别对应"跳一个元素"与"跳一行"。
+  \item \textbf{把二维数组传给 \texttt{int **}}：类型不匹配，运行期按错误的地址取值，是最隐蔽的错误之一。
+  \item \textbf{函数内用 \texttt{sizeof(a)} 求数组长度}：形参已退化为指针，结果恒为 4 或 8。
+  \item \textbf{\texttt{malloc} 不判空、不释放}：前者在内存紧张时崩溃，后者造成泄漏。
+  \item \textbf{释放顺序错误或重复释放}：二维动态数组要"先各行、后指针数组"；\texttt{free} 两次是未定义行为。
+  \item \textbf{释放后继续使用}：\texttt{free(p)} 之后又读 \texttt{*p}，读到的是已被复用的内存。
+  \item \textbf{把 \texttt{realloc} 的返回值丢掉}：\texttt{realloc} 可能搬家，写成 \texttt{realloc(p, n);} 而不接收返回值，旧指针可能已失效。
+  \item \textbf{对字符串字面量做 \texttt{strcpy} 的目标}：字面量在只读区，写入即崩溃。
+\end{enumerate}

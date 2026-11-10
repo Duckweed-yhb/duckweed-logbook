@@ -1,51 +1,311 @@
-% 4.2 第七章 电流与磁场.tex
-\chapter{第七章 电流与磁场}
+\chapter{第7章\texorpdfstring{\hspace{0.5em}}{ }电流与磁场}
 
 \section{恒定电流和恒定电场 电动势}
-    \subsection{电流形成的条件}
-    定义单位时间内通过导线任一截面的电荷量为电流。
+    \subsection{电流 电流密度}
+    电荷的定向移动形成电流。单位时间内通过导体某一截面的电荷量称为电流强度，简称电流：
+    \[
+    I=\frac{\mathrm{d}q}{\mathrm{d}t},
+    \]
+    单位为安培（$\mathrm{A}$）。习惯上规定正电荷移动的方向为电流的方向，在金属导体中电流方向与自由电子的实际运动方向相反。
 
-    在导体中形成电流的条件是：（1）导体（1）
+    电流强度只能描述截面上电流的总体情况，不能反映电流在截面上的分布。为此引入电流密度矢量 $\boldsymbol{j}$：其方向与该点正电荷运动方向一致，大小等于单位时间内通过垂直于该点电流方向的单位面积的电量：
+    \keyformula{j=\frac{\mathrm{d}I}{\mathrm{d}S_{\perp}}=nqv}
+    其中 $n$ 为载流子的数密度，$q$ 为每个载流子的电荷量，$v$ 为其漂移速度。电流密度的单位为 $\mathrm{A/m^{2}}$。通过任意曲面 $S$ 的电流为
+    \[
+    I=\int_S\boldsymbol{j}\cdot\mathrm{d}\boldsymbol{S}.
+    \]
+
     \subsection{恒定电流和恒定电场}
-    \subsection{电流和电流密度}
-    定义单位时间内通过垂直于电流方向单位面积的电量为导体中某点电流密度矢量的$\boldsymbol{j}$大小，$\boldsymbol{j}$的方向与正电荷在该点
-    \subsection{欧姆定律的微分形式 焦耳—楞次定律的微分形式}
-    \subsection{电源及电源电动势}
-    电源电动势在量值
+    若导体内各点电流密度的大小和方向都不随时间变化，这样的电流称为恒定电流。由电荷守恒定律可得电流的连续性方程
+    \[
+    \oint_S\boldsymbol{j}\cdot\mathrm{d}\boldsymbol{S}=-\frac{\mathrm{d}q_{\text{内}}}{\mathrm{d}t},
+    \]
+    对恒定电流，电荷分布不随时间变化，故
+    \[
+    \oint_S\boldsymbol{j}\cdot\mathrm{d}\boldsymbol{S}=0,
+    \]
+    即流入任意闭合面的电流等于流出的电流，电流线连续闭合、无源头，这是恒定电流的条件。
 
-\section{恒定磁场和磁感应强度}
-    \subsection{磁性起源于电荷的运动}
-    \subsection{磁场 磁感应强度\texorpdfstring{$\boldsymbol{B}$}{B}}
+    维持恒定电流的电场称为恒定电场。恒定电场也是由电荷产生的，只不过这些电荷的分布恒定不变，因此恒定电场与静电场具有相同的性质：满足高斯定理，也满足环路定理 $\oint_L\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}=0$。二者的区别在于：静电场由静止电荷产生，而恒定电场是在电源非静电力作用下维持的、存在于导体内部的电场。
 
-\section{毕奥‑萨伐尔定律}
-    \subsection{毕奥‑萨伐尔定律}
-    在真空中
-    \subsection{毕奥‑萨伐尔定律应用举例}
-    \subsection{匀速运动电荷的磁场}
+    \subsection{欧姆定律的微分形式 焦耳-楞次定律的微分形式}
+    一段均匀导体的欧姆定律为 $U=IR$，其中电阻 $R=\rho\dfrac{l}{S}$，$\rho$ 为电阻率，$\sigma=1/\rho$ 为电导率。将欧姆定律用于导体中的微小体积元，可得欧姆定律的微分形式
+    \[
+    \boldsymbol{j}=\sigma\boldsymbol{E}=\frac{\boldsymbol{E}}{\rho},
+    \]
+    它给出了导体中任一点的电流密度与该点场强的对应关系，比积分形式更普遍。
 
-\section{磁场中的高斯定理}
+    电流通过导体时产生热量，焦耳-楞次定律为 $Q=I^{2}Rt$。其微分形式为单位体积内的热功率密度
+    \[
+    p=\frac{\mathrm{d}P}{\mathrm{d}V}=\boldsymbol{j}\cdot\boldsymbol{E}=\sigma E^{2}=\rho j^{2},
+    \]
+    单位为 $\mathrm{W/m^{3}}$。
+
+    \subsection{电源 电动势}
+    要在导体中维持恒定电流，必须有非静电力（化学作用、电磁作用、温差等）不断把正电荷从电势低处移向电势高处，电源就是提供这种非静电力的装置。设作用在单位正电荷上的非静电力为 $\boldsymbol{E}_k$（称非静电场强），则电源的电动势定义为
+    \keyformula{\varepsilon=\oint_L\boldsymbol{E}_k\cdot\mathrm{d}\boldsymbol{l}=\int_{-}^{+}\boldsymbol{E}_k\cdot\mathrm{d}\boldsymbol{l}}
+    即电动势在量值上等于把单位正电荷从电源负极经电源内部移到正极时非静电力所做的功，单位为伏特（$\mathrm{V}$）。
+
+    电动势是电源本身的特性，与电源是否接入电路、电流大小无关，它表征电源把其他形式的能量转化为电能的本领。对闭合电路，由能量关系可得 $I=\dfrac{\varepsilon}{R+r}$（$r$ 为电源内阻），端电压为 $U=\varepsilon-Ir$。
+
+    \corepoint{（1）电流强度与电流密度是两个不同层次的物理量，$I$ 是标量（有正负），$\boldsymbol{j}$ 是矢量；（2）电动势与电压虽然单位相同，但物理意义不同：电动势是非静电力做功，电压是静电力做功；（3）电动势方向规定为电源内部由负极指向正极。}
+
+\section{磁场 磁感应强度}
+    \subsection{磁现象与磁性的起源}
+    人类最早认识的磁现象是天然磁石吸引铁屑以及磁极间的相互作用：同名磁极相斥，异名磁极相吸；磁极总是成对出现，至今没有发现单独存在的磁单极。
+
+    1820 年奥斯特发现通电导线能使附近的小磁针偏转，首次揭示了电流与磁现象的联系。安培由此提出分子电流假说：一切磁现象的根源都是电荷的运动，组成物质的分子中存在环形电流，每个分子电流相当于一个小磁体。
+
+    因此，磁现象的本质是运动电荷（电流）之间的相互作用：运动电荷（或电流）在周围空间激发磁场，磁场又对处于其中的运动电荷（或电流）施加磁力。
+
+    \subsection{磁感应强度}
+    与用试验电荷定义电场强度类似，可用运动电荷（试验电荷 $q_0$ 以速度 $\boldsymbol{v}$ 运动）定义磁感应强度。实验表明，运动电荷在磁场中某点所受的磁力 $\boldsymbol{F}$ 总垂直于 $\boldsymbol{v}$，且当 $\boldsymbol{v}$ 与某一特定方向平行时磁力为零（该方向即该点磁场的方向）；当 $\boldsymbol{v}$ 与该方向垂直时，磁力最大。定义
+    \[
+    B=\frac{F_{\max}}{q_0v},
+    \]
+    即以该方向为磁场方向、以最大磁力所对应的 $F_{\max}$ 定义的量值为磁感应强度的大小。更普遍地
+    \keyformula{\boldsymbol{F}=q_0\boldsymbol{v}\times\boldsymbol{B}}
+    磁感应强度 $\boldsymbol{B}$ 是描述磁场的基本物理量，是矢量，单位为特斯拉（$\mathrm{T}$），$1\ \mathrm{T}=1\ \mathrm{N/(A\cdot m)}=1\ \mathrm{Wb/m^{2}}$；工程上也曾用高斯（$\mathrm{Gs}$），$1\ \mathrm{T}=10^{4}\ \mathrm{Gs}$。
+
     \subsection{磁感应线}
-    \subsection{磁通量}
-    \subsection{恒定磁场中的高斯定理}
+    为形象描述磁场，引入磁感应线（$\boldsymbol{B}$ 线）：线上每一点的切线方向与该点 $\boldsymbol{B}$ 的方向一致，疏密表示 $\boldsymbol{B}$ 的大小。磁感应线的性质为：
+    \begin{enumerate}
+        \item 磁感应线是无头无尾的闭合曲线（或伸向无穷远），不像电场线那样起于正电荷、止于负电荷；
+        \item 任意两条磁感应线不相交；
+        \item 磁感应线总是环绕电流的，其环绕方向与电流方向之间满足右手螺旋关系。
+    \end{enumerate}
+    磁感应线闭合这一特点，正是磁场无源（不存在磁单极）的直观反映。
 
-\section{真空中恒定磁场的安培环路定理}
-    \subsection{恒定磁场的安培环路定理}
+\section{毕奥-萨伐尔定律}
+    \subsection{毕奥-萨伐尔定律}
+    把载流导线分成许多微小的电流元 $I\mathrm{d}\boldsymbol{l}$（$\mathrm{d}\boldsymbol{l}$ 的方向沿电流方向），则电流元在空间某点 $P$ 产生的磁感应强度为
+    \keyformula{\mathrm{d}\boldsymbol{B}=\frac{\mu_0}{4\pi}\frac{I\mathrm{d}\boldsymbol{l}\times\hat{\boldsymbol{r}}}{r^{2}}}
+    其大小为
+    \[
+    \mathrm{d}B=\frac{\mu_0}{4\pi}\frac{I\mathrm{d}l\sin\theta}{r^{2}},
+    \]
+    其中 $\theta$ 为 $\mathrm{d}\boldsymbol{l}$ 与位矢 $\boldsymbol{r}$ 的夹角，$\hat{\boldsymbol{r}}$ 为从电流元指向场点 $P$ 的单位矢量；$\mathrm{d}\boldsymbol{B}$ 的方向由 $\mathrm{d}\boldsymbol{l}\times\hat{\boldsymbol{r}}$ 确定（右手螺旋法则）。式中
+    \[
+    \mu_0=4\pi\times10^{-7}\ \mathrm{N/A^{2}}\ \ (\mathrm{H/m})
+    \]
+    称为真空磁导率。
+
+    任意载流导线产生的磁场等于各电流元磁场的矢量叠加：
+    \[
+    \boldsymbol{B}=\int\mathrm{d}\boldsymbol{B}=\frac{\mu_0}{4\pi}\int\frac{I\mathrm{d}\boldsymbol{l}\times\hat{\boldsymbol{r}}}{r^{2}}.
+    \]
+    毕奥-萨伐尔定律是恒定磁场的基本定律，地位相当于静电场中的库仑定律；由于电流元不能单独存在，该定律不能直接用实验验证，但其一切推论都与实验相符。
+
+    \subsection{典型载流导线的磁场}
+    由毕奥-萨伐尔定律结合叠加原理，可得几种典型载流导线的磁场（各式中 $a$ 为场点到导线的垂直距离，$R$ 为圆半径）。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{几种典型载流导线的磁场}
+    \begin{tabular}{ll}
+    \toprule
+    载流导线 & 磁感应强度 \\
+    \midrule
+    无限长直导线（距 $a$） & $B=\dfrac{\mu_0I}{2\pi a}$ \\
+    有限长直导线（两端夹角 $\theta_1,\theta_2$） & $B=\dfrac{\mu_0I}{4\pi a}(\cos\theta_1-\cos\theta_2)$ \\
+    半无限长直导线（端点垂线上，距 $a$） & $B=\dfrac{\mu_0I}{4\pi a}$ \\
+    圆电流圆心 & $B=\dfrac{\mu_0I}{2R}$ \\
+    圆电流轴线上（距圆心 $x$） & $B=\dfrac{\mu_0IR^{2}}{2(R^{2}+x^{2})^{3/2}}$ \\
+    圆弧电流圆心（张角 $\theta$） & $B=\dfrac{\mu_0I\theta}{4\pi R}$ \\
+    无限长载流直螺线管内部 & $B=\mu_0nI$（$n$ 为单位长度匝数） \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    有限长直导线公式中，$\theta_1$、$\theta_2$ 分别为导线两端到 $P$ 点的连线与电流方向的夹角。当导线两端无限延伸时 $\theta_1\to0$、$\theta_2\to\pi$，得 $B=\dfrac{\mu_0I}{2\pi a}$，与无限长直导线的结果一致；当一端在 $P$ 点的垂足处时 $\theta_1=\pi/2$，得 $B=\dfrac{\mu_0I}{4\pi a}$。
+
+    求载流导线磁场的步骤：（1）取电流元，写出 $\mathrm{d}\boldsymbol{B}$ 的大小和方向；（2）由对称性分析，判断哪些分量相互抵消，只保留不抵消的分量；（3）对保留的分量积分。
+
+    \subsection{运动电荷的磁场}
+    电流是电荷定向运动形成的，故电流元的磁场也就是运动电荷的磁场。设电荷 $q$ 以速度 $\boldsymbol{v}$ 运动，则它在距其 $\boldsymbol{r}$ 处产生的磁感应强度为
+    \[
+    \boldsymbol{B}=\frac{\mu_0}{4\pi}\frac{q\boldsymbol{v}\times\hat{\boldsymbol{r}}}{r^{2}}.
+    \]
+    可见运动电荷既产生电场又产生磁场，磁场与电场的关系随参考系而变，这正是狭义相对论中电场与磁场统一性的体现。
+
+    \corepoint{（1）$\mathrm{d}\boldsymbol{B}$ 的方向由 $\mathrm{d}\boldsymbol{l}\times\hat{\boldsymbol{r}}$ 决定，不能只凭"右手定则"想当然，必须按矢量叉乘判断；（2）电流元 $I\mathrm{d}\boldsymbol{l}$ 是矢量，$\mathrm{d}\boldsymbol{l}$ 的方向沿电流方向；（3）各电流元的 $\mathrm{d}\boldsymbol{B}$ 是矢量叠加，须先分解再积分；（4）长直导线公式中的 $a$ 是场点到导线的垂直距离，不是到端点的距离。}
+
+\section{磁通量 磁场的高斯定理}
+    \subsection{磁通量}
+    通过磁场中某一曲面的磁感应线总数，用磁通量描述。在曲面上取面元 $\mathrm{d}\boldsymbol{S}=\mathrm{d}S\,\hat{\boldsymbol{n}}$，定义通过该面元的磁通量为
+    \[
+    \mathrm{d}\Phi_m=\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{S}=B\cos\theta\,\mathrm{d}S,
+    \]
+    通过曲面 $S$ 的磁通量为
+    \[
+    \Phi_m=\int_S\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{S}.
+    \]
+    磁通量的单位为韦伯（$\mathrm{Wb}$），$1\ \mathrm{Wb}=1\ \mathrm{T\cdot m^{2}}$。
+
+    \subsection{磁场的高斯定理}
+    由于磁感应线是闭合曲线，对任意闭合曲面而言，穿入的磁感应线必然又从另一处穿出，净通量恒为零：
+    \keyformula{\oint_S\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{S}=0}
+    称为磁场的高斯定理（磁通量连续性定理）。它表明磁场是无源场，不存在与电荷相对应的"磁荷"（磁单极子），磁感应线无始无终。
+
+    需要注意，磁场的高斯定理与静电场的环路定理在数学形式上相似，但物理含义完全不同：前者说磁场无源，后者说静电场无旋。磁场是有旋场（涡旋场），其涡旋源就是电流，这一点由下一节的安培环路定理给出。
+
+    \corepoint{磁通量是标量，有正负（取决于面元法向的选取）；对闭合曲面规定外法向为正。$\oint\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{S}=0$ 对任意磁场（不限于恒定磁场）都成立，它是麦克斯韦方程组的基本方程之一。}
+
+\section{恒定磁场的安培环路定理}
+    \subsection{安培环路定理}
+    在恒定电流的磁场中，磁感应强度沿任意闭合路径的线积分（环流）等于该闭合路径所包围的各电流强度的代数和乘以 $\mu_0$：
+    \keyformula{\oint_L\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{l}=\mu_0\sum_{L\text{内}}I_i}
+    这就是安培环路定理。式中电流的正负按右手螺旋法则确定：右手四指沿回路 $L$ 的绕行方向弯曲，伸直的拇指所指方向为电流的正方向，与该方向相同的电流取正，相反的取负。
+
+    对安培环路定理的理解要注意：
+    \begin{enumerate}
+        \item 环流只由穿过闭合路径所围曲面的电流决定，与路径外的电流无关，与路径的形状也无关；
+        \item 但路径上各点的磁感应强度 $\boldsymbol{B}$ 是由空间所有电流共同产生的，路径外的电流虽不贡献环流，却影响 $\boldsymbol{B}$ 本身；
+        \item 定理对任意形状的闭合路径都成立，但只有电流分布具有高度对称性时，才能由它方便地求出 $\boldsymbol{B}$；
+        \item 定理是在恒定电流条件下导出的，对非恒定电流需推广为全电流定律（见第八章）。
+    \end{enumerate}
+    安培环路定理反映了磁场是有旋场，电流是磁场涡旋的源头，这与静电场的环路定理 $\oint\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}=0$ 形成鲜明对照。
+
     \subsection{安培环路定理的应用}
+    应用安培环路定理求磁场的步骤与用高斯定理求场强类似：（1）分析电流分布的对称性；（2）选取合适的闭合路径（安培环路），使路径上 $\boldsymbol{B}$ 的大小相等且与路径平行（或垂直），从而把 $\boldsymbol{B}$ 提出积分号；（3）由定理求出 $\boldsymbol{B}$。
+
+    典型结果：
+    \begin{enumerate}
+        \item 无限长直导线：取以导线为轴、半径为 $r$ 的圆为环路，得 $B=\dfrac{\mu_0I}{2\pi r}$；
+        \item 无限长载流圆柱导体（半径 $R$，电流均匀分布）：柱内 $B=\dfrac{\mu_0Ir}{2\pi R^{2}}$（$r<R$，与 $r$ 成正比），柱外 $B=\dfrac{\mu_0I}{2\pi r}$（$r>R$，相当于电流集中于轴线）；
+        \item 无限长载流直螺线管：管内 $B=\mu_0nI$（均匀磁场），管外 $B\approx0$；
+        \item 螺绕环（环形螺线管，共 $N$ 匝）：管内 $B=\dfrac{\mu_0NI}{2\pi r}$，方向沿环内圆周；
+        \item 无限大均匀载流薄平板（面电流密度 $i$）：板外两侧 $B=\dfrac{\mu_0i}{2}$，方向相反且平行于板面。
+    \end{enumerate}
+
+    \corepoint{（1）应用安培环路定理的前提是对称性；没有对称性时定理仍成立，但不能由此求出 $B$；（2）求和时电流的正负号必须按右手螺旋法则统一规定；（3）$\oint\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{l}=\mu_0\sum I$ 中的 $\sum I$ 只计穿过环路的电流，而环路是任意的，不要与"闭合回路"混淆。}
 
 \section{磁场对运动电荷和载流导线的作用}
     \subsection{洛伦兹力}
-    \subsection{带电粒子在磁场中的运动}
-    \subsection{应用电场和磁场控制带电粒子运动的实例}
-    \subsection{安培力}
+    运动电荷在磁场中所受的磁力称为洛伦兹力：
+    \keyformula{\boldsymbol{F}=q\boldsymbol{v}\times\boldsymbol{B}}
+    其大小为 $F=qvB\sin\theta$（$\theta$ 为 $\boldsymbol{v}$ 与 $\boldsymbol{B}$ 的夹角），方向垂直于 $\boldsymbol{v}$ 与 $\boldsymbol{B}$ 所决定的平面，由右手螺旋法则（正电荷）判定，负电荷则反向。
 
-\section{磁力的功}
-    \subsection{磁力对运动载流导线的功}
-    \subsection{磁力矩对转动载流线圈的功}
-    磁力矩对转动载流线圈的功等于电流强度与回路包围面积内的磁通量的增量的乘积。
+    由于洛伦兹力始终垂直于电荷的运动速度，它不做功，只改变速度的方向而不改变速度的大小（即不改变动能）。这是分析带电粒子在磁场中运动的关键。
+
+    \subsection{带电粒子在磁场中的运动}
+    设粒子质量为 $m$、电荷量为 $q$，以速度 $\boldsymbol{v}$ 射入均匀磁场 $\boldsymbol{B}$，分三种情形：
+    \begin{enumerate}
+        \item $\boldsymbol{v}\parallel\boldsymbol{B}$：洛伦兹力为零，粒子作匀速直线运动；
+        \item $\boldsymbol{v}\perp\boldsymbol{B}$：洛伦兹力提供向心力，粒子作匀速圆周运动，半径和周期为
+        \[
+        R=\frac{mv}{qB},\qquad T=\frac{2\pi m}{qB},\qquad \omega=\frac{qB}{m}.
+        \]
+        周期 $T$ 与速度大小、半径无关，这一特性是回旋加速器的物理基础；
+        \item $\boldsymbol{v}$ 与 $\boldsymbol{B}$ 成任意角 $\theta$：把 $\boldsymbol{v}$ 分解为平行分量 $v_{\parallel}=v\cos\theta$ 和垂直分量 $v_{\perp}=v\sin\theta$。平行分量不受磁力，垂直分量使粒子作圆周运动，二者合成螺旋线运动，其半径和螺距为
+        \[
+        R=\frac{mv_{\perp}}{qB}=\frac{mv\sin\theta}{qB},\qquad
+        h=v_{\parallel}T=\frac{2\pi mv\cos\theta}{qB}.
+        \]
+    \end{enumerate}
+
+    \subsection{电场和磁场控制带电粒子运动的应用}
+    \begin{enumerate}
+        \item 磁聚焦：从一点出发的带电粒子束，若速度大小相近、与磁场夹角很小，则经一个周期后重新会聚于一点，可用于电子显微镜等；
+        \item 回旋加速器：利用磁场使粒子回旋、利用交变电场反复加速，因回旋周期与速度无关，交变电场频率可固定；
+        \item 质谱仪：利用不同质量（或电荷）的粒子在磁场中回旋半径不同，把同位素分离；
+        \item 霍尔效应：将载流导体放入磁场，载流子受洛伦兹力而偏转，在导体两侧积累电荷形成横向电场，当电场力与洛伦兹力平衡时，两侧出现稳定的霍尔电压
+        \[
+        U_H=\frac{IB}{nqd}=R_H\frac{IB}{d},\qquad R_H=\frac{1}{nq},
+        \]
+        其中 $d$ 为导体沿磁场方向的厚度，$R_H$ 为霍尔系数。霍尔效应可用于测量磁感应强度、判断载流子的类型和数密度。
+    \end{enumerate}
+
+    \subsection{安培力}
+    载流导线在磁场中所受的力称为安培力，它实质上是导线中大量定向运动电荷所受洛伦兹力的宏观表现。电流元 $I\mathrm{d}\boldsymbol{l}$ 所受的安培力为
+    \[
+    \mathrm{d}\boldsymbol{F}=I\mathrm{d}\boldsymbol{l}\times\boldsymbol{B}.
+    \]
+    对长度为 $L$ 的直导线，在均匀磁场中
+    \[
+    \boldsymbol{F}=I\boldsymbol{L}\times\boldsymbol{B},\qquad F=BIL\sin\theta.
+    \]
+    对任意形状的载流导线在均匀磁场中，其受力等效于连接始末端的那根直导线所受的力；对闭合载流线圈，在均匀磁场中所受合力为零。
+
+    \subsection{磁矩 磁力矩}
+    平面载流线圈的磁矩定义为
+    \[
+    \boldsymbol{m}=NIS\,\hat{\boldsymbol{n}},
+    \]
+    其中 $N$ 为匝数，$S$ 为线圈面积，$\hat{\boldsymbol{n}}$ 为线圈法向单位矢量，其方向与电流绕行方向成右手螺旋关系；磁矩单位为 $\mathrm{A\cdot m^{2}}$。
+
+    均匀磁场对载流线圈作用的磁力矩为
+    \[
+    \boldsymbol{M}=\boldsymbol{m}\times\boldsymbol{B},\qquad M=mB\sin\theta,
+    \]
+    其中 $\theta$ 为磁矩 $\boldsymbol{m}$ 与 $\boldsymbol{B}$ 的夹角。当 $\boldsymbol{m}\parallel\boldsymbol{B}$ 时力矩为零（稳定平衡），当 $\boldsymbol{m}\perp\boldsymbol{B}$ 时力矩最大。磁电式电流表、电动机都是利用磁力矩使线圈（或转子）转动的。
+
+    \subsection{磁力的功}
+    磁力对运动载流导线所做的功为
+    \[
+    W=I\Delta\Phi_m,
+    \]
+    即等于电流强度与导线扫过面积内磁通量增量的乘积。对在磁场中转动的载流线圈，磁力矩做的功同样为 $W=I\Delta\Phi_m$。这一结论是分析电动机、电磁铁等装置能量转换的基础。
+
+    \corepoint{（1）洛伦兹力不做功，但安培力可以做功（因为导线整体在移动，洛伦兹力的分力做了功）；（2）带电粒子在磁场中圆周运动的周期 $T=2\pi m/(qB)$ 与速度无关，这是回旋加速器能工作的前提；（3）磁力矩 $\boldsymbol{M}=\boldsymbol{m}\times\boldsymbol{B}$ 中 $\theta$ 是 $\boldsymbol{m}$ 与 $\boldsymbol{B}$ 的夹角，不是线圈平面与 $\boldsymbol{B}$ 的夹角。}
 
 \section{磁介质中的恒定磁场}
-    \subsection{磁介质及其磁化}
-    \subsection{磁介质中的高斯定理和安培环路定理}
-    \subsection{铁磁质}
+    \subsection{磁介质的分类}
+    处在磁场中能与磁场发生相互作用的物质称为磁介质。磁介质被磁化后会产生附加磁场，使原来的磁场发生变化。按磁化特性的不同，磁介质可分为三类：
+    \begin{table}[htbp]
+    \centering
+    \caption{三类磁介质的比较}
+    \begin{tabular}{llll}
+    \toprule
+    种类 & 相对磁导率 $\mu_r$ & 磁化方向 & 实例 \\
+    \midrule
+    顺磁质 & 略大于 1 & 与外磁场同向 & 铝、铂、氧 \\
+    抗磁质 & 略小于 1 & 与外磁场反向 & 铜、水银、水、氮 \\
+    铁磁质 & 远大于 1（$10^{2}\sim10^{6}$） & 与外磁场同向 & 铁、钴、镍及其合金 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
 
-\endinput
+    顺磁质的分子具有固有磁矩，无外场时因热运动而杂乱取向，宏观上不显磁性；外场使分子磁矩转向外场方向，产生与外场同向的附加磁场。抗磁质的分子固有磁矩为零，外场使分子产生与外场反向的附加磁矩，故磁化方向与外场相反。
+
+    \subsection{磁化强度 磁场强度}
+    定义单位体积内分子磁矩的矢量和为磁化强度：
+    \[
+    \boldsymbol{M}=\frac{\sum_i\boldsymbol{m}_i}{\Delta V},
+    \]
+    单位为 $\mathrm{A/m}$。磁介质被磁化后，表面上出现等效的束缚电流（磁化电流），其线密度等于磁化强度沿表面切向的分量。
+
+    有磁介质时，安培环路定理应写成
+    \[
+    \oint_L\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{l}=\mu_0\left(\sum I_0+\oint_L\boldsymbol{M}\cdot\mathrm{d}\boldsymbol{l}\right),
+    \]
+    其中 $\sum I_0$ 为穿过环路的传导电流。为简化，引入磁场强度
+    \[
+    \boldsymbol{H}=\frac{\boldsymbol{B}}{\mu_0}-\boldsymbol{M},
+    \]
+    则
+    \keyformula{\oint_L\boldsymbol{H}\cdot\mathrm{d}\boldsymbol{l}=\sum_{L\text{内}}I_{0i}}
+    即磁场强度沿任意闭合路径的环流只等于该路径所包围的传导电流的代数和，与磁化电流无关。对线性各向同性磁介质，有
+    \[
+    \boldsymbol{B}=\mu_0\mu_r\boldsymbol{H}=\mu\boldsymbol{H},
+    \]
+    $\mu_r$ 称相对磁导率，$\mu=\mu_0\mu_r$ 称磁导率。
+
+    有磁介质时的磁场高斯定理形式不变：
+    \[
+    \oint_S\boldsymbol{B}\cdot\mathrm{d}\boldsymbol{S}=0.
+    \]
+    计算有磁介质时的磁场，通常先用 $\boldsymbol{H}$ 的环路定理求 $\boldsymbol{H}$（只依赖传导电流），再由 $\boldsymbol{B}=\mu\boldsymbol{H}$ 求 $\boldsymbol{B}$。
+
+    \subsection{铁磁质}
+    铁磁质的磁化特性与顺磁质、抗磁质有本质不同：
+    \begin{enumerate}
+        \item $\mu_r$ 很大且不是常数，随磁场强度而变化，$\boldsymbol{B}$ 与 $\boldsymbol{H}$ 之间呈非线性关系；
+        \item 存在磁滞现象：磁化过程中 $\boldsymbol{B}$ 的变化落后于 $\boldsymbol{H}$ 的变化，反复磁化时 $\boldsymbol{B}$--$\boldsymbol{H}$ 曲线形成磁滞回线。外场撤去后仍保留的磁感应强度称为剩磁，要使剩磁消失所需的反向磁场强度称为矫顽力；
+        \item 存在居里点（居里温度）：温度超过居里点时，铁磁性消失而变为顺磁性。
+    \end{enumerate}
+    铁磁性的微观解释是磁畴：铁磁质内部存在许多自发磁化的小区域（磁畴），每个磁畴内分子磁矩取向一致。无外场时各磁畴取向杂乱，宏观不显磁性；外场使磁畴的取向趋于一致（磁畴壁移动、磁畴转向），因而产生很强的附加磁场。磁畴的存在已由实验直接观察到。
+
+    按磁滞回线的形状，铁磁质可分为软磁材料（矫顽力小、易磁化也易退磁，如硅钢，用作变压器铁芯）和硬磁材料（矫顽力大、剩磁强，如碳钢，用作永久磁铁）。
+
+    \corepoint{（1）$\boldsymbol{H}$ 的环路定理只对传导电流求和，这是它的价值所在；（2）$\boldsymbol{B}=\mu_0\mu_r\boldsymbol{H}$ 只对线性各向同性介质成立，铁磁质中 $\mu_r$ 不是常数，此式不能直接使用；（3）磁场强度 $\boldsymbol{H}$ 与磁感应强度 $\boldsymbol{B}$ 是两个不同的物理量，$\boldsymbol{B}$ 是磁场本身的描述，$\boldsymbol{H}$ 是辅助量。}

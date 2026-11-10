@@ -1,47 +1,23 @@
-% 基础文档类：ctexbook适配中文，UTF8编码
-\documentclass[oneside, UTF8]{ctexbook}
-
-% 核心宏包（精简必要的，避免冲突）
-\usepackage{amsmath,amssymb,amsfonts,mathrsfs}
-\usepackage{graphicx,geometry,enumitem,booktabs}
-\usepackage{xcolor,hyperref} % 颜色+超链接
-\geometry{a4paper, margin=2.5cm} % 页面布局
-
-% 1. 定义封面需要的主色调
-\definecolor{mainblue}{RGB}{0, 102, 204} 
-
-% 2. 超链接配置（仅保留核心功能，避免错误）
-\hypersetup{
-    colorlinks=true,    % 文字颜色代替边框
-    linkcolor=mainblue, % 内部链接颜色（和封面色调统一）
-    urlcolor=mainblue,  % 外部链接颜色（和封面色调统一）
-    pdfborder={0 0 0},  % 移除边框
-    unicode=true        % 支持中文
-}
-
-% 3. 极致警告屏蔽（新增字体大小替换警告屏蔽）
-\usepackage{silence}
-\WarningFilter{xeCJK}{Redefining CJKfamily} % 屏蔽xeCJK重定义警告
-\WarningFilter{latexfont}{Size substitutions with differences} % 屏蔽字体大小替换警告
-\hbadness=10000
-\vfuzz=100pt
-
-% 4. 目录配置
-\usepackage{tocbibind}
-\setcounter{tocdepth}{3}
-\setcounter{secnumdepth}{3}
-
-% 5. 标题样式（极简，避免特殊字符）
-\usepackage{titlesec}
-\titleformat{\chapter}{\bfseries\Large}{\thechapter}{1em}{}
-\titleformat{\section}{\bfseries\large}{\thesection}{1em}{}
-\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
-
-% 元信息
-\title{复变函数与积分变换}
-\author{课程笔记}
-\date{}
-
+% 复变函数与积分变换课程笔记 —— 主文档（正文排版集中在 0.样式.tex，章节文件只放内容）
+% 编译：xelatex 1.main.tex 两遍；成品输出见 build.ps1
+\documentclass[11pt,a4paper,oneside,openany]{book}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
+\newcommand{\YHBbooktrue}{}
+\newcommand{\YHBcourse}{复变函数与积分变换}
+\newcommand{\YHBversion}{v0.9}
+\newcommand{\YHBquote}{以复数为桥，连接分析与几何；以积分变换为器，求解工程与物理问题。}
+\newcommand{\YHBcoverSize}{33pt}
+\newcommand{\YHBcoverLead}{40pt}
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{1F3A5F}
+\definecolor{yhbAccent2}{HTML}{3F6E8C}
+\input{0.样式.tex}
+\usepackage{mathrsfs}
+\graphicspath{{../图片/}}
+\usepackage{tikz}
 \begin{document}
 % 引入封面
 \input{2.cover.tex}
@@ -55,11 +31,17 @@
 \setcounter{page}{1}
 
 % 引入章节文件
+% 章序与教材《复变函数与积分变换》(哈工大·第三版) 8 章一一对应：
+%   3  → 教材第1章 复数与复变函数      4  → 教材第2章 解析函数
+%   5  → 教材第3章 复变函数的积分      6  → 教材第4章 级数（§4.5 孤立奇点取自教材 §5.1）
+%   7  → 教材第5章 留数                7a → 教材第6章 保形映射
+%   8  → 教材第7章 傅里叶变换          9  → 教材第8章 拉普拉斯变换
 \input{3.复数与复变函数.tex}
 \input{4.解析函数.tex}
 \input{5.复变函数的积分.tex}
 \input{6.级数.tex}
 \input{7.留数.tex}
+\input{7a.保形映射.tex}
 \input{8.傅里叶变换.tex}
 \input{9.拉普拉斯变换.tex}
 

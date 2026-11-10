@@ -522,22 +522,55 @@
     \end{tabular}
 \end{table}
 
-\subsection{常用化简公式}
+\subsection{常用公式（若干常用公式）}
 \begin{table}[!htbp]
     \centering
     \caption{逻辑化简常用公式}
-    \begin{tabular}{|c|l|}
-        \hline
-        1 & $A + AB = A$ \\
-        2 & $A + \overline{A}B = A + B$ \\
-        3 & $AB + A\overline{B} = A$ \\
-        4 & $A(A+B) = A$ \\
-        5 & $AB+\overline{A}C+BC=AB+\overline{A}C$ \\
-          & $AB+\overline{A}C+BCD=AB+\overline{A}C$ \\
-        6 & $A\cdot\overline{AB}=A\overline{B},\ \overline{A}\cdot\overline{AB}=\overline{A}$ \\
-        \hline
+    \label{tab:common_formula}
+    \begin{tabular}{@{}clll@{}}
+        \toprule
+        序号 & 公式 & 名称 & 使用要点 \\
+        \midrule
+        21 & $A+AB=A$ & 吸收律 & 一项包含另一项，则被包含项多余 \\
+        22 & $A+\overline{A}B=A+B$ & 消去律 & 消去反变量因子，但原变量保留 \\
+        23 & $AB+A\overline{B}=A$ & 合并律 & 两乘积项只差一个互补因子，可合并 \\
+        24 & $A(A+B)=A$ & 吸收律 & 与项中含有一项，则该与项多余 \\
+        25 & $AB+\overline{A}C+BC=AB+\overline{A}C$ & 冗余项定理 & $BC$ 是冗余项，可删 \\
+           & $AB+\overline{A}C+BCD=AB+\overline{A}C$ & 冗余项定理 & 任意多项冗余项均可删 \\
+        26 & $A\cdot\overline{AB}=A\overline{B}$ & 消去非号 & 与项吸收后只剩一项 \\
+           & $\overline{A}\cdot\overline{AB}=\overline{A}$ & 消去非号 & 同上 \\
+        \bottomrule
     \end{tabular}
 \end{table}
+
+\subsubsection{公式 21--24 的证明（吸收律与消去律）}
+\begin{align}
+A+AB &= A(1+B)=A, \label{eq:p21}\\
+A+\overline{A}B &= (A+\overline{A})(A+B)=1\cdot(A+B)=A+B, \label{eq:p22}\\
+AB+A\overline{B} &= A(B+\overline{B})=A\cdot 1=A, \label{eq:p23}\\
+A(A+B) &= A\cdot A+AB=A+AB=A. \label{eq:p24}
+\end{align}
+式~\eqref{eq:p22} 也可由 $A+B=(A+B)(A+\overline{A})=A+AB+\overline{A}B=A+\overline{A}B$ 反推得到。\textbf{公式 22 最容易记错}：$A+\overline{A}B=A+B$ 中 $A$ 保留而不是被消掉。
+
+\subsubsection{公式 25 的证明（冗余项定理）}
+\begin{align}
+AB+\overline{A}C+BC &= AB+\overline{A}C+BC(A+\overline{A}) \notag\\
+&= AB+\overline{A}C+ABC+\overline{A}BC \notag\\
+&= AB(1+C)+\overline{A}C(1+B)=AB+\overline{A}C. \label{eq:p25}
+\end{align}
+同理
+\[
+AB+\overline{A}C+BCD=AB+\overline{A}C+BCD(A+\overline{A})
+=AB(1+CD)+\overline{A}C(1+BD)=AB+\overline{A}C .
+\]
+式~\eqref{eq:p25} 的物理含义：两个乘积项中，一项含原变量 $B$、另一项含反变量 $\overline{B}$，则这两项``其余因子''组成的乘积项是冗余的。\textbf{这是公式法化简中最常用、也最容易漏用的一条}。
+
+\subsubsection{公式 26 的证明（非号消去）}
+\[
+A\cdot\overline{AB}=A(\overline{A}+\overline{B})=A\overline{B},\qquad
+\overline{A}\cdot\overline{AB}=\overline{A}(\overline{A}+\overline{B})=\overline{A}.
+\]
+即：与项中某一变量与``整个与项之非''相乘时，``非号''可以去掉，与项只保留该变量（或其反变量）。
 
 \section{逻辑代数三大重要定理}
 \subsection{代入定理}
@@ -547,15 +580,59 @@
 \]
 \textbf{作用}：将两变量公式推广至多变量，拓展所有恒等式适用范围。
 
-\subsection{反演定理（多变量推广）}
+\subsection{反演定理}
+对任一逻辑式 $Y$，将其中的
 \[
-\overline{A_1A_2\cdots A_n} = \overline{A_1}+\overline{A_2}+\cdots+\overline{A_n},\quad
-\overline{A_1+A_2+\cdots+A_n} = \overline{A_1}\overline{A_2}\cdots\overline{A_n}
+\cdot\ \longleftrightarrow\ +,\qquad
++\ \longleftrightarrow\ \cdot,\qquad
+0\ \longleftrightarrow\ 1,\qquad
+1\ \longleftrightarrow\ 0,\qquad
+\text{原变量}\ \longleftrightarrow\ \text{反变量},
 \]
-求反函数$\overline{Y}$变换规则：$\cdot\leftrightarrow +$，$0\leftrightarrow1$，原变量$\leftrightarrow$反变量。
+所得的新逻辑式即为 $Y$ 的\textbf{反函数} $\overline{Y}$，这一规律称为反演定理。多变量形式为
+\[
+\overline{A_1A_2\cdots A_n} = \overline{A_1}+\overline{A_2}+\cdots+\overline{A_n},\qquad
+\overline{A_1+A_2+\cdots+A_n} = \overline{A_1}\,\overline{A_2}\cdots\overline{A_n}.
+\]
+
+\subsubsection{使用反演定理的两条注意事项}
+\begin{enumerate}
+    \item \textbf{必须保持先与后或的运算顺序}。变换时若改变了运算次序，须用括号强制维持原有的``先与后或''关系，否则结果不是反函数。
+    \item \textbf{对跨越两个或两个以上变量的``非号''要保留不变}。即形如 $\overline{AB}$、$\overline{A+B}$ 的横线不能一并去掉，只能按德摩根定律逐层展开。
+\end{enumerate}
+
+\subsubsection{求反函数的操作步骤}
+\begin{enumerate}
+    \item 先按``先与后或''给原式加括号，明确每一项的层次；
+    \item 逐层对每个运算取反：与变或、或变与、常量取反、变量取反；
+    \item 保留跨越多个变量的非号，必要时用德摩根定律展开；
+    \item 用公式整理成最简形式（通常是或与式或与或式）。
+\end{enumerate}
 
 \subsection{对偶定理}
-等式两边同时交换$\cdot\leftrightarrow +$、$0\leftrightarrow1$，变量不变，得到对偶式$Y^D$；原式成立则对偶式必然成立。
+\subsubsection{对偶式的定义}
+将逻辑函数 $Y$ 中所有的 ``$+$'' 换成 ``$\cdot$''、``$\cdot$'' 换成 ``$+$''、``$1$'' 换成 ``$0$''、``$0$'' 换成 ``$1$''，而\textbf{变量（包括原变量与反变量）保持不变}，所得的新逻辑式 $Y^{D}$ 称为 $Y$ 的\textbf{对偶式}。
+
+例如：
+\begin{align*}
+Y&=A(B+\overline{C}) & Y^{D}&=A+B\overline{C},\\
+Y&=(A+\overline{B})(A+C\cdot 1) & Y^{D}&=A\overline{B}+A(C+0),\\
+Y&=\bigl[\overline{A}+(\overline{BC})\bigr]' & Y^{D}&=\bigl[\overline{A}\cdot\overline{(B+C)}\bigr]'.
+\end{align*}
+注意对偶式与反函数的区别：\textbf{求对偶式时变量不动}，只换运算符号与常量；求反函数时变量也要取反。
+
+\subsubsection{对偶定理与对偶规则}
+\textbf{对偶定理}：若两个逻辑式相等，则它们的对偶式也相等。
+
+\textbf{对偶规则}：一个逻辑等式成立，则其两边同时取对偶后仍然成立。因此逻辑代数的公式总是``成对''出现的，例如
+\[
+A(B+C)=AB+AC
+\quad\Longleftrightarrow\quad
+A+BC=(A+B)(A+C),
+\]
+只需记住其中一个，另一个由对偶规则直接写出。这也说明表~\ref{tab:common_formula} 中的吸收律 $A+AB=A$ 与 $A(A+B)=A$ 互为对偶。
+
+利用对偶定理还可以证明公式：要证 $A+BC=(A+B)(A+C)$，可先证它的对偶式 $A(B+C)=AB+AC$（即分配律），由对偶定理即得原式成立。
 
 \section{逻辑函数及其描述方法}
 \subsection{逻辑函数定义}
@@ -613,16 +690,130 @@
 \end{itemize}
 
 \subsubsection{最小项与最大项的关系}
-相同下标编号的最小项和最大项互为反量：$M_i=\overline{m_i}$，两种标准形式可以互相转换。
+相同下标编号的最小项和最大项互为反量：$M_i=\overline{m_i}$，两种标准形式可以互相转换。表~\ref{tab:minmax3} 以三变量为例给出编号规则。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{三变量最小项与最大项的编号}
+    \label{tab:minmax3}
+    \begin{tabular}{@{}cccccc@{}}
+        \toprule
+        十进制数 & $A$ & $B$ & $C$ & 最小项 $m_i$ & 最大项 $M_i$ \\
+        \midrule
+        0 & 0 & 0 & 0 & $\overline{A}\,\overline{B}\,\overline{C}\ (m_0)$ & $A+B+C\ (M_0)$ \\
+        1 & 0 & 0 & 1 & $\overline{A}\,\overline{B}C\ (m_1)$ & $A+B+\overline{C}\ (M_1)$ \\
+        2 & 0 & 1 & 0 & $\overline{A}B\overline{C}\ (m_2)$ & $A+\overline{B}+C\ (M_2)$ \\
+        3 & 0 & 1 & 1 & $\overline{A}BC\ (m_3)$ & $A+\overline{B}+\overline{C}\ (M_3)$ \\
+        4 & 1 & 0 & 0 & $A\overline{B}\,\overline{C}\ (m_4)$ & $\overline{A}+B+C\ (M_4)$ \\
+        5 & 1 & 0 & 1 & $A\overline{B}C\ (m_5)$ & $\overline{A}+B+\overline{C}\ (M_5)$ \\
+        6 & 1 & 1 & 0 & $AB\overline{C}\ (m_6)$ & $\overline{A}+\overline{B}+C\ (M_6)$ \\
+        7 & 1 & 1 & 1 & $ABC\ (m_7)$ & $\overline{A}+\overline{B}+\overline{C}\ (M_7)$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+注意编号规则的\textbf{方向相反}：最小项中变量取 $1$ 写原变量、取 $0$ 写反变量；最大项中变量取 $0$ 写原变量、取 $1$ 写反变量（因为最大项是在那一组取值下为 $0$ 的或项）。
+
+\subsubsection{最小项与最大项性质的对照}
+最小项与最大项的性质一一对应：最小项``仅一组取值使其为 $1$、全体之和为 $1$、任意两项之积为 $0$''；最大项``仅一组取值使其为 $0$、全体之积为 $0$、任意两项之和为 $1$''。二者都能通过合并相邻项消去一对互补变量。
+
+\subsubsection{两种标准形式的互换}
+若 $Y=\sum m_i$（$i$ 取使 $Y=1$ 的全部编号），则 $\overline{Y}=\sum m_j$（$j$ 取其余编号），于是
+\[
+Y=\overline{\sum_{j}m_j}=\prod_{j}\overline{m_j}=\prod_{j}M_j ,
+\]
+即\textbf{与或式中的最小项编号，取补后即为或与式中最大项的编号}。这是两种标准形式互相转换的依据。
 
 \section{逻辑函数化简}
 \subsection{公式化简法}
 利用逻辑代数基础公式，通过合并项、消去冗余项、配项法消去多余变量与冗余项。
 
 \subsection{卡诺图化简法}
-\subsubsection{卡诺图结构与逻辑相邻规则}
-卡诺图将$n$变量最小项按几何相邻等价逻辑相邻排布，支持2/3/4/5变量，可由低变量卡诺图折叠生成。
-逻辑相邻包含四类场景：左右方格相邻、上下方格相邻、左右边界循环相邻、四角方格相邻；仅逻辑相邻的方格才能合并圈组，不相邻方格禁止圈在一起。
+\subsubsection{卡诺图的定义与构成}
+卡诺图是把逻辑函数的真值表\textbf{图形化}：将真值表中的变量分成两组，分别排列在行和列上，并把最小项按\textbf{逻辑相邻}的规则填入方格，构成的二维图表即卡诺图（由卡诺 Karnaugh 与范奇 Veich 提出）。
+
+构成要点：
+\begin{enumerate}
+    \item 行、列变量的取值顺序必须按\textbf{格雷码}（$00,01,11,10$）排列，而不是按二进制自然顺序，这样才能使几何相邻的方格恰好逻辑相邻；
+    \item $n$ 变量的卡诺图有 $2^{n}$ 个方格，每格对应一个最小项；
+    \item $n$ 变量的卡诺图可由 $n-1$ 变量的卡诺图用\textbf{折叠法}构成（五变量卡诺图即由四变量的折叠得到）。
+\end{enumerate}
+
+\begin{figure}[!htbp]
+\centering
+\begin{minipage}{0.44\textwidth}
+    \centering
+    \captionof{table}{三变量卡诺图}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $A\backslash BC$ & 00 & 01 & 11 & 10 \\
+        \hline
+        0 & $m_0$ & $m_1$ & $m_3$ & $m_2$ \\
+        \hline
+        1 & $m_4$ & $m_5$ & $m_7$ & $m_6$ \\
+        \hline
+    \end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \centering
+    \captionof{table}{四变量卡诺图}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        $AB\backslash CD$ & 00 & 01 & 11 & 10 \\
+        \hline
+        00 & $m_0$ & $m_1$ & $m_3$ & $m_2$ \\
+        \hline
+        01 & $m_4$ & $m_5$ & $m_7$ & $m_6$ \\
+        \hline
+        11 & $m_{12}$ & $m_{13}$ & $m_{15}$ & $m_{14}$ \\
+        \hline
+        10 & $m_8$ & $m_9$ & $m_{11}$ & $m_{10}$ \\
+        \hline
+    \end{tabular}
+\end{minipage}
+\end{figure}
+
+\subsubsection{逻辑相邻规则}
+\textbf{逻辑相邻}：任意两个最小项中只有一个变量不同（互补），则二者逻辑相邻。
+
+在卡诺图上，逻辑相邻表现为四类几何关系：
+\begin{enumerate}
+    \item \textbf{左右相邻}：同一行中紧挨的两格；
+    \item \textbf{上下相邻}：同一列中紧挨的两格；
+    \item \textbf{左右边界循环相邻}：最左列与最右列对应格相邻（如 $m_0$ 与 $m_2$、$m_8$ 与 $m_{10}$）；
+    \item \textbf{上下边界循环相邻}：最上行与最下行对应格相邻（如 $m_0$ 与 $m_8$、$m_2$ 与 $m_{10}$），四角格彼此也相邻。
+\end{enumerate}
+可以证明，$n$ 变量卡诺图中每个最小项都有 $n$ 个相邻最小项。\textbf{只有逻辑相邻的方格才能圈在一起，不相邻的方格绝不能圈在同一组}——这是卡诺图化简最常见的错误来源。
+
+\subsubsection{合并最小项的原则}
+\textbf{若 $2^{k}$ 个最小项相邻并排列成一个矩形组，则可合并为一项并消去 $k$ 对因子，合并结果只保留这些最小项的公共因子。}
+
+\begin{table}[!htbp]
+    \centering
+    \caption{合并最小项数与消去因子数的关系}
+    \label{tab:merge_rule}
+    \begin{tabular}{@{}llll@{}}
+        \toprule
+        圈内最小项数 & 矩形形状（示例） & 消去的变量对数 & 结果保留的变量数（$n$ 变量） \\
+        \midrule
+        $2$  & $1\times2$ 或 $2\times1$ & $1$ & $n-1$ \\
+        $4$  & $1\times4$、$2\times2$、$4\times1$ & $2$ & $n-2$ \\
+        $8$  & $2\times4$、$4\times2$、$1\times8$ & $3$ & $n-3$ \\
+        $16$ & 整图 & $4$ & $n-4$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+例如四变量卡诺图中，$A\overline{B}\,\overline{C}D(m_5)$、$A\overline{B}CD(m_7)$、$AB\overline{C}D(m_{13})$、$ABCD(m_{15})$ 四格相邻，合并后消去 $A/\overline{A}$ 与 $C/\overline{C}$ 两对因子，只剩公共因子 $BD$。
+
+\subsubsection{卡诺图化简的步骤}
+\begin{enumerate}
+    \item 把逻辑函数化为最小项之和形式（或直接由真值表），在对应方格填 $1$，其余填 $0$（也可留空）；
+    \item 按``圈尽可能大、圈数尽可能少''的原则圈 $1$：先圈孤立的 $1$（$2^{0}$），再圈只能两两合并的 $1$，最后圈 $4$ 格、$8$ 格的大组；
+    \item 检查每个 $1$ 是否至少被圈一次（可重复圈），每个圈是否都是 $2^{k}$ 个相邻格构成的矩形；
+    \item 每个圈写出其公共因子（圈内取值不变的变量保留：为 $1$ 写原变量，为 $0$ 写反变量），全部相或即得最简与或式。
+\end{enumerate}
 
 \subsubsection{圈组化简核心原则}
 1. 圈内方格数量必须为$2^k$：$1,2,4,8,16\cdots$；
@@ -635,26 +826,153 @@
 \subsubsection{圈0化简技巧}
 若卡诺图中0数量远少于1，可直接合并所有0得到反函数$Y'$，再对$Y'$整体取反得到原函数最简式，大幅简化运算。
 
+\subsection{奎恩-麦克拉斯基化简法（Q-M 法）}
+\subsubsection{提出背景与适用场合}
+卡诺图法虽然直观、简单，但存在明显局限：输入变量较多（例如大于 $5$ 以后）时失去直观性；合并最小项的方式在许多情况下要靠设计者的经验确定，不便于借助计算机完成化简。公式化简法虽不受变量数目限制，但化简过程没有固定、通用的步骤可循，同样不适用于计算机辅助化简。
+
+由奎恩（W. V. Quine）和麦克拉斯基（E. J. McCluskey）提出的\textbf{列表化简法}有一定的规则和步骤可循，较好地克服了上述局限，因而适用于编制计算机辅助化简程序，通常称为\textbf{奎恩-麦克拉斯基法}，简称 \textbf{Q-M 法}。其基本原理仍然是通过合并相邻最小项并消去多余因子来求最简与或式。
+
+\subsubsection{基本概念}
+\begin{itemize}
+    \item \textbf{蕴含项}：若乘积项 $P$ 取值为 $1$ 的所有最小项都包含在函数 $Y$ 的最小项集合中（即 $P$ 覆盖的每一格在卡诺图上都是 $1$ 或无关项），则称 $P$ 为 $Y$ 的蕴含项。
+    \item \textbf{质蕴含项}（prime implicant）：不能再与任何其他蕴含项合并（再合并就会覆盖 $0$）的蕴含项，即卡诺图中``不能再扩大''的圈。
+    \item \textbf{必要质蕴含项}：至少包含一个``只被它覆盖''的最小项的质蕴含项，最简式中必须保留。
+\end{itemize}
+
+\subsubsection{化简步骤}
+\begin{enumerate}
+    \item \textbf{化为最小项之和并编码}：将函数写成 $\sum m_i$ 形式，用 $1$ 表示最小项中的原变量、$0$ 表示反变量，得到每个最小项的二进制代码（即最小项编码表）。
+    \item \textbf{按含 $1$ 的个数分组}：把全部最小项按代码中 $1$ 的个数分组排列（含 $0$ 个 $1$ 的一组、含 $1$ 个 $1$ 的一组……）。这样只有\textbf{相邻组}中的最小项才可能只差一个因子。
+    \item \textbf{合并相邻最小项}：将某一组中的每个最小项与相邻组中的所有最小项逐一比较，若仅有一个因子不同，则二者可合并，消去该因子并用``$-$''（无关位）表示；同时在原表中给被合并的最小项打``$\surd$''号。对合并所得的新项按同样方法继续合并（第二次、第三次……），直到不能再合并为止。
+    \item \textbf{选出质蕴含项}：合并过程中\textbf{始终未被合并过}的项即为质蕴含项，记为 $P_1,P_2,\cdots$。把它们相加，已能覆盖函数的全部最小项，但不一定最简。
+    \item \textbf{列覆盖表选最少乘积项}：以质蕴含项为行、最小项为列，在质蕴含项覆盖的最小项处填 $1$。
+    \begin{itemize}
+        \item 若某列只有一个 $1$，则该列对应的质蕴含项为\textbf{必要质蕴含项}，必须选取；
+        \item 选出全部必要质蕴含项后，若仍有最小项未被覆盖，则在剩余质蕴含项中选数目最少、覆盖最全的一组；
+        \item 若某质蕴含项覆盖的最小项全部被其他已选项覆盖，则它是\textbf{冗余项}，可以删去。
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{特点与使用建议}
+\begin{itemize}
+    \item 步骤机械、可编程，适合变量数较多（$5$ 个以上）且需计算机辅助的场合；
+    \item 变量数增大时，需要比较的项数增长很快，手工计算量大，故手算时仍以卡诺图为主；
+    \item 两种方法得到的\textbf{最简与或式等价}，Q-M 法可用来校验卡诺图的结果是否已是最简。
+\end{itemize}
+
 \subsection{含无关项的卡诺图化简}
 \subsubsection{无关项分类定义}
 \begin{itemize}
-    \item \textbf{约束项}：输入变量受物理场景限制，永远不会出现的取值组合，对应最小项恒等于0；
-    \item \textbf{任意项}：输入该组合时电路输出无功能要求，输出可取0或1，不影响整体逻辑功能；
-    \item \textbf{无关项统称}：约束项、任意项合并记为$\sum d$，逻辑函数标准写法：$Y=\sum m + \sum d$，约束条件$\sum d=0$。
+    \item \textbf{约束项}：在逻辑函数中，输入变量的取值不是任意的，而是受到限制。对输入变量取值所加的限制称为\textbf{约束}，被约束而恒等于 $0$ 的最小项称为约束项。
+    \item \textbf{任意项}：输入变量的某些取值对电路的功能没有影响，对应的输出取 $0$ 或取 $1$ 均可，这些项称为任意项。
+    \item \textbf{无关项}：约束项和任意项统称为无关项——即这些最小项是否写入函数式、在卡诺图中记作 $0$ 还是 $1$，都不影响逻辑功能。
 \end{itemize}
 
+\subsubsection{约束项的典型来源}
+\begin{itemize}
+    \item \textbf{互斥状态约束}：三个逻辑变量 $A$、$B$、$C$ 分别表示一台电动机的正转、反转和停止（$A=1$ 正转，$B=1$ 反转，$C=1$ 停止）。三者互斥，同一时刻只能有一个为 $1$，故
+    \[
+    A\overline{B}\,\overline{C}\ (100),\quad \overline{A}B\overline{C}\ (010),\quad \overline{A}\,\overline{B}C\ (001)
+    \]
+    为允许状态；而 $000$、$011$、$101$、$110$、$111$ 不可能出现，它们对应的最小项恒为 $0$，即
+    \[
+    \overline{A}\,\overline{B}\,\overline{C}+\overline{A}BC+A\overline{B}C+AB\overline{C}+ABC=0 .
+    \]
+    \item \textbf{代码约束}：$8421$ 码只用到 $0000\sim1001$ 十个状态，$1010\sim1111$ 六个状态不可能出现，对应的最小项即为任意项。
+\end{itemize}
+
+\subsubsection{含无关项逻辑函数的表示}
+最小项表达式写作
+\begin{equation}
+Y=\sum m+\sum d,\qquad \text{约束条件：}\sum d=0,
+\label{eq:donotcare}
+\end{equation}
+其中 $\sum d$ 为无关项之和。约束条件也可直接写成若干最小项之和等于 $0$ 的形式。
+
 \subsubsection{无关项化简规则}
-1. 卡诺图中无关项方格标记为$\times$；
-2. 化简时可按需将$\times$当作1或0处理；
-3. 取舍目标：使可圈出的矩形圈更大，最终表达式最简。
+\begin{enumerate}
+    \item 先画出函数 $Y$ 的卡诺图，$1$ 格按 $\sum m$ 填入；
+    \item 将无关项 $\sum d$ 中的最小项在卡诺图相应位置用 ``$\times$'' 标出；
+    \item 化简时，根据需要把 ``$\times$'' 当作 $1$ 或当作 $0$ 处理，原则是\textbf{使可圈出的矩形组最大}（圈内含 $1$ 的个数最多），从而得到最简结果。
+\end{enumerate}
+
+\textbf{使用注意}：
+\begin{itemize}
+    \item 无关项``可用可不用''，用了不会错，不用也不会错；但若某个 ``$\times$'' 不能使圈扩大，就不应圈它，否则会引入不必要的因子；
+    \item \textbf{不允许把全部由 ``$\times$'' 组成的组单独圈出来}作为一项——这样得到的乘积项在无关项不出现时恒为 $0$，会改变函数在有效输入上的取值；
+    \item 圈出的每一组中\textbf{至少要包含一个 $1$}。
+\end{itemize}
 
 \subsection{多输出逻辑函数化简}
-多输出电路包含多个独立输出$Y_1,Y_2,Y_3\dots$，化简核心目标不是单独每个输出最简，而是寻找多个输出之间的公共与项，共享中间门电路，让整体电路总门、总输入引脚数量最小，降低硬件成本。
+\subsubsection{化简目标}
+多输出电路包含多个输出 $Y_1,Y_2,Y_3,\cdots$，化简的核心目标不是让每个输出各自最简，而是寻找各输出之间的\textbf{公共与项}，共享中间门电路，使整体电路的总门数、总输入引脚数最少，降低硬件成本。
+
+\subsubsection{化简方法}
+\begin{enumerate}
+    \item 先分别对每个输出单独化简，得到各自的最简与或式作为参考；
+    \item 比较各输出的卡诺图，寻找可以\textbf{共用}的圈（同一乘积项被多个输出覆盖）；
+    \item 允许某个输出多用一个乘积项（其表达式不是单独最简），以换取与其他输出共用一项；
+    \item 统计整体门数与输入端数，取总体最优的方案。
+\end{enumerate}
+
+\subsubsection{判断标准}
+单输出最简的判据是``乘积项最少、每项因子最少''；多输出最简的判据则是\textbf{总门数、总输入端数最少}，两者可能不一致，后者才是工程目标。
 
 \subsection{逻辑函数形式变换}
-数字工程中常统一采用单一类型逻辑门搭建电路，需利用反演律对标准与或式做形式转换：
-\begin{enumerate}
-    \item 与或式 $\rightarrow$ 与非-与非式：整体两次取反，内层用德摩根拆分；
-    \item 与或式 $\rightarrow$ 或非-或非式：先求反函数或与式，再整体两次取反；
-    \item 可结合异或、同或运算进一步压缩表达式项数。
-\end{enumerate}
+数字工程中常统一采用单一类型的逻辑门搭建电路（如全用与非门或全用或非门），以简化器件品种、便于采购与维修，因此需要利用反演律对最简与或式做\textbf{形式变换}。设已得最简与或式
+\[
+Y=\sum_{k}P_k \quad (P_k \text{ 为乘积项}),
+\]
+则各类变换方法如下。
+
+\subsubsection{与或式 $\rightarrow$ 与非-与非式}
+对 $Y$ 整体两次取反，再用德摩根定律把中间的非号分配到每一项：
+\begin{equation}
+Y=\overline{\overline{\sum_k P_k}}
+=\overline{\sum_k \overline{P_k}}
+=\overline{\overline{P_1}\cdot\overline{P_2}\cdots},
+\label{eq:nand_nand}
+\end{equation}
+即``先对每个乘积项取与非，再把结果与非''。这是最常用的变换，因为与非门最容易实现、价格最低。
+
+\subsubsection{与或式 $\rightarrow$ 或非-或非式、与或非式}
+或非-或非式：先求反函数并化为与或式，再整体两次取反，
+\begin{equation}
+Y=\overline{\overline{Y}}=\overline{\sum_j Q_j}
+=\overline{\overline{\overline{Q_1}+\overline{Q_2}+\cdots}},
+\label{eq:nor_nor}
+\end{equation}
+即``先对每个或项取或非，再把结果或非''；也可先将 $Y$ 化为最简或与式，再整体两次取反。
+
+与或非式：对 $\overline{Y}$ 用卡诺图\textbf{圈 $0$} 化简，直接得到 $\overline{Y}$ 的最简与或式，再对整体取反，恰好对应一级与或非门。
+
+\subsubsection{与或式 $\rightarrow$ 异或/同或形式}
+当函数具有``输入相异输出 $1$''的规律时，用异或、同或运算可显著压缩项数。例如
+\[
+A\overline{B}+\overline{A}B=A\oplus B,\qquad
+AB+\overline{A}\,\overline{B}=A\odot B=\overline{A\oplus B},
+\]
+三变量奇偶判别可写成 $Y=A\oplus B\oplus C$，比最小项之和短得多。
+
+\subsubsection{变换的取舍}
+用与非门实现取与非-与非式，用或非门实现取或非-或非式，用与或非门实现取与或非式；器件品种不限时优先选门数最少的原始最简式。
+
+\section{本章小结与易错点}
+\subsection{易错点}
+\begin{itemize}
+    \item \textbf{混淆``逻辑加''与算术加}：$1+1=1$（逻辑或），不是 $2$；$A+A=A$，不是 $2A$。
+    \item \textbf{公式 22 记错}：$A+\overline{A}B=A+B$，其中 $A$ 必须保留；误写成 $A+\overline{A}B=B$ 是最常见的错误。
+    \item \textbf{冗余项漏删}：$AB+\overline{A}C+BC$ 中 $BC$ 恒可删，因为 $B$、$\overline{B}$ 已分别出现在前两项中。
+    \item \textbf{反演时改变运算顺序}：求反函数必须保持``先与后或''，跨多个变量的非号要保留，否则结果不是反函数。
+    \item \textbf{把对偶式当反函数}：求对偶式时\textbf{变量不变}，只换运算符号与常量；求反函数时变量还要取反。
+    \item \textbf{卡诺图圈法违规}：圈内格数不是 $2^{k}$、圈了不相邻的格、漏圈某个 $1$、把纯无关项组单独圈出，都是错误圈法。
+    \item \textbf{误以为化简结果唯一}：卡诺图化简结果可能不唯一（不同圈法得到不同的最简式），但各结果逻辑等价，且乘积项数与因子数相同。
+    \item \textbf{最小项与最大项编号方向搞反}：最小项按``取 $1$ 写原变量''编号，最大项按``取 $0$ 写原变量''编号，二者编号相同则互为反量。
+\end{itemize}
+
+\subsection{与其他章节的衔接}
+\begin{itemize}
+    \item 本章的公式与化简方法是第 4 章\textbf{组合逻辑电路}分析与设计的直接工具；
+    \item 卡诺图的``圈组''思想在第 5 章触发器、第 6 章时序逻辑电路的状态化简中仍会用到；
+    \item 逻辑函数形式变换决定了第 3 章门电路的选择与级联方式。
+\end{itemize}

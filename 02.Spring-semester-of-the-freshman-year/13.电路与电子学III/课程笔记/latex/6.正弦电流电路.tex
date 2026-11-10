@@ -1,70 +1,426 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第四章 正弦电流电路}
+% 电路与电子学III 课程笔记 —— 第4章（教材：孙立山《电路理论基础》第四版 第4章）
+\chapter{正弦电流电路}
+
+\noindent
+电压、电流随时间按正弦规律变化的电路称为\textbf{正弦电流电路}（简称正弦电路）。正弦量的微分或积分仍是正弦量，若直接以时间函数为变量列写电路方程，就不可避免地要处理三角函数的加减与微积分。本章的核心思路是：用\textbf{相量}（复数）表示正弦量，用\textbf{阻抗}与\textbf{导纳}表示元件，从而把正弦电路的微积分方程化为\textbf{复系数线性代数方程}，再照搬第 2、3 章的全部方法与定理。学习本章要随时与第 2、3 章的规律作对比。
 
 \section{正弦电流}
-随正弦规律变化的电流称为正弦电流或正弦交流。
+随时间按正弦规律变化的电流称为正弦电流（正弦交流）。正弦波既可用正弦函数、也可用余弦函数表示，本书一般采用\textbf{余弦函数}：
+\begin{equation}
+i(t)=I_m\cos\left(\omega t+\psi_i\right)
+\end{equation}
+式中 $I_m$ 为最大值，称为\textbf{振幅}（幅值），恒为正；$\psi_i$ 为\textbf{初相}；$\left(\omega t+\psi_i\right)$ 为\textbf{相位}（相角），$t=0$ 时的相位即初相；$\omega$ 为\textbf{角频率}。这三个量称为正弦量的\textbf{三要素}。
+
+角频率与周期、频率的关系为
+\keyformula{\omega=\frac{2\pi}{T}=2\pi f}
+频率 $f$ 的 SI 单位为赫[兹]（$\mathrm{Hz}$），角频率的单位为 $\mathrm{rad/s}$。我国电力系统的标准频率为 $50\,\mathrm{Hz}$，称为\textbf{工频}，对应 $\omega=2\pi\times50\approx314\,\mathrm{rad/s}$。
+
+\subsection{有效值}
+用振幅表征交流量在做功等问题上很不方便：振幅与直流相等的交流，其做功的平均效果并不相等。因此引入\textbf{有效值}：设周期电流 $i(t)$ 和直流 $I$ 分别通过相同的电阻 $R$，若二者做功的平均效果相同，则将此直流 $I$ 的量值规定为周期电流 $i$ 的有效值。由
+\begin{equation}
+\int_0^{T}i^2R\,\mathrm{d}t=I^2RT
+\end{equation}
+得
+\keyformula{I=\sqrt{\frac{1}{T}\int_0^{T}i^2(t)\,\mathrm{d}t}}
+即有效值乃是瞬时值的平方在一个周期内的平均值再开平方根，故又称\textbf{方均根值}（RMS）。对正弦电流
+\keyformula{I=\frac{I_m}{\sqrt{2}}\approx0.707I_m}
+该式对正弦电压同样成立。为与瞬时值相区别，有效值用大写字母（$I$、$U$）表示，瞬时值用小写字母（$i$、$u$）表示。工程上谈到正弦电流、电压的量值时，若无特殊声明\textbf{总是指有效值}；交流仪表所标示的也是有效值。
+
+\subsection{相位差}
+同频率的正弦电压 $u=U_m\cos(\omega t+\psi_u)$ 与正弦电流 $i=I_m\cos(\omega t+\psi_i)$ 的\textbf{相位差}为
+\keyformula{\varphi=\psi_u-\psi_i}
+虽然各正弦量的相位都是时间的函数，但因角频率相同，相位差是\textbf{常量}，等于初相之差。
+\begin{itemize}
+  \item $\varphi=0$：两正弦量\textbf{同相}；
+  \item $\varphi>0$：$u$ \textbf{超前}于 $i$（先达到最大值或零值），反过来说 $i$ 滞后于 $u$；
+  \item $|\varphi|=90^\circ$：两正弦量\textbf{相位正交}；$|\varphi|=180^\circ$：\textbf{反相}。
+\end{itemize}
+比较相位差时，必须把两个正弦量都写成余弦函数（或都写成正弦函数）。初相为零的正弦量称为\textbf{参考正弦量}，它可以任意选取，但各正弦量之间的相位差不变；一旦选定了参考正弦量，其余各量的初相就都确定了。
+
+\corepoint{有效值与振幅差 $\sqrt{2}$ 倍，做题时先看清题目给的是有效值还是振幅相量。相位差要“同函数形式、同频率”才能比较；把 $\sin$ 直接当成 $\cos$ 来读初相是高频错误（$\sin\theta=\cos(\theta-90^\circ)$）。}
 
 \section{正弦量的相量表示法}
+当电路中各处电压、电流都是同频率正弦量时，称为正弦电流电路。本节把正弦量变换为复数，用复数形式的电路变量来计算正弦电路。
+
 \subsection{复数}
+复数可用直角坐标式或极坐标式表示
+\begin{equation}
+A=a_1+\mathrm{j}a_2=|A|\angle\theta=|A|\mathrm{e}^{\mathrm{j}\theta}
+\end{equation}
+其中 $\mathrm{j}=\sqrt{-1}$，$a_1=\mathrm{Re}[A]$、$a_2=\mathrm{Im}[A]$ 分别为实部和虚部；$|A|$、$\theta$ 分别为模和辐角。由欧拉公式 $\mathrm{e}^{\mathrm{j}\theta}=\cos\theta+\mathrm{j}\sin\theta$ 得互换公式
+\begin{equation}
+|A|=\sqrt{a_1^2+a_2^2},\qquad \theta=\arctan\frac{a_2}{a_1}
+\end{equation}
+\textbf{加减运算必须用直角坐标式，乘除运算用极坐标式较方便}。用 $\arctan$ 判断辐角所在象限时，必须考虑实部、虚部各自的符号，不能只看比值的符号。
 
 \subsection{正弦量的相量表示}
-\[
-\dot{A}_m = A_m e^{j\psi} = A_m \angle \psi
-\]
+由欧拉公式，复数 $A_m\mathrm{e}^{\mathrm{j}(\omega t+\psi)}$ 的实部正是正弦量
+\begin{equation}
+i(t)=I_m\cos\left(\omega t+\psi_i\right)=\mathrm{Re}\left[I_m\mathrm{e}^{\mathrm{j}\psi_i}\mathrm{e}^{\mathrm{j}\omega t}\right]
+=\mathrm{Re}\left[\dot{I}_m\mathrm{e}^{\mathrm{j}\omega t}\right]
+\end{equation}
+其中
+\keyformula{\dot{I}_m=I_m\mathrm{e}^{\mathrm{j}\psi_i}=I_m\angle\psi_i}
+表示正弦量振幅和初相的复值量称为\textbf{相量}（振幅相量）。若取有效值作模，则得\textbf{有效值相量} $\dot{I}=I\angle\psi_i$，二者关系为 $\dot{I}_m=\sqrt{2}\dot{I}$。叙述时二者都简称电流相量。
 
-\subsection{正弦量运算与相量运算的对应关系}
+要点：
 \begin{enumerate}
-    \item 唯一性
-    \item 线性性质
-    \item 微分规则
+  \item 相量是\textbf{复值量}，正弦量是时间的余弦函数；相量只是\textbf{代表}正弦量而非等于正弦量，二者由上式相互变换；
+  \item 相量默认与某一角频率 $\omega$ 对应，因此\textbf{不同频率的正弦量不能用同一相量图比较}；
+  \item 相量在复平面上用有向线段表示，按一定振幅与相位关系画出的若干相量的图形称为\textbf{相量图}，可直观看出各量的大小与相位关系；
+  \item 旋转相量 $\dot{I}_m\mathrm{e}^{\mathrm{j}\omega t}$ 以角速度 $\omega$ 逆时针旋转，其在实轴上的投影即为正弦量。同频率的旋转相量相对位置不变（这正是相位差为常量的几何解释），故画相量图时只画 $t=0$ 时的位置。
 \end{enumerate}
 
-\section{基尔霍夫的相量形式}
+\subsection{正弦量运算与相量运算的对应关系}
+用相量表示正弦量实质上是一种数学变换，其运算规则如下：
+\begin{enumerate}
+  \item \textbf{唯一性}：两个同频率正弦量相等的充要条件是代表它们的相量相等，即 $\mathrm{Re}[\dot{A}_1\mathrm{e}^{\mathrm{j}\omega t}]=\mathrm{Re}[\dot{A}_2\mathrm{e}^{\mathrm{j}\omega t}]$ 对一切 $t$ 成立的充要条件为 $\dot{A}_{1m}=\dot{A}_{2m}$；
+  \item \textbf{线性性质}：$N$ 个同频率正弦量线性组合（实系数）的相量，等于各正弦量相量的同样线性组合，即
+  \begin{equation}
+  \sum_{k=1}^{N}a_ki_k(t)\;\longleftrightarrow\;\sum_{k=1}^{N}a_k\dot{I}_{km}\qquad(a_k\ \text{为实数})
+  \end{equation}
+  \item \textbf{微分规则}：表示正弦量（角频率 $\omega$）时间导数的相量，等于表示原正弦量的相量乘以因子 $\mathrm{j}\omega$，即
+  \keyformula{\frac{\mathrm{d}}{\mathrm{d}t}\;\longleftrightarrow\;\mathrm{j}\omega}
+\end{enumerate}
+第三条是相量法的“发动机”：\textbf{求导运算变成了乘以 $\mathrm{j}\omega$}，微分方程因此变成代数方程。相应地，积分运算变为除以 $\mathrm{j}\omega$。
 
-\section{RLC元件上电压与电流的关系}
+\corepoint{相量法只对\textbf{同频率}的正弦量有效；把相量写成 $\dot{U}=U\angle\psi$ 时，$\psi$ 是初相而不是瞬时相位。画相量图时习惯以某一相量为参考（水平方向），其余按相位差逆时针排布。}
+
+\section{基尔霍夫定律的相量形式}
+正弦电路中所有电路变量都是同频率正弦量，故时域形式的 KCL、KVL 可直接变换为相量形式。由相量表示的唯一性和线性性质
+\keyformula{\sum\dot{I}_m=0\ \ \text{或}\ \ \sum\dot{I}=0,\qquad
+\sum\dot{U}_m=0\ \ \text{或}\ \ \sum\dot{U}=0}
+表述为：在集中参数正弦电流电路中，流出节点的各支路电流相量的代数和等于零；沿任一回路各支路电压相量的代数和等于零。
+
+注意：\textbf{有效值（或振幅）本身不满足 KCL、KVL}，即 $\sum I\neq0$ 一般成立（例如串联电路中 $U\neq U_R+U_L+U_C$，而是 $U=\sqrt{U_R^2+(U_L-U_C)^2}$）。求相量和可以用平行四边形法则在相量图上作图完成。
+
+\corepoint{“相量相加”与“有效值相加”是两件事。看到 $U=U_1+U_2$ 时先问：这是相量式还是有效值式？只有同相时才成立。}
+
+\section{RLC 元件上电压与电流的相量关系}
+设各元件上电压、电流取关联参考方向，且均为同频率正弦量。
+
 \subsection{电阻元件}
+时域关系 $u=Ri$，由相量表示的线性性质得
+\keyformula{\dot{U}_m=R\dot{I}_m\qquad\text{或}\qquad \dot{U}=R\dot{I}}
+即电阻上电压、电流相量仍服从欧姆定律；二者\textbf{同相位}，有效值（振幅）之比等于 $R$。这是因为 $u$、$i$ 同时过零、同时达到最大。
 
 \subsection{电感元件}
-可得电感上电压、电流相量关系
-\[
-\]
+时域关系 $u=L\dfrac{\mathrm{d}i}{\mathrm{d}t}$，由相量表示的微分规则（$\mathrm{d}/\mathrm{d}t\to\mathrm{j}\omega$）得
+\keyformula{\dot{U}_m=\mathrm{j}\omega L\dot{I}_m\qquad\text{或}\qquad \dot{U}=\mathrm{j}\omega L\dot{I}}
+令
+\begin{equation}
+X_L=\omega L
+\end{equation}
+称为电感的\textbf{电抗}，简称\textbf{感抗}，单位为 $\Omega$。于是 $\dot{U}=\mathrm{j}X_L\dot{I}$，即
+\begin{equation}
+U=X_LI,\qquad \psi_u=\psi_i+90^\circ
+\end{equation}
+电感上电压\textbf{超前}电流 $90^\circ$；感抗与频率成正比——频率越高，感应电动势阻碍电流的作用越强；直流时 $\omega=0$，$X_L=0$，电感相当于\textbf{短路}。
 
 \subsection{电容元件}
+时域关系 $i=C\dfrac{\mathrm{d}u}{\mathrm{d}t}$，变换得 $\dot{I}_m=\mathrm{j}\omega C\dot{U}_m$，即
+\keyformula{\dot{U}_m=\frac{1}{\mathrm{j}\omega C}\dot{I}_m=-\mathrm{j}\frac{1}{\omega C}\dot{I}_m
+\qquad\text{或}\qquad \dot{U}=\frac{1}{\mathrm{j}\omega C}\dot{I}}
+令
+\begin{equation}
+X_C=-\frac{1}{\omega C}
+\end{equation}
+称为电容的\textbf{电抗}，简称\textbf{容抗}，单位为 $\Omega$。于是 $\dot{U}=\mathrm{j}X_C\dot{I}$，即
+\begin{equation}
+U=|X_C|I,\qquad \psi_u=\psi_i-90^\circ
+\end{equation}
+电容上电压\textbf{滞后}电流 $90^\circ$；容抗与频率成反比——频率越高，充放电进行得越快，电流越大；直流时 $\omega=0$，$|X_C|\to\infty$，电容相当于\textbf{开路}。
+
+\begin{center}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+元件 & 时域关系 & 相量关系 & 有效值关系 & 相位关系 \\
+\midrule
+电阻 & $u=Ri$ & $\dot{U}=R\dot{I}$ & $U=RI$ & 同相 \\
+电感 & $u=L\dfrac{\mathrm{d}i}{\mathrm{d}t}$ & $\dot{U}=\mathrm{j}\omega L\dot{I}=\mathrm{j}X_L\dot{I}$ & $U=X_LI$ & 电压超前 $90^\circ$ \\
+电容 & $i=C\dfrac{\mathrm{d}u}{\mathrm{d}t}$ & $\dot{U}=\dfrac{1}{\mathrm{j}\omega C}\dot{I}=\mathrm{j}X_C\dot{I}$ & $U=|X_C|I$ & 电压滞后 $90^\circ$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{相量模型中 $\mathrm{j}$ 的物理含义是“逆时针转 $90^\circ$”：乘 $\mathrm{j}$ 表示超前 $90^\circ$，乘 $-\mathrm{j}$ 表示滞后 $90^\circ$。三种元件的相量模型（$R$、$\mathrm{j}\omega L$、$1/\mathrm{j}\omega C$）一旦画对，剩下的就是直流电路的全套方法。}
 
 \section{阻抗与导纳}
+由无源元件构成的交流一端口网络，对外可等效成一个阻抗或导纳。
+
 \subsection{阻抗}
-即阻抗端口电压、电流有效值（或振幅）之比等于阻抗模；端口电压超前于电流的相位差等于阻抗角$\psi$。
+以 RLC 串联电路为例，由 KVL 的相量形式
+\begin{equation}
+\dot{U}=\dot{U}_R+\dot{U}_L+\dot{U}_C
+=R\dot{I}+\mathrm{j}\omega L\dot{I}+\frac{1}{\mathrm{j}\omega C}\dot{I}
+=\left[R+\mathrm{j}\left(\omega L-\frac{1}{\omega C}\right)\right]\dot{I}
+\end{equation}
+定义
+\keyformula{Z=\frac{\dot{U}}{\dot{I}}=R+\mathrm{j}\left(X_L+X_C\right)=R+\mathrm{j}\left(\omega L-\frac{1}{\omega C}\right)=R+\mathrm{j}X}
+复数 $Z$ 称为\textbf{阻抗}，实部是电阻 $R$，虚部 $X=X_L+X_C$ 称为\textbf{电抗}。写成极坐标式
+\begin{equation}
+|Z|=\sqrt{R^2+\left(X_L+X_C\right)^2},\qquad
+\psi_Z=\arctan\frac{X_L+X_C}{R}
+\end{equation}
+$|Z|$、$\psi_Z$ 分别称为\textbf{阻抗模}和\textbf{阻抗角}。于是
+\keyformula{\dot{U}=Z\dot{I},\qquad |Z|=\frac{U}{I},\qquad \psi_Z=\psi_u-\psi_i}
+即阻抗端口电压、电流有效值（或振幅）之比等于阻抗模；端口电压超前于电流的相位差等于阻抗角。这就是\textbf{欧姆定律的相量形式}。
+
+性质判定：
+\begin{itemize}
+  \item $X_L+X_C>0$：$\psi_Z>0$，电压超前电流，电路呈\textbf{感性}；
+  \item $X_L+X_C<0$：$\psi_Z<0$，电压滞后电流，电路呈\textbf{容性}；
+  \item $X_L+X_C=0$：$\psi_Z=0$，电压与电流同相，电路呈\textbf{阻性}（谐振，见第 7 章）。
+\end{itemize}
+对电阻 $Z=R$；对电感 $Z=\mathrm{j}X_L$；对电容 $Z=\mathrm{j}X_C$。三式都是 $\dot{U}=Z\dot{I}$ 的特例。
+
+RLC 串联电路各电压有效值满足
+\begin{equation}
+U=\sqrt{U_R^2+\left(U_L-U_C\right)^2}
+\end{equation}
+其中 $U_L$ 与 $U_C$ 相位相反，故在总电压中相减——这正是“有效值不能直接相加”的体现。
 
 \subsection{导纳}
+以 GCL 并联电路为例，由 KCL 的相量形式
+\begin{equation}
+\dot{I}=\dot{I}_G+\dot{I}_C+\dot{I}_L
+=G\dot{U}+\mathrm{j}\omega C\dot{U}+\frac{1}{\mathrm{j}\omega L}\dot{U}
+=\left[G+\mathrm{j}\left(\omega C-\frac{1}{\omega L}\right)\right]\dot{U}
+\end{equation}
+定义
+\keyformula{Y=\frac{\dot{I}}{\dot{U}}=G+\mathrm{j}\left(B_C+B_L\right)=G+\mathrm{j}\left(\omega C-\frac{1}{\omega L}\right)=G+\mathrm{j}B}
+其中 $G$ 为电导，$B_C=\omega C$ 为容纳，$B_L=-\dfrac{1}{\omega L}$ 为感纳，$B=B_C+B_L$ 为\textbf{电纳}。极坐标式
+\begin{equation}
+|Y|=\sqrt{G^2+\left(B_C+B_L\right)^2},\qquad \psi_Y=\arctan\frac{B_C+B_L}{G}
+\end{equation}
+于是
+\keyformula{\dot{I}=Y\dot{U},\qquad |Y|=\frac{I}{U},\qquad \psi_Y=\psi_i-\psi_u}
+即导纳端口电流与电压有效值之比等于导纳模；端口电流超前于电压的相位差等于导纳角。$B_C+B_L<0$ 时 $\psi_Y<0$，电流滞后电压，电路呈感性；$B_C+B_L>0$ 时呈容性。
+
+\subsection{阻抗与导纳的等效互换}
+两式形式相同，故阻抗与导纳可以等效互换，等效条件为
+\keyformula{Z=\frac{1}{Y},\qquad |Y|=\frac{1}{|Z|},\qquad \psi_Y=-\psi_Z}
+注意：\textbf{等效电导不等于串联电阻的倒数}。例如电阻与电感串联的线圈
+\begin{equation}
+Z=R+\mathrm{j}\omega L
+\quad\Longrightarrow\quad
+Y=\frac{1}{R+\mathrm{j}\omega L}=\frac{R}{R^2+\omega^2L^2}
+-\mathrm{j}\frac{\omega L}{R^2+\omega^2L^2}=G+\mathrm{j}B
+\end{equation}
+等效电导 $G$ 与 $R$、$\omega$ 都有关，等效电纳与 $\omega$ 也不是简单的正比或反比关系。因此由某一频率下求出的等效参数，\textbf{只在该频率下有效}。一个实际电路在不同频率下的等效电路，不仅参数不同，连元件类型都可能改变（例如某 GCL 并联电路在 $50\,\mathrm{Hz}$ 时等效为电阻串联电感，在 $400\,\mathrm{Hz}$ 时等效为电阻串联电容）。
+
+\corepoint{阻抗串联用 $Z=\sum Z_k$（分压公式照搬），导纳并联用 $Y=\sum Y_k$（分流公式照搬）；但 $Z_1+Z_2$ 的模一般\textbf{不等于} $|Z_1|+|Z_2|$，必须用复数相加。串并联等效只对同一频率成立。}
 
 \section{正弦电流电路的相量分析法}
+用相量表示正弦电压、电流并引入阻抗、导纳后，相量形式的 KCL、KVL 与元件方程都是\textbf{线性代数方程}，与直流电路中相应方程形式相同。因此第 2、3 章针对线性直流电路提出的各种分析方法、定理、公式和等效变换，都可推广用于正弦电路的相量模型。具体地说：\textbf{将电阻推广为阻抗、电导推广为导纳、恒定电压电流推广为电压电流相量}，即可按直流电路的计算方法计算正弦电路，只是所解的是\textbf{复系数}线性代数方程。
+
+相量法的步骤：
+\begin{enumerate}
+  \item 写出激励的相量（注意是振幅相量还是有效值相量，全题统一）；
+  \item 画出\textbf{相量模型}：$R\to R$，$L\to\mathrm{j}\omega L$，$C\to1/(\mathrm{j}\omega C)$，独立源与受控源写成相量；
+  \item 在相量模型上用节点法/回路法/等效化简/电路定理求解，得响应相量；
+  \item 由相量与正弦量的变换关系写出时间函数（幅值与初相）。
+\end{enumerate}
+
+推广后的常用关系：回路电流法 $\sum Z_{kj}\dot{I}_{mj}=\dot{U}_{skk}$（自阻抗、互阻抗、回路源电压相量的列写规则与直流电路相同）；节点电压法 $\sum Y_{kj}\dot{U}_{nk}=\dot{I}_{skk}$。戴维宁等效为 $\dot{U}_{oc}$ 串联 $Z_i$，诺顿等效为 $\dot{I}_{sc}$ 并联 $Y_i$；叠加定理、齐性定理、置换定理、互易定理在相量形式下同样成立。
+
+\corepoint{相量法不改变电路结构，只改变“元件长什么样”。所以做题时先画相量模型图，再套直流电路的方法；最后一步千万别忘了把相量还原成正弦量（写清 $\omega$、幅值、初相）。}
 
 \section{正弦电流电路的功率}
 \subsection{瞬时功率}
+设一端口网络端口电压 $u=\sqrt{2}U\cos(\omega t)$、电流 $i=\sqrt{2}I\cos(\omega t-\varphi)$（$\varphi=\psi_u-\psi_i$ 为电压超前电流的相位差），则瞬时功率
+\begin{equation}
+p=ui=2UI\cos(\omega t)\cos(\omega t-\varphi)
+=UI\cos\varphi+UI\cos\left(2\omega t-\varphi\right)
+\end{equation}
+瞬时功率由两部分组成：恒定分量 $UI\cos\varphi$ 与两倍频的振荡分量。$p>0$ 表示该时刻网络吸收功率，$p<0$ 表示发出功率。
 
-\subsection{平均功率}
+\subsection{平均功率（有功功率）}
+\begin{equation}
+P=\frac{1}{T}\int_0^{T}p\,\mathrm{d}t=UI\cos\varphi
+\end{equation}
+即
+\keyformula{P=UI\cos\varphi=I^2R=\frac{U_R^2}{R}}
+平均功率就是电阻消耗的功率，单位 $\mathrm{W}$。$\cos\varphi$ 称为\textbf{功率因数}，记作 $\lambda$；$\varphi$ 称为\textbf{功率因数角}，它就是阻抗角。
 
 \subsection{无功功率}
-定义无功功率
-\[
-\]
+定义
+\keyformula{Q=UI\sin\varphi=I^2X}
+单位乏（$\mathrm{var}$）。无功功率反映电源与储能元件（$L$、$C$）之间往返交换功率的规模：$Q>0$ 表示网络呈感性（吸收感性无功），$Q<0$ 表示呈容性。电感 $Q_L=X_LI^2>0$，电容 $Q_C=X_CI^2<0$。
 
 \subsection{视在功率}
+\begin{equation}
+S=UI
+\end{equation}
+单位伏安（$\mathrm{V\cdot A}$），表示设备的容量（额定电压与额定电流的乘积）。三者关系
+\keyformula{S=\sqrt{P^2+Q^2},\qquad \lambda=\cos\varphi=\frac{P}{S}}
 
 \subsection{功率因数的提高}
+工程上多数负载是感性的（电动机、变压器），功率因数低会使电源容量得不到充分利用、线路损耗增大。提高功率因数的常用办法是\textbf{并联电容}：电容电流 $\dot{I}_C$ 超前电压 $90^\circ$，它只改变端口电流的\textbf{无功分量}而不影响有功功率
+\begin{equation}
+Q'=Q-Q_C=UI\sin\varphi-UI_C
+\end{equation}
+即用容性无功抵消部分感性无功，使总无功功率减小、功率因数角减小。这种做法称为\textbf{无功补偿}。所需电容由 $Q_C=\omega CU^2$ 求得
+\begin{equation}
+C=\frac{P\left(\tan\varphi-\tan\varphi'\right)}{\omega U^2}
+\end{equation}
+式中 $\varphi$、$\varphi'$ 为补偿前后的功率因数角。补偿后电源电流减小、视在功率减小，而有功功率不变。
 
 \subsection{复功率}
+把平均功率与无功功率分别作为实部和虚部构成复量
+\keyformula{\bar{S}=P+\mathrm{j}Q=UI\cos\varphi+\mathrm{j}UI\sin\varphi=\dot{U}\dot{I}^{*}}
+复量 $\bar{S}$ 称为\textbf{复功率}，它只是计算用的复量，\textbf{不代表正弦量}，故不能视为相量。式中 $\dot{I}^{*}$ 是电流相量的共轭——取共轭是为了使二者相乘时辐角相减，从而得到电压超前电流的相位差。若直接把电压相量与电流相量相乘，所得复数没有意义。
+
+性质：$|\bar{S}|=S$，$\arg\bar{S}=\varphi$；对阻抗 $Z=R+\mathrm{j}X$ 有 $\bar{S}=Z\dot{I}\dot{I}^{*}=ZI^2=RI^2+\mathrm{j}XI^2$。复功率具有\textbf{守恒性}：任一瞬间某些支路“发出”的复功率之和等于其余各支路“吸收”的复功率之和，即 $\sum\bar{S}_k=0$；其实部守恒给出有功功率平衡，虚部守恒给出无功功率平衡。
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+名称 & 符号/单位 & 计算公式 & 说明 \\
+\midrule
+瞬时功率 & $p$ / $\mathrm{W}$ & $p=ui$ & 含两倍频振荡分量 \\
+有功功率 & $P$ / $\mathrm{W}$ & $P=UI\cos\varphi=I^2R$ & 电阻消耗，真正做功 \\
+无功功率 & $Q$ / $\mathrm{var}$ & $Q=UI\sin\varphi=I^2X$ & 与储能元件交换 \\
+视在功率 & $S$ / $\mathrm{V\cdot A}$ & $S=UI=\sqrt{P^2+Q^2}$ & 设备容量 \\
+复功率 & $\bar{S}$ / $\mathrm{V\cdot A}$ & $\bar{S}=\dot{U}\dot{I}^{*}=P+\mathrm{j}Q$ & 守恒，便于计算 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{四个功率不要混：$P$ 只与电阻有关，$Q$ 只与电抗有关，$S$ 是二者平方和开方，$\bar{S}$ 是复数和。功率因数角 $\varphi$ 就是阻抗角，$P$、$Q$ 的符号都由它决定；求“某元件吸收的功率”时务必用该元件自己的 $U$、$I$、$\varphi$。}
 
 \section{最大功率传输定理}
+设含内阻抗 $Z_s=R_s+\mathrm{j}X_s$（$R_s>0$）的正弦电源向负载 $Z_L=R_L+\mathrm{j}X_L$ 供电，负载电流有效值
+\begin{equation}
+I=\frac{U_s}{\sqrt{\left(R_s+R_L\right)^2+\left(X_s+X_L\right)^2}}
+\end{equation}
+负载获得的平均功率
+\begin{equation}
+P_L=R_LI^2=\frac{R_LU_s^2}{\left(R_s+R_L\right)^2+\left(X_s+X_L\right)^2}
+\end{equation}
+
+先看与 $X_L$ 的关系：$X_L$ 只出现在分母中，当 $X_L=-X_s$ 时分母最小，功率为 $P_L'=\dfrac{R_LU_s^2}{\left(R_s+R_L\right)^2}$。再对 $R_L$ 求极值，令 $\mathrm{d}P_L'/\mathrm{d}R_L=0$ 得 $R_L=R_s$（且为唯一极大值）。综合得负载获得最大功率的条件
+\keyformula{Z_L=Z_s^{*}=R_s-\mathrm{j}X_s}
+即\textbf{负载阻抗等于电源内阻抗的共轭复数}时负载获得最大功率，称为\textbf{最大功率匹配}或\textbf{共轭匹配}。此时
+\keyformula{P_{L\max}=\frac{U_s^2}{4R_s}}
+由于 $R_L=R_s$，负载吸收的功率与电源内阻消耗的功率相等，故共轭匹配时电路的\textbf{传输效率只有 50\%}。这与直流电路的最大功率传输条件 $R_L=R_s$ 是一致的（$X_L=X_s=0$ 的特例）。
+
+若负载阻抗的\textbf{模可以改变而阻抗角不能改变}（例如纯电阻负载，$Z_L=|Z_L|\angle\varphi_L$），则令 $\mathrm{d}P_L/\mathrm{d}|Z_L|=0$ 得
+\keyformula{|Z_L|=|Z_s|}
+即负载阻抗模等于电源内阻抗模时获得最大功率，此时
+\begin{equation}
+P_{L\max}=\frac{U_s^2\cos\varphi_L}{2|Z_s|\left[1+\cos\left(\varphi_s-\varphi_L\right)\right]}
+\end{equation}
+例如电源内阻抗为 $Z_s=R_s+\mathrm{j}X_s$ 时，纯电阻负载获得最大功率的条件是 $R_L=|Z_s|$；若内阻抗也是纯电阻，则退化为 $R_L=R_s$。
+
+\corepoint{共轭匹配（$Z_L=Z_s^*$）与模匹配（$|Z_L|=|Z_s|$）是两种不同条件，取决于“负载的角能不能调”。求最大功率前，先把负载左侧电路做戴维宁等效，得 $\dot{U}_{oc}$ 与 $Z_i$，再套公式。}
 
 \section{耦合电感}
-\subsection{互感元件端口特性方程}
+当几个线圈之间存在\textbf{磁耦合}时，便形成多端口电感。本章只讨论二端口电感，习惯上称为\textbf{互感元件}。
 
-\subsection{互感元件的等效电路和去耦合等效}
+\subsection{互感元件的端口特性方程}
+两个线圈靠近时，每个线圈内的电流不仅在本线圈内产生电磁感应（\textbf{自感应}），也在邻近线圈内产生电磁感应（\textbf{互感应}）。线圈 1 中电流 $i_1$ 所激发的磁通，一部分形成自感磁链 $\Psi_{11}$，一部分与线圈 2 交链形成互感磁链 $\Psi_{12}$；$i_2$ 同理。
+
+在线性条件下，自感磁链与互感磁链都正比于激发它们的电流。设电流与自感磁链的参考方向符合右手螺旋定则，则
+\begin{equation}
+\Psi_1=L_1i_1\pm Mi_2,\qquad \Psi_2=\pm Mi_1+L_2i_2
+\end{equation}
+式中 $L_1$、$L_2$ 为两个端口的\textbf{自感}；$M$ 为两线圈间的\textbf{互感}（可以证明 $M_{12}=M_{21}=M$）。互感磁链前的正负号取决于两线圈的\textbf{相对绕向}和电流流向。
+
+由电磁感应定律，在端口电压、电流为关联参考方向且自感磁通与电流符合右手螺旋关系时
+\keyformula{\begin{aligned}
+u_1&=\frac{\mathrm{d}\Psi_1}{\mathrm{d}t}=L_1\frac{\mathrm{d}i_1}{\mathrm{d}t}\pm M\frac{\mathrm{d}i_2}{\mathrm{d}t}\\
+u_2&=\pm M\frac{\mathrm{d}i_1}{\mathrm{d}t}+L_2\frac{\mathrm{d}i_2}{\mathrm{d}t}
+\end{aligned}}
+若 $u_1$ 与 $i_1$（或 $u_2$ 与 $i_2$）参考方向相反，则相应的 $L$ 前添负号；若 $i_1$ 与 $i_2$ 相对星标的流向相同，则 $M$ 前取正号。
+
+\subsection{同名端与耦合系数}
+互感元件的电路符号不反映两线圈的相对绕向，无法判定互感磁链与自感磁链方向是否相同，因此在符号上增设一对星标“$*$”，带星标的两个端子称为\textbf{同名端}。确定方法：当两个线圈的电流激发的自感磁链与互感磁链方向相同时，流入（或流出）电流的两个端子为同名端。实验上，当某一电流变化时，两个线圈中感应电压的同极性端即为同名端。
+
+判断 $M$ 前符号的口诀：\textbf{两个电流的参考方向相对星标“同进同出”取正，“一进一出”取负}。
+
+为衡量磁耦合的程度，定义\textbf{耦合系数}
+\keyformula{k=\frac{M}{\sqrt{L_1L_2}},\qquad 0\le k\le1}
+$k=1$ 的互感称为\textbf{全耦合}；$k=0$ 表示无磁耦合。
+
+\subsection{互感元件的等效电路与去耦合等效}
+\textbf{串联}：顺接（电流从两线圈同名端流入）时两线圈电压相加
+\begin{equation}
+\dot{U}=\left(\mathrm{j}\omega L_1+\mathrm{j}\omega M\right)\dot{I}+\left(\mathrm{j}\omega M+\mathrm{j}\omega L_2\right)\dot{I}
+=\mathrm{j}\omega\left(L_1+L_2+2M\right)\dot{I}
+\end{equation}
+故
+\keyformula{L_{eq}=L_1+L_2+2M\ \ (\text{顺接}),\qquad L_{eq}=L_1+L_2-2M\ \ (\text{反接})}
+\textbf{并联}：同名端相接时，可等效成 T 形无互感电路，三条支路的等效电感为
+\begin{equation}
+L_a=L_1-M,\qquad L_b=L_2-M,\qquad L_c=M
+\end{equation}
+若无需计算内部电流，还可进一步合并为
+\keyformula{L_{eq}=\frac{L_1L_2-M^2}{L_1+L_2-2M}}
+异名端相接时只需改变上式中 $M$ 前的符号。对实际耦合线圈，无论何种串联或并联，等效电感均为正值，故自感与互感满足
+\begin{equation}
+M\le\sqrt{L_1L_2}\quad\Longleftrightarrow\quad k\le1
+\end{equation}
+
+\textbf{引入阻抗}：当一次侧接电源、二次侧接负载 $Z_2$ 时，从一次侧看进去的等效阻抗为
+\keyformula{Z_{eq}=Z_1+\mathrm{j}\omega L_1+\frac{\left(\omega M\right)^2}{Z_2+\mathrm{j}\omega L_2}=Z_1+Z_r}
+其中 $Z_r=\dfrac{(\omega M)^2}{Z_2+\mathrm{j}\omega L_2}=R_r+\mathrm{j}X_r$ 称为二次侧对一次侧的\textbf{引入阻抗}，实部、虚部分别称为引入电阻与引入电抗。由于 $M$ 以平方形式出现，引入阻抗不受同名端位置的影响。
+
+\corepoint{去耦合等效的关键是“有公共节点”或“串联”这两种结构：串联直接 $L_1+L_2\pm2M$；有公共节点用 T 形（$L_1-M$、$L_2-M$、$M$）。判断 $M$ 的符号只看两个电流相对星标是否“同进同出”。}
 
 \section{含互感元件的正弦电流电路}
-\subsection{含互感电路的等效化简}
+分析含互感正弦电路的基本方法是\textbf{列写相量形式的电路方程}；其次，当两个耦合线圈相串联或存在公共节点时，可通过\textbf{消去互感}变换成等效的不含互感电路来分析。
+
+因为互感元件方程一般是用电流表示电压，所以列写电路方程时应\textbf{以电流为待求量}，即列写支路电流方程或回路电流方程。列方程时要把互感电压项一并写入，这是最容易遗漏的地方。为减少出错，可采取两个技巧：
+\begin{enumerate}
+  \item \textbf{选回路使每个互感线圈中只流过一个回路电流}，这样互感电压项数最少（若某线圈流过两个回路电流，则该线圈上会出现两项互感电压）；
+  \item 若两线圈有公共节点，先化为 T 形去耦等效电路，再按普通电路计算。
+\end{enumerate}
+
+含互感电路的其他等价处理：
+\begin{itemize}
+  \item 求一次侧等效阻抗时用引入阻抗 $Z_r$（见 §4.9）；
+  \item 从二次侧看进去相当于含源一端口，可用戴维宁等效：$\dot{U}_{oc}=\dfrac{\mathrm{j}\omega M}{Z_1+\mathrm{j}\omega L_1}\dot{U}_s$，$Z_{eq}=Z_r+\mathrm{j}\omega L_2$；
+  \item 求互感电路的戴维宁等效阻抗时，若一次侧为无源，则两线圈“正串”，等效电感为 $L_1+L_2+2M$。
+\end{itemize}
 
 \section{理想变压器}
+理想变压器是实际电磁耦合元件的一种理想化模型。实际变压器的两个线圈绕在磁导率很高的铁心上，理想化条件为：
+\begin{enumerate}
+  \item 铁心磁导率 $\mu\to\infty$，漏磁通为零，两线圈\textbf{全耦合}（$k=1$）；
+  \item 线圈电阻为零，各线圈端口电压等于感应电动势；
+  \item 铁心损耗为零，铁心中不存在涡流。
+\end{enumerate}
+
+由 $\Psi_1=N_1\Phi$、$\Psi_2=N_2\Phi$ 及 $u=\mathrm{d}\Psi/\mathrm{d}t$ 得
+\keyformula{\frac{u_1}{u_2}=\frac{N_1}{N_2}=n}
+再由安培环路定律 $Hl=N_1i_1+N_2i_2=0$（$\mu\to\infty$ 时 $H=0$）得
+\keyformula{N_1i_1+N_2i_2=0\quad\Longrightarrow\quad \frac{i_1}{i_2}=-\frac{N_2}{N_1}=-\frac{1}{n}}
+式中 $n=N_1/N_2$ 称为\textbf{变比}（匝数比），是理想变压器唯一的参数。两式就是理想变压器的端口方程；符号由各电压、电流参考方向相对星标的关系确定（相对星标相同则取正，否则加负号）。
+
+理想变压器输入的瞬时功率
+\begin{equation}
+p=u_1i_1+u_2i_2=u_1i_1+\frac{u_1}{n}\left(-ni_1\right)=0
+\end{equation}
+说明它不仅无源，而且每一瞬间输入功率等于输出功率，传输过程中既无能量损耗也无能量存储，故称为\textbf{非能元件}。
+
+\textbf{阻抗变换}：在二次侧接负载 $Z_L$ 时，从一次侧看进去的输入阻抗为
+\keyformula{Z_{in}=\frac{\dot{U}_1}{\dot{I}_1}=n^2\frac{\dot{U}_2}{\dot{I}_2}=n^2Z_L}
+这就是理想变压器的\textbf{阻抗变换}作用：$n>1$（降压变压器）时把负载阻抗“放大” $n^2$ 倍，$n<1$ 时“缩小”。它在电子线路中常用于阻抗匹配与电气隔离。
+
+注意：$u_1/u_2=n$ 与 $i_1/i_2=-1/n$ 本身不限制电压、电流是否时变——即使各量恒定，这两式也成立，这与实际变压器的工作条件不符。可见电路模型中的元件只是对所要分析的电压、电流关系的一种\textbf{有条件的近似}。
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+元件 & 端口方程（相量） & 特点 \\
+\midrule
+耦合电感 & $\dot{U}_1=\mathrm{j}\omega L_1\dot{I}_1\pm\mathrm{j}\omega M\dot{I}_2$，$\dot{U}_2=\pm\mathrm{j}\omega M\dot{I}_1+\mathrm{j}\omega L_2\dot{I}_2$ & 储能元件，$k\le1$ \\
+理想变压器 & $\dot{U}_1=n\dot{U}_2$，$\dot{I}_1=-\dot{I}_2/n$ & 非能元件，$Z_{in}=n^2Z_L$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{理想变压器记两条就够：电压按匝数比、电流按匝数比的反比且带负号（功率守恒），阻抗按 $n^2$ 变换。变比 $n$ 的定义是“一次侧匝数 ÷ 二次侧匝数”，做题前先在图上标清同名端与 $n$ 的方向。}
 
 \endinput

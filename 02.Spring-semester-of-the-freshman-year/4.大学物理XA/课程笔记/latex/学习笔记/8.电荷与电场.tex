@@ -1,80 +1,367 @@
-% 4.1 第六章 电荷与电场.tex
-\chapter{第六章 电荷与电场}
+\chapter{第6章\texorpdfstring{\hspace{0.5em}}{ }电荷与电场}
 
-\section{库仑定律与电场强度}
-    \subsection{电荷及其性质}
-    \subsection{库仑定律}
+\section{电荷 库仑定律}
+    \subsection{电荷的量子化}
+    实验表明，自然界中电荷总是以一个基本单元的整数倍出现，这个基本单元就是电子（或质子）所带电荷量的绝对值
     \[
-    F=k\frac{q_1q_2}{r^3}\boldsymbol{r}
+    e=1.60\times10^{-19}\ \mathrm{C}.
     \]
-    比例系数$k$写成
+    任何带电体所带电荷量都可写成 $q=ne$（$n$ 为整数），电荷的这种不连续性质称为电荷的量子化。宏观带电体的 $n$ 极大，可视为连续分布。
+
+    \subsection{电荷守恒定律}
+    \textbf{电荷守恒定律}：在一个孤立系统（与外界没有电荷交换的系统）内，无论发生什么过程（摩擦起电、感应起电、电荷的转移，甚至粒子的产生与湮没），系统内电荷量的代数和始终保持不变。
+
+    这一定律是自然界中最普遍、最精确的守恒定律之一。摩擦起电只是电荷的转移（电子从一个物体转移到另一个物体）；正负电子对的产生与湮没也总伴随等量异号电荷的成对出现与消失。
+
+    \subsection{点电荷 库仑定律}
+    当带电体的线度远小于它到其他带电体的距离，以致其形状、大小对研究的问题影响可以忽略时，可把带电体抽象为集中全部电荷的一个几何点，称为点电荷。点电荷是电学中的理想模型，与质点一样具有相对意义。
+
+    \textbf{库仑定律}：真空中两个静止点电荷之间的相互作用力的大小，与它们电荷量的乘积成正比，与它们之间距离的平方成反比；作用力的方向沿两电荷的连线，同号电荷相斥、异号电荷相吸。其矢量形式为
+    \keyformula{\boldsymbol{F}=\frac{1}{4\pi\varepsilon_0}\frac{q_1q_2}{r^{2}}\hat{\boldsymbol{r}}}
+    式中 $\hat{\boldsymbol{r}}$ 为从施力电荷指向受力电荷的单位矢量；$\varepsilon_0$ 称真空介电常量（真空电容率），
     \[
-    k=\frac{1}{4\pi\varepsilon_0}
+    \varepsilon_0=8.85\times10^{-12}\ \mathrm{C^{2}/(N\cdot m^{2})},
     \]
-    式中，$\varepsilon_0$称为真空介电常量，也叫真空电容率。
-    %\[
-    %\varepsilon_0\approx 8.85\times10^{-12}\,\mathrm{F/m}
-    %\]
-    \subsection{电场与电场强度}
+    而 $k=\dfrac{1}{4\pi\varepsilon_0}\approx 8.99\times10^{9}\ \mathrm{N\cdot m^{2}/C^{2}}$。
+
+    库仑定律的适用条件：（1）真空中；（2）静止的点电荷（运动电荷之间还有磁力作用，库仑定律不再单独成立）；（3）$r$ 为两电荷间距，不能趋于零。
+
+    \subsection{静电力的叠加原理}
+    当空间有多个点电荷时，某一点电荷所受的静电力等于其他各点电荷单独存在时对它作用力的矢量和，即
+    \[
+    \boldsymbol{F}=\sum_i\boldsymbol{F}_i.
+    \]
+    对连续分布的带电体，把它分成电荷元 $\mathrm{d}q$，先求每个电荷元的作用力 $\mathrm{d}\boldsymbol{F}$，再矢量积分。
+
+    \corepoint{库仑定律只适用于真空中的静止点电荷；求合力时必须用矢量叠加（先分解后合成），不能把各力的大小直接相加或相减。电荷守恒是对孤立系统而言的，单个物体带电量的变化不违反电荷守恒。}
+
+\section{电场 电场强度}
+    \subsection{电场}
+    电荷周围存在一种特殊的物质——电场。电荷之间的相互作用不是"超距"的，而是通过电场传递的：电荷在周围空间激发电场，电场对处于其中的其他电荷施力。电场具有能量、动量和质量，是物质存在的一种基本形式。
+
+    相对于观察者静止的电荷所激发的电场称为静电场。本章只研究静电场。
+
+    \subsection{电场强度}
+    为定量描述电场，引入试验电荷 $q_0$（电荷量足够小、线度足够小，以致它的引入不改变原电场的分布）。实验表明，试验电荷在电场中某点所受的力 $\boldsymbol{F}$ 与 $q_0$ 的比值只由该点的电场性质决定，与 $q_0$ 无关。于是定义
+    \keyformula{\boldsymbol{E}=\frac{\boldsymbol{F}}{q_0}}
+    为电场强度（场强），简称场强。场强是矢量，其方向与正电荷在该点所受力的方向一致，单位为 $\mathrm{N/C}$ 或 $\mathrm{V/m}$。
+
+    \subsection{点电荷的场强}
+    由库仑定律，点电荷 $q$ 在距其 $r$ 处的场强为
+    \[
+    \boldsymbol{E}=\frac{1}{4\pi\varepsilon_0}\frac{q}{r^{2}}\hat{\boldsymbol{r}},
+    \]
+    当 $q>0$ 时 $\boldsymbol{E}$ 沿 $\hat{\boldsymbol{r}}$ 方向（背离 $q$），当 $q<0$ 时指向 $q$。
+
     \subsection{场强叠加原理}
+    点电荷系在空间某点产生的场强，等于各点电荷单独存在时在该点产生的场强的矢量和：
+    \[
+    \boldsymbol{E}=\sum_i\boldsymbol{E}_i=\frac{1}{4\pi\varepsilon_0}\sum_i\frac{q_i}{r_i^{2}}\hat{\boldsymbol{r}}_i.
+    \]
+    对电荷连续分布的带电体，取电荷元 $\mathrm{d}q$（相应有线电荷 $\mathrm{d}q=\lambda\mathrm{d}l$、面电荷 $\mathrm{d}q=\sigma\mathrm{d}S$、体电荷 $\mathrm{d}q=\rho\mathrm{d}V$），则
+    \[
+    \boldsymbol{E}=\int\mathrm{d}\boldsymbol{E}=\frac{1}{4\pi\varepsilon_0}\int\frac{\mathrm{d}q}{r^{2}}\hat{\boldsymbol{r}}.
+    \]
+    计算连续带电体的场强，通常是先写出 $\mathrm{d}\boldsymbol{E}$，再按对称性判断哪些分量抵消，只对不抵消的分量积分。
 
-\section{电场强度通量与高斯定理}
     \subsection{电场线}
+    为形象描述电场，引入电场线：电场线上每一点的切线方向与该点场强方向一致，电场线的疏密表示场强的大小（通过垂直于 $\boldsymbol{E}$ 的单位面积的电场线条数等于该处场强的大小）。
+
+    静电场的电场线具有如下性质：（1）起于正电荷（或来自无穷远），止于负电荷（或伸向无穷远）；（2）不闭合，也不中断；（3）任意两条电场线不相交（否则该点场强方向不唯一）。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{几种典型带电体的电场强度}
+    \begin{tabular}{ll}
+    \toprule
+    带电体 & 电场强度 \\
+    \midrule
+    点电荷 $q$（距 $r$） & $E=\dfrac{q}{4\pi\varepsilon_0r^{2}}$ \\
+    均匀带电球面（$r>R$） & $E=\dfrac{q}{4\pi\varepsilon_0r^{2}}$，球内 $E=0$ \\
+    均匀带电球体（$r<R$） & $E=\dfrac{qr}{4\pi\varepsilon_0R^{3}}$ \\
+    无限长均匀带电直线（距 $r$） & $E=\dfrac{\lambda}{2\pi\varepsilon_0r}$ \\
+    无限大均匀带电平面 & $E=\dfrac{\sigma}{2\varepsilon_0}$（均匀场） \\
+    两块等量异号平行板之间 & $E=\dfrac{\sigma}{\varepsilon_0}$ \\
+    均匀带电圆环轴线上（距中心 $x$） & $E=\dfrac{qx}{4\pi\varepsilon_0(R^{2}+x^{2})^{3/2}}$ \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \corepoint{场强 $\boldsymbol{E}$ 是矢量，描述电场对电荷的作用力；$\boldsymbol{E}$ 由场源电荷和场点位置共同决定，与试验电荷无关。求连续带电体的场强时，"先分解、后积分"是关键，切勿把标量直接相加。}
+
+\section{电场强度通量 高斯定理}
     \subsection{电场强度通量}
-    通过某个闭合曲面$S$的$\boldsymbol{E}$通量
-    \subsection{真空中高斯定理}
-    在真空中静电场内通过任意闭合曲面的$\boldsymbol{E}$通量，等于该闭合曲面所包围的电荷的代数和除以，其数学表达式为
-    %\[
-    %\]
-    若场源电荷连续分布，则式为
-    %\[
-    %\]
+    在电场中取面元 $\mathrm{d}S$，规定其法向单位矢量 $\hat{\boldsymbol{n}}$，则面元矢量为 $\mathrm{d}\boldsymbol{S}=\mathrm{d}S\,\hat{\boldsymbol{n}}$。通过该面元的电场强度通量（$E$ 通量）定义为
+    \[
+    \mathrm{d}\Phi_e=\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{S}=E\cos\theta\,\mathrm{d}S,
+    \]
+    其中 $\theta$ 为 $\boldsymbol{E}$ 与 $\hat{\boldsymbol{n}}$ 的夹角。通过任一曲面 $S$ 的通量为 $\Phi_e=\int_S\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{S}$。
+
+    对闭合曲面，规定外法向为正方向，故电场线穿出闭合面时通量为正，穿入时为负。
+
+    \subsection{真空中静电场的高斯定理}
+    \textbf{高斯定理}：在真空中，通过任意闭合曲面（高斯面）的电场强度通量，等于该闭合曲面所包围的所有电荷量的代数和除以 $\varepsilon_0$，与曲面外的电荷无关：
+    \keyformula{\oint_S\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{S}=\frac{1}{\varepsilon_0}\sum_{S\text{内}}q_i}
+    若电荷连续分布，则
+    \[
+    \oint_S\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{S}=\frac{1}{\varepsilon_0}\int_V\rho\,\mathrm{d}V.
+    \]
+    对高斯定理的理解要注意三点：（1）通量只由面内电荷的代数和决定，面内电荷为正则净通量向外，为负则向内；（2）面外电荷对总通量没有贡献，但它仍在该闭合面上各点产生场强，因此不能认为面外电荷"不产生影响"；（3）闭合面上各点的 $\boldsymbol{E}$ 是空间所有电荷共同产生的合场强。
+
+    高斯定理是静电场的基本定理之一，它由库仑定律和场强叠加原理导出，反映了静电场是有源场，电荷是电场的源头。
+
     \subsection{高斯定理的应用}
+    当电荷分布具有某种对称性时，可用高斯定理方便地求出场强。其步骤为：
+    \begin{enumerate}
+        \item 分析电荷分布的对称性（球对称、轴对称、面对称），判断场强方向与大小的分布规律；
+        \item 选取合适的高斯面，使面上 $\boldsymbol{E}$ 的大小处处相等且与面元平行（$E$ 为常量可提出积分号），或使 $\boldsymbol{E}$ 与面元垂直（该部分通量为零）；
+        \item 由高斯定理求出 $E$，再写方向。
+    \end{enumerate}
 
-\section{静电场的环路定理与电势}
+    常见的三类对称性及其对应的高斯面如下表。球对称的带电体如均匀带电球面、球体、同心球壳；轴对称的如无限长带电直线、圆柱面、同轴电缆；面对称的如无限大带电平面、带电平板。
+
+    \begin{table}[htbp]
+    \centering
+    \caption{三类对称性与高斯面的选取}
+    \begin{tabular}{lll}
+    \toprule
+    对称性 & 场强特点 & 高斯面形状 \\
+    \midrule
+    球对称 & $\boldsymbol{E}$ 沿径向，大小只与 $r$ 有关 & 同心球面 \\
+    轴对称 & $\boldsymbol{E}$ 垂直轴沿径向，只与 $r$ 有关 & 同轴圆柱面（长 $l$） \\
+    面对称 & $\boldsymbol{E}$ 垂直平面，两侧等值反向 & 跨平面的圆柱面 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \corepoint{用高斯定理求场强的前提是"对称性"，没有对称性时高斯定理仍然成立，但求不出 $E$。另外，高斯定理中的 $\sum q_i$ 只计面内电荷，而 $E$ 却是全部电荷的合场强，这两点不可混淆。}
+
+\section{静电场的环路定理 电势}
+    \subsection{静电力做功的特点}
+    点电荷 $q$ 的电场中，试验电荷 $q_0$ 沿任意路径由 $a$ 移到 $b$ 时，静电力做的功为
+    \[
+    W_{ab}=\int_a^b q_0\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}
+    =\frac{q_0q}{4\pi\varepsilon_0}\left(\frac{1}{r_a}-\frac{1}{r_b}\right),
+    \]
+    结果只与始末位置有关，与路径无关。因此静电力是保守力，静电场是保守场。
+
     \subsection{静电场的环路定理}
-    在静电场中，场强沿闭合路径的线积分等于零，称静电场环路定理。
-    \subsection{电势}
-    \subsection{电势差}
+    将试验电荷沿任意闭合路径移动一周，静电力做功为零，即
+    \keyformula{\oint_L\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}=0}
+    称为静电场的环路定理。它表明静电场是无旋场（保守场），电场线不闭合。环路定理与高斯定理一起，构成了描述真空静电场性质的两个基本定理。
+
+    \subsection{电势能}
+    由于静电力是保守力，可引入电势能。规定试验电荷在无穷远处的电势能为零，则 $q_0$ 在电场中 $a$ 点的电势能为
+    \[
+    W_a=\int_a^{\infty}q_0\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l},
+    \]
+    静电力做的功等于电势能的减少：
+    \[
+    W_{ab}=W_a-W_b=q_0\int_a^b\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}.
+    \]
+    电势能是试验电荷与电场共有的，其大小与 $q_0$ 有关，不能单独描述电场的性质。
+
+    \subsection{电势 电势差}
+    定义单位正电荷在该点所具有的电势能为该点的电势：
+    \keyformula{V_a=\frac{W_a}{q_0}=\int_a^{\infty}\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}}
+    电势是标量，单位为伏特（$\mathrm{V}$），$1\ \mathrm{V}=1\ \mathrm{J/C}$。
+
+    两点间的电势差（电压）为
+    \[
+    U_{ab}=V_a-V_b=\int_a^b\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l},
+    \]
+    它与电势零点的选择无关，具有绝对意义。电场中任意两点间的电势差等于把单位正电荷从 $a$ 移到 $b$ 时静电力所做的功。
+
+    电势零点的选取是任意的：对有限大小的带电体，通常取无穷远处为电势零点；对无限大带电体（如无限长带电直线、无限大带电平面），则不能取无穷远为零点，应改取其他合适的参考点。
+
     \subsection{电势的计算}
-    \subsection{等势面 电势梯度}
-        \subsubsection{等势面}
-        \subsubsection{电势梯度}
+    计算电势有两条常用途径。
 
-\section{静电场中导体}
-    \subsection{导体的静电平衡性质}
-        \subsubsection{导体的静电平衡状态}
-        \subsubsection{静电平衡下导体带电特性}
-    \subsection{空腔导体和静电屏蔽}
-        \subsubsection{空腔导体}
-        \subsubsection{静电屏蔽}
-    \subsection{电容和电容器}
-        \subsubsection{孤立导体的电容}
-        \subsubsection{电容器及其电容}
-        \subsubsection{串联和并联}
-            \subsubsubsection{串联}
-            \subsubsubsection{并联}
+    \textbf{（1）电势叠加法}。点电荷系的电势等于各点电荷单独存在时电势的代数和（电势是标量，可以代数相加）：
+    \[
+    V=\sum_i V_i=\frac{1}{4\pi\varepsilon_0}\sum_i\frac{q_i}{r_i},
+    \]
+    对连续带电体
+    \[
+    V=\int\frac{\mathrm{d}q}{4\pi\varepsilon_0 r}
+    \quad\left(\mathrm{d}q=\lambda\mathrm{d}l,\ \sigma\mathrm{d}S,\ \rho\mathrm{d}V\right).
+    \]
 
-\section{静电场中的电介质 电介质中的高斯定理}
-    \subsection{电介质的微观结构和极化过程}
-    \subsection{电极化强度矢量}
+    \textbf{（2）场强积分法（定义法）}。当带电体的场强已由高斯定理求出时，由 $V_a=\int_a^{\infty}\boldsymbol{E}\cdot\mathrm{d}\boldsymbol{l}$ 沿任意路径积分。对有限大带电体，常选沿电场线方向的径向路径分段积分。
+
+    典型的电势结果：点电荷 $V=\dfrac{q}{4\pi\varepsilon_0r}$；均匀带电球面外 $V=\dfrac{q}{4\pi\varepsilon_0r}$，球面内 $V=\dfrac{q}{4\pi\varepsilon_0R}$（等势体）；无限长均匀带电直线 $V=\dfrac{\lambda}{2\pi\varepsilon_0}\ln\dfrac{r_0}{r}$。
+
+    \subsection{等势面}
+    电场中电势相等的点所构成的面称为等势面。等势面具有以下性质：
+    \begin{enumerate}
+        \item 等势面与电场线处处垂直（否则电场线沿等势面方向有分量，沿等势面移动电荷静电力将做功，与等势矛盾）；
+        \item 任意两个等势面不相交；
+        \item 沿电场线方向电势降低；
+        \item 相邻等势面间的电势差相等时，等势面越密的地方场强越大。
+    \end{enumerate}
+    画等势面时通常使相邻等势面的电势差相等，这样等势面的疏密就直观地反映了场强的大小。
+
+    \corepoint{（1）电势是标量，叠加时按代数和相加，但要带正负号；（2）电势与电势能不同，电势是场的性质，电势能属于电荷与场组成的系统；（3）电势零点一旦选定，全场必须统一；（4）$U_{ab}=V_a-V_b$ 是 $a$ 减 $b$，方向不能颠倒。}
+
+\section{电场强度与电势梯度}
+    \subsection{电势梯度}
+    电场中电势的分布与场强的分布有确定的微分关系。取两个相距很近的等势面，电势分别为 $V$ 和 $V+\mathrm{d}V$，沿等势面法向（即场强方向）的距离为 $\mathrm{d}n$，则场强的大小为
+    \[
+    E=-\frac{\mathrm{d}V}{\mathrm{d}n},
+    \]
+    负号表示场强指向电势降低的方向。写成矢量形式
+    \keyformula{\boldsymbol{E}=-\nabla V=-\left(\frac{\partial V}{\partial x}\boldsymbol{i}+\frac{\partial V}{\partial y}\boldsymbol{j}+\frac{\partial V}{\partial z}\boldsymbol{k}\right)}
+    式中 $\nabla V$ 称为电势梯度。
+
+    电势梯度的物理意义是：电势梯度是一个矢量，其方向为电势升高最快的方向，大小为单位长度上电势的最大变化率。场强等于电势梯度的负值，即场强指向电势降落最快的方向，大小等于该方向上的电势变化率。
+
+    \subsection{场强与电势关系的应用}
+    由 $\boldsymbol{E}=-\nabla V$ 可知：
+    \begin{enumerate}
+        \item 场强为零处，电势不一定为零（如导体内部 $E=0$，但导体是等势体，电势可以不为零）；
+        \item 电势为零处，场强不一定为零；
+        \item 电势均匀的区域，场强必为零；
+        \item 已知电势分布求场强，用微分（求梯度）；已知场强求电势，用积分。二者互为逆运算。
+    \end{enumerate}
+    在实际问题中，往往先由电荷分布求出电势（标量积分比矢量积分容易），再由电势梯度求场强，这是计算场强的常用方法。
+
+    \corepoint{$\boldsymbol{E}=-\nabla V$ 中的负号不可漏掉；电势梯度是矢量，其方向与场强方向相反（指向电势升高方向）。只有当电场均匀时才有 $E=U/d$，非均匀场必须用梯度或积分。}
+
+\section{静电场中的导体}
+    \subsection{导体的静电平衡条件}
+    导体内部有大量可自由移动的电子。把导体放入静电场后，导体中的自由电子在电场力作用下定向移动，在导体两端出现感应电荷，感应电荷产生的附加场强与外电场方向相反，直到二者在导体内部完全抵消，自由电子不再定向移动，此时称导体处于静电平衡状态。
+
+    导体静电平衡的条件是：
+    \[
+    \boldsymbol{E}_{\text{内}}=0,\qquad \boldsymbol{E}_{\text{表面}}\perp\text{表面}.
+    \]
+    否则导体内部的自由电荷仍会继续移动。
+
+    \subsection{静电平衡下导体的性质}
+    由静电平衡条件可推出导体的一系列性质：
+    \begin{enumerate}
+        \item 导体是等势体，其表面是等势面（因为导体内 $E=0$，任意两点间电势差为零）；
+        \item 导体内部没有净电荷，电荷只能分布在导体的外表面上；
+        \item 导体表面附近的场强方向垂直于表面，大小为 $E=\dfrac{\sigma}{\varepsilon_0}$，与表面电荷面密度成正比；
+        \item 导体表面电荷的分布与表面曲率有关，曲率大（尖端）处电荷面密度大、场强大，曲率小处面密度小。尖端处场强过大时会使空气电离而放电，称尖端放电。
+    \end{enumerate}
+
+    \subsection{空腔导体与静电屏蔽}
+    空腔导体（内部有空腔的导体）的电荷分布分两种情形：
+    \begin{enumerate}
+        \item 腔内无电荷：导体内表面没有电荷，电荷全部分布在外表面，腔内各点场强为零，电势处处相等；
+        \item 腔内有电荷 $q$：腔内表面感应出 $-q$，外表面出现 $+q$（若导体原带电荷 $Q$，则外表面为 $Q+q$）。此时腔内场强由腔内电荷和腔内表面电荷共同决定，但腔外电场只由外表面电荷决定。
+    \end{enumerate}
+
+    \textbf{静电屏蔽}：空腔导体（不论是否接地）可以屏蔽外部电场对腔内的影响，使腔内不受外电场干扰；若空腔导体接地，则腔内电荷对外部的影响也被屏蔽。静电屏蔽在电子仪器、电缆屏蔽层、高压设备防护中有广泛应用。
+
+    \corepoint{静电平衡时"导体内部场强为零"指的是合场强为零，而不是外场为零；导体内部无净电荷，但可以有感应电荷分布于表面。接地与不接地的空腔导体屏蔽效果不同：不接地只能屏蔽外场对腔内的影响。}
+
+\section{静电场中的电介质 有电介质时的高斯定理}
+    \subsection{电介质的极化}
+    电介质（绝缘体）内部几乎没有可自由移动的电荷，在外电场作用下，介质中的电荷只能在分子范围内作微小位移，表面出现极化电荷（束缚电荷），这种现象称为电介质的极化。
+
+    按分子结构可分为两类：
+    \begin{enumerate}
+        \item 无极分子：无外场时分子正负电荷中心重合，分子电矩为零。外场使其正负电荷中心相对位移，称位移极化；
+        \item 有极分子：无外场时分子正负电荷中心不重合，具有固有分子电矩，但热运动使各分子电矩取向杂乱，宏观电矩为零。外场使分子电矩转向外场方向，称取向极化。
+    \end{enumerate}
+    两类极化的微观机制不同，但宏观结果相同：介质表面出现极化电荷，介质内部出现与外加场反向的附加场，使介质中的合场强减小。
+
+    \subsection{电极化强度}
+    定义单位体积内分子电矩的矢量和为电极化强度：
+    \[
+    \boldsymbol{P}=\frac{\sum_i\boldsymbol{p}_i}{\Delta V},
+    \]
+    单位为 $\mathrm{C/m^{2}}$。对线性各向同性介质，实验表明
+    \[
+    \boldsymbol{P}=\chi_e\varepsilon_0\boldsymbol{E},
+    \]
+    其中 $\chi_e$ 为电极化率。极化面电荷面密度 $\sigma'$ 与 $\boldsymbol{P}$ 的关系为 $\sigma'=P_n$（$P$ 沿表面法向的分量）。
+
     \subsection{电介质中的场强}
-    \subsection{电介质中的高斯定理 电位移\texorpdfstring{$\boldsymbol{D}$}{D}}
-    \subsection{有电介质时静电场的计算}
+    电介质极化后，极化电荷在介质内部产生的附加场强 $\boldsymbol{E}'$ 与外场 $\boldsymbol{E}_0$ 反向，故介质中的合场强
+    \[
+    \boldsymbol{E}=\boldsymbol{E}_0+\boldsymbol{E}'
+    \]
+    比真空时小。对均匀各向同性介质充满电场空间的情形，有
+    \[
+    E=\frac{E_0}{\varepsilon_r},
+    \]
+    其中 $\varepsilon_r$ 称相对介电常数（相对电容率），$\varepsilon=\varepsilon_0\varepsilon_r$ 称介质的介电常量。
 
-\section{电场的能量}
-    \subsection{点电荷系统的电能}
-    \subsection{电容器的能量}
-    \subsection{电场能量 电场能量密度}
-    \subsection{电场能量的计算}
-    电场能量为
-    %\[
-    %d
-    %\]
-    即可求得整个电场的总能量为
-    %\[
-    %W_e
-    %\]
-    显然
+    \subsection{有电介质时的高斯定理 电位移}
+    有电介质时，高斯定理中的电荷应包括自由电荷与极化电荷，使用不便。引入电位移矢量
+    \[
+    \boldsymbol{D}=\varepsilon_0\boldsymbol{E}+\boldsymbol{P},
+    \]
+    对线性各向同性介质 $\boldsymbol{D}=\varepsilon_0\varepsilon_r\boldsymbol{E}=\varepsilon\boldsymbol{E}$。可以证明
+    \keyformula{\oint_S\boldsymbol{D}\cdot\mathrm{d}\boldsymbol{S}=\sum_{S\text{内}}q_{0i}}
+    即：通过任意闭合曲面的电位移通量，只等于该面内所包围的自由电荷的代数和，与极化电荷无关。这就是有电介质时的高斯定理，$\boldsymbol{D}$ 的单位为 $\mathrm{C/m^{2}}$。
 
-\endinput
+    有电介质时静电场的计算步骤：（1）由自由电荷分布的对称性，用 $\boldsymbol{D}$ 的高斯定理求 $\boldsymbol{D}$；（2）由 $\boldsymbol{D}=\varepsilon\boldsymbol{E}$ 求 $\boldsymbol{E}$；（3）由 $\boldsymbol{P}=\boldsymbol{D}-\varepsilon_0\boldsymbol{E}$ 求极化强度，进而求极化电荷。由于 $\boldsymbol{D}$ 只与自由电荷有关，这一步骤比直接求 $\boldsymbol{E}$ 简便得多。
+
+    当介质中的场强超过某一临界值时，介质的绝缘性能被破坏而变成导体，称电介质击穿，该临界场强称为介电强度（如空气约为 $3\times10^{6}\ \mathrm{V/m}$）。
+
+    \corepoint{$\boldsymbol{D}$ 的高斯定理只对自由电荷求和，这是它最大的优点；但 $\boldsymbol{D}$ 本身仍由自由电荷与极化电荷共同决定。"$E=E_0/\varepsilon_r$"只对均匀介质充满整个场空间（或介质界面为等势面）的情形成立，不能随意套用。}
+
+\section{电容 电场的能量}
+    \subsection{电容}
+    孤立导体的电势与其所带电荷量成正比，比值只由导体本身的大小和形状决定：
+    \[
+    C=\frac{Q}{V},
+    \]
+    称为孤立导体的电容，单位为法拉（$\mathrm{F}$），$1\ \mathrm{F}=1\ \mathrm{C/V}$。例如孤立导体球的电容 $C=4\pi\varepsilon_0R$。
+
+    实际中常用两个导体组成的电容器，其电容定义为
+    \[
+    C=\frac{Q}{U_{AB}},
+    \]
+    其中 $Q$ 为一个极板所带电荷量的绝对值，$U_{AB}$ 为两极板间的电势差。电容只由电容器的形状、大小、相对位置和其间介质的性质决定，与所带电荷量无关。
+
+    \subsection{几种常见电容器的电容}
+    \begin{table}[htbp]
+    \centering
+    \caption{常见电容器的电容公式}
+    \begin{tabular}{ll}
+    \toprule
+    电容器 & 电容 \\
+    \midrule
+    平行板电容器 & $C=\dfrac{\varepsilon_0\varepsilon_rS}{d}$ \\
+    圆柱形电容器（长 $l$，内外半径 $R_1,R_2$） & $C=\dfrac{2\pi\varepsilon_0\varepsilon_rl}{\ln(R_2/R_1)}$ \\
+    球形电容器（内外半径 $R_1,R_2$） & $C=\dfrac{4\pi\varepsilon_0\varepsilon_rR_1R_2}{R_2-R_1}$ \\
+    孤立导体球（半径 $R$） & $C=4\pi\varepsilon_0\varepsilon_rR$ \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \subsection{电容器的串联和并联}
+    串联时各电容器所带电荷量相同，总电压为各电压之和，故
+    \[
+    \frac{1}{C}=\sum_i\frac{1}{C_i};
+    \]
+    并联时各电容器电压相同，总电荷量为各电荷量之和，故
+    \[
+    C=\sum_iC_i.
+    \]
+    串联可提高耐压能力，并联可增大电容。计算时先判断是串联还是并联，再套用相应公式。
+
+    \subsection{电容器的能量 电场能量密度}
+    电容器充电过程中，外力克服静电力做功，把能量储存在电容器中。带电 $Q$、电压 $U$、电容 $C$ 的电容器储能为
+    \keyformula{W=\frac{Q^{2}}{2C}=\frac{1}{2}CU^{2}=\frac{1}{2}QU}
+    这些能量储存在电容器两极板之间的电场中，故称电场能量。
+
+    以平行板电容器为例，$C=\varepsilon S/d$，$U=Ed$，代入得 $W=\frac{1}{2}\varepsilon E^{2}Sd=\frac{1}{2}\varepsilon E^{2}V$，$V=Sd$ 为两极板间电场占据的体积。于是单位体积内的电场能量为
+    \keyformula{w_e=\frac{W}{V}=\frac{1}{2}\varepsilon_0\varepsilon_rE^{2}=\frac{1}{2}ED=\frac{D^{2}}{2\varepsilon_0\varepsilon_r}}
+    称电场能量密度。此式虽由平行板电容器导出，但对任意电场都成立。任意电场中的总能量为
+    \[
+    W=\int_V w_e\,\mathrm{d}V=\int_V\frac{1}{2}\varepsilon E^{2}\,\mathrm{d}V.
+    \]
+
+    对点电荷系统，其相互作用能（电势能）为
+    \[
+    W=\frac{1}{2}\sum_i q_iV_i,
+    \]
+    式中的 $\frac{1}{2}$ 是为避免把每一对电荷的相互作用重复计算两次。
+
+    \corepoint{（1）电容 $C$ 由电容器本身决定，与 $Q$、$U$ 无关，不能说"不带电时电容为零"；（2）电容器储能公式有三个形式，使用时注意已知量是 $Q$、$U$ 还是 $E$；（3）电场能量密度 $w_e=\frac{1}{2}\varepsilon E^{2}$ 说明能量储存在电场中，而不是"储存在电荷上"；（4）介质中介电常量应取 $\varepsilon=\varepsilon_0\varepsilon_r$，不要漏掉 $\varepsilon_r$。}

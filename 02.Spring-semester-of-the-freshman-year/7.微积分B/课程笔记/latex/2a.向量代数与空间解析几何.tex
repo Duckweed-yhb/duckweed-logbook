@@ -1,0 +1,267 @@
+% 子文件：2a.向量代数与空间解析几何.tex
+% 对应教材：同济《高等数学》第七版 下册 第八章 向量代数与空间解析几何
+% 主文档使用 \input{2a.向量代数与空间解析几何.tex} 引入，不含 document 环境
+
+\section{向量及其线性运算}
+
+\subsection{向量的概念}
+
+定义 8.1\quad 既有大小、又有方向的量称为\textbf{向量}（矢量），用有向线段表示：长度表示大小，箭头表示方向。以 $A$ 为起点、$B$ 为终点的向量记 $\overrightarrow{AB}$，或记黑体 $\boldsymbol a,\boldsymbol b$。只论大小与方向、不论起点的向量称为\textbf{自由向量}，故平移后能重合的向量相等。
+
+\symb{模}{$|\boldsymbol a|$，即向量的大小}
+\symb{单位向量}{模为 $1$ 的向量；$\boldsymbol a\neq\boldsymbol 0$ 时 $\boldsymbol e_a=\boldsymbol a/|\boldsymbol a|$ 与 $\boldsymbol a$ 同向}
+\symb{零向量}{模为 $0$ 的 $\boldsymbol 0$，方向任意}
+\symb{负向量}{与 $\boldsymbol a$ 模同、方向反，记 $-\boldsymbol a$}
+
+设 $\boldsymbol a,\boldsymbol b$ 非零，任取 $O$ 作 $\overrightarrow{OA}=\boldsymbol a,\ \overrightarrow{OB}=\boldsymbol b$，规定不超过 $\pi$ 的 $\angle AOB$ 为\textbf{夹角} $(\boldsymbol a,\boldsymbol b)$，$0\le(\boldsymbol a,\boldsymbol b)\le\pi$，于是
+\begin{equation}
+(\boldsymbol a,\boldsymbol b)=0\text{ 或 }\pi\iff\boldsymbol a\parallel\boldsymbol b;\qquad
+(\boldsymbol a,\boldsymbol b)=\frac\pi2\iff\boldsymbol a\perp\boldsymbol b .
+\end{equation}
+零向量与任何向量既平行又垂直；$n(\ge3)$ 个向量起点同置一点时终点与公共起点共面，则称它们\textbf{共面}（两向量共面即共线）。
+
+\subsection{向量的线性运算}
+
+\textbf{加法}：作 $\overrightarrow{AB}=\boldsymbol a,\ \overrightarrow{BC}=\boldsymbol b$，则 $\overrightarrow{AC}=\boldsymbol a+\boldsymbol b$（三角形法则）；不平行时以二者为邻边作平行四边形，对角线即和（平行四边形法则）。加法满足交换律与结合律。\textbf{减法}：$\boldsymbol b-\boldsymbol a=\boldsymbol b+(-\boldsymbol a)$；移到同一起点后，从 $\boldsymbol a$ 终点指向 $\boldsymbol b$ 终点的向量即差。由三角形不等式
+\begin{equation}
+\bigl||\boldsymbol a|-|\boldsymbol b|\bigr|\le|\boldsymbol a\pm\boldsymbol b|\le|\boldsymbol a|+|\boldsymbol b| .
+\end{equation}
+\textbf{数乘}：$|\lambda\boldsymbol a|=|\lambda||\boldsymbol a|$，$\lambda>0$ 时与 $\boldsymbol a$ 同向，$\lambda<0$ 时反向；且
+\begin{equation}
+\lambda(\mu\boldsymbol a)=(\lambda\mu)\boldsymbol a,\quad
+(\lambda+\mu)\boldsymbol a=\lambda\boldsymbol a+\mu\boldsymbol a,\quad
+\lambda(\boldsymbol a+\boldsymbol b)=\lambda\boldsymbol a+\lambda\boldsymbol b .
+\end{equation}
+加法与数乘统称\textbf{线性运算}。
+
+\keyformula{\boldsymbol b\parallel\boldsymbol a\ (\boldsymbol a\neq\boldsymbol 0)\iff\exists!\,\lambda\in\mathbb R:\ \boldsymbol b=\lambda\boldsymbol a}
+
+\textbf{定理 8.1（共线定理）}\quad 设 $\boldsymbol a\neq\boldsymbol 0$，则 $\boldsymbol b\parallel\boldsymbol a$ 的充要条件是存在唯一实数 $\lambda$ 使 $\boldsymbol b=\lambda\boldsymbol a$。它是建立数轴的依据。
+
+\subsection{空间直角坐标系}
+
+取定点 $O$ 及三个两两垂直的单位向量 $\boldsymbol i,\boldsymbol j,\boldsymbol k$，得三条以 $O$ 为原点的数轴，构成\textbf{空间直角坐标系} $Oxyz$，正向符合\textbf{右手规则}；两轴确定一个\textbf{坐标面}，三面把空间分成八个\textbf{卦限}。作 $\overrightarrow{OM}=\boldsymbol r$ 得以 $OM$ 为对角线的长方体，则
+\begin{equation}
+\boldsymbol r=\overrightarrow{OM}=x\boldsymbol i+y\boldsymbol j+z\boldsymbol k ,
+\end{equation}
+称为\textbf{坐标分解式}；$(x,y,z)$ 为 $\boldsymbol r$ 的\textbf{坐标}，也记作点 $M(x,y,z)$，$\overrightarrow{OM}$ 称为 $M$ 的\textbf{向径}。
+
+\subsection{利用坐标作向量的线性运算}
+
+设 $\boldsymbol a=(a_x,a_y,a_z)$，$\boldsymbol b=(b_x,b_y,b_z)$，则
+\begin{equation}
+\boldsymbol a\pm\boldsymbol b=(a_x\pm b_x,\ a_y\pm b_y,\ a_z\pm b_z),\qquad
+\lambda\boldsymbol a=(\lambda a_x,\ \lambda a_y,\ \lambda a_z),
+\end{equation}
+且 $\boldsymbol b\parallel\boldsymbol a\iff\dfrac{b_x}{a_x}=\dfrac{b_y}{a_y}=\dfrac{b_z}{a_z}$（分母为零时约定分子为零）。
+
+\keyformula{\overrightarrow{AB}=(x_2-x_1,\ y_2-y_1,\ z_2-z_1),\qquad
+\overrightarrow{OM}=\frac{\overrightarrow{OA}+\lambda\overrightarrow{OB}}{1+\lambda}\ (\lambda\neq-1)}
+
+若 $\overrightarrow{AM}=\lambda\overrightarrow{MB}$，则 $M$ 为 $AB$ 的 \textbf{$\lambda$ 分点}，$x=\dfrac{x_1+\lambda x_2}{1+\lambda}$，$y,z$ 同理；$\lambda=1$ 得中点公式。
+
+\subsection{向量的模、方向角、投影}
+
+\keyformula{|\boldsymbol r|=\sqrt{x^{2}+y^{2}+z^{2}},\qquad
+|AB|=\sqrt{(x_2-x_1)^{2}+(y_2-y_1)^{2}+(z_2-z_1)^{2}}}
+
+非零向量与三坐标轴的夹角 $\alpha,\beta,\gamma$ 称为\textbf{方向角}，其余弦称为\textbf{方向余弦}：
+\begin{equation}
+\cos\alpha=\frac{x}{|\boldsymbol r|},\quad \cos\beta=\frac{y}{|\boldsymbol r|},\quad \cos\gamma=\frac{z}{|\boldsymbol r|},\qquad
+\cos^{2}\alpha+\cos^{2}\beta+\cos^{2}\gamma=1 ,
+\end{equation}
+以它们为坐标的向量即与 $\boldsymbol r$ 同向的单位向量。$\overrightarrow{AB}$ 在 $u$ 轴上的\textbf{投影}满足
+\begin{equation}
+\mathrm{Prj}_u\overrightarrow{AB}=|\overrightarrow{AB}|\cos\varphi,\qquad
+\mathrm{Prj}_u(\boldsymbol a+\boldsymbol b)=\mathrm{Prj}_u\boldsymbol a+\mathrm{Prj}_u\boldsymbol b .
+\end{equation}
+
+\corepoint{$(x,y,z)$ 既可表示点又可表示向量，须按上下文辨析；已知两点求单位向量必须先算 $\overrightarrow{AB}$ 再除以 $|\overrightarrow{AB}|$；三方向余弦平方和为 $1$ 可用于校验。}
+
+\section{数量积·向量积·混合积}
+
+\subsection{两向量的数量积}
+
+\symb{定义 8.2（数量积）}{$\boldsymbol a\cdot\boldsymbol b=|\boldsymbol a||\boldsymbol b|\cos(\boldsymbol a,\boldsymbol b)$，结果是一个数}
+由定义得 $\boldsymbol a\cdot\boldsymbol a=|\boldsymbol a|^{2}$，$\boldsymbol a\perp\boldsymbol b\iff\boldsymbol a\cdot\boldsymbol b=0$，且满足交换律、数乘结合律与分配律。
+
+\keyformula{\boldsymbol a\cdot\boldsymbol b=a_xb_x+a_yb_y+a_zb_z,\qquad
+\cos(\boldsymbol a,\boldsymbol b)=\frac{a_xb_x+a_yb_y+a_zb_z}{|\boldsymbol a||\boldsymbol b|}}
+
+\subsection{两向量的向量积}
+
+\symb{定义 8.3（向量积）}{$\boldsymbol c=\boldsymbol a\times\boldsymbol b$ 满足 $|\boldsymbol c|=|\boldsymbol a||\boldsymbol b|\sin(\boldsymbol a,\boldsymbol b)$，$\boldsymbol c\perp\boldsymbol a,\boldsymbol c\perp\boldsymbol b$，指向按右手规则由 $\boldsymbol a$ 转向 $\boldsymbol b$}
+几何意义：$|\boldsymbol a\times\boldsymbol b|$ 为以 $\boldsymbol a,\boldsymbol b$ 为邻边的平行四边形面积。满足 $\boldsymbol a\times\boldsymbol a=\boldsymbol 0$、$\boldsymbol a\times\boldsymbol b=-\boldsymbol b\times\boldsymbol a$、数乘可提出、对加法分配，且 $\boldsymbol i\times\boldsymbol j=\boldsymbol k$，$\boldsymbol j\times\boldsymbol k=\boldsymbol i$，$\boldsymbol k\times\boldsymbol i=\boldsymbol j$。
+
+\keyformula{\boldsymbol a\times\boldsymbol b=
+\begin{vmatrix}
+\boldsymbol i & \boldsymbol j & \boldsymbol k\\
+a_x & a_y & a_z\\
+b_x & b_y & b_z
+\end{vmatrix}}
+
+由此 $\boldsymbol a\parallel\boldsymbol b\iff\boldsymbol a\times\boldsymbol b=\boldsymbol 0$。
+
+\subsection{向量的混合积}
+
+\symb{定义 8.4（混合积）}{$[\boldsymbol a\,\boldsymbol b\,\boldsymbol c]=(\boldsymbol a\times\boldsymbol b)\cdot\boldsymbol c$，结果是一个数}
+
+\keyformula{[\boldsymbol a\,\boldsymbol b\,\boldsymbol c]=
+\begin{vmatrix}
+a_x & a_y & a_z\\
+b_x & b_y & b_z\\
+c_x & c_y & c_z
+\end{vmatrix}}
+
+$|[\boldsymbol a\,\boldsymbol b\,\boldsymbol c]|$ 为以三向量为棱的平行六面体体积；轮换对称、交换两向量变号；三向量共面 $\iff[\boldsymbol a\,\boldsymbol b\,\boldsymbol c]=0$；以三向量为棱的四面体体积 $V=\frac16\bigl|[\boldsymbol a\,\boldsymbol b\,\boldsymbol c]\bigr|$。
+
+\corepoint{点积得数判垂直；叉积得向量判平行（模为面积）；混合积得数判共面。算叉积时行列式第一行为 $\boldsymbol i,\boldsymbol j,\boldsymbol k$，第二、三行依次为 $\boldsymbol a,\boldsymbol b$ 的坐标。}
+
+\section{平面及其方程}
+
+\subsection{曲面方程与空间曲线方程的概念}
+
+若曲面 $S$ 上任一点坐标都满足 $F(x,y,z)=0$，而不在 $S$ 上的点都不满足，则称其为 $S$ 的方程；空间曲线可看作两曲面的交线。
+
+\subsection{平面的点法式方程}
+
+垂直于平面 $\Pi$ 的非零向量 $\boldsymbol n$ 称为 $\Pi$ 的\textbf{法向量}。$\Pi$ 过 $M_0(x_0,y_0,z_0)$、法向量 $\boldsymbol n=(A,B,C)$，由 $\overrightarrow{M_0M}\perp\boldsymbol n$ 得\textbf{点法式方程}
+
+\keyformula{A(x-x_0)+B(y-y_0)+C(z-z_0)=0}
+
+\subsection{平面的一般方程}
+
+展开得\textbf{一般方程} $Ax+By+Cz+D=0$（$A,B,C$ 不全为零），法向量 $(A,B,C)$；反之三元一次方程都表示平面。位置判别：$D=0$ 过原点；缺哪个变量就平行于哪条轴（$A=0$ 平行 $x$ 轴，$A=B=0$ 平行 $xOy$ 面）；$A,B,C,D$ 均非零时可化\textbf{截距式} $\dfrac xa+\dfrac yb+\dfrac zc=1$（$a,b,c$ 为三轴截距）。
+
+\subsection{两平面的夹角}
+
+两平面夹角即其法向量夹角（取锐角），设 $\boldsymbol n_1,\boldsymbol n_2$ 为法向量，则
+
+\keyformula{\cos\theta=\frac{|\boldsymbol n_1\cdot\boldsymbol n_2|}{|\boldsymbol n_1||\boldsymbol n_2|}}
+
+\begin{equation}
+\Pi_1\perp\Pi_2\iff A_1A_2+B_1B_2+C_1C_2=0,\qquad
+\Pi_1\parallel\Pi_2\iff\frac{A_1}{A_2}=\frac{B_1}{B_2}=\frac{C_1}{C_2}.
+\end{equation}
+
+点 $M_0$ 到平面 $Ax+By+Cz+D=0$ 的距离 $d=\dfrac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$。
+
+\corepoint{求平面方程两步：定一点、定法向量（常取两向量叉积）；夹角分子加绝对值，平行垂直判别不加；距离公式分母只含 $A,B,C$。}
+
+\section{空间直线及其方程}
+
+\subsection{空间直线的一般方程}
+
+两不平行平面的交线给出直线的\textbf{一般方程}
+\begin{equation}
+\begin{cases}A_1x+B_1y+C_1z+D_1=0,\\ A_2x+B_2y+C_2z+D_2=0,\end{cases}
+\end{equation}
+其表示不唯一（过一条直线的平面有无穷多张）。
+
+\subsection{空间直线的对称式方程与参数方程}
+
+定义 8.5\quad 平行于直线的非零向量 $\boldsymbol s=(m,n,p)$ 称为\textbf{方向向量}，$m,n,p$ 为\textbf{方向数}。设直线过 $M_0$、方向向量 $\boldsymbol s$，由 $\overrightarrow{M_0M}\parallel\boldsymbol s$ 得
+
+\keyformula{\frac{x-x_0}{m}=\frac{y-y_0}{n}=\frac{z-z_0}{p}\ (\text{对称式}),\qquad
+x=x_0+mt,\ y=y_0+nt,\ z=z_0+pt\ (\text{参数式})}
+
+由一般方程化对称式：取 $\boldsymbol s=\boldsymbol n_1\times\boldsymbol n_2$，再在直线上任取一点。
+
+\subsection{两直线的夹角}
+
+\begin{equation}
+\cos\theta=\frac{|\boldsymbol s_1\cdot\boldsymbol s_2|}{|\boldsymbol s_1||\boldsymbol s_2|},\qquad
+L_1\perp L_2\iff m_1m_2+n_1n_2+p_1p_2=0 .
+\end{equation}
+\begin{equation}
+L_1\parallel L_2\iff\frac{m_1}{m_2}=\frac{n_1}{n_2}=\frac{p_1}{p_2}.
+\end{equation}
+
+\subsection{直线与平面的夹角}
+
+直线与其在平面上投影直线的夹角 $\varphi\ (0\le\varphi\le\frac\pi2)$ 称为直线与平面的夹角，则
+
+\keyformula{\sin\varphi=\frac{|\boldsymbol s\cdot\boldsymbol n|}{|\boldsymbol s||\boldsymbol n|}
+=\frac{|Am+Bn+Cp|}{\sqrt{m^{2}+n^{2}+p^{2}}\sqrt{A^{2}+B^{2}+C^{2}}}}
+
+\begin{equation}
+L\parallel\Pi\iff Am+Bn+Cp=0,\qquad
+L\perp\Pi\iff\frac Am=\frac Bn=\frac Cp .
+\end{equation}
+
+\subsection{杂例：平面束}
+
+过直线 $L$（由一般方程给出）的\textbf{平面束}为
+\begin{equation}
+A_1x+B_1y+C_1z+D_1+\lambda\bigl(A_2x+B_2y+C_2z+D_2\bigr)=0\quad(\lambda\ \text{任意}),
+\end{equation}
+它表示过 $L$ 的除第二张平面外的所有平面。
+
+\corepoint{线面用 $\sin\varphi$（$\varphi$ 与 $\boldsymbol s,\boldsymbol n$ 夹角互余），面面、线线用 $\cos\theta$，分子一律取绝对值。平面束把“过已知直线且满足条件”化为一元方程；若所求平面正是被排除的那张，须单独检验。}
+
+\section{曲面及其方程}
+
+\subsection{曲面研究的基本问题}
+
+两类问题：由几何轨迹建立方程；由方程研究图形，常用\textbf{截痕法}（用平行于坐标面的平面截曲面，由截痕形状与变化趋势想象全貌）。
+
+\subsection{旋转曲面}
+
+定义 8.6\quad 平面曲线绕其所在平面内一条定直线旋转一周所得曲面称为\textbf{旋转曲面}，定直线为\textbf{轴}，曲线为\textbf{母线}。设 $yOz$ 面上曲线 $C:f(y,z)=0$，则
+
+\keyformula{\text{绕 }z\text{ 轴}:\ f\bigl(\pm\sqrt{x^{2}+y^{2}},z\bigr)=0;\qquad
+\text{绕 }y\text{ 轴}:\ f\bigl(y,\pm\sqrt{x^{2}+z^{2}}\bigr)=0}
+
+即绕哪条轴转，该轴对应变量不变，另一变量换成其余两变量平方和的平方根。例：$y^{2}=2pz$ 绕 $z$ 轴得旋转抛物面 $x^{2}+y^{2}=2pz$。
+
+\subsection{柱面}
+
+定义 8.7\quad 平行于定直线并沿定曲线 $C$ 移动的直线 $L$ 所形成的曲面称为\textbf{柱面}，$C$ 为\textbf{准线}，$L$ 为\textbf{母线}。只含两个变量的方程 $F(x,y)=0$ 表示母线平行于 $z$ 轴的柱面，准线为 $xOy$ 面上的 $F(x,y)=0$；$G(y,z)=0$、$H(z,x)=0$ 的母线分别平行于 $x$、$y$ 轴。
+
+\corepoint{方程缺哪个变量，母线就平行于哪条轴——判断柱面最快的方法；柱面方程与平面曲线方程形式相同，区别在于所处空间。}
+
+\subsection{二次曲面}
+
+定义 8.8\quad 三元二次方程所表示的曲面称为\textbf{二次曲面}（平面为一次曲面），共九种，适当选坐标系可得标准方程。常用六种如下。
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+名称 & 标准方程 & 特征 \\
+\midrule
+椭圆锥面 & $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}=z^{2}$ & 过原点，$z=0$ 时缩为一点 \\
+椭球面 & $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}+\dfrac{z^{2}}{c^{2}}=1$ & 截痕均为椭圆，有界 \\
+单叶双曲面 & $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}-\dfrac{z^{2}}{c^{2}}=1$ & 平行 $xOy$ 面截痕为椭圆 \\
+双叶双曲面 & $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}-\dfrac{z^{2}}{c^{2}}=-1$ & 分两叶，$|z|\ge c$ \\
+椭圆抛物面 & $\dfrac{x^{2}}{2p}+\dfrac{y^{2}}{2q}=z$ & $p,q$ 同号，开口朝 $z$ 轴正向 \\
+双曲抛物面 & $\dfrac{x^{2}}{2p}-\dfrac{y^{2}}{2q}=z$ & $p,q>0$，马鞍面 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{三看定类型：一看平方项符号（三同号右端 $1$ 为椭球；两正一负右端 $1$ 为单叶、$-1$ 为双叶；平方项相等为椭圆锥面）；二看有无一次项（含 $z$ 的一次项为抛物面）；三看截痕（马鞍面的坐标面截痕含一对相交直线）。}
+
+\section{空间曲线及其方程}
+
+\subsection{空间曲线的一般方程}
+
+两曲面交线给出曲线的\textbf{一般方程}
+\begin{equation}
+\begin{cases}F(x,y,z)=0,\\ G(x,y,z)=0,\end{cases}
+\end{equation}
+表示同一条曲线的方程组不唯一。
+
+\subsection{空间曲线的参数方程}
+
+$x=\varphi(t),\ y=\psi(t),\ z=\omega(t)\ (\alpha\le t\le\beta)$ 称为曲线的\textbf{参数方程}；如动点沿半径 $a$ 的圆以角速度 $\omega$ 绕 $z$ 轴旋转、同时以线速度 $v$ 上升，得\textbf{螺旋线} $x=a\cos\omega t,\ y=a\sin\omega t,\ z=vt$。
+
+\subsection{空间曲线在坐标面上的投影}
+
+定义 8.9\quad 以 $C$ 为准线、母线平行于 $z$ 轴的柱面称为 $C$ 关于 $xOy$ 面的\textbf{投影柱面}，它与 $xOy$ 面的交线称为 $C$ 的\textbf{投影曲线}。求法：消去 $z$ 得投影柱面，再与 $z=0$ 联立。
+
+\keyformula{C:\begin{cases}F(x,y,z)=0\\G(x,y,z)=0\end{cases}\ \xrightarrow{\ \text{消去 }z\ }\
+\begin{cases}H(x,y)=0\\ z=0\end{cases}}
+
+同理消去 $x$、$y$ 得关于 $yOz$、$zOx$ 面的投影。
+
+\corepoint{投影曲线须写成“投影柱面 $+\,z=0$”的联立式，只写 $H(x,y)=0$ 是柱面而非曲线；消元只保证曲线上的点满足所得方程（可能多出柱面上的其他点）。}

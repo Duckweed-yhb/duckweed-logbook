@@ -1,25 +1,35 @@
-\documentclass{article}
-\usepackage[fontset=windows,UTF8]{ctex}
-\usepackage{amsmath,amssymb,amsfonts,mathtools}
-\usepackage{geometry,enumitem,graphicx,amsthm,booktabs,hyperref,multicol}
+% 概率论与数理统计课程笔记 —— 正文排版集中在 0.样式.tex
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
+
+\newcommand{\YHBcourse}{概率论与数理统计}
+\newcommand{\YHBversion}{v1.1}
+\newcommand{\YHBquote}{概率是生活的真正指南。\par\vspace{2mm}\normalfont —— 约瑟夫·巴特勒}
+\newcommand{\YHBcoverSize}{34pt}
+\newcommand{\YHBcoverLead}{42pt}
+
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{3A2E5C}
+\definecolor{yhbAccent2}{HTML}{6B5B8C}
+\input{0.样式.tex}
+\usepackage{multicol}
 \usepackage{ragged2e}
 \usepackage{setspace}
-\usepackage{titlesec}
-\usepackage{titletoc}
-\usepackage{fancyhdr}
-\usepackage{xcolor}
-\usepackage{lastpage}
+\usepackage{amsthm}
+\newtheoremstyle{yhbthm}{4pt}{5pt}{\normalfont}{0pt}{\bfseries}{：}{0.3em}{}
+\theoremstyle{yhbthm}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}{定义}[section]
+\newtheorem{property}{性质}[section]
+\newtheorem{corollary}{推论}[section]
+\newtheorem{example}{例}[section]
+\newlist{mlist}{enumerate}{1}
+\setlist[mlist]{label={\arabic*.},leftmargin=2em,itemsep=0.4em,labelsep=0.5em}
 
-\definecolor{darkblue}{RGB}{0,0,128}
-
-% 页面与全局间距 —— 最舒服的排版
-\geometry{a4paper, margin=1in}
-\setstretch{1.15}             % 行间距适中
-\setlength{\parskip}{0.4em}   % 段落间距：不大不小，最耐看
-\setlength{\parindent}{0pt}   % 无缩进
-\frenchspacing                % 杜绝标题/文字被强行撑开
-
-% 你的符号命令
+% ---------- 本课程常用符号 ----------
 \newcommand{\Cov}{\mathrm{Cov}}
 \newcommand{\E}{\mathrm{E}}
 \newcommand{\D}{\mathrm{Var}}
@@ -36,125 +46,7 @@
 \newcommand{\talpha}[1]{t_{\alpha/2}(#1)}
 \newcommand{\xalpha}[1]{\chi^2_{\alpha/2}(#1)}
 \newcommand{\xalphaone}[1]{\chi^2_{1-\alpha/2}(#1)}
-
-% 定理环境 —— 干净紧凑
-\newtheoremstyle{mytheorem}{4pt}{5pt}{\normalfont}{0pt}{\bfseries}{：}{0.3em}{}
-\theoremstyle{mytheorem}
-\newtheorem{theorem}{定理}[section]
-\newtheorem{definition}{定义}[section]
-\newtheorem{property}{性质}[section]
-\newtheorem{corollary}{推论}[section]
-\newtheorem{example}{例}[section]
-
-% 超链接
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=cyan,
-    citecolor=red,
-    pdftitle={概率论与数理统计核心公式整理},
-    pdfauthor={Duckweed-yhb},
-    pdfsubject={概率论与数理统计},
-    pdfpagemode=UseOutlines,
-    hidelinks,
-    unicode=true
-}
-
-
-\setlist{leftmargin=2em, itemsep=0.25em, parsep=0pt, topsep=0.3em}
-% 新增：专门用于最大似然估计的列表环境，保证换行内容对齐
-\newlist{mlist}{enumerate}{1}
-\setlist[mlist]{
-    label={\arabic*.},
-    leftmargin=2em,
-    itemindent=0em,
-    labelwidth=1.5em,
-    labelsep=0.5em,
-    align=left,
-    itemsep=0.5em
-}
-
-% ====================== 标题：紧凑！不散开！======================
-\titleformat{\section}
-  {\Large\bfseries\centering\color{darkblue}}
-  {\thesection}
-  {0.3em}  % 标号和文字贴紧
-  {}
-\titlespacing*{\section}{0pt}{1.0em}{0.6em} % 标题上下干净
-
-% 关键优化：subsection强制左对齐，解决两字标题分散问题
-\titleformat{\subsection}
-  {\large\bfseries\color{darkblue}\raggedright}
-  {\thesubsection}
-  {0.3em}  % 标号和文字贴紧
-  {}
-\titlespacing*{\subsection}{0pt}{0.7em}{0.4em}
-
-% 目录
-\titlecontents{section}[0pt]{\bfseries}{\thecontentslabel\quad}{}{\ \titlerule*[0.5pc]{.}\contentspage}
-\titlecontents{subsection}[1.5em]{}{\thecontentslabel\quad}{}{\ \titlerule*[0.5pc]{.}\contentspage}
-
-% 页眉页脚
-\pagestyle{fancy}
-\fancyhf{}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.2pt}
-\fancyhead[L]{\footnotesize 概率论与数理统计}
-\fancyhead[R]{\footnotesize \leftmark}
-\fancyfoot[C]{\footnotesize 第 \thepage 页 / 共 \pageref{LastPage} 页}
-\fancypagestyle{plain}{%
-  \fancyhf{}%
-  \renewcommand{\headrulewidth}{0pt}%
-  \renewcommand{\footrulewidth}{0.2pt}%
-  \fancyfoot[C]{\footnotesize 第 \thepage 页 / 共 \pageref{LastPage} 页}%
-}
-
-% 封面
-\newcommand{\makeCover}
-{
-  \begin{titlepage}
-    % 临时调整封面边距
-    \newgeometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
-    
-    \centering
-    \vspace*{1cm}
-    
-    % 顶部名言（贴合概率论主题，斜体+引用样式）
-    {\Large \itshape “概率是生活的真正指南。” —— 约瑟夫·巴特勒}\\[0.5cm]
-    \rule{\textwidth}{1pt}\\[0.5cm]
-    
-    % 主标题
-    {\Huge \bfseries \color{darkblue} 概率论与数理统计}\\[8pt]
-    {\Huge \bfseries \color{darkblue} 核心公式整理}\\[12pt]
-    {\Large \itshape —— 简洁版复习讲义 ——}\\[1cm]
-    
-    % 分隔线
-    \rule{0.6\textwidth}{0.5pt}\\[1cm]
-    
-    % 学科说明（按要求修改）
-    {\Large \textbf{内容概要：} 随机变量 | 数字特征 | 抽样分布 | 参数估计}\\[8pt]
-    {\Large \textbf{适用场景：} 课程复习 · 公式速查}\\[1.5cm]
-    
-    % 整理者信息
-    {\Large \textbf{整理者：}Duckweed-yhb}\\[6pt]
-    {\large \textbf{个人博客：}\url{https://duckweed-yhb.github.io/}}\\[6pt]
-    {\large \textbf{GitHub：}\url{https://github.com/Duckweed-yhb}}\\[6pt]
-    {\large \textbf{联系邮箱：}\href{mailto:3071974740@qq.com}{3071974740@qq.com}}\\[6pt]
-    {\Large 整理日期：\today}\\[1cm]
-    
-    \rule{0.6\textwidth}{0.5pt}\\[1cm]
-    
-    % 底部信息
-    {\large \textbf{版本：} v1.0 简洁版}\\[6pt]
-    {\small \itshape Copyright © \the\year\ Duckweed-yhb · 禁止商用 · 欢迎交流}\\[0.5cm]
-    
-    \rule{\textwidth}{1pt}
-    \vfill
-    
-    % 恢复原始页面布局
-    \restoregeometry
-  \end{titlepage}
-}
+\newcommand{\makeCover}{\input{2.cover.tex}}
 
 \begin{document}
 

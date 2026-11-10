@@ -1,115 +1,264 @@
-% 子文件：4.微分中值定理与导数应用.tex
-% 主文档使用 \input{4.微分中值定理与导数应用} 引入，无document环境
+% 子文件：6.微分中值定理与导数的应用.tex
+% 对应教材（同济《高等数学》第七版·上册）第三章 微分中值定理与导数的应用
+%   第一节 微分中值定理 / 第二节 洛必达法则 / 第三节 泰勒公式
+%   第四节 函数的单调性与曲线的凹凸性 / 第五节 函数的极值与最大值最小值
+%   第六节 函数图形的描绘 / 第七节 曲率·曲率圆与曲率半径 / 第八节 方程的近似解
+% 主文档使用 \input{6.微分中值定理与导数的应用.tex} 引入，不含 \documentclass / \begin{document}
 
 \section{微分中值定理}
 
-定理4.1（罗尔定理）\quad 若函数$f(x)$满足
-\begin{enumerate}
-    \item 在闭区间$[a,b]$上连续；
-    \item 在开区间$(a,b)$内可导；
-    \item $f(a)=f(b)$，
-\end{enumerate}
-则在开区间$(a,b)$内至少存在一点$\xi$，使得
+\subsection{费马引理}
+\textbf{引理（费马）}\quad 设函数 $f(x)$ 在点 $x_0$ 的某邻域 $U(x_0)$ 内有定义，并且在 $x_0$ 处可导。如果对任意 $x\in U(x_0)$ 有
 \[
-f'(\xi)=0.
+f(x)\le f(x_0)\quad(\text{或}\ f(x)\ge f(x_0)),
+\]
+则 $f'(x_0)=0$。
+
+\noindent 即：可导函数在极值点处的导数为零（极值点的必要条件）。
+
+\corepoint{费马引理只说“可导的极值点导数为零”，反之不成立：$f(x)=x^3$ 在 $x=0$ 处 $f'(0)=0$ 但不是极值点。另外，极值点也可能出现在\textbf{不可导点}（如 $|x|$ 在 $0$ 处），这类点费马引理管不了，求极值时不能漏。}
+
+\subsection{罗尔定理}
+\textbf{定理（罗尔）}\quad 如果函数 $f(x)$ 满足
+\begin{enumerate}
+    \item 在闭区间 $[a,b]$ 上连续；
+    \item 在开区间 $(a,b)$ 内可导；
+    \item 在区间端点处的函数值相等，即 $f(a)=f(b)$，
+\end{enumerate}
+那么在 $(a,b)$ 内至少存在一点 $\xi$，使得
+\keyformula{f'(\xi)=0}
+
+\subsection{拉格朗日中值定理}
+\textbf{定理（拉格朗日）}\quad 如果函数 $f(x)$ 满足
+\begin{enumerate}
+    \item 在闭区间 $[a,b]$ 上连续；
+    \item 在开区间 $(a,b)$ 内可导，
+\end{enumerate}
+那么在 $(a,b)$ 内至少存在一点 $\xi$，使得
+\keyformula{f(b)-f(a)=f'(\xi)(b-a)\qquad\text{或}\qquad \frac{f(b)-f(a)}{b-a}=f'(\xi)}
+
+\noindent 几何意义：曲线上至少有一点的切线平行于连接两端点的弦（弦的斜率为 $\frac{f(b)-f(a)}{b-a}$）。上式也常写成\textbf{有限增量公式}
+\[
+f(x_0+\Delta x)-f(x_0)=f'(\xi)\,\Delta x,\qquad \xi=x_0+\theta\Delta x,\ 0<\theta<1 .
 \]
 
-定理4.2（拉格朗日中值定理）\quad
-若函数$f(x)$满足
+\textbf{两个常用推论}
 \begin{enumerate}
-    \item 在闭区间$[a,b]$上连续；
-    \item 在开区间$(a,b)$内可导，
+    \item 若 $f(x)$ 在区间 $I$ 上连续、在 $I$ 内可导且 $f'(x)\equiv0$，则 $f(x)$ 在 $I$ 上为常数；
+    \item 若 $f,g$ 在 $I$ 上满足同样条件且 $f'(x)=g'(x)$，则 $f(x)=g(x)+C$（$C$ 为常数）。
 \end{enumerate}
-则在开区间$(a,b)$内至少存在一点$\xi$，使得
+
+\corepoint{推论 1 是“证明两个函数恒等”的标准工具：要证 $f(x)=g(x)$，作 $F=f-g$，证 $F'\equiv0$ 再用某一点定出常数。用拉格朗日定理证不等式 $f(b)-f(a)\lessgtr ?$ 的关键是：\textbf{把要证的式子凑成 $\frac{f(b)-f(a)}{b-a}$ 的形状}，再对 $f'$ 作估计（放大或缩小），区间与辅助函数的选择决定了成败。}
+
+\subsection{柯西中值定理}
+\textbf{定理（柯西）}\quad 如果函数 $f(x)$ 与 $g(x)$ 满足
+\begin{enumerate}
+    \item 在闭区间 $[a,b]$ 上连续；
+    \item 在开区间 $(a,b)$ 内可导，且 $g'(x)\neq0$，
+\end{enumerate}
+那么在 $(a,b)$ 内至少存在一点 $\xi$，使得
+\keyformula{\frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f'(\xi)}{g'(\xi)}}
+
+\noindent 三者的关系：柯西定理取 $g(x)=x$ 即得拉格朗日定理；拉格朗日定理取 $f(a)=f(b)$ 即得罗尔定理。反之，柯西定理可由罗尔定理证明（作辅助函数 $F(x)=f(x)-f(a)-\frac{f(b)-f(a)}{g(b)-g(a)}[g(x)-g(a)]$）。拉格朗日定理的证明也作辅助函数
 \[
-f(b)-f(a)=(b-a)f'(\xi). \tag{3}
+F(x)=f(x)-f(a)-\frac{f(b)-f(a)}{b-a}(x-a).
 \]
 
-\noindent 其中 $\dfrac{f(b)-f(a)}{b-a}$ 称平均曲线的斜率（原 markdown 稿的批注，2026-10-20 补回）。
-
-\noindent 分析（利用罗尔定理证明拉格朗日中值定理）
-
-定理4.3（柯西中值定理）\quad 如果函数$f(x)$和$g(x)$满足
-\begin{enumerate}
-    \item 在闭区间$[a,b]$上连续；
-    \item 在开区间$(a,b)$内可导，且$g'(x)\neq 0$，
-\end{enumerate}
-则在开区间$(a,b)$内至少存在一点$\xi$，使得
-\[
-\frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f'(\xi)}{g'(\xi)}.
-\]
+\corepoint{中值定理的\textbf{三个条件缺一不可}：$f(x)=|x|$ 在 $[-1,1]$ 上满足 $f(-1)=f(1)$ 但在 $x=0$ 不可导，不存在 $\xi$ 使 $f'(\xi)=0$；$f(x)=x$ 在 $(0,1)$ 上可导但不闭连续（取不到端点），也不能用。结论只断言 $\xi$ \textbf{存在}，不指明位置、也不唯一。柯西定理要求 $g'(x)\neq0$，这保证 $g(b)\neq g(a)$，分母不为零。}
 
 \section{洛必达法则}
-\noindent 和型未定式
 
-\noindent 其他型未定式
+\subsection{$\dfrac00$ 型与 $\dfrac{\infty}{\infty}$ 型}
+\textbf{定理（$\frac00$ 型）}\quad 设
+\begin{enumerate}
+    \item 当 $x\to a$（或 $x\to\infty$）时，$f(x)\to0$，$g(x)\to0$；
+    \item 在 $a$ 的某去心邻域内（或 $|x|>X$ 时）$f'(x)$、$g'(x)$ 都存在且 $g'(x)\neq0$；
+    \item $\lim\dfrac{f'(x)}{g'(x)}$ 存在（或为无穷大），
+\end{enumerate}
+则
+\keyformula{\lim\frac{f(x)}{g(x)}=\lim\frac{f'(x)}{g'(x)}}
+\noindent 把条件 1 换成 $f(x)\to\infty$、$g(x)\to\infty$，结论对 $\dfrac{\infty}{\infty}$ 型同样成立。
+
+\subsection{其他类型的未定式}
+除 $\frac00$、$\frac{\infty}{\infty}$ 外，还有 $0\cdot\infty$、$\infty-\infty$、$0^0$、$1^{\infty}$、$\infty^0$ 五种，处理原则是\textbf{化归}为前两种：
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+类型 & 化归方法 \\
+\midrule
+$0\cdot\infty$ & $f\cdot g=\dfrac{f}{1/g}$ 或 $\dfrac{g}{1/f}$（把“好求导的”留在分子） \\
+$\infty-\infty$ & 通分、有理化、提公因子，化为 $\dfrac00$ 或 $\dfrac{\infty}{\infty}$ \\
+$0^0,\ 1^{\infty},\ \infty^0$ & 取对数：$f^{g}=e^{g\ln f}$，先求 $\lim g\ln f$（属 $0\cdot\infty$） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{洛必达法则的四个陷阱：(1) \textbf{必须先验证}是 $\frac00$ 或 $\frac{\infty}{\infty}$ 型，非未定式（如 $\frac{\sin x}{x+1}$ 在 $x\to0$）用它必错；(2) 条件 3 只是\textbf{充分}条件——$\lim\frac{f'}{g'}$ 不存在时原极限仍可能存在（如 $\lim\limits_{x\to\infty}\frac{x+\sin x}{x}=1$，而 $\frac{f'}{g'}=1+\cos x$ 无极限），此时应改用其他方法；(3) 求导后要\textbf{化简}，能约就约、能提就提，别硬求导到底；(4) 与等价无穷小替换、泰勒公式配合使用效率最高，连用洛必达往往越算越繁。}
 
 \section{泰勒公式}
-定理4.4（泰勒定理）\quad 设函数$f(x)$在点$x_0$处有$n$阶导数，则在$x_0$附近$f(x)$可表示为。
 
-麦克劳林公式
+\subsection{泰勒中值定理}
+\textbf{定理（泰勒中值定理，带拉格朗日余项）}\quad 如果函数 $f(x)$ 在含有 $x_0$ 的某个开区间 $(a,b)$ 内具有直到 $(n+1)$ 阶的导数，则对任一 $x\in(a,b)$，有
+\keyformula{f(x)=f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^{2}+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^{n}+R_n(x)}
+\noindent 其中
+\keyformula{R_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}\quad(\xi\ \text{介于}\ x_0\ \text{与}\ x\ \text{之间})}
+\noindent 称为\textbf{拉格朗日型余项}；若只要求 $f$ 在 $x_0$ 处有 $n$ 阶导数，则余项可写成
+\keyformula{R_n(x)=o\bigl[(x-x_0)^{n}\bigr]}
+\noindent 称为\textbf{佩亚诺型余项}。取 $x_0=0$ 即得\textbf{麦克劳林公式}。
+
+\subsection{几个常用函数的麦克劳林公式}
+\keyformula{\begin{aligned}
+e^{x}&=1+x+\frac{x^{2}}{2!}+\cdots+\frac{x^{n}}{n!}+o(x^{n}),\\
+\sin x&=x-\frac{x^{3}}{3!}+\frac{x^{5}}{5!}-\cdots+(-1)^{m}\frac{x^{2m+1}}{(2m+1)!}+o(x^{2m+2}),\\
+\cos x&=1-\frac{x^{2}}{2!}+\frac{x^{4}}{4!}-\cdots+(-1)^{m}\frac{x^{2m}}{(2m)!}+o(x^{2m+1}),\\
+\ln(1+x)&=x-\frac{x^{2}}{2}+\frac{x^{3}}{3}-\cdots+(-1)^{n-1}\frac{x^{n}}{n}+o(x^{n}),\\
+(1+x)^{\alpha}&=1+\alpha x+\frac{\alpha(\alpha-1)}{2!}x^{2}+\cdots+\frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{n!}x^{n}+o(x^{n}),\\
+\frac{1}{1-x}&=1+x+x^{2}+\cdots+x^{n}+o(x^{n}).
+\end{aligned}}
+
+\corepoint{余项怎么选：\textbf{求极限}用佩亚诺余项（只关心阶数，$o(x^n)$ 足够）；\textbf{证不等式、估计误差、判断极值}用拉格朗日余项（需要 $\xi$ 的范围来放缩）。展开到几阶？原则是“上下同阶”：分母是 $x^k$ 就展到 $x^k$，分子各展到 $x^k$ 后再合并；展开不足会漏主部，展得过多是浪费但不出错。$\sin x$ 的展开式只含奇次幂、$\cos x$ 只含偶次幂，写错奇偶是高频错误。}
+
+\subsection{泰勒公式的应用}
+\begin{enumerate}
+    \item 求极限：把各因子展开到同阶，用“低阶项消去、首项相比”求值；
+    \item 近似计算：用 $n$ 次泰勒多项式代替 $f(x)$，余项给出误差界；
+    \item 证明不等式：把 $f$ 在适当点展开，利用 $f^{(n+1)}$ 的符号或界放缩余项；
+    \item 判别极值：由 $f'(x_0)=0$ 与最低阶非零导数的阶数判断（见下节）。
+\end{enumerate}
+
+\section{函数的单调性与曲线的凹凸性}
+
+\subsection{函数单调性的判定法}
+\textbf{定理}\quad 设函数 $f(x)$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内可导。
+\begin{enumerate}
+    \item 若在 $(a,b)$ 内 $f'(x)>0$，则 $f(x)$ 在 $[a,b]$ 上单调增加；
+    \item 若在 $(a,b)$ 内 $f'(x)<0$，则 $f(x)$ 在 $[a,b]$ 上单调减少。
+\end{enumerate}
+\noindent 更精细的结论：若 $f'(x)\ge0$（$\le0$）且等号只在有限个点成立，则 $f$ 仍\textbf{严格}单调。
+
+\corepoint{单调性的“分界点”来自 $f'(x)=0$ 的点与 $f'(x)$ 不存在的点，把它们按大小插入定义域划分区间，再逐段判断 $f'$ 的符号（列表法最清楚）。$f'(x_0)=0$ 只说明该点是驻点，\textbf{不说明}它两侧单调性改变，如 $x^3$ 在 $0$ 处两侧都增。证明不等式常用套路：作 $F(x)=$ 左 $-$ 右，求 $F'$ 定号证明 $F$ 单调，再用端点值。}
+
+\subsection{曲线的凹凸性与拐点}
+\textbf{定义}\quad 设 $f(x)$ 在区间 $I$ 上连续。如果对 $I$ 上任意两点 $x_1,x_2$，恒有
 \[
-f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^2+\cdots+\frac{f^{(n)}(0)}{n!}x^n+\frac{f^{(n+1)}(\theta x)}{(n+1)!}x^{n+1}.
+f\Bigl(\frac{x_1+x_2}{2}\Bigr)<\frac{f(x_1)+f(x_2)}{2}\quad\Bigl(\text{或}\ >\Bigr),
 \]
+则称曲线 $y=f(x)$ 在 $I$ 上是\textbf{凹}的（或凸的），$f$ 称为 $I$ 上的凹函数（凸函数）。
 
-\noindent 初等函数的麦克劳林公式（拉格朗日型余项，$0<\theta<1$）：
-\begin{align*}
-(1)\quad \mathrm{e}^{x} &= 1+x+\frac{x^{2}}{2!}+\cdots+\frac{x^{n}}{n!}+\frac{\mathrm{e}^{\theta x}}{(n+1)!}x^{n+1};\\
-(2)\quad \sin x &= x-\frac{x^{3}}{3!}+\frac{x^{5}}{5!}-\cdots+(-1)^{m}\frac{x^{2m+1}}{(2m+1)!}+(-1)^{m+1}\frac{\cos\theta x}{(2m+3)!}x^{2m+3};\\
-(3)\quad \cos x &= 1-\frac{x^{2}}{2!}+\frac{x^{4}}{4!}-\cdots+(-1)^{m}\frac{x^{2m}}{(2m)!}+(-1)^{m+1}\frac{\cos\theta x}{(2m+2)!}x^{2m+2};\\
-(4)\quad \ln(1+x) &= x-\frac{x^{2}}{2}+\frac{x^{3}}{3}-\cdots+(-1)^{n-1}\frac{x^{n}}{n}+(-1)^{n}\frac{x^{n+1}}{(n+1)(1+\theta x)^{n+1}};\\
-(5)\quad (1+x)^{\mu} &= 1+\mu x+\frac{\mu(\mu-1)}{2!}x^{2}+\cdots+\frac{\mu(\mu-1)\cdots(\mu-n+1)}{n!}x^{n}\\
-&\qquad +\frac{\mu(\mu-1)\cdots(\mu-n)}{(n+1)!}(1+\theta x)^{\mu-n-1}x^{n+1}.
-\end{align*}
+\textbf{判定定理}\quad 设 $f(x)$ 在 $[a,b]$ 上连续，在 $(a,b)$ 内具有一阶和二阶导数：
+\begin{enumerate}
+    \item 若在 $(a,b)$ 内 $f''(x)>0$，则曲线在 $[a,b]$ 上是凹的；
+    \item 若在 $(a,b)$ 内 $f''(x)<0$，则曲线在 $[a,b]$ 上是凸的。
+\end{enumerate}
 
-\[
-\frac{1}{1-x}=1+x+x^2+\cdots+x^n+o(x^n).
-\]
+\noindent 连续曲线 $y=f(x)$ 上凹弧与凸弧的分界点，称为曲线的\textbf{拐点}，记作 $(x_0,f(x_0))$。
 
-\section{极值与最大（小）值的求法}
+\corepoint{拐点是\textbf{曲线上的点}（要写成坐标 $(x_0,f(x_0))$），不是 $x_0$。$f''(x_0)=0$ 或 $f''$ 不存在的点只是“可疑点”，必须验证该点两侧 $f''$ 的\textbf{符号是否改变}：$y=x^4$ 在 $0$ 处 $f''(0)=0$ 但两侧都凹，不是拐点；$y=\sqrt[3]{x}$ 在 $0$ 处 $f''$ 不存在却是拐点。教材的“凹/凸”与部分教材的“凸/凹”叫法相反，以“$f''>0$ 为凹（开口向上）”记忆最稳。}
+
+\section{函数的极值与最大值最小值}
+
 \subsection{函数的极值及其求法}
+\textbf{定义}\quad 若在 $x_0$ 的某去心邻域内有 $f(x)<f(x_0)$（或 $f(x)>f(x_0)$），则称 $f(x_0)$ 为 $f$ 的极大值（极小值），$x_0$ 为极大值点（极小值点）。极大值与极小值统称极值。
 
-\subsection{函数的最大（小）值的求法}
+\textbf{必要条件}\quad 若 $f$ 在 $x_0$ 处可导且取得极值，则 $f'(x_0)=0$。
 
-\section{函数的分析作图法}
-\subsection{凸函数、曲线的凸向及拐点}
-定理4.9\quad 设$f(x)$在区间$I$上有二阶导数，若$f''(x)\ge 0\,(\le 0)$，则$f(x)$为$I$上的下凸函数（上凸函数）。
+\textbf{第一充分条件}\quad 设 $f$ 在 $x_0$ 处连续，在 $x_0$ 的某去心邻域内可导：
+\begin{itemize}
+    \item 若 $x<x_0$ 时 $f'(x)>0$、$x>x_0$ 时 $f'(x)<0$，则 $f$ 在 $x_0$ 处取极大值；
+    \item 若 $x<x_0$ 时 $f'(x)<0$、$x>x_0$ 时 $f'(x)>0$，则 $f$ 在 $x_0$ 处取极小值；
+    \item 若 $f'$ 在 $x_0$ 两侧同号，则 $x_0$ 不是极值点。
+\end{itemize}
 
-定理4.10\quad 若
+\textbf{第二充分条件}\quad 设 $f'(x_0)=0$，$f''(x_0)\neq0$：
+\[
+f''(x_0)<0\ \Longrightarrow\ f(x_0)\ \text{为极大值};\qquad f''(x_0)>0\ \Longrightarrow\ f(x_0)\ \text{为极小值}.
+\]
 
-\noindent 在连续曲线$y=f(x)$上，不同凸向曲线段的分界点叫做拐点。
+\corepoint{求极值的完整步骤：(1) 求 $f'(x)$；(2) 找出 $f'(x)=0$ 的点（驻点）与 $f'$ \textbf{不存在}的点；(3) 用第一或第二充分条件逐个判别；(4) 只写极值点与极值。第二充分条件失效（$f''(x_0)=0$）时不能下结论，必须回退到第一充分条件（如 $x^4$、$x^3$ 在 $0$ 处）。极值点是定义域\textbf{内部}的点，端点处没有极值。}
+
+\subsection{最大值最小值问题}
+求连续函数 $f(x)$ 在闭区间 $[a,b]$ 上的最大值、最小值：
+\begin{enumerate}
+    \item 求出 $f$ 在 $(a,b)$ 内的驻点与不可导点 $x_1,x_2,\cdots,x_k$；
+    \item 计算 $f(x_1),\cdots,f(x_k)$ 及端点值 $f(a)$、$f(b)$；
+    \item 比较这些值，最大者为最大值，最小者为最小值。
+\end{enumerate}
+
+\noindent 若 $f$ 在区间内只有一个驻点而实际问题又必存在最值，则该驻点处的值就是所求最值（不必再比较端点）。
+
+\corepoint{“极值”是局部概念、“最值”是整体概念，切不可混用：极值点一定在内部且两侧变号，最值可能在端点。闭区间上一定要把\textbf{端点值}列入比较——这是最常见的丢分点。实际问题建模时先写出目标函数与定义域（往往由几何、物理条件给出区间），再看是否需要检验端点。}
+
+\section{函数图形的描绘}
 
 \subsection{曲线的渐近线}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+类型 & 判别式 & 说明 \\
+\midrule
+水平渐近线 & $\lim\limits_{x\to+\infty}f(x)=b$ 或 $\lim\limits_{x\to-\infty}f(x)=b$ & 得 $y=b$ \\
+铅直渐近线 & $\lim\limits_{x\to x_0^{+}}f(x)=\infty$（或左极限） & 得 $x=x_0$，$x_0$ 常为无定义点 \\
+斜渐近线 & $k=\lim\limits_{x\to\infty}\dfrac{f(x)}{x}\neq0$，$b=\lim\limits_{x\to\infty}[f(x)-kx]$ & 得 $y=kx+b$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\subsection{函数的分析作图法}
+\corepoint{三类渐近线可以并存，但同一方向上水平渐近线与斜渐近线\textbf{不能同时存在}（$k=0$ 时斜渐近线退化为水平渐近线）。求斜渐近线必须\textbf{先}求 $k$ 且 $k$ 存在且非零，\textbf{再}求 $b$；两个方向的 $k,b$ 可能不同，要分别算 $x\to+\infty$ 与 $x\to-\infty$。铅直渐近线只需一侧趋于无穷即可。}
 
-\section{曲率}
+\subsection{函数图形的描绘步骤}
+\begin{enumerate}
+    \item 确定定义域、间断点，讨论奇偶性、周期性（可缩小作图范围）；
+    \item 求 $f'(x)$、$f''(x)$，解出 $f'=0$、$f''=0$ 及两者不存在的点；
+    \item 列表讨论 $f'$、$f''$ 的符号，确定单调区间、凹凸区间、极值点、拐点；
+    \item 求渐近线，算出与坐标轴的交点及若干辅助点；
+    \item 描点连线成图。
+\end{enumerate}
+
+\section{曲率·曲率圆与曲率半径}
+
 \subsection{弧微分}
-若函数曲线是由极坐标方程
-\[
-r=r(\theta),\quad \alpha\le\theta\le\beta
-\]
-给出，且$r(\theta)$有连续导数，则将$x=r(\theta)\cos\theta,\ y=r(\theta)\sin\theta$代入，即得
-\[
-ds=\sqrt{[r(\theta)]^2+[r'(\theta)]^2}\,d\theta.
-\]
+设曲线由 $y=f(x)$ 给出且 $f'$ 连续，则弧微分
+\keyformula{\mathrm{d}s=\sqrt{1+y'^{2}}\,\mathrm{d}x}
+\noindent 若曲线由参数方程 $x=\varphi(t)$、$y=\psi(t)$ 给出，则
+\keyformula{\mathrm{d}s=\sqrt{\bigl[\varphi'(t)\bigr]^{2}+\bigl[\psi'(t)\bigr]^{2}}\,\mathrm{d}t}
+\noindent 若曲线由极坐标方程 $r=r(\theta)$ 给出，则由 $x=r\cos\theta$、$y=r\sin\theta$ 得
+\keyformula{\mathrm{d}s=\sqrt{r^{2}(\theta)+\bigl[r'(\theta)\bigr]^{2}}\,\mathrm{d}\theta}
 
-\subsection{曲率}
-为了说明在点$M$处曲线弯曲程度，让$M_1$沿曲线趋于$M\,(\Delta s\rightarrow 0)$，称倾角$\alpha$对弧长$s$的导数
-\[
-\frac{d\alpha}{ds}=\lim_{\Delta s\rightarrow0}\frac{\Delta\alpha}{\Delta s}
-\]
-的绝对值为曲线在点$M$处的曲率，记为$k$，则
-\[
-k=\left|\frac{d\alpha}{ds}\right|.
-\]
-就是说，曲率等于切线倾角随弧长变化的变化率的绝对值，或者说是切线方向随弧长变化的变化率的模。
+\subsection{曲率及其计算公式}
+设曲线的切线的倾角为 $\alpha$，则曲线在点 $M$ 处的\textbf{曲率}定义为切线倾角对弧长的变化率的绝对值：
+\keyformula{k=\Bigl|\frac{\mathrm{d}\alpha}{\mathrm{d}s}\Bigr|=\lim_{\Delta s\to0}\Bigl|\frac{\Delta\alpha}{\Delta s}\Bigr|}
+\noindent 即曲率刻画曲线在该点处弯曲的程度（切线方向随弧长变化的快慢）。计算式：
+\keyformula{k=\frac{|y''|}{\bigl(1+y'^{2}\bigr)^{3/2}}\qquad\text{（直角坐标）}}
+\keyformula{k=\frac{\bigl|\varphi'(t)\psi''(t)-\varphi''(t)\psi'(t)\bigr|}{\Bigl(\bigl[\varphi'(t)\bigr]^{2}+\bigl[\psi'(t)\bigr]^{2}\Bigr)^{3/2}}\qquad\text{（参数方程）}}
 
-在直角坐标下$\alpha=$，其微分。由式知$ds=\sqrt{1+y'^2}\,dx$就得到曲率的计算公式
+\corepoint{曲率公式分母是 $3/2$ 次方，分子带\textbf{绝对值}（曲率非负，只反映弯曲程度不反映方向）。直线 $y''=0$ 所以 $k=0$；圆上各点 $k=\frac1R$ 为常数，这是“曲率半径 $R=\frac1k$”的直观来由。算 $k$ 之前不要漏绝对值，也不要把 $3/2$ 写成 $1/2$ 或 $3$。}
+
+\subsection{曲率半径、曲率圆与曲率中心}
+若曲线在点 $M$ 处的曲率 $k\neq0$，则称
 \[
-k=\left|\frac{y''}{\left(1+y'^2\right)^{\frac{3}{2}}}\right|.
+R=\frac{1}{k}=\frac{\bigl(1+y'^{2}\bigr)^{3/2}}{|y''|}
 \]
+为曲线在该点处的\textbf{曲率半径}。在点 $M$ 处曲线凹向的一侧的法线上取一点 $D$，使 $|MD|=R$，则以 $D$ 为圆心、$R$ 为半径的圆称为曲线在 $M$ 处的\textbf{曲率圆}（密切圆），$D$ 称为\textbf{曲率中心}。
 
-若曲线$c$上点$M$处的曲率$k\neq0$，则称$R=\dfrac{1}{k}$为曲线$c$在点$M$处的曲率半径。
+曲率中心的坐标公式为
+\keyformula{\alpha=x-\frac{y'\bigl(1+y'^{2}\bigr)}{y''},\qquad \beta=y+\frac{1+y'^{2}}{y''}}
+\noindent 当点 $M(x,f(x))$ 沿曲线移动时，相应曲率中心 $D$ 的轨迹曲线称为原曲线的\textbf{渐屈线}，原曲线则称为该渐屈线的\textbf{渐伸线}。
 
-在点$M$处曲线凹向的法线上取一点$D$，使$|MD|=R=\dfrac{1}{k}$，则以$D$为圆心，$R$为半径的圆叫做曲线在$M$处的
+\corepoint{曲率中心公式的符号取决于 $y''$ 的正负：$y''>0$（凹）时 $D$ 在法线的上方一侧，$\alpha=x-\frac{y'(1+y'^2)}{y''}$、$\beta=y+\frac{1+y'^2}{y''}$ 中 $y''$ 必须原样带符号，不要取绝对值（取绝对值会跑到另一侧）。曲率圆与曲线在该点有相同的切线、相同的曲率，是“二阶密切”，比切线（一阶）更贴近曲线。}
+
+\section{方程的近似解}
+
+\subsection{二分法}
+设 $f(x)\in C[a,b]$ 且 $f(a)f(b)<0$，则方程 $f(x)=0$ 在 $(a,b)$ 内至少有根。取中点 $x_1=\frac{a+b}{2}$，判断 $f(x_1)$ 的符号，保留使函数值异号的那一半区间，如此反复，区间长度每次减半。经 $n$ 次后误差不超过 $\frac{b-a}{2^{n}}$。
+
+\subsection{切线法（牛顿法）}
+在根 $x^{*}$ 的近似值 $x_k$ 处用切线近似曲线，切线与 $x$ 轴的交点作为下一次近似：
+\keyformula{x_{k+1}=x_k-\frac{f(x_k)}{f'(x_k)}\qquad(k=0,1,2,\cdots)}
+\noindent 条件是 $f'(x)\neq0$、$f''(x)$ 不变号，且初值 $x_0$ 满足 $f(x_0)f''(x_0)>0$（保证切线交点始终落在根的一侧）。牛顿法收敛较快（平方收敛）。
+
+\subsection{割线法（弦位法）}
+用弦代替切线：
+\keyformula{x_{k+1}=x_k-\frac{f(x_k)\,(x_k-x_{k-1})}{f(x_k)-f(x_{k-1})}}
+\noindent 无需计算导数，收敛比二分法快，但比牛顿法慢。
+
+\corepoint{用二分法前必须验证三条：$f$ 连续、$f(a)f(b)<0$、区间内\textbf{只有一个}根（否则只能保证找到一个根）。牛顿法对初值敏感：初值选在 $f$ 与 $f''$ 同号的一端才保证收敛，选错可能发散或跳到别的根；$f'(x_k)$ 接近 0 时迭代会“飞出”，要换初值。误差要求给定时，二分法按 $\frac{b-a}{2^n}<\varepsilon$ 反解 $n$，牛顿法一般用 $|x_{k}-x^{*}|\approx\frac{|f(x_k)|}{\min|f'|}$ 估计。}

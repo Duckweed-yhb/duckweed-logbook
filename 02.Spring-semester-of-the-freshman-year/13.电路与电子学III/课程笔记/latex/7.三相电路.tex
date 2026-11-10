@@ -1,103 +1,262 @@
-% 6.电路基础.tex 子文件，book文档类，主文档通过\input{6.电路基础.tex}导入
-\chapter{第五章 三相电路}
+% 电路与电子学III 课程笔记 —— 第5章（教材：孙立山《电路理论基础》第四版 第5章）
+\chapter{三相电路}
+
+\noindent
+三相制是电力生产、变送和应用的主要形式。从电路模型上看，三相电路是一种具有\textbf{特殊规律}的交流电路，这些特殊规律简化了三相电路的分析方法。本章重点介绍：星形与三角形两种连接方式、对称三相电路中相量与线量的关系、对称三相电路的计算、三相功率及其测量，并扼要介绍不对称三相电路。
 
 \section{三相电源和三相电路}
-如果三相电压不仅频率相同、波形和幅值相同，而且变化进程的时间差相等，即彼此相差，则称为对称三相电压。
+三相制就是由三相电源供电的体系。三相电源一般具有三个电压源，能够同时发出三个频率相同、波形相同而\textbf{变化进程不同}的交变电压，分别用 $u_A$、$u_B$、$u_C$ 表示，称为三相电压。三相电源中的每一部分称为一个\textbf{相}，三个相分别称为 A 相、B 相、C 相；电源始端标注 A、B、C，末端标注 X、Y、Z。
 
-如果三相电压，其瞬时表达式为
-\[
-\]
-取$k=1$，则为
-\[
-\]
-其波形如图所示，对称正弦三相电压有效值相量为
-\[
-\]
-式中，是一个旋转因子。
+\subsection{对称三相电压}
+如果三相电压 $u_A$、$u_B$、$u_C$ 不仅频率相同、波形和幅值相同，而且变化进程的时间差相等，即彼此相差 $\dfrac{2\pi}{3}$（或 $\dfrac{T}{3}$），则称为\textbf{对称三相电压}。其瞬时表达式为
+\begin{equation}
+\begin{aligned}
+u_A&=U_m\cos\left(\omega t+\psi\right)\\
+u_B&=U_m\cos\left(\omega t+\psi-120^\circ\right)\\
+u_C&=U_m\cos\left(\omega t+\psi-240^\circ\right)=U_m\cos\left(\omega t+\psi+120^\circ\right)
+\end{aligned}
+\end{equation}
+设 $\dot{U}_A=U\angle\psi$，对称正弦三相电压的有效值相量为
+\keyformula{\dot{U}_B=\dot{U}_A\angle-120^\circ=a^2\dot{U}_A,\qquad
+\dot{U}_C=\dot{U}_A\angle120^\circ=a\dot{U}_A}
+其中
+\begin{equation}
+a=\mathrm{e}^{\mathrm{j}120^\circ}=-\frac{1}{2}+\mathrm{j}\frac{\sqrt{3}}{2}
+\end{equation}
+是一个\textbf{旋转因子}：乘 $a$ 相当于把相量逆时针旋转 $120^\circ$（或顺时针 $240^\circ$），乘 $a^2$ 则为逆时针旋转 $240^\circ$。三个对称相量之和为零：
+\begin{equation}
+\dot{U}_A+\dot{U}_B+\dot{U}_C=\dot{U}_A\left(1+a+a^2\right)=0
+\end{equation}
 
-三相电压的相位。式中三相电压的相位的次序为，称为正序或顺序。
+\subsection{相序}
+三相电压 $u_A$、$u_B$、$u_C$ 的相位从超前到滞后的次序称为\textbf{相序}。上式中相位次序为 A—B—C（或 B—C—A、C—A—B），称为\textbf{正序}（顺序）；若取 $k=2$ 使 $u_B$ 超前 $u_A$，则相序为 A—C—B，称为\textbf{负序}（逆序）；若三相相位差为 $360^\circ$，即三者同相位，称为\textbf{零序}。
 
-由三相电源、三相负载和连接导线所组成的电路称为三相电路。
+实际对称三相电路中，若以某一相为 A 相，则认为比 A 相滞后 $120^\circ$ 的为 B 相、再滞后 $120^\circ$ 的为 C 相，这属于正序。负序和零序都是相对于正序而言的。
+
+\subsection{三相负载与三相电路}
+三相制中的负载一般也由三部分组成，每一部分称为负载的一个相，这样的负载称为\textbf{三相负载}（如三相感应电动机）。若三相负载各相参数都相同，则称为\textbf{对称三相负载}。有了三相负载的概念以后，以前用二端网络表示的交流负载称为\textbf{单相负载}；三相制中通常把若干单相负载分成三组，组合成三相负载再与三相电源相接。
+
+由三相电源、三相负载（包括个别单相负载）和连接导线组成的电路称为\textbf{三相电路}。当三相电源和三相负载都对称、且三相导线阻抗都相等时，称为\textbf{对称三相电路}（如无特殊说明，均指对称三相正弦电路，相序为正序）。
+
+以上概念可推广为\textbf{多相制}：对称 $m$ 相正弦电压包含 $m$ 个幅值相等、频率相同的正弦电压，相邻两电压间相位差为 $2\pi/m$。二相制是例外——两相电压幅值相等而相位差为 $90^\circ$，可视为对称四相制的一半。
+
+\corepoint{“对称”是本章一切简化的前提，包含三层：电源对称（幅值同、相差 $120^\circ$）、负载对称（三相阻抗相同）、线路对称（三相导线阻抗相等）。三者缺一即为不对称电路，不能化为单相计算。}
 
 \section{星形联结和三角形联结}
+三相电源和三相负载都有两种基本连接方式：星形（$Y$）联结和三角形（$\Delta$）联结。
+
 \subsection{星形联结}
-图中三相电源和负载均为星形，或称$Y$形。三个相连在一起的公共点称为中性点。中性点之间的连线称为中性线。在这种连接方式中，电源。
+把三个电压源的末端 X、Y、Z 连在一起（也可把始端 A、B、C 连在一起），另三个端分别引出，即为电源的星形联结；负载的星形联结与之类似。
 
-在对称三相电路中，各相电流必然是对称的。此时
-\[
-\]
-上式说明。
+三个相连在一起的公共点称为\textbf{中性点}（图中的 $N$ 和 $N'$）；中性点之间的连线称为\textbf{中性线}；分别从始端 A、B、C 引出的三根导线称为\textbf{端线}（俗称火线）。电源与负载之间用了四根导线，故称\textbf{三相四线制}。
 
-端线电流。
+在对称三相电路中，各相电流必然对称，即 $\dot{I}_A$、$\dot{I}_B$、$\dot{I}_C$ 振幅相等、相位互差 $120^\circ$，此时中性线电流为
+\begin{equation}
+\dot{I}_N=\dot{I}_A+\dot{I}_B+\dot{I}_C=\dot{I}_A\left(1+a^2+a\right)=0
+\end{equation}
+即端线电流对称时中性线电流为零。此时中性线不起载送电流的作用，可以省去，三相四线制变为\textbf{三相三线制}。
 
-根据星形联结的电路结构可知：后者用相量表示为
-\[
-\]
+\textbf{线量与相量}：端线电流 $\dot{I}_A$、$\dot{I}_B$、$\dot{I}_C$ 称为\textbf{线电流}；每两条端线之间的电压称为\textbf{线电压}；电源和负载中各相的电流称为\textbf{相电流}；各相上的电压（星形联结中即端线与中性点之间的电压）称为\textbf{相电压}。工程上所说的三相电路电压都是指\textbf{线电压}（例如说 110 kV 输电线，指其线电压）。
 
-在相电压对称的情况下，线电压与相电压的关系可进一步简化。
+星形联结的基本关系：不论有无中性线，\textbf{相电流等于相应的线电流}；线电压等于相应的两个相电压之差
+\keyformula{\dot{U}_{AB}=\dot{U}_{AN}-\dot{U}_{BN},\quad
+\dot{U}_{BC}=\dot{U}_{BN}-\dot{U}_{CN},\quad
+\dot{U}_{CA}=\dot{U}_{CN}-\dot{U}_{AN}}
+在相电压对称时，例如
+\begin{equation}
+\dot{U}_{AB}=\dot{U}_{AN}-a^2\dot{U}_{AN}=\left(1-a^2\right)\dot{U}_{AN}=\sqrt{3}\dot{U}_{AN}\angle30^\circ
+\end{equation}
+同理可得三相，合写为
+\keyformula{\dot{U}_{AB}=\sqrt{3}\dot{U}_{AN}\angle30^\circ,\quad
+\dot{U}_{BC}=\sqrt{3}\dot{U}_{BN}\angle30^\circ,\quad
+\dot{U}_{CA}=\sqrt{3}\dot{U}_{CN}\angle30^\circ}
+结论：\textbf{星形联结中，当相电压对称时线电压也对称，其有效值等于相电压有效值的 $\sqrt{3}$ 倍}。用 $U_L$、$U_p$ 表示线电压与相电压有效值，则
+\keyformula{U_L=\sqrt{3}U_p}
+且线电压在相位上\textbf{超前于先行相相电压 $30^\circ$}（按 A—B—C 顺序取参考方向时）。
 
-同理，可以得出。
-\[
-\]
-图画出了所示电源的对称相电压和线电压的相量图。则有
-\[
-\]
-按照。
+对称情况下三个相电流有效值相等（记 $I_p$），三个线电流有效值也相等（记 $I_L$），星形联结中
+\begin{equation}
+I_L=I_p
+\end{equation}
 
-在对称情况下，三个相电流有效值相等。
+\corepoint{$\sqrt{3}$ 与 $30^\circ$ 是星形联结的两个关键词：线电压 = $\sqrt{3}\times$相电压，且超前先行相 $30^\circ$。上述简化关系\textbf{只在相电压对称时成立}；相电压不对称时线电压与相电压之间只有 $\dot{U}_{AB}=\dot{U}_{AN}-\dot{U}_{BN}$ 这一原始关系。}
 
 \subsection{三角形联结}
-图中，则三相总电压为
-\[
-\]
-与上式对应的电压相量图。假如，则三相总电压为
-\[
-\]
-相应的相量图。总电压有效值为相电压有效值的二倍。
+把三个电压源的始端和末端依次相接（A 接 Z、B 接 X、C 接 Y），再从各连接点引出端线，即为电源的三角形联结。
 
-当把负载接成三角形时，如果。
+对称三相电压接成三角形时，回路总电压
+\begin{equation}
+\dot{U}=\dot{U}_A+\dot{U}_B+\dot{U}_C=\dot{U}_A\left(1+a+a^2\right)=0
+\end{equation}
+回路内无循环电流。但若其中一相反接（例如 C 相反接），则
+\begin{equation}
+\dot{U}=\dot{U}_A+\dot{U}_B-\dot{U}_C=-\dot{U}_C\left(1-a^2\right)=-2\dot{U}_C
+\end{equation}
+总电压有效值为相电压有效值的\textbf{二倍}，由于电源内阻抗极小，将产生极大的回路电流，甚至烧毁电源。因此把三相电源接成三角形时，应先用一个电压表接到尚未连接的最后两个连接点，测量三相电压之和是否为零，确认后再闭合。
 
-在三角形联结中。
+把负载接成三角形时，若各相负载两端有极性差异（例如各相之间存在互感），也需按始端和末端依次相接；若无极性差异则可随意连接。
 
-在三角形联结中，用相量表示为
-\[
-\]
+三角形联结中\textbf{没有中性点和中性线}，故只能用于三相三线制电路。在三角形联结中\textbf{线电流与相电流不同}。习惯上：电源中相电流与相电压参考方向相反，负载中相电流与相电压参考方向相同。这样无论电源端还是负载端，线电流都等于两个相电流之差
+\keyformula{\dot{I}_A=\dot{I}_{AB}-\dot{I}_{CA},\quad
+\dot{I}_B=\dot{I}_{BC}-\dot{I}_{AB},\quad
+\dot{I}_C=\dot{I}_{CA}-\dot{I}_{BC}}
+三个相电流对称时，例如
+\begin{equation}
+\dot{I}_A=\dot{I}_{AB}-a\dot{I}_{AB}=\sqrt{3}\dot{I}_{AB}\angle-30^\circ
+\end{equation}
+故
+\keyformula{I_L=\sqrt{3}I_p}
+且线电流在相位上\textbf{滞后于后续相电流 $30^\circ$}。三角形联结中各相电压均等于相应的线电压
+\begin{equation}
+U_L=U_p
+\end{equation}
 
-在负载端。
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+项目 & 星形（$Y$）联结 & 三角形（$\Delta$）联结 \\
+\midrule
+电压关系 & $U_L=\sqrt{3}U_p$，线电压超前先行相相电压 $30^\circ$ & $U_L=U_p$ \\
+电流关系 & $I_L=I_p$ & $I_L=\sqrt{3}I_p$，线电流滞后后续相电流 $30^\circ$ \\
+中性点 & 有（可引出中性线） & 无 \\
+适用制式 & 三相四线制或三线制 & 仅三相三线制 \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-如果三个相电流是对称的，并由此得线电流与相电流的关系
-\[
-\]
-可见在三角形联结中，当正弦相电流对称时，线电流也是对称的，其有效值等于，即
-\[
-\]
-当按。
+电源接成星形还是三角形，与负载接成星形还是三角形\textbf{无关}，各自按技术要求确定。为了得到三相四线制系统，电源必须接成星形（才能引出中性线，从而得到线电压和相电压两种电压）。一般三相四线低压电网的标准相电压为 $220\,\mathrm{V}$，线电压为 $\sqrt{3}\times220\,\mathrm{V}\approx380\,\mathrm{V}$。
 
-三角形联结中，在对称情况下可以记作
-\[
-\]
+一个三相负载应接成星形还是三角形，要根据其\textbf{额定电压}与电源线电压的量值决定：接成三角形时每相承受的电压为电源线电压；接成星形时每相承受的电压为线电压的 $1/\sqrt{3}$。许多小功率单相负载（如家用电器）额定电压是 $220\,\mathrm{V}$，应接在端线与中性线之间。
 
-上面。
-
-在三相电路。
-
-一个三相负载应当接成。
+\corepoint{星形“电压 $\sqrt{3}$、电流相等”，三角形“电流 $\sqrt{3}$、电压相等”——两句口诀不可互换。三角形联结的电源接错一相会烧设备，所以实际接线前必须用电压表核对总电压为零。}
 
 \section{对称三相电路的计算}
-图。
+最基本的三相电路（一个电源向一个负载供电）也含四条支路、两个节点，可用第 4 章的方法列方程求解。但对称三相电路有特殊规律，可大幅简化。
 
-设，对负载中性点列电压方程
-\[
-\]
-因为回路电压方程为
-\[
-\]
-上式表明。
+设三相电源对称，以电源中性点 $N$ 为电位参考点，对负载中性点 $N'$ 列节点电压方程
+\begin{equation}
+\dot{U}_{N'N}=\frac{\dfrac{\dot{U}_A}{Z+Z_L}+\dfrac{\dot{U}_B}{Z+Z_L}+\dfrac{\dot{U}_C}{Z+Z_L}}{\dfrac{3}{Z+Z_L}+\dfrac{1}{Z_N}}
+=\frac{\dfrac{\dot{U}_A+\dot{U}_B+\dot{U}_C}{Z+Z_L}}{\dfrac{3}{Z+Z_L}+\dfrac{1}{Z_N}}=0
+\end{equation}
+解得 $\dot{U}_{N'N}=0$。这说明：\textbf{在对称星形联结三相正弦电路中，无论中性线阻抗为何值（包括 $Z_N=0$ 或 $Z_N\to\infty$），负载中性点与电源中性点之间的电压恒为零}。
 
-对于比较复杂。
+据此可假想用一条无阻抗的导线将电源和负载的中性点直接连接，不会影响电路工作。对由 A 相和假想中性线构成的回路列回路电压方程
+\keyformula{\left(Z+Z_L\right)\dot{I}_A=\dot{U}_A}
+即 A 相电流只由 A 相电源电压与本相总阻抗决定，可取出\textbf{一相}按单相电路计算；其余两相的电流、电压由对称关系直接写出。
+
+\textbf{对称三相电路的一般计算步骤}：
+\begin{enumerate}
+  \item 把各三角形联结的电源和负载都等效为\textbf{星形}联结（$\Delta\to Y$ 用 $Z_Y=Z_\Delta/3$）；
+  \item 用一条无阻抗的\textbf{假想中性线}把所有电源和负载的中性点连接起来，原有中性线上的阻抗被假想中性线短路；
+  \item \textbf{取出一相}（通常取 A 相）按单相电路计算；
+  \item 根据\textbf{对称关系}推算其他两相：$\dot{I}_B=a^2\dot{I}_A$，$\dot{I}_C=a\dot{I}_A$，电压同理。
+\end{enumerate}
+
+\corepoint{“一相计算法”的前提是对称。中性点电压为零是它能成立的根本原因——正因为 $N$、$N'$ 等电位，三相才互不干扰。若负载不对称，中性点位移，一相计算法立即失效。}
 
 \section{不对称三相电路示例}
+当三相电源电压不对称或电路参数不对称时，电路中各相电流一般也不对称，这种电路称为\textbf{不对称三相电路}。不对称问题是大量存在的：大量小功率单相负载很难凑成完全对称的三相电路；对称三相电路发生断路、短路等故障时也变成不对称电路；有的设备正是利用不对称三相电路的某些特性工作的。
+
+不对称三相电路各相电流之间一般不存在“有效值相等、相位互差 $120^\circ$”的关系，故\textbf{不能直接化为单相电路}，而要作为一般正弦电流电路分析。
+
+最常见的低压三相四线制系统中，由于有大量单相负载，三个相的等效阻抗 $Z_A$、$Z_B$、$Z_C$ 互不相同，而电源电压通常可认为是对称的。电路只有两个节点，由节点电压法可直接写出两中性点间电压
+\keyformula{\dot{U}_{N'N}=\frac{\dfrac{\dot{U}_A}{Z_A}+\dfrac{\dot{U}_B}{Z_B}+\dfrac{\dot{U}_C}{Z_C}}{\dfrac{1}{Z_A}+\dfrac{1}{Z_B}+\dfrac{1}{Z_C}+\dfrac{1}{Z_N}}}
+电源电压对称但负载不对称，故 $\dot{U}_{N'N}$ 一般不为零。由 KVL 得负载各相电压
+\begin{equation}
+\dot{U}_{AN'}=\dot{U}_A-\dot{U}_{N'N},\quad
+\dot{U}_{BN'}=\dot{U}_B-\dot{U}_{N'N},\quad
+\dot{U}_{CN'}=\dot{U}_C-\dot{U}_{N'N}
+\end{equation}
+负载中性点电位与电源中性点电位不相等的现象称为\textbf{负载中性点的位移}。中性点位移越大，负载相电压不对称越严重，有的相电压偏高（可能损坏设备）、有的相电压偏低（不能正常工作）。
+
+两点重要结论：
+\begin{itemize}
+  \item 三相四线制中若\textbf{中性线阻抗为零}（$Z_N=0$），则 $\dot{U}_{N'N}=0$，各相负载电压仍等于对称的电源相电压，各相互不影响——这就是照明等单相负载必须用三相四线制且中性线上不允许装开关和熔断器的原因；
+  \item 若\textbf{中性线断开}（$Z_N\to\infty$），则中性点位移最大，各相电压随负载不对称程度而严重偏离，可能烧坏设备。
+\end{itemize}
+
+\corepoint{不对称电路只能老老实实用节点电压法（求 $\dot{U}_{N'N}$）再求各相电压、电流；用对称分量法或“一相计算”都是错的。中性线的作用就是强制 $\dot{U}_{N'N}=0$，保证各相电压对称。}
 
 \section{三相电路的功率}
+\subsection{瞬时功率与瞬时功率平衡}
+设对称三相电路中各相电压、电流都对称，各相瞬时功率为
+\begin{equation}
+\begin{aligned}
+p_A&=u_Ai_A=\frac{1}{2}U_mI_m\cos\varphi+\frac{1}{2}U_mI_m\cos\left(2\omega t-\varphi\right)\\
+p_B&=u_Bi_B=\frac{1}{2}U_mI_m\cos\varphi+\frac{1}{2}U_mI_m\cos\left(2\omega t-240^\circ-\varphi\right)\\
+p_C&=u_Ci_C=\frac{1}{2}U_mI_m\cos\varphi+\frac{1}{2}U_mI_m\cos\left(2\omega t-480^\circ-\varphi\right)
+\end{aligned}
+\end{equation}
+三式中时间余弦函数在时间上互差三分之一周期，三者之和为零，故三相总瞬时功率
+\keyformula{p=p_A+p_B+p_C=\frac{3}{2}U_mI_m\cos\varphi=3U_pI_p\cos\varphi}
+即\textbf{对称三相正弦电路的瞬时功率等于常量}，这种性质称为\textbf{瞬时功率平衡}。三相制是一种\textbf{平衡制}，这是三相制的优点之一：发电机任何瞬间输出的电功率是常量，故驱动它所需的机械功率与转矩也是常量，可免除运转时的振动；对电动机也有类似优点。
+
+\subsection{平均功率、无功功率与视在功率}
+由于瞬时功率是常量，它也就是平均功率
+\keyformula{P=3U_pI_p\cos\varphi}
+即对称三相电路的平均功率等于其中一相平均功率的三倍。$U_p$、$I_p$ 为相电压、相电流有效值，$\varphi$ 为\textbf{相电压超前于相电流}的相位差，$\cos\varphi$ 是对称三相负载的功率因数。
+
+三相电源与负载的外部特性用线电压、线电流表示，故通常用线量计算。星形联结时 $U_p=U_L/\sqrt{3}$、$I_p=I_L$；三角形联结时 $U_p=U_L$、$I_p=I_L/\sqrt{3}$，代入上式都得到
+\keyformula{P=\sqrt{3}U_LI_L\cos\varphi}
+同理
+\keyformula{Q=3U_pI_p\sin\varphi=\sqrt{3}U_LI_L\sin\varphi,\qquad
+S=\sqrt{P^2+Q^2}=\sqrt{3}U_LI_L}
+即在对称三相正弦电路中，不论星形或三角形联结，平均功率总等于线电压、线电流和功率因数三者乘积的 $\sqrt{3}$ 倍；无功功率、视在功率同此。
+
+\subsection{不对称三相电路的功率}
+不对称三相电路中各相电压之间、各相电流之间均无特定关系，只能\textbf{分别计算各相功率再求和}
+\begin{equation}
+P=P_A+P_B+P_C=U_AI_A\cos\varphi_A+U_BI_B\cos\varphi_B+U_CI_C\cos\varphi_C
+\end{equation}
+\begin{equation}
+Q=Q_A+Q_B+Q_C=U_AI_A\sin\varphi_A+U_BI_B\sin\varphi_B+U_CI_C\sin\varphi_C
+\end{equation}
+视在功率仍按 $S=\sqrt{P^2+Q^2}$ 确定，不对称三相负载的功率因数定义为
+\begin{equation}
+\lambda=\cos\varphi=\frac{P}{S}
+\end{equation}
+但这个 $\varphi$ 不能写成 $\arccos\lambda$ 后再当作某相相位差使用，因为不对称时它没有相应的物理意义。
+
+\corepoint{对称时 $\sqrt{3}U_LI_L\cos\varphi$ 一步到位；不对称时必须“分相求和”。注意 $\varphi$ 永远是\textbf{相}电压与\textbf{相}电流的相位差，不是线电压与线电流的相位差。}
+
+\section{三相电路功率的测量}
+\subsection{对称三相电路：一表法}
+测量对称三相电路的功率时，只需用一个功率表测量其一相功率，然后乘以 3。某些情况下星形联结负载的中性点不易引出，或负载为三角形联结，此时必须制造一个\textbf{人工中性点}——用三个相等的适当电阻连成星形并引出其中性点，把功率表的电压线圈接在该相与人工中性点之间。
+
+\subsection{任意三相三线制：二表法}
+测量任意（对称或不对称）三相三线制的功率需用两个功率表，即\textbf{二表法}，两个功率表读数之和等于总功率。证明如下：把三角形负载等效成 Y-Y 连接，负载吸收的总瞬时功率等于三个电源发出的瞬时功率之和
+\begin{equation}
+p=u_Ai_A+u_Bi_B+u_Ci_C
+\end{equation}
+三相三线制中线电流满足 $i_A+i_B+i_C=0$，即 $i_C=-\left(i_A+i_B\right)$，代入得
+\begin{equation}
+p=u_Ai_A+u_Bi_B-u_C\left(i_A+i_B\right)
+=\left(u_A-u_C\right)i_A+\left(u_B-u_C\right)i_B
+=u_{AC}i_A+u_{BC}i_B
+\end{equation}
+各项取平均值即得三相平均功率
+\keyformula{P=U_{AC}I_A\cos\varphi_1+U_{BC}I_B\cos\varphi_2}
+式中 $\varphi_1$ 表示 $\dot{U}_{AC}$ 与 $\dot{I}_A$ 的相位差，$\varphi_2$ 表示 $\dot{U}_{BC}$ 与 $\dot{I}_B$ 的相位差；等号右端两项分别是两个功率表的读数。
+
+二表法的要点：
+\begin{itemize}
+  \item 两个功率表的\textbf{电流线圈}分别串入任意两条端线（如 A、B），\textbf{电压线圈}的非极性端都接到\textbf{第三条端线}（C）上；
+  \item 总功率等于两表读数之\textbf{代数和}，\textbf{单个表的读数没有物理意义}；
+  \item 当 $\cos\varphi<0.5$（即 $|\varphi|>60^\circ$）时，其中一只表会反偏，需把它的电流线圈（或电压线圈）反接，读数取负值；
+  \item 此法适用于\textbf{三相三线制}（对称或不对称均可）；三相四线制因有中性线电流，$i_A+i_B+i_C\neq0$，二表法不成立，须用三表法。
+\end{itemize}
+
+对称负载时两表读数还有如下关系（便于由读数反求无功功率）
+\begin{equation}
+P_1=U_LI_L\cos\left(\varphi-30^\circ\right),\qquad
+P_2=U_LI_L\cos\left(\varphi+30^\circ\right)
+\end{equation}
+由此 $P_1+P_2=\sqrt{3}U_LI_L\cos\varphi=P$，$P_1-P_2=U_LI_L\sin\varphi$，故
+\keyformula{Q=\sqrt{3}\left(P_1-P_2\right)}
+
+\subsection{三相四线制：三表法}
+三相四线制（有中性线）用三个功率表分别测量各相功率，总功率为三表读数之和，即 $P=P_A+P_B+P_C$。这与不对称三相电路“分相求和”的公式完全对应。
+
+\corepoint{选表先看制式：三相三线制→二表法（两读数代数和，单表无意义）；三相四线制→三表法（或一表法测对称负载）。二表法测对称负载时可用 $\sqrt{3}(P_1-P_2)$ 直接得无功功率。}
 
 \endinput

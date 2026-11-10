@@ -1,0 +1,512 @@
+﻿% ============================================================
+% 第 2 章  电力网络各元件的等值电路和参数计算
+% （教材：何仰赞、温增银《电力系统分析》上册 第 2 章）
+% 结构对齐 2.1—2.4；例题、习题不录
+% ============================================================
+
+\chapter{电力网络各元件的等值电路和参数计算}
+
+电力系统的运行状态基本上是三相对称的（正常运行），或者可以化为三相对称的（用对称分量法），
+因此只需研究一相。元件的三相有星形和三角形接法，等值电路相应地也有星形和三角形两种，
+为便于用一相等值电路计算，常把三角形化为星形。\textbf{等值电路中的参数是计及了其余两相
+影响（相间互感等）的一相等值参数}，这一点是本章所有算式的共同前提。
+
+\section{架空输电线路的参数}
+
+线路的四个参数各有明确物理意义：电阻反映有功损耗，电感反映磁场效应，电导反映泄漏电流
+与电晕引起的有功损耗，电容反映电场效应。参数沿全长均匀分布，单位长度参数记为
+$r_0$、$L_0$（或 $x_0$）、$g_0$、$C_0$（或 $b_0$）。电缆参数由厂家给出或实测，本节只讨论架空线。
+
+\subsection{电阻}
+
+有色金属导线单位长度的直流电阻
+\begin{equation}
+  r=\rho/S ,
+\end{equation}
+其中 $\rho$ 为电阻率（$\Omega\cdot\text{mm}^2/\text{km}$），$S$ 为载流部分标称截面积（$\text{mm}^2$）。
+工程上不用材料的标准电阻率，而用略为增大的\textbf{计算值}：铜 $18.8$、铝 $31.5\
+\Omega\cdot\text{mm}^2/\text{km}$。原因有三：
+\begin{enumerate}
+  \item 工频交流下集肤效应与邻近效应使交流电阻略大于直流电阻；
+  \item 多股绞线扭绞后实际长度比线路长度长 $2\%\sim3\%$；
+  \item 制造中实际截面常比标称截面略小。
+\end{enumerate}
+
+手册查得或按上式计算的值均为 $20\,^\circ$C 时的值，其他温度下
+\keyformula{r_t=r_{20}\left[1+\alpha(t-20)\right]}
+其中温度系数 $\alpha$：铜 $0.00382/^\circ$C，铝 $0.00361/^\circ$C。
+$220$~kV 以下线路一般可忽略集肤效应，直接取手册值。
+
+\subsection{电感（电抗）}
+
+\subsubsection{基本算式}
+
+设磁路磁导率为常数，则磁链与电流成正比，自感 $L=\varPsi/i$，互感 $M_{AB}=\varPsi_{AB}/i_B$。
+非铁磁材料圆柱形长导线（长度 $l\gg$ 半径 $r$）每单位长度的自感
+\begin{equation}
+  L=\frac{\mu_0}{2\pi}\left(\ln\frac{2l}{r}-1\right)=\frac{\mu_0}{2\pi}\ln\frac{2l}{D_s},
+  \qquad D_s=re^{-1/4}=0.779\,r ,
+\end{equation}
+$D_s$ 称为导线的\textbf{自几何均距}。两根平行长导线（轴线间距 $D$）每单位长度的互感
+\begin{equation}
+  M=\frac{\mu_0}{2\pi}\left(\ln\frac{2l}{D}-1\right)=\frac{\mu_0}{2\pi}\ln\frac{2l}{D}.
+\end{equation}
+这两式是计算多相线路电感的基础。
+
+\subsubsection{三相输电线路的一相等值电感}
+
+等边三角形排列、相间距离 $D$ 的三相线路，利用 $i_a+i_b+i_c=0$ 消去互感项后得
+\begin{equation}
+  L_1=\frac{\mu_0}{2\pi}\ln\frac{D}{D_s}\quad(\text{H/m}).
+\end{equation}
+三相排列不对称时，各相交链磁链不等，须用\textbf{导线换位}（一个整循环换位分三段，
+每段三相各占一个位置）使各相平均电感接近相等。经整循环换位后
+\begin{equation}
+  L_1=\frac{\mu_0}{2\pi}\ln\frac{D_{eq}}{D_s},
+  \qquad D_{eq}=\sqrt[3]{D_{ab}D_{bc}D_{ca}},
+\end{equation}
+$D_{eq}$ 称为三相导线的\textbf{互几何均距}。三相水平排列时 $D_{eq}=\sqrt[3]{D\cdot 2D\cdot D}=1.26D$。
+
+导线自几何均距的取值：非铁磁材料单股线 $D_s=0.779r$；多股线 $D_s=(0.724\sim0.771)r$；
+钢芯铝线 $D_s=(0.77\sim0.9)r$（查手册）。
+
+\subsubsection{分裂导线的等值电感}
+
+每相分裂成 $n$ 根（一般 $n\le4$），布置在正多边形顶点上，边长（分裂间距）为 $d$。
+因相间距离远大于 $d$，可认为各相分裂导线重心间的距离即相间距离，于是只需用分裂导线的
+自几何均距 $D_{sb}$ 代替 $D_s$：
+\begin{equation}
+  L_1=\frac{\mu_0}{2\pi}\ln\frac{D_{eq}}{D_{sb}},\qquad
+  D_{sb}=\sqrt[n]{D_s\,d^{\,n-1}} .
+\end{equation}
+具体写开为
+\begin{align}
+  n=2:&\quad D_{sb}=\sqrt{D_s d},\\
+  n=3:&\quad D_{sb}=\sqrt[3]{D_s d^{2}},\\
+  n=4:&\quad D_{sb}=\sqrt[4]{D_s d^{3}}=1.09\sqrt[4]{D_s d^{3}} .
+\end{align}
+$d\gg D_s$，故 $D_{sb}$ 大于单导线的 $D_s$，分裂导线等值电感较小。
+
+\subsubsection{等值电抗}
+
+额定频率 $f_N=50$~Hz、$\mu_0=4\pi\times10^{-7}$~H/m 时，单导线线路
+\keyformula{x_1=0.0628\ln\frac{D_{eq}}{D_s}=0.1445\lg\frac{D_{eq}}{D_s}\quad(\Omega/\text{km})}
+分裂导线线路把 $D_s$ 换成 $D_{sb}$：
+\begin{equation}
+  x_1=0.1445\lg\frac{D_{eq}}{D_{sb}}\quad(\Omega/\text{km}).
+\end{equation}
+相间距离、导线截面等结构参数都在对数符号内，故各种线路的电抗值变化不大：
+单导线约 $0.4\ \Omega/\text{km}$；$2$、$3$、$4$ 分裂时分别约 $0.33$、$0.30$、$0.28\ \Omega/\text{km}$。
+钢导线的集肤效应与内部磁导率随电流变化，其阻抗是非线性的，只能用实验测定，不能用上式计算。
+
+\subsection{电导}
+
+电导反映泄漏电流和空气游离引起的有功损耗。绝缘良好时泄漏可忽略，主要考虑\textbf{电晕}：
+导线表面电场强度超过空气击穿强度时，附近空气游离而产生局部放电（嘶嘶声、臭氧、夜间紫晕）。
+开始出现电晕的电压称为临界电压，三相导线等边三角形排列时
+\begin{equation}
+  U_{cr}=49.3\,m_1 m_2 \delta\, r\lg\frac{D}{r}\quad(\text{kV}),
+\end{equation}
+其中 $m_1$ 为导线表面状况系数（多股绞线 $0.83\sim0.87$），$m_2$ 为气象系数（干燥晴朗取 $1$，
+雨雪雾 $0.8\sim1$），$r$ 为导线计算半径（cm），$\delta$ 为空气相对密度
+\begin{equation}
+  \delta=\frac{3.92p}{273+t},
+\end{equation}
+$p$ 为大气压力（Pa），$t$ 为温度（$^\circ$C）；$t=25\,^\circ$C、$p=76$~Pa 时 $\delta=1$。
+水平排列时，两边线临界电压比上式计算值高 $6\%$，中间相低 $4\%$。
+
+若三相线路每公里电晕损耗为 $\Delta P_g$（MW/km），则每相等值电导
+\begin{equation}
+  g_1=\frac{\Delta P_g}{U_L^{2}}\times10^{-3}\quad(\text{S/km}),
+\end{equation}
+$U_L$ 为线电压（kV）。
+
+设计时总尽量避免正常气象下发生电晕。由 $U_{cr}$ 算式可见：$D$ 在对数内，增大它对
+$U_{cr}$ 影响不大却大幅增加杆塔造价；$U_{cr}$ 差不多与 $r$ 成正比，故\textbf{增大导线半径}
+是减小电晕损耗的有效方法。220~kV 以下按避免电晕选导线半径；220~kV 及以上用分裂导线
+（或扩径导线）增大每相等值半径。因此一般系统计算中可认为 $g\approx0$。
+
+\subsection{电容（电纳）}
+
+由带电平行长导线的电位叠加可得导线 $A$ 的对地电位
+$U_A=\dfrac{q}{2\pi\varepsilon}\ln\dfrac{D}{r}$，据此两线间单位长度电容
+$C=\pi\varepsilon/\ln(D/r)$。三相线路须计及大地影响（用镜像代替），经整循环换位并略去
+与大地影响有关的次要项后，每相等值电容
+\begin{equation}
+  C_1=\frac{0.0241}{\lg\dfrac{D_{eq}}{r}}\times10^{-6}\quad(\text{F/km}),
+\end{equation}
+分裂导线用一相导线组的\textbf{等值半径} $r_{eq}$ 代替 $r$：
+\begin{equation}
+  r_{eq}=\sqrt[n]{r\,d^{\,n-1}},
+\end{equation}
+即 $n=2$ 时 $r_{eq}=\sqrt{rd}$，$n=3$ 时 $\sqrt[3]{rd^{2}}$，$n=4$ 时 $1.09\sqrt[4]{rd^{3}}$，
+单导线 $r_{eq}=r$。
+
+额定频率下的等值电纳
+\keyformula{b_1=2\pi f_N C_1=\frac{7.58}{\lg\dfrac{D_{eq}}{r_{eq}}}\times10^{-6}\quad(\text{S/km})}
+单导线约 $2.8\times10^{-6}$~S/km；2、3、4 分裂分别约 $3.4$、$3.8$、$4.1\times10^{-6}$~S/km。
+与电抗同理，结构参数在对数内，故各电压等级线路电纳差别不大。
+
+\begin{table}[htbp]
+  \centering
+  \caption{架空线路四个参数的算式与数量级汇总}
+  \small
+  \begin{tabular}{@{}p{0.08\linewidth}p{0.42\linewidth}p{0.18\linewidth}p{0.22\linewidth}@{}}
+    \toprule
+    参数 & 算式 & 数量级 & 物理意义 \\
+    \midrule
+    $r$ & $\rho/S$，$\rho$ 取计算值（铜 18.8、铝 31.5） & $0.05\sim0.2\ \Omega$/km & 有功损耗 \\
+    $x$ & $0.1445\lg(D_{eq}/D_s)$（分裂用 $D_{sb}$） & $0.28\sim0.42\ \Omega$/km & 磁场效应 \\
+    $g$ & $\Delta P_g/U_L^{2}$，正常可忽略 & $\approx0$ & 电晕与泄漏损耗 \\
+    $b$ & $7.58\times10^{-6}/\lg(D_{eq}/r_{eq})$ & $2.8\sim4.1\ \mu$S/km & 电场效应 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{三个易错点：（1） $D_{eq}$ 用互几何均距 $1.26D$（水平排列），不是 $D$；
+（2） 分裂导线只改自几何均距 $D_{sb}$（电抗）与等值半径 $r_{eq}$（电纳），$D_{eq}$ 不变；
+（3） $r_{eq}$ 用于电纳，$D_{sb}$ 用于电抗，两者虽然形式相似但一个是“半径”一个是“均距”，不能互串。}
+
+\section{架空输电线的等值电路}
+
+\subsection{输电线路的方程式}
+
+设单位长度阻抗 $z_0=r_0+j\omega L_0$、导纳 $y_0=g_0+j\omega C_0$，沿线均匀分布。
+在距末端 $x$ 处取微段 $\mathrm{d}x$，由电压降和分流关系得
+\begin{equation}
+  \frac{\mathrm{d}\dot U}{\mathrm{d}x}=z_0\dot I,\qquad
+  \frac{\mathrm{d}\dot I}{\mathrm{d}x}=y_0\dot U ,
+\end{equation}
+对第一式求导并代入第二式，得二阶常系数齐次微分方程
+$\dfrac{\mathrm{d}^{2}\dot U}{\mathrm{d}x^{2}}=z_0y_0\dot U$，通解为
+$\dot U=A_1e^{\gamma x}+A_2e^{-\gamma x}$。式中
+\keyformula{\gamma=\sqrt{z_0y_0}=\beta+j\alpha,\qquad Z_c=\sqrt{z_0/y_0}=|Z_c|e^{j\theta_c}}
+$\gamma$ 称\textbf{传播常数}（实部 $\beta$ 为衰减常数，虚部 $\alpha$ 为相位常数，
+因 $z_0$、$y_0$ 的辐角均在 $0^\circ\sim90^\circ$，故 $\beta$、$\alpha$ 均为正）；
+$Z_c$ 称\textbf{波阻抗}（特性阻抗），二者只与线路参数和频率有关。
+高压架空线 $r_0\ll\omega L_0$、$g_0\approx0$，故 $Z_c$ 接近纯电阻而略呈电容性；
+略去 $r_0$、$g_0$ 时 $\gamma=j\alpha=j\omega\sqrt{L_0C_0}$、$Z_c=R_c=\sqrt{L_0/C_0}$。
+单导线架空线波阻抗 $370\sim410\ \Omega$，分裂导线 $270\sim310\ \Omega$，电缆 $30\sim50\ \Omega$。
+
+由边界条件（$x=0$ 处 $\dot U=\dot U_2$、$\dot I=\dot I_2$）定出积分常数，写成双曲函数形式：
+\begin{align}
+  \dot U&=\dot U_2\operatorname{ch}\gamma x+\dot I_2Z_c\operatorname{sh}\gamma x,\\
+  \dot I&=\frac{\dot U_2}{Z_c}\operatorname{sh}\gamma x+\dot I_2\operatorname{ch}\gamma x .
+\end{align}
+取 $x=l$ 得首末端关系，与二端口网络通用方程
+$\dot U_1=A\dot U_2+B\dot I_2$、$\dot I_1=C\dot U_2+D\dot I_2$ 比较，有
+\begin{equation}
+  A=D=\operatorname{ch}\gamma l,\qquad B=Z_c\operatorname{sh}\gamma l,\qquad
+  C=\frac{\operatorname{sh}\gamma l}{Z_c},
+\end{equation}
+且 $AD-BC=1$，故输电线是\textbf{对称的无源二端口网络}，可用对称等值电路表示。
+
+\subsection{集中参数等值电路}
+
+\subsubsection{$\pi$ 型与 T 型}
+
+$\pi$ 型电路（两端各并 $Y'/2$、中间串 $Z'$）与 T 型电路均可作等值电路，其精确参数为
+\begin{align}
+  \pi\ \text{型}:&\quad Z'=Z_c\operatorname{sh}\gamma l,\qquad
+     \frac{Y'}{2}=\frac{\operatorname{ch}\gamma l-1}{Z_c\operatorname{sh}\gamma l},\\
+  \text{T 型}:&\quad Z_T'=Z_c\operatorname{th}\gamma l,\qquad Y_T'=\frac{\operatorname{sh}\gamma l}{Z_c}.
+\end{align}
+工程上绝大多数采用 $\pi$ 型。
+
+\subsubsection{修正系数}
+
+复数双曲函数计算不便，令 $Z=z_0l$、$Y=y_0l$ 为全线总阻抗与总导纳，则
+\keyformula{Z'=K_zZ,\qquad Y'=K_yY,\qquad
+  K_z=\frac{\operatorname{sh}\gamma l}{\gamma l},\quad
+  K_y=\frac{2(\operatorname{ch}\gamma l-1)}{\gamma l\operatorname{sh}\gamma l}}
+略去电导并作级数展开，得常用的\textbf{简化修正公式}
+\begin{equation}
+  Z'=\left(k_r r_0+jk_x x_0\right)l,\qquad Y'\approx jk_b b_0 l,
+\end{equation}
+\begin{align}
+  k_r&=1-\tfrac{1}{3}x_0b_0l^{2},\\
+  k_x&=1-\tfrac{1}{6}\left(x_0b_0-\frac{r_0^{2}b_0}{x_0}\right)l^{2},\\
+  k_b&=1+\tfrac{1}{12}x_0b_0l^{2}.
+\end{align}
+可见 $k_r<1$、$k_x<1$ 而 $k_b>1$：修正使等值电阻、电抗略减、电纳略增，
+这正是分布参数“沿线逐渐泄漏”的集总化补偿。
+
+\subsubsection{三种参数与适用范围}
+
+\begin{table}[htbp]
+  \centering
+  \caption{$\pi$ 型电路三种参数取法及适用长度}
+  \small
+  \begin{tabular}{@{}p{0.13\linewidth}p{0.30\linewidth}p{0.44\linewidth}@{}}
+    \toprule
+    取法 & 算式 & 适用与说明 \\
+    \midrule
+    近似参数 & $Z'=Z$,\ $Y'=Y$ & 长度不超过 $300$~km 可用一个 $\pi$ 型电路；更长时用串级的多个 $\pi$ 型，
+                                    每个代替 $200\sim300$~km \\
+    修正参数 & $Z'=(k_rr_0+jk_xx_0)l$,\ $Y'=jk_bb_0l$ & 一个 $\pi$ 型可代替 $500\sim600$~km 的线路，
+                                    精度已接近精确参数 \\
+    精确参数 & $Z'=K_zZ$,\ $Y'=K_yY$ & 双曲函数计算，用于长线校核；上述处理仅适用于工频稳态计算 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+误差规律：随线路长度增加而增大；相对而言电阻误差最大，电抗次之，电纳最小。
+修正后各参数与精确值已非常接近，修正效果显著。即使 $g_0=0$，精确参数中仍有一个数值很小的
+电导，实际计算可忽略。
+
+\corepoint{短线路（$\le100$~km、$U_N\le110$~kV）可只保留串联阻抗、忽略并联电纳；
+中等长度（$100\sim300$~km）用 $\pi$ 型近似参数；长线（$>300$~km）必须用修正或精确参数，
+或串级 $\pi$ 型。判断“能否用一个 $\pi$ 型”看的是线路长度与波长之比，不是电压等级。}
+
+\section{变压器的一相等值电路和参数}
+
+\subsection{等值电路}
+
+双绕组变压器：把二次绕组的电阻和漏抗折算到一次侧，与一次绕组的合并为 $R_T+jX_T$，
+励磁支路 $G_T-jB_T$ \textbf{前移}到电源侧（因励磁电流很小，前移引起的误差可忽略）。
+三绕组变压器：采用励磁支路前移的星形等值电路，三个绕组阻抗 $R_i+jX_i$ 均折算到一次侧。
+自耦变压器的等值电路与普通变压器相同。
+
+\subsection{双绕组变压器的参数计算}
+
+参数由铭牌四个数据算出：短路损耗 $\Delta P_s$、短路电压百分数 $U_s\%$（由短路试验确定
+$R_T$、$X_T$），空载损耗 $\Delta P_0$、空载电流百分数 $I_0\%$（由空载试验确定 $G_T$、$B_T$）。
+
+\subsubsection{电阻 $R_T$}
+
+短路试验时外加电压小、铁耗可忽略，故短路损耗即额定电流下原副方绕组的铜耗
+$\Delta P_s=3I_N^2R_T$。改用三相额定容量 $S_N$ 与额定线电压 $U_N$ 表示，得
+\keyformula{R_T=\frac{\Delta P_s U_N^{2}}{1000\,S_N^{2}}\quad(\Omega)}
+其中 $\Delta P_s$ 单位 kW，$S_N$ 单位 MV$\cdot$A，$U_N$ 单位 kV（取折算侧额定线电压）。
+
+\subsubsection{电抗 $X_T$}
+
+短路电压百分数 $U_s\%$ 是额定电流下阻抗压降占额定电压的百分数。大容量变压器
+$R_T\ll X_T$，可近似认为 $U_x\%\approx U_s\%$，于是
+\keyformula{X_T=\frac{U_s\%}{100}\cdot\frac{U_N^{2}}{S_N}\quad(\Omega)}
+（$S_N$ 单位 MV$\cdot$A，$U_N$ 单位 kV）。
+
+\subsubsection{电导 $G_T$ 与电纳 $B_T$}
+
+铁耗近似等于空载损耗，故
+\begin{equation}
+  G_T=\frac{\Delta P_0}{U_N^{2}}\times10^{-3}\quad(\text{S}),
+\end{equation}
+$\Delta P_0$ 单位 kW。空载电流的有功分量很小，无功分量近似等于空载电流，故
+\begin{equation}
+  B_T=\frac{I_0\%}{100}\cdot\frac{S_N}{U_N^{2}}\times10^{-3}\quad(\text{S}).
+\end{equation}
+
+\subsubsection{变比 $k_T$}
+
+三相系统中变比指两侧绕组\textbf{空载线电压}之比，与同一铁芯柱上的匝数比有区别：
+Y,y 与 D,d 接法 $k_T=U_{1N}/U_{2N}=W_1/W_2$；Y,d 接法 $k_T=U_{1N}/U_{2N}=\sqrt{3}W_1/W_2$。
+运行中的\textbf{实际变比}应取两侧实际抽头的空载线电压之比（抽头有 $\pm5\%$、$\pm2\times2.5\%$ 等）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{双绕组变压器四个参数（铭牌数据 $\to$ 等值参数）}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    参数 & 算式 & 由哪个试验数据 & 数量级（110~kV、20~MV$\cdot$A 级） \\
+    \midrule
+    $R_T$ & $\Delta P_sU_N^{2}/(1000S_N^{2})$ & 短路损耗 $\Delta P_s$ & 几欧 \\
+    $X_T$ & $U_s\%\,U_N^{2}/(100S_N)$ & 短路电压 $U_s\%$ & 几十欧 \\
+    $G_T$ & $\Delta P_0\times10^{-3}/U_N^{2}$ & 空载损耗 $\Delta P_0$ & $10^{-6}$~S \\
+    $B_T$ & $I_0\%\,S_N\times10^{-3}/(100U_N^{2})$ & 空载电流 $I_0\%$ & $10^{-5}$~S \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{$R_T$、$X_T$ 依赖“折算到哪一侧”，$G_T$、$B_T$ 也随所选 $U_N$ 变化，四者必须
+折算到\textbf{同一侧}才能配套使用。铭牌容量 $S_N$ 恒为三相容量，$U_N$ 恒为线电压——
+这两条单位约定是本章计算题最常见的失分点。}
+
+\subsection{三绕组变压器的参数计算}
+
+\subsubsection{电阻}
+
+三绕组变压器的短路试验是依次让一个绕组开路、按双绕组方式做的，测得
+$\Delta P_{s(1\text{-}2)}$、$\Delta P_{s(2\text{-}3)}$、$\Delta P_{s(3\text{-}1)}$，则
+\begin{align}
+  \Delta P_{s(1\text{-}2)}&=\Delta P_{s1}+\Delta P_{s2},\\
+  \Delta P_{s(2\text{-}3)}&=\Delta P_{s2}+\Delta P_{s3},\\
+  \Delta P_{s(3\text{-}1)}&=\Delta P_{s3}+\Delta P_{s1},
+\end{align}
+解出各绕组短路损耗
+\begin{equation}
+  \Delta P_{s1}=\tfrac{1}{2}\left(\Delta P_{s(1\text{-}2)}+\Delta P_{s(3\text{-}1)}
+  -\Delta P_{s(2\text{-}3)}\right),
+\end{equation}
+其余两式按“$1,2,3$”轮换。再按双绕组公式
+\begin{equation}
+  R_i=\frac{\Delta P_{si}U_N^{2}}{1000\,S_N^{2}}\quad(i=1,2,3).
+\end{equation}
+
+\textbf{容量比的处理}：三个绕组额定容量可以不等，我国常见容量比（高/中/低）为
+$100/100/100$、$100/100/50$、$100/50/100$。铭牌额定容量指容量最大的绕组（高压绕组）。
+短路试验受较小容量绕组额定电流限制，故工厂给的 $\Delta P'_{s}$ 须先折算：
+\begin{equation}
+  \Delta P_{s(1\text{-}2)}=\Delta P'_{s(1\text{-}2)}
+  \left(\frac{S_N}{\min\{S_{1N},S_{2N}\}}\right)^{2},
+\end{equation}
+其余两组按所涉两绕组中较小的容量折算。若厂家只提供最大短路损耗 $\Delta P_{s.\max}$
+（两个 $100\%$ 容量绕组通额定电流、第三绕组空载时的损耗），则额定容量绕组的电阻为
+\begin{equation}
+  R_{(S_N)}=\frac{\Delta P_{s.\max}U_N^{2}}{2000\,S_N^{2}},
+\end{equation}
+容量为 $S'_N$ 的绕组 $R'_{(S'_N)}=R_{(S_N)}\left(S_N/S'_N\right)^{2}$。
+
+\subsubsection{电抗}
+
+近似认为电抗上的电压降等于短路电压。给出 $U_{s(1\text{-}2)}\%$、$U_{s(2\text{-}3)}\%$、
+$U_{s(3\text{-}1)}\%$ 后，各绕组短路电压为
+\begin{equation}
+  \begin{aligned}
+    U_{s1}\%&=\tfrac{1}{2}\left(U_{s(1\text{-}2)}\%+U_{s(3\text{-}1)}\%-U_{s(2\text{-}3)}\%\right),\\
+    U_{s2}\%&=\tfrac{1}{2}\left(U_{s(1\text{-}2)}\%+U_{s(2\text{-}3)}\%-U_{s(3\text{-}1)}\%\right),\\
+    U_{s3}\%&=\tfrac{1}{2}\left(U_{s(2\text{-}3)}\%+U_{s(3\text{-}1)}\%-U_{s(1\text{-}2)}\%\right),
+  \end{aligned}
+\end{equation}
+\begin{equation}
+  X_i=\frac{U_{si}\%}{100}\cdot\frac{U_N^{2}}{S_N}\quad(i=1,2,3).
+\end{equation}
+注意：手册和厂家提供的短路电压一般已折算到变压器额定容量，可直接用上述两式计算，
+\textbf{不必再折算}（这与电阻的折算形成对比，是常考的区别）。
+
+\subsubsection{各绕组电抗的相对大小}
+
+电抗大小取决于三个绕组在铁芯上的排列。高压绕组因绝缘要求排在最外层，中压或低压绕组
+可能位于中层。\textbf{排在中层的绕组等值电抗较小，甚至可为不大负值}：
+低压在中层（升压变压器常用）时有利于功率由低压向高、中压侧传送；
+中压在中层（降压变压器常用）时有利于功率由高压向中压侧传送，且 $X_1$、$X_3$ 较大，
+有利于限制低压侧短路电流。
+
+导纳 $G_T-jB_T$ 与变比 $k_{12}$、$k_{13}$、$k_{23}$ 的计算与双绕组变压器相同。
+
+\subsection{自耦变压器的参数计算}
+
+等值电路与参数计算原理同普通变压器。三绕组自耦变压器的第三绕组（低压绕组）总接成
+三角形，用以消除铁芯饱和引起的三次谐波，其容量小于变压器额定容量（高、中压绕组的
+通过容量）。故计算等值电阻时须折算短路试验数据；若手册给的短路电压是未折算值，
+计算等值电抗时也要先折算：
+\begin{equation}
+  U_{s(2\text{-}3)}\%=U'_{s(2\text{-}3)}\%\left(\frac{S_N}{S_{3N}}\right),
+  \qquad
+  U_{s(3\text{-}1)}\%=U'_{s(3\text{-}1)}\%\left(\frac{S_N}{S_{3N}}\right).
+\end{equation}
+
+\subsection{变压器的 $\Gamma$ 型等值电路}
+
+用 $R_T+jX_T$（折算到原方）加理想变压器 $k_T:1$ 表示变压器时，副方求得的电流、电压都是
+折算值，与副方相接的其他元件参数也须用折算值。实际计算常需副方真实值，为此在等值电路中
+\textbf{增添只反映变比的理想变压器}（无损、无漏磁、无需励磁电流）。
+
+设阻抗 $Z_T$ 在电源侧、理想变压器变比 $k$，则
+\begin{equation}
+  \dot U_1-Z_T\dot I_1=k\dot U_2,\qquad \dot I_1=-\dot I_2/k ,
+\end{equation}
+消去理想变压器得两端口的导纳方程
+\keyformula{
+  \begin{bmatrix}\dot I_1\\ \dot I_2\end{bmatrix}
+  =\frac{1}{Z_T}
+  \begin{bmatrix}1 & -k\\ -k & k^{2}\end{bmatrix}
+  \begin{bmatrix}\dot U_1\\ \dot U_2\end{bmatrix}}
+相应的 $\pi$ 型等值电路为：串联支路阻抗 $Z_T/k$，节点 1 对地阻抗 $Z_T/(1-k)$，
+节点 2 对地阻抗 $Z_T/\left[k(k-1)\right]$。$k>1$ 时节点 1 对地阻抗为负值——
+这是“非标准变比”变压器的典型特征，写节点导纳矩阵时直接用它即可（第 4 章）。
+
+\section{标幺制}
+
+\subsection{标幺制的概念}
+
+标幺值 $=$ 有名值 $/$ 基准值（同单位），无量纲；百分值 $=100\times$ 标幺值。
+例如取 $U_B=10.5$~kV，则 $10.5$~kV 的标幺值为 $1$。同一有名值，基准值不同则标幺值不同，
+\textbf{说标幺值必须同时说明基准值}。
+
+\subsection{基准值的选择}
+
+四个基准值 $U_B$、$I_B$、$S_B$、$Z_B$ 应使其关系与有名值关系同形，即满足
+\begin{equation}
+  U_B=\sqrt{3}I_BZ_B,\qquad S_B=\sqrt{3}U_BI_B .
+\end{equation}
+两个方程约束四个量，故一般选定 $S_B$ 与 $U_B$（三相容量、线电压），其余两个导出：
+\keyformula{I_B=\frac{S_B}{\sqrt{3}U_B},\qquad
+  Z_B=\frac{U_B^{2}}{S_B},\qquad Y_B=\frac{S_B}{U_B^{2}}}
+注意 $U_B$ 是线电压基准，相电压基准为 $U_B/\sqrt{3}$；$Z_B$、$Y_B$ 是\textbf{一相}的基准值。
+
+\subsection{不同基准值的标幺值间的换算}
+
+手册查得的电机、电器阻抗是以其自身额定容量与额定电压为基准的额定标幺阻抗。
+统一到全网基准（$S_B$、$U_B$）时，先把额定标幺值还原为有名值再归算：
+\keyformula{X_{*(B)}=X_{*(N)}\cdot\frac{S_B}{S_N}\cdot\left(\frac{U_N}{U_B}\right)^{2}}
+此式适用于发电机与变压器。\textbf{电抗器}的额定标幺电抗以额定电压、额定电流为基准，
+其换算为
+\begin{equation}
+  X_{R*(B)}=\frac{X_R\%}{100}\cdot\frac{U_{RN}}{\sqrt{3}I_{RN}}\cdot\frac{S_B}{U_B^{2}} .
+\end{equation}
+变压器的额定标幺电抗常用 $X_{T*(N)}=U_s\%/100$。
+
+\subsection{有几级电压的网络中各元件参数标幺值的计算}
+
+各电压等级的线路段经变压器（仅有磁耦合、无直接电气联系）相联，故可\textbf{对各段分别选
+基准电压，而全系统共用同一个基准功率} $S_B$。于是
+\begin{equation}
+  X_{*}=\frac{X_{\text{有名值}}}{Z_B}=\frac{X_{\text{有名值}}\,S_B}{U_B^{2}} ,
+\end{equation}
+理想变压器的变比也要用标幺值表示：
+\keyformula{k_{T*}=\frac{k_T}{k_B},\qquad k_B=\frac{U_{B(\text{I})}}{U_{B(\text{II})}}}
+$k_B$ 称\textbf{基准变比}。若选择相邻段基准电压之比恰好等于该变压器的变比，
+则 $k_{T*}=1$，标幺等值电路中不必串理想变压器；但此时各段基准电压不等于网络额定电压，
+计算结果仍须换算成有名值才能看出电压水平。
+
+工程简化：规定各级电压都用\textbf{平均额定电压} $U_{av}$ 作基准电压，
+各变压器的额定电压和实际变比都取平均额定电压之比，于是所有 $k_{T*}=1$，
+标幺等值电路成为纯阻抗网络。这就是短路实用计算（第 6 章）中“不再出现理想变压器”的根据。
+
+\subsection{标幺制的特点}
+
+\begin{table}[htbp]
+  \centering
+  \caption{标幺制的优缺点}
+  \small
+  \begin{tabular}{@{}p{0.06\linewidth}p{0.42\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+     & 优点 & 说明 \\
+    \midrule
+    数值 & 各元件参数与运行变量都在同一数量级（$0\sim$几） & 便于判断结果是否合理、易发现计算错误 \\
+    公式 & 三相与单相公式形式统一；线电压标幺值与相电压标幺值相等 &
+           $\sqrt{3}$ 与 $3$ 在标幺制中消失，$S_*=U_*I_*$ \\
+    归算 & 用平均额定电压作基准时变压器标幺变比为 $1$ & 多级电压网络不必逐级折算 \\
+    \midrule
+     & 缺点 & \\
+    \midrule
+    概念 & 无量纲，物理概念不如有名值清晰 & 结果须乘基准值还原为有名值 \\
+    可比 & 基准不同则标幺值不可直接比较 & 必须说明基准，换基准须重算 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+换算回有名值：$U=U_*U_B$，$I=I_*I_B=I_*S_B/(\sqrt{3}U_B)$，$S=S_*S_B$，
+$Z=(R_*+jX_*)U_B^{2}/S_B$。
+
+\begin{table}[htbp]
+  \centering
+  \caption{常用元件标幺电抗算式（统一基准 $S_B$、$U_B$）}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    元件 & 原始数据 & 标幺电抗 \\
+    \midrule
+    发电机 & $X_{*(N)}$、$S_N$、$U_N$ & $X_{*(B)}=X_{*(N)}\dfrac{S_B}{S_N}\left(\dfrac{U_N}{U_B}\right)^{2}$ \\
+    变压器 & $U_s\%$、$S_N$、$U_N$ & $X_{*(B)}=\dfrac{U_s\%}{100}\cdot\dfrac{S_B}{S_N}\left(\dfrac{U_N}{U_B}\right)^{2}$ \\
+    电抗器 & $X_R\%$、$U_{RN}$、$I_{RN}$ & $X_{*(B)}=\dfrac{X_R\%}{100}\cdot\dfrac{U_{RN}}{\sqrt{3}I_{RN}}\cdot\dfrac{S_B}{U_B^{2}}$ \\
+    线路 & $x_1$（$\Omega$/km）、$l$ & $X_{*(B)}=x_1l\dfrac{S_B}{U_B^{2}}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{标幺制计算的三条纪律：（1） 全系统只能有一个 $S_B$，电压基准按变比（或平均额定电压）
+逐段确定；（2） 换算公式里 $U_N/U_B$ 是\textbf{平方}关系，漏平方是最常见错误；
+（3） 电抗器是唯一用“额定电流”为基准的元件，不能套发电机的换算公式。}

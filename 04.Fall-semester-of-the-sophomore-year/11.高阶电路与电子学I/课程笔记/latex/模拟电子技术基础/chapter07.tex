@@ -1,0 +1,294 @@
+% 第7章 波形的发生和信号的转换
+\chapter{波形的发生和信号的转换}
+
+本章解决两个问题：\textbf{不用外加输入信号}如何产生正弦波（振荡电路），以及如何把一种波形或一个模拟量\textbf{转换}成另一种（比较器把模拟量变成矩形波，积分电路把矩形波变成三角波）。全章的关键在“运放到底工作在哪个区”：正弦波振荡中的放大电路工作在线性区（靠正反馈维持），而比较器工作在非线性区（开环或正反馈），两者不能用同一套虚短虚断去套。
+
+\section{正弦波振荡电路的振荡条件与组成}
+\subsection{自激振荡的建立过程}
+振荡电路不接输入信号，却能在输出端得到持续的周期性波形，靠的是\textbf{正反馈}把输出的一部分送回输入端。起振的“第一推动力”是内部热噪声与接通的电冲击——它们频谱极宽，其中等于选频网络谐振频率的分量被选出并放大。
+
+设某频率上环路满足正反馈，过程便自我强化：$X_o\uparrow\to X_f\uparrow\to X_o\uparrow\uparrow$。幅值不会无限增长：晶体管的非线性使放大倍数随幅值增大而下降，加上电源电压的限制，最终放大倍数的下降与反馈量的增长相互抵消，幅值稳定在确定值上，形成\textbf{动态平衡}。
+
+\subsection{平衡条件与起振条件}
+放大电路的增益为 $\dot A=\dot X_o/\dot X_{id}$，反馈网络的反馈系数为 $\dot F=\dot X_f/\dot X_o$，且 $\dot X_{id}=\dot X_f$。平衡时 $\dot X_o=\dot A\dot F\dot X_o$，故
+\begin{equation}
+\dot A\dot F = 1 \formulaNote{平衡条件}
+\end{equation}
+写成幅值与相位两组条件（缺一不可）：
+\begin{equation}
+\begin{cases}
+|\dot A\dot F| = 1 & \formulaNote{幅值平衡条件}\\[4pt]
+\varphi_A + \varphi_F = 2n\pi,\ n=0,1,2,\cdots & \formulaNote{相位平衡条件}
+\end{cases}
+\end{equation}
+相位条件说明反馈必须是\textbf{正反馈}，这是判断“电路能否振荡”的第一道关；幅值条件说明环路增益恰为 1，这是“振荡能否稳定”的条件。而起振时必须让幅值条件取不等式：
+\begin{equation}
+|\dot A\dot F| > 1 \formulaNote{起振条件}
+\end{equation}
+起振时环路增益略大于 1，幅值才能由小变大；随着幅值增大，管子的非线性使 $|\dot A|$ 自动下降，直到 $|\dot A\dot F|=1$ 进入平衡。若起振时就恰好 $|\dot A\dot F|=1$，电路理论上能维持振荡，实际上稍有损耗就振不起来；若 $|\dot A\dot F|<1$，任何扰动都会衰减掉，只能得到“阻尼振荡”。
+
+\subsection{电路的四个组成部分}
+任何正弦波振荡电路都可拆成四块，缺一块就不完整：
+\begin{itemize}
+    \item \textbf{放大电路}：提供能量控制，把直流电源的能量转换为交流输出，使幅值能够增长；
+    \item \textbf{选频网络}：只让某一频率满足相位条件，从而输出单一频率的正弦波（RC 网络或 LC 网络）；
+    \item \textbf{正反馈网络}：把输出送回输入端，通常与选频网络合二为一；
+    \item \textbf{稳幅环节}：非线性元件（热敏电阻、二极管、稳压管、场效应管）使幅值自动稳定，避免输出削顶失真。
+\end{itemize}
+
+\subsection{判断电路能否振荡的步骤}
+遇到一个振荡电路，按固定顺序检查：
+\begin{enumerate}
+    \item 找出\textbf{选频网络}，算出其特征频率 $f_0$（RC 网络用 $1/2\pi RC$，LC 网络用 $1/2\pi\sqrt{LC}$）；
+    \item 用\textbf{瞬时极性法}从输入端假设一个极性（如“$+$”），沿放大、反馈路径逐级推回，判断在 $f_0$ 处是否为正反馈（相位差为 $2n\pi$）；
+    \item 检查\textbf{起振条件} $|\dot A\dot F|>1$，即放大倍数是否大于反馈系数的倒数；
+    \item 检查\textbf{稳幅环节}是否存在，没有则输出会削顶成方波而不是正弦波。
+\end{enumerate}
+\formulaNote{易错}：相位条件必须在 $f_0$ 处判断。RC 或 LC 网络的相移随频率变化，在别的频率上看似正反馈毫无意义。
+
+\section{RC 正弦波振荡电路}
+\subsection{RC 串并联网络的选频特性}
+RC 串并联网络由一只串联电阻 $R$、一只并联电阻 $R$ 和两只电容 $C$ 组成（$R$ 与 $C$ 串、$R$ 与 $C$ 并），它既是选频网络又是正反馈网络。其反馈系数为
+\begin{equation}
+\dot F = \frac{1}{3+\mathrm{j}\left(\omega RC-\dfrac{1}{\omega RC}\right)}
+\end{equation}
+幅频与相频分别为
+\begin{equation}
+|\dot F| = \frac{1}{\sqrt{9+\left(\omega RC-\dfrac{1}{\omega RC}\right)^2}},
+\qquad \varphi_F = -\arctan\frac{\omega RC-\dfrac{1}{\omega RC}}{3}
+\end{equation}
+物理图像很清楚：频率很低时 $X_C\gg R$，电容占主导，$\dot U_f$ 超前 $\dot U_o$，相位趋于 $+90^\circ$；频率很高时 $X_C\ll R$，电阻占主导，$\dot U_f$ 滞后，相位趋于 $-90^\circ$。既然相位从 $+90^\circ$ 连续变到 $-90^\circ$，中间必有一个频率使 $\varphi_F=0$。令虚部为零：
+\begin{equation}
+\omega_0 RC = \frac{1}{\omega_0 RC}\ \Longrightarrow\
+f_0 = \frac{1}{2\pi RC},\qquad
+\dot F\big|_{f=f_0} = \frac{1}{3}\ \angle 0^\circ
+\end{equation}
+即在 $f_0$ 处反馈系数为实数 $1/3$、相移为零；偏离 $f_0$ 时幅值下降且带相移，故只有在 $f_0$ 附近很窄的频带内才满足振荡条件，这就是“选频”。
+
+\subsection{RC 桥式（文氏桥）振荡电路}
+把 RC 串并联网络作为正反馈支路，放大器用同相比例电路，两者构成桥式结构，故称 RC 桥式振荡电路（文氏桥）。放大器在 $f_0$ 处的增益为
+\begin{equation}
+\dot A = 1+\frac{R_f}{R_1}
+\end{equation}
+由平衡条件 $|\dot A\dot F|=1$、$|F|=1/3$ 得 $A=3$，即
+\begin{equation}
+1+\frac{R_f}{R_1}=3\ \Longrightarrow\ R_f=2R_1 \formulaNote{平衡}\qquad
+R_f>2R_1 \formulaNote{起振}
+\end{equation}
+工程上取 $R_f$ 略大于 $2R_1$ 以保证起振，再用稳幅环节把幅值压回来。振荡频率由选频网络唯一决定：
+\begin{equation}
+f_0 = \frac{1}{2\pi RC}
+\end{equation}
+调节振荡频率时，必须让两只 $R$（或两只 $C$）\textbf{同步变化}（同轴双联电位器），否则 $f_0$ 与 $|F|=1/3$ 的条件同时被破坏，电路会停振。这是 RC 桥式电路的固有约束，也使它的频率调节范围不宜太宽（一般音频段 $20\ \mathrm{Hz}\sim200\ \mathrm{kHz}$）。
+
+\subsection{稳幅措施}
+若 $R_f$ 严格等于 $2R_1$，稍有温漂就停振；取得过大又会削顶成方波。所以必须让 $|\dot A|$ 随幅值自动变化，常用三种办法：\textbf{热敏电阻稳幅}（$R_f$ 用负温度系数热敏电阻，幅值增大→电流增大→温度升高→阻值下降→增益下降，自动回到平衡点）；\textbf{二极管稳幅}（反馈支路串入或反并联二极管，小信号时动态电阻大、增益高，大信号时动态电阻小、增益低，实现非线性稳幅，但带来波形失真）；\textbf{场效应管稳幅}（用线性区 JFET 作压控电阻，由整流后的直流电压控制阻值，失真最小，用于低失真信号发生器）。
+
+\section{LC 正弦波振荡电路}
+\subsection{LC 并联网络的选频特性}
+把 LC 并联网络作为共射放大电路的集电极负载，其阻抗在谐振时呈纯阻且最大，电压增益 $|\dot A_u|=\beta Z/r_{be}$ 也最大，从而实现选频。谐振频率与品质因数为
+\begin{equation}
+f_0\approx\frac{1}{2\pi\sqrt{LC}},\qquad
+Q=\frac{\omega_0 L}{R}=\frac{1}{R}\sqrt{\frac{L}{C}}
+\end{equation}
+其中 $R$ 为回路等效损耗电阻。$Q$ 越大，选频特性越尖锐、频率稳定度越高，但通频带越窄。LC 振荡电路的振荡频率可以做得很高（几十千赫到几百兆赫），这是它相对 RC 振荡电路的根本优势；RC 电路的频率上限受运放带宽和寄生电容限制。
+
+按反馈的引入方式，LC 振荡电路分为变压器反馈式、电感反馈式（电感三点式）和电容反馈式（电容三点式）三种。
+
+\subsection{变压器反馈式振荡电路}
+LC 回路作集电极负载，二次绕组把输出耦合回基极，靠互感 $M$ 实现正反馈。同名端的接法必须使反馈电压与输入电压同相（瞬时极性法可验证）。
+起振条件是环路增益大于 1，把 $I_1=QI_C=Q\beta U_i/r_{be}$ 与 $U_f=\omega_0MI_1$ 代入可得
+\begin{equation}
+\frac{U_f}{U_i}>1\ \Longrightarrow\
+\beta>\frac{r_{be}}{\omega_0 M Q}=\frac{r_{be}R'C}{M}
+\end{equation}
+其中 $R'$ 为二次侧折算到一次侧后的等效电阻。再用 $r_{be}\approx\beta U_T/I_{EQ}$ 代入，可得更直观的形式 $\dfrac{U_T R'C}{I_{EQ}M}<1$：静态电流 $I_{EQ}$ 越大、互感 $M$ 越大，越容易起振。
+
+优点是容易起振、波形较好、应用广泛；缺点是输出与反馈靠磁耦合，耦合不紧密、损耗大，频率稳定度不高。
+
+\subsection{电感反馈式（电感三点式）振荡电路}
+为克服变压器耦合松散的缺点，把一次、二次绕组合并成一个线圈，中间抽头接电源（交流接地），电容跨接在线圈两端。因为三个端点分别接晶体管的三个电极，故又称\textbf{电感三点式}。设抽头把线圈分成 $L_1$、$L_2$，互感为 $M$，则
+\begin{equation}
+f_0\approx\frac{1}{2\pi\sqrt{(L_1+L_2+2M)\,C}},\qquad
+|\dot F|\approx\frac{L_2+M}{L_1+M}
+\end{equation}
+起振条件为
+\begin{equation}
+\beta>\frac{L_1+M}{L_2+M}\cdot\frac{r_{be}}{R_L''}
+\end{equation}
+其中 $R_L''$ 为集电极负载的等效电阻。特点是线圈耦合紧密、振幅大，当 $C$ 用可变电容时可在较宽范围内调节频率；缺点是反馈电压取自电感，含较多高次谐波，输出波形较差。
+
+\subsection{电容反馈式（电容三点式）振荡电路}
+把电感三点式中的电感与电容互换，两只电容的三个端分别接晶体管的三个极，故称\textbf{电容三点式}（考毕兹电路），并增加集电极电阻 $R_c$ 以提供直流通路。反馈系数与起振条件为
+\begin{equation}
+\dot F=\frac{C_1}{C_2},\qquad
+\beta>\frac{C_2}{C_1}\cdot\frac{r_{be}}{R_L'}
+\end{equation}
+振荡频率由 $L$ 与两只电容的串联值决定：
+\begin{equation}
+f_0\approx\frac{1}{2\pi\sqrt{L\cdot\dfrac{C_1C_2}{C_1+C_2}}}
+\end{equation}
+电容三点式的反馈电压取自电容，高次谐波被电容旁路，\textbf{输出波形好}、频率稳定度高，适用于固定频率或窄范围调频的场合；缺点是靠改变电容调频会同时改变反馈系数，从而影响起振条件，而改变电感又很困难。
+
+\begin{table}[htbp]
+\centering
+\caption{三种 LC 振荡电路的比较}
+\begin{tabular}{@{}llll@{}}
+\hline
+类型 & 反馈元件 & 波形质量 & 适用场合 \\
+\hline
+变压器反馈式 & 互感 $M$ & 较好 & 一般场合，易起振 \\
+电感三点式 & 电感抽头 & 较差（含高次谐波） & 需要宽范围调频 \\
+电容三点式 & 电容分压 & 好 & 固定频率、要求稳定 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{石英晶体正弦波振荡电路}
+\subsection{压电效应与等效电路}
+石英晶体片在两个电极间加交变电场时会产生机械变形，机械变形又反过来产生交变电场，这一现象称\textbf{压电效应}。当外加电场的频率等于晶片的固有机械谐振频率时振幅最大，称压电谐振，该频率即晶体的谐振频率。
+
+石英晶体的等效电路为：静态电容 $C_0$（几皮法到几十皮法）与一条 $L$-$C$-$R$ 串联支路并联。其中 $L$ 等效晶片振动的惯性（几毫亨到几十毫亨），$C$ 等效晶片的弹性（仅 $0.01\sim0.1\ \mathrm{pF}$，远小于 $C_0$），$R$ 等效摩擦损耗（约 $100\ \Omega$，理想情况为零）。
+
+\subsection{电抗特性}
+串联支路发生串联谐振时支路呈纯阻性，此时整个晶体近似为纯阻性：
+\begin{equation}
+f_s=\frac{1}{2\pi\sqrt{LC}}
+\end{equation}
+当 $f<f_s$ 时 $C$ 与 $C_0$ 起主导作用，晶体呈\textbf{容性}；当 $f_s<f<f_p$ 时 $LCR$ 支路呈感性，与 $C_0$ 并联后发生并联谐振：
+\begin{equation}
+f_p=\frac{1}{2\pi\sqrt{L\cdot\dfrac{CC_0}{C+C_0}}}
+=f_s\sqrt{1+\frac{C}{C_0}}
+\end{equation}
+$f>f_p$ 时 $C_0$ 起主导作用，晶体又呈容性。可见晶体只在 $f_s\sim f_p$ 这一极窄的频带内呈\textbf{感性}，可以当作一个电感使用。由于 $C\ll C_0$，$f_s$ 与 $f_p$ 非常接近，这条“感性窄带”极窄。
+
+\subsection{为什么石英晶体的频率稳定度极高}
+晶体的品质因数极大，比一般 LC 回路高几个数量级：
+\begin{equation}
+Q=\frac{1}{R}\sqrt{\frac{L}{C}}\approx10^4\sim10^6
+\end{equation}
+同时振荡频率只取决于晶片的几何尺寸（切割方向与厚度），几乎不受温度、电源电压与老化的影响。因此频率稳定度 $\Delta f/f_0$ 可达 $10^{-8}\sim10^{-6}$，甚至更高，是时钟与频率基准的首选。用法有两种：\textbf{并联型}——晶体工作在 $f_s\sim f_p$ 之间，作为\textbf{电感}接入三点式电路，振荡频率略高于 $f_s$；\textbf{串联型}——晶体作为串联谐振元件接在反馈支路中，只在 $f_s$ 处阻抗最小、正反馈最强，振荡频率等于 $f_s$。
+
+\section{电压比较器}
+\subsection{比较器的工作特点}
+比较器用来比较两个电压的大小，输出只有高、低两个电平（$\pm U_{OM}$ 或经限幅后的 $\pm U_Z$）。为此运放\textbf{开环}或只引入\textbf{正反馈}，工作在非线性区：
+\begin{equation}
+u_P>u_N \Rightarrow u_O=+U_{OM};\qquad
+u_P<u_N \Rightarrow u_O=-U_{OM}
+\end{equation}
+这里\textbf{虚短不成立}（$u_P\neq u_N$），只有“输入电阻极大、输入电流为零”这一条还能用。使输出发生跳变的输入电压称为\textbf{阈值电压} $U_T$，求法固定：写出 $u_P$、$u_N$ 的表达式，令 $u_P=u_N$ 解出 $u_I$。
+
+\subsection{单限比较器}
+\subsubsection{过零比较器}
+同相端接地、输入接反相端（或反之），则 $U_T=0$：$u_I>0$ 时 $u_O=-U_{OM}$，$u_I<0$ 时 $u_O=+U_{OM}$（接法相反则极性相反）。它把任意波形整形为矩形波，是最简单的模数转换接口。
+
+\subsubsection{一般单限比较器}
+通过外接参考电压 $U_{REF}$ 把阈值移到任意位置。输入电压与参考电压各经一个电阻汇于反相端：
+\begin{equation}
+u_N=\frac{R_1\,u_I+R_2\,U_{REF}}{R_1+R_2}
+\end{equation}
+令 $u_N=u_P=0$ 得
+\begin{equation}
+U_T=-\frac{R_2}{R_1}U_{REF}
+\end{equation}
+改变 $U_{REF}$ 的大小和极性即可移动阈值，改变 $R_2/R_1$ 可改变灵敏度。单限比较器的输出跳变只取决于输入瞬时值，输入信号上稍有噪声、且恰好落在阈值附近时，输出就会反复抖动——这是它最大的缺点。
+
+\subsection{滞回比较器}
+\subsubsection{电路与阈值}
+从输出端经 $R_2$ 引回同相端，构成\textbf{正反馈}，输出经稳压管限幅为 $\pm U_Z$。同相端电位由输出分压得到：
+\begin{equation}
+u_P=\frac{R_1}{R_1+R_2}U_Z
+\end{equation}
+令 $u_P=u_N=u_I$，得到两个阈值
+\begin{equation}
+\pm U_T=\pm\frac{R_1}{R_1+R_2}U_Z
+\end{equation}
+两个阈值之差称\textbf{回差电压}：
+\begin{equation}
+\Delta U=U_{T+}-U_{T-}=\frac{2R_1}{R_1+R_2}U_Z
+\end{equation}
+由于输出状态改变后阈值随之改变，传输特性呈“滞回”形状（顺时针或逆时针方向由输入接哪个端决定）。这正是它抗干扰的原理：一旦输出翻转，阈值立刻跳到另一侧，噪声必须大到超过整个回差才能让输出再翻回去。回差越大抗干扰越强，但比较精度越低，二者要折中。
+
+\subsubsection{阈值的平移}
+若希望滞回特性的中心不在零、而平移一个直流电压，可把同相端再经 $R_2$ 接参考电压 $U_{REF}$，此时
+\begin{equation}
+u_P=\frac{R_2}{R_1+R_2}U_{REF}\pm\frac{R_1}{R_1+R_2}U_Z
+\end{equation}
+于是两个阈值变为
+\begin{equation}
+U_{T1}=\frac{R_2U_{REF}-R_1U_Z}{R_1+R_2},\qquad
+U_{T2}=\frac{R_2U_{REF}+R_1U_Z}{R_1+R_2}
+\end{equation}
+即整个滞回曲线沿水平方向平移，而回差 $\Delta U$ 保持不变。
+
+\subsection{窗口比较器}
+用一个比较器只能判断“高于还是低于某个值”。若需要判断输入是否落在某个区间 $[U_{TL},U_{TH}]$ 内，就用\textbf{两个}比较器，分别与低参考电压和高参考电压比较，再把两路输出经二极管或门（或逻辑门）合并：输入在两个阈值之间时输出为一种电平，超出区间时输出为另一种电平。窗口比较器用于电压监测、越限报警与元器件分选。
+
+\subsection{限幅与保护}
+比较器的输出要与后续逻辑电路匹配，常用稳压管限幅：输出端接两只对接的稳压管，把 $\pm U_{OM}$ 限制为 $\pm(U_Z+U_D)$。输入侧则两只二极管反并联到地，把差模输入电压限制在 $\pm0.7\ \mathrm{V}$ 以内，防止大信号损坏运放。
+
+\begin{table}[htbp]
+\centering
+\caption{三种比较器的比较}
+\begin{tabular}{@{}llll@{}}
+\hline
+类型 & 反馈 & 阈值个数 & 主要用途 \\
+\hline
+单限比较器 & 无（开环） & 1 个 & 电平检测、波形整形 \\
+滞回比较器 & 正反馈 & 2 个（回差） & 抗干扰整形、矩形波发生 \\
+窗口比较器 & 无（两个运放） & 2 个（不同参考） & 电压监测、越限报警 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{矩形波、三角波与锯齿波发生电路}
+\subsection{矩形波发生电路}
+矩形波发生电路由\textbf{滞回比较器}和 \textbf{RC 充放电回路}组成：电容上的电压 $u_C$ 作为比较器的输入，比较器的输出又通过 $R_3$ 对电容充放电，两者形成闭环，输出状态自动往复翻转。RC 回路在这里起“延迟”作用，延迟的长短决定振荡周期。
+
+设输出为 $+U_Z$ 时电容充电、为 $-U_Z$ 时电容放电，充放电时间常数均为 $R_3C$，两个方向的幅值相等，故输出为对称方波。由一阶电路的三要素法，充电过程满足
+\begin{equation}
+U_T=(U_Z+U_T)\left(1-\mathrm{e}^{-T/2R_3C}\right)+(-U_T)
+\end{equation}
+代入 $U_T=\dfrac{R_1}{R_1+R_2}U_Z$ 解得振荡周期与频率
+\begin{equation}
+T=2R_3C\ln\left(1+\frac{2R_1}{R_2}\right),\qquad f=\frac{1}{T}
+\end{equation}
+可见频率由 $R_3C$ 与分压比 $R_1/R_2$ 共同决定：改变 $R_3$ 或 $C$ 可连续调频，改变 $R_1/R_2$ 同时改变频率与阈值。
+
+\subsection{占空比可调的矩形波电路}
+把充放电回路分开：用一只电位器 $R_W$ 与两只二极管，使充电电流走一条路、放电电流走另一条路，则正、反向充电时间常数不同，得到占空比可调（甚至可调成锯齿状）的矩形波。周期为
+\begin{equation}
+T=T_1+T_2=(R_W+2R_3)C\ln\left(1+\frac{2R_1}{R_2}\right)
+\end{equation}
+$a=R_W/(2R_3+R_W)$ 越大，占空比偏离 $50\%$ 越多。
+
+\subsection{三角波发生电路}
+在矩形波发生电路的输出端接一级\textbf{积分运算电路}，方波积分即得三角波，这就是“矩形波—三角波变换”。实际电路常把 RC 充放电的电容与积分电容合并成一只，使比较器与积分器互相驱动：比较器输出 $\pm U_Z$ 经 $R_3$ 对电容恒流充放电，输出即为线性良好的三角波。
+
+设比较器阈值由 $R_1$、$R_2$ 分压得到 $\pm U_T=\pm\dfrac{R_1}{R_2}U_Z$，积分器的时间常数为 $R_3C$。半周期内电容电压从 $-U_T$ 变到 $+U_T$，由积分关系
+\begin{equation}
+u_O=-\frac{1}{R_3C}\int U_Z\,\mathrm{d}t+u_O(t_0)
+\end{equation}
+可得半周期 $t=\dfrac{2U_T R_3C}{U_Z}=\dfrac{2R_1R_3C}{R_2}$，故
+\begin{equation}
+T=\frac{4R_1R_3C}{R_2},\qquad f=\frac{R_2}{4R_1R_3C}
+\end{equation}
+三角波的幅值等于比较器的阈值 $\pm U_T$，与频率无关——这是该电路的重要优点：调频时幅值不变。改变 $R_1/R_2$ 可同时改变幅值与频率，改变 $R_3$ 或 $C$ 则只改变频率。
+
+\subsection{锯齿波发生电路}
+把三角波电路中积分器的充、放电时间常数做成不同（在积分电阻上串联电位器并用二极管旁路一半），则上升沿与下降沿斜率不等，得到锯齿波。若上升段占 $T_1$、总周期为 $T$，则占空比为
+\begin{equation}
+\frac{T_1}{T}=\frac{R_3}{2R_3+R_W}
+\end{equation}
+锯齿波广泛用于示波器的时基扫描与 PWM 调制中的载波。若把三角波再经二极管折线网络整形，还可近似得到正弦波——这是低频信号发生器中“三角波→正弦波”的常用手段。
+
+\section{本章小结与易错点}
+\begin{itemize}
+    \item 振荡要有两个条件：\textbf{相位条件}是正反馈（在 $f_0$ 处 $\varphi_A+\varphi_F=2n\pi$），\textbf{幅值条件}是 $|AF|=1$（起振时 $>1$）。不能只看“接了正反馈”就判定能振荡。
+    \item RC 桥式：$f_0=1/2\pi RC$，$|F|=1/3$，要求 $A=3$ 即 $R_f=2R_1$；调频必须双联同步，否则停振。
+    \item 电感三点式波形差（反馈取自电感）、电容三点式波形好（反馈取自电容）；“三点”指晶体管的三个电极分别接网络的三端。
+    \item 石英晶体只在 $f_s\sim f_p$ 之间呈感性，并联型必须工作在这一窄带内；稳定度高的根本原因是 $Q$ 极高且频率由晶片尺寸决定。
+    \item 比较器\textbf{不能用虚短}，求阈值永远是“写 $u_P$、$u_N$，令二者相等解 $u_I$”；滞回比较器的回差 $\Delta U=2R_1U_Z/(R_1+R_2)$ 决定抗干扰能力。
+    \item 矩形波周期 $T=2R_3C\ln(1+2R_1/R_2)$、三角波周期 $T=4R_1R_3C/R_2$，两式的 $R_1/R_2$ 含义不同（阈值分压比 vs 比较器与积分器的耦合比），不要混用。
+    \item 波形发生电路既有线性环节（积分器、RC 延迟）又有非线性环节（比较器、稳幅元件），分析时各用各的方法。
+\end{itemize}

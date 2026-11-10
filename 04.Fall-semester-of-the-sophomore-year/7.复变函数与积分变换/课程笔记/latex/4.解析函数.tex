@@ -1,26 +1,256 @@
+% 子文件：4.解析函数.tex
+% 对应教材：《复变函数与积分变换》(哈工大, 第三版) 第 2 章
+% 对应讲义：包益欣《复变函数》第 2 章（可导、解析的定义 / 导数性质 / C-R 条件 / 初等函数导数 / 调和函数）
+% 节次：§2.1 解析函数的概念（2.1.1 导数 / 2.1.2 解析的概念）
+%       §2.2 函数解析的充要条件｜§2.3 解析函数与调和函数
+%       §2.4 初等函数（2.4.1 指数 / 2.4.2 三角与双曲 / 2.4.3 对数 / 2.4.4 幂 / 2.4.5 反三角与反双曲）
+%       §2.5 解析函数的物理意义
+% 由 1.main.tex 用 \input 引入
+
 \chapter{解析函数}
 
-\section{可导与解析的条件}
-\subsection{柯西-黎曼条件}
-函数 \( f(z) = u(x,y) + iv(x,y) \) 在点 \( z_0 = x_0 + iy_0 \) 处可导的**必要条件**是：
-\( u(x,y) \) 和 \( v(x,y) \) 在 \( (x_0,y_0) \) 处偏导数存在，且满足
+\section{解析函数的概念}
+
+\subsection{复变函数的导数}
+设 \(w=f(z)\) 在点 \(z_{0}\) 的某邻域内有定义。若极限
 \[
-\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad -\frac{\partial u}{\partial y} = \frac{\partial v}{\partial x}.
+\lim_{\Delta z\to 0}\frac{f(z_{0}+\Delta z)-f(z_{0})}{\Delta z}
+\]
+存在（\(\Delta z\to 0\) 指在复平面上沿任意方式趋近于零），则称 \(f(z)\) 在 \(z_{0}\) 处\textbf{可导}，该极限值称为 \(f\) 在 \(z_{0}\) 处的\textbf{导数}，记作
+\[
+f'(z_{0})=\left.\frac{\mathrm{d}w}{\mathrm{d}z}\right|_{z=z_{0}}.
+\]
+形式上它与一元实函数的导数定义完全相同，但 \(\Delta z\) 是\textbf{复}增量，可以从任何方向趋于零，这一要求比实函数强得多。
+
+由此立得：\(f\) 在 \(z_{0}\) 可导 \(\Rightarrow f\) 在 \(z_{0}\) 连续；反之不成立。
+
+求导法则与实函数一致（都可按定义直接验证）：
+\begin{itemize}[leftmargin=2em]
+  \item \((f\pm g)'=f'\pm g'\)，\((fg)'=f'g+fg'\)，\(\left(\dfrac{f}{g}\right)'=\dfrac{f'g-fg'}{g^{2}}\ (g\neq 0)\)；
+  \item 复合函数：若 \(f\) 在 \(z_{0}\) 可导、\(g\) 在 \(w_{0}=f(z_{0})\) 可导，则 \((g\circ f)'(z_{0})=g'(w_{0})f'(z_{0})\)；
+  \item 反函数：若 \(f\) 在 \(z_{0}\) 可导且 \(f'(z_{0})\neq 0\)，\(w_{0}=f(z_{0})\)，则反函数 \(g=f^{-1}\) 在 \(w_{0}\) 可导，且
+  \[
+  g'(w_{0})=\frac{1}{f'(z_{0})}.
+  \]
+\end{itemize}
+特别地 \((z^{n})'=nz^{n-1}\)（\(n\) 为正整数），多项式与有理函数在分母不为零处可导。
+
+\corepoint{“可导”是极强的条件：\(\Delta z\) 可沿任意方向趋于零，而实函数只要求左右两个方向。以 \(f(z)=\bar z\) 为例，沿实轴取 \(\Delta z=\Delta x\) 差商为 \(1\)，沿虚轴取 \(\Delta z=\mathrm{i}\Delta y\) 差商为 \(-1\)，故导数处处不存在，尽管其实部 \(x\)、虚部 \(-y\) 都光滑。凡含 \(\bar z\)、\(|z|\)、\(\operatorname{Re}z\)、\(\operatorname{Im}z\)、\(\arg z\) 而未与 \(z\) 组合成解析式的函数，先怀疑它不解析。}
+
+\subsection{复变函数解析的概念}
+若 \(f(z)\) 在 \(z_{0}\) 的\textbf{某一个邻域内处处可导}，则称 \(f\) 在 \(z_{0}\) 处\textbf{解析}（正则、全纯）。若 \(f\) 在区域 \(D\) 内处处可导（等价于在 \(D\) 内每点解析），称 \(f\) 在 \(D\) 内解析，或称 \(f\) 为 \(D\) 内的\textbf{解析函数}。在复平面上处处解析的函数称为\textbf{整函数}（如多项式、\(\mathrm{e}^{z}\)、\(\sin z\)）。
+
+若 \(f\) 在 \(z_{0}\) 不解析，则称 \(z_{0}\) 为 \(f\) 的\textbf{奇点}。
+
+三者的关系是（箭头反向均不成立）：
+\[
+\text{在区域内解析}\ \Longrightarrow\ \text{在某点解析}\ \Longrightarrow\ \text{在该点可导}\ \Longrightarrow\ \text{在该点连续}.
 \]
 
-函数 \( f(z) \) 在点 \( z_0 \) 处可导的**充要条件**是：
-\( u(x,y) \) 和 \( v(x,y) \) 在 \( (x_0,y_0) \) 处可微，且满足柯西-黎曼条件。
+\corepoint{“在某点可导”与“在该点解析”\textbf{不等价}：解析是\textbf{邻域}性质。例如 \(f(z)=|z|^{2}\) 只在 \(z=0\) 可导，而在 \(0\) 的任何邻域内都有不可导的点，故 \(f\) 在 \(z=0\) 处\textbf{不解析}，\(z=0\) 是它的奇点。判卷时“可导但无处解析”是高频陷阱。}
 
-\subsection{调和函数与共轭调和函数}
-设 \( u(x,y) \) 是区域 \( D \) 上的调和函数，若 \( v(x,y) \) 也是 \( D \) 上的调和函数，且满足
+\section{函数解析的充要条件}
+
+设 \(f(z)=u(x,y)+\mathrm{i}v(x,y)\) 定义在区域 \(D\) 内。
+
+\textbf{定理（可导的必要条件）}\quad 若 \(f\) 在 \(z_{0}=x_{0}+\mathrm{i}y_{0}\) 处可导，则 \(u,v\) 在 \((x_{0},y_{0})\) 处的一阶偏导数都存在，且满足\textbf{柯西—黎曼（Cauchy--Riemann）条件}
+\keyformula{\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},\qquad
+\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}}
+此时
+\keyformula{f'(z_{0})=\frac{\partial u}{\partial x}+\mathrm{i}\frac{\partial v}{\partial x}
+=\frac{\partial v}{\partial y}-\mathrm{i}\frac{\partial u}{\partial y}}
+推导思路：分别沿实轴方向与虚轴方向计算差商的极限，两者必须相等，比较实部、虚部即得 C-R 条件。
+
+\textbf{定理（可导的充要条件）}\quad \(f\) 在 \(z_{0}\) 处可导 \(\iff u,v\) 在 \((x_{0},y_{0})\) 处\textbf{可微}，且在该点满足 C-R 条件。
+
+\textbf{推论（最常用的判别法）}\quad 若 \(u,v\) 在 \((x_{0},y_{0})\) 的某邻域内有\textbf{连续}的一阶偏导数，且在该点满足 C-R 条件，则 \(f\) 在 \(z_{0}\) 可导；若这些条件在区域 \(D\) 内处处成立，则 \(f\) 在 \(D\) 内解析。
+
+注意：C-R 条件本身只是\textbf{必要}条件，不是充分的——偏导数存在 + C-R 并不能保证可微，须补“偏导连续”或“可微”。
+
+\subsection*{判定步骤}
+\begin{enumerate}[leftmargin=2em]
+  \item 把 \(f\) 化成 \(x,y\) 的显式：\(u=\operatorname{Re}f(z)\)，\(v=\operatorname{Im}f(z)\)（切忌只写 \(f(z)=u+\mathrm{i}v\) 而不分出 \(u,v\)）。
+  \item 求出四个偏导 \(u_{x},u_{y},v_{x},v_{y}\)。
+  \item 令 \(u_{x}=v_{y}\)、\(u_{y}=-v_{x}\)，解出\textbf{满足 C-R 条件的点集} \(E\)。
+  \item 若 \(E\) 无内点（常见情形：只是若干孤立点或一条曲线），则 \(f\) 只在 \(E\) 上可导，\textbf{处处不解析}。
+  \item 若 \(E\) 含某个区域且偏导连续，则 \(f\) 在该区域内解析，并用 \(f'=u_{x}+\mathrm{i}v_{x}\) 求导。
+\end{enumerate}
+
+\textbf{极坐标形式}\quad 记 \(z=r\mathrm{e}^{\mathrm{i}\theta}\)，\(u=u(r,\theta)\)，\(v=v(r,\theta)\)，则 C-R 条件为
+\keyformula{\frac{\partial u}{\partial r}=\frac{1}{r}\frac{\partial v}{\partial \theta},\qquad
+\frac{\partial v}{\partial r}=-\frac{1}{r}\frac{\partial u}{\partial \theta},\qquad
+f'(z)=\mathrm{e}^{-\mathrm{i}\theta}\left(\frac{\partial u}{\partial r}+\mathrm{i}\frac{\partial v}{\partial r}\right)}
+它在处理含 \(z\bar z\)、\(|z|\)、\(\arg z\) 的函数（如 \(f(z)=z^{2}\bar z\)、对数与幂函数）时比直角坐标方便。
+
+\textbf{两个常用推论}
+\begin{itemize}[leftmargin=2em]
+  \item 若 \(f\) 在区域 \(D\) 内解析且 \(f'(z)\equiv 0\)，则 \(f\) 在 \(D\) 内为常数（由 \(u_{x}=u_{y}=v_{x}=v_{y}=0\) 及区域连通性）。
+  \item 若 \(f=u+\mathrm{i}v\) 在 \(D\) 内解析，则 \(u,v\) 都满足拉普拉斯方程（见 §2.3）。
+\end{itemize}
+
+\corepoint{三类典型反例要记牢，考“是否解析”几乎都由它们变形而来：\(f(z)=\bar z\)（处处不可导）；\(f(z)=|z|^{2}\)（\(u_{x}=2x,\ v_{y}=0\Rightarrow x=0\)；\(u_{y}=2y,\ v_{x}=0\Rightarrow y=0\)，只在原点可导）；\(f(z)=z\operatorname{Re}z=x^{2}+\mathrm{i}xy\)（同样只在原点可导）。共同特征：C-R 条件只在\textbf{孤立点}成立，“可导点”不构成区域，故处处不解析。}
+
+\section{解析函数与调和函数}
+
+\textbf{定义}\quad 若二元实函数 \(u(x,y)\) 在区域 \(D\) 内有二阶连续偏导数，且满足拉普拉斯方程
+\keyformula{\Delta u=\frac{\partial^{2}u}{\partial x^{2}}+\frac{\partial^{2}u}{\partial y^{2}}=0}
+则称 \(u\) 为 \(D\) 内的\textbf{调和函数}。
+
+\textbf{定理}\quad 若 \(f(z)=u+\mathrm{i}v\) 在区域 \(D\) 内解析，则 \(u,v\) 都是 \(D\) 内的调和函数。
+（解析函数有任意阶导数，故 \(u,v\) 的二阶偏导存在且连续；由 C-R 条件
+\(u_{xx}=v_{yx}=v_{xy}=-u_{yy}\)，即 \(u_{xx}+u_{yy}=0\)；对 \(v\) 同理。）
+
+\textbf{定义}\quad 设 \(u,v\) 都是区域 \(D\) 内的调和函数，且满足 C-R 条件 \(u_{x}=v_{y}\)、\(u_{y}=-v_{x}\)，则称 \(v\) 是 \(u\) 的\textbf{共轭调和函数}。此时 \(u+\mathrm{i}v\) 在 \(D\) 内解析。
+
+\textbf{定理}\quad 若 \(D\) 是\textbf{单连通}区域，则 \(D\) 内任一调和函数 \(u\) 都有共轭调和函数 \(v\)，且在相差一个实常数的意义下唯一；从而 \(u\) 必是某个解析函数的实部。
+
+\subsection*{由 \(u\) 求 \(v\)（构造解析函数）的步骤}
+\begin{enumerate}[leftmargin=2em]
+  \item 验证 \(\Delta u=0\)（不满足则 \(u\) 不是调和函数，题目无解）。
+  \item 由 \(v_{y}=u_{x}\) 对 \(y\) 积分：\(v=\displaystyle\int u_{x}(x,y)\,\mathrm{d}y+\varphi(x)\)，其中 \(\varphi(x)\) 待定。
+  \item 代入 \(v_{x}=-u_{y}\)，比较两端的 \(x\) 函数，解出 \(\varphi'(x)\) 并积分得 \(\varphi(x)\)。
+  \item 写出 \(f=u+\mathrm{i}v\)；若要求表成 \(z\) 的函数，可用 \(x=z,\ y=0\) 化简易式（因解析函数的表达式与坐标无关）。
+\end{enumerate}
+等价的曲线积分写法：
+\keyformula{v(x,y)=\int_{(x_{0},y_{0})}^{(x,y)}-u_{y}\,\mathrm{d}x+u_{x}\,\mathrm{d}y+C}
+（被积表达式全微分存在，正是 \(\Delta u=0\)，故积分与路径无关。）
+
+\corepoint{共轭调和是\textbf{有方向}的：\(v\) 是 \(u\) 的共轭调和函数 \(\iff u+\mathrm{i}v\) 解析；此时 \(-u\)（而非 \(u\)）才是 \(v\) 的共轭调和函数，因为 \(v-\mathrm{i}u=-\mathrm{i}(u+\mathrm{i}v)\) 解析。另外，“存在共轭调和函数”依赖区域\textbf{单连通}：圆环 \(0<|z|<1\) 上 \(u=\ln|z|\) 调和却无共轭调和函数，否则将得到 \(\ln z\) 的单值解析分支，而绕原点一周其值改变 \(2\pi\mathrm{i}\)。}
+
+\section{初等函数}
+
+\subsection{指数函数}
+对 \(z=x+\mathrm{i}y\)，定义
+\keyformula{\mathrm{e}^{z}=\mathrm{e}^{x}(\cos y+\mathrm{i}\sin y)}
+它由实指数函数的泰勒展开推广而来，并保持实指数的基本性质：
+\begin{itemize}[leftmargin=2em]
+  \item 在全平面解析，且 \((\mathrm{e}^{z})'=\mathrm{e}^{z}\)；
+  \item \(\mathrm{e}^{z_{1}+z_{2}}=\mathrm{e}^{z_{1}}\mathrm{e}^{z_{2}}\)，\(\mathrm{e}^{0}=1\)；
+  \item 以 \(2\pi\mathrm{i}\) 为周期：\(\mathrm{e}^{z+2\pi\mathrm{i}}=\mathrm{e}^{z}\)；
+  \item 处处不为零：\(\mathrm{e}^{z}\neq 0\)，且 \(\mathrm{e}^{z}=1\iff z=2k\pi\mathrm{i}\ (k\in\mathbb{Z})\)；
+  \item \(|\mathrm{e}^{z}|=\mathrm{e}^{x}\)，\(\operatorname{Arg}\mathrm{e}^{z}=y+2k\pi\)。
+\end{itemize}
+与实指数函数的重要差别：\(\mathrm{e}^{z}\) 是\textbf{周期}函数，故不是一一映射，没有单值反函数（这正是对数函数多值性的根源）；又当 \(y\to\pm\infty\) 时 \(|\mathrm{e}^{z}|=\mathrm{e}^{x}\) 与 \(y\) 无关而 \(\mathrm{e}^{z}\) 沿虚方向震荡，故 \(\lim\limits_{z\to\infty}\mathrm{e}^{z}\) 不存在。
+
+\subsection{三角函数与双曲函数}
+由欧拉公式解出 \(\cos x,\sin x\) 的指数表示，再把实变量换成复变量，定义
+\keyformula{\sin z=\frac{\mathrm{e}^{\mathrm{i}z}-\mathrm{e}^{-\mathrm{i}z}}{2\mathrm{i}},\qquad
+\cos z=\frac{\mathrm{e}^{\mathrm{i}z}+\mathrm{e}^{-\mathrm{i}z}}{2},\qquad
+\tan z=\frac{\sin z}{\cos z},\quad \cot z=\frac{\cos z}{\sin z}}
+（正割、余割类似）。性质：
+\begin{itemize}[leftmargin=2em]
+  \item 在全平面解析，\((\sin z)'=\cos z\)，\((\cos z)'=-\sin z\)；\(\tan z,\cot z\) 在分母不为零处解析；
+  \item 以 \(2\pi\) 为周期；\(\sin z\) 为奇函数、\(\cos z\) 为偶函数；和角公式、\(\sin^{2}z+\cos^{2}z=1\) 等恒等式全部成立；
+  \item 零点与实情形相同：\(\sin z=0\iff z=k\pi\)，\(\cos z=0\iff z=\frac{\pi}{2}+k\pi\)（\(k\in\mathbb{Z}\)）；
+  \item \textbf{无界性}：\(|\cos(\mathrm{i}y)|=\dfrac{\mathrm{e}^{y}+\mathrm{e}^{-y}}{2}\to+\infty\ (y\to\infty)\)，故 \(|\sin z|\leqslant 1\)、\(|\cos z|\leqslant 1\) 在复平面上\textbf{不再成立}。
+\end{itemize}
+
+\textbf{双曲函数}直接由指数定义：
+\keyformula{\operatorname{sh}z=\frac{\mathrm{e}^{z}-\mathrm{e}^{-z}}{2},\qquad
+\operatorname{ch}z=\frac{\mathrm{e}^{z}+\mathrm{e}^{-z}}{2},\qquad
+\operatorname{th}z=\frac{\operatorname{sh}z}{\operatorname{ch}z}}
+它们在全平面解析，\((\operatorname{sh}z)'=\operatorname{ch}z\)，\((\operatorname{ch}z)'=\operatorname{sh}z\)，以 \(2\pi\mathrm{i}\) 为周期；且
 \[
-\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x},
+\operatorname{ch}z=\cos(\mathrm{i}z),\qquad \operatorname{sh}z=-\mathrm{i}\sin(\mathrm{i}z),
 \]
-则称 \( v(x,y) \) 是 \( u(x,y) \) 的**共轭调和函数**。
+零点为 \(\operatorname{sh}z=0\iff z=k\pi\mathrm{i}\)，\(\operatorname{ch}z=0\iff z=\left(\frac{\pi}{2}+k\pi\right)\mathrm{i}\)。
 
-% ===== 以下内容原在 markdown 稿中、tex 里没有，2026-10-21 归并时以注释保留 =====
-% （片段按公式切分，断句不整；需要时手工整理进正文，整理完删掉这段注释）
-% 的实部和虚部可以用的模和辐角表示。
-% 复变函数在区域内解析的充要条件是。
-% 这就是关于及的偏微分方程组。
-% 反三角函数与反双曲函数。
+\corepoint{复三角函数只在\textbf{实轴}上有零点，却在虚方向上无界——这与实三角函数“有界、零点周期性分布”的直觉相反。求 \(\sin z=0\) 时不要只写 \(z=k\pi\) 却忘了可以设 \(z=x+\mathrm{i}y\) 验证：由 \(\mathrm{e}^{2\mathrm{i}z}=1\) 可得 \(\mathrm{e}^{-2y}\mathrm{e}^{2\mathrm{i}x}=1\)，故 \(y=0\)，零点的确都在实轴上。}
+
+\subsection{对数函数}
+对数函数定义为指数函数的反函数：满足 \(\mathrm{e}^{w}=z\ (z\neq 0)\) 的 \(w\) 称为 \(z\) 的\textbf{对数}，记 \(w=\operatorname{Ln}z\)。设 \(w=u+\mathrm{i}v\)，则 \(\mathrm{e}^{w}=\mathrm{e}^{u}(\cos v+\mathrm{i}\sin v)=z\)，比较两端的模与辐角得
+\keyformula{\operatorname{Ln}z=\ln|z|+\mathrm{i}\operatorname{Arg}z=\ln|z|+\mathrm{i}(\arg z+2k\pi),\qquad k=0,\pm 1,\pm 2,\cdots}
+它是\textbf{无穷多值}函数，各值相差 \(2\pi\mathrm{i}\) 的整数倍。取 \(\operatorname{Arg}z\) 的主值即得\textbf{对数主值}
+\[
+\ln z=\ln|z|+\mathrm{i}\arg z\qquad (-\pi<\arg z\leqslant \pi).
+\]
+性质：
+\begin{itemize}[leftmargin=2em]
+  \item 集合意义下的运算律：\(\operatorname{Ln}(z_{1}z_{2})=\operatorname{Ln}z_{1}+\operatorname{Ln}z_{2}\)，\(\operatorname{Ln}\dfrac{z_{1}}{z_{2}}=\operatorname{Ln}z_{1}-\operatorname{Ln}z_{2}\)；
+  \item 主值 \(\ln z\) 在割开平面 \(D=\mathbb{C}\setminus(-\infty,0]\)（即 \(|z|>0,\ -\pi<\arg z<\pi\)）内单值解析，且
+  \[
+  \frac{\mathrm{d}}{\mathrm{d}z}\ln z=\frac{1}{z};
+  \]
+  \item \(\operatorname{Ln}z\) 的\textbf{任一}连续单值分支 \(f(z)\) 都满足 \(f'(z)=\dfrac{1}{z}\)（不同分支只差常数 \(2k\pi\mathrm{i}\)）；
+  \item 当 \(z=x>0\) 时 \(\ln z=\ln x\)，即复对数是实对数的推广；负数也有对数，如 \(\operatorname{Ln}(-1)=(2k+1)\pi\mathrm{i}\)。
+\end{itemize}
+
+\subsection{幂函数}
+设 \(a\in\mathbb{C}\)，对 \(z\neq 0\) 定义
+\keyformula{z^{a}=\mathrm{e}^{a\operatorname{Ln}z}=\mathrm{e}^{a(\ln|z|+\mathrm{i}\arg z+2k\pi\mathrm{i})}}
+其多值性完全由 \(a\) 决定：
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\(a\) 的类型 & \(z^{a}\) 的取值个数 & 说明 \\
+\midrule
+正整数 \(n\) & 1（单值） & 即通常的 \(z^{n}\)，全平面解析 \\
+负整数 \(-n\) & 1（单值） & \(z^{-n}=1/z^{n}\)，除 \(z=0\) 外解析 \\
+既约分数 \(p/q\ (q>0)\) & \(q\)（有限多值） & \(q\) 个分支，如 \(\sqrt[n]{z}\) 有 \(n\) 个值 \\
+其他（无理数或虚部非零） & 无穷多值 & 各值相差 \(2\pi a\mathrm{i}\) 的整数倍 \\
+\bottomrule
+\end{tabular}
+\end{center}
+取定 \(\operatorname{Ln}z\) 的一个单值解析分支即得 \(z^{a}\) 的一个\textbf{单值解析分支}，在该分支上
+\[
+(z^{a})'=a\,z^{a-1}.
+\]
+\(a\) 为整数时上式对通常的幂函数也成立。
+
+\subsection{反三角函数与反双曲函数}
+由三角函数的指数表示解出 \(w\)，即得反三角函数的对数表示（均为多值函数）：
+\keyformula{\operatorname{Arcsin}z=-\mathrm{i}\operatorname{Ln}\left(\mathrm{i}z+\sqrt{1-z^{2}}\right),\qquad
+\operatorname{Arccos}z=-\mathrm{i}\operatorname{Ln}\left(z+\sqrt{z^{2}-1}\right)}
+\keyformula{\operatorname{Arctan}z=\frac{1}{2\mathrm{i}}\operatorname{Ln}\frac{1+\mathrm{i}z}{1-\mathrm{i}z}}
+类似地
+\[
+\operatorname{Arsh}z=\operatorname{Ln}\left(z+\sqrt{z^{2}+1}\right),\quad
+\operatorname{Arch}z=\operatorname{Ln}\left(z+\sqrt{z^{2}-1}\right),\quad
+\operatorname{Arth}z=\frac{1}{2}\operatorname{Ln}\frac{1+z}{1-z}.
+\]
+它们的多值性来自两处：\textbf{对数}的多值性与\textbf{根式}的多值性（复合而成）。取定单值解析分支后有
+\[
+(\operatorname{Arcsin}z)'=\frac{1}{\sqrt{1-z^{2}}},\qquad
+(\operatorname{Arctan}z)'=\frac{1}{1+z^{2}}.
+\]
+
+\subsection{多值函数与支点}
+对多值函数 \(w=f(z)\)，若沿绕 \(z_{0}\) 一周的闭曲线连续变动时，函数值从某一分支连续变到另一分支（且绕任意小圈都如此），则称 \(z_{0}\) 为 \(f\) 的\textbf{支点}（分支点）。
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+多值函数 & 支点 \\
+\midrule
+\(\operatorname{Ln}z\) & \(0\) 与 \(\infty\)（每绕原点一周，虚部增加 \(2\pi\)） \\
+\(\sqrt[n]{z}\) & \(0\) 与 \(\infty\)（绕一周进入下一分支，绕 \(n\) 周复原） \\
+\(\sqrt{(z-a)(z-b)}\) & \(a,\ b,\ \infty\)（绕 \(a\) 或 \(b\) 一周变号） \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+在复平面上从支点引一条\textbf{支割线}（如 \(\operatorname{Ln}z\) 取负实轴），把平面割成单连通区域，多值函数在该区域上就可分出单值解析分支。保证这一点的定理是：\textbf{若 \(D\) 是不含原点的单连通区域，则 \(\operatorname{Ln}z\) 在 \(D\) 上存在无穷多个单值解析分支，彼此相差 \(2k\pi\mathrm{i}\)。}
+
+\corepoint{易混的两个说法：\textbf{支点}是“绕行一周函数值改变”的点，与函数在该点是否有定义无关——\(z=0\) 不在 \(\operatorname{Ln}z\) 的定义域内，却是它的支点。问“\(\ln z\) 的解析区域”时，标准答案是“割去负实轴（或任一由原点出发的射线）后的单连通区域”，而不是“除原点外的平面”。}
+
+\section{解析函数的物理意义}
+
+解析函数的实部 \(\varphi\) 与虚部 \(\psi\) 都是调和函数且等值线正交（\(\nabla\varphi\cdot\nabla\psi=\varphi_{x}\psi_{x}+\varphi_{y}\psi_{y}=0\)），这一结构恰好对应平面稳定场“无旋且无源”的两条性质。于是三类稳态场都可用一个\textbf{复势} \(w=\varphi+\mathrm{i}\psi\)（解析函数）统一描述（教材 §2.5）：
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+场 & 势函数 \(\varphi\) & 共轭调和函数 \(\psi\) & 正交的两族曲线 \\
+\midrule
+平面流速场 & 速度势 & 流函数 & 等势线 / 流线 \\
+平面静电场 & 电势 & 力函数 & 等势线 / 电力线 \\
+平面稳定温度场 & 温度 \(T\) & 热流函数 & 等温线 / 热流线 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+三者的势函数都满足 \(\Delta\varphi=0\)（无旋无源、无电荷、无内热源），场量由 \(w\) 的导数给出。以流速场为例，
+\keyformula{v_{x}+\mathrm{i}v_{y}=\overline{w'(z)}}
+即\textbf{复速度等于复势导数的共轭}；静电场中 \(\boldsymbol{E}=-\nabla\varphi\)，温度场中 \(\boldsymbol{q}=-k\nabla T\)（\(k\) 为导热系数），结构完全相同。数学上“求一个平面无旋无源场”就此化归为“求一个解析函数”。
+
+\corepoint{三场同构，差别只是物理量的名称与符号约定。最易错的是复速度的共轭：由 \(w'=\varphi_{x}+\mathrm{i}\psi_{x}=v_{x}-\mathrm{i}v_{y}\) 可知正确式是 \(v_{x}+\mathrm{i}v_{y}=\overline{w'(z)}\)，写成 \(w'(z)\) 就把 \(v_{y}\) 的符号弄反了。}

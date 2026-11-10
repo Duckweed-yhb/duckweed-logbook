@@ -1,0 +1,387 @@
+﻿% ============================================================
+% 第 3 章  同步发电机的基本方程
+% （教材：何仰赞、温增银《电力系统分析》上册 第 3 章）
+% 结构对齐 3.1—3.6；例题、习题不录
+% ============================================================
+
+\chapter{同步发电机的基本方程}
+
+同步发电机是电力系统中最重要的元件，其运行特性对系统运行状态起决定性影响。
+短路电流的暂态过程、机电暂态（稳定）分析都要用到同步电机的暂态模型。
+本章从理想同步电机内部各电磁量的关系出发，建立较精确而完整的数学模型。
+
+\section{基本前提}
+
+\subsection{理想同步电机}
+
+为便于分析，采用以下简化假设：
+\begin{enumerate}
+  \item 忽略磁路饱和、磁滞、涡流的影响，认为电机铁芯部分的导磁系数为常数（磁路线性）；
+  \item 转子在结构上对纵轴（$d$ 轴）和横轴（$q$ 轴）分别对称；
+  \item 定子 $a$、$b$、$c$ 三相绕组的空间位置互差 $120^\circ$ 电角度，结构完全相同，
+        均在气隙中产生正弦分布的磁动势；
+  \item 电机空载、转子恒速旋转时，转子绕组的磁动势在定子绕组中感应的空载电势是时间的
+        正弦函数；
+  \item 定子和转子的槽与通风沟不影响电感，即认为电机具有光滑表面。
+\end{enumerate}
+符合上述条件的电机称为\textbf{理想同步电机}。
+
+具有阻尼绕组的凸极同步电机共有 \textbf{6 个有磁耦合关系的线圈}：定子侧静止的三个相绕组
+$a$、$b$、$c$；转子侧一个励磁绕组 $f$ 和代替阻尼绕组的等值绕组 $D$、$Q$。
+三个转子绕组随转子一起旋转，$f$ 与 $D$ 位于纵轴向，$Q$ 位于横轴向。
+没有装设阻尼绕组的隐极电机，其实心转子的阻尼作用也可用等值阻尼绕组代表。
+
+\begin{table}[htbp]
+  \centering
+  \caption{同步电机的 6 个绕组与变量}
+  \small
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    绕组 & 位置 & 端电压 & 说明 \\
+    \midrule
+    $a$、$b$、$c$ & 定子，静止，互差 $120^\circ$ & $u_a,u_b,u_c$ & 相绕组，正方向由中性点指向端点 \\
+    $f$ & 转子纵轴 $d$ & $u_f$ & 励磁绕组，外加直流励磁电压 \\
+    $D$ & 转子纵轴 $d$ & $0$ & 纵轴等值阻尼绕组 \\
+    $Q$ & 转子横轴 $q$ & $0$ & 横轴等值阻尼绕组 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{假定正向的选取}
+
+正方向的规定直接决定方程中各项的符号，是本章最容易出错的地方。约定如下：
+\begin{itemize}
+  \item 转子\textbf{横轴 $q$ 轴落后于纵轴 $d$ 轴 $90^\circ$} 电角度，转子按一定方向旋转；
+  \item 各绕组轴线的正方向就是该绕组\textbf{磁链的正方向}；
+  \item 对本绕组产生正向磁链的电流为该绕组的\textbf{正电流}；
+  \item 定子电流正方向为\textbf{由绕组中性点流向端点}，各相感应电势正方向与相电流相同，
+        向外电路送出正向相电流时的机端相电压为正（发电机惯例）；
+  \item 转子各绕组感应电势正方向与本绕组电流正方向相同；向励磁绕组提供正向励磁电流的
+        外加励磁电压为正；两个阻尼回路的外加电压均为零。
+\end{itemize}
+
+按此正方向，定子电流的正向分量在 $d$ 轴方向起\textbf{去磁}作用，
+这一条决定了后面磁链方程中定子电流项带负号。
+
+\section{同步发电机的原始方程}
+
+\subsection{电势方程和磁链方程}
+
+定子和转子各回路的电势方程可写成矩阵形式
+\keyformula{\begin{bmatrix}\boldsymbol u_{abc}\\ \boldsymbol u_{fDQ}\end{bmatrix}
+  =-\begin{bmatrix}\boldsymbol\psi_{abc}\\ \boldsymbol\psi_{fDQ}\end{bmatrix}^{\!\!\bullet}
+  -\begin{bmatrix}\boldsymbol r_s & \boldsymbol 0\\ \boldsymbol 0 & \boldsymbol r_R\end{bmatrix}
+  \begin{bmatrix}\boldsymbol i_{abc}\\ \boldsymbol i_{fDQ}\end{bmatrix}}
+即 $\boldsymbol u=-\dot{\boldsymbol\psi}-\boldsymbol R\boldsymbol i$，其中“$\,\dot{}\,$”表示对时间求导，
+$\boldsymbol r_s=\operatorname{diag}(r,r,r)$ 为定子每相电阻，$\boldsymbol r_R=\operatorname{diag}(r_f,r_D,r_Q)$
+为转子各绕组电阻。定子侧取负号是发电机惯例（电流流出）的必然结果。
+
+磁链方程为
+\begin{equation}
+  \begin{bmatrix}\boldsymbol\psi_{abc}\\ \boldsymbol\psi_{fDQ}\end{bmatrix}
+  =\begin{bmatrix}\boldsymbol L_{SS} & \boldsymbol L_{SR}\\
+          \boldsymbol L_{RS} & \boldsymbol L_{RR}\end{bmatrix}
+  \begin{bmatrix}\boldsymbol i_{abc}\\ \boldsymbol i_{fDQ}\end{bmatrix},
+\end{equation}
+其中 $\boldsymbol L_{SS}$ 为定子绕组自感与相互感（$3\times3$），$\boldsymbol L_{RR}$ 为转子绕组
+自感与相互感，$\boldsymbol L_{SR}=\boldsymbol L_{RS}^{\mathsf T}$ 为定转子间互感。
+
+式（电势方程）与式（磁链方程）共 \textbf{12 个方程式}，含 6 个绕组的磁链、电流、电压共
+\textbf{18 个运行变量}。一般把各绕组电压作给定量，剩 12 个待求量（6 个磁链、6 个电流）；
+各绕组电阻、自感与互感为已知参数。
+
+\subsection{电感系数}
+
+转子旋转时定、转子绕组相对位置不断变化，凸极机中部分磁通路径的磁导也随转子位置周期性
+变化，故许多自感、互感系数是转子位置角 $\alpha$ 的函数。
+
+以 $a$ 相为例：$a$ 相电流产生的正弦分布磁势 $F_a=w_a i_a$ 可分解为 $d$ 轴分量
+$F_a\cos\alpha$ 与 $q$ 轴分量 $F_a\sin\alpha$，沿两轴产生气隙磁通
+$\phi_{ad}=\lambda_{ad}F_a\cos\alpha$、$\phi_{aq}=\lambda_{aq}F_a\sin\alpha$，
+另有漏磁通 $\phi_{\sigma a}=\lambda_{sa}F_a$。于是
+\begin{equation}
+  \psi_{aa}=w_a^2 i_a\left(\lambda_{sa}+\lambda_{ad}\cos^{2}\alpha+\lambda_{aq}\sin^{2}\alpha\right),
+\end{equation}
+\begin{equation}
+  L_{aa}=\frac{\psi_{aa}}{i_a}=l_0+l_2\cos 2\alpha,
+\end{equation}
+\begin{equation}
+  l_0=w_a^2\left[\lambda_{sa}+\tfrac{1}{2}\left(\lambda_{ad}+\lambda_{aq}\right)\right],
+  \qquad
+  l_2=\tfrac{1}{2}w_a^2\left(\lambda_{ad}-\lambda_{aq}\right).
+\end{equation}
+可见\textbf{定子自感系数是转子位置角的周期函数，周期为 $\pi$}（$\alpha=0$ 即 $d$ 轴对准该相
+轴线时自感最大）。由三相对称性同理可得
+\begin{align}
+  L_{bb}&=l_0+l_2\cos 2(\alpha-120^\circ),&
+  L_{cc}&=l_0+l_2\cos 2(\alpha+120^\circ),\\
+  M_{ab}&=M_{ba}=-m_0+m_2\cos 2(\alpha+30^\circ),&\dots
+\end{align}
+定子与转子绕组间的互感则随 $\alpha$ 作\textbf{周期为 $2\pi$ 的正弦变化}（因为转子绕组轴线
+与定子绕组轴线的夹角变化一整周才复原）。
+
+\begin{table}[htbp]
+  \centering
+  \caption{原始方程中三类电感系数的变化规律}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    电感系数 & 变化规律 & 变化原因 \\
+    \midrule
+    定子自感 $L_{aa}$ 等 & $l_0+l_2\cos2\alpha$，周期 $\pi$ & 凸极转子使气隙磁导随位置变化 \\
+    定子互感 $M_{ab}$ 等 & $-m_0+m_2\cos2(\alpha+30^\circ)$，周期 $\pi$ & 同上，且三相互差 $120^\circ$ \\
+    定转子互感 & 随 $\alpha$ 正弦变化，周期 $2\pi$ & 两绕组轴线夹角变化一周才复原 \\
+    转子绕组自感、互感 & 常数 & 转子绕组间无相对运动 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+因此，$abc$ 坐标下的基本方程是\textbf{含周期性变系数的一组微分方程}，直接求解极为困难。
+解决办法是坐标变换：把定子三相变量变换到随转子一起旋转的 $d$、$q$、$0$ 坐标系，
+使电感系数变为常数。
+
+\corepoint{“变系数”不是电机本身的非线性，而是\textbf{坐标系选得不巧}。
+坐标变换不改变物理本质，只把时变电感换成常电感。这是理解派克变换的唯一要点，
+也是后面所有暂态分析（运算电抗、时间常数）能够成立的前提。}
+
+\section{$dq0$ 坐标系的同步电机方程}
+
+\subsection{坐标变换和 $dq0$ 系统}
+
+取 $d$ 轴与 $a$ 相绕组轴线之间的电角度为 $\alpha$，令
+\keyformula{
+  \boldsymbol P=\frac{2}{3}
+  \begin{bmatrix}
+    \cos\alpha & \cos(\alpha-120^\circ) & \cos(\alpha+120^\circ)\\
+    \sin\alpha & \sin(\alpha-120^\circ) & \sin(\alpha+120^\circ)\\
+    \tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{2}
+  \end{bmatrix}}
+则 $\boldsymbol i_{dq0}=\boldsymbol P\boldsymbol i_{abc}$，即
+\begin{align}
+  i_d&=\tfrac{2}{3}\left[i_a\cos\alpha+i_b\cos(\alpha-120^\circ)+i_c\cos(\alpha+120^\circ)\right],\\
+  i_q&=\tfrac{2}{3}\left[i_a\sin\alpha+i_b\sin(\alpha-120^\circ)+i_c\sin(\alpha+120^\circ)\right],\\
+  i_0&=\tfrac{1}{3}\left(i_a+i_b+i_c\right).
+\end{align}
+变换矩阵 $\boldsymbol P$ 非奇异，逆阵为
+\begin{equation}
+  \boldsymbol P^{-1}=
+  \begin{bmatrix}
+    \cos\alpha & \sin\alpha & 1\\
+    \cos(\alpha-120^\circ) & \sin(\alpha-120^\circ) & 1\\
+    \cos(\alpha+120^\circ) & \sin(\alpha+120^\circ) & 1
+  \end{bmatrix},
+  \qquad \boldsymbol i_{abc}=\boldsymbol P^{-1}\boldsymbol i_{dq0}.
+\end{equation}
+
+\textbf{零轴分量的物理意义}：由于定子三相绕组完全对称、空间互差 $120^\circ$，
+三相零轴电流在气隙中的合成磁势为零，不产生与转子绕组交链的磁通，
+只产生与定子绕组交链的磁通，其值与转子位置无关。$i_0$ 的表达式与对称分量法中零序电流
+相似，区别是这里用瞬时值、那里用相量。
+
+\textbf{等效绕组的物理图像}：$i_d$、$i_q$ 可看成定子两个等效绕组 $dd$、$qq$ 中的电流。
+这两个绕组不像 $a$、$b$、$c$ 那样空间静止，而是\textbf{随转子一起旋转}，
+其磁势对转子相对静止，所遇磁路磁阻恒定，相应的电感系数变为常数——这正是变换的目的。
+
+\textbf{频率对应关系}（教材表 3-1 的结论）：设三相电流为对称的 $i_a=I\cos\theta$ 等，
+$\theta=\theta_0+\omega' t$，$d$ 轴角速度 $\omega$，则 $i_d=I\cos(\alpha-\theta)$、
+$i_q=I\sin(\alpha-\theta)$、$i_0=0$。于是
+\begin{table}[htbp]
+  \centering
+  \caption{$abc$ 系统与 $dq0$ 系统变量的频率对应}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    定子电流角频率 $\omega'$ & $dq0$ 分量 & 含义 \\
+    \midrule
+    $\omega'=0$（直流） & 频率为 $\omega$ 的交流 & 直流 $\to$ 基频 \\
+    $\omega'=\omega$（基频交流） & 常量（直流） & 对称基频交流 $\to$ 直流 \\
+    $\omega'=2\omega$（倍频） & 频率为 $\omega$ 的交流 & 倍频 $\to$ 基频 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+即：三相系统的对称\textbf{基频交流}经派克变换后成为 $d$、$q$ 轴分量中的\textbf{直流}；
+而三相系统的\textbf{直流与倍频}分量变换后成为 $d$、$q$ 轴中的\textbf{基频交流}。
+变换可逆，故反之亦然。这一条是短路电流中“周期分量对应直流励磁磁链、
+非周期分量（直流）对应基频”之类结论的数学依据。
+
+\subsection{$dq0$ 系统的电势方程}
+
+只对定子各量施行变换。定子电势方程 $\boldsymbol u_{abc}=-\dot{\boldsymbol\psi}_{abc}-\boldsymbol r_s\boldsymbol i_{abc}$，
+左乘 $\boldsymbol P$，并利用 $\dot{\boldsymbol\psi}_{abc}=\boldsymbol P^{-1}\dot{\boldsymbol\psi}_{dq0}
++\dot{\boldsymbol P}^{-1}\boldsymbol\psi_{dq0}$，得
+\begin{equation}
+  \boldsymbol u_{dq0}=-\dot{\boldsymbol\psi}_{dq0}-\boldsymbol S-\boldsymbol r_s\boldsymbol i_{dq0},
+  \qquad \boldsymbol S=\boldsymbol P\dot{\boldsymbol P}^{-1}\boldsymbol\psi_{dq0}.
+\end{equation}
+把 $\boldsymbol S$ 展开（$\dot\alpha=\omega$）即得
+\keyformula{
+  \begin{aligned}
+    u_d&=-\dot\psi_d-\omega\psi_q-r i_d,\\
+    u_q&=-\dot\psi_q+\omega\psi_d-r i_q,\\
+    u_0&=-\dot\psi_0-r i_0 .
+  \end{aligned}}
+后两项值得注意：$\omega\psi_q$、$\omega\psi_d$ 是\textbf{旋转电势}（切割电势），
+来源于坐标轴在空间旋转；$\dot\psi$ 是\textbf{变压器电势}。在稳态（$\dot\psi=0$）下只剩旋转电势，
+这正是“同步电机稳态电压由励磁磁链乘转速决定”的数学表现。
+
+\subsection{$dq0$ 系统的磁链方程和电感系数}
+
+变换后 $d$、$q$、$0$ 三轴互相解耦，电感系数全部为常数：
+\begin{align}
+  \psi_d&=X_{ad}\left(i_f+i_D\right)-X_d i_d,\\
+  \psi_q&=X_{aq}i_Q-X_q i_q,\\
+  \psi_0&=-X_0 i_0,\\
+  \psi_f&=X_{ff}i_f+X_{ad}i_D-X_{ad}i_d,\\
+  \psi_D&=X_{ad}i_f+X_{DD}i_D-X_{ad}i_d,\\
+  \psi_Q&=X_{aq}i_Q-X_{aq}i_q,
+\end{align}
+其中定子电流项前的负号来自所取正方向（正向定子电流的去磁作用）。电抗关系为
+\begin{equation}
+  X_d=X_{ad}+X_\sigma,\qquad X_q=X_{aq}+X_\sigma,
+\end{equation}
+$X_{ad}$、$X_{aq}$ 为纵轴、横轴电枢反应电抗，$X_\sigma$ 为定子漏抗；且
+$X_d>X_q$（凸极机），隐极机 $X_d\approx X_q$。
+
+\subsection{功率公式}
+
+由三相瞬时功率 $p=u_ai_a+u_bi_b+u_ci_c$ 代入逆变换得
+\keyformula{p=\frac{3}{2}\left(u_di_d+u_qi_q\right)+3u_0i_0}
+系数 $3/2$、$3$ 来自变换矩阵的 $2/3$ 因子。若采用恒功率变换（系数取 $\sqrt{2/3}$），
+系数变为 $1$，两种写法结果等价，但\textbf{同一题中不能混用}。
+对称运行时 $i_0=u_0=0$，故
+\begin{equation}
+  p=\frac{3}{2}\left(u_di_d+u_qi_q\right),\qquad
+  T_e=\frac{p}{\omega}\ \ (\text{标幺制下}\ \omega=1\ \text{时}\ T_e=p).
+\end{equation}
+
+\corepoint{派克变换的三个易错点：（1） 变换矩阵的 $2/3$ 系数决定了功率公式必须带 $3/2$；
+（2） $q$ 轴分量用 $\sin$（本书约定），若某书用 $-\sin$，则 $i_q$ 差一符号，
+后面的 $X_q$、$T_e$ 符号随之改变，\textbf{不可跨书混用公式}；
+（3） $i_0$ 与对称分量法的零序电流形式相同但性质不同：这里是瞬时值，那里是相量。}
+
+\section{同步电机的常用标幺制}
+
+采用标幺制可使各量数值归一，并使 $d$、$q$ 轴方程的形式进一步简化。基值选取分两部分：
+
+\subsection{定子侧基值}
+
+选三相容量 $S_B$ 与线电压 $U_B$，则
+\begin{equation}
+  I_B=\frac{S_B}{\sqrt{3}U_B},\qquad Z_B=\frac{U_B^{2}}{S_B},\qquad
+  \psi_B=\frac{U_B}{\omega_B},\qquad \omega_B=2\pi f_N,
+\end{equation}
+电阻、电抗、磁链、时间分别以 $Z_B$、$\psi_B$、$1/\omega_B$ 为基值（时间基值取 $t_B=1/\omega_B$，
+这样 $\omega$ 的标幺值为 $1$）。
+
+\subsection{转子侧基值与“互感可逆”}
+
+转子各绕组（$f$、$D$、$Q$）的基值电流、基值电压不能任意选，须满足
+\begin{quote}
+  使定子绕组与转子绕组之间的\textbf{互感系数标幺值相等}（即互感可逆），
+  从而使 $X_{ad}$、$X_{aq}$ 在定子侧与转子侧只有一个标幺值。
+\end{quote}
+具体做法是先选定转子基值电流 $I_{fB}$（常取空载额定电压所需的励磁电流作为参考），
+再由 $X_{ad*}=1$ 之类的条件反定电压基值 $U_{fB}=Z_{fB}I_{fB}$。
+这样处理后，$d$、$q$ 轴磁链方程中标幺化的互感系数都等于 $X_{ad*}$、$X_{aq*}$，
+方程形式与有名值方程完全一致，只是各量加了星号。
+
+\textbf{实用效果}：标幺制下 $X_d$、$X_q$、$X_d'$、$X_d''$、$X_q''$ 都是同一数量级的纯数
+（如 $X_d=1.0\sim2.5$），时间常数以秒计，转矩与功率标幺值相等（$\omega_*=1$）。
+
+\section{基本方程的拉氏运算形式}
+
+\subsection{有阻尼绕组同步电机的运算方程}
+
+假定转子转速恒定为额定转速，对派克方程作拉氏变换（$p=\mathrm{d}/\mathrm{d}t\to s$），
+把微分方程化为象函数的代数方程，然后求解。可得
+\begin{equation}
+  \psi_d(s)=X_d(s)\,i_d(s)+G_f(s)u_f(s)+\cdots
+\end{equation}
+其中
+\keyformula{X_d(p)=X_\sigma+\frac{1}{\dfrac{1}{X_{ad}}+\dfrac{1}{X_{f\sigma}+r_f/p}
+  +\dfrac{1}{X_{D\sigma}+r_D/p}},\qquad
+  X_q(p)=X_\sigma+\frac{1}{\dfrac{1}{X_{aq}}+\dfrac{1}{X_{Q\sigma}+r_Q/p}}}
+$X_d(p)$、$X_q(p)$ 称为同步电机的\textbf{纵轴、横轴运算电抗}；此外还引出传递函数
+$G_f(p)$、$G_D(p)$、$G_Q(p)$，反映励磁电压、阻尼绕组磁链对定子量的作用。
+
+\subsection{运算电抗的等值电路}
+
+运算电抗有直观的等值电路解释：
+\begin{itemize}
+  \item \textbf{纵轴}：$X_\sigma$ 串联“$X_{ad}$、$X_{f\sigma}+r_f/p$、$X_{D\sigma}+r_D/p$
+        \textbf{三支路并联}”；
+  \item \textbf{横轴}：$X_\sigma$ 串联“$X_{aq}$ 与 $X_{Q\sigma}+r_Q/p$ 两支路并联”。
+\end{itemize}
+物理意义很清楚：$p\to\infty$（突变瞬间）时 $r/p\to0$，各阻尼、励磁支路相当于短路，
+并联支路被短接，得
+\begin{equation}
+  X_d(0)=X_\sigma+\left(\frac{1}{X_{ad}}+\frac{1}{X_{f\sigma}}+\frac{1}{X_{D\sigma}}\right)^{-1}
+  =X_d'',
+\end{equation}
+即\textbf{次暂态电抗}；$p\to0$（稳态）时 $r/p\to\infty$，各转子支路相当于开路，
+得 $X_d(\infty)=X_{ad}+X_\sigma=X_d$，即\textbf{同步电抗}。
+只有一个转子绕组时对应 $X_d'$（暂态电抗）。这一“极限即参数”的对应关系，
+是第 5 章短路电流中各阶段电流取值的根本依据。
+
+\subsection{无阻尼绕组同步电机的运算方程}
+
+无阻尼绕组（或隐极机不带阻尼绕组）时，$d$ 轴只剩励磁支路、$q$ 轴无转子绕组：
+\begin{equation}
+  X_d(p)=X_\sigma+\frac{1}{\dfrac{1}{X_{ad}}+\dfrac{1}{X_{f\sigma}+r_f/p}},\qquad
+  X_q(p)=X_q=X_{aq}+X_\sigma .
+\end{equation}
+此时 $q$ 轴无暂态过程（$X_q$ 恒定），只有 $d$ 轴存在暂态电抗 $X_d'$ 与时间常数 $T_d'$。
+第 5 章对“无阻尼绕组电机突然三相短路”的分析就用这一组方程。
+
+\section{同步电机的对称稳态运行}
+
+\subsection{基本方程的实用化}
+
+稳态对称运行时：$\dot\psi_d=\dot\psi_q=0$，$i_0=0$，转子转速为同步速（$\omega_*=1$），
+定子电阻压降远小于电抗压降，通常可忽略（$r=0$）。$dq0$ 电势方程退化为
+\keyformula{u_d=-\psi_q=X_q i_q,\qquad u_q=\psi_d=X_{ad}i_f-X_d i_d=E_q-X_d i_d}
+其中
+\begin{equation}
+  E_q=X_{ad}i_f=\psi_{fd}
+\end{equation}
+为励磁电流在定子绕组中产生的互感磁链（有用磁链）及其感应电势，即通常所指的\textbf{空载电势}。
+
+\subsection{稳态运行的电势方程式、相量图和等值电路}
+
+\textbf{隐极机}（$X_d=X_q$）：由 $u_d=X_qi_q$、$u_q=E_q-X_di_d$ 合成相量式
+\begin{equation}
+  \dot E_q=\dot U+jX_d\dot I .
+\end{equation}
+等值电路为：电势源 $\dot E_q$ 串 $jX_d$ 后接机端。$\dot E_q$ 与 $\dot U$ 的相位差即\textbf{功角} $\delta$。
+
+\textbf{凸极机}（$X_d\ne X_q$）：因 $X_d\ne X_q$，$d$、$q$ 轴压降不等，须引入辅助电势
+\begin{equation}
+  \dot E_Q=\dot U+jX_q\dot I ,
+\end{equation}
+$E_Q$ 落在 $q$ 轴上。再由
+\begin{equation}
+  E_q=E_Q-(X_d-X_q)i_d
+\end{equation}
+求空载电势。故凸极机的相量图须先定 $q$ 轴方向（$\dot E_Q$ 方向即 $q$ 轴），
+再分解 $d$、$q$ 分量。
+
+\begin{table}[htbp]
+  \centering
+  \caption{稳态方程与等值电路的对照}
+  \small
+  \begin{tabular}{@{}p{0.12\linewidth}p{0.34\linewidth}p{0.40\linewidth}@{}}
+    \toprule
+    机型 & 方程 & 说明 \\
+    \midrule
+    隐极机 & $\dot E_q=\dot U+jX_d\dot I$ & 一个电势、一个电抗，可直接求 $\delta$ \\
+    凸极机 & $\dot E_Q=\dot U+jX_q\dot I$，\newline $E_q=E_Q-(X_d-X_q)i_d$ &
+             先由 $\dot E_Q$ 定 $q$ 轴，再分解；$X_d\ne X_q$ 造成附加项 \\
+    标幺形式 & $\omega_*=1$ 时 $u_d=X_qi_q$，$u_q=E_q-X_di_d$ & 转矩与功率数值相等 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\corepoint{稳态分析的三步：（1） 由 $\dot U$、$\dot I$ 及 $X_q$ 定 $q$ 轴（凸极机）或直接用 $X_d$
+（隐极机）；（2） 分解 $i_d$、$i_q$；（3） 由 $E_q=u_q+X_di_d$ 反求空载电势，$\delta$ 为 $\dot E_q$
+超前 $\dot U$ 的角度。功角 $\delta$ 是第 15、16 章全部稳定分析的基准量，
+其物理含义（转子磁极轴线领先定子合成磁极轴线的电角度）必须在本章就建立起来。}

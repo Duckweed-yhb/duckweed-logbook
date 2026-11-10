@@ -1,0 +1,379 @@
+% ============================================================
+% 第 4 章 变压器的基本理论（教材第二篇，印刷页 30--47）
+% 节名：第一节 变压器的空载运行；第二节 变压器的负载运行；
+%       第三节 变压器的归算；第四节 变压器的等效电路和相量图；第五节 变压器的参数测定
+% ============================================================
+\chapter{变压器的基本理论}
+
+本章介绍变压器的基本原理和分析方法：先从变压器内部的电磁关系出发得出基本方程式，再通过归算得到等效电路和相量图，最后给出由试验测定参数的方法。这一整套"物理过程 $\rightarrow$ 基本方程 $\rightarrow$ 归算 $\rightarrow$ 等效电路 $\rightarrow$ 参数测定"的流程，是后面分析感应电机、同步电机的通用模板，务必在本章彻底打通。
+
+\section{变压器的空载运行}
+
+变压器空载运行是指一次绕组接到交流电源上、二次绕组开路、二次绕组没有电流流通的运行情况。
+
+\subsection{空载运行的物理情况和变压原理}
+设一、二次绕组匝数分别为 $N_1$、$N_2$。二次绕组开路、一次绕组接上交流电源时，在外加电压作用下一次绕组中流过交变电流，称为\textbf{空载电流} $i_0$。$i_0$ 产生磁动势 $F_0=N_1i_0$，建立变压器的空载磁场。
+
+由于铁芯磁路的磁导率远大于周围空气或油的磁导率，$F_0$ 产生的交变磁通绝大部分通过铁芯，并与一、二次绕组同时交链。这部分磁通是联系一、二次绕组的媒介，称为\textbf{主磁通} $\Phi$。另有一小部分仅与一次绕组交链、主要经铁芯外空气或油闭合的磁通，称为一次绕组的\textbf{漏磁通} $\Phi_{1\sigma}$。
+
+按图示正方向（磁通正方向与感应电动势正方向符合右手螺旋定则），
+\begin{equation}
+e_1=-N_1\frac{\mathrm{d}\Phi}{\mathrm{d}t},\qquad e_2=-N_2\frac{\mathrm{d}\Phi}{\mathrm{d}t}.
+\end{equation}
+漏磁通仅与一次绕组交链，只在该绕组中感应漏磁电动势 $e_{1\sigma}$。由于漏磁通主要沿非铁磁材料闭合，基本不受铁芯饱和影响，故漏磁链与 $i_0$ 成正比：
+\begin{equation}
+\Psi_{1\sigma}=L_{1\sigma}i_0,\qquad
+e_{1\sigma}=-L_{1\sigma}\frac{\mathrm{d}i_0}{\mathrm{d}t}=-N_1\frac{\mathrm{d}\Phi_{1\sigma}}{\mathrm{d}t},
+\end{equation}
+其中 $L_{1\sigma}$ 为一次绕组的漏磁电感（漏感），是一常值。
+
+由基尔霍夫定律，一次绕组的电压方程为
+\begin{equation}
+u_1=-e_1-e_{1\sigma}+R_1i_0=-e_1+L_{1\sigma}\frac{\mathrm{d}i_0}{\mathrm{d}t}+R_1i_0 .
+\end{equation}
+由于漏磁通远小于主磁通，$|e_{1\sigma}|\ll|e_1|$；电阻压降 $R_1i_0$ 更小，在电力变压器中通常约占一次绕组电压的 0.1\%。二者均可忽略，故
+\begin{equation}
+u_1\approx-e_1,\qquad u_{20}=e_2 .
+\end{equation}
+于是空载时一、二次电压之比
+\begin{equation}
+\frac{U_1}{U_{20}}\approx\frac{E_1}{E_2}=\frac{N_1}{N_2}=k ,
+\end{equation}
+$k$ 称为变压器的\textbf{变比}。
+
+\keyformula{\frac{U_1}{U_{20}}\approx\frac{E_1}{E_2}=\frac{N_1}{N_2}=k}
+
+该式表明：空载运行时，变压器一、二次绕组的电压之比等于匝数比。因此要使一、二次绕组具有不同电压，只要使它们具有不同的匝数即可——这就是变压器变压的原理。
+
+\subsection{主磁通与感应电动势}
+一次绕组漏抗压降与电阻压降之和小于 $0.4\%U_{1N}$，可以忽略，故 $U_1\approx E_1$，即一次绕组的感应电动势近似与外加电源电压相平衡。若外加电压按正弦规律变化，$e_1$ 也按正弦变化；由 $e_1=-N_1\mathrm{d}\Phi/\mathrm{d}t$ 可知，产生正弦电动势的磁通必须按正弦规律变化。设
+\begin{equation}
+\Phi=\Phi_m\sin\omega t,
+\end{equation}
+代入 $e_1=-N_1\mathrm{d}\Phi/\mathrm{d}t$ 得
+\begin{equation}
+e_1=-\omega N_1\Phi_m\cos\omega t=\sqrt2E_1\sin\!\left(\omega t-90^\circ\right),
+\end{equation}
+故一次绕组感应电动势的有效值与主磁通的关系为
+\begin{equation}
+E_1=\frac{\omega N_1\Phi_m}{\sqrt2}=4.44fN_1\Phi_m .
+\end{equation}
+
+\keyformula{E_1=4.44fN_1\Phi_m,\qquad E_2=4.44fN_2\Phi_m}
+
+同理可得二次绕组感应电动势 $E_2=4.44fN_2\Phi_m$，其相位与 $E_1$ 相同，亦滞后主磁通 $90^\circ$。
+
+\subsubsection{两个重要推论}
+\begin{enumerate}
+  \item \textbf{电动势大小}与绕组匝数以及主磁通变化的频率与幅值成正比。
+  \item 由 $U_1\approx E_1=4.44fN_1\Phi_m$，当外加电源电压不变时，对已制好的变压器，
+  \begin{equation}
+  \Phi_m\approx\frac{U_1}{4.44fN_1}=\text{常数}.
+  \end{equation}
+  \textbf{空载运行时的主磁通基本不变}。这条"恒磁通"结论是后面磁动势平衡方程成立的前提（第 4.2 节），也是判断"加电压还是加频率会改变铁耗"的依据。
+\end{enumerate}
+
+\subsection{励磁电流与励磁阻抗}
+空载时 $i_0$ 产生的磁动势 $F_0=N_1i_0$ 用来建立空载磁场，故\textbf{空载电流基本就是励磁电流}，即 $i_0=i_m$。由第 1 章第五节，主磁通为正弦波时励磁电流为非正弦波，可分解为产生主磁通的\textbf{磁化电流} $i_\mu$ 与\textbf{铁芯损耗电流} $i_{Fe}$ 两个分量：
+\begin{equation}
+i_m=i_\mu+i_{Fe}.
+\end{equation}
+$i_\mu$ 是尖顶波，其数值与额定电流相比很小，工程上常用\textbf{等效正弦波}代替——即该正弦波的有效值、频率和相位都与尖顶波相同。经过等效后，励磁电流可以用相量表示：
+\begin{equation}
+\dot I_m=\dot I_\mu+\dot I_{Fe}.
+\end{equation}
+
+相量关系为：$\dot I_\mu$ 与 $\dot\Phi_m$ 同相，$\dot E_1$ 超前于 $\dot\Phi_m$ $90^\circ$，故 $\dot I_\mu$ 与 $\dot E_1$ 反相，为一\textbf{无功电流}；$\dot I_{Fe}$ 超前于 $\dot\Phi_m$ $90^\circ$，与 $\dot E_1$ 同相，为一\textbf{有功电流}。励磁电流 $\dot I_m$ 超前于磁通 $\dot\Phi_m$ 的角度很小，用 $\alpha_{Fe}$ 表示，通常称为\textbf{铁耗角}。因此铁芯损耗还可以表示为
+\begin{equation}
+P_{Fe}=E_1I_m\cos\!\left(90^\circ-\alpha_{Fe}\right)=E_1I_m\sin\alpha_{Fe}=E_1I_{Fe}.
+\end{equation}
+
+若将励磁电流与感应电动势 $E_1$ 直接联系起来，其关系为
+\begin{equation}
+\dot E_1=-\dot I_m\left(R_{Fe}+\mathrm{j}X_\mu\right)=-\dot I_mZ_m,
+\end{equation}
+式中：$R_{Fe}$ 为表征铁耗的参数，称为\textbf{铁耗电阻}；$X_\mu$ 为表征铁芯磁化性能的参数，称为\textbf{磁化电抗}；$Z_m$ 为变压器的\textbf{励磁阻抗}，是用串联阻抗形式表征铁芯磁化性能和铁芯损耗的一个综合参数，$Z_m=R_m+\mathrm{j}X_m$。其中 $R_m$ 为励磁电阻（表征铁耗的等效参数），$X_m$ 为励磁电抗（表征磁化性能的等效参数）。
+
+励磁回路的并联形式由铁耗电阻 $R_{Fe}$ 与磁化电抗 $X_\mu$ 并联构成；进一步用一个等效串联阻抗 $Z_m$ 代替这两个并联支路，则由串并联等效关系
+\begin{equation}
+R_m=\frac{R_{Fe}X_\mu^{2}}{R_{Fe}^{2}+X_\mu^{2}},\qquad
+X_m=\frac{R_{Fe}^{2}X_\mu}{R_{Fe}^{2}+X_\mu^{2}} .
+\end{equation}
+通常 $R_{Fe}\gg X_\mu$，故近似有 $R_m\approx X_\mu^{2}/R_{Fe}$、$X_m\approx X_\mu$。
+
+将励磁电流等效成正弦波后，漏磁电动势可写成相量形式 $\dot E_{1\sigma}=-\mathrm{j}\dot I_0X_{1\sigma}$，其中 $X_{1\sigma}=\omega L_{1\sigma}$ 为一次绕组的\textbf{漏抗}。于是电压方程的相量形式为
+\begin{equation}
+\dot U_1=-\dot E_1+\dot I_0\left(R_1+\mathrm{j}X_{1\sigma}\right)=-\dot E_1+\dot I_0Z_{1\sigma},
+\end{equation}
+其中 $Z_{1\sigma}=R_1+\mathrm{j}X_{1\sigma}$ 为一次绕组的\textbf{漏阻抗}。
+
+\corepoint{由于磁化曲线非线性，饱和情况下 $X_m$ 是一个变值，随饱和增加而减小。但通常电源电压变化很小，磁通变化范围很小，故可近似认为 $Z_m$ 为常值。这就是"非线性问题局部线性化"的处理手法：把受饱和影响的主磁路作为一个局部非线性环节，单独用 $Z_m$ 表征；把不受饱和影响的漏磁通分离出来，用常值 $X_{1\sigma}$、$X_{2\sigma}$ 表征。}
+
+\section{变压器的负载运行}
+
+\subsection{负载运行时的物理过程}
+空载时由 $i_0$ 产生磁动势 $F_0=N_1i_0$ 建立主磁通 $\Phi$，在一、二次绕组中分别感应 $e_1$、$e_2$；电网电压 $u_1$ 与 $E_1$ 以及一次漏阻抗压降相平衡，维持 $i_0$ 在一次绕组内流通，使变压器中的电磁关系处于平衡状态。
+
+二次绕组接上负载 $Z_L$ 后，在 $e_2$ 作用下二次绕组中有电流 $i_2$ 流通。$i_2$ 建立磁动势 $F_2=N_2i_2$ 作用在铁芯磁路上，引起主磁通变化，主磁通的变化又引起 $e_1$、$e_2$ 变化。在电网电压不变的情况下，$e_1$ 的变化将引起一次绕组电流从空载的 $i_0$ 过渡到负载时的 $i_1$；这时磁动势 $N_1i_1$ 和 $N_2i_2$ 同时作用在铁芯磁路上共同建立主磁通，在一、二次绕组中产生新的感应电动势，以使一、二次绕组达到新的电压平衡，维持一、二次绕组电流流通。
+
+为便于分析，假设一次绕组漏阻抗 $Z_{1\sigma}\approx0$，则 $U_1\approx E_1$。当电网电压有效值 $U_1$ 保持不变时，主磁通 $\Phi_m$ 亦保持不变。因此一次绕组电流从空载 $i_0$ 过渡到负载 $i_1$ 时，\textbf{励磁磁动势 $N_1i_0$ 将保持不变}，故一次绕组电流增加部分产生的磁动势应完全与二次绕组磁动势 $N_2i_2$ 抵消，即
+\begin{equation}
+N_1\dot I_1+N_2\dot I_2=N_1\dot I_0 .
+\end{equation}
+考虑到 $e_1/e_2=N_1/N_2$，可得
+\begin{equation}
+e_1i_1+e_2i_2=e_1i_0,
+\end{equation}
+即一次绕组从电网增加输入的电功率传递到二次绕组，变成二次绕组获得的电功率。
+
+综上：变压器负载运行时，通过电磁感应关系，一、二次绕组的电流紧密联系在一起——二次绕组电流的增加或减小必然同时引起一次绕组电流的增加或减小；相应地，二次绕组输出功率增加或减小时，一次绕组从电网吸收的功率必然同时增加或减小。
+
+\subsection{磁动势方程}
+作用在磁路上的合成磁动势，也就是励磁磁动势。若用一次绕组电流所产生的磁动势来表征励磁磁动势，则磁动势方程为
+\begin{equation}
+N_1\dot I_m=N_1\dot I_1+N_2\dot I_2
+\quad\Longleftrightarrow\quad
+N_1\dot I_1=N_1\dot I_m+\left(-N_2\dot I_2\right).
+\end{equation}
+若用电流表示，
+\begin{equation}
+\dot I_1=\dot I_m+\dot I_{1L},\qquad
+\dot I_{1L}=-\frac{N_2}{N_1}\dot I_2=-\frac{\dot I_2}{k},
+\end{equation}
+其中 $\dot I_{1L}$ 称为一次绕组的\textbf{负载分量}。
+
+该式表明：变压器负载运行时，一次绕组电流有两个分量——一个是\textbf{励磁电流} $\dot I_m$，用于建立负载运行时的主磁通；另一个是\textbf{负载分量} $\dot I_{1L}$，产生磁动势 $N_1\dot I_{1L}$，用以抵消二次绕组磁动势 $N_2\dot I_2$，即 $N_1\dot I_{1L}+N_2\dot I_2=0$。由于一次绕组漏阻抗很小，从空载到额定负载，$E_1$ 变化很小，因此主磁通和励磁磁动势 $N_1\dot I_m$ 变化都不大，故 $\dot I_0$ 与 $\dot I_m$ 差别不大。
+
+\subsection{电压方程}
+负载运行时磁通包括三部分：励磁电流产生的主磁通 $\Phi$、$N_1\dot I_1$ 在一次绕组中产生的漏磁通 $\Phi_{1\sigma}$、$N_2\dot I_2$ 在二次绕组中产生的漏磁通 $\Phi_{2\sigma}$。主磁通在一、二次绕组中感应 $E_1$、$E_2$；漏磁通分别感应漏磁电动势 $E_{1\sigma}$、$E_{2\sigma}$。漏磁通与产生它的电流成正比，故
+\begin{equation}
+\dot E_{1\sigma}=-\mathrm{j}\dot I_1X_{1\sigma},\qquad
+\dot E_{2\sigma}=-\mathrm{j}\dot I_2X_{2\sigma},
+\end{equation}
+其中 $X_{2\sigma}$ 为二次绕组的漏抗。
+
+从一次电路看，负载运行与空载运行的区别仅是把电流 $i_0$ 改变为 $i_1$，故一次电压方程为
+\begin{equation}
+\dot U_1=-\dot E_1+\dot I_1\left(R_1+\mathrm{j}X_{1\sigma}\right)=-\dot E_1+\dot I_1Z_{1\sigma}.
+\end{equation}
+从二次电路看，二次绕组中有了电流 $i_2$，感应电动势不再等于端电压，由基尔霍夫第二定律
+\begin{equation}
+\dot E_2=\dot U_2+\dot I_2\left(R_2+\mathrm{j}X_{2\sigma}\right)=\dot U_2+\dot I_2Z_{2\sigma},
+\end{equation}
+即 $\dot U_2=\dot E_2-\dot I_2Z_{2\sigma}$，其中 $Z_{2\sigma}=R_2+\mathrm{j}X_{2\sigma}$ 称为二次绕组的漏阻抗。
+
+归纳起来，变压器负载运行时的基本方程组为
+\begin{equation}
+\left\{
+\begin{aligned}
+\dot U_1&=-\dot E_1+\dot I_1Z_{1\sigma},\\
+\dot E_1&=k\dot E_2,\\
+\dot I_1&=\dot I_m+\dot I_{1L}=\dot I_m-\dot I_2/k,\\
+\dot E_1&=-\dot I_mZ_m,\\
+\dot U_2&=\dot E_2-\dot I_2Z_{2\sigma},\\
+\dot U_2&=\dot I_2Z_L .
+\end{aligned}
+\right.
+\end{equation}
+
+\corepoint{这组方程就是变压器的"牛顿定律"。五个方程、五个未知量（$\dot E_1$、$\dot E_2$、$\dot I_1$、$\dot I_2$、$\dot U_2$），给定 $U_1$ 与 $Z_L$ 即可解。注意第三个方程是\textbf{磁动势平衡}（不是电流平衡），第四个方程把主磁路的非线性"打包"进 $Z_m$——这两个处理是全书通用套路。}
+
+\section{变压器的归算}
+
+原则上，应用基本方程组即可进行变压器的运行分析与计算。但由于一、二次绕组匝数不等，给计算带来麻烦，尤其当 $N_1$ 与 $N_2$ 相差较大时，绕组相对应的量值相差较大，运行计算和相量图绘制都比较困难。解决这个问题通常采用\textbf{归算法}。
+
+所谓归算法，就是把各绕组的匝数变换成相同匝数的方法。\textbf{归算仅仅是分析变压器的一种方法，不改变变压器原有的电磁关系和电磁过程}——归算前后的磁平衡关系、功率传递、损耗和漏磁场储能均应保持不变。通常的做法是用一个匝数亦为 $N_1$ 的新绕组代替原来的二次绕组，而一次绕组匝数不变，称为将二次绕组\textbf{归算到一次侧}。归算后二次侧各物理量的数值称为\textbf{归算值}，在原来符号右上角加"$'$"表示。
+
+\subsection{二次绕组电流的归算}
+归算前后二次绕组的磁动势不能改变，即
+\begin{equation}
+I_2'N_1=I_2N_2\quad\Longrightarrow\quad
+I_2'=\frac{N_2}{N_1}I_2=\frac{I_2}{k}.
+\end{equation}
+
+\subsection{二次绕组电动势的归算}
+归算前后作用在磁路上的磁动势没变，主磁通不会改变，而感应电动势与匝数成正比，于是
+\begin{equation}
+\frac{E_2'}{E_2}=\frac{N_1}{N_2}=k\quad\Longrightarrow\quad
+E_2'=kE_2=E_1 .
+\end{equation}
+归算后从一次绕组传输到二次侧的视在功率为 $E_2'I_2'=kE_2\cdot I_2/k=E_2I_2$，与归算前相等，满足\textbf{功率不变}原则。
+
+\subsection{二次绕组端电压的归算}
+根据功率不变原则，归算前后二次绕组输出的视在功率也不应改变，即 $U_2'I_2'=U_2I_2$，故
+\begin{equation}
+U_2'=kU_2 .
+\end{equation}
+
+\subsection{二次绕组阻抗的归算}
+根据归算前后\textbf{损耗不变}原则，$I_2'^2R_2'=I_2^2R_2$，故
+\begin{equation}
+R_2'=k^{2}R_2 ;
+\end{equation}
+根据归算前后\textbf{漏磁场储能不变}原则，$\tfrac12L_{2\sigma}'I_2'^2=\tfrac12L_{2\sigma}I_2^2$，故
+\begin{equation}
+X_{2\sigma}'=k^{2}X_{2\sigma},\qquad Z_{2\sigma}'=k^{2}Z_{2\sigma},\qquad Z_L'=k^{2}Z_L .
+\end{equation}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+物理量 & 归算规律 & 依据 \\
+\midrule
+电动势、电压（V） & 乘 $k$ & 电动势 $\propto$ 匝数；功率不变 \\
+电流（A） & 除 $k$ & 磁动势不变 \\
+电阻、电抗、阻抗（$\Omega$） & 乘 $k^{2}$ & 损耗不变、漏磁场储能不变 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+综合上述分析：若把二次绕组归算到一次侧，归算后的二次侧各量，凡单位为 V 的量（电动势和电压）归算值等于原值乘以 $k$；凡单位为 $\Omega$ 的量（电阻、电抗、阻抗）归算值等于原值乘以 $k^2$；电流的归算值则等于原值乘以 $1/k$。
+
+将基本方程组中第二个方程式两边同乘以 $k$、第四个方程式两边同除以 $N_1$，便得到归算后变压器的基本方程组：
+\begin{equation}
+\left\{
+\begin{aligned}
+\dot U_1&=-\dot E_1+\dot I_1Z_{1\sigma},\\
+\dot U_2'&=\dot E_2'-\dot I_2'Z_{2\sigma}',\\
+\dot E_1&=\dot E_2',\\
+\dot I_1&=\dot I_m+\left(-\dot I_2'\right),\\
+\dot E_1&=-\dot I_mZ_m .
+\end{aligned}
+\right.
+\end{equation}
+
+在变压器中有时也将一次侧各量归算到二次侧：二次侧各量保持不变，一次侧电动势、电压的归算值等于原值乘以 $1/k$；一次侧电阻、电抗和阻抗的归算值等于原值乘以 $1/k^2$；电流的归算值等于原值乘以 $k$——与从二次侧归算到一次侧正好相反。
+
+\corepoint{归算的三个"不变量"是判错的标准答案：\textbf{磁动势不变、功率不变、损耗与漏磁场储能不变}。做题时如果归算后算出的铜耗或输出功率与归算前不同，一定是 $k$ 的幂次用错了。记忆口诀："电压乘 $k$、电流除 $k$、阻抗乘 $k^2$"，但\textbf{三相变压器要用相电压比}，用线电压比会把 $\sqrt3$ 带进 $k^2$，这是最常见的失分点。}
+
+\section{变压器的等效电路和相量图}
+
+归算的目的不仅是使计算与相量图绘制方便，更重要的是可以把既有电关系又有磁关系的实际变压器，用一个\textbf{单纯的电路}来表示——这种电路称为\textbf{等效电路}。
+
+\subsection{T 型等效电路}
+分析归算后的基本方程组：第一个方程对应一次侧的串联支路 $Z_{1\sigma}$，第二个方程对应二次侧的串联支路 $Z_{2\sigma}'$ 与负载 $Z_L'$，第四个方程对应励磁支路 $Z_m$。把三个电路的尾端连起来不会改变各自特性；又因 $\dot E_1=\dot E_2'$，三个对应节点等电位，将这三个节点直接相连，即完全满足基本方程组——所得到的电路就是变压器的 \textbf{T 型等效电路}：一次漏阻抗 $Z_{1\sigma}$ 与励磁支路 $Z_m$ 串联后，再与二次漏阻抗 $Z_{2\sigma}'$ 及负载 $Z_L'$ 串联。
+
+运用 T 型等效电路可以很精确地进行变压器的运行分析与计算。
+
+\subsection{相量图}
+相量图根据基本方程组画出，特点是可以直观看出各物理量的大小和相位关系。画相量图时认为 $R_1$、$R_2'$、$X_{1\sigma}$、$X_{2\sigma}'$ 和 $Z_m$ 均为已知，负载阻抗 $Z_L'$（或负载电流 $\dot I_2'$）亦给定。
+
+\subsubsection{作图步骤（感性负载）}
+\begin{enumerate}
+  \item 以负载端电压 $\dot U_2'$ 为参考相量；
+  \item 由给定负载阻抗 $Z_L'$ 画出负载电流 $\dot I_2'=\dot U_2'/Z_L'$；
+  \item 由 $\dot U_2'=\dot E_2'-\dot I_2'Z_{2\sigma}'$ 反求 $\dot E_2'=\dot E_1$：在 $\dot U_2'$ 上加阻抗压降 $\dot I_2'R_2'+\mathrm{j}\dot I_2'X_{2\sigma}'$，其中 $\dot I_2'R_2'$ 平行于 $\dot I_2'$，$\mathrm{j}\dot I_2'X_{2\sigma}'$ 超前 $\dot I_2'$ $90^\circ$；
+  \item 主磁通 $\dot\Phi_m$ 超前 $\dot E_1$（即 $\dot E_2'$）$90^\circ$；
+  \item 由 $\dot E_1=-\dot I_mZ_m$ 画励磁电流 $\dot I_m$，它应滞后于 $-\dot E_1$ 角度 $\alpha_{Fe}=\arctan\left(X_m/R_m\right)$（铁耗角）；
+  \item 由 $\dot I_1=\dot I_m+\left(-\dot I_2'\right)$ 得一次电流 $\dot I_1$；
+  \item 由 $\dot U_1=-\dot E_1+\dot I_1Z_{1\sigma}$ 得一次电压 $\dot U_1$：在 $-\dot E_1$ 上加 $\dot I_1R_1$（平行 $\dot I_1$）与 $\mathrm{j}\dot I_1X_{1\sigma}$（超前 $\dot I_1$ $90^\circ$）。
+\end{enumerate}
+
+相量图主要用以直观反映各量之间的大小和相位关系，具体计算一般还是利用等效电路。
+
+\subsection{近似和简化等效电路}
+对于普通电力变压器，励磁电流与额定电流相比很小（通常占额定电流的千分之几至百分之几），它在 $Z_{1\sigma}$ 上引起的压降很小；即使是额定电流在 $Z_{1\sigma}$ 上引起的压降 $I_{1N}Z_{1\sigma}$ 也不超过额定电压的百分之几。因此把 T 型等效电路中的励磁分支从中间位置移到\textbf{电源端}，对运行计算仍然很精确，这就是\textbf{近似等效电路}。
+
+如果进一步忽略励磁电流，则得到\textbf{简化等效电路}——此时变压器表现为一个串联阻抗
+\begin{equation}
+Z_k=R_k+\mathrm{j}X_k,\qquad R_k=R_1+R_2',\qquad X_k=X_{1\sigma}+X_{2\sigma}' ,
+\end{equation}
+其中 $Z_k$ 为变压器的\textbf{短路阻抗}，$R_k$ 为\textbf{短路电阻}，$X_k$ 为\textbf{短路电抗}。
+
+工程上常用简化等效电路进行定性分析和简化计算；在电力系统计算中，变压器的等效电路几乎都采用简化等效电路。
+
+\begin{center}
+\begin{tabular}{@{}p{2.4cm}p{3.6cm}p{4.2cm}p{3.4cm}@{}}
+\toprule
+等效电路 & 结构 & 适用条件 & 典型用途 \\
+\midrule
+T 型 & 励磁支路接在两侧漏阻抗之间 & 精确分析，任何负载 & 教学、精确计算 \\
+近似 & 励磁支路移到电源端 & 励磁电流远小于额定电流 & 一般运行计算 \\
+简化 & 只有 $Z_k=R_k+\mathrm{j}X_k$ & 忽略励磁电流，负载较大 & 电力系统计算、短路计算 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{变压器的参数测定}
+
+变压器的参数可以通过\textbf{空载试验}和\textbf{短路试验}测定。
+
+\subsection{空载试验}
+空载试验的目的是测定变压器的\textbf{变比}、空载电流特性、空载损耗特性和\textbf{励磁阻抗}。为了安全和便于试验，通常\textbf{在低压端加电压，高压端开路}。
+
+\subsubsection{变比}
+低压绕组加电源电压，用电压表分别测出低压端的外加电压 $U_1$ 和高压端的开路电压 $U_{20}$，便可算出变比
+\begin{equation}
+k=\frac{N(\text{高压})}{N(\text{低压})}=\frac{U_{20}}{U_1}.
+\end{equation}
+
+\subsubsection{空载特性}
+用调压器把电源电压调到变压器低压端额定电压的 1.2 倍左右，然后逐步降低电压，同时测量空载电流 $I_0$、外加电压 $U_1$ 和相应的空载功率 $p_0$，得到空载特性曲线 $I_0=f(U_1)$ 和 $p_0=f(U_1)$。
+
+空载时漏阻抗压降相当小，电压 $U_1$ 与主磁通成正比，且空载电流就是励磁电流，所以 $I_0=f(U_1)$ 实质上反映了变压器铁芯的\textbf{基本磁化曲线}：电压较低时磁路不饱和，$I_0=f(U_1)$ 是线性关系；电压增高时磁路逐渐饱和，$I_0$ 迅速增加。
+
+空载时变压器从电网吸收的功率 $p_0$ 为铁芯损耗 $p_{Fe}$ 与空载绕组损耗 $p_{Cu0}$ 之和。$p_{Cu0}=I_0^2R_1$ 与空载电流二次方成正比；铁芯损耗正比于铁芯磁密（或 $U_1$）的二次方。空载时 $I_0=I_m$ 非常小，可认为 $p_{Cu0}\approx0$，所以 $p_0\approx p_{Fe}$，与外加电压 $U_1$ 的二次方成正比——故\textbf{空载损耗特性 $p_0=f(U_1)$ 基本上是抛物形曲线}。
+
+\subsubsection{励磁参数}
+在空载特性曲线上查出额定电压时的 $I_0$ 和 $p_0$，便得到额定电压下的励磁参数：
+\begin{equation}
+Z_m=\frac{U_{1N}}{I_0},\qquad
+R_m=\frac{p_0}{I_0^{2}},\qquad
+X_m=\sqrt{Z_m^{2}-R_m^{2}} ,
+\end{equation}
+式中 $U_{1N}$ 为一次绕组（此处的加压侧）的额定相电压。
+
+\textbf{注意}：此时的励磁参数为\textbf{低压侧的值}，若归算到高压侧，各参数均应乘以 $k^2$。
+
+\subsection{短路试验}
+短路试验时把二次绕组短路，一次绕组外加可调的低电压。为便于测量，通常将\textbf{高压侧作为一次侧}，低压侧作为二次侧。通过短路试验可以确定变压器的\textbf{短路特性}和\textbf{短路参数}。
+
+\subsubsection{短路特性}
+用调压器升高外加电压 $U_k$，使短路电流达到高压绕组额定电流的 1.2 倍为止，然后再逐渐降低电压，同时测量 $U_k$、$I_k$ 和相应的短路功率 $p_k$，得到短路特性曲线。
+
+短路试验时外加电压很低，一般小于额定电压的 10\%，磁路不饱和，$I_k=f(U_k)$ 为直线。由于电压低，短路时的铁芯损耗很小可以忽略，故短路功率约等于一、二次绕组的电阻损耗之和：
+\begin{equation}
+p_k\approx I_1^{2}R_1+I_2'^{2}R_2'\approx I_k^{2}R_k ,
+\end{equation}
+且 $p_k$ 与 $U_k$ 为线性关系，于是 $p_k=f(U_k)$ 为抛物形曲线（$p_k\propto U_k^2$ 的变形写法）。
+
+\subsubsection{短路参数}
+在短路特性曲线上查出短路电流为额定电流时的 $U_k$ 和 $p_k$，可得
+\begin{equation}
+Z_k=\frac{U_k}{I_k},\qquad
+R_k=\frac{p_k}{I_k^{2}},\qquad
+X_k=\sqrt{Z_k^{2}-R_k^{2}} .
+\end{equation}
+所得到的结果是\textbf{折算到高压侧}的值。
+
+由于 $X_{1\sigma}$ 与 $X_{2\sigma}'$ 从 $X_k$ 中分离开是极其困难的，对于近似和简化等效电路可直接使用上式求得的短路参数，无需将各参数分开；对于 T 型等效电路，工程上假设
+\begin{equation}
+X_{1\sigma}=X_{2\sigma}'=\frac{X_k}{2},\qquad
+R_1=R_2'=\frac{R_k}{2},
+\end{equation}
+这对于工程计算已足够精确。
+
+\subsubsection{热态电阻的换算}
+绕组电阻随温度变化，而短路试验通常在室温下进行，故测得的电阻必须换算到规定工作温度。我国国家标准规定，油浸式电力变压器的短路电阻须换算到 75\,℃ 时的值。对于铜线绕组
+\begin{equation}
+R_k(75\,^\circ\mathrm{C})=R_k(\theta)\cdot\frac{235+75}{235+\theta},
+\end{equation}
+式中 $\theta$ 为试验时的室温（℃），$R_k(\theta)$ 为室温 $\theta$ 时的绕组电阻；铝线绕组把 235 换成 228。
+换算后再算短路阻抗：
+\begin{equation}
+Z_k(75\,^\circ\mathrm{C})=\sqrt{R_k^{2}(75\,^\circ\mathrm{C})+X_k^{2}} .
+\end{equation}
+
+\begin{center}
+\begin{tabular}{@{}p{1.9cm}p{3.4cm}p{3.9cm}p{4.0cm}@{}}
+\toprule
+项目 & 接线与条件 & 求得的主要参数 & 关键判据 \\
+\midrule
+空载试验 & 低压侧加压、高压侧开路 & $k$、$Z_m$、$R_m$、$X_m$（低压侧值） & $p_0\approx p_{Fe}$，$p_0\propto U_1^2$ \\
+短路试验 & 高压侧加压、低压侧短路 & $Z_k$、$R_k$、$X_k$（高压侧值） & $p_k\approx p_{Cu}$，$p_k\propto I_k^2$ \\
+热态换算 & 铜线 235、铝线 228 & 75\,℃ 下的 $R_k$、$Z_k$ & 国标规定油浸式换算到 75\,℃ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\corepoint{六个易错点：① 空载试验在\textbf{低压侧}加压，所得 $Z_m$ 是低压侧值，归算到高压侧要乘 $k^2$；② 短路试验在\textbf{高压侧}加压，所得 $Z_k$ 是高压侧值；③ 空载损耗近似等于铁耗，但严格说含少量铜耗；短路损耗近似等于铜耗，但严格说含少量铁耗；④ $X_{1\sigma}$ 与 $X_{2\sigma}'$ 无法由试验分离，T 型电路只能各取一半；⑤ 短路试验数据必须换算到 75\,℃，否则 $R_k$ 偏小；⑥ 做参数计算前先把\textbf{线值换成相值}，三相变压器尤其容易漏除 $\sqrt3$。}

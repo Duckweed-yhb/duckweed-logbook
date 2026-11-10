@@ -1,46 +1,24 @@
-% 网络安全攻防竞赛实践 - 主文件 1.main.tex
-\documentclass[12pt,a4paper,UTF8]{ctexart}
-\usepackage{geometry}
-\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+% 网络安全攻防竞赛实践课程笔记 —— 主文档（正文排版集中在 0.样式.tex，章节文件只放内容）
+% 编译：xelatex 1.main.tex 两遍；成品输出见 build.ps1
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage[UTF8,fontset=windows,scheme=plain]{ctex}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Microsoft YaHei}
 
-% 核心宏包
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{graphicx}
-% 图片在 课程笔记/图片/（latex 的上一级），2026-11-06 补上搜索路径
+\newcommand{\YHBcourse}{网络安全攻防竞赛实践}
+\newcommand{\YHBversion}{v1.1}
+\newcommand{\YHBquote}{以攻防为刃，守护数字边界；以技术为基，探索安全世界。}
+\newcommand{\YHBcoverSize}{33pt}
+\newcommand{\YHBcoverLead}{40pt}
+\usepackage{xcolor}
+\definecolor{yhbAccent}{HTML}{262626}
+\definecolor{yhbAccent2}{HTML}{8C3030}
+\input{0.样式.tex}
 \graphicspath{{../图片/}}
 \usepackage{listings}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
-
-% 超链接（无红框 + 蓝色文字）
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue!80!black,
-    citecolor=blue!80!black,
-    urlcolor=blue!80!black
-}
-
-% 代码块样式
-\lstset{
-    basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!60},
-    stringstyle=\color{red},
-    frame=single,
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    breaklines=true,
-    captionpos=b,
-    tabsize=4
-}
-
-% 标题信息
-\title{\bfseries 网络安全攻防竞赛实践笔记}
-\author{duckweed}
-\date{\today}
-
+\lstset{basicstyle=\ttfamily\normalsize,keywordstyle=\color{yhbAccent2}\bfseries,commentstyle=\color{textgray},stringstyle=\color{yhbAccent},frame=single,rulecolor=\color{yhbAccent!35},backgroundcolor=\color{yhbAccent!3},numbers=left,numberstyle=\tiny\color{textgray},breaklines=true,showstringspaces=false,tabsize=4,aboveskip=10pt,belowskip=10pt}
+\usepackage{tikz}
 \begin{document}
 
 % 封面

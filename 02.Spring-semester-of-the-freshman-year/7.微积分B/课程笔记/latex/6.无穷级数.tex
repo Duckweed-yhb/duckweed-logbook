@@ -1,259 +1,206 @@
-% 子文件：11.无穷级数与傅里叶级数.tex
-% 主文档使用 \input{11.无穷级数与傅里叶级数} 引入，不含 document 环境
+% 子文件：6.无穷级数.tex
+% 对应教材：同济《高等数学》下册 第十二章 无穷级数
+% 节次：§12.1 常数项级数的概念和性质｜§12.2 常数项级数的审敛法｜§12.3 幂级数
+%       §12.4 函数展开成幂级数｜§12.5 函数的幂级数展开式的应用
+%       §12.6 函数项级数的一致收敛性｜§12.7 傅里叶级数｜§12.8 一般周期函数的傅里叶级数
+% 主文档使用 \input{6.无穷级数} 引入，不含 document 环境
 
-\section{无穷级数的敛散性}
+\section{常数项级数的概念和性质}
+\subsection{概念}
 
-定义11.1\quad
+\textbf{定义}\quad 给定数列 $u_1,u_2,\cdots,u_n,\cdots$，称 $\sum\limits_{n=1}^{\infty}u_n=u_1+u_2+\cdots+u_n+\cdots$ 为（常数项）\textbf{无穷级数}，$u_n$ 为一般项。作部分和 $s_n=u_1+\cdots+u_n$，若 $\lim\limits_{n\to\infty}s_n=s$（常数），称级数\textbf{收敛}，$s$ 为\textbf{和}；若 $\{s_n\}$ 无极限，称级数\textbf{发散}。收敛时 $r_n=s-s_n=\sum\limits_{k=n+1}^{\infty}u_k$ 称\textbf{余项}，且 $r_n\to0$。
 
-\subsection{收敛与发散概念}
+\textbf{两个基准级数}（必须记牢）：
+\keyformula{\sum_{n=0}^{\infty}aq^{n}=\frac{a}{1-q}\ (|q|<1),\quad \text{发散}\ (|q|\ge1);\qquad \sum_{n=1}^{\infty}\frac{1}{n^{p}}\ \text{收敛}\iff p>1}
+几何级数：$|q|<1$ 收敛于 $\frac{a}{1-q}$；$p$ 级数：$p>1$ 收敛，$p\le1$ 发散（$p=1$ 为调和级数，发散）。
 
-\subsection{无穷级数的几个基本性质}
+\subsection{收敛级数的基本性质}
+
 \begin{enumerate}
-    \item 性质1\quad 当$k$为非零常数时，级数
-    \item 性质2
-    \item 性质3
-    \item 性质4
-    \item 性质5（级数收敛的必要条件）\quad 若级数收敛，则必有
+  \item \textbf{线性}：$\sum u_n=s,\ \sum v_n=t\Rightarrow\sum(\alpha u_n+\beta v_n)=\alpha s+\beta t$。
+  \item \textbf{去掉、加上或改变有限项}不改变收敛性（收敛时和一般会变）。
+  \item \textbf{收敛的必要条件}：若 $\sum u_n$ 收敛，则 $\lim\limits_{n\to\infty}u_n=0$。
+  \item \textbf{收敛级数可任意加括号}（和不变）；但\textbf{去括号}不一定成立。
+  \item \textbf{柯西审敛原理}：$\sum u_n$ 收敛 $\iff$ 对任意 $\varepsilon>0$ 存在 $N$，当 $n>N$ 时对任意正整数 $p$ 有 $|u_{n+1}+\cdots+u_{n+p}|<\varepsilon$。
 \end{enumerate}
 
-\subsection{柯西收敛原理}
+\corepoint{性质 3 是\textbf{必要}条件，只用来判\textbf{发散}：$\lim u_n\ne0$ 则必发散；但 $\lim u_n=0$ 推不出收敛（调和级数 $\sum\frac1n$ 即反例），这是判敛第一步。性质 4 的单向性常考：加括号收敛 $\not\Rightarrow$ 原级数收敛。}
 
-定理11.1\quad 级数收敛的充要条件为：
+\section{常数项级数的审敛法}
+\subsection{正项级数及其审敛法}
 
-\section{正项级数敛散性判别法}
+若 $u_n\ge0$，称 $\sum u_n$ 为\textbf{正项级数}。
 
-若，即有
-\[
-u_n\ge 0
-\]
-所以
+\textbf{定理 1（基本定理）}\quad 正项级数收敛的\textbf{充要条件}是部分和数列 $\{s_n\}$ \textbf{有界}（$s_n$ 单调增，单调有界必收敛）。
 
-定理11.2\quad 正项级数收敛的充要条件是其部分和数列有上界。
+\textbf{定理 2（比较审敛法）}\quad 设 $\sum u_n,\sum v_n$ 为正项级数且 $u_n\le v_n$：若 $\sum v_n$ 收敛则 $\sum u_n$ 收敛；若 $\sum u_n$ 发散则 $\sum v_n$ 发散。
 
-定理11.3（比较判别法）\quad 设
+\textbf{推论（极限形式）}\quad 设 $\lim\limits_{n\to\infty}\frac{u_n}{v_n}=l$：$0<l<+\infty$ 时两者\textbf{同敛散}；$l=0$ 且 $\sum v_n$ 收敛则 $\sum u_n$ 收敛；$l=+\infty$ 且 $\sum v_n$ 发散则 $\sum u_n$ 发散。
 
-\noindent 推论
+\textbf{定理 3（比值审敛法，达朗贝尔）}\quad 对正项级数 $\sum u_n$，若 $\lim\limits_{n\to\infty}\frac{u_{n+1}}{u_n}=\rho$，则 $\rho<1$ 收敛，$\rho>1$（含 $+\infty$）发散，$\rho=1$ \textbf{失效}。
 
-定理11.4（比较判别法的极限形式）\quad 设$\sum u_n$，$\sum v_n$为两个正项级数，如果
-\[
-\lim_{n\to\infty}\frac{u_n}{v_n}=l
-\]
-则
-\begin{enumerate}
-    \item 当$0<l<+\infty$；
-    \item 当$l=0$；
-    \item 当$l=+\infty$。
-\end{enumerate}
+\textbf{定理 4（根值审敛法，柯西）}\quad 若 $\lim\limits_{n\to\infty}\sqrt[n]{u_n}=\rho$，结论同定理 3。
 
-\noindent 推论\quad 设，则
-\begin{enumerate}
-    \item
-    \item
-\end{enumerate}
+\textbf{定理 5（积分审敛法）}\quad 设 $f(x)$ 在 $[1,+\infty)$ 上连续、非负、单调减少且 $f(n)=u_n$，则 $\sum\limits_{n=1}^{\infty}u_n$ 与 $\int_1^{+\infty}f(x)\,\mathrm{d}x$ \textbf{同时收敛或同时发散}。
 
-定理11.5（比值判别法或达朗贝尔判别法）\quad 对正项级数$\sum u_n$，若
+\corepoint{比较法的\textbf{关键是选比较对象}：常用几何级数、$p$ 级数、$\frac{1}{n\ln^pn}$ 型。选法看通项的阶：含 $n!$、$a^n$、$n^n$ 优先用\textbf{比值}；通项为 $(f(n))^n$ 形优先用\textbf{根值}；$n$ 的有理分式（含根号）优先用\textbf{比较法}（与 $\frac{1}{n^p}$ 比，看分母最高次与分子之差）。比值、根值法在 $\rho=1$ 时\textbf{不能用}（$\sum\frac1n$、$\sum\frac{1}{n^2}$ 都给出 $\rho=1$），这是最常见失分点。}
 
-定理11.6（根值判别法或柯西判别法）\quad 对正项级数$\sum u_n$，若
-\[
-\lim_{n\to\infty}\sqrt[n]{u_n}=\rho
-\]
-则当
+\subsection{交错级数及其审敛法}
 
-\noindent 两点补充：
-\begin{enumerate}
-    \item
-    \item
-\end{enumerate}
+形如 $\sum\limits_{n=1}^{\infty}(-1)^{n-1}u_n=u_1-u_2+u_3-\cdots$（$u_n>0$）的级数称\textbf{交错级数}。
 
-定理11.7（积分判别法）\quad 设，且$f(n)=u_n$，则级数
+\textbf{定理 6（莱布尼茨判别法）}\quad 若 (1) $u_n\ge u_{n+1}$（$n=1,2,\cdots$）；(2) $\lim\limits_{n\to\infty}u_n=0$，则 $\sum(-1)^{n-1}u_n$ \textbf{收敛}，且 $s\le u_1$，余项 $|r_n|\le u_{n+1}$。
 
-\section{任意项级数、绝对收敛}
+\corepoint{两条件缺一不可：$u_n$ \textbf{单调不增}且 $\to0$；只看 $\to0$ 不够（不单调时可能发散）。非交错级数不能套用，应先拆项。余项估计 $|r_n|\le u_{n+1}$ 常用于近似计算定误差。}
 
-既有正项又有负项。
+\subsection{绝对收敛与条件收敛}
 
-定义11.3\quad 如果，则称绝对收敛。如果级数收敛，但不绝对收敛，则称级数条件收敛。
+对任意项级数 $\sum u_n$：若 $\sum|u_n|$ 收敛，称 $\sum u_n$ \textbf{绝对收敛}；若 $\sum u_n$ 收敛而 $\sum|u_n|$ 发散，称\textbf{条件收敛}。
 
-定理11.8\quad 级数绝对收敛的充要条件是由级数中正项构成的级数和负项构成的级数
-\[
-\sum u_n^+,\quad \sum u_n^-
-\]
-都收敛。
+\textbf{定理 7}\quad 绝对收敛 $\Rightarrow$ 收敛。
 
-定理11.9\quad 若级数绝对收敛。
+\textbf{定理 8（绝对收敛级数的性质）}\quad 绝对收敛级数可\textbf{任意交换项次序}而不改变其和；两个绝对收敛级数的\textbf{柯西乘积} $\sum\limits_{n=1}^{\infty}\left(\sum\limits_{k=1}^{n}u_kv_{n-k+1}\right)$ 也绝对收敛，和为 $(\sum u_n)(\sum v_n)$。条件收敛级数不能随意重排。
 
-\noindent 注意
-
-\noindent 正项与负项
-
-定理11.10（莱布尼茨判别法）\quad 若
-\begin{enumerate}
-    \item
-    \item
-\end{enumerate}
-则级数收敛，且其和，余和。
-
-\noindent 绝对收敛级数的两条性质
-\begin{enumerate}
-    \item 性质1\quad 若级数
-    \item 性质2\quad 若级数$\sum u_n$，$\sum v_n$都绝对收敛，它们的和分别为$A,B$，则它们的柯西乘积
-\[
-\sum_{n=1}^{\infty}\left(\sum_{k=1}^{n}u_k v_{n-k+1}\right)
-\]
-也是绝对收敛的，且其和为$A\cdot B$。
-\end{enumerate}
-
-\section{函数项级数、一致收敛}
-\subsection{函数项级数}
-
-设，对函数项级数
-\[
-\sum_{n=1}^{\infty}u_n(x)
-\]
-当，若数项级数
-\[
-\sum_{n=1}^{\infty}u_n(x_0)
-\]
-收敛。
-
-设$J$是。
-
-\subsection{一致收敛}
-
-恒有，这个。
-
-定义11.4\quad
-
-定理\quad
+\corepoint{判任意项级数的\textbf{标准流程}：先看 $\sum|u_n|$——收敛即\textbf{绝对收敛}，结束；若发散，再判原级数（交错用莱布尼茨，一般用定义）——收敛则为\textbf{条件收敛}。$|u_n|$ 发散\textbf{不能}推出 $u_n$ 发散，这是最易搞反的一步。}
 
 \section{幂级数}
+\subsection{函数项级数}
 
-形如
-\[
-\sum_{n=0}^{\infty}a_n(x-x_0)^n
-\]
+设 $u_n(x)$ 定义在区间 $I$ 上，称 $\sum\limits_{n=1}^{\infty}u_n(x)$ 为\textbf{函数项级数}。若 $\sum u_n(x_0)$ 收敛，称 $x_0$ 为收敛点，收敛点全体称\textbf{收敛域}，其上的 $s(x)=\sum u_n(x)$ 称\textbf{和函数}。
 
-\subsection{幂级数的收敛半径和收敛域}
+\subsection{幂级数及其收敛性}
 
-阿贝尔引理\quad 如果
+形如 $\sum\limits_{n=0}^{\infty}a_n(x-x_0)^n$ 的级数称\textbf{幂级数}（$x_0=0$ 时即 $\sum a_nx^n$）。
 
-\noindent 推论\quad 幂级数的收敛性有三种类型：
-\begin{enumerate}
-    \item
-    \item
-    \item
-\end{enumerate}
+\textbf{阿贝尔定理}\quad 若 $\sum a_nx^n$ 在 $x=x_0\ne0$ 处收敛，则对 $|x|<|x_0|$ 的一切 $x$ \textbf{绝对收敛}；若在 $x_0$ 处发散，则对 $|x|>|x_0|$ 的一切 $x$ \textbf{发散}。
 
-定理11.12\quad 对幂级数$\sum a_n x^n$，若
-\[
-\rho=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|
-\]
-则幂级数的收敛半径
-\[
-R=\frac1\rho
-\]
+故收敛性只有三种：仅在 $x=0$ 收敛（$R=0$）；全数轴收敛（$R=+\infty$）；存在 $R>0$，$|x|<R$ 绝对收敛、$|x|>R$ 发散——$R$ 称\textbf{收敛半径}，$(-R,R)$ 称\textbf{收敛区间}，端点 $x=\pm R$ 须单独判定，最终得\textbf{收敛域}。
+
+\textbf{收敛半径的求法}：对 $\sum a_nx^n$，若
+\keyformula{\rho=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|\quad\text{或}\quad \rho=\lim_{n\to\infty}\sqrt[n]{|a_n|},\qquad R=\frac{1}{\rho}}
+（约定 $\rho=0$ 时 $R=+\infty$；$\rho=+\infty$ 时 $R=0$。）
+
+\corepoint{求收敛域\textbf{三步}：(1) 用公式求 $R$（$a_n$ 是 $x^n$ 的系数；缺项级数如 $\sum a_nx^{2n}$ 不能直接套公式，应把 $x^2$ 当整体用比值法）；(2) 得 $(-R,R)$；(3) \textbf{端点单独讨论}——代入 $x=\pm R$ 化成数项级数再判，两端可能一敛一散。只写开区间不讨论端点是最常见的扣分点。}
 
 \subsection{幂级数的运算}
 
-设有两个幂级数
+设 $\sum a_nx^n=f(x)$，$\sum b_nx^n=g(x)$，收敛半径 $R_1,R_2$，$R=\min\{R_1,R_2\}$，则在 $(-R,R)$ 内
 \[
-\sum a_n x^n =f(x),\qquad \sum b_n x^n =g(x)
+\sum a_nx^n\pm\sum b_nx^n=\sum(a_n\pm b_n)x^n,\qquad
+\left(\sum a_nx^n\right)\left(\sum b_nx^n\right)=\sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}a_kb_{n-k}\right)x^n .
 \]
-记，由绝对收敛级数的性质有：
-\begin{enumerate}
-    \item 加法与减法
-    \item 乘法
-    \item 除法
-\end{enumerate}
+在 $(-R,R)$ 内和函数连续，且可\textbf{逐项求导}、\textbf{逐项积分}：
+\keyformula{s'(x)=\sum_{n=1}^{\infty}na_nx^{n-1},\qquad \int_0^{x}s(t)\,\mathrm{d}t=\sum_{n=0}^{\infty}\frac{a_n}{n+1}x^{n+1}}
+运算后\textbf{收敛半径不变}，但\textbf{端点处的收敛性可能改变}。
 
-定理11.13\quad
+\corepoint{逐项求导降次、可能"丢失"常数项，逐项积分升次并添 $x$ 因子——求\textbf{和函数}正靠这两招把系数凑成可积分/可求导的形状，再回到已知展开式。逐项运算只在\textbf{开区间}内保证成立，端点要重新讨论。}
 
-\noindent 幂级数有如下分析运算性质：
-\begin{enumerate}
-    \item
-    \item
-    \item
-\end{enumerate}
+\section{函数展开成幂级数}
+\subsection{泰勒级数与展开条件}
 
-幂级数，例如的收敛域。
-
-\noindent 关于幂级数的和函数有下列重要性质：
-\begin{enumerate}
-    \item 性质1
-    \item 性质2
-    \item 性质3
-\end{enumerate}
-
-\section{函数的幂级数展开}
-\subsection{直接展开法、泰勒级数}
-
-如果：人们称幂级数
+若 $f(x)$ 在 $x_0$ 的某邻域内有任意阶导数，则称
 \[
-\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n
+\sum_{n=0}^{\infty}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n=f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots
 \]
-为$f(x)$在$x_0$处的泰勒级数。
+为 $f(x)$ 在 $x_0$ 处的\textbf{泰勒级数}；$x_0=0$ 时称\textbf{麦克劳林级数}。
 
-显然。
+\textbf{定理（展开的充要条件）}\quad $f(x)$ 在该邻域内能展开成泰勒级数 $\iff$ 泰勒公式的余项满足 $\lim\limits_{n\to\infty}R_n(x)=0$。
 
-定理11.14\quad 则它的泰勒级数收敛于$f(x)$的充分必要条件是余项
-\[
-\lim_{n\to\infty}R_n(x)=0
-\]
+\textbf{定理（唯一性）}\quad 若 $f(x)$ 能展开成 $x-x_0$ 的幂级数，则系数必为 $a_n=\dfrac{f^{(n)}(x_0)}{n!}$，展开式唯一。
 
-定理11.15（函数幂级数展开的唯一性）\quad 若函数可展开为幂级数
-\[
-f(x)=\sum_{n=0}^{\infty}a_n(x-x_0)^n
-\]
-则其系数
-\[
-a_n=\frac{f^{(n)}(x_0)}{n!}
-\]
-这里规定。
+\subsection{五个基本展开式}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+函数 & 展开式 & 收敛域 \\
+\midrule
+$\mathrm{e}^{x}$ & $\sum\limits_{n=0}^{\infty}\dfrac{x^{n}}{n!}=1+x+\dfrac{x^{2}}{2!}+\cdots$ & $(-\infty,+\infty)$ \\
+$\sin x$ & $\sum\limits_{n=0}^{\infty}\dfrac{(-1)^{n}x^{2n+1}}{(2n+1)!}=x-\dfrac{x^{3}}{3!}+\dfrac{x^{5}}{5!}-\cdots$ & $(-\infty,+\infty)$ \\
+$\cos x$ & $\sum\limits_{n=0}^{\infty}\dfrac{(-1)^{n}x^{2n}}{(2n)!}=1-\dfrac{x^{2}}{2!}+\dfrac{x^{4}}{4!}-\cdots$ & $(-\infty,+\infty)$ \\
+$\ln(1+x)$ & $\sum\limits_{n=1}^{\infty}\dfrac{(-1)^{n-1}x^{n}}{n}=x-\dfrac{x^{2}}{2}+\dfrac{x^{3}}{3}-\cdots$ & $(-1,1]$ \\
+$(1+x)^{m}$ & $1+mx+\dfrac{m(m-1)}{2!}x^{2}+\cdots$（$m$ 非非负整数） & $(-1,1)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\keyformula{\mathrm{e}^{x}=\sum_{n=0}^{\infty}\frac{x^{n}}{n!},\qquad \frac{1}{1-x}=\sum_{n=0}^{\infty}x^{n}\ (|x|<1)}
 
 \subsection{间接展开法}
 
-称为欧拉公式。
+直接按 $a_n=\frac{f^{(n)}(0)}{n!}$ 求系数（直接展开法）计算量大，通常用\textbf{间接展开法}：由已知展开式经\textbf{变量代换}、四则运算、\textbf{逐项求导}、\textbf{逐项积分}得新展开式，由唯一性保证正确。
 
-\noindent 幂级数求和。
+\textbf{常用套路}：(1) 把 $f$ 化成 $\mathrm{e}^{u},\sin u,\ln(1+u),(1+u)^m,\frac{1}{1-u}$ 的形式，令 $u=\varphi(x)$；(2) 有理分式先\textbf{拆成部分分式}再用 $\frac{1}{1\mp x}$；(3) 含 $\arctan x,\arcsin x,\ln(1+x)$ 的先求导化成有理式，展开后再逐项积分。
 
-\section{幂级数的应用举例}
+\corepoint{间接展开最易错的是\textbf{收敛域}：代换后范围要跟着换。由 $\frac{1}{1-x}=\sum x^n\,(|x|<1)$ 得 $\frac{1}{1+x^2}=\sum(-1)^nx^{2n}$，收敛域仍是 $|x|<1$；而 $\ln(1+x)$ 逐项积分后在 $x=1$ 也收敛（得 $(-1,1]$）。\textbf{端点是否包含必须重新判}，不能照抄原级数区间。}
+
+\section{函数的幂级数展开式的应用}
+
+利用幂级数可作近似计算，误差由\textbf{余项}估计：(1) \textbf{求函数近似值}——把 $x$ 取小，展开到所需精度，由余项定项数；(2) \textbf{求积分近似值}——被积函数展开后\textbf{逐项积分}再截断；(3) \textbf{求极限}——用展开式代替函数，同阶项相消。
+
+\textbf{微分方程的幂级数解法}：对 $y'=f(x,y)$，若 $f$ 在 $(x_0,y_0)$ 附近可展成幂级数，可设 $y=\sum a_n(x-x_0)^n$，代入比较同次幂系数逐次定出 $a_n$。
+
+\corepoint{核心是\textbf{误差控制}：问"精确到 $10^{-4}$"就要由 $|r_n|\le10^{-4}$ 反解 $n$。交错级数（满足莱布尼茨条件）的余项不超过第一个被舍去项，是最快的估计。}
+
+\section{函数项级数的一致收敛性}
+
+\textbf{定义}\quad 设 $\sum u_n(x)$ 在 $I$ 上收敛于 $s(x)$。若对任意 $\varepsilon>0$，存在\textbf{与 $x$ 无关}的 $N$，使 $n>N$ 时对一切 $x\in I$ 有 $|r_n(x)|<\varepsilon$，则称它在 $I$ 上\textbf{一致收敛}。\textbf{魏尔斯特拉斯判别法}：若 $|u_n(x)|\le M_n$ 且 $\sum M_n$ 收敛，则 $\sum u_n(x)$ 一致收敛。一致收敛级数具有\textbf{连续性}、可\textbf{逐项积分}、可\textbf{逐项求导}（导级数须一致收敛）。
+
+\corepoint{与普通收敛的差别只在 $N$ 是否\textbf{与 $x$ 无关}；有了它才能逐项求极限、积分、求导。幂级数在其收敛区间内部一致收敛，这正是它可逐项运算的依据。}
 
 \section{傅里叶级数}
+\subsection{三角级数与三角函数系的正交性}
 
-即将周期为$T$的函数展开成
+形如 $\frac{a_0}{2}+\sum\limits_{n=1}^{\infty}(a_n\cos nx+b_n\sin nx)$ 的级数称\textbf{三角级数}。三角函数系 $1,\cos x,\sin x,\cos 2x,\sin 2x,\cdots$ 在 $[-\pi,\pi]$ 上\textbf{正交}：
 \[
-\frac{a_0}{2}+\sum\left(a_n\cos\frac{2\pi}{T}nx+b_n\sin\frac{2\pi}{T}nx\right)
+\int_{-\pi}^{\pi}\cos mx\cos nx\,\mathrm{d}x=\int_{-\pi}^{\pi}\sin mx\sin nx\,\mathrm{d}x=\int_{-\pi}^{\pi}\cos mx\sin nx\,\mathrm{d}x=0\quad(m\ne n),
 \]
-的形式。
+而 $\int_{-\pi}^{\pi}1^2\mathrm{d}x=2\pi$，$\int_{-\pi}^{\pi}\cos^2nx\,\mathrm{d}x=\int_{-\pi}^{\pi}\sin^2nx\,\mathrm{d}x=\pi$。
 
-\subsection{三角函数系的正交性}
+\subsection{函数展开成傅里叶级数}
 
-三角函数系
-\begin{enumerate}
-    \item（正交性）任何两个不同的
-    \item
-\end{enumerate}
+设 $f(x)$ 是周期为 $2\pi$ 的周期函数，由正交性逐项积分得\textbf{欧拉—傅里叶公式}
+\keyformula{a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\cos nx\,\mathrm{d}x\ (n=0,1,2,\cdots),\qquad b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin nx\,\mathrm{d}x\ (n=1,2,\cdots)}
+由此系数确定的三角级数称 $f$ 的\textbf{傅里叶级数}。
 
-\subsection{傅里叶级数}
-
-定理11.16\quad 如果
+\textbf{狄利克雷收敛定理}\quad 设 $f$ 是周期 $2\pi$ 的周期函数，若 (1) 一个周期内\textbf{连续或只有有限个第一类间断点}；(2) 一个周期内\textbf{至多有有限个极值点}，则其傅里叶级数收敛，且
 \[
-f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}(a_n\cos nx+b_n\sin nx)
+\frac{a_0}{2}+\sum_{n=1}^{\infty}(a_n\cos nx+b_n\sin nx)=
+\begin{cases}
+f(x), & x\ \text{为连续点},\\[3pt]
+\dfrac{f(x^-)+f(x^+)}{2}, & x\ \text{为间断点}.
+\end{cases}
 \]
 
-定理11.17（收敛的充分条件）\quad 如果
-\begin{enumerate}
-    \item
-    \item
-\end{enumerate}
+\corepoint{两个要点：(1) 系数公式的 $\frac{1}{\pi}$ 与 $a_0$ 前的 $\frac12$ 配套，写错全错；(2) 收敛定理给的是"和函数"——\textbf{间断点}处收敛于左右极限的\textbf{平均值}，端点 $x=\pm\pi$ 处收敛于 $\frac{f(-\pi^+)+f(\pi^-)}{2}$。问"展开式在某点等于什么"，往往就考这个平均值。}
 
 \subsection{正弦级数和余弦级数}
-\begin{enumerate}
-    \item
-    \item
-\end{enumerate}
 
-\subsection{以$2l$为周期的函数的傅里叶级数}
+\begin{itemize}
+  \item $f$ 为\textbf{奇函数}：$a_n=0$，$b_n=\frac{2}{\pi}\int_0^{\pi}f(x)\sin nx\,\mathrm{d}x$，级数只含正弦项（\textbf{正弦级数}）。
+  \item $f$ 为\textbf{偶函数}：$b_n=0$，$a_n=\frac{2}{\pi}\int_0^{\pi}f(x)\cos nx\,\mathrm{d}x$，级数只含余弦项（\textbf{余弦级数}）。
+\end{itemize}
 
-\subsection{有限区间上的函数的傅里叶展开}
+\textbf{有限区间上的展开（奇延拓与偶延拓）}：若 $f$ 只在 $[0,\pi]$ 上有定义，要展成正弦级数就作\textbf{奇延拓}（$F(-x)=-F(x)$）再按奇函数求 $b_n$；要展成余弦级数就作\textbf{偶延拓}（$F(-x)=F(x)$）再按偶函数求 $a_n$。所得级数在 $(0,\pi)$ 内收敛于 $f(x)$。
 
-\subsection{傅里叶级数的复数形式}
+\corepoint{奇延拓的正弦级数在 $x=0$ 处收敛于 $0$（除非 $f(0)=0$）；偶延拓的余弦级数在 $x=0$ 处收敛于 $f(0^+)$。这是"端点值"类题目的标准考法；延拓只是求系数的技巧，原函数在 $[0,\pi]$ 上并未改变。}
+
+\section{一般周期函数的傅里叶级数}
+\subsection{周期为 $2l$ 的周期函数}
+
+设 $f(x)$ 的周期为 $2l$，令 $t=\frac{\pi x}{l}$ 可化为周期 $2\pi$ 的情形，得
+\keyformula{f(x)\sim\frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\frac{n\pi x}{l}+b_n\sin\frac{n\pi x}{l}\right)}
+其中
+\[
+a_n=\frac{1}{l}\int_{-l}^{l}f(x)\cos\frac{n\pi x}{l}\,\mathrm{d}x\ (n=0,1,2,\cdots),\qquad
+b_n=\frac{1}{l}\int_{-l}^{l}f(x)\sin\frac{n\pi x}{l}\,\mathrm{d}x\ (n=1,2,\cdots).
+\]
+$f$ 为奇函数时 $a_n=0$，$b_n=\frac{2}{l}\int_0^{l}f\sin\frac{n\pi x}{l}\mathrm{d}x$；为偶函数时 $b_n=0$，$a_n=\frac{2}{l}\int_0^{l}f\cos\frac{n\pi x}{l}\mathrm{d}x$。狄利克雷定理同样成立。
+
+\subsection{傅里叶级数的复数形式（简）}
+
+由欧拉公式 $\mathrm{e}^{\mathrm{i}\theta}=\cos\theta+\mathrm{i}\sin\theta$ 得复数形式
+\keyformula{f(x)\sim\sum_{n=-\infty}^{+\infty}c_n\mathrm{e}^{\mathrm{i}\frac{n\pi x}{l}},\qquad c_n=\frac{1}{2l}\int_{-l}^{l}f(x)\,\mathrm{e}^{-\mathrm{i}\frac{n\pi x}{l}}\,\mathrm{d}x\ (n=0,\pm1,\pm2,\cdots)}
+周期为 $2\pi$ 时 $c_n=\frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)\mathrm{e}^{-\mathrm{i}nx}\mathrm{d}x$，且 $c_0=\frac{a_0}{2}$，$c_n=\frac{a_n-\mathrm{i}b_n}{2}$，$c_{-n}=\frac{a_n+\mathrm{i}b_n}{2}$。
+
+\corepoint{周期 $2l$ 的记法：把 $2\pi$ 情形的 $\cos nx$ 换成 $\cos\frac{n\pi x}{l}$，系数前的 $\frac{1}{\pi}$ 换成 $\frac{1}{l}$（区间长度由 $2\pi$ 变 $2l$）。\textbf{积分区间须与周期一致}（$[-l,l]$ 或任一长 $2l$ 的区间），否则系数全错。}
