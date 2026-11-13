@@ -19,13 +19,13 @@
 
 ## 📁 本课程资料清单
 
-**共 183 个文件**（2026-10-21 整理后实测）
+**共 175 个文件 / 47.1 MB**（2026-11-13 实测）
 
 > **本课与微积分/电路那类"章节笔记"课不同**：主体是**分类作业的 Writeup**（每类一份 `wp.tex` + 编译好的 `wp.pdf` + 题图 + 题目附件），没有"章节 md 笔记"这一层。
 
 | 子项 | 分类建议 | 内容 |
 |---|---|---|
-| `课程笔记/latex/` | 🟡 个人产出 | 5 个 tex（`1.main` / `2.cover` / `3.introduction` / `4.misc` / `5.web`）+ 编译成品 `1.main.pdf` |
+| `课程笔记/latex/` | 🟡 个人产出 | 6 个 tex（`0.样式` / `1.main` / `2.cover` / `3.introduction` / `4.misc` / `5.web`）；编译成品在 `pdf/网络安全攻防竞赛实践课程笔记.pdf` |
 | `课程笔记/图片/` | 🔵 素材 | 笔记用图（`4.1.png`） |
 | `课程笔记/随附文档/` | 🔵 素材 | 工具教程：`Burpsuite简单使用.docx`、`Hackbar插件.docx` |
 | `作业/{crypto,misc,pwn,reverse,web}/` | 🟡 个人产出 | **5 个分类的 Writeup 工程**：每类 `wp.tex` + `wp.pdf` + 题图（图引用：crypto 4 / misc 18 / pwn 15 / reverse 13 / web 23 处，各自 `graphicx` 已加载 ✅）+ 题目附件（`.tar.gz` / `.zip` / `chal` 可执行 / `.wav` / `.jpg` 等） |

@@ -26,6 +26,6 @@
 
 若确实需要放回仓库（例如要随仓库分发）：
 ```powershell
-Move-Item -Path "E:\future\yhb-大文件\2026-10-23-工程训练-3D模型\*" `
+Move-Item -Path "<库外归档目录>\*" `
           -Destination "<仓库>/硬件资料/3D模型/" -Recurse
 ```
